@@ -4,7 +4,7 @@ extension UIImageView {
     
     func setImage(image: LazyImage?, size: CGSize? = nil, placeholder: UIImage? = nil) {
         
-        let size = size ?? self.size
+        let size = size ?? self.frame.size
         
         self.image = placeholder
         
