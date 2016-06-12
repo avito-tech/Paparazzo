@@ -92,7 +92,7 @@ final class CameraControlsView: UIView {
         photoView.transform = transform
     }
     
-    func setLatestPhotoLibraryItemImage(image: AbstractImage?) {
+    func setLatestPhotoLibraryItemImage(image: LazyImage?) {
         
         if let image = image {
         

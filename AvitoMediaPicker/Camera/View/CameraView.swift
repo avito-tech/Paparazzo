@@ -195,7 +195,7 @@ final class CameraView: UIView, UICollectionViewDelegate {
         self.cameraPreviewLayer = cameraPreviewLayer
     }
     
-    func setLatestPhotoLibraryItemImage(image: AbstractImage?) {
+    func setLatestPhotoLibraryItemImage(image: LazyImage?) {
         cameraControlsView.setLatestPhotoLibraryItemImage(image)
     }
     

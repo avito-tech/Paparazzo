@@ -12,7 +12,7 @@ protocol CameraViewInput: class {
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
  
     func setCaptureSession(session: AVCaptureSession)
-    func setLatestLibraryPhoto(image: AbstractImage?)
+    func setLatestLibraryPhoto(image: LazyImage?)
     
     func setFlashButtonVisible(visible: Bool)
     func animateFlash()

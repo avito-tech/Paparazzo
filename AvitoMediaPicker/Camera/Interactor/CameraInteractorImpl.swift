@@ -34,7 +34,7 @@ final class CameraInteractorImpl: CameraInteractor {
         handler?(deviceOrientationService.currentOrientation)
     }
     
-    func observeLatestPhotoLibraryItem(handler: (AbstractImage? -> ())?) {
+    func observeLatestPhotoLibraryItem(handler: (LazyImage? -> ())?) {
         latestLibraryPhotoProvider.observePhoto(handler)
     }
     

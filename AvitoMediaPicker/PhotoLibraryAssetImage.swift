@@ -1,6 +1,6 @@
 import Photos
 
-struct PhotoLibraryAssetImage: AbstractImage {
+struct PhotoLibraryAssetImage: LazyImage {
 
     private let asset: PHAsset
     private let imageManager: PHImageManager

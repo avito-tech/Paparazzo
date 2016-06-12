@@ -1,11 +1,6 @@
 import UIKit
 import AVFoundation
 
-struct CameraPhoto {
-    let url: NSURL
-    let thumbnailUrl: NSURL
-}
-
 protocol CameraInteractor: class {
     
     var onCaptureSessionReady: (AVCaptureSession -> ())? { get set }
@@ -18,5 +13,5 @@ protocol CameraInteractor: class {
     
     // Set nil handler to stop observing
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?)
-    func observeLatestPhotoLibraryItem(handler: (AbstractImage? -> ())?)
+    func observeLatestPhotoLibraryItem(handler: (LazyImage? -> ())?)
 }

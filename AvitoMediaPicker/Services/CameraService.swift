@@ -12,6 +12,11 @@ protocol CameraService: class {
     func setCaptureSessionRunning(needsRunning: Bool)
 }
 
+struct CameraPhoto {
+    let url: NSURL
+    let thumbnailUrl: NSURL
+}
+
 final class CameraServiceImpl: CameraService {
     
     let captureSession = AVCaptureSession()
@@ -27,11 +32,12 @@ final class CameraServiceImpl: CameraService {
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         
         guard let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice] else {
-            // TODO: handle no video devices
+            // TODO: handle devices that doesn't support photo capturing
             return
         }
         
         guard let camera = videoDevices.filter({ $0.position == .Back }).first else {
+            // TODO: handle devices with no back camera
             return
         }
         
@@ -46,7 +52,7 @@ final class CameraServiceImpl: CameraService {
                 // TODO: handle failure
             }
             
-        } catch let error as NSError {
+        } catch {
             print(error)
             // TODO: handle failure
         }
@@ -154,27 +160,5 @@ final class CameraServiceImpl: CameraService {
         }
         
         return nil
-    }
-}
-
-struct PhotoFromCamera: AbstractImage {
-    
-    let url: NSURL
-    
-    private let imageResizingService: ImageResizingService
-    
-    init(url: NSURL, imageResizingService: ImageResizingService) {
-        self.url = url
-        self.imageResizingService = imageResizingService
-    }
-    
-    // MARK: - AbstractImage
-    
-    func fullResolutionImage<T : InitializableWithCGImage>(completion: T? -> ()) {
-        // TODO
-    }
-    
-    func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: AbstractImageContentMode, completion: T? -> ()) {
-        // TODO
     }
 }

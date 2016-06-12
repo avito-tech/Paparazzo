@@ -76,7 +76,7 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
         cameraView.setCaptureSession(session)
     }
     
-    func setLatestLibraryPhoto(image: AbstractImage?) {
+    func setLatestLibraryPhoto(image: LazyImage?) {
         cameraView.setLatestPhotoLibraryItemImage(image)
     }
     
