@@ -144,7 +144,7 @@ final class CameraView: UIView, UICollectionViewDelegate {
     }
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())?
-    var onPhotoSelect: (CameraPhoto -> ())?
+    var onPhotoSelect: (PhotoPickerItem -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
@@ -176,7 +176,7 @@ final class CameraView: UIView, UICollectionViewDelegate {
         
         case .Preview(let photo):
             photoView.hidden = false
-            photoView.image = photo.url.path.flatMap { UIImage(contentsOfFile: $0) }
+            photoView.setImage(photo.image, placeholder: nil)  // TODO: placeholder
             
             cameraControlsView.hidden = true
             photoControlsView.hidden = false
@@ -217,7 +217,7 @@ final class CameraView: UIView, UICollectionViewDelegate {
         }
     }
     
-    func addPhoto(photo: CameraPhoto) {
+    func addPhoto(photo: PhotoPickerItem) {
         photosRibbonDataSource.addPhoto(photo)
     }
     

@@ -8,7 +8,7 @@ protocol CameraInteractor: class {
     func isFlashAvailable(completion: Bool -> ())
     func setFlashEnabled(enabled: Bool)
     
-    func takePhoto(completion: CameraPhoto? -> ())
+    func takePhoto(completion: PhotoPickerItem? -> ())
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool)
     
     // Set nil handler to stop observing

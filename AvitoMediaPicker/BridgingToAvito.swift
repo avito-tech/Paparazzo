@@ -1,3 +1,5 @@
+// В этом файле собрано всё то из основного проекта Avito,
+// за что могут цепляться VIPER-компоненты пикера
 import UIKit
 
 protocol ViewLifecycleObservable {

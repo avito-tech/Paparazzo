@@ -1,11 +1,13 @@
 import Foundation
 
-final class CameraPresenter: CameraModuleInput, PhotoLibraryModuleOutput, CroppingModuleOutput {
+final class CameraPresenter: PhotoPickerModuleInput, PhotoLibraryModuleOutput, CroppingModuleOutput {
     
     // MARK: - Dependencies
     
     private let interactor: CameraInteractor
     private let router: CameraRouter
+
+    weak var moduleOutput: PhotoPickerModuleOutput?
     
     // MARK: - Init
     
@@ -57,7 +59,7 @@ final class CameraPresenter: CameraModuleInput, PhotoLibraryModuleOutput, Croppi
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.view?.addPhoto(photo)
+                    self?.view?.addPhotoRibbonItem(photo)
                 }
             }
         }
@@ -70,7 +72,7 @@ final class CameraPresenter: CameraModuleInput, PhotoLibraryModuleOutput, Croppi
             self?.view?.setMode(.Preview(photo))
         }
         
-        view?.onRemoveButtonTap = { [weak self] in
+        view?.onRemoveButtonTap = {
             // TODO
             print("onRemoveButtonTap")
         }

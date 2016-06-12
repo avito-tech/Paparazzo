@@ -93,18 +93,8 @@ final class CameraControlsView: UIView {
     }
     
     func setLatestPhotoLibraryItemImage(image: LazyImage?) {
-        
-        if let image = image {
-        
-            let thumbnailSize = CGSize(width: photoViewDiameter, height: photoViewDiameter)
-            
-            image.imageFittingSize(thumbnailSize) { [weak photoView] (image: UIImage?) in
-                photoView?.image = image
-            }
-            
-        } else {
-            photoView.image = nil
-        }
+        let thumbnailSize = CGSize(width: photoViewDiameter, height: photoViewDiameter)
+        photoView.setImage(image, size: thumbnailSize)
     }
     
     func setFlashButtonVisible(visible: Bool) {

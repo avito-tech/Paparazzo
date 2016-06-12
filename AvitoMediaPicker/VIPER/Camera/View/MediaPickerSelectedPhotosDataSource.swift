@@ -5,17 +5,17 @@ final class MediaPickerSelectedPhotosDataSource: NSObject, UICollectionViewDataS
     let cellReuseIdentifier: String
     var onDataChanged: (() -> ())?
     
-    private var photos = [CameraPhoto]()
+    private var photos = [PhotoPickerItem]()
     
     init(cellReuseIdentifier: String) {
         self.cellReuseIdentifier = cellReuseIdentifier
     }
     
-    func photoAtIndexPath(indexPath: NSIndexPath) -> CameraPhoto {
+    func photoAtIndexPath(indexPath: NSIndexPath) -> PhotoPickerItem {
         return photos[indexPath.row]
     }
     
-    func addPhoto(photo: CameraPhoto) {
+    func addPhoto(photo: PhotoPickerItem) {
         
         photos.append(photo)
         
@@ -35,8 +35,8 @@ final class MediaPickerSelectedPhotosDataSource: NSObject, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath)
         let photo = photoAtIndexPath(indexPath)
         
-        if let cell = cell as? MediaPickerCollectionViewCell, photoPath = photo.thumbnailUrl.path {
-            cell.imageView.image = UIImage(contentsOfFile: photoPath)
+        if let cell = cell as? MediaPickerCollectionViewCell {
+            cell.imageView.setImage(photo.image, placeholder: nil)  // TODO: placeholder
         }
         
         return cell

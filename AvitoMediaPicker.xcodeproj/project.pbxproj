@@ -9,116 +9,116 @@
 /* Begin PBXBuildFile section */
 		253FC2581D0AA495000185B4 /* DeviceOrientationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */; };
 		253FC25A1D0AA8CF000185B4 /* LazyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2591D0AA8CF000185B4 /* LazyImage.swift */; };
-		253FC28C1D0AAF83000185B4 /* CameraAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC27A1D0AAF83000185B4 /* CameraAssembly.swift */; };
-		253FC28D1D0AAF83000185B4 /* CameraAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC27B1D0AAF83000185B4 /* CameraAssemblyImpl.swift */; };
-		253FC28E1D0AAF83000185B4 /* CameraInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC27D1D0AAF83000185B4 /* CameraInteractor.swift */; };
-		253FC28F1D0AAF83000185B4 /* CameraInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC27E1D0AAF83000185B4 /* CameraInteractorImpl.swift */; };
-		253FC2901D0AAF83000185B4 /* CameraModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2801D0AAF83000185B4 /* CameraModuleInputOutput.swift */; };
-		253FC2911D0AAF83000185B4 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2821D0AAF83000185B4 /* CameraPresenter.swift */; };
-		253FC2921D0AAF83000185B4 /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2851D0AAF83000185B4 /* CameraControlsView.swift */; };
-		253FC2931D0AAF83000185B4 /* MediaPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2861D0AAF83000185B4 /* MediaPickerCollectionViewCell.swift */; };
-		253FC2941D0AAF83000185B4 /* MediaPickerSelectedPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2871D0AAF83000185B4 /* MediaPickerSelectedPhotosDataSource.swift */; };
-		253FC2951D0AAF83000185B4 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2881D0AAF83000185B4 /* CameraView.swift */; };
-		253FC2961D0AAF83000185B4 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2891D0AAF83000185B4 /* CameraViewController.swift */; };
-		253FC2971D0AAF83000185B4 /* CameraViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC28A1D0AAF83000185B4 /* CameraViewInput.swift */; };
-		253FC2981D0AAF83000185B4 /* PhotoControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC28B1D0AAF83000185B4 /* PhotoControlsView.swift */; };
 		253FC29B1D0AC057000185B4 /* CGAffineTransformExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29A1D0AC057000185B4 /* CGAffineTransformExtensions.swift */; };
-		253FC29D1D0ACE3E000185B4 /* PhotoRibbonLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29C1D0ACE3E000185B4 /* PhotoRibbonLayout.swift */; };
-		253FC29F1D0AE59A000185B4 /* UIImage+InitializableWithCGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29E1D0AE59A000185B4 /* UIImage+InitializableWithCGImage.swift */; };
+		253FC29F1D0AE59A000185B4 /* UIImage+LazyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29E1D0AE59A000185B4 /* UIImage+LazyImage.swift */; };
 		253FC2A21D0AEE8E000185B4 /* PhotoLibraryLatestPhotoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2A11D0AEE8E000185B4 /* PhotoLibraryLatestPhotoProvider.swift */; };
 		2554CEB91D0421CC009371FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2554CEB81D0421CC009371FB /* AppDelegate.swift */; };
-		2554CEBE1D0421CC009371FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2554CEBC1D0421CC009371FB /* Main.storyboard */; };
 		2554CEC01D0421CC009371FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2554CEBF1D0421CC009371FB /* Assets.xcassets */; };
-		2554CEC31D0421CC009371FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2554CEC11D0421CC009371FB /* LaunchScreen.storyboard */; };
 		2554CECE1D04243A009371FB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2554CECD1D04243A009371FB /* AVFoundation.framework */; };
 		25AEA6D11D070EE10037E7BF /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AEA6D01D070EE10037E7BF /* CameraService.swift */; };
 		25AEA6D41D071BC30037E7BF /* BridgingToAvito.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AEA6D31D071BC30037E7BF /* BridgingToAvito.swift */; };
 		25AEA6D61D0806290037E7BF /* ImageResizingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AEA6D51D0806290037E7BF /* ImageResizingService.swift */; };
 		25AEA6DD1D084BC70037E7BF /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25AEA6DC1D084BC70037E7BF /* Photos.framework */; };
-		25BF69751D0D951F002ECFB3 /* PhotoLibraryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69651D0D951F002ECFB3 /* PhotoLibraryAssembly.swift */; };
-		25BF69761D0D951F002ECFB3 /* PhotoLibraryAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69661D0D951F002ECFB3 /* PhotoLibraryAssemblyImpl.swift */; };
-		25BF69771D0D951F002ECFB3 /* PhotoLibraryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69681D0D951F002ECFB3 /* PhotoLibraryInteractor.swift */; };
-		25BF69781D0D951F002ECFB3 /* PhotoLibraryInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69691D0D951F002ECFB3 /* PhotoLibraryInteractorImpl.swift */; };
-		25BF69791D0D951F002ECFB3 /* PhotoLibraryModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF696B1D0D951F002ECFB3 /* PhotoLibraryModuleInputOutput.swift */; };
-		25BF697A1D0D951F002ECFB3 /* PhotoLibraryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF696D1D0D951F002ECFB3 /* PhotoLibraryPresenter.swift */; };
-		25BF697B1D0D951F002ECFB3 /* PhotoLibraryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF696F1D0D951F002ECFB3 /* PhotoLibraryRouter.swift */; };
-		25BF697C1D0D951F002ECFB3 /* PhotoLibraryRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69701D0D951F002ECFB3 /* PhotoLibraryRouterImpl.swift */; };
-		25BF697D1D0D951F002ECFB3 /* PhotoLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69721D0D951F002ECFB3 /* PhotoLibraryView.swift */; };
-		25BF697E1D0D951F002ECFB3 /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69731D0D951F002ECFB3 /* PhotoLibraryViewController.swift */; };
-		25BF697F1D0D951F002ECFB3 /* PhotoLibraryViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69741D0D951F002ECFB3 /* PhotoLibraryViewInput.swift */; };
-		25BF69941D0D99C5002ECFB3 /* CroppingAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69841D0D99C5002ECFB3 /* CroppingAssembly.swift */; };
-		25BF69951D0D99C5002ECFB3 /* CroppingAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69851D0D99C5002ECFB3 /* CroppingAssemblyImpl.swift */; };
-		25BF69961D0D99C5002ECFB3 /* CroppingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69871D0D99C5002ECFB3 /* CroppingInteractor.swift */; };
-		25BF69971D0D99C5002ECFB3 /* CroppingInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69881D0D99C5002ECFB3 /* CroppingInteractorImpl.swift */; };
-		25BF69981D0D99C5002ECFB3 /* CroppingModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF698A1D0D99C5002ECFB3 /* CroppingModuleInputOutput.swift */; };
-		25BF69991D0D99C5002ECFB3 /* CroppingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF698C1D0D99C5002ECFB3 /* CroppingPresenter.swift */; };
-		25BF699A1D0D99C5002ECFB3 /* CroppingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF698E1D0D99C5002ECFB3 /* CroppingRouter.swift */; };
-		25BF699B1D0D99C5002ECFB3 /* CroppingRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF698F1D0D99C5002ECFB3 /* CroppingRouterImpl.swift */; };
-		25BF699C1D0D99C5002ECFB3 /* CroppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69911D0D99C5002ECFB3 /* CroppingView.swift */; };
-		25BF699D1D0D99C5002ECFB3 /* CroppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69921D0D99C5002ECFB3 /* CroppingViewController.swift */; };
-		25BF699E1D0D99C5002ECFB3 /* CroppingViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69931D0D99C5002ECFB3 /* CroppingViewInput.swift */; };
-		3CAFE0C1359C8224C0E711FC /* CameraRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE233D17650FA8F5ED188 /* CameraRouterImpl.swift */; };
-		3CAFE20AB8B061E17F96C95C /* CameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE018E02EB656BB25350C /* CameraRouter.swift */; };
+		25BF69A41D0DACD2002ECFB3 /* UIImageView+LazyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69A31D0DACD2002ECFB3 /* UIImageView+LazyImage.swift */; };
+		3CAFE073805A791558BDAB6B /* PhotoLibraryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEA0EDE53DFEEDFB463DC /* PhotoLibraryRouter.swift */; };
+		3CAFE0ACE65B12EDFB101D98 /* CroppingViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4B4AE02DEC087B7FB42 /* CroppingViewInput.swift */; };
+		3CAFE12AA99A6946FC834ACE /* CameraPhotoImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */; };
+		3CAFE13E2DD717CB80B340F8 /* CameraRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE85EB026391C19004E93 /* CameraRouterImpl.swift */; };
+		3CAFE269A190D556BE9152ED /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEFF2B639891F4ED438BB /* CameraPresenter.swift */; };
+		3CAFE2785ABF69F02A994997 /* CroppingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE1F4206341B7BDDC18B6 /* CroppingInteractor.swift */; };
+		3CAFE2CEE58612C2CF2052FC /* PhotoLibraryAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE1B261F15564F589329C /* PhotoLibraryAssemblyImpl.swift */; };
+		3CAFE322875FD8D19F06A031 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFECF75068CE224CD7119F /* CameraView.swift */; };
+		3CAFE353344D7F1A850A8052 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE2C4EBF68C44E991287A /* CameraViewController.swift */; };
+		3CAFE398643D1DF8F08A925B /* CroppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE444DB5BFF19AEDFA2FF /* CroppingView.swift */; };
+		3CAFE42EBE82B5CAE8D55720 /* PhotoPickerModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4F729E4EE33627D484F /* PhotoPickerModuleInputOutput.swift */; };
+		3CAFE490666158FE695541D0 /* CroppingAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE1A6E7A16EF00802F8AD /* CroppingAssemblyImpl.swift */; };
+		3CAFE4D5C2DF44D5AD432B65 /* CroppingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE56D689AA261E0D4747 /* CroppingPresenter.swift */; };
+		3CAFE57CC9652C97B282DFDF /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEAE12DB41C8034C1A719 /* CameraControlsView.swift */; };
+		3CAFE5DC688AD70830F93A13 /* MediaPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE2B23EFBDBD99D0BBAED /* MediaPickerCollectionViewCell.swift */; };
+		3CAFE5E901963B1A04B0AB81 /* PhotoLibraryModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE6B698E2FF6FD3DA197 /* PhotoLibraryModuleInputOutput.swift */; };
+		3CAFE662A830FC7FB216769B /* CameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEB869DBC84F35F20A5C7 /* CameraRouter.swift */; };
+		3CAFE6D4612E31D55E6A84A0 /* CroppingModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE0CFDDA96786AD367A41 /* CroppingModuleInputOutput.swift */; };
+		3CAFE724FBED6AA73D388398 /* PhotoLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4054F36726E1998C9D0 /* PhotoLibraryView.swift */; };
+		3CAFE7843E211380C8BA9786 /* PhotoLibraryViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE90791C6B1290B040DB9 /* PhotoLibraryViewInput.swift */; };
+		3CAFE89C06E1DE2979470F9B /* CameraViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEDCD7F6A99D9D43D7985 /* CameraViewInput.swift */; };
+		3CAFE8FDEE9301BD01D6273F /* CroppingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8A79132616CDAF38A67 /* CroppingRouter.swift */; };
+		3CAFE91561B09A6099B4B785 /* PhotoLibraryRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE97818272C2CDDDCF57F /* PhotoLibraryRouterImpl.swift */; };
+		3CAFE92B63672603304E5115 /* PhotoControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4592BCFFAE70E254002 /* PhotoControlsView.swift */; };
+		3CAFE9BF3056C71901CB66DF /* MediaPickerSelectedPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8EF8BC8BA860D437DF0 /* MediaPickerSelectedPhotosDataSource.swift */; };
+		3CAFEA139A2E43527A03D825 /* PhotoLibraryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE56463A3DC87D9671BB6 /* PhotoLibraryPresenter.swift */; };
+		3CAFEA6109B37A9B960E773B /* CroppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFED56BA18B46A9E4B2CB4 /* CroppingViewController.swift */; };
+		3CAFEAABB3F482293B994992 /* CameraInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE054FF6BF6868661E190 /* CameraInteractorImpl.swift */; };
+		3CAFEAE6649A1EF45DC0EEB0 /* CroppingAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE6698017ECA2A42B7A4 /* CroppingAssembly.swift */; };
+		3CAFEB6B4ACA14924CA36529 /* PhotoPickerAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */; };
+		3CAFEBBDF61FD2E027F63119 /* CroppingInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE0D48EFBC0EC51DF3FE6 /* CroppingInteractorImpl.swift */; };
+		3CAFEC556606606EE692D8E0 /* PhotoLibraryInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */; };
+		3CAFEC9D826F7C88934AC19A /* PhotoPickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */; };
+		3CAFED58B0B9F2FD9B35A117 /* PhotoLibraryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFED57F6B0BF40BC4C8772 /* PhotoLibraryInteractor.swift */; };
+		3CAFEDD34950B8F6131F8C8D /* CroppingRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE7EDD1346D65B25062B /* CroppingRouterImpl.swift */; };
 		3CAFEE6DA015385C0177799F /* PhotoLibraryAssetImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4D8EC2E453BAE654E9E /* PhotoLibraryAssetImage.swift */; };
+		3CAFEE7E1C4A2B53DCAECF17 /* PhotoLibraryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE3B5329150C95659EB1A /* PhotoLibraryAssembly.swift */; };
+		3CAFEE875FF09717548AD2EF /* PhotoRibbonLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE6BAEBAF106E819173EA /* PhotoRibbonLayout.swift */; };
+		3CAFEEAC0FC5FB88C348C19D /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEAB615488A37E2F49B42 /* PhotoLibraryViewController.swift */; };
+		3CAFEFAD78734D2F41D1CB63 /* CameraInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE32325C06236691C7E09 /* CameraInteractor.swift */; };
 		BD44C2A29274452087648D97 /* Pods_AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF63B5B765CCF907822DEAEF /* Pods_AvitoMediaPicker.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceOrientationService.swift; path = Services/DeviceOrientationService.swift; sourceTree = "<group>"; };
 		253FC2591D0AA8CF000185B4 /* LazyImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyImage.swift; sourceTree = "<group>"; };
-		253FC27A1D0AAF83000185B4 /* CameraAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraAssembly.swift; sourceTree = "<group>"; };
-		253FC27B1D0AAF83000185B4 /* CameraAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraAssemblyImpl.swift; sourceTree = "<group>"; };
-		253FC27D1D0AAF83000185B4 /* CameraInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraInteractor.swift; sourceTree = "<group>"; };
-		253FC27E1D0AAF83000185B4 /* CameraInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraInteractorImpl.swift; sourceTree = "<group>"; };
-		253FC2801D0AAF83000185B4 /* CameraModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraModuleInputOutput.swift; sourceTree = "<group>"; };
-		253FC2821D0AAF83000185B4 /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
-		253FC2851D0AAF83000185B4 /* CameraControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
-		253FC2861D0AAF83000185B4 /* MediaPickerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCollectionViewCell.swift; sourceTree = "<group>"; };
-		253FC2871D0AAF83000185B4 /* MediaPickerSelectedPhotosDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerSelectedPhotosDataSource.swift; sourceTree = "<group>"; };
-		253FC2881D0AAF83000185B4 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		253FC2891D0AAF83000185B4 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
-		253FC28A1D0AAF83000185B4 /* CameraViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewInput.swift; sourceTree = "<group>"; };
-		253FC28B1D0AAF83000185B4 /* PhotoControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoControlsView.swift; sourceTree = "<group>"; };
 		253FC29A1D0AC057000185B4 /* CGAffineTransformExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CGAffineTransformExtensions.swift; path = Extensions/CGAffineTransformExtensions.swift; sourceTree = "<group>"; };
-		253FC29C1D0ACE3E000185B4 /* PhotoRibbonLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRibbonLayout.swift; sourceTree = "<group>"; };
-		253FC29E1D0AE59A000185B4 /* UIImage+InitializableWithCGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+InitializableWithCGImage.swift"; path = "Extensions/UIImage+InitializableWithCGImage.swift"; sourceTree = "<group>"; };
+		253FC29E1D0AE59A000185B4 /* UIImage+LazyImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+LazyImage.swift"; path = "Extensions/UIImage+LazyImage.swift"; sourceTree = "<group>"; };
 		253FC2A11D0AEE8E000185B4 /* PhotoLibraryLatestPhotoProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoLibraryLatestPhotoProvider.swift; path = Services/PhotoLibrary/PhotoLibraryLatestPhotoProvider.swift; sourceTree = "<group>"; };
 		2554CEB51D0421CC009371FB /* AvitoMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AvitoMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2554CEB81D0421CC009371FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2554CEBD1D0421CC009371FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2554CEBF1D0421CC009371FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2554CEC21D0421CC009371FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2554CEC41D0421CC009371FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2554CECD1D04243A009371FB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25AEA6D01D070EE10037E7BF /* CameraService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraService.swift; path = Services/CameraService.swift; sourceTree = "<group>"; };
 		25AEA6D31D071BC30037E7BF /* BridgingToAvito.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BridgingToAvito.swift; sourceTree = "<group>"; };
 		25AEA6D51D0806290037E7BF /* ImageResizingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageResizingService.swift; path = Services/ImageResizingService.swift; sourceTree = "<group>"; };
 		25AEA6DC1D084BC70037E7BF /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		25BF69651D0D951F002ECFB3 /* PhotoLibraryAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssembly.swift; sourceTree = "<group>"; };
-		25BF69661D0D951F002ECFB3 /* PhotoLibraryAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssemblyImpl.swift; sourceTree = "<group>"; };
-		25BF69681D0D951F002ECFB3 /* PhotoLibraryInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractor.swift; sourceTree = "<group>"; };
-		25BF69691D0D951F002ECFB3 /* PhotoLibraryInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractorImpl.swift; sourceTree = "<group>"; };
-		25BF696B1D0D951F002ECFB3 /* PhotoLibraryModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryModuleInputOutput.swift; sourceTree = "<group>"; };
-		25BF696D1D0D951F002ECFB3 /* PhotoLibraryPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPresenter.swift; sourceTree = "<group>"; };
-		25BF696F1D0D951F002ECFB3 /* PhotoLibraryRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouter.swift; sourceTree = "<group>"; };
-		25BF69701D0D951F002ECFB3 /* PhotoLibraryRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouterImpl.swift; sourceTree = "<group>"; };
-		25BF69721D0D951F002ECFB3 /* PhotoLibraryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryView.swift; sourceTree = "<group>"; };
-		25BF69731D0D951F002ECFB3 /* PhotoLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewController.swift; sourceTree = "<group>"; };
-		25BF69741D0D951F002ECFB3 /* PhotoLibraryViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewInput.swift; sourceTree = "<group>"; };
-		25BF69841D0D99C5002ECFB3 /* CroppingAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingAssembly.swift; sourceTree = "<group>"; };
-		25BF69851D0D99C5002ECFB3 /* CroppingAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingAssemblyImpl.swift; sourceTree = "<group>"; };
-		25BF69871D0D99C5002ECFB3 /* CroppingInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingInteractor.swift; sourceTree = "<group>"; };
-		25BF69881D0D99C5002ECFB3 /* CroppingInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingInteractorImpl.swift; sourceTree = "<group>"; };
-		25BF698A1D0D99C5002ECFB3 /* CroppingModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingModuleInputOutput.swift; sourceTree = "<group>"; };
-		25BF698C1D0D99C5002ECFB3 /* CroppingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingPresenter.swift; sourceTree = "<group>"; };
-		25BF698E1D0D99C5002ECFB3 /* CroppingRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingRouter.swift; sourceTree = "<group>"; };
-		25BF698F1D0D99C5002ECFB3 /* CroppingRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingRouterImpl.swift; sourceTree = "<group>"; };
-		25BF69911D0D99C5002ECFB3 /* CroppingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingView.swift; sourceTree = "<group>"; };
-		25BF69921D0D99C5002ECFB3 /* CroppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingViewController.swift; sourceTree = "<group>"; };
-		25BF69931D0D99C5002ECFB3 /* CroppingViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingViewInput.swift; sourceTree = "<group>"; };
-		3CAFE018E02EB656BB25350C /* CameraRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraRouter.swift; sourceTree = "<group>"; };
-		3CAFE233D17650FA8F5ED188 /* CameraRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraRouterImpl.swift; sourceTree = "<group>"; };
+		25BF69A31D0DACD2002ECFB3 /* UIImageView+LazyImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+LazyImage.swift"; path = "Extensions/UIImageView+LazyImage.swift"; sourceTree = "<group>"; };
+		3CAFE054FF6BF6868661E190 /* CameraInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraInteractorImpl.swift; sourceTree = "<group>"; };
+		3CAFE0CFDDA96786AD367A41 /* CroppingModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingModuleInputOutput.swift; sourceTree = "<group>"; };
+		3CAFE0D48EFBC0EC51DF3FE6 /* CroppingInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingInteractorImpl.swift; sourceTree = "<group>"; };
+		3CAFE1A6E7A16EF00802F8AD /* CroppingAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingAssemblyImpl.swift; sourceTree = "<group>"; };
+		3CAFE1B261F15564F589329C /* PhotoLibraryAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssemblyImpl.swift; sourceTree = "<group>"; };
+		3CAFE1F4206341B7BDDC18B6 /* CroppingInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingInteractor.swift; sourceTree = "<group>"; };
+		3CAFE2B23EFBDBD99D0BBAED /* MediaPickerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCollectionViewCell.swift; sourceTree = "<group>"; };
+		3CAFE2C4EBF68C44E991287A /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		3CAFE32325C06236691C7E09 /* CameraInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraInteractor.swift; sourceTree = "<group>"; };
+		3CAFE3B5329150C95659EB1A /* PhotoLibraryAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssembly.swift; sourceTree = "<group>"; };
+		3CAFE4054F36726E1998C9D0 /* PhotoLibraryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryView.swift; sourceTree = "<group>"; };
+		3CAFE444DB5BFF19AEDFA2FF /* CroppingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingView.swift; sourceTree = "<group>"; };
+		3CAFE4592BCFFAE70E254002 /* PhotoControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoControlsView.swift; sourceTree = "<group>"; };
+		3CAFE4B4AE02DEC087B7FB42 /* CroppingViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingViewInput.swift; sourceTree = "<group>"; };
 		3CAFE4D8EC2E453BAE654E9E /* PhotoLibraryAssetImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssetImage.swift; sourceTree = "<group>"; };
+		3CAFE4F729E4EE33627D484F /* PhotoPickerModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerModuleInputOutput.swift; sourceTree = "<group>"; };
+		3CAFE56463A3DC87D9671BB6 /* PhotoLibraryPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPresenter.swift; sourceTree = "<group>"; };
+		3CAFE6BAEBAF106E819173EA /* PhotoRibbonLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRibbonLayout.swift; sourceTree = "<group>"; };
+		3CAFE85EB026391C19004E93 /* CameraRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraRouterImpl.swift; sourceTree = "<group>"; };
+		3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractorImpl.swift; sourceTree = "<group>"; };
+		3CAFE8A79132616CDAF38A67 /* CroppingRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingRouter.swift; sourceTree = "<group>"; };
+		3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPhotoImage.swift; sourceTree = "<group>"; };
+		3CAFE8EF8BC8BA860D437DF0 /* MediaPickerSelectedPhotosDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerSelectedPhotosDataSource.swift; sourceTree = "<group>"; };
+		3CAFE90791C6B1290B040DB9 /* PhotoLibraryViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewInput.swift; sourceTree = "<group>"; };
+		3CAFE97818272C2CDDDCF57F /* PhotoLibraryRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouterImpl.swift; sourceTree = "<group>"; };
+		3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssemblyImpl.swift; sourceTree = "<group>"; };
+		3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssembly.swift; sourceTree = "<group>"; };
+		3CAFEA0EDE53DFEEDFB463DC /* PhotoLibraryRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouter.swift; sourceTree = "<group>"; };
+		3CAFEAB615488A37E2F49B42 /* PhotoLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewController.swift; sourceTree = "<group>"; };
+		3CAFEAE12DB41C8034C1A719 /* CameraControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
+		3CAFEB869DBC84F35F20A5C7 /* CameraRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraRouter.swift; sourceTree = "<group>"; };
+		3CAFECF75068CE224CD7119F /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		3CAFED56BA18B46A9E4B2CB4 /* CroppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingViewController.swift; sourceTree = "<group>"; };
+		3CAFED57F6B0BF40BC4C8772 /* PhotoLibraryInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractor.swift; sourceTree = "<group>"; };
+		3CAFEDCD7F6A99D9D43D7985 /* CameraViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewInput.swift; sourceTree = "<group>"; };
+		3CAFEE56D689AA261E0D4747 /* CroppingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingPresenter.swift; sourceTree = "<group>"; };
+		3CAFEE6698017ECA2A42B7A4 /* CroppingAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingAssembly.swift; sourceTree = "<group>"; };
+		3CAFEE6B698E2FF6FD3DA197 /* PhotoLibraryModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryModuleInputOutput.swift; sourceTree = "<group>"; };
+		3CAFEE7EDD1346D65B25062B /* CroppingRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CroppingRouterImpl.swift; sourceTree = "<group>"; };
+		3CAFEFF2B639891F4ED438BB /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
 		AD70B1A17A3D9606448873FA /* Pods-AvitoMediaPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker/Pods-AvitoMediaPicker.debug.xcconfig"; sourceTree = "<group>"; };
 		DF63B5B765CCF907822DEAEF /* Pods_AvitoMediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AvitoMediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE1C2DE176DF364440E83004 /* Pods-AvitoMediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker/Pods-AvitoMediaPicker.release.xcconfig"; sourceTree = "<group>"; };
@@ -138,82 +138,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		253FC2781D0AAF83000185B4 /* Camera */ = {
-			isa = PBXGroup;
-			children = (
-				253FC2791D0AAF83000185B4 /* Assembly */,
-				253FC27C1D0AAF83000185B4 /* Interactor */,
-				253FC27F1D0AAF83000185B4 /* Module */,
-				253FC2811D0AAF83000185B4 /* Presenter */,
-				253FC2831D0AAF83000185B4 /* Router */,
-				253FC2841D0AAF83000185B4 /* View */,
-			);
-			path = Camera;
-			sourceTree = "<group>";
-		};
-		253FC2791D0AAF83000185B4 /* Assembly */ = {
-			isa = PBXGroup;
-			children = (
-				253FC27A1D0AAF83000185B4 /* CameraAssembly.swift */,
-				253FC27B1D0AAF83000185B4 /* CameraAssemblyImpl.swift */,
-			);
-			path = Assembly;
-			sourceTree = "<group>";
-		};
-		253FC27C1D0AAF83000185B4 /* Interactor */ = {
-			isa = PBXGroup;
-			children = (
-				253FC27D1D0AAF83000185B4 /* CameraInteractor.swift */,
-				253FC27E1D0AAF83000185B4 /* CameraInteractorImpl.swift */,
-			);
-			path = Interactor;
-			sourceTree = "<group>";
-		};
-		253FC27F1D0AAF83000185B4 /* Module */ = {
-			isa = PBXGroup;
-			children = (
-				253FC2801D0AAF83000185B4 /* CameraModuleInputOutput.swift */,
-			);
-			path = Module;
-			sourceTree = "<group>";
-		};
-		253FC2811D0AAF83000185B4 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				253FC2821D0AAF83000185B4 /* CameraPresenter.swift */,
-			);
-			path = Presenter;
-			sourceTree = "<group>";
-		};
-		253FC2831D0AAF83000185B4 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-				3CAFE018E02EB656BB25350C /* CameraRouter.swift */,
-				3CAFE233D17650FA8F5ED188 /* CameraRouterImpl.swift */,
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
-		253FC2841D0AAF83000185B4 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				253FC28A1D0AAF83000185B4 /* CameraViewInput.swift */,
-				253FC2891D0AAF83000185B4 /* CameraViewController.swift */,
-				253FC2881D0AAF83000185B4 /* CameraView.swift */,
-				253FC2851D0AAF83000185B4 /* CameraControlsView.swift */,
-				253FC28B1D0AAF83000185B4 /* PhotoControlsView.swift */,
-				253FC29C1D0ACE3E000185B4 /* PhotoRibbonLayout.swift */,
-				253FC2861D0AAF83000185B4 /* MediaPickerCollectionViewCell.swift */,
-				253FC2871D0AAF83000185B4 /* MediaPickerSelectedPhotosDataSource.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		253FC2991D0AC027000185B4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				253FC29A1D0AC057000185B4 /* CGAffineTransformExtensions.swift */,
-				253FC29E1D0AE59A000185B4 /* UIImage+InitializableWithCGImage.swift */,
+				253FC29E1D0AE59A000185B4 /* UIImage+LazyImage.swift */,
+				25BF69A31D0DACD2002ECFB3 /* UIImageView+LazyImage.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -249,16 +179,12 @@
 			isa = PBXGroup;
 			children = (
 				253FC2991D0AC027000185B4 /* Extensions */,
-				253FC2591D0AA8CF000185B4 /* LazyImage.swift */,
-				25AEA6D31D071BC30037E7BF /* BridgingToAvito.swift */,
 				25AEA6CB1D070ACC0037E7BF /* Services */,
-				253FC2781D0AAF83000185B4 /* Camera */,
-				25BF69631D0D951F002ECFB3 /* PhotoLibrary */,
-				25BF69821D0D99C5002ECFB3 /* Cropping */,
+				3CAFE948024F3E5857150049 /* VIPER */,
 				2554CEB81D0421CC009371FB /* AppDelegate.swift */,
-				2554CEBC1D0421CC009371FB /* Main.storyboard */,
+				25AEA6D31D071BC30037E7BF /* BridgingToAvito.swift */,
+				253FC2591D0AA8CF000185B4 /* LazyImage.swift */,
 				2554CEBF1D0421CC009371FB /* Assets.xcassets */,
-				2554CEC11D0421CC009371FB /* LaunchScreen.storyboard */,
 				2554CEC41D0421CC009371FB /* Info.plist */,
 			);
 			path = AvitoMediaPicker;
@@ -275,136 +201,218 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
-		25BF69631D0D951F002ECFB3 /* PhotoLibrary */ = {
+		3CAFE1C89E46D1D626B17526 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69641D0D951F002ECFB3 /* Assembly */,
-				25BF69671D0D951F002ECFB3 /* Interactor */,
-				25BF696A1D0D951F002ECFB3 /* Module */,
-				25BF696C1D0D951F002ECFB3 /* Presenter */,
-				25BF696E1D0D951F002ECFB3 /* Router */,
-				25BF69711D0D951F002ECFB3 /* View */,
+				3CAFE56463A3DC87D9671BB6 /* PhotoLibraryPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		3CAFE3530FFA6E71DA663146 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE4054F36726E1998C9D0 /* PhotoLibraryView.swift */,
+				3CAFEAB615488A37E2F49B42 /* PhotoLibraryViewController.swift */,
+				3CAFE90791C6B1290B040DB9 /* PhotoLibraryViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3CAFE5248D7589BD4F9692E7 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFEE56D689AA261E0D4747 /* CroppingPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		3CAFE5252E181ACA2AD6A675 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFEDCD7F6A99D9D43D7985 /* CameraViewInput.swift */,
+				3CAFE2C4EBF68C44E991287A /* CameraViewController.swift */,
+				3CAFECF75068CE224CD7119F /* CameraView.swift */,
+				3CAFEAE12DB41C8034C1A719 /* CameraControlsView.swift */,
+				3CAFE4592BCFFAE70E254002 /* PhotoControlsView.swift */,
+				3CAFE6BAEBAF106E819173EA /* PhotoRibbonLayout.swift */,
+				3CAFE2B23EFBDBD99D0BBAED /* MediaPickerCollectionViewCell.swift */,
+				3CAFE8EF8BC8BA860D437DF0 /* MediaPickerSelectedPhotosDataSource.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3CAFE5C155F8144ADB330B30 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFEE6698017ECA2A42B7A4 /* CroppingAssembly.swift */,
+				3CAFE1A6E7A16EF00802F8AD /* CroppingAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		3CAFE6B1A9623BD4F1F17FE5 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFEFF2B639891F4ED438BB /* CameraPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		3CAFE6C25A8177527DAD72CB /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFEE6B698E2FF6FD3DA197 /* PhotoLibraryModuleInputOutput.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		3CAFE7CCF3EBDFD5063CDFC3 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */,
+				3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		3CAFE7F6188BC2FEA17F45AF /* PhotoLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFEBC33BE9DD94AF5E2B8D /* Assembly */,
+				3CAFECA0CBF42C7B1DB4DED5 /* Interactor */,
+				3CAFE6C25A8177527DAD72CB /* Module */,
+				3CAFE1C89E46D1D626B17526 /* Presenter */,
+				3CAFEDDF4DB1EA4B7C5278F4 /* Router */,
+				3CAFE3530FFA6E71DA663146 /* View */,
 			);
 			path = PhotoLibrary;
 			sourceTree = "<group>";
 		};
-		25BF69641D0D951F002ECFB3 /* Assembly */ = {
+		3CAFE948024F3E5857150049 /* VIPER */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69651D0D951F002ECFB3 /* PhotoLibraryAssembly.swift */,
-				25BF69661D0D951F002ECFB3 /* PhotoLibraryAssemblyImpl.swift */,
+				3CAFEED4449B6170027B8E25 /* Camera */,
+				3CAFE7F6188BC2FEA17F45AF /* PhotoLibrary */,
+				3CAFEC821139B4CBF9AEA1B2 /* Cropping */,
 			);
-			path = Assembly;
+			path = VIPER;
 			sourceTree = "<group>";
 		};
-		25BF69671D0D951F002ECFB3 /* Interactor */ = {
+		3CAFE980554F69FF02DFA5A6 /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69681D0D951F002ECFB3 /* PhotoLibraryInteractor.swift */,
-				25BF69691D0D951F002ECFB3 /* PhotoLibraryInteractorImpl.swift */,
-			);
-			path = Interactor;
-			sourceTree = "<group>";
-		};
-		25BF696A1D0D951F002ECFB3 /* Module */ = {
-			isa = PBXGroup;
-			children = (
-				25BF696B1D0D951F002ECFB3 /* PhotoLibraryModuleInputOutput.swift */,
+				3CAFE0CFDDA96786AD367A41 /* CroppingModuleInputOutput.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
 		};
-		25BF696C1D0D951F002ECFB3 /* Presenter */ = {
+		3CAFE9A8045697BF5406CBFE /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
-				25BF696D1D0D951F002ECFB3 /* PhotoLibraryPresenter.swift */,
+				3CAFE32325C06236691C7E09 /* CameraInteractor.swift */,
+				3CAFE054FF6BF6868661E190 /* CameraInteractorImpl.swift */,
+				3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */,
 			);
-			path = Presenter;
+			path = Interactor;
 			sourceTree = "<group>";
 		};
-		25BF696E1D0D951F002ECFB3 /* Router */ = {
+		3CAFEAA1C8525897B56067BA /* Router */ = {
 			isa = PBXGroup;
 			children = (
-				25BF696F1D0D951F002ECFB3 /* PhotoLibraryRouter.swift */,
-				25BF69701D0D951F002ECFB3 /* PhotoLibraryRouterImpl.swift */,
+				3CAFEB869DBC84F35F20A5C7 /* CameraRouter.swift */,
+				3CAFE85EB026391C19004E93 /* CameraRouterImpl.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
 		};
-		25BF69711D0D951F002ECFB3 /* View */ = {
+		3CAFEAD41C945293CD7E9197 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69721D0D951F002ECFB3 /* PhotoLibraryView.swift */,
-				25BF69731D0D951F002ECFB3 /* PhotoLibraryViewController.swift */,
-				25BF69741D0D951F002ECFB3 /* PhotoLibraryViewInput.swift */,
+				3CAFE444DB5BFF19AEDFA2FF /* CroppingView.swift */,
+				3CAFED56BA18B46A9E4B2CB4 /* CroppingViewController.swift */,
+				3CAFE4B4AE02DEC087B7FB42 /* CroppingViewInput.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		25BF69821D0D99C5002ECFB3 /* Cropping */ = {
+		3CAFEBC33BE9DD94AF5E2B8D /* Assembly */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69831D0D99C5002ECFB3 /* Assembly */,
-				25BF69861D0D99C5002ECFB3 /* Interactor */,
-				25BF69891D0D99C5002ECFB3 /* Module */,
-				25BF698B1D0D99C5002ECFB3 /* Presenter */,
-				25BF698D1D0D99C5002ECFB3 /* Router */,
-				25BF69901D0D99C5002ECFB3 /* View */,
+				3CAFE3B5329150C95659EB1A /* PhotoLibraryAssembly.swift */,
+				3CAFE1B261F15564F589329C /* PhotoLibraryAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		3CAFEC38FA14FA60CA5C0F41 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE4F729E4EE33627D484F /* PhotoPickerModuleInputOutput.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		3CAFEC821139B4CBF9AEA1B2 /* Cropping */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE5C155F8144ADB330B30 /* Assembly */,
+				3CAFEF75C834ECC7D55D3737 /* Interactor */,
+				3CAFE980554F69FF02DFA5A6 /* Module */,
+				3CAFE5248D7589BD4F9692E7 /* Presenter */,
+				3CAFECBCA22A8EC02717B184 /* Router */,
+				3CAFEAD41C945293CD7E9197 /* View */,
 			);
 			path = Cropping;
 			sourceTree = "<group>";
 		};
-		25BF69831D0D99C5002ECFB3 /* Assembly */ = {
+		3CAFECA0CBF42C7B1DB4DED5 /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69841D0D99C5002ECFB3 /* CroppingAssembly.swift */,
-				25BF69851D0D99C5002ECFB3 /* CroppingAssemblyImpl.swift */,
-			);
-			path = Assembly;
-			sourceTree = "<group>";
-		};
-		25BF69861D0D99C5002ECFB3 /* Interactor */ = {
-			isa = PBXGroup;
-			children = (
-				25BF69871D0D99C5002ECFB3 /* CroppingInteractor.swift */,
-				25BF69881D0D99C5002ECFB3 /* CroppingInteractorImpl.swift */,
+				3CAFED57F6B0BF40BC4C8772 /* PhotoLibraryInteractor.swift */,
+				3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
 		};
-		25BF69891D0D99C5002ECFB3 /* Module */ = {
+		3CAFECBCA22A8EC02717B184 /* Router */ = {
 			isa = PBXGroup;
 			children = (
-				25BF698A1D0D99C5002ECFB3 /* CroppingModuleInputOutput.swift */,
-			);
-			path = Module;
-			sourceTree = "<group>";
-		};
-		25BF698B1D0D99C5002ECFB3 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				25BF698C1D0D99C5002ECFB3 /* CroppingPresenter.swift */,
-			);
-			path = Presenter;
-			sourceTree = "<group>";
-		};
-		25BF698D1D0D99C5002ECFB3 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-				25BF698E1D0D99C5002ECFB3 /* CroppingRouter.swift */,
-				25BF698F1D0D99C5002ECFB3 /* CroppingRouterImpl.swift */,
+				3CAFE8A79132616CDAF38A67 /* CroppingRouter.swift */,
+				3CAFEE7EDD1346D65B25062B /* CroppingRouterImpl.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
 		};
-		25BF69901D0D99C5002ECFB3 /* View */ = {
+		3CAFEDDF4DB1EA4B7C5278F4 /* Router */ = {
 			isa = PBXGroup;
 			children = (
-				25BF69911D0D99C5002ECFB3 /* CroppingView.swift */,
-				25BF69921D0D99C5002ECFB3 /* CroppingViewController.swift */,
-				25BF69931D0D99C5002ECFB3 /* CroppingViewInput.swift */,
+				3CAFEA0EDE53DFEEDFB463DC /* PhotoLibraryRouter.swift */,
+				3CAFE97818272C2CDDDCF57F /* PhotoLibraryRouterImpl.swift */,
 			);
-			path = View;
+			path = Router;
+			sourceTree = "<group>";
+		};
+		3CAFEED4449B6170027B8E25 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE7CCF3EBDFD5063CDFC3 /* Assembly */,
+				3CAFE9A8045697BF5406CBFE /* Interactor */,
+				3CAFEC38FA14FA60CA5C0F41 /* Module */,
+				3CAFE6B1A9623BD4F1F17FE5 /* Presenter */,
+				3CAFEAA1C8525897B56067BA /* Router */,
+				3CAFE5252E181ACA2AD6A675 /* View */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		3CAFEF75C834ECC7D55D3737 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE1F4206341B7BDDC18B6 /* CroppingInteractor.swift */,
+				3CAFE0D48EFBC0EC51DF3FE6 /* CroppingInteractorImpl.swift */,
+			);
+			path = Interactor;
 			sourceTree = "<group>";
 		};
 		7823F5CE36495ED8D3C892A2 /* Frameworks */ = {
@@ -488,9 +496,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2554CEC31D0421CC009371FB /* LaunchScreen.storyboard in Resources */,
 				2554CEC01D0421CC009371FB /* Assets.xcassets in Resources */,
-				2554CEBE1D0421CC009371FB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,77 +555,60 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25BF69961D0D99C5002ECFB3 /* CroppingInteractor.swift in Sources */,
-				25BF69791D0D951F002ECFB3 /* PhotoLibraryModuleInputOutput.swift in Sources */,
 				253FC2A21D0AEE8E000185B4 /* PhotoLibraryLatestPhotoProvider.swift in Sources */,
-				25BF697E1D0D951F002ECFB3 /* PhotoLibraryViewController.swift in Sources */,
-				25BF69751D0D951F002ECFB3 /* PhotoLibraryAssembly.swift in Sources */,
-				25BF69761D0D951F002ECFB3 /* PhotoLibraryAssemblyImpl.swift in Sources */,
-				25BF69941D0D99C5002ECFB3 /* CroppingAssembly.swift in Sources */,
-				253FC2911D0AAF83000185B4 /* CameraPresenter.swift in Sources */,
 				253FC29B1D0AC057000185B4 /* CGAffineTransformExtensions.swift in Sources */,
 				253FC25A1D0AA8CF000185B4 /* LazyImage.swift in Sources */,
-				253FC2941D0AAF83000185B4 /* MediaPickerSelectedPhotosDataSource.swift in Sources */,
-				253FC28C1D0AAF83000185B4 /* CameraAssembly.swift in Sources */,
-				253FC28E1D0AAF83000185B4 /* CameraInteractor.swift in Sources */,
-				25BF697D1D0D951F002ECFB3 /* PhotoLibraryView.swift in Sources */,
-				25BF699A1D0D99C5002ECFB3 /* CroppingRouter.swift in Sources */,
-				253FC2971D0AAF83000185B4 /* CameraViewInput.swift in Sources */,
-				25BF697B1D0D951F002ECFB3 /* PhotoLibraryRouter.swift in Sources */,
-				25BF699B1D0D99C5002ECFB3 /* CroppingRouterImpl.swift in Sources */,
-				253FC28D1D0AAF83000185B4 /* CameraAssemblyImpl.swift in Sources */,
-				253FC2951D0AAF83000185B4 /* CameraView.swift in Sources */,
-				25BF697A1D0D951F002ECFB3 /* PhotoLibraryPresenter.swift in Sources */,
-				253FC29D1D0ACE3E000185B4 /* PhotoRibbonLayout.swift in Sources */,
 				25AEA6D11D070EE10037E7BF /* CameraService.swift in Sources */,
-				25BF697C1D0D951F002ECFB3 /* PhotoLibraryRouterImpl.swift in Sources */,
 				253FC2581D0AA495000185B4 /* DeviceOrientationService.swift in Sources */,
-				253FC2981D0AAF83000185B4 /* PhotoControlsView.swift in Sources */,
-				25BF69781D0D951F002ECFB3 /* PhotoLibraryInteractorImpl.swift in Sources */,
-				253FC2931D0AAF83000185B4 /* MediaPickerCollectionViewCell.swift in Sources */,
 				2554CEB91D0421CC009371FB /* AppDelegate.swift in Sources */,
-				25BF69951D0D99C5002ECFB3 /* CroppingAssemblyImpl.swift in Sources */,
 				25AEA6D41D071BC30037E7BF /* BridgingToAvito.swift in Sources */,
-				25BF699E1D0D99C5002ECFB3 /* CroppingViewInput.swift in Sources */,
-				253FC2961D0AAF83000185B4 /* CameraViewController.swift in Sources */,
-				25BF699C1D0D99C5002ECFB3 /* CroppingView.swift in Sources */,
-				253FC29F1D0AE59A000185B4 /* UIImage+InitializableWithCGImage.swift in Sources */,
-				25BF69771D0D951F002ECFB3 /* PhotoLibraryInteractor.swift in Sources */,
+				253FC29F1D0AE59A000185B4 /* UIImage+LazyImage.swift in Sources */,
+				25BF69A41D0DACD2002ECFB3 /* UIImageView+LazyImage.swift in Sources */,
 				25AEA6D61D0806290037E7BF /* ImageResizingService.swift in Sources */,
-				253FC2901D0AAF83000185B4 /* CameraModuleInputOutput.swift in Sources */,
-				253FC28F1D0AAF83000185B4 /* CameraInteractorImpl.swift in Sources */,
-				253FC2921D0AAF83000185B4 /* CameraControlsView.swift in Sources */,
 				3CAFEE6DA015385C0177799F /* PhotoLibraryAssetImage.swift in Sources */,
-				25BF69991D0D99C5002ECFB3 /* CroppingPresenter.swift in Sources */,
-				3CAFE20AB8B061E17F96C95C /* CameraRouter.swift in Sources */,
-				25BF697F1D0D951F002ECFB3 /* PhotoLibraryViewInput.swift in Sources */,
-				3CAFE0C1359C8224C0E711FC /* CameraRouterImpl.swift in Sources */,
-				25BF69971D0D99C5002ECFB3 /* CroppingInteractorImpl.swift in Sources */,
-				25BF699D1D0D99C5002ECFB3 /* CroppingViewController.swift in Sources */,
-				25BF69981D0D99C5002ECFB3 /* CroppingModuleInputOutput.swift in Sources */,
+				3CAFEE7E1C4A2B53DCAECF17 /* PhotoLibraryAssembly.swift in Sources */,
+				3CAFE2CEE58612C2CF2052FC /* PhotoLibraryAssemblyImpl.swift in Sources */,
+				3CAFED58B0B9F2FD9B35A117 /* PhotoLibraryInteractor.swift in Sources */,
+				3CAFEC556606606EE692D8E0 /* PhotoLibraryInteractorImpl.swift in Sources */,
+				3CAFE5E901963B1A04B0AB81 /* PhotoLibraryModuleInputOutput.swift in Sources */,
+				3CAFEA139A2E43527A03D825 /* PhotoLibraryPresenter.swift in Sources */,
+				3CAFE073805A791558BDAB6B /* PhotoLibraryRouter.swift in Sources */,
+				3CAFE91561B09A6099B4B785 /* PhotoLibraryRouterImpl.swift in Sources */,
+				3CAFE724FBED6AA73D388398 /* PhotoLibraryView.swift in Sources */,
+				3CAFEEAC0FC5FB88C348C19D /* PhotoLibraryViewController.swift in Sources */,
+				3CAFE7843E211380C8BA9786 /* PhotoLibraryViewInput.swift in Sources */,
+				3CAFEAE6649A1EF45DC0EEB0 /* CroppingAssembly.swift in Sources */,
+				3CAFE490666158FE695541D0 /* CroppingAssemblyImpl.swift in Sources */,
+				3CAFE2785ABF69F02A994997 /* CroppingInteractor.swift in Sources */,
+				3CAFEBBDF61FD2E027F63119 /* CroppingInteractorImpl.swift in Sources */,
+				3CAFE6D4612E31D55E6A84A0 /* CroppingModuleInputOutput.swift in Sources */,
+				3CAFE4D5C2DF44D5AD432B65 /* CroppingPresenter.swift in Sources */,
+				3CAFE8FDEE9301BD01D6273F /* CroppingRouter.swift in Sources */,
+				3CAFEDD34950B8F6131F8C8D /* CroppingRouterImpl.swift in Sources */,
+				3CAFE398643D1DF8F08A925B /* CroppingView.swift in Sources */,
+				3CAFEA6109B37A9B960E773B /* CroppingViewController.swift in Sources */,
+				3CAFE0ACE65B12EDFB101D98 /* CroppingViewInput.swift in Sources */,
+				3CAFEC9D826F7C88934AC19A /* PhotoPickerAssembly.swift in Sources */,
+				3CAFEB6B4ACA14924CA36529 /* PhotoPickerAssemblyImpl.swift in Sources */,
+				3CAFEFAD78734D2F41D1CB63 /* CameraInteractor.swift in Sources */,
+				3CAFEAABB3F482293B994992 /* CameraInteractorImpl.swift in Sources */,
+				3CAFE42EBE82B5CAE8D55720 /* PhotoPickerModuleInputOutput.swift in Sources */,
+				3CAFE269A190D556BE9152ED /* CameraPresenter.swift in Sources */,
+				3CAFE662A830FC7FB216769B /* CameraRouter.swift in Sources */,
+				3CAFE13E2DD717CB80B340F8 /* CameraRouterImpl.swift in Sources */,
+				3CAFE89C06E1DE2979470F9B /* CameraViewInput.swift in Sources */,
+				3CAFE353344D7F1A850A8052 /* CameraViewController.swift in Sources */,
+				3CAFE322875FD8D19F06A031 /* CameraView.swift in Sources */,
+				3CAFE57CC9652C97B282DFDF /* CameraControlsView.swift in Sources */,
+				3CAFE92B63672603304E5115 /* PhotoControlsView.swift in Sources */,
+				3CAFEE875FF09717548AD2EF /* PhotoRibbonLayout.swift in Sources */,
+				3CAFE5DC688AD70830F93A13 /* MediaPickerCollectionViewCell.swift in Sources */,
+				3CAFE9BF3056C71901CB66DF /* MediaPickerSelectedPhotosDataSource.swift in Sources */,
+				3CAFE12AA99A6946FC834ACE /* CameraPhotoImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		2554CEBC1D0421CC009371FB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2554CEBD1D0421CC009371FB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		2554CEC11D0421CC009371FB /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2554CEC21D0421CC009371FB /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2554CEC51D0421CC009371FB /* Debug */ = {
@@ -710,6 +699,7 @@
 			baseConfigurationReference = AD70B1A17A3D9606448873FA /* Pods-AvitoMediaPicker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AvitoMediaPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -723,6 +713,7 @@
 			baseConfigurationReference = EE1C2DE176DF364440E83004 /* Pods-AvitoMediaPicker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AvitoMediaPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

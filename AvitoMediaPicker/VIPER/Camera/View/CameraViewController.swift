@@ -39,7 +39,7 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
         set { cameraView.onCameraVisibilityChange = newValue }
     }
     
-    var onPhotoSelect: (CameraPhoto -> ())? {
+    var onPhotoSelect: (PhotoPickerItem -> ())? {
         get { return cameraView.onPhotoSelect }
         set { cameraView.onPhotoSelect = newValue }
     }
@@ -87,8 +87,8 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
     func animateFlash() {
         cameraView.animateFlash()
     }
-    
-    func addPhoto(photo: CameraPhoto) {
+
+    func addPhotoRibbonItem(photo: PhotoPickerItem) {
         cameraView.addPhoto(photo)
     }
     

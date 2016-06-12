@@ -3,7 +3,7 @@ import AVFoundation
 
 enum CameraViewMode {
     case Capture
-    case Preview(CameraPhoto)
+    case Preview(PhotoPickerItem)
 }
 
 protocol CameraViewInput: class {
@@ -17,7 +17,7 @@ protocol CameraViewInput: class {
     func setFlashButtonVisible(visible: Bool)
     func animateFlash()
     
-    func addPhoto(photo: CameraPhoto)
+    func addPhotoRibbonItem(photo: PhotoPickerItem)
     func removeSelectionInPhotoRibbon()
     
     func startSpinnerForNewPhoto()
@@ -26,7 +26,7 @@ protocol CameraViewInput: class {
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
     
     // MARK: - Actions in photo ribbon
-    var onPhotoSelect: (CameraPhoto -> ())? { get set }
+    var onPhotoSelect: (PhotoPickerItem -> ())? { get set }
     
     // MARK: - Camera actions
     var onPhotoLibraryButtonTap: (() -> ())? { get set }

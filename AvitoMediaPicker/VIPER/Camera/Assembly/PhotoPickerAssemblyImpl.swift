@@ -1,11 +1,11 @@
 import UIKit
 import Marshroute
 
-final class CameraAssemblyImpl: CameraAssembly {
+final class PhotoPickerAssemblyImpl: PhotoPickerAssembly {
     
     // MARK: - MediaPickerAssembly
     
-    func viewController() -> UIViewController {
+    func viewController(moduleOutput moduleOutput: PhotoPickerModuleOutput) -> UIViewController {
 
         let imageResizingService = ImageResizingServiceImpl()
         let cameraService = CameraServiceImpl(imageResizingService: imageResizingService)
@@ -13,20 +13,22 @@ final class CameraAssemblyImpl: CameraAssembly {
         let interactor = CameraInteractorImpl(
             cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
-            latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
+            latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl(),
+            imageResizingService: imageResizingService
         )
 
         let router = CameraRouterImpl()
         
-        let mediaPickerPresenter = CameraPresenter(
+        let presenter = CameraPresenter(
             interactor: interactor,
             router: router
         )
         
         let viewController = CameraViewController()
-        viewController.addDisposable(mediaPickerPresenter)
+        viewController.addDisposable(presenter)
         
-        mediaPickerPresenter.view = viewController
+        presenter.view = viewController
+        presenter.moduleOutput = moduleOutput
         
         return viewController
     }
