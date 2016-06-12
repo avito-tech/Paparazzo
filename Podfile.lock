@@ -1,0 +1,35 @@
+PODS:
+  - AvitoDesignKit (0.0.0):
+    - JVFloatLabeledTextField (= 1.1.0)
+    - TTTAttributedLabel (= 1.13.0)
+  - JVFloatLabeledTextField (1.1.0)
+  - Marshroute (0.3.0)
+  - TTTAttributedLabel (1.13.0)
+
+DEPENDENCIES:
+  - AvitoDesignKit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git`,
+    branch `master`)
+  - Marshroute (from `https://github.com/avito-tech/Marshroute`)
+
+EXTERNAL SOURCES:
+  AvitoDesignKit:
+    :branch: master
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
+  Marshroute:
+    :git: https://github.com/avito-tech/Marshroute
+
+CHECKOUT OPTIONS:
+  AvitoDesignKit:
+    :commit: 0c771a2cbcfe69ff6918395c0aadd6aa13c0bb08
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
+  Marshroute:
+    :commit: 71df57c9f7afd278509af15b94f67c1a465193e1
+    :git: https://github.com/avito-tech/Marshroute
+
+SPEC CHECKSUMS:
+  AvitoDesignKit: 22962cf9014aa10378eaf518635a51b29e8fd03e
+  JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
+  Marshroute: 79f1079511f007ea89a9c82a3acaae1264196454
+  TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
+
+COCOAPODS: 0.39.0
