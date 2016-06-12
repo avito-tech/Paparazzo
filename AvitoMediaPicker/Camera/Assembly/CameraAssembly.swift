@@ -1,5 +1,5 @@
 import UIKit
-import AvitoNavigation
+import Marshroute
 
 protocol CameraAssembly: class {
     func viewController() -> UIViewController

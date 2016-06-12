@@ -279,7 +279,7 @@
 				TargetAttributes = {
 					2554CEB41D0421CC009371FB = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = J35C63C5DR;
+						DevelopmentTeam = 5PHGGKL9UQ;
 					};
 				};
 			};
@@ -507,7 +507,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AvitoMediaPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ru.avito.AvitoMediaPicker;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.avito.PhotoPickerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -520,7 +520,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AvitoMediaPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ru.avito.AvitoMediaPicker;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.avito.PhotoPickerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
