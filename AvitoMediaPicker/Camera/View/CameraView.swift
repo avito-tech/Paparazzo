@@ -133,6 +133,11 @@ final class CameraView: UIView, UICollectionViewDelegate {
         set { cameraControlsView.onShutterButtonTap = newValue }
     }
     
+    var onPhotoLibraryButtonTap: (() -> ())? {
+        get { return cameraControlsView.onPhotoLibraryButtonTap }
+        set { cameraControlsView.onPhotoLibraryButtonTap = newValue }
+    }
+    
     var onFlashToggle: (Bool -> ())? {
         get { return cameraControlsView.onFlashToggle }
         set { cameraControlsView.onFlashToggle = newValue }
@@ -140,6 +145,16 @@ final class CameraView: UIView, UICollectionViewDelegate {
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())?
     var onPhotoSelect: (CameraPhoto -> ())?
+    
+    var onRemoveButtonTap: (() -> ())? {
+        get { return photoControlsView.onRemoveButtonTap }
+        set { photoControlsView.onRemoveButtonTap = newValue }
+    }
+    
+    var onCropButtonTap: (() -> ())? {
+        get { return photoControlsView.onCropButtonTap }
+        set { photoControlsView.onCropButtonTap = newValue }
+    }
     
     var onReturnToCameraTap: (() -> ())? {
         get { return photoControlsView.onCameraButtonTap }

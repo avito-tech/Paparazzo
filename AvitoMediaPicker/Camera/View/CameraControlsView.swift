@@ -4,6 +4,7 @@ import AvitoDesignKit
 final class CameraControlsView: UIView {
     
     var onShutterButtonTap: (() -> ())?
+    var onPhotoLibraryButtonTap: (() -> ())?
     var onFlashToggle: (Bool -> ())?
     
     // MARK: - Subviews
@@ -31,6 +32,11 @@ final class CameraControlsView: UIView {
         photoView.backgroundColor = .lightGrayColor()
         photoView.layer.cornerRadius = photoViewDiameter / 2
         photoView.clipsToBounds = true
+        photoView.userInteractionEnabled = true
+        photoView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(CameraControlsView.onPhotoViewTap(_:))
+        ))
         
         shutterButton.backgroundColor = .blueColor()    // TODO
         shutterButton.addTarget(
@@ -109,6 +115,10 @@ final class CameraControlsView: UIView {
     
     @objc private func onShutterButtonTap(button: UIButton) {
         onShutterButtonTap?()
+    }
+    
+    @objc private func onPhotoViewTap(tapRecognizer: UITapGestureRecognizer) {
+        onPhotoLibraryButtonTap?()
     }
     
     @objc private func onFlashButtonTap(button: UIButton) {

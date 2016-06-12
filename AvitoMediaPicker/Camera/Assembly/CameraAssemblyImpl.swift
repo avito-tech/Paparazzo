@@ -6,17 +6,21 @@ final class CameraAssemblyImpl: CameraAssembly {
     // MARK: - MediaPickerAssembly
     
     func viewController() -> UIViewController {
-        
+
         let imageResizingService = ImageResizingServiceImpl()
+        let cameraService = CameraServiceImpl(imageResizingService: imageResizingService)
         
         let interactor = CameraInteractorImpl(
-            cameraService: CameraServiceImpl(imageResizingService: imageResizingService),
+            cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
         )
+
+        let router = CameraRouterImpl()
         
         let mediaPickerPresenter = CameraPresenter(
-            interactor: interactor
+            interactor: interactor,
+            router: router
         )
         
         let viewController = CameraViewController()

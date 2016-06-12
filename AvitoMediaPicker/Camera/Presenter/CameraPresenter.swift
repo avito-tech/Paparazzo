@@ -1,17 +1,17 @@
 import Foundation
 
-final class CameraPresenter: CameraModuleInput {
+final class CameraPresenter: CameraModuleInput, PhotoLibraryModuleOutput, CroppingModuleOutput {
     
     // MARK: - Dependencies
     
     private let interactor: CameraInteractor
-//    private let router: MediaPickerRouter
+    private let router: CameraRouter
     
     // MARK: - Init
     
-    init(interactor: CameraInteractor/*, router: MediaPickerRouter*/) {
+    init(interactor: CameraInteractor, router: CameraRouter) {
         self.interactor = interactor
-//        self.router = router
+        self.router = router
     }
     
     weak var view: CameraViewInput? {
@@ -43,6 +43,10 @@ final class CameraPresenter: CameraModuleInput {
             self?.interactor.setCameraOutputNeeded(isCameraVisible)
         }
         
+        view?.onPhotoLibraryButtonTap = { [weak self] in
+            self?.showPhotoLibrary()
+        }
+        
         view?.onShutterButtonTap = { [weak self] in
             
             self?.view?.animateFlash()
@@ -66,9 +70,33 @@ final class CameraPresenter: CameraModuleInput {
             self?.view?.setMode(.Preview(photo))
         }
         
+        view?.onRemoveButtonTap = { [weak self] in
+            // TODO
+            print("onRemoveButtonTap")
+        }
+        
+        view?.onCropButtonTap = { [weak self] in
+            self?.showCroppingModule()
+        }
+        
         view?.onReturnToCameraTap = { [weak self] in
             self?.view?.removeSelectionInPhotoRibbon()
             self?.view?.setMode(.Capture)
         }
+    }
+    
+    // MARK: - PhotoLibraryModuleOutput
+    
+    // TODO
+    
+    // MARK: - Private
+    
+    private func showPhotoLibrary() {
+        router.showPhotoLibrary(moduleOutput: self)
+    }
+    
+    private func showCroppingModule() {
+        let photo = NSNumber()  // TODO
+        router.showCroppingModule(photo: photo, moduleOutput: self)
     }
 }

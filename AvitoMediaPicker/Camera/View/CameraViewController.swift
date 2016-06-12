@@ -23,7 +23,12 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
         get { return cameraView.onShutterButtonTap }
         set { cameraView.onShutterButtonTap = newValue }
     }
-    
+
+    var onPhotoLibraryButtonTap: (() -> ())? {
+        get { return cameraView.onPhotoLibraryButtonTap }
+        set { cameraView.onPhotoLibraryButtonTap = newValue }
+    }
+
     var onFlashToggle: (Bool -> ())? {
         get { return cameraView.onFlashToggle }
         set { cameraView.onFlashToggle = newValue }
@@ -37,6 +42,16 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
     var onPhotoSelect: (CameraPhoto -> ())? {
         get { return cameraView.onPhotoSelect }
         set { cameraView.onPhotoSelect = newValue }
+    }
+    
+    var onRemoveButtonTap: (() -> ())? {
+        get { return cameraView.onRemoveButtonTap }
+        set { cameraView.onRemoveButtonTap = newValue }
+    }
+    
+    var onCropButtonTap: (() -> ())? {
+        get { return cameraView.onCropButtonTap }
+        set { cameraView.onCropButtonTap = newValue }
     }
     
     var onReturnToCameraTap: (() -> ())? {
