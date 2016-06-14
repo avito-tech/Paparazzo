@@ -1,5 +1,9 @@
 import UIKit
 import Marshroute
 
-final class PhotoLibraryAssemblyImpl: /*BaseAvitoAssembly,*/ PhotoLibraryAssembly {
+public final class PhotoLibraryAssemblyImpl: /*BaseAvitoAssembly,*/ PhotoLibraryAssembly {
+    
+    public func viewController(moduleOutput moduleOutput: PhotoLibraryModuleOutput) -> UIViewController {
+        return UIViewController()   // TODO
+    }
 }

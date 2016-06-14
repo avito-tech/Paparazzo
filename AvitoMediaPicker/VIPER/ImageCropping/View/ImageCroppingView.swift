@@ -1,6 +1,6 @@
 import UIKit
 
-final class CroppingView: UIView {
+final class ImageCroppingView: UIView {
     // MARK: - Init
     init() {
         super.init(frame: .zero)

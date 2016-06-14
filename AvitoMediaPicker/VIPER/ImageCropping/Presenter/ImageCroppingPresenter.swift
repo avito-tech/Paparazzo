@@ -1,22 +1,24 @@
 import Foundation
 
-final class CroppingPresenter: CroppingModuleInput {
-    // MARK: - Init
-    private var interactor: CroppingInteractor {
+final class ImageCroppingPresenter: ImageCroppingModuleInput {
+
+    private var interactor: ImageCroppingInteractor {
         didSet {
             setupInteractor()
         }
     }
     
-    private let router: CroppingRouter
-    
-    init(interactor: CroppingInteractor, router: CroppingRouter) {
+    private let router: ImageCroppingRouter
+
+    // MARK: - Init
+
+    init(interactor: ImageCroppingInteractor, router: ImageCroppingRouter) {
         self.interactor = interactor
         self.router = router
     }
     
     // MARK: - Weak properties
-    weak var view: CroppingViewInput? {
+    weak var view: ImageCroppingViewInput? {
         didSet {
             setupView()
         }

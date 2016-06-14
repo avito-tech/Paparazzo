@@ -1,6 +1,6 @@
 import Foundation
 
-final class CameraPresenter: PhotoPickerModuleInput, PhotoLibraryModuleOutput, CroppingModuleOutput {
+final class CameraPresenter: PhotoPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies
     

@@ -1,7 +1,7 @@
 import Foundation
 
-protocol PhotoLibraryModuleInput: class {
+public protocol PhotoLibraryModuleInput: class {
 }
 
-protocol PhotoLibraryModuleOutput: class {
+public protocol PhotoLibraryModuleOutput: class {
 }

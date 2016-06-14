@@ -4,6 +4,6 @@ protocol CameraRouter: class {
     
     func showCroppingModule(
         photo photo: AnyObject /* TODO */,
-        moduleOutput: CroppingModuleOutput
+        moduleOutput: ImageCroppingModuleOutput
     )
 }
