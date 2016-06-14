@@ -4,7 +4,13 @@ final class MediaPickerCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "MediaPickerCollectionViewCell"
     
-    let imageView = UIImageView()
+    var image: LazyImage? {
+        didSet {
+            updateImage()
+        }
+    }
+    
+    private let imageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,12 +30,24 @@ final class MediaPickerCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let previousImageSize = imageView.frame.size
+        
         imageView.frame = contentView.bounds
+        
+        if imageView.size != previousImageSize {
+            updateImage()
+        }
     }
     
     override var selected: Bool {
         didSet {
             layer.borderWidth = selected ? 4 : 0
         }
+    }
+    
+    // MARK: - Private
+    
+    private func updateImage() {
+        imageView.setImage(image)
     }
 }

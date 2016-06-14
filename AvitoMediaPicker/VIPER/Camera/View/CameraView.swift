@@ -2,7 +2,7 @@ import UIKit
 import AVFoundation
 import AvitoDesignKit
 
-final class CameraView: UIView, UICollectionViewDelegate {
+final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
@@ -26,10 +26,8 @@ final class CameraView: UIView, UICollectionViewDelegate {
     private let controlsExtendedHeight = CGFloat(83)
     
     private let photoRibbonMinHeight = CGFloat(72)
-    
-    private let photoItemSize = CGSize(width: 66, height: 66)
-    private let photosInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    private let photosInteritemSpacing = CGFloat(7)
+    private let photoRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    private let photoRibbonInteritemSpacing = CGFloat(7)
     
     // MARK: - Helpers
     
@@ -42,9 +40,8 @@ final class CameraView: UIView, UICollectionViewDelegate {
     override init(frame: CGRect) {
         
         photoRibbonLayout.scrollDirection = .Horizontal
-        photoRibbonLayout.itemSize = photoItemSize
-        photoRibbonLayout.sectionInset = photosInsets
-        photoRibbonLayout.minimumLineSpacing = photosInteritemSpacing
+        photoRibbonLayout.sectionInset = photoRibbonInsets
+        photoRibbonLayout.minimumLineSpacing = photoRibbonInteritemSpacing
         
         photoRibbonView = UICollectionView(frame: .zero, collectionViewLayout: photoRibbonLayout)
         photoRibbonView.backgroundColor = .whiteColor()
@@ -176,7 +173,7 @@ final class CameraView: UIView, UICollectionViewDelegate {
         
         case .Preview(let photo):
             photoView.hidden = false
-            photoView.setImage(photo.image, placeholder: nil)  // TODO: placeholder
+            photoView.setImage(photo.image)
             
             cameraControlsView.hidden = true
             photoControlsView.hidden = false
@@ -251,6 +248,13 @@ final class CameraView: UIView, UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let photo = photosRibbonDataSource.photoAtIndexPath(indexPath)
         onPhotoSelect?(photo)
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let height = photoRibbonView.height - photoRibbonInsets.top - photoRibbonInsets.bottom
+        return CGSize(width: height, height: height)
     }
     
     // MARK: - Private

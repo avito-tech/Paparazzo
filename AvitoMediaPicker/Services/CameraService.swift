@@ -14,7 +14,6 @@ protocol CameraService: class {
 
 struct CameraPhoto {
     let url: NSURL
-    let thumbnailUrl: NSURL
 }
 
 final class CameraServiceImpl: CameraService {
@@ -101,8 +100,8 @@ final class CameraServiceImpl: CameraService {
             return
         }
         
-        output.captureStillImageAsynchronouslyFromConnection(connection) { [weak self] sampleBuffer, error in
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [weak self] in
+        output.captureStillImageAsynchronouslyFromConnection(connection) { sampleBuffer, error in
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
           
                 let exifAttachments = CMGetAttachment(
                     sampleBuffer,
@@ -116,24 +115,17 @@ final class CameraServiceImpl: CameraService {
                     let randomId: NSString = NSUUID().UUIDString
                     let tempDirPath: NSString = NSTemporaryDirectory()
                     
-                    guard let tempName = randomId.stringByAppendingPathExtension("jpg"),
-                        thumbnailName = NSString(string: "\(randomId)-thumbnail").stringByAppendingPathExtension("jpg")
-                    else {
-                        return  // TODO
-                    }
-                    
-                    let filePath = tempDirPath.stringByAppendingPathComponent(tempName)
-                    let thumbnailPath = tempDirPath.stringByAppendingPathComponent(thumbnailName)
-                    
-                    let thumbnailSize = CGSize(width: 200, height: 200)
-                    
-                    data.writeToFile(filePath, atomically: true)
-                    
-                    self?.imageResizingService.resizeImage(atPath: filePath, toSize: thumbnailSize, outputPath: thumbnailPath) { success in
-                        completion(CameraPhoto(
-                            url: NSURL(fileURLWithPath: filePath, isDirectory: false),
-                            thumbnailUrl: NSURL(fileURLWithPath: thumbnailPath, isDirectory: false)
-                        ))
+                    if let tempName = randomId.stringByAppendingPathExtension("jpg") {
+                        
+                        let filePath = tempDirPath.stringByAppendingPathComponent(tempName)
+                        let fileUrl = NSURL(fileURLWithPath: filePath)
+                        
+                        data.writeToFile(filePath, atomically: true)
+                        
+                        completion(CameraPhoto(url: fileUrl))
+                        
+                    } else {
+                        completion(nil)
                     }
                 }
                 

@@ -36,7 +36,7 @@ final class MediaPickerSelectedPhotosDataSource: NSObject, UICollectionViewDataS
         let photo = photoAtIndexPath(indexPath)
         
         if let cell = cell as? MediaPickerCollectionViewCell {
-            cell.imageView.setImage(photo.image, placeholder: nil)  // TODO: placeholder
+            cell.image = photo.image
         }
         
         return cell

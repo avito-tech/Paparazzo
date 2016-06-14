@@ -21,9 +21,10 @@ struct CameraPhotoImage: LazyImage {
     }
 
     func imageFittingSize<T:InitializableWithCGImage>(size: CGSize, contentMode: AbstractImageContentMode, completion: (T?) -> ()) {
-        // TODO: actually resize image
-        if let path = photo.thumbnailUrl.path, image = UIImage(contentsOfFile: path) {
-            completion(image.CGImage.flatMap { T(CGImage: $0) })
+        if let path = photo.url.path {
+            imageResizingService.resizeImage(atPath: path, toPixelSize: size) { cgImage in
+                completion(cgImage.flatMap { T(CGImage: $0) })
+            }
         } else {
             completion(nil)
         }
