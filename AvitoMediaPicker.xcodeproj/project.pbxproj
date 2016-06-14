@@ -10,6 +10,7 @@
 		251FCEC41D1045FD00970324 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCEC31D1045FD00970324 /* NavigationController.swift */; };
 		251FCECE1D106A8C00970324 /* PhotoLibraryItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCECD1D106A8C00970324 /* PhotoLibraryItemCell.swift */; };
 		251FCED01D106B0D00970324 /* MediaRibbonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCECF1D106B0D00970324 /* MediaRibbonCell.swift */; };
+		251FCED21D106EC400970324 /* PhotoLibraryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */; };
 		253FC2581D0AA495000185B4 /* DeviceOrientationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */; };
 		253FC25A1D0AA8CF000185B4 /* LazyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2591D0AA8CF000185B4 /* LazyImage.swift */; };
 		253FC29B1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */; };
@@ -73,6 +74,7 @@
 		251FCEC31D1045FD00970324 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		251FCECD1D106A8C00970324 /* PhotoLibraryItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryItemCell.swift; sourceTree = "<group>"; };
 		251FCECF1D106B0D00970324 /* MediaRibbonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRibbonCell.swift; sourceTree = "<group>"; };
+		251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryLayout.swift; sourceTree = "<group>"; };
 		253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceOrientationService.swift; path = Services/DeviceOrientationService.swift; sourceTree = "<group>"; };
 		253FC2591D0AA8CF000185B4 /* LazyImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyImage.swift; sourceTree = "<group>"; };
 		253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGAffineTransform+DeviceOrientation.swift"; path = "Extensions/CGAffineTransform+DeviceOrientation.swift"; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				3CAFEAB615488A37E2F49B42 /* PhotoLibraryViewController.swift */,
 				3CAFE4054F36726E1998C9D0 /* PhotoLibraryView.swift */,
 				251FCECD1D106A8C00970324 /* PhotoLibraryItemCell.swift */,
+				251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				3CAFE398643D1DF8F08A925B /* ImageCroppingView.swift in Sources */,
 				3CAFEA6109B37A9B960E773B /* ImageCroppingViewController.swift in Sources */,
 				3CAFE0ACE65B12EDFB101D98 /* ImageCroppingViewInput.swift in Sources */,
+				251FCED21D106EC400970324 /* PhotoLibraryLayout.swift in Sources */,
 				3CAFEC9D826F7C88934AC19A /* MediaPickerAssembly.swift in Sources */,
 				3CAFEB6B4ACA14924CA36529 /* MediaPickerAssemblyImpl.swift in Sources */,
 				3CAFEFAD78734D2F41D1CB63 /* MediaPickerInteractor.swift in Sources */,

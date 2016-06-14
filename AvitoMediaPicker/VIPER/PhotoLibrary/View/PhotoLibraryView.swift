@@ -4,10 +4,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
-    private let collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
-    )
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: PhotoLibraryLayout())
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(
         cellReuseIdentifier: PhotoLibraryItemCell.reuseIdentifier
