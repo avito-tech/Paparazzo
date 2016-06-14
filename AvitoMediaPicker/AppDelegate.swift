@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PhotoPickerModuleOutput {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        window?.rootViewController = MarshrouteFacade().navigationControllerWithRootViewControllerDerivedFrom { routerSeed in
+        window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
             
             let assemblyFactory = AssemblyFactory()
             let photoPickerAssembly = assemblyFactory.photoPickerAssembly()

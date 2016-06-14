@@ -1,6 +1,6 @@
 import UIKit
 import Marshroute
 
-final class PhotoLibraryRouterImpl: /*BaseAvitoRouter,*/ PhotoLibraryRouter {
+final class PhotoLibraryRouterImpl: BaseRouter, PhotoLibraryRouter {
     // MARK: - PhotoLibraryRouter
 }

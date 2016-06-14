@@ -1,6 +1,6 @@
 import UIKit
 
-final class MediaPickerSelectedPhotosDataSource: NSObject, UICollectionViewDataSource {
+final class PhotoRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     let cellReuseIdentifier: String
     var onDataChanged: (() -> ())?
@@ -35,7 +35,7 @@ final class MediaPickerSelectedPhotosDataSource: NSObject, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath)
         let photo = photoAtIndexPath(indexPath)
         
-        if let cell = cell as? MediaPickerCollectionViewCell {
+        if let cell = cell as? PhotoRibbonCell {
             cell.image = photo.image
         }
         

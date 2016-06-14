@@ -3,6 +3,14 @@ import Marshroute
 
 public final class PhotoPickerAssemblyImpl: PhotoPickerAssembly {
     
+    typealias AssemblyFactory = protocol<ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
+    
+    private let assemblyFactory: AssemblyFactory
+    
+    init(assemblyFactory: AssemblyFactory) {
+        self.assemblyFactory = assemblyFactory
+    }
+    
     // MARK: - MediaPickerAssembly
     
     public func viewController(
@@ -19,10 +27,11 @@ public final class PhotoPickerAssemblyImpl: PhotoPickerAssembly {
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl(),
             imageResizingService: imageResizingService
         )
-        
-        let assemblyFactory = AssemblyFactory()
 
-        let router = CameraRouterImpl(assemblyFactory: assemblyFactory, routerSeed: routerSeed)
+        let router = CameraRouterImpl(
+            assemblyFactory: assemblyFactory,
+            routerSeed: routerSeed
+        )
         
         let presenter = CameraPresenter(
             interactor: interactor,

@@ -2,16 +2,18 @@ import Marshroute
 
 final class MarshrouteFacade {
     
-    func navigationControllerWithRootViewControllerDerivedFrom(@noescape deriveViewController: RouterSeed -> UIViewController) -> UIViewController {
+    func navigationController(
+        navigationController: UINavigationController? = nil,
+        @noescape withRootViewControllerDerivedFrom deriveViewController: RouterSeed -> UIViewController
+    ) -> UIViewController {
         
-        // Init `Marshroute` stack
         let marshrouteSetupService = MarshrouteSetupServiceImpl()
         
         let marshrouteStack = marshrouteSetupService.marshrouteStack()
         
         let transitionId = marshrouteStack.transitionIdGenerator.generateNewTransitionId()
         
-        let navigationController = marshrouteStack.routerControllersProvider.navigationController()
+        let navigationController = navigationController ?? marshrouteStack.routerControllersProvider.navigationController()
         
         let navigationTransitionsHandler = marshrouteStack.transitionsHandlersProvider.navigationTransitionsHandler(
             navigationController: navigationController

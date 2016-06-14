@@ -1,8 +1,8 @@
 import UIKit
 
-final class MediaPickerCollectionViewCell: UICollectionViewCell {
+final class PhotoRibbonCell: UICollectionViewCell {
     
-    static let reuseIdentifier = "MediaPickerCollectionViewCell"
+    static let reuseIdentifier = "PhotoRibbonCell"
     
     var image: LazyImage? {
         didSet {

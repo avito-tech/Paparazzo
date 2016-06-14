@@ -12,16 +12,16 @@ final class CameraRouterImpl: BaseRouter, CameraRouter {
     }
 
     func showPhotoLibrary(moduleOutput moduleOutput: PhotoLibraryModuleOutput) {
-        print("showPhotoLibrary")
-        let assembly = assemblyFactory.photoLibraryAssembly()
-        let viewController = assembly.viewController(moduleOutput: moduleOutput)
-        // TODO: открыть через Marshroute
+        pushViewControllerDerivedFrom { routerSeed in
+            let assembly = assemblyFactory.photoLibraryAssembly()
+            return assembly.viewController(moduleOutput: moduleOutput, routerSeed: routerSeed)
+        }
     }
     
     func showCroppingModule(photo photo: AnyObject, moduleOutput: ImageCroppingModuleOutput) {
         print("showCroppingModule")
-        let assembly = assemblyFactory.imageCroppingAssembly()
-        let viewController = assembly.viewController(photo: photo, moduleOutput: moduleOutput)
+//        let assembly = assemblyFactory.imageCroppingAssembly()
+//        let viewController = assembly.viewController(photo: photo, moduleOutput: moduleOutput)
         // TODO: открыть через Marshroute
     }
 }

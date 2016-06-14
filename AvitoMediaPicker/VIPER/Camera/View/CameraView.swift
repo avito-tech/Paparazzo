@@ -31,8 +31,8 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Helpers
     
-    private let photosRibbonDataSource = MediaPickerSelectedPhotosDataSource(
-        cellReuseIdentifier: MediaPickerCollectionViewCell.reuseIdentifier
+    private let photosRibbonDataSource = PhotoRibbonDataSource(
+        cellReuseIdentifier: PhotoRibbonCell.reuseIdentifier
     )
     
     // MARK: - UIView
@@ -48,8 +48,8 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
         photoRibbonView.showsHorizontalScrollIndicator = false
         photoRibbonView.showsVerticalScrollIndicator = false
         photoRibbonView.registerClass(
-            MediaPickerCollectionViewCell.self,
-            forCellWithReuseIdentifier: MediaPickerCollectionViewCell.reuseIdentifier
+            PhotoRibbonCell.self,
+            forCellWithReuseIdentifier: PhotoRibbonCell.reuseIdentifier
         )
         
         super.init(frame: .zero)

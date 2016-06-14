@@ -14,6 +14,16 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        onCameraVisibilityChange?(isCameraVisible: true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        onCameraVisibilityChange?(isCameraVisible: false)
+    }
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return .Portrait
     }

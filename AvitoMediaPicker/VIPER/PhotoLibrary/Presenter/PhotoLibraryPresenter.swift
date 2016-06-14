@@ -1,31 +1,30 @@
 import Foundation
 
 final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
-    // MARK: - Init
-    private var interactor: PhotoLibraryInteractor {
+    
+    // MARK: - Dependencies
+    
+    private let interactor: PhotoLibraryInteractor
+    private let router: PhotoLibraryRouter
+    
+    weak var moduleOutput: PhotoLibraryModuleOutput?
+    
+    weak var view: PhotoLibraryViewInput? {
         didSet {
-            setupInteractor()
+            setUpView()
         }
     }
     
-    private let router: PhotoLibraryRouter
+    // MARK: - Init
     
     init(interactor: PhotoLibraryInteractor, router: PhotoLibraryRouter) {
         self.interactor = interactor
         self.router = router
     }
     
-    // MARK: - Weak properties
-    weak var view: PhotoLibraryViewInput? {
-        didSet {
-            setupView()
-        }
-    }
-    
-    // MARK: - PhotoLibraryModuleInput
-    
     // MARK: - Private
-    private func setupView() {
+    
+    private func setUpView() {
         
     }
     
