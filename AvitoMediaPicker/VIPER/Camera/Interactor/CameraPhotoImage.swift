@@ -20,7 +20,7 @@ struct CameraPhotoImage: LazyImage {
         }
     }
 
-    func imageFittingSize<T:InitializableWithCGImage>(size: CGSize, contentMode: AbstractImageContentMode, completion: (T?) -> ()) {
+    func imageFittingSize<T:InitializableWithCGImage>(size: CGSize, contentMode: LazyImageContentMode, completion: (T?) -> ()) {
         if let path = photo.url.path {
             imageResizingService.resizeImage(atPath: path, toPixelSize: size) { cgImage in
                 completion(cgImage.flatMap { T(CGImage: $0) })

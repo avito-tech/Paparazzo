@@ -8,7 +8,7 @@ protocol LazyImage {
     
     func imageFittingSize<T: InitializableWithCGImage>(
         size: CGSize,
-        contentMode: AbstractImageContentMode,
+        contentMode: LazyImageContentMode,
         completion: T? -> ()
     )
 }
@@ -20,7 +20,7 @@ protocol InitializableWithCGImage {
     init(CGImage: CGImage)
 }
 
-enum AbstractImageContentMode {
+enum LazyImageContentMode {
     case AspectFit
     case AspectFill
 }

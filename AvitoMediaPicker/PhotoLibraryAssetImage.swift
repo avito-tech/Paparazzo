@@ -32,7 +32,7 @@ struct PhotoLibraryAssetImage: LazyImage {
         }
     }
 
-    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: AbstractImageContentMode, completion: T? -> ()) {
+    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: LazyImageContentMode, completion: T? -> ()) {
 
         let options = PHImageRequestOptions()
         options.deliveryMode = .Opportunistic
@@ -46,7 +46,7 @@ struct PhotoLibraryAssetImage: LazyImage {
 }
 
 private extension PHImageContentMode {
-    init(abstractImageContentMode: AbstractImageContentMode) {
+    init(abstractImageContentMode: LazyImageContentMode) {
         switch abstractImageContentMode {
         case .AspectFit:
             self = .AspectFit
