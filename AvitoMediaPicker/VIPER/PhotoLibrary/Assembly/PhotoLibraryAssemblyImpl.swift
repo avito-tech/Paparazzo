@@ -8,7 +8,9 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         routerSeed: RouterSeed
     ) -> UIViewController {
         
-        let interactor = PhotoLibraryInteractorImpl()
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
+        
+        let interactor = PhotoLibraryInteractorImpl(photoLibraryItemsService: photoLibraryItemsService)
         
         let router = PhotoLibraryRouterImpl(routerSeed: routerSeed)
         

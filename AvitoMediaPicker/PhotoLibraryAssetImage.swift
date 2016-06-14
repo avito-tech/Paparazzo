@@ -22,7 +22,7 @@ struct PhotoLibraryAssetImage: LazyImage {
             let dataProvider = CGDataProviderCreateWithCFData(data)
 
             let cgImage = CGImageCreateWithJPEGDataProvider(
-            dataProvider,
+                dataProvider,
                 UnsafePointer<CGFloat>(nil),
                 false,
                 .RenderingIntentDefault

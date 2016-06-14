@@ -26,9 +26,8 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
     
     private func setUpView() {
         
-    }
-    
-    private func setupInteractor() {
-        
+        interactor.observeItems { [weak self] items in
+            self?.view?.setItems(items)
+        }
     }
 }

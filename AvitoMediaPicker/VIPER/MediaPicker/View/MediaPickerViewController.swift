@@ -3,7 +3,7 @@ import AVFoundation
 
 final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewInput {
     
-    private var mediaPickerView = MediaPickerView()
+    private let mediaPickerView = MediaPickerView()
     
     override func loadView() {
         view = mediaPickerView
@@ -12,10 +12,6 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         onCameraVisibilityChange?(isCameraVisible: true)
     }
     

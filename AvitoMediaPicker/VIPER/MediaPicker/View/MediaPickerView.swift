@@ -31,7 +31,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Helpers
     
-    private let mediaRibbonDataSource = MediaRibbonDataSource(
+    private let mediaRibbonDataSource = CollectionViewDataSource<MediaRibbonCell>(
         cellReuseIdentifier: MediaRibbonCell.reuseIdentifier
     )
     
@@ -49,7 +49,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonView.showsVerticalScrollIndicator = false
         mediaRibbonView.registerClass(
             MediaRibbonCell.self,
-            forCellWithReuseIdentifier: MediaRibbonCell.reuseIdentifier
+            forCellWithReuseIdentifier: mediaRibbonDataSource.cellReuseIdentifier
         )
         
         super.init(frame: .zero)
@@ -215,7 +215,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func addPhoto(photo: MediaPickerItem) {
-        mediaRibbonDataSource.addPhoto(photo)
+        mediaRibbonDataSource.addItem(photo)
     }
     
     func removeSelectionInPhotoRibbon() {
@@ -246,7 +246,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let photo = mediaRibbonDataSource.photoAtIndexPath(indexPath)
+        let photo = mediaRibbonDataSource.itemAtIndexPath(indexPath)
         onPhotoSelect?(photo)
     }
     
