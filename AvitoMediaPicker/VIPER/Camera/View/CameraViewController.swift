@@ -9,6 +9,11 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
         view = cameraView
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return .Portrait
     }

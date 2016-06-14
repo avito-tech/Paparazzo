@@ -52,6 +52,7 @@
 		3CAFEAE6649A1EF45DC0EEB0 /* ImageCroppingAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE6698017ECA2A42B7A4 /* ImageCroppingAssembly.swift */; };
 		3CAFEB6B4ACA14924CA36529 /* PhotoPickerAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */; };
 		3CAFEBBDF61FD2E027F63119 /* ImageCroppingInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE0D48EFBC0EC51DF3FE6 /* ImageCroppingInteractorImpl.swift */; };
+		3CAFEC202D1473CE0C65FE98 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8D2ABB3CA95FFF22BCD /* MarshrouteFacade.swift */; };
 		3CAFEC556606606EE692D8E0 /* PhotoLibraryInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */; };
 		3CAFEC9D826F7C88934AC19A /* PhotoPickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */; };
 		3CAFED58B0B9F2FD9B35A117 /* PhotoLibraryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFED57F6B0BF40BC4C8772 /* PhotoLibraryInteractor.swift */; };
@@ -102,6 +103,7 @@
 		3CAFE893C73C509B45E04EBF /* AssemblyFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssemblyFactory.swift; sourceTree = "<group>"; };
 		3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractorImpl.swift; sourceTree = "<group>"; };
 		3CAFE8A79132616CDAF38A67 /* ImageCroppingRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingRouter.swift; sourceTree = "<group>"; };
+		3CAFE8D2ABB3CA95FFF22BCD /* MarshrouteFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarshrouteFacade.swift; sourceTree = "<group>"; };
 		3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPhotoImage.swift; sourceTree = "<group>"; };
 		3CAFE8EF8BC8BA860D437DF0 /* MediaPickerSelectedPhotosDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerSelectedPhotosDataSource.swift; sourceTree = "<group>"; };
 		3CAFE90791C6B1290B040DB9 /* PhotoLibraryViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewInput.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				253FC2591D0AA8CF000185B4 /* LazyImage.swift */,
 				2554CEBF1D0421CC009371FB /* Assets.xcassets */,
 				2554CEC41D0421CC009371FB /* Info.plist */,
+				3CAFED67404A7E3004C3C365 /* MarshrouteFacade */,
 			);
 			path = AvitoMediaPicker;
 			sourceTree = "<group>";
@@ -385,6 +388,14 @@
 				3CAFEE7EDD1346D65B25062B /* ImageCroppingRouterImpl.swift */,
 			);
 			path = Router;
+			sourceTree = "<group>";
+		};
+		3CAFED67404A7E3004C3C365 /* MarshrouteFacade */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE8D2ABB3CA95FFF22BCD /* MarshrouteFacade.swift */,
+			);
+			path = MarshrouteFacade;
 			sourceTree = "<group>";
 		};
 		3CAFEDDF4DB1EA4B7C5278F4 /* Router */ = {
@@ -609,6 +620,7 @@
 				3CAFE9BF3056C71901CB66DF /* MediaPickerSelectedPhotosDataSource.swift in Sources */,
 				3CAFE12AA99A6946FC834ACE /* CameraPhotoImage.swift in Sources */,
 				3CAFE42D51BD3F6F9A2687E6 /* AssemblyFactory.swift in Sources */,
+				3CAFEC202D1473CE0C65FE98 /* MarshrouteFacade.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

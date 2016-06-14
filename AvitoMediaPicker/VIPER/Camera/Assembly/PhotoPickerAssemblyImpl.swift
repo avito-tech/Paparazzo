@@ -5,7 +5,10 @@ public final class PhotoPickerAssemblyImpl: PhotoPickerAssembly {
     
     // MARK: - MediaPickerAssembly
     
-    public func viewController(moduleOutput moduleOutput: PhotoPickerModuleOutput) -> UIViewController {
+    public func viewController(
+        moduleOutput moduleOutput: PhotoPickerModuleOutput,
+        routerSeed: RouterSeed
+    ) -> UIViewController {
 
         let imageResizingService = ImageResizingServiceImpl()
         let cameraService = CameraServiceImpl(imageResizingService: imageResizingService)
@@ -19,7 +22,7 @@ public final class PhotoPickerAssemblyImpl: PhotoPickerAssembly {
         
         let assemblyFactory = AssemblyFactory()
 
-        let router = CameraRouterImpl(assemblyFactory: assemblyFactory)
+        let router = CameraRouterImpl(assemblyFactory: assemblyFactory, routerSeed: routerSeed)
         
         let presenter = CameraPresenter(
             interactor: interactor,

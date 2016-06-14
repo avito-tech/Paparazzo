@@ -16,11 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PhotoPickerModuleOutput {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        let assembly = PhotoPickerAssemblyImpl()
-        let viewController = assembly.viewController(moduleOutput: self)
-        
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window?.rootViewController = viewController
+        
+        window?.rootViewController = MarshrouteFacade().navigationControllerWithRootViewControllerDerivedFrom { routerSeed in
+            
+            let assemblyFactory = AssemblyFactory()
+            let photoPickerAssembly = assemblyFactory.photoPickerAssembly()
+            
+            return photoPickerAssembly.viewController(moduleOutput: self, routerSeed: routerSeed)
+        }
+        
         window?.makeKeyAndVisible()
         
         return true

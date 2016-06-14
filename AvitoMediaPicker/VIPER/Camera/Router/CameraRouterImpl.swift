@@ -1,13 +1,14 @@
 import Marshroute
 
-final class CameraRouterImpl: /*BaseRouter,*/ CameraRouter {
+final class CameraRouterImpl: BaseRouter, CameraRouter {
     
     typealias AssemblyFactory = protocol<ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
 
     private let assemblyFactory: AssemblyFactory
 
-    init(assemblyFactory: AssemblyFactory) {
+    init(assemblyFactory: AssemblyFactory, routerSeed: RouterSeed) {
         self.assemblyFactory = assemblyFactory
+        super.init(routerSeed: routerSeed)
     }
 
     func showPhotoLibrary(moduleOutput moduleOutput: PhotoLibraryModuleOutput) {
