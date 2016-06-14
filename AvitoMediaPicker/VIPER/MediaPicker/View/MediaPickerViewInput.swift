@@ -1,23 +1,23 @@
 import UIKit
 import AVFoundation
 
-enum CameraViewMode {
-    case Capture
-    case Preview(PhotoPickerItem)
+enum MediaPickerViewMode {
+    case Camera
+    case PhotoPreview(MediaPickerItem)
 }
 
-protocol CameraViewInput: class {
+protocol MediaPickerViewInput: class {
     
-    func setMode(mode: CameraViewMode)
+    func setMode(mode: MediaPickerViewMode)
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
- 
+
     func setCaptureSession(session: AVCaptureSession)
     func setLatestLibraryPhoto(image: LazyImage?)
     
     func setFlashButtonVisible(visible: Bool)
     func animateFlash()
     
-    func addPhotoRibbonItem(photo: PhotoPickerItem)
+    func addPhotoRibbonItem(photo: MediaPickerItem)
     func removeSelectionInPhotoRibbon()
     
     func startSpinnerForNewPhoto()
@@ -26,7 +26,7 @@ protocol CameraViewInput: class {
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
     
     // MARK: - Actions in photo ribbon
-    var onPhotoSelect: (PhotoPickerItem -> ())? { get set }
+    var onPhotoSelect: (MediaPickerItem -> ())? { get set }
     
     // MARK: - Camera actions
     var onPhotoLibraryButtonTap: (() -> ())? { get set }

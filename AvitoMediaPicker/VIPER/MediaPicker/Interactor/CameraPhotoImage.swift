@@ -1,5 +1,6 @@
 import UIKit
 
+// TODO: переименовать во что-нибудь вроде FileLazyImage
 struct CameraPhotoImage: LazyImage {
 
     private let photo: CameraPhoto

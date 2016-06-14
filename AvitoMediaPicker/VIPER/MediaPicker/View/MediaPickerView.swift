@@ -2,7 +2,7 @@ import UIKit
 import AVFoundation
 import AvitoDesignKit
 
-final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
+final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
@@ -15,8 +15,8 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
     private let continueButton = UIButton()
     private let flashView = UIView()
     
-    private let photoRibbonLayout = PhotoRibbonLayout()
-    private let photoRibbonView: UICollectionView
+    private let mediaRibbonLayout = MediaRibbonLayout()
+    private let mediaRibbonView: UICollectionView
     
     // MARK: - Constants
     
@@ -25,31 +25,31 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
     private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4 / 3 = 53,333...
     private let controlsExtendedHeight = CGFloat(83)
     
-    private let photoRibbonMinHeight = CGFloat(72)
-    private let photoRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    private let photoRibbonInteritemSpacing = CGFloat(7)
+    private let mediaRibbonMinHeight = CGFloat(72)
+    private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    private let mediaRibbonInteritemSpacing = CGFloat(7)
     
     // MARK: - Helpers
     
-    private let photosRibbonDataSource = PhotoRibbonDataSource(
-        cellReuseIdentifier: PhotoRibbonCell.reuseIdentifier
+    private let mediaRibbonDataSource = MediaRibbonDataSource(
+        cellReuseIdentifier: MediaRibbonCell.reuseIdentifier
     )
     
     // MARK: - UIView
     
     override init(frame: CGRect) {
         
-        photoRibbonLayout.scrollDirection = .Horizontal
-        photoRibbonLayout.sectionInset = photoRibbonInsets
-        photoRibbonLayout.minimumLineSpacing = photoRibbonInteritemSpacing
+        mediaRibbonLayout.scrollDirection = .Horizontal
+        mediaRibbonLayout.sectionInset = mediaRibbonInsets
+        mediaRibbonLayout.minimumLineSpacing = mediaRibbonInteritemSpacing
         
-        photoRibbonView = UICollectionView(frame: .zero, collectionViewLayout: photoRibbonLayout)
-        photoRibbonView.backgroundColor = .whiteColor()
-        photoRibbonView.showsHorizontalScrollIndicator = false
-        photoRibbonView.showsVerticalScrollIndicator = false
-        photoRibbonView.registerClass(
-            PhotoRibbonCell.self,
-            forCellWithReuseIdentifier: PhotoRibbonCell.reuseIdentifier
+        mediaRibbonView = UICollectionView(frame: .zero, collectionViewLayout: mediaRibbonLayout)
+        mediaRibbonView.backgroundColor = .whiteColor()
+        mediaRibbonView.showsHorizontalScrollIndicator = false
+        mediaRibbonView.showsVerticalScrollIndicator = false
+        mediaRibbonView.registerClass(
+            MediaRibbonCell.self,
+            forCellWithReuseIdentifier: MediaRibbonCell.reuseIdentifier
         )
         
         super.init(frame: .zero)
@@ -62,21 +62,21 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
         flashView.backgroundColor = .whiteColor()
         flashView.alpha = 0
         
-        photosRibbonDataSource.onDataChanged = { [weak self] in
+        mediaRibbonDataSource.onDataChanged = { [weak self] in
             print("collectionViewDataSource.onDataChanged")
-            self?.photoRibbonView.reloadData()
+            self?.mediaRibbonView.reloadData()
         }
         
-        photoRibbonView.dataSource = photosRibbonDataSource
-        photoRibbonView.delegate = self
+        mediaRibbonView.dataSource = mediaRibbonDataSource
+        mediaRibbonView.delegate = self
         
         addSubview(photoView)
-        addSubview(photoRibbonView)
+        addSubview(mediaRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
         addSubview(flashView)
         
-        setMode(.Capture)
+        setMode(.Camera)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -109,16 +109,16 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
         
         photoControlsView.frame = cameraControlsView.frame
 
-        let photoRibbonHeight = max(photoRibbonMinHeight, cameraControlsView.top - photoView.bottom)
+        let photoRibbonHeight = max(mediaRibbonMinHeight, cameraControlsView.top - photoView.bottom)
 
-        photoRibbonView.layout(
+        mediaRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
             bottom: cameraControlsView.top,
             height: photoRibbonHeight
         )
 
-        photoRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
+        mediaRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
 
         flashView.frame = bounds
     }
@@ -141,7 +141,7 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())?
-    var onPhotoSelect: (PhotoPickerItem -> ())?
+    var onPhotoSelect: (MediaPickerItem -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
@@ -158,11 +158,11 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
         set { photoControlsView.onCameraButtonTap = newValue }
     }
     
-    func setMode(mode: CameraViewMode) {
+    func setMode(mode: MediaPickerViewMode) {
         
         switch mode {
         
-        case .Capture:
+        case .Camera:
             photoView.hidden = true
             photoView.image = nil
             
@@ -171,7 +171,7 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
             
             setCameraVisible(true)
         
-        case .Preview(let photo):
+        case .PhotoPreview(let photo):
             photoView.hidden = false
             photoView.setImage(photo.image)
             
@@ -214,13 +214,13 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func addPhoto(photo: PhotoPickerItem) {
-        photosRibbonDataSource.addPhoto(photo)
+    func addPhoto(photo: MediaPickerItem) {
+        mediaRibbonDataSource.addPhoto(photo)
     }
     
     func removeSelectionInPhotoRibbon() {
-        photoRibbonView.indexPathsForSelectedItems()?.forEach { indexPath in
-            photoRibbonView.deselectItemAtIndexPath(indexPath, animated: false)
+        mediaRibbonView.indexPathsForSelectedItems()?.forEach { indexPath in
+            mediaRibbonView.deselectItemAtIndexPath(indexPath, animated: false)
         }
     }
     
@@ -239,21 +239,21 @@ final class CameraView: UIView, UICollectionViewDelegateFlowLayout {
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
         
-        photoRibbonLayout.itemsTransform = transform
-        photoRibbonLayout.invalidateLayout()
+        mediaRibbonLayout.itemsTransform = transform
+        mediaRibbonLayout.invalidateLayout()
     }
     
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let photo = photosRibbonDataSource.photoAtIndexPath(indexPath)
+        let photo = mediaRibbonDataSource.photoAtIndexPath(indexPath)
         onPhotoSelect?(photo)
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let height = photoRibbonView.height - photoRibbonInsets.top - photoRibbonInsets.bottom
+        let height = mediaRibbonView.height - mediaRibbonInsets.top - mediaRibbonInsets.bottom
         return CGSize(width: height, height: height)
     }
     

@@ -1,7 +1,7 @@
-final class AssemblyFactory: PhotoPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
+final class AssemblyFactory: MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
     
-    func photoPickerAssembly() -> PhotoPickerAssembly {
-        return PhotoPickerAssemblyImpl(assemblyFactory: self)
+    func mediaPickerAssembly() -> MediaPickerAssembly {
+        return MediaPickerAssemblyImpl(assemblyFactory: self)
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {

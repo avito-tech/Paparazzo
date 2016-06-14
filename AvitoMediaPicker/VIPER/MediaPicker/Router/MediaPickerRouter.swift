@@ -1,4 +1,4 @@
-protocol CameraRouter: class {
+protocol MediaPickerRouter: class {
     
     func showPhotoLibrary(moduleOutput moduleOutput: PhotoLibraryModuleOutput)
     

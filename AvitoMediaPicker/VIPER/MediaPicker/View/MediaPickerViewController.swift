@@ -1,12 +1,12 @@
 import UIKit
 import AVFoundation
 
-final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
+final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewInput {
     
-    private var cameraView = CameraView()
+    private var mediaPickerView = MediaPickerView()
     
     override func loadView() {
-        view = cameraView
+        view = mediaPickerView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -35,47 +35,47 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
     // MARK: - MediaPickerViewInput
     
     var onShutterButtonTap: (() -> ())? {
-        get { return cameraView.onShutterButtonTap }
-        set { cameraView.onShutterButtonTap = newValue }
+        get { return mediaPickerView.onShutterButtonTap }
+        set { mediaPickerView.onShutterButtonTap = newValue }
     }
 
     var onPhotoLibraryButtonTap: (() -> ())? {
-        get { return cameraView.onPhotoLibraryButtonTap }
-        set { cameraView.onPhotoLibraryButtonTap = newValue }
+        get { return mediaPickerView.onPhotoLibraryButtonTap }
+        set { mediaPickerView.onPhotoLibraryButtonTap = newValue }
     }
 
     var onFlashToggle: (Bool -> ())? {
-        get { return cameraView.onFlashToggle }
-        set { cameraView.onFlashToggle = newValue }
+        get { return mediaPickerView.onFlashToggle }
+        set { mediaPickerView.onFlashToggle = newValue }
     }
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? {
-        get { return cameraView.onCameraVisibilityChange }
-        set { cameraView.onCameraVisibilityChange = newValue }
+        get { return mediaPickerView.onCameraVisibilityChange }
+        set { mediaPickerView.onCameraVisibilityChange = newValue }
     }
     
-    var onPhotoSelect: (PhotoPickerItem -> ())? {
-        get { return cameraView.onPhotoSelect }
-        set { cameraView.onPhotoSelect = newValue }
+    var onPhotoSelect: (MediaPickerItem -> ())? {
+        get { return mediaPickerView.onPhotoSelect }
+        set { mediaPickerView.onPhotoSelect = newValue }
     }
     
     var onRemoveButtonTap: (() -> ())? {
-        get { return cameraView.onRemoveButtonTap }
-        set { cameraView.onRemoveButtonTap = newValue }
+        get { return mediaPickerView.onRemoveButtonTap }
+        set { mediaPickerView.onRemoveButtonTap = newValue }
     }
     
     var onCropButtonTap: (() -> ())? {
-        get { return cameraView.onCropButtonTap }
-        set { cameraView.onCropButtonTap = newValue }
+        get { return mediaPickerView.onCropButtonTap }
+        set { mediaPickerView.onCropButtonTap = newValue }
     }
     
     var onReturnToCameraTap: (() -> ())? {
-        get { return cameraView.onReturnToCameraTap }
-        set { cameraView.onReturnToCameraTap = newValue }
+        get { return mediaPickerView.onReturnToCameraTap }
+        set { mediaPickerView.onReturnToCameraTap = newValue }
     }
     
-    func setMode(mode: CameraViewMode) {
-        cameraView.setMode(mode)
+    func setMode(mode: MediaPickerViewMode) {
+        mediaPickerView.setMode(mode)
     }
     
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
@@ -83,39 +83,39 @@ final class CameraViewController: BaseViewControllerSwift, CameraViewInput {
         let transform = CGAffineTransform(deviceOrientation: orientation)
         
         UIView.animateWithDuration(0.25) {
-            self.cameraView.setControlsTransform(transform)
+            self.mediaPickerView.setControlsTransform(transform)
         }
     }
     
     func setCaptureSession(session: AVCaptureSession) {
-        cameraView.setCaptureSession(session)
+        mediaPickerView.setCaptureSession(session)
     }
     
     func setLatestLibraryPhoto(image: LazyImage?) {
-        cameraView.setLatestPhotoLibraryItemImage(image)
+        mediaPickerView.setLatestPhotoLibraryItemImage(image)
     }
     
     func setFlashButtonVisible(visible: Bool) {
-        cameraView.setFlashButtonVisible(visible)
+        mediaPickerView.setFlashButtonVisible(visible)
     }
     
     func animateFlash() {
-        cameraView.animateFlash()
+        mediaPickerView.animateFlash()
     }
 
-    func addPhotoRibbonItem(photo: PhotoPickerItem) {
-        cameraView.addPhoto(photo)
+    func addPhotoRibbonItem(photo: MediaPickerItem) {
+        mediaPickerView.addPhoto(photo)
     }
     
     func removeSelectionInPhotoRibbon() {
-        cameraView.removeSelectionInPhotoRibbon()
+        mediaPickerView.removeSelectionInPhotoRibbon()
     }
     
     func startSpinnerForNewPhoto() {
-        cameraView.startSpinnerForNewPhoto()
+        mediaPickerView.startSpinnerForNewPhoto()
     }
     
     func stopSpinnerForNewPhoto() {
-        cameraView.stopSpinnerForNewPhoto()
+        mediaPickerView.stopSpinnerForNewPhoto()
     }
 }

@@ -1,6 +1,6 @@
 import Marshroute
 
-final class CameraRouterImpl: BaseRouter, CameraRouter {
+final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
     
     typealias AssemblyFactory = protocol<ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
 
@@ -11,6 +11,8 @@ final class CameraRouterImpl: BaseRouter, CameraRouter {
         super.init(routerSeed: routerSeed)
     }
 
+    // MARK: - PhotoPickerRouter
+
     func showPhotoLibrary(moduleOutput moduleOutput: PhotoLibraryModuleOutput) {
         pushViewControllerDerivedFrom { routerSeed in
             let assembly = assemblyFactory.photoLibraryAssembly()
@@ -19,9 +21,9 @@ final class CameraRouterImpl: BaseRouter, CameraRouter {
     }
     
     func showCroppingModule(photo photo: AnyObject, moduleOutput: ImageCroppingModuleOutput) {
-        print("showCroppingModule")
-//        let assembly = assemblyFactory.imageCroppingAssembly()
-//        let viewController = assembly.viewController(photo: photo, moduleOutput: moduleOutput)
-        // TODO: открыть через Marshroute
+        pushViewControllerDerivedFrom { routerSeed in
+            let assembly = assemblyFactory.imageCroppingAssembly()
+            return assembly.viewController(photo: photo, moduleOutput: moduleOutput, routerSeed: routerSeed)
+        }
     }
 }

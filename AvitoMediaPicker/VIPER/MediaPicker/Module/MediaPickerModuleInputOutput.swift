@@ -1,18 +1,18 @@
-public protocol PhotoPickerModuleInput: class {
+public protocol MediaPickerModuleInput: class {
     // TODO: сюда можно передавать структурку, которая будет кастомизировать UI пикера (цвета, картинки и т.п.)
 }
 
-public protocol PhotoPickerModuleOutput: class {
+public protocol MediaPickerModuleOutput: class {
     
-    func photoPickerDidAddItem(item: PhotoPickerItem)
-    func photoPickerDidUpdateItem(item: PhotoPickerItem)  // crop/apply filter
-    func photoPickerDidRemoveItem(item: PhotoPickerItem)
+    func photoPickerDidAddItem(item: MediaPickerItem)
+    func photoPickerDidUpdateItem(item: MediaPickerItem)  // crop/apply filter
+    func photoPickerDidRemoveItem(item: MediaPickerItem)
     
     func photoPickerDidFinish()
     func photoPickerDidCancel()
 }
 
 /// Главная модель, представляющая фотку в пикере
-public struct PhotoPickerItem {
+public struct MediaPickerItem {
     let image: LazyImage
 }

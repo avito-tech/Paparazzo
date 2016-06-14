@@ -1,22 +1,22 @@
 import Foundation
 
-final class CameraPresenter: PhotoPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
+final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies
     
-    private let interactor: CameraInteractor
-    private let router: CameraRouter
+    private let interactor: MediaPickerInteractor
+    private let router: MediaPickerRouter
 
-    weak var moduleOutput: PhotoPickerModuleOutput?
+    weak var moduleOutput: MediaPickerModuleOutput?
     
     // MARK: - Init
     
-    init(interactor: CameraInteractor, router: CameraRouter) {
+    init(interactor: MediaPickerInteractor, router: MediaPickerRouter) {
         self.interactor = interactor
         self.router = router
     }
     
-    weak var view: CameraViewInput? {
+    weak var view: MediaPickerViewInput? {
         didSet {
             setUpView()
         }
@@ -69,7 +69,7 @@ final class CameraPresenter: PhotoPickerModuleInput, PhotoLibraryModuleOutput, I
         }
         
         view?.onPhotoSelect = { [weak self] photo in
-            self?.view?.setMode(.Preview(photo))
+            self?.view?.setMode(.PhotoPreview(photo))
         }
         
         view?.onRemoveButtonTap = {
@@ -83,7 +83,7 @@ final class CameraPresenter: PhotoPickerModuleInput, PhotoLibraryModuleOutput, I
         
         view?.onReturnToCameraTap = { [weak self] in
             self?.view?.removeSelectionInPhotoRibbon()
-            self?.view?.setMode(.Capture)
+            self?.view?.setMode(.Camera)
         }
     }
     

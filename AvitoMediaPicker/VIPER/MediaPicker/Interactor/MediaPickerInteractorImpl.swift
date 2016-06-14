@@ -1,7 +1,7 @@
 import Foundation
 import AVFoundation
 
-final class CameraInteractorImpl: CameraInteractor {
+final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let cameraService: CameraService
     private let deviceOrientationService: DeviceOrientationService
@@ -51,10 +51,10 @@ final class CameraInteractorImpl: CameraInteractor {
         cameraService.setFlashEnabled(enabled)
     }
     
-    func takePhoto(completion: PhotoPickerItem? -> ()) {
+    func takePhoto(completion: MediaPickerItem? -> ()) {
         cameraService.takePhoto { [imageResizingService] photo in
             completion(photo.flatMap { photo in
-                PhotoPickerItem(image: CameraPhotoImage(
+                MediaPickerItem(image: CameraPhotoImage(
                     photo: photo,
                     imageResizingService: imageResizingService
                 ))

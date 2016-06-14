@@ -2,13 +2,18 @@ import Foundation
 
 final class ImageCroppingPresenter: ImageCroppingModuleInput {
 
-    private var interactor: ImageCroppingInteractor {
+    // MARK: - Dependencies
+    
+    private var interactor: ImageCroppingInteractor
+    private let router: ImageCroppingRouter
+    
+    weak var moduleOutput: ImageCroppingModuleOutput?
+    
+    weak var view: ImageCroppingViewInput? {
         didSet {
-            setupInteractor()
+            setUpView()
         }
     }
-    
-    private let router: ImageCroppingRouter
 
     // MARK: - Init
 
@@ -17,17 +22,9 @@ final class ImageCroppingPresenter: ImageCroppingModuleInput {
         self.router = router
     }
     
-    // MARK: - Weak properties
-    weak var view: ImageCroppingViewInput? {
-        didSet {
-            setupView()
-        }
-    }
-    
-    // MARK: - CroppingModuleInput
-    
     // MARK: - Private
-    private func setupView() {
+    
+    private func setUpView() {
         
     }
     

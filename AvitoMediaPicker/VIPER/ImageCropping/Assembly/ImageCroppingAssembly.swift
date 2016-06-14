@@ -1,10 +1,12 @@
 import UIKit
+import Marshroute
 
 public protocol ImageCroppingAssembly: class {
     
     func viewController(
         photo photo: AnyObject, // TODO
-        moduleOutput: ImageCroppingModuleOutput
+        moduleOutput: ImageCroppingModuleOutput,
+        routerSeed: RouterSeed
     ) -> UIViewController
 }
 

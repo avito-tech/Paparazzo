@@ -1,6 +1,6 @@
 import UIKit
 
-final class PhotoRibbonLayout: UICollectionViewFlowLayout {
+final class MediaRibbonLayout: UICollectionViewFlowLayout {
     
     var itemsTransform = CGAffineTransformIdentity
     

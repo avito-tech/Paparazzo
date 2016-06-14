@@ -24,45 +24,45 @@
 		3CAFE073805A791558BDAB6B /* PhotoLibraryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEA0EDE53DFEEDFB463DC /* PhotoLibraryRouter.swift */; };
 		3CAFE0ACE65B12EDFB101D98 /* ImageCroppingViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4B4AE02DEC087B7FB42 /* ImageCroppingViewInput.swift */; };
 		3CAFE12AA99A6946FC834ACE /* CameraPhotoImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */; };
-		3CAFE13E2DD717CB80B340F8 /* CameraRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE85EB026391C19004E93 /* CameraRouterImpl.swift */; };
-		3CAFE269A190D556BE9152ED /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEFF2B639891F4ED438BB /* CameraPresenter.swift */; };
+		3CAFE13E2DD717CB80B340F8 /* MediaPickerRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE85EB026391C19004E93 /* MediaPickerRouterImpl.swift */; };
+		3CAFE269A190D556BE9152ED /* MediaPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEFF2B639891F4ED438BB /* MediaPickerPresenter.swift */; };
 		3CAFE2785ABF69F02A994997 /* ImageCroppingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE1F4206341B7BDDC18B6 /* ImageCroppingInteractor.swift */; };
 		3CAFE2CEE58612C2CF2052FC /* PhotoLibraryAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE1B261F15564F589329C /* PhotoLibraryAssemblyImpl.swift */; };
-		3CAFE322875FD8D19F06A031 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFECF75068CE224CD7119F /* CameraView.swift */; };
-		3CAFE353344D7F1A850A8052 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE2C4EBF68C44E991287A /* CameraViewController.swift */; };
+		3CAFE322875FD8D19F06A031 /* MediaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFECF75068CE224CD7119F /* MediaPickerView.swift */; };
+		3CAFE353344D7F1A850A8052 /* MediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE2C4EBF68C44E991287A /* MediaPickerViewController.swift */; };
 		3CAFE398643D1DF8F08A925B /* ImageCroppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE444DB5BFF19AEDFA2FF /* ImageCroppingView.swift */; };
 		3CAFE42D51BD3F6F9A2687E6 /* AssemblyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE893C73C509B45E04EBF /* AssemblyFactory.swift */; };
-		3CAFE42EBE82B5CAE8D55720 /* PhotoPickerModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4F729E4EE33627D484F /* PhotoPickerModuleInputOutput.swift */; };
+		3CAFE42EBE82B5CAE8D55720 /* MediaPickerModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4F729E4EE33627D484F /* MediaPickerModuleInputOutput.swift */; };
 		3CAFE490666158FE695541D0 /* ImageCroppingAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE1A6E7A16EF00802F8AD /* ImageCroppingAssemblyImpl.swift */; };
 		3CAFE4D5C2DF44D5AD432B65 /* ImageCroppingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE56D689AA261E0D4747 /* ImageCroppingPresenter.swift */; };
 		3CAFE57CC9652C97B282DFDF /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEAE12DB41C8034C1A719 /* CameraControlsView.swift */; };
-		3CAFE5DC688AD70830F93A13 /* PhotoRibbonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE2B23EFBDBD99D0BBAED /* PhotoRibbonCell.swift */; };
+		3CAFE5DC688AD70830F93A13 /* MediaRibbonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE2B23EFBDBD99D0BBAED /* MediaRibbonCell.swift */; };
 		3CAFE5E901963B1A04B0AB81 /* PhotoLibraryModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE6B698E2FF6FD3DA197 /* PhotoLibraryModuleInputOutput.swift */; };
-		3CAFE662A830FC7FB216769B /* CameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEB869DBC84F35F20A5C7 /* CameraRouter.swift */; };
+		3CAFE662A830FC7FB216769B /* MediaPickerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEB869DBC84F35F20A5C7 /* MediaPickerRouter.swift */; };
 		3CAFE6BCCFBD2E0C6D8D73C5 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE032B06F4C4DD309FF49 /* MarshrouteFacade.swift */; };
 		3CAFE6D4612E31D55E6A84A0 /* ImageCroppingModuleInputOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE0CFDDA96786AD367A41 /* ImageCroppingModuleInputOutput.swift */; };
 		3CAFE724FBED6AA73D388398 /* PhotoLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4054F36726E1998C9D0 /* PhotoLibraryView.swift */; };
 		3CAFE7843E211380C8BA9786 /* PhotoLibraryViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE90791C6B1290B040DB9 /* PhotoLibraryViewInput.swift */; };
-		3CAFE89C06E1DE2979470F9B /* CameraViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEDCD7F6A99D9D43D7985 /* CameraViewInput.swift */; };
+		3CAFE89C06E1DE2979470F9B /* MediaPickerViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEDCD7F6A99D9D43D7985 /* MediaPickerViewInput.swift */; };
 		3CAFE8FDEE9301BD01D6273F /* ImageCroppingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8A79132616CDAF38A67 /* ImageCroppingRouter.swift */; };
 		3CAFE91561B09A6099B4B785 /* PhotoLibraryRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE97818272C2CDDDCF57F /* PhotoLibraryRouterImpl.swift */; };
 		3CAFE92B63672603304E5115 /* PhotoControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4592BCFFAE70E254002 /* PhotoControlsView.swift */; };
-		3CAFE9BF3056C71901CB66DF /* PhotoRibbonDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8EF8BC8BA860D437DF0 /* PhotoRibbonDataSource.swift */; };
+		3CAFE9BF3056C71901CB66DF /* MediaRibbonDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8EF8BC8BA860D437DF0 /* MediaRibbonDataSource.swift */; };
 		3CAFEA139A2E43527A03D825 /* PhotoLibraryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE56463A3DC87D9671BB6 /* PhotoLibraryPresenter.swift */; };
 		3CAFEA6109B37A9B960E773B /* ImageCroppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFED56BA18B46A9E4B2CB4 /* ImageCroppingViewController.swift */; };
-		3CAFEAABB3F482293B994992 /* CameraInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE054FF6BF6868661E190 /* CameraInteractorImpl.swift */; };
+		3CAFEAABB3F482293B994992 /* MediaPickerInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE054FF6BF6868661E190 /* MediaPickerInteractorImpl.swift */; };
 		3CAFEAE6649A1EF45DC0EEB0 /* ImageCroppingAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE6698017ECA2A42B7A4 /* ImageCroppingAssembly.swift */; };
-		3CAFEB6B4ACA14924CA36529 /* PhotoPickerAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */; };
+		3CAFEB6B4ACA14924CA36529 /* MediaPickerAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE98EA738DF107CE2483B /* MediaPickerAssemblyImpl.swift */; };
 		3CAFEBBDF61FD2E027F63119 /* ImageCroppingInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE0D48EFBC0EC51DF3FE6 /* ImageCroppingInteractorImpl.swift */; };
 		3CAFEC556606606EE692D8E0 /* PhotoLibraryInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */; };
-		3CAFEC9D826F7C88934AC19A /* PhotoPickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */; };
+		3CAFEC9D826F7C88934AC19A /* MediaPickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE9E84104CADDB89EAFEF /* MediaPickerAssembly.swift */; };
 		3CAFED58B0B9F2FD9B35A117 /* PhotoLibraryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFED57F6B0BF40BC4C8772 /* PhotoLibraryInteractor.swift */; };
 		3CAFEDD34950B8F6131F8C8D /* ImageCroppingRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEE7EDD1346D65B25062B /* ImageCroppingRouterImpl.swift */; };
 		3CAFEE6DA015385C0177799F /* PhotoLibraryAssetImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE4D8EC2E453BAE654E9E /* PhotoLibraryAssetImage.swift */; };
 		3CAFEE7E1C4A2B53DCAECF17 /* PhotoLibraryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE3B5329150C95659EB1A /* PhotoLibraryAssembly.swift */; };
-		3CAFEE875FF09717548AD2EF /* PhotoRibbonLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE6BAEBAF106E819173EA /* PhotoRibbonLayout.swift */; };
+		3CAFEE875FF09717548AD2EF /* MediaRibbonLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE6BAEBAF106E819173EA /* MediaRibbonLayout.swift */; };
 		3CAFEEAC0FC5FB88C348C19D /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFEAB615488A37E2F49B42 /* PhotoLibraryViewController.swift */; };
-		3CAFEFAD78734D2F41D1CB63 /* CameraInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE32325C06236691C7E09 /* CameraInteractor.swift */; };
+		3CAFEFAD78734D2F41D1CB63 /* MediaPickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE32325C06236691C7E09 /* MediaPickerInteractor.swift */; };
 		BD44C2A29274452087648D97 /* Pods_AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF63B5B765CCF907822DEAEF /* Pods_AvitoMediaPicker.framework */; };
 /* End PBXBuildFile section */
 
@@ -84,47 +84,47 @@
 		25AEA6DC1D084BC70037E7BF /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		25BF69A31D0DACD2002ECFB3 /* UIImageView+LazyImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+LazyImage.swift"; path = "Extensions/UIImageView+LazyImage.swift"; sourceTree = "<group>"; };
 		3CAFE032B06F4C4DD309FF49 /* MarshrouteFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarshrouteFacade.swift; sourceTree = "<group>"; };
-		3CAFE054FF6BF6868661E190 /* CameraInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraInteractorImpl.swift; sourceTree = "<group>"; };
+		3CAFE054FF6BF6868661E190 /* MediaPickerInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerInteractorImpl.swift; sourceTree = "<group>"; };
 		3CAFE0CFDDA96786AD367A41 /* ImageCroppingModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingModuleInputOutput.swift; sourceTree = "<group>"; };
 		3CAFE0D48EFBC0EC51DF3FE6 /* ImageCroppingInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingInteractorImpl.swift; sourceTree = "<group>"; };
 		3CAFE1A6E7A16EF00802F8AD /* ImageCroppingAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingAssemblyImpl.swift; sourceTree = "<group>"; };
 		3CAFE1B261F15564F589329C /* PhotoLibraryAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssemblyImpl.swift; sourceTree = "<group>"; };
 		3CAFE1F4206341B7BDDC18B6 /* ImageCroppingInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingInteractor.swift; sourceTree = "<group>"; };
-		3CAFE2B23EFBDBD99D0BBAED /* PhotoRibbonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRibbonCell.swift; sourceTree = "<group>"; };
-		3CAFE2C4EBF68C44E991287A /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
-		3CAFE32325C06236691C7E09 /* CameraInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraInteractor.swift; sourceTree = "<group>"; };
+		3CAFE2B23EFBDBD99D0BBAED /* MediaRibbonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRibbonCell.swift; sourceTree = "<group>"; };
+		3CAFE2C4EBF68C44E991287A /* MediaPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerViewController.swift; sourceTree = "<group>"; };
+		3CAFE32325C06236691C7E09 /* MediaPickerInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerInteractor.swift; sourceTree = "<group>"; };
 		3CAFE3B5329150C95659EB1A /* PhotoLibraryAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssembly.swift; sourceTree = "<group>"; };
 		3CAFE4054F36726E1998C9D0 /* PhotoLibraryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryView.swift; sourceTree = "<group>"; };
 		3CAFE444DB5BFF19AEDFA2FF /* ImageCroppingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingView.swift; sourceTree = "<group>"; };
 		3CAFE4592BCFFAE70E254002 /* PhotoControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoControlsView.swift; sourceTree = "<group>"; };
 		3CAFE4B4AE02DEC087B7FB42 /* ImageCroppingViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingViewInput.swift; sourceTree = "<group>"; };
 		3CAFE4D8EC2E453BAE654E9E /* PhotoLibraryAssetImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssetImage.swift; sourceTree = "<group>"; };
-		3CAFE4F729E4EE33627D484F /* PhotoPickerModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerModuleInputOutput.swift; sourceTree = "<group>"; };
+		3CAFE4F729E4EE33627D484F /* MediaPickerModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerModuleInputOutput.swift; sourceTree = "<group>"; };
 		3CAFE56463A3DC87D9671BB6 /* PhotoLibraryPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPresenter.swift; sourceTree = "<group>"; };
-		3CAFE6BAEBAF106E819173EA /* PhotoRibbonLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRibbonLayout.swift; sourceTree = "<group>"; };
-		3CAFE85EB026391C19004E93 /* CameraRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraRouterImpl.swift; sourceTree = "<group>"; };
+		3CAFE6BAEBAF106E819173EA /* MediaRibbonLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRibbonLayout.swift; sourceTree = "<group>"; };
+		3CAFE85EB026391C19004E93 /* MediaPickerRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerRouterImpl.swift; sourceTree = "<group>"; };
 		3CAFE893C73C509B45E04EBF /* AssemblyFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssemblyFactory.swift; sourceTree = "<group>"; };
 		3CAFE8A205BD798B51E4C332 /* PhotoLibraryInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractorImpl.swift; sourceTree = "<group>"; };
 		3CAFE8A79132616CDAF38A67 /* ImageCroppingRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingRouter.swift; sourceTree = "<group>"; };
 		3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPhotoImage.swift; sourceTree = "<group>"; };
-		3CAFE8EF8BC8BA860D437DF0 /* PhotoRibbonDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRibbonDataSource.swift; sourceTree = "<group>"; };
+		3CAFE8EF8BC8BA860D437DF0 /* MediaRibbonDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRibbonDataSource.swift; sourceTree = "<group>"; };
 		3CAFE90791C6B1290B040DB9 /* PhotoLibraryViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewInput.swift; sourceTree = "<group>"; };
 		3CAFE97818272C2CDDDCF57F /* PhotoLibraryRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouterImpl.swift; sourceTree = "<group>"; };
-		3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssemblyImpl.swift; sourceTree = "<group>"; };
-		3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssembly.swift; sourceTree = "<group>"; };
+		3CAFE98EA738DF107CE2483B /* MediaPickerAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerAssemblyImpl.swift; sourceTree = "<group>"; };
+		3CAFE9E84104CADDB89EAFEF /* MediaPickerAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerAssembly.swift; sourceTree = "<group>"; };
 		3CAFEA0EDE53DFEEDFB463DC /* PhotoLibraryRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouter.swift; sourceTree = "<group>"; };
 		3CAFEAB615488A37E2F49B42 /* PhotoLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewController.swift; sourceTree = "<group>"; };
 		3CAFEAE12DB41C8034C1A719 /* CameraControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
-		3CAFEB869DBC84F35F20A5C7 /* CameraRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraRouter.swift; sourceTree = "<group>"; };
-		3CAFECF75068CE224CD7119F /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		3CAFEB869DBC84F35F20A5C7 /* MediaPickerRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerRouter.swift; sourceTree = "<group>"; };
+		3CAFECF75068CE224CD7119F /* MediaPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerView.swift; sourceTree = "<group>"; };
 		3CAFED56BA18B46A9E4B2CB4 /* ImageCroppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingViewController.swift; sourceTree = "<group>"; };
 		3CAFED57F6B0BF40BC4C8772 /* PhotoLibraryInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractor.swift; sourceTree = "<group>"; };
-		3CAFEDCD7F6A99D9D43D7985 /* CameraViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewInput.swift; sourceTree = "<group>"; };
+		3CAFEDCD7F6A99D9D43D7985 /* MediaPickerViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerViewInput.swift; sourceTree = "<group>"; };
 		3CAFEE56D689AA261E0D4747 /* ImageCroppingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingPresenter.swift; sourceTree = "<group>"; };
 		3CAFEE6698017ECA2A42B7A4 /* ImageCroppingAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingAssembly.swift; sourceTree = "<group>"; };
 		3CAFEE6B698E2FF6FD3DA197 /* PhotoLibraryModuleInputOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryModuleInputOutput.swift; sourceTree = "<group>"; };
 		3CAFEE7EDD1346D65B25062B /* ImageCroppingRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCroppingRouterImpl.swift; sourceTree = "<group>"; };
-		3CAFEFF2B639891F4ED438BB /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
+		3CAFEFF2B639891F4ED438BB /* MediaPickerPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerPresenter.swift; sourceTree = "<group>"; };
 		AD70B1A17A3D9606448873FA /* Pods-AvitoMediaPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker/Pods-AvitoMediaPicker.debug.xcconfig"; sourceTree = "<group>"; };
 		DF63B5B765CCF907822DEAEF /* Pods_AvitoMediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AvitoMediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE1C2DE176DF364440E83004 /* Pods-AvitoMediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker/Pods-AvitoMediaPicker.release.xcconfig"; sourceTree = "<group>"; };
@@ -238,14 +238,14 @@
 		3CAFE5252E181ACA2AD6A675 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFEDCD7F6A99D9D43D7985 /* CameraViewInput.swift */,
-				3CAFE2C4EBF68C44E991287A /* CameraViewController.swift */,
-				3CAFECF75068CE224CD7119F /* CameraView.swift */,
+				3CAFEDCD7F6A99D9D43D7985 /* MediaPickerViewInput.swift */,
+				3CAFE2C4EBF68C44E991287A /* MediaPickerViewController.swift */,
+				3CAFECF75068CE224CD7119F /* MediaPickerView.swift */,
 				3CAFEAE12DB41C8034C1A719 /* CameraControlsView.swift */,
 				3CAFE4592BCFFAE70E254002 /* PhotoControlsView.swift */,
-				3CAFE6BAEBAF106E819173EA /* PhotoRibbonLayout.swift */,
-				3CAFE2B23EFBDBD99D0BBAED /* PhotoRibbonCell.swift */,
-				3CAFE8EF8BC8BA860D437DF0 /* PhotoRibbonDataSource.swift */,
+				3CAFE6BAEBAF106E819173EA /* MediaRibbonLayout.swift */,
+				3CAFE2B23EFBDBD99D0BBAED /* MediaRibbonCell.swift */,
+				3CAFE8EF8BC8BA860D437DF0 /* MediaRibbonDataSource.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -262,7 +262,7 @@
 		3CAFE6B1A9623BD4F1F17FE5 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFEFF2B639891F4ED438BB /* CameraPresenter.swift */,
+				3CAFEFF2B639891F4ED438BB /* MediaPickerPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -278,8 +278,8 @@
 		3CAFE7CCF3EBDFD5063CDFC3 /* Assembly */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFE9E84104CADDB89EAFEF /* PhotoPickerAssembly.swift */,
-				3CAFE98EA738DF107CE2483B /* PhotoPickerAssemblyImpl.swift */,
+				3CAFE9E84104CADDB89EAFEF /* MediaPickerAssembly.swift */,
+				3CAFE98EA738DF107CE2483B /* MediaPickerAssemblyImpl.swift */,
 			);
 			path = Assembly;
 			sourceTree = "<group>";
@@ -300,7 +300,7 @@
 		3CAFE948024F3E5857150049 /* VIPER */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFEED4449B6170027B8E25 /* Camera */,
+				3CAFEED4449B6170027B8E25 /* MediaPicker */,
 				3CAFE7F6188BC2FEA17F45AF /* PhotoLibrary */,
 				3CAFEC821139B4CBF9AEA1B2 /* ImageCropping */,
 				3CAFE893C73C509B45E04EBF /* AssemblyFactory.swift */,
@@ -319,8 +319,8 @@
 		3CAFE9A8045697BF5406CBFE /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFE32325C06236691C7E09 /* CameraInteractor.swift */,
-				3CAFE054FF6BF6868661E190 /* CameraInteractorImpl.swift */,
+				3CAFE32325C06236691C7E09 /* MediaPickerInteractor.swift */,
+				3CAFE054FF6BF6868661E190 /* MediaPickerInteractorImpl.swift */,
 				3CAFE8EE5A5D659C5D03E82E /* CameraPhotoImage.swift */,
 			);
 			path = Interactor;
@@ -329,8 +329,8 @@
 		3CAFEAA1C8525897B56067BA /* Router */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFEB869DBC84F35F20A5C7 /* CameraRouter.swift */,
-				3CAFE85EB026391C19004E93 /* CameraRouterImpl.swift */,
+				3CAFEB869DBC84F35F20A5C7 /* MediaPickerRouter.swift */,
+				3CAFE85EB026391C19004E93 /* MediaPickerRouterImpl.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -365,7 +365,7 @@
 		3CAFEC38FA14FA60CA5C0F41 /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				3CAFE4F729E4EE33627D484F /* PhotoPickerModuleInputOutput.swift */,
+				3CAFE4F729E4EE33627D484F /* MediaPickerModuleInputOutput.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -410,7 +410,7 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
-		3CAFEED4449B6170027B8E25 /* Camera */ = {
+		3CAFEED4449B6170027B8E25 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
 				3CAFE7CCF3EBDFD5063CDFC3 /* Assembly */,
@@ -420,7 +420,7 @@
 				3CAFEAA1C8525897B56067BA /* Router */,
 				3CAFE5252E181ACA2AD6A675 /* View */,
 			);
-			path = Camera;
+			path = MediaPicker;
 			sourceTree = "<group>";
 		};
 		3CAFEF75C834ECC7D55D3737 /* Interactor */ = {
@@ -606,22 +606,22 @@
 				3CAFE398643D1DF8F08A925B /* ImageCroppingView.swift in Sources */,
 				3CAFEA6109B37A9B960E773B /* ImageCroppingViewController.swift in Sources */,
 				3CAFE0ACE65B12EDFB101D98 /* ImageCroppingViewInput.swift in Sources */,
-				3CAFEC9D826F7C88934AC19A /* PhotoPickerAssembly.swift in Sources */,
-				3CAFEB6B4ACA14924CA36529 /* PhotoPickerAssemblyImpl.swift in Sources */,
-				3CAFEFAD78734D2F41D1CB63 /* CameraInteractor.swift in Sources */,
-				3CAFEAABB3F482293B994992 /* CameraInteractorImpl.swift in Sources */,
-				3CAFE42EBE82B5CAE8D55720 /* PhotoPickerModuleInputOutput.swift in Sources */,
-				3CAFE269A190D556BE9152ED /* CameraPresenter.swift in Sources */,
-				3CAFE662A830FC7FB216769B /* CameraRouter.swift in Sources */,
-				3CAFE13E2DD717CB80B340F8 /* CameraRouterImpl.swift in Sources */,
-				3CAFE89C06E1DE2979470F9B /* CameraViewInput.swift in Sources */,
-				3CAFE353344D7F1A850A8052 /* CameraViewController.swift in Sources */,
-				3CAFE322875FD8D19F06A031 /* CameraView.swift in Sources */,
+				3CAFEC9D826F7C88934AC19A /* MediaPickerAssembly.swift in Sources */,
+				3CAFEB6B4ACA14924CA36529 /* MediaPickerAssemblyImpl.swift in Sources */,
+				3CAFEFAD78734D2F41D1CB63 /* MediaPickerInteractor.swift in Sources */,
+				3CAFEAABB3F482293B994992 /* MediaPickerInteractorImpl.swift in Sources */,
+				3CAFE42EBE82B5CAE8D55720 /* MediaPickerModuleInputOutput.swift in Sources */,
+				3CAFE269A190D556BE9152ED /* MediaPickerPresenter.swift in Sources */,
+				3CAFE662A830FC7FB216769B /* MediaPickerRouter.swift in Sources */,
+				3CAFE13E2DD717CB80B340F8 /* MediaPickerRouterImpl.swift in Sources */,
+				3CAFE89C06E1DE2979470F9B /* MediaPickerViewInput.swift in Sources */,
+				3CAFE353344D7F1A850A8052 /* MediaPickerViewController.swift in Sources */,
+				3CAFE322875FD8D19F06A031 /* MediaPickerView.swift in Sources */,
 				3CAFE57CC9652C97B282DFDF /* CameraControlsView.swift in Sources */,
 				3CAFE92B63672603304E5115 /* PhotoControlsView.swift in Sources */,
-				3CAFEE875FF09717548AD2EF /* PhotoRibbonLayout.swift in Sources */,
-				3CAFE5DC688AD70830F93A13 /* PhotoRibbonCell.swift in Sources */,
-				3CAFE9BF3056C71901CB66DF /* PhotoRibbonDataSource.swift in Sources */,
+				3CAFEE875FF09717548AD2EF /* MediaRibbonLayout.swift in Sources */,
+				3CAFE5DC688AD70830F93A13 /* MediaRibbonCell.swift in Sources */,
+				3CAFE9BF3056C71901CB66DF /* MediaRibbonDataSource.swift in Sources */,
 				3CAFE12AA99A6946FC834ACE /* CameraPhotoImage.swift in Sources */,
 				3CAFE42D51BD3F6F9A2687E6 /* AssemblyFactory.swift in Sources */,
 				3CAFE6BCCFBD2E0C6D8D73C5 /* MarshrouteFacade.swift in Sources */,

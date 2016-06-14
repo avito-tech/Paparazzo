@@ -1,21 +1,21 @@
 import UIKit
 
-final class PhotoRibbonDataSource: NSObject, UICollectionViewDataSource {
+final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     let cellReuseIdentifier: String
     var onDataChanged: (() -> ())?
     
-    private var photos = [PhotoPickerItem]()
+    private var photos = [MediaPickerItem]()
     
     init(cellReuseIdentifier: String) {
         self.cellReuseIdentifier = cellReuseIdentifier
     }
     
-    func photoAtIndexPath(indexPath: NSIndexPath) -> PhotoPickerItem {
+    func photoAtIndexPath(indexPath: NSIndexPath) -> MediaPickerItem {
         return photos[indexPath.row]
     }
     
-    func addPhoto(photo: PhotoPickerItem) {
+    func addPhoto(photo: MediaPickerItem) {
         
         photos.append(photo)
         
@@ -35,7 +35,7 @@ final class PhotoRibbonDataSource: NSObject, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath)
         let photo = photoAtIndexPath(indexPath)
         
-        if let cell = cell as? PhotoRibbonCell {
+        if let cell = cell as? MediaRibbonCell {
             cell.image = photo.image
         }
         

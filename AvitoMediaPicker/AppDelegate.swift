@@ -10,7 +10,7 @@ import UIKit
 import Marshroute
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PhotoPickerModuleOutput {
+class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
 
     var window: UIWindow?
 
@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PhotoPickerModuleOutput {
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
             
             let assemblyFactory = AssemblyFactory()
-            let photoPickerAssembly = assemblyFactory.photoPickerAssembly()
+            let photoPickerAssembly = assemblyFactory.mediaPickerAssembly()
             
             return photoPickerAssembly.viewController(moduleOutput: self, routerSeed: routerSeed)
         }
@@ -33,13 +33,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PhotoPickerModuleOutput {
 
     // MARK: - PhotoPickerModuleOutput
 
-    func photoPickerDidAddItem(item: PhotoPickerItem) {
+    func photoPickerDidAddItem(item: MediaPickerItem) {
     }
 
-    func photoPickerDidUpdateItem(item: PhotoPickerItem) {
+    func photoPickerDidUpdateItem(item: MediaPickerItem) {
     }
 
-    func photoPickerDidRemoveItem(item: PhotoPickerItem) {
+    func photoPickerDidRemoveItem(item: MediaPickerItem) {
     }
 
     func photoPickerDidFinish() {
