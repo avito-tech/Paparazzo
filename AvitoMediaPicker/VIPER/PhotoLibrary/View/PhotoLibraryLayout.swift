@@ -7,8 +7,8 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
     
     // MARK: - Constants
     
-    private let cellSpacing = CGFloat(2)
-    private let numberOfPhotosInRow = 4
+    private let cellSpacing = CGFloat(5)
+    private let numberOfPhotosInRow = 3
     
     // MARK: - UICollectionViewLayout
     

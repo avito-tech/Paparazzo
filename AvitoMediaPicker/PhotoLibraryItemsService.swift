@@ -1,7 +1,7 @@
 import Photos
 
 protocol PhotoLibraryItemsService {
-    func observePhotos(handler: [LazyImage] -> ())
+    func observePhotos(handler: [PHAsset] -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
@@ -34,9 +34,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    private var observerHandler: ([LazyImage] -> ())?
+    private var observerHandler: ([PHAsset] -> ())?
     
-    func observePhotos(handler: [LazyImage] -> ()) {
+    func observePhotos(handler: [PHAsset] -> ()) {
         observerHandler = handler
         callObserverHandler()
     }
@@ -54,16 +54,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     // MARK: - Private
 
     private func callObserverHandler() {
-        observerHandler?(imagesFromFetchResult())
+        observerHandler?(assetsFromFetchResult())
     }
     
-    private func imagesFromFetchResult() -> [LazyImage] {
+    private func assetsFromFetchResult() -> [PHAsset] {
         
-        var images = [LazyImage]()
+        var images = [PHAsset]()
         
-        fetchResult.enumerateObjectsUsingBlock { asset, index, stop in
+        fetchResult.enumerateObjectsUsingBlock { asset, _, _ in
             if let asset = asset as? PHAsset {
-                images.append(PhotoLibraryAssetImage(asset: asset))
+                images.append(asset)
             }
         }
         

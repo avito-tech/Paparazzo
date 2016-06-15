@@ -22,7 +22,14 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
     }
     
+    // MARK: - PhotoLibraryModuleOutput
+    
+    func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
+        // TODO
+    }
+    
     // MARK: - Private
+    
     private func setUpView() {
         
         interactor.isFlashAvailable { [weak self] flashAvailable in

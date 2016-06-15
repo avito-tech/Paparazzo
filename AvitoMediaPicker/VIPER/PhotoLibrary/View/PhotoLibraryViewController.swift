@@ -10,6 +10,17 @@ final class PhotoLibraryViewController: BaseViewControllerSwift, PhotoLibraryVie
         view = photoLibraryView
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Выбрать",
+            style: .Plain,
+            target: self,
+            action: #selector(PhotoLibraryViewController.onPickButtonTap(_:))
+        )
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -17,7 +28,24 @@ final class PhotoLibraryViewController: BaseViewControllerSwift, PhotoLibraryVie
     
     // MARK: - PhotoLibraryViewInput
     
-    func setItems(items: [PhotoLibraryItem]) {
-        photoLibraryView.setItems(items)
+    var onItemSelect: (PhotoLibraryItem -> ())?
+    var onPickButtonTap: (() -> ())?
+    
+    func setCellsData(items: [PhotoLibraryItemCellData]) {
+        photoLibraryView.setCellsData(items)
+    }
+    
+    func setCanSelectMoreItems(canSelectMoreItems: Bool) {
+        photoLibraryView.canSelectMoreItems = canSelectMoreItems
+    }
+    
+    func setDimUnselectedItems(dimUnselectedItems: Bool) {
+        photoLibraryView.dimUnselectedItems = dimUnselectedItems
+    }
+    
+    // MARK: - Private
+    
+    @objc private func onPickButtonTap(sender: UIBarButtonItem) {
+        onPickButtonTap?()
     }
 }
