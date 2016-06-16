@@ -4,7 +4,7 @@ protocol PhotoLibraryViewInput: class, ViewLifecycleObservable {
     
     func setCellsData(items: [PhotoLibraryItemCellData])
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
-    func setDimUnselectedItems(dimUnselectedItems: Bool)
+    func setDimsUnselectedItems(dimUnselectedItems: Bool)
     
     var onPickButtonTap: (() -> ())? { get set }
 }

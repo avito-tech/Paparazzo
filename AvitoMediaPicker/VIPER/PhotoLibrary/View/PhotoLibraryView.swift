@@ -4,11 +4,11 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - State
     
-    var canSelectMoreItems = true
+    var canSelectMoreItems = false
     
-    var dimUnselectedItems = true {
+    var dimsUnselectedItems = false {
         didSet {
-            collectionView.reloadItemsAtIndexPaths(collectionView.indexPathsForVisibleItems())
+            adjustDimmingForVisibleCells()
         }
     }
     
@@ -72,17 +72,25 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        dataSource.mutateItem(atIndexPath: indexPath) { $0.selected = true }
+        dataSource.item(atIndexPath: indexPath).onSelect?()
+        
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        dataSource.mutateItem(atIndexPath: indexPath) { $0.selected = false }
+        dataSource.item(atIndexPath: indexPath).onDeselect?()
+        
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
     // MARK: - Private
     
     private func adjustDimmingForCell(cell: UICollectionViewCell) {
-        let shouldDimCell = (dimUnselectedItems && !cell.selected)
+        let shouldDimCell = (dimsUnselectedItems && !cell.selected)
         cell.contentView.alpha = shouldDimCell ? 0.3 /* TODO: взято с потолка, нужно взять с пола */ : 1
     }
     
@@ -90,5 +98,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
             adjustDimmingForCell(cell)
         }
+    }
+    
+    private func adjustDimmingForVisibleCells() {
+        collectionView.visibleCells().forEach { adjustDimmingForCell($0) }
     }
 }

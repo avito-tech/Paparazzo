@@ -39,8 +39,8 @@ final class PhotoLibraryViewController: BaseViewControllerSwift, PhotoLibraryVie
         photoLibraryView.canSelectMoreItems = canSelectMoreItems
     }
     
-    func setDimUnselectedItems(dimUnselectedItems: Bool) {
-        photoLibraryView.dimUnselectedItems = dimUnselectedItems
+    func setDimsUnselectedItems(dimUnselectedItems: Bool) {
+        photoLibraryView.dimsUnselectedItems = dimUnselectedItems
     }
     
     // MARK: - Private

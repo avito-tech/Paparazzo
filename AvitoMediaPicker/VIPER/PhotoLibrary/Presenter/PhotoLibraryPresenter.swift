@@ -26,8 +26,9 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
     
     private func setUpView() {
         
-        interactor.observeItems { [weak self] items in
+        interactor.observeItems { [weak self] items, selectionState in
             self?.setCellsDataFromItems(items)
+            self?.adjustViewForSelectionState(selectionState)
         }
         
         view?.onPickButtonTap = { [weak self] in
@@ -41,6 +42,11 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
         view?.setCellsData(items.map(cellData))
     }
     
+    private func adjustViewForSelectionState(state: PhotoLibraryItemSelectionState) {
+        view?.setDimsUnselectedItems(state.isAnyItemSelected)
+        view?.setCanSelectMoreItems(state.canSelectMoreItems)
+    }
+    
     private func cellData(item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
         var cellData = PhotoLibraryItemCellData(image: item.image)
@@ -48,14 +54,14 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
         cellData.selected = item.selected
         
         cellData.onSelect = { [weak self] in
-            self?.interactor.selectItem(item) { canSelectMoreItems in
-                self?.view?.setCanSelectMoreItems(canSelectMoreItems)
+            self?.interactor.selectItem(item) { selectionState in
+                self?.adjustViewForSelectionState(selectionState)
             }
         }
         
         cellData.onDeselect = { [weak self] in
-            self?.interactor.deselectItem(item) { canSelectMoreItems in
-                self?.view?.setCanSelectMoreItems(canSelectMoreItems)
+            self?.interactor.deselectItem(item) { selectionState in
+                self?.adjustViewForSelectionState(selectionState)
             }
         }
         

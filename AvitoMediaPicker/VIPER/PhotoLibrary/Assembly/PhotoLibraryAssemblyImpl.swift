@@ -10,7 +10,10 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
-        let interactor = PhotoLibraryInteractorImpl(photoLibraryItemsService: photoLibraryItemsService)
+        let interactor = PhotoLibraryInteractorImpl(
+            maxSelectedItemsCount: 5,   // TODO: брать откуда-нибудь (из конфига? с сервера?)
+            photoLibraryItemsService: photoLibraryItemsService
+        )
         
         let router = PhotoLibraryRouterImpl(routerSeed: routerSeed)
         

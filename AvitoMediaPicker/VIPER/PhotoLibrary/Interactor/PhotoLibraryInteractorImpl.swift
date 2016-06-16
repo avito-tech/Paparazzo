@@ -18,38 +18,46 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - PhotoLibraryInteractor
     
-    func observeItems(handler: [PhotoLibraryItem] -> ()) {
+    func observeItems(handler: (items: [PhotoLibraryItem], selectionState: PhotoLibraryItemSelectionState) -> ()) {
+        
         photoLibraryItemsService.observePhotos { [weak self] assets in
-            handler(assets.map { asset in
+            guard let strongSelf = self else { return }
+            
+            let items = assets.map { asset -> PhotoLibraryItem in
                 
+                let identifier = asset.localIdentifier
                 let image = PhotoLibraryAssetImage(asset: asset)
                 
-                var item = PhotoLibraryItem(identifier: asset.localIdentifier, image: image)
-                item.selected = self?.selectedItems.contains(item) ?? false
-                
-                return item
-            })
+                return PhotoLibraryItem(
+                    identifier: identifier,
+                    image: image,
+                    selected: strongSelf.selectedItems.contains { $0.identifier == identifier }
+                )
+            }
+            
+            handler((
+                items: items,
+                selectionState: strongSelf.selectionState()
+            ))
         }
     }
     
-    func selectItem(item: PhotoLibraryItem, completion: (canSelectMoreItems: Bool) -> ()) {
+    func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ()) {
         
-        let canSelectMoreItems = self.canSelectMoreItems()
-        
-        if canSelectMoreItems {
+        if canSelectMoreItems() {
             selectedItems.append(item)
         }
         
-        completion(canSelectMoreItems: canSelectMoreItems)
+        completion(selectionState())
     }
     
-    func deselectItem(item: PhotoLibraryItem, completion: (canSelectMoreItems: Bool) -> ()) {
+    func deselectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ()) {
         
         if let index = selectedItems.indexOf(item) {
             selectedItems.removeAtIndex(index)
         }
         
-        completion(canSelectMoreItems: canSelectMoreItems())
+        completion(selectionState())
     }
     
     func selectedItems(completion: (items: [PhotoLibraryItem], canSelectMoreItems: Bool) -> ()) {
@@ -60,5 +68,12 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     private func canSelectMoreItems() -> Bool {
         return maxSelectedItemsCount.flatMap { selectedItems.count < $0 } ?? true
+    }
+    
+    private func selectionState() -> PhotoLibraryItemSelectionState {
+        return PhotoLibraryItemSelectionState(
+            isAnyItemSelected: selectedItems.count > 0,
+            canSelectMoreItems: canSelectMoreItems()
+        )
     }
 }

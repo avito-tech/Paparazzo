@@ -246,7 +246,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let photo = mediaRibbonDataSource.itemAtIndexPath(indexPath)
+        let photo = mediaRibbonDataSource.item(atIndexPath: indexPath)
         onPhotoSelect?(photo)
     }
     
