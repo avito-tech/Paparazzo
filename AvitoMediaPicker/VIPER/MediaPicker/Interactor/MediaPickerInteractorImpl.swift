@@ -22,6 +22,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             self?.deviceOrientationObserverHandler?(orientation)
         }
     }
+
+    // MARK: - MediaPickerInteractor
     
     var onCaptureSessionReady: (AVCaptureSession -> ())? {
         didSet {
@@ -39,8 +41,6 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     func observeLatestPhotoLibraryItem(handler: (ImageSource? -> ())?) {
         latestLibraryPhotoProvider.observePhoto(handler)
     }
-    
-    // MARK: - MediaPickerInteractor
     
     func isFlashAvailable(completion: Bool -> ()) {
         completion(cameraService.isFlashAvailable)

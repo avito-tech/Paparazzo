@@ -27,7 +27,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
+        // TODO: придумать что-нибудь поумнее
         let previousImageSize = imageView.frame.size
         
         imageView.frame = contentView.bounds
