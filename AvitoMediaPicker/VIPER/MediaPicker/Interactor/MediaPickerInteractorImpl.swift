@@ -54,10 +54,13 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     func takePhoto(completion: MediaPickerItem? -> ()) {
         cameraService.takePhoto { [imageResizingService] photo in
             completion(photo.flatMap { photo in
-                MediaPickerItem(image: CameraPhotoImage(
-                    photo: photo,
+                
+                let imageFile = ImageFile(
+                    fileUrl: photo.url,
                     imageResizingService: imageResizingService
-                ))
+                )
+                
+                return imageFile.flatMap { MediaPickerItem(image: $0) }
             })
         }
     }

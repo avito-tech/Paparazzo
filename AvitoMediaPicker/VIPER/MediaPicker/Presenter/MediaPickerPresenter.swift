@@ -95,10 +95,6 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
     }
     
-    // MARK: - PhotoLibraryModuleOutput
-    
-    // TODO
-    
     // MARK: - Private
     
     private func showPhotoLibrary() {
