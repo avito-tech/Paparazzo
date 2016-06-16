@@ -32,7 +32,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
         }
         
         view?.onPickButtonTap = { [weak self] in
-            self?.interactor.selectedItems { items, canSelectMoreItems in
+            self?.interactor.selectedItems { items in
                 self?.moduleOutput?.photoLibraryPickerDidFinishWithItems(items)
             }
         }

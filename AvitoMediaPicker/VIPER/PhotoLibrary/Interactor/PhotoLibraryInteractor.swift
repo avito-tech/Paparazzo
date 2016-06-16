@@ -6,7 +6,7 @@ protocol PhotoLibraryInteractor: class {
     
     func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
     func deselectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
-    func selectedItems(completion: (items: [PhotoLibraryItem], canSelectMoreItems: Bool) -> ())
+    func selectedItems(completion: [PhotoLibraryItem] -> ())
 }
 
 public struct PhotoLibraryItem: Equatable {

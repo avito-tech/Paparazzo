@@ -26,6 +26,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
         // TODO
+        print("photoLibraryPickerDidFinishWithItems: \(selectedItems)")
     }
     
     // MARK: - Private

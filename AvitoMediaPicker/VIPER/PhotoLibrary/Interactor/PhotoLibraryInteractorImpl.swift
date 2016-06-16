@@ -60,8 +60,8 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         completion(selectionState())
     }
     
-    func selectedItems(completion: (items: [PhotoLibraryItem], canSelectMoreItems: Bool) -> ()) {
-        completion(items: selectedItems, canSelectMoreItems: canSelectMoreItems())
+    func selectedItems(completion: [PhotoLibraryItem] -> ()) {
+        completion(selectedItems)
     }
     
     // MARK: - Private
