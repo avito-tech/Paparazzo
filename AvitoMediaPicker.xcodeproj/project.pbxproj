@@ -12,6 +12,8 @@
 		251FCED01D106B0D00970324 /* MediaRibbonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCECF1D106B0D00970324 /* MediaRibbonCell.swift */; };
 		251FCED21D106EC400970324 /* PhotoLibraryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */; };
 		251FCED41D12DE3300970324 /* UIScrollView+ScrollToBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED31D12DE3300970324 /* UIScrollView+ScrollToBottom.swift */; };
+		251FCEDA1D12F64900970324 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED81D12F64900970324 /* CameraService.swift */; };
+		251FCEDB1D12F64900970324 /* CameraServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED91D12F64900970324 /* CameraServiceImpl.swift */; };
 		253FC2581D0AA495000185B4 /* DeviceOrientationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */; };
 		253FC25A1D0AA8CF000185B4 /* ImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2591D0AA8CF000185B4 /* ImageSource.swift */; };
 		253FC29B1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */; };
@@ -20,7 +22,6 @@
 		2554CEB91D0421CC009371FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2554CEB81D0421CC009371FB /* AppDelegate.swift */; };
 		2554CEC01D0421CC009371FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2554CEBF1D0421CC009371FB /* Assets.xcassets */; };
 		2554CECE1D04243A009371FB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2554CECD1D04243A009371FB /* AVFoundation.framework */; };
-		25AEA6D11D070EE10037E7BF /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AEA6D01D070EE10037E7BF /* CameraService.swift */; };
 		25AEA6D41D071BC30037E7BF /* BridgingToAvito.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AEA6D31D071BC30037E7BF /* BridgingToAvito.swift */; };
 		25AEA6DD1D084BC70037E7BF /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25AEA6DC1D084BC70037E7BF /* Photos.framework */; };
 		25BF69A41D0DACD2002ECFB3 /* UIImageView+ImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BF69A31D0DACD2002ECFB3 /* UIImageView+ImageSource.swift */; };
@@ -76,6 +77,8 @@
 		251FCECF1D106B0D00970324 /* MediaRibbonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRibbonCell.swift; sourceTree = "<group>"; };
 		251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryLayout.swift; sourceTree = "<group>"; };
 		251FCED31D12DE3300970324 /* UIScrollView+ScrollToBottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIScrollView+ScrollToBottom.swift"; path = "Extensions/UIScrollView+ScrollToBottom.swift"; sourceTree = "<group>"; };
+		251FCED81D12F64900970324 /* CameraService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		251FCED91D12F64900970324 /* CameraServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraServiceImpl.swift; sourceTree = "<group>"; };
 		253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceOrientationService.swift; path = Services/DeviceOrientationService.swift; sourceTree = "<group>"; };
 		253FC2591D0AA8CF000185B4 /* ImageSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSource.swift; sourceTree = "<group>"; };
 		253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGAffineTransform+DeviceOrientation.swift"; path = "Extensions/CGAffineTransform+DeviceOrientation.swift"; sourceTree = "<group>"; };
@@ -86,7 +89,6 @@
 		2554CEBF1D0421CC009371FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2554CEC41D0421CC009371FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2554CECD1D04243A009371FB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		25AEA6D01D070EE10037E7BF /* CameraService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraService.swift; path = Services/CameraService.swift; sourceTree = "<group>"; };
 		25AEA6D31D071BC30037E7BF /* BridgingToAvito.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BridgingToAvito.swift; sourceTree = "<group>"; };
 		25AEA6DC1D084BC70037E7BF /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		25BF69A31D0DACD2002ECFB3 /* UIImageView+ImageSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+ImageSource.swift"; path = "Extensions/UIImageView+ImageSource.swift"; sourceTree = "<group>"; };
@@ -152,6 +154,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		251FCED71D12F64900970324 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				251FCED81D12F64900970324 /* CameraService.swift */,
+				251FCED91D12F64900970324 /* CameraServiceImpl.swift */,
+			);
+			name = Camera;
+			path = Services/Camera;
+			sourceTree = "<group>";
+		};
 		253FC2991D0AC027000185B4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,8 +224,8 @@
 		25AEA6CB1D070ACC0037E7BF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				251FCED71D12F64900970324 /* Camera */,
 				253FC2A01D0AEE6A000185B4 /* PhotoLibrary */,
-				25AEA6D01D070EE10037E7BF /* CameraService.swift */,
 				253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */,
 			);
 			name = Services;
@@ -595,7 +607,6 @@
 				253FC2A21D0AEE8E000185B4 /* PhotoLibraryLatestPhotoProvider.swift in Sources */,
 				253FC29B1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift in Sources */,
 				253FC25A1D0AA8CF000185B4 /* ImageSource.swift in Sources */,
-				25AEA6D11D070EE10037E7BF /* CameraService.swift in Sources */,
 				253FC2581D0AA495000185B4 /* DeviceOrientationService.swift in Sources */,
 				2554CEB91D0421CC009371FB /* AppDelegate.swift in Sources */,
 				25AEA6D41D071BC30037E7BF /* BridgingToAvito.swift in Sources */,
@@ -611,8 +622,10 @@
 				3CAFE073805A791558BDAB6B /* PhotoLibraryRouter.swift in Sources */,
 				3CAFE91561B09A6099B4B785 /* PhotoLibraryRouterImpl.swift in Sources */,
 				3CAFE724FBED6AA73D388398 /* PhotoLibraryView.swift in Sources */,
+				251FCEDB1D12F64900970324 /* CameraServiceImpl.swift in Sources */,
 				3CAFEEAC0FC5FB88C348C19D /* PhotoLibraryViewController.swift in Sources */,
 				3CAFE7843E211380C8BA9786 /* PhotoLibraryViewInput.swift in Sources */,
+				251FCEDA1D12F64900970324 /* CameraService.swift in Sources */,
 				3CAFEAE6649A1EF45DC0EEB0 /* ImageCroppingAssembly.swift in Sources */,
 				3CAFE490666158FE695541D0 /* ImageCroppingAssemblyImpl.swift in Sources */,
 				3CAFE2785ABF69F02A994997 /* ImageCroppingInteractor.swift in Sources */,

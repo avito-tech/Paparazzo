@@ -1,30 +1,18 @@
 import AVFoundation
 import ImageIO
 
-protocol CameraService: class {
-    
-    // Will be nil after service initialization if back camera is not available
-    var captureSession: AVCaptureSession? { get }
-    
-    var isFlashAvailable: Bool { get }
-    func setFlashEnabled(enabled: Bool)
-    
-    func takePhoto(completion: PhotoFromCamera? -> ())
-    func setCaptureSessionRunning(needsRunning: Bool)
-}
-
-struct PhotoFromCamera {
-    let url: NSURL
-}
-
 final class CameraServiceImpl: CameraService {
+    
+    let captureSession: AVCaptureSession?
+    
+    // MARK: - Private types and properties
     
     private struct Error: ErrorType {}
     
-    let captureSession: AVCaptureSession?
-
     private let output: AVCaptureStillImageOutput?
-    private var camera: AVCaptureDevice?
+    private let camera: AVCaptureDevice?
+    
+    // MARK: - Init
     
     init() {
         
@@ -55,6 +43,7 @@ final class CameraServiceImpl: CameraService {
             self.captureSession = captureSession
             
         } catch {
+            self.camera = nil
             self.output = nil
             self.captureSession = nil
         }
@@ -73,67 +62,67 @@ final class CameraServiceImpl: CameraService {
     var isFlashAvailable: Bool {
         return camera?.flashAvailable == true
     }
-
-    func setFlashEnabled(enabled: Bool) {
-        // TODO: возвращать результат: если не удалось включить вспышку, в UI не должно отображаться, как будто она включена
+    
+    func setFlashEnabled(enabled: Bool) -> Bool {
+        
+        guard let camera = camera else { return false }
+        
         do {
-            try camera?.lockForConfiguration()
-            camera?.flashMode = enabled ? .On : .Off
-            camera?.unlockForConfiguration()
+            try camera.lockForConfiguration()
+            camera.flashMode = enabled ? .On : .Off
+            camera.unlockForConfiguration()
+            
+            return true
+            
         } catch {
-            print("Failed to lock camera to set flashMode")
+            return false
         }
     }
-
+    
     func takePhoto(completion: PhotoFromCamera? -> ()) {
+        
         guard let output = output, connection = videoOutputConnection() else {
-            // TODO
+            completion(nil)
             return
         }
         
-        output.captureStillImageAsynchronouslyFromConnection(connection) { sampleBuffer, error in
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-          
-                let exifAttachments = CMGetAttachment(
-                    sampleBuffer,
-                    kCGImagePropertyExifDictionary,
-                    UnsafeMutablePointer<CMAttachmentMode>(nil))
-                
-                print(exifAttachments)
-                
-                if let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) {
-                    
-                    let randomId: NSString = NSUUID().UUIDString
-                    let tempDirPath: NSString = NSTemporaryDirectory()
-                    
-                    if let tempName = randomId.stringByAppendingPathExtension("jpg") {
-                        
-                        let filePath = tempDirPath.stringByAppendingPathComponent(tempName)
-                        let fileUrl = NSURL(fileURLWithPath: filePath)
-                        
-                        data.writeToFile(filePath, atomically: true)
-                        
-                        completion(PhotoFromCamera(url: fileUrl))
-                        
-                    } else {
-                        completion(nil)
-                    }
+        output.captureStillImageAsynchronouslyFromConnection(connection) { [weak self] sampleBuffer, error in
+            self?.savePhoto(sampleBuffer: sampleBuffer) { photo in
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(photo)
                 }
-                
-                // TODO: handle error cases
             }
         }
     }
     
     // MARK: - Private
     
+    private func savePhoto(sampleBuffer sampleBuffer: CMSampleBuffer?, completion: PhotoFromCamera? -> ()) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [weak self] in
+            
+            if let sampleBuffer = sampleBuffer,
+                url = self?.randomTemporaryPhotoFileUrl(),
+                data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) {
+                
+                data.writeToURL(url, atomically: true)
+                
+                completion(PhotoFromCamera(url: url))
+                
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
     private func videoOutputConnection() -> AVCaptureConnection? {
+        
         guard let output = output else { return nil }
         
         for connection in output.connections {
             
             if let connection = connection as? AVCaptureConnection,
-                   inputPorts = connection.inputPorts as? [AVCaptureInputPort] {
+                inputPorts = connection.inputPorts as? [AVCaptureInputPort] {
                 
                 let connectionContainsVideoPort = inputPorts.filter({ $0.mediaType == AVMediaTypeVideo }).count > 0
                 
@@ -144,5 +133,15 @@ final class CameraServiceImpl: CameraService {
         }
         
         return nil
+    }
+    
+    private func randomTemporaryPhotoFileUrl() -> NSURL? {
+        
+        let randomId: NSString = NSUUID().UUIDString
+        let tempDirPath: NSString = NSTemporaryDirectory()
+        let tempName = randomId.stringByAppendingPathExtension("jpg")
+        let filePath = tempName.flatMap { tempDirPath.stringByAppendingPathComponent($0) }
+        
+        return filePath.flatMap { NSURL(fileURLWithPath: $0) }
     }
 }
