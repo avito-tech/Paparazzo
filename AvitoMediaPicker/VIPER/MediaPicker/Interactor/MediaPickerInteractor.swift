@@ -6,7 +6,7 @@ protocol MediaPickerInteractor: class {
     var onCaptureSessionReady: (AVCaptureSession -> ())? { get set }
     
     func isFlashAvailable(completion: Bool -> ())
-    func setFlashEnabled(enabled: Bool)
+    func setFlashEnabled(enabled: Bool, completion: (success: Bool) -> ())
     
     func takePhoto(completion: MediaPickerItem? -> ())
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool)

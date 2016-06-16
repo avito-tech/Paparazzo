@@ -101,6 +101,10 @@ final class CameraControlsView: UIView {
         flashButton.hidden = !visible
     }
     
+    func setFlashButtonOn(isOn: Bool) {
+        flashButton.selected = isOn
+    }
+    
     // MARK: - Private
     
     @objc private func onShutterButtonTap(button: UIButton) {

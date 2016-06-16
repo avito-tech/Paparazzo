@@ -46,8 +46,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(cameraService.isFlashAvailable)
     }
     
-    func setFlashEnabled(enabled: Bool) {
-        cameraService.setFlashEnabled(enabled)
+    func setFlashEnabled(enabled: Bool, completion: (success: Bool) -> ()) {
+        completion(success: cameraService.setFlashEnabled(enabled))
     }
     
     func takePhoto(completion: MediaPickerItem? -> ()) {

@@ -49,7 +49,7 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
-    // MARK: - CameraInteractor
+    // MARK: - CameraService
     
     func setCaptureSessionRunning(needsRunning: Bool) {
         if needsRunning {

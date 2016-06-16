@@ -75,8 +75,12 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             }
         }
         
-        view?.onFlashToggle = { [weak self] flashEnabled in
-            self?.interactor.setFlashEnabled(flashEnabled)
+        view?.onFlashToggle = { [weak self] shouldEnableFlash in
+            self?.interactor.setFlashEnabled(shouldEnableFlash) { success in
+                if !success {
+                    self?.view?.setFlashButtonOn(!shouldEnableFlash)
+                }
+            }
         }
         
         view?.onPhotoSelect = { [weak self] photo in

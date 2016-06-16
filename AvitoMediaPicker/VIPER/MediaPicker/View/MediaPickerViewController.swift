@@ -95,6 +95,10 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         mediaPickerView.setFlashButtonVisible(visible)
     }
     
+    func setFlashButtonOn(isOn: Bool) {
+        mediaPickerView.setFlashButtonOn(isOn)
+    }
+    
     func animateFlash() {
         mediaPickerView.animateFlash()
     }

@@ -15,6 +15,7 @@ protocol MediaPickerViewInput: class {
     func setLatestLibraryPhoto(image: ImageSource?)
     
     func setFlashButtonVisible(visible: Bool)
+    func setFlashButtonOn(isOn: Bool)
     func animateFlash()
     
     func addPhotoRibbonItem(photo: MediaPickerItem)

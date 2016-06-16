@@ -7,7 +7,7 @@ protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
     
-    // Return a flag indicating whether changing flash mode was successful
+    // Returns a flag indicating whether changing flash mode was successful
     func setFlashEnabled(enabled: Bool) -> Bool
     
     func takePhoto(completion: PhotoFromCamera? -> ())

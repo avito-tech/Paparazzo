@@ -200,6 +200,10 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         cameraControlsView.setFlashButtonVisible(visible)
     }
     
+    func setFlashButtonOn(isOn: Bool) {
+        cameraControlsView.setFlashButtonOn(isOn)
+    }
+    
     func animateFlash() {
         
         let fadeInOptions: UIViewAnimationOptions = [.CurveEaseIn]
