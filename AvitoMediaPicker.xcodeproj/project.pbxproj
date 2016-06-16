@@ -12,8 +12,6 @@
 		251FCF601D1316BF00970324 /* AvitoMediaPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 251FCF5F1D1316BF00970324 /* AvitoMediaPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		251FCF671D1316C000970324 /* AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */; };
 		251FCF6E1D1316C000970324 /* AvitoMediaPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCF6D1D1316C000970324 /* AvitoMediaPickerTests.swift */; };
-		251FCF721D1316C000970324 /* AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */; };
-		251FCF731D1316C000970324 /* AvitoMediaPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		251FCF7F1D1317C900970324 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCF7B1D1317C900970324 /* AppDelegate.swift */; };
 		251FCF801D1317C900970324 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCF7D1D1317C900970324 /* MarshrouteFacade.swift */; };
 		251FCF811D1317C900970324 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCF7E1D1317C900970324 /* NavigationController.swift */; };
@@ -72,6 +70,8 @@
 		251FD0081D13187200970324 /* PhotoLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCFD11D13187200970324 /* PhotoLibraryView.swift */; };
 		251FD0091D13187200970324 /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCFD21D13187200970324 /* PhotoLibraryViewController.swift */; };
 		251FD00A1D13187200970324 /* PhotoLibraryViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCFD31D13187200970324 /* PhotoLibraryViewInput.swift */; };
+		251FD0111D131F2A00970324 /* AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */; };
+		251FD0121D131F2A00970324 /* AvitoMediaPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5002CCFB1E0E3883B53DAB22 /* Pods_AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF63B5B765CCF907822DEAEF /* Pods_AvitoMediaPicker.framework */; };
 /* End PBXBuildFile section */
 
@@ -90,7 +90,7 @@
 			remoteGlobalIDString = 251FCF451D13169000970324;
 			remoteInfo = AvitoMediaPickerDemo;
 		};
-		251FCF701D1316C000970324 /* PBXContainerItemProxy */ = {
+		251FD0131D131F2A00970324 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2554CEAD1D0421CC009371FB /* Project object */;
 			proxyType = 1;
@@ -100,13 +100,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		251FCF771D1316C000970324 /* Embed Frameworks */ = {
+		251FD0151D131F2A00970324 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				251FCF731D1316C000970324 /* AvitoMediaPicker.framework in Embed Frameworks */,
+				251FD0121D131F2A00970324 /* AvitoMediaPicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -196,8 +196,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				251FCF721D1316C000970324 /* AvitoMediaPicker.framework in Frameworks */,
 				0ED4F779D40B51D2809CEFC2 /* Pods_AvitoMediaPickerDemo.framework in Frameworks */,
+				251FD0111D131F2A00970324 /* AvitoMediaPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,14 +595,14 @@
 				251FCF421D13169000970324 /* Sources */,
 				251FCF431D13169000970324 /* Frameworks */,
 				251FCF441D13169000970324 /* Resources */,
-				251FCF771D1316C000970324 /* Embed Frameworks */,
 				5E1205D51E768F717D0A9709 /* Embed Pods Frameworks */,
 				8BC844521B8DCF5C5C9E6ED0 /* Copy Pods Resources */,
+				251FD0151D131F2A00970324 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				251FCF711D1316C000970324 /* PBXTargetDependency */,
+				251FD0141D131F2A00970324 /* PBXTargetDependency */,
 			);
 			name = AvitoMediaPickerDemo;
 			productName = AvitoMediaPickerDemo;
@@ -889,10 +889,10 @@
 			target = 251FCF451D13169000970324 /* AvitoMediaPickerDemo */;
 			targetProxy = 251FCF6A1D1316C000970324 /* PBXContainerItemProxy */;
 		};
-		251FCF711D1316C000970324 /* PBXTargetDependency */ = {
+		251FD0141D131F2A00970324 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 251FCF5C1D1316BF00970324 /* AvitoMediaPicker */;
-			targetProxy = 251FCF701D1316C000970324 /* PBXContainerItemProxy */;
+			targetProxy = 251FD0131D131F2A00970324 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

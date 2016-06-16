@@ -14,5 +14,5 @@ target 'AvitoMediaPicker' do
 end
 
 target 'AvitoMediaPickerDemo' do
-    pod 'Marshroute'
+    default_pods
 end
