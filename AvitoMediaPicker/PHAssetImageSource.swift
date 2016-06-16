@@ -1,9 +1,11 @@
 import Photos
 
-struct PHAssetImageSource: ImageSource {
+final class PHAssetImageSource: ImageSource {
 
     private let asset: PHAsset
     private let imageManager: PHImageManager
+    
+    private var thumbnailRequestId: PHImageRequestID?
 
     init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
         self.asset = asset
@@ -38,8 +40,13 @@ struct PHAssetImageSource: ImageSource {
         options.deliveryMode = .Opportunistic
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
+        
+        if let thumbnailRequestId = thumbnailRequestId {
+            imageManager.cancelImageRequest(thumbnailRequestId)
+        }
 
-        imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { image, _ in
+        thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, _ in
+            self?.thumbnailRequestId = nil
             completion(image?.CGImage.flatMap { T(CGImage: $0) })
         }
     }
