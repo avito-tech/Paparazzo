@@ -3,76 +3,70 @@ import ImageIO
 
 protocol CameraService: class {
     
-    var captureSession: AVCaptureSession { get }
+    // Will be nil after service initialization if back camera is not available
+    var captureSession: AVCaptureSession? { get }
     
     var isFlashAvailable: Bool { get }
     func setFlashEnabled(enabled: Bool)
     
-    func takePhoto(completion: CameraPhoto? -> ())
+    func takePhoto(completion: PhotoFromCamera? -> ())
     func setCaptureSessionRunning(needsRunning: Bool)
 }
 
-struct CameraPhoto {
+struct PhotoFromCamera {
     let url: NSURL
 }
 
 final class CameraServiceImpl: CameraService {
     
-    let captureSession = AVCaptureSession()
+    private struct Error: ErrorType {}
+    
+    let captureSession: AVCaptureSession?
 
-    private let output = AVCaptureStillImageOutput()
+    private let output: AVCaptureStillImageOutput?
     private var camera: AVCaptureDevice?
     
     init() {
         
-        captureSession.sessionPreset = AVCaptureSessionPresetPhoto
-        
-        guard let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice] else {
-            // TODO: handle devices that doesn't support photo capturing
-            return
-        }
-        
-        guard let camera = videoDevices.filter({ $0.position == .Back }).first else {
-            // TODO: handle devices with no back camera
-            return
-        }
-        
-        self.camera = camera
-        
         do {
+            
+            let captureSession = AVCaptureSession()
+            captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+            
+            let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice]
+            let camera = videoDevices?.filter({ $0.position == .Back }).first
+            
             let input = try AVCaptureDeviceInput(device: camera)
             
-            if captureSession.canAddInput(input) {
+            let output = AVCaptureStillImageOutput()
+            output.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+            
+            if captureSession.canAddInput(input) && captureSession.canAddOutput(output) {
                 captureSession.addInput(input)
+                captureSession.addOutput(output)
             } else {
-                // TODO: handle failure
+                throw Error()
             }
             
+            captureSession.startRunning()
+            
+            self.camera = camera
+            self.output = output
+            self.captureSession = captureSession
+            
         } catch {
-            print(error)
-            // TODO: handle failure
+            self.output = nil
+            self.captureSession = nil
         }
-        
-        output.outputSettings = [
-            AVVideoCodecKey: AVVideoCodecJPEG
-        ]
-        
-        if captureSession.canAddOutput(output) {
-            captureSession.addOutput(output)
-        } else {
-            // TODO: handle failure
-        }
-        
-        captureSession.startRunning()
     }
     
     // MARK: - CameraInteractor
     
     func setCaptureSessionRunning(needsRunning: Bool) {
         if needsRunning {
-            captureSession.startRunning()
+            captureSession?.startRunning()
         } else {
-            captureSession.stopRunning()
+            captureSession?.stopRunning()
         }
     }
     
@@ -91,8 +85,8 @@ final class CameraServiceImpl: CameraService {
         }
     }
 
-    func takePhoto(completion: CameraPhoto? -> ()) {
-        guard let connection = videoOutputConnection() else {
+    func takePhoto(completion: PhotoFromCamera? -> ()) {
+        guard let output = output, connection = videoOutputConnection() else {
             // TODO
             return
         }
@@ -119,7 +113,7 @@ final class CameraServiceImpl: CameraService {
                         
                         data.writeToFile(filePath, atomically: true)
                         
-                        completion(CameraPhoto(url: fileUrl))
+                        completion(PhotoFromCamera(url: fileUrl))
                         
                     } else {
                         completion(nil)
@@ -134,6 +128,7 @@ final class CameraServiceImpl: CameraService {
     // MARK: - Private
     
     private func videoOutputConnection() -> AVCaptureConnection? {
+        guard let output = output else { return nil }
         
         for connection in output.connections {
             

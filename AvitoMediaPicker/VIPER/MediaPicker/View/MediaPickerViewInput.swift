@@ -25,6 +25,8 @@ protocol MediaPickerViewInput: class {
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
     
+    func setCameraUnavailableMessageVisible(visible: Bool)
+    
     // MARK: - Actions in photo ribbon
     var onPhotoSelect: (MediaPickerItem -> ())? { get set }
     

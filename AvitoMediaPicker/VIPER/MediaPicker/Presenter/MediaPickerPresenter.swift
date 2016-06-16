@@ -33,12 +33,15 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     private func setUpView() {
         
+        view?.setCameraUnavailableMessageVisible(true)
+        
         interactor.isFlashAvailable { [weak self] flashAvailable in
             self?.view?.setFlashButtonVisible(flashAvailable)
         }
         
         interactor.onCaptureSessionReady = { [weak self] session in
             self?.view?.setCaptureSession(session)
+            self?.view?.setCameraUnavailableMessageVisible(false)
         }
         
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in

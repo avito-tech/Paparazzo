@@ -25,7 +25,9 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     var onCaptureSessionReady: (AVCaptureSession -> ())? {
         didSet {
-            onCaptureSessionReady?(cameraService.captureSession)
+            if let captureSession = cameraService.captureSession {
+                onCaptureSessionReady?(captureSession)
+            }
         }
     }
     

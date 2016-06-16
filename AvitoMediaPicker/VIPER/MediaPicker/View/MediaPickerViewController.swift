@@ -114,4 +114,8 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
     func stopSpinnerForNewPhoto() {
         mediaPickerView.stopSpinnerForNewPhoto()
     }
+    
+    func setCameraUnavailableMessageVisible(visible: Bool) {
+        // TODO
+    }
 }

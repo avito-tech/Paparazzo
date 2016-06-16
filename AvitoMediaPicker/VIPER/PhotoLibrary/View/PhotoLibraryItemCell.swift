@@ -3,13 +3,7 @@ import UIKit
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     static let reuseIdentifier = "PhotoLibraryItemCell"
-    
-    var dimmed = false {
-        didSet {
-            contentView.alpha = dimmed ? 0.3 /* TODO: взято с потолка, нужно взять с пола */ : 1
-        }
-    }
-    
+
     // MARK: - UICollectionViewCell
     
     override init(frame: CGRect) {
