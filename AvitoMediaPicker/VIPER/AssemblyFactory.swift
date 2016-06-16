@@ -1,14 +1,16 @@
-final class AssemblyFactory: MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
+public final class AssemblyFactory: MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
     
-    func mediaPickerAssembly() -> MediaPickerAssembly {
+    public init() {}
+    
+    public func mediaPickerAssembly() -> MediaPickerAssembly {
         return MediaPickerAssemblyImpl(assemblyFactory: self)
     }
 
-    func imageCroppingAssembly() -> ImageCroppingAssembly {
+    public func imageCroppingAssembly() -> ImageCroppingAssembly {
         return ImageCroppingAssemblyImpl()
     }
 
-    func photoLibraryAssembly() -> PhotoLibraryAssembly {
+    public func photoLibraryAssembly() -> PhotoLibraryAssembly {
         return PhotoLibraryAssemblyImpl()
     }
 }
