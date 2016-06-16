@@ -43,6 +43,10 @@ final class PhotoLibraryViewController: BaseViewControllerSwift, PhotoLibraryVie
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
     }
     
+    func scrollToBottom() {
+        photoLibraryView.scrollToBottom()
+    }
+    
     // MARK: - Private
     
     @objc private func onPickButtonTap(sender: UIBarButtonItem) {

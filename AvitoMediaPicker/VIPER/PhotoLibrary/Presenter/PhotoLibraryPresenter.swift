@@ -15,6 +15,10 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
         }
     }
     
+    // MARK: - Flags
+    
+    private var shouldScrollToBottomWhenItemsArrive = true
+    
     // MARK: - Init
     
     init(interactor: PhotoLibraryInteractor, router: PhotoLibraryRouter) {
@@ -27,8 +31,14 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
     private func setUpView() {
         
         interactor.observeItems { [weak self] items, selectionState in
+            
             self?.setCellsDataFromItems(items)
             self?.adjustViewForSelectionState(selectionState)
+            
+            if self?.shouldScrollToBottomWhenItemsArrive == true {
+                self?.view?.scrollToBottom()
+                self?.shouldScrollToBottomWhenItemsArrive = false
+            }
         }
         
         view?.onPickButtonTap = { [weak self] in

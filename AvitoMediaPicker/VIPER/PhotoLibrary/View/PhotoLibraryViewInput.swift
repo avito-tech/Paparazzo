@@ -6,6 +6,8 @@ protocol PhotoLibraryViewInput: class, ViewLifecycleObservable {
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)
     
+    func scrollToBottom()
+    
     var onPickButtonTap: (() -> ())? { get set }
 }
 

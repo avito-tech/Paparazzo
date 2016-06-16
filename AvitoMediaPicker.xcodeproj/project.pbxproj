@@ -11,6 +11,7 @@
 		251FCECE1D106A8C00970324 /* PhotoLibraryItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCECD1D106A8C00970324 /* PhotoLibraryItemCell.swift */; };
 		251FCED01D106B0D00970324 /* MediaRibbonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCECF1D106B0D00970324 /* MediaRibbonCell.swift */; };
 		251FCED21D106EC400970324 /* PhotoLibraryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */; };
+		251FCED41D12DE3300970324 /* UIScrollView+ScrollToBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCED31D12DE3300970324 /* UIScrollView+ScrollToBottom.swift */; };
 		253FC2581D0AA495000185B4 /* DeviceOrientationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */; };
 		253FC25A1D0AA8CF000185B4 /* ImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC2591D0AA8CF000185B4 /* ImageSource.swift */; };
 		253FC29B1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */; };
@@ -74,6 +75,7 @@
 		251FCECD1D106A8C00970324 /* PhotoLibraryItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryItemCell.swift; sourceTree = "<group>"; };
 		251FCECF1D106B0D00970324 /* MediaRibbonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRibbonCell.swift; sourceTree = "<group>"; };
 		251FCED11D106EC400970324 /* PhotoLibraryLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryLayout.swift; sourceTree = "<group>"; };
+		251FCED31D12DE3300970324 /* UIScrollView+ScrollToBottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIScrollView+ScrollToBottom.swift"; path = "Extensions/UIScrollView+ScrollToBottom.swift"; sourceTree = "<group>"; };
 		253FC2571D0AA495000185B4 /* DeviceOrientationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceOrientationService.swift; path = Services/DeviceOrientationService.swift; sourceTree = "<group>"; };
 		253FC2591D0AA8CF000185B4 /* ImageSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSource.swift; sourceTree = "<group>"; };
 		253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGAffineTransform+DeviceOrientation.swift"; path = "Extensions/CGAffineTransform+DeviceOrientation.swift"; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				253FC29A1D0AC057000185B4 /* CGAffineTransform+DeviceOrientation.swift */,
 				253FC29E1D0AE59A000185B4 /* UIImage+InitializableWithCGImage.swift */,
 				25BF69A31D0DACD2002ECFB3 /* UIImageView+ImageSource.swift */,
+				251FCED31D12DE3300970324 /* UIScrollView+ScrollToBottom.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -641,6 +644,7 @@
 				3CAFE5DC688AD70830F93A13 /* PhotoCollectionViewCell.swift in Sources */,
 				3CAFE12AA99A6946FC834ACE /* UrlImageSource.swift in Sources */,
 				3CAFE42D51BD3F6F9A2687E6 /* AssemblyFactory.swift in Sources */,
+				251FCED41D12DE3300970324 /* UIScrollView+ScrollToBottom.swift in Sources */,
 				3CAFE6BCCFBD2E0C6D8D73C5 /* MarshrouteFacade.swift in Sources */,
 				251FCECE1D106A8C00970324 /* PhotoLibraryItemCell.swift in Sources */,
 				3CAFE06E57D43E7B4B635DC0 /* CollectionViewDataSource.swift in Sources */,

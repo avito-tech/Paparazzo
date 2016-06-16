@@ -61,6 +61,12 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         dataSource.setItems(items)
     }
     
+    func scrollToBottom() {
+        dispatch_async(dispatch_get_main_queue()) { [collectionView] in
+            collectionView.scrollToBottom()
+        }
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
