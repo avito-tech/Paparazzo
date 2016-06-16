@@ -7,7 +7,7 @@ extension UIImageView {
         let pointSize = (size ?? self.frame.size)
         
         let scale = UIScreen.mainScreen().scale
-        let pixelSize = CGSizeMake(pointSize.width * scale, pointSize.height * scale)
+        let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
         
         self.image = placeholder
         

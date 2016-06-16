@@ -2,7 +2,7 @@ import CoreGraphics
 
 /// Предлагается как замена UIImage/NSImage.
 /// Позволяет оптимизировать память и абстрагировать источник картинки.
-protocol ImageSource {
+public protocol ImageSource {
     
     func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ())
     
@@ -13,21 +13,21 @@ protocol ImageSource {
     )
 }
 
-protocol InitializableWithCGImage {
+public protocol InitializableWithCGImage {
     // Если хотим совсем ни к чему не привязываться (отвязаться от Core Graphics),
     // нужно создать свою структуру, представляющую bitmap, а потом реализовать
     // для UIImage и NSImage конструкторы, позволяющие инициализировать их из этой структуры.
     init(CGImage: CGImage)
 }
 
-enum ImageContentMode {
+public enum ImageContentMode {
     case AspectFit
     case AspectFill
 }
 
-extension ImageSource {
+public extension ImageSource {
     /// Convenience method
-    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, completion: T? -> ()) {
+    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, completion: T? -> ()) {
         imageFittingSize(size, contentMode: .AspectFill, completion: completion)
     }
 }

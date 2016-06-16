@@ -10,9 +10,16 @@ protocol PhotoLibraryInteractor: class {
 }
 
 public struct PhotoLibraryItem: Equatable {
+
     var identifier: String
     var image: ImageSource
     var selected: Bool
+    
+    public init(identifier: String, image: ImageSource, selected: Bool) {
+        self.identifier = identifier
+        self.image = image
+        self.selected = selected
+    }
 }
 
 public func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {

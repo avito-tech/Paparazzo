@@ -522,7 +522,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2554CEB01D0421CC009371FB /* Build configuration list for PBXProject "AvitoMediaPicker" */;
+			buildConfigurationList = 2554CEB01D0421CC009371FB /* Build configuration list for PBXProject "AvitoMediaPickerDemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -782,7 +782,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2554CEB01D0421CC009371FB /* Build configuration list for PBXProject "AvitoMediaPicker" */ = {
+		2554CEB01D0421CC009371FB /* Build configuration list for PBXProject "AvitoMediaPickerDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2554CEC51D0421CC009371FB /* Debug */,
