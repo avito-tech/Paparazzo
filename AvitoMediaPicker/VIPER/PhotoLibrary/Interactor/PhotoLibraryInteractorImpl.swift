@@ -1,4 +1,5 @@
 import Foundation
+import Photos
 
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
@@ -23,20 +24,10 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         photoLibraryItemsService.observePhotos { [weak self] assets in
             guard let strongSelf = self else { return }
             
-            let items = assets.map { asset -> PhotoLibraryItem in
-                
-                let identifier = asset.localIdentifier
-                let image = PhotoLibraryAssetImage(asset: asset)
-                
-                return PhotoLibraryItem(
-                    identifier: identifier,
-                    image: image,
-                    selected: strongSelf.selectedItems.contains { $0.identifier == identifier }
-                )
-            }
+            strongSelf.removeSelectedItemsNotPresentedAmongAssets(assets)
             
             handler((
-                items: items,
+                items: strongSelf.photoLibraryItems(from: assets),
                 selectionState: strongSelf.selectionState()
             ))
         }
@@ -75,5 +66,25 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
             isAnyItemSelected: selectedItems.count > 0,
             canSelectMoreItems: canSelectMoreItems()
         )
+    }
+    
+    private func removeSelectedItemsNotPresentedAmongAssets(assets: [PHAsset]) {
+        let assetIds = Set(assets.map { $0.localIdentifier })
+        selectedItems = selectedItems.filter { assetIds.contains($0.identifier) }
+    }
+    
+    private func photoLibraryItems(from assets: [PHAsset]) -> [PhotoLibraryItem] {
+        
+        return assets.map { asset in
+            
+            let identifier = asset.localIdentifier
+            let image = PhotoLibraryAssetImage(asset: asset)
+            
+            return PhotoLibraryItem(
+                identifier: identifier,
+                image: image,
+                selected: selectedItems.contains { $0.identifier == identifier }
+            )
+        }
     }
 }
