@@ -18,14 +18,12 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         routerSeed: RouterSeed
     ) -> UIViewController {
 
-        let imageResizingService = ImageResizingServiceImpl()
-        let cameraService = CameraServiceImpl(imageResizingService: imageResizingService)
+        let cameraService = CameraServiceImpl()
         
         let interactor = MediaPickerInteractorImpl(
             cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
-            latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl(),
-            imageResizingService: imageResizingService
+            latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
         )
 
         let router = MediaPickerRouterImpl(

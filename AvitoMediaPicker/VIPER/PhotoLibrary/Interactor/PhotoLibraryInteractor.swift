@@ -11,7 +11,7 @@ protocol PhotoLibraryInteractor: class {
 
 public struct PhotoLibraryItem: Equatable {
     var identifier: String
-    var image: LazyImage
+    var image: ImageSource
     var selected: Bool
 }
 

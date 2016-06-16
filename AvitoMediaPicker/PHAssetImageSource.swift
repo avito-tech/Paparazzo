@@ -1,6 +1,6 @@
 import Photos
 
-struct PhotoLibraryAssetImage: LazyImage {
+struct PHAssetImageSource: ImageSource {
 
     private let asset: PHAsset
     private let imageManager: PHImageManager
@@ -32,7 +32,7 @@ struct PhotoLibraryAssetImage: LazyImage {
         }
     }
 
-    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: LazyImageContentMode, completion: T? -> ()) {
+    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
 
         let options = PHImageRequestOptions()
         options.deliveryMode = .Opportunistic
@@ -46,7 +46,7 @@ struct PhotoLibraryAssetImage: LazyImage {
 }
 
 private extension PHImageContentMode {
-    init(abstractImageContentMode: LazyImageContentMode) {
+    init(abstractImageContentMode: ImageContentMode) {
         switch abstractImageContentMode {
         case .AspectFit:
             self = .AspectFit

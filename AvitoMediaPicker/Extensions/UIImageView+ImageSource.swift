@@ -2,7 +2,7 @@ import UIKit
 
 extension UIImageView {
     
-    func setImage(image: LazyImage?, size: CGSize? = nil, placeholder: UIImage? = nil) {
+    func setImage(image: ImageSource?, size: CGSize? = nil, placeholder: UIImage? = nil) {
         
         let pointSize = (size ?? self.frame.size)
         

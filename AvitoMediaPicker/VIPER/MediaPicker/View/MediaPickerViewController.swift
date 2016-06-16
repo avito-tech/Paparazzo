@@ -87,7 +87,7 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         mediaPickerView.setCaptureSession(session)
     }
     
-    func setLatestLibraryPhoto(image: LazyImage?) {
+    func setLatestLibraryPhoto(image: ImageSource?) {
         mediaPickerView.setLatestPhotoLibraryItemImage(image)
     }
     

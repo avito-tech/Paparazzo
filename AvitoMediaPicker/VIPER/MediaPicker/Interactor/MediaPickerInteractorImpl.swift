@@ -6,21 +6,18 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private let cameraService: CameraService
     private let deviceOrientationService: DeviceOrientationService
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
-    private let imageResizingService: ImageResizingService
-    
+
     private var deviceOrientationObserverHandler: (DeviceOrientation -> ())?
     
     init(
         cameraService: CameraService,
         deviceOrientationService: DeviceOrientationService,
-        latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider,
-        imageResizingService: ImageResizingService
+        latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
         self.cameraService = cameraService
         self.deviceOrientationService = deviceOrientationService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
-        self.imageResizingService = imageResizingService
-        
+
         deviceOrientationService.onOrientationChange = { [weak self] orientation in
             self?.deviceOrientationObserverHandler?(orientation)
         }
@@ -37,7 +34,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         handler?(deviceOrientationService.currentOrientation)
     }
     
-    func observeLatestPhotoLibraryItem(handler: (LazyImage? -> ())?) {
+    func observeLatestPhotoLibraryItem(handler: (ImageSource? -> ())?) {
         latestLibraryPhotoProvider.observePhoto(handler)
     }
     
@@ -52,16 +49,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     func takePhoto(completion: MediaPickerItem? -> ()) {
-        cameraService.takePhoto { [imageResizingService] photo in
-            completion(photo.flatMap { photo in
-                
-                let imageFile = ImageFile(
-                    fileUrl: photo.url,
-                    imageResizingService: imageResizingService
-                )
-                
-                return imageFile.flatMap { MediaPickerItem(image: $0) }
-            })
+        cameraService.takePhoto { photo in
+            completion(photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url)) })
         }
     }
     

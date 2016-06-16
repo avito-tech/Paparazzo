@@ -13,5 +13,5 @@ protocol MediaPickerInteractor: class {
     
     // Set nil handler to stop observing
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?)
-    func observeLatestPhotoLibraryItem(handler: (LazyImage? -> ())?)
+    func observeLatestPhotoLibraryItem(handler: (ImageSource? -> ())?)
 }

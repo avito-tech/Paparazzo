@@ -2,7 +2,7 @@ import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
     
-    var image: LazyImage? {
+    var image: ImageSource? {
         didSet {
             updateImage()
         }

@@ -12,7 +12,7 @@ protocol MediaPickerViewInput: class {
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
 
     func setCaptureSession(session: AVCaptureSession)
-    func setLatestLibraryPhoto(image: LazyImage?)
+    func setLatestLibraryPhoto(image: ImageSource?)
     
     func setFlashButtonVisible(visible: Bool)
     func animateFlash()

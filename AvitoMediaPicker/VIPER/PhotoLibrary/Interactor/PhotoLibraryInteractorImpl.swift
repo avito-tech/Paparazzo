@@ -78,7 +78,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         return assets.map { asset in
             
             let identifier = asset.localIdentifier
-            let image = PhotoLibraryAssetImage(asset: asset)
+            let image = PHAssetImageSource(asset: asset)
             
             return PhotoLibraryItem(
                 identifier: identifier,

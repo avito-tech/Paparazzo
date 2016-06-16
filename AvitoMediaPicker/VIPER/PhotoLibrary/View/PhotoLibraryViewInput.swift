@@ -11,13 +11,13 @@ protocol PhotoLibraryViewInput: class, ViewLifecycleObservable {
 
 struct PhotoLibraryItemCellData {
     
-    var image: LazyImage
+    var image: ImageSource
     var selected = false
     
     var onSelect: (() -> ())?
     var onDeselect: (() -> ())?
     
-    init(image: LazyImage) {
+    init(image: ImageSource) {
         self.image = image
     }
 }

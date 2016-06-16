@@ -2,13 +2,13 @@ import CoreGraphics
 
 /// Предлагается как замена UIImage/NSImage.
 /// Позволяет оптимизировать память и абстрагировать источник картинки.
-protocol LazyImage {
+protocol ImageSource {
     
     func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ())
     
     func imageFittingSize<T: InitializableWithCGImage>(
         size: CGSize,
-        contentMode: LazyImageContentMode,
+        contentMode: ImageContentMode,
         completion: T? -> ()
     )
 }
@@ -20,12 +20,12 @@ protocol InitializableWithCGImage {
     init(CGImage: CGImage)
 }
 
-enum LazyImageContentMode {
+enum ImageContentMode {
     case AspectFit
     case AspectFill
 }
 
-extension LazyImage {
+extension ImageSource {
     /// Convenience method
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, completion: T? -> ()) {
         imageFittingSize(size, contentMode: .AspectFill, completion: completion)

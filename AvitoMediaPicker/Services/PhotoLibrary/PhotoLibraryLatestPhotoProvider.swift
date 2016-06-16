@@ -2,7 +2,7 @@ import Photos
 import UIKit
 
 protocol PhotoLibraryLatestPhotoProvider {
-    func observePhoto(handler: (LazyImage? -> ())?)
+    func observePhoto(handler: (ImageSource? -> ())?)
 }
 
 final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPhotoProvider, PHPhotoLibraryChangeObserver {
@@ -34,9 +34,9 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     // MARK: - PhotoLibraryLatestPhotoProvider
     
-    private var photoObserverHandler: (LazyImage? -> ())?
+    private var photoObserverHandler: (ImageSource? -> ())?
     
-    func observePhoto(handler: (LazyImage? -> ())?) {
+    func observePhoto(handler: (ImageSource? -> ())?) {
         photoObserverHandler = handler
         callObserver()
     }
@@ -55,7 +55,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     private func callObserver() {
         let asset = fetchResult.firstObject as? PHAsset
-        let image = asset.flatMap { PhotoLibraryAssetImage(asset: $0) }
+        let image = asset.flatMap { PHAssetImageSource(asset: $0) }
         photoObserverHandler?(image)
     }
 }

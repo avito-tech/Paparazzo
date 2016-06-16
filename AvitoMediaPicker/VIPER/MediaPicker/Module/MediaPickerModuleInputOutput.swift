@@ -14,5 +14,5 @@ public protocol MediaPickerModuleOutput: class {
 
 /// Главная модель, представляющая фотку в пикере
 public struct MediaPickerItem {
-    let image: LazyImage
+    let image: ImageSource
 }

@@ -92,7 +92,7 @@ final class CameraControlsView: UIView {
         photoView.transform = transform
     }
     
-    func setLatestPhotoLibraryItemImage(image: LazyImage?) {
+    func setLatestPhotoLibraryItemImage(image: ImageSource?) {
         let thumbnailSize = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.setImage(image, size: thumbnailSize)
     }

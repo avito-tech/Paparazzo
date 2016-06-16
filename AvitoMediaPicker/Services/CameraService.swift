@@ -19,14 +19,11 @@ struct CameraPhoto {
 final class CameraServiceImpl: CameraService {
     
     let captureSession = AVCaptureSession()
-    private let imageResizingService: ImageResizingService
-    
+
     private let output = AVCaptureStillImageOutput()
     private var camera: AVCaptureDevice?
     
-    init(imageResizingService: ImageResizingService) {
-        
-        self.imageResizingService = imageResizingService
+    init() {
         
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         

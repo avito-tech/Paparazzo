@@ -192,7 +192,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         self.cameraPreviewLayer = cameraPreviewLayer
     }
     
-    func setLatestPhotoLibraryItemImage(image: LazyImage?) {
+    func setLatestPhotoLibraryItemImage(image: ImageSource?) {
         cameraControlsView.setLatestPhotoLibraryItemImage(image)
     }
     
