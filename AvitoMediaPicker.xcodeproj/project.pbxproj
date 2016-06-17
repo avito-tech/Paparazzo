@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0ED4F779D40B51D2809CEFC2 /* Pods_AvitoMediaPickerDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A32225C66F3416535226E97 /* Pods_AvitoMediaPickerDemo.framework */; };
 		251FCF501D13169000970324 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 251FCF4F1D13169000970324 /* Assets.xcassets */; };
-		251FCF601D1316BF00970324 /* AvitoMediaPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 251FCF5F1D1316BF00970324 /* AvitoMediaPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		251FCF671D1316C000970324 /* AvitoMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */; };
 		251FCF6E1D1316C000970324 /* AvitoMediaPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCF6D1D1316C000970324 /* AvitoMediaPickerTests.swift */; };
 		251FCF7F1D1317C900970324 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251FCF7B1D1317C900970324 /* AppDelegate.swift */; };
@@ -120,7 +119,6 @@
 		251FCF4F1D13169000970324 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		251FCF541D13169000970324 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		251FCF5D1D1316BF00970324 /* AvitoMediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AvitoMediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		251FCF5F1D1316BF00970324 /* AvitoMediaPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AvitoMediaPicker.h; sourceTree = "<group>"; };
 		251FCF611D1316BF00970324 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		251FCF661D1316C000970324 /* AvitoMediaPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AvitoMediaPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		251FCF6D1D1316C000970324 /* AvitoMediaPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvitoMediaPickerTests.swift; sourceTree = "<group>"; };
@@ -235,7 +233,6 @@
 		251FCF5E1D1316BF00970324 /* AvitoMediaPicker */ = {
 			isa = PBXGroup;
 			children = (
-				251FCF5F1D1316BF00970324 /* AvitoMediaPicker.h */,
 				251FCF821D13187200970324 /* BridgingToAvito.swift */,
 				251FCF8A1D13187200970324 /* ImageSource.swift */,
 				251FCF8B1D13187200970324 /* PHAssetImageSource.swift */,
@@ -520,11 +517,11 @@
 		251FCFCE1D13187200970324 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				251FCFCF1D13187200970324 /* PhotoLibraryItemCell.swift */,
-				251FCFD01D13187200970324 /* PhotoLibraryLayout.swift */,
-				251FCFD11D13187200970324 /* PhotoLibraryView.swift */,
-				251FCFD21D13187200970324 /* PhotoLibraryViewController.swift */,
 				251FCFD31D13187200970324 /* PhotoLibraryViewInput.swift */,
+				251FCFD21D13187200970324 /* PhotoLibraryViewController.swift */,
+				251FCFD11D13187200970324 /* PhotoLibraryView.swift */,
+				251FCFD01D13187200970324 /* PhotoLibraryLayout.swift */,
+				251FCFCF1D13187200970324 /* PhotoLibraryItemCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -580,7 +577,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				251FCF601D1316BF00970324 /* AvitoMediaPicker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
