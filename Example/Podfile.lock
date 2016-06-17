@@ -1,0 +1,26 @@
+PODS:
+  - AvitoDesignKit (0.0.6):
+    - TTTAttributedLabel (= 1.13.0)
+  - AvitoMediaPicker (0.0.1):
+    - AvitoDesignKit (= 0.0.6)
+    - Marshroute
+  - Marshroute (0.3.3)
+  - TTTAttributedLabel (1.13.0)
+
+DEPENDENCIES:
+  - AvitoMediaPicker (from `../`)
+  - Marshroute
+
+EXTERNAL SOURCES:
+  AvitoMediaPicker:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AvitoDesignKit: 24b7a9c13ced6f715efc4084b5e1efa24a4b26ef
+  AvitoMediaPicker: 247243390239ab55972820298e18b1260e98b1f3
+  Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
+  TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
+
+PODFILE CHECKSUM: 93a41216df0cc0bc0e579551da4c1b1e242cfc4b
+
+COCOAPODS: 1.0.1

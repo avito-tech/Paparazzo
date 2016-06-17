@@ -19,7 +19,10 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
         
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        options.fetchLimit = 1
+        
+        if #available(iOS 9.0, *) {
+            options.fetchLimit = 1
+        }
         
         fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
         
