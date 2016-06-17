@@ -24,7 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
             let assemblyFactory = AssemblyFactory()
             let photoPickerAssembly = assemblyFactory.mediaPickerAssembly()
             
-            return photoPickerAssembly.viewController(moduleOutput: self, routerSeed: routerSeed)
+            return photoPickerAssembly.viewController(
+                maxItemsCount: 5,
+                moduleOutput: self,
+                routerSeed: routerSeed
+            )
         }
         
         window?.makeKeyAndVisible()

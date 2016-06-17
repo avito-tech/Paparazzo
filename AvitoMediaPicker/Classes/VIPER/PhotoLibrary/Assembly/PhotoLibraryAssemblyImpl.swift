@@ -4,6 +4,7 @@ import Marshroute
 public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
     
     public func viewController(
+        maxItemsCount maxItemsCount: Int?,
         moduleOutput moduleOutput: PhotoLibraryModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController {
@@ -11,7 +12,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
         let interactor = PhotoLibraryInteractorImpl(
-            maxSelectedItemsCount: 5,   // TODO: брать откуда-нибудь (из конфига? с сервера?)
+            maxSelectedItemsCount: maxItemsCount,
             photoLibraryItemsService: photoLibraryItemsService
         )
         

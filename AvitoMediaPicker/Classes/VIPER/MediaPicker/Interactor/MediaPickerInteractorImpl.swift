@@ -3,23 +3,30 @@ import AVFoundation
 
 final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
+    private let maxItemsCount: Int?
+    
     private let cameraService: CameraService
     private let deviceOrientationService: DeviceOrientationService
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
+    
+    private var items = [MediaPickerItem]()
 
-    private var deviceOrientationObserverHandler: (DeviceOrientation -> ())?
+    private var onDeviceOrientationChange: (DeviceOrientation -> ())?
     
     init(
+        maxItemsCount: Int?,
         cameraService: CameraService,
         deviceOrientationService: DeviceOrientationService,
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
+        self.maxItemsCount = maxItemsCount
+        
         self.cameraService = cameraService
         self.deviceOrientationService = deviceOrientationService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
 
         deviceOrientationService.onOrientationChange = { [weak self] orientation in
-            self?.deviceOrientationObserverHandler?(orientation)
+            self?.onDeviceOrientationChange?(orientation)
         }
     }
 
@@ -34,7 +41,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?) {
-        deviceOrientationObserverHandler = handler
+        onDeviceOrientationChange = handler
         handler?(deviceOrientationService.currentOrientation)
     }
     
@@ -50,13 +57,26 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(success: cameraService.setFlashEnabled(enabled))
     }
     
-    func takePhoto(completion: MediaPickerItem? -> ()) {
+    func takePhoto(completion: (item: MediaPickerItem?, canTakeMorePhotos: Bool) -> ()) {
         cameraService.takePhoto { photo in
-            completion(photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url)) })
+            let item = photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url)) }
+            completion(item: item, canTakeMorePhotos: true)   // TODO: canTakeMorePhotos
         }
     }
     
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool) {
         cameraService.setCaptureSessionRunning(isCameraOutputNeeded)
+    }
+    
+    func addPhotoLibraryItems(items: [AnyObject], completion: ()) {
+        // TODO
+    }
+    
+    func removeItem(item: MediaPickerItem) {
+        // TODO
+    }
+    
+    func numberOfItemsAvailableForAdding(completion: Int? -> ()) {
+        completion(maxItemsCount.flatMap { $0 - items.count })
     }
 }

@@ -65,7 +65,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             self?.view?.animateFlash()
             self?.view?.startSpinnerForNewPhoto()
             
-            self?.interactor.takePhoto { photo in
+            self?.interactor.takePhoto { photo, canTakeMorePhotos in
                 
                 self?.view?.stopSpinnerForNewPhoto()
                 
@@ -105,7 +105,10 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     // MARK: - Private
     
     private func showPhotoLibrary() {
-        router.showPhotoLibrary(moduleOutput: self)
+        interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
+            guard let strongSelf = self else { return }
+            strongSelf.router.showPhotoLibrary(maxItemsCount: maxItemsCount, moduleOutput: strongSelf)
+        }
     }
     
     private func showCroppingModule() {

@@ -14,6 +14,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     // MARK: - MediaPickerAssembly
     
     public func viewController(
+        maxItemsCount maxItemsCount: Int?,
         moduleOutput moduleOutput: MediaPickerModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController {
@@ -21,6 +22,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         let cameraService = CameraServiceImpl()
         
         let interactor = MediaPickerInteractorImpl(
+            maxItemsCount: maxItemsCount,
             cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()

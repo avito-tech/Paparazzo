@@ -1,6 +1,6 @@
 protocol MediaPickerRouter: class {
     
-    func showPhotoLibrary(moduleOutput moduleOutput: PhotoLibraryModuleOutput)
+    func showPhotoLibrary(maxItemsCount maxItemsCount: Int?, moduleOutput: PhotoLibraryModuleOutput)
     
     func showCroppingModule(
         photo photo: AnyObject /* TODO */,

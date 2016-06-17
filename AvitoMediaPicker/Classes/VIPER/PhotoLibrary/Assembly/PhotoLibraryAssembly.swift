@@ -4,6 +4,7 @@ import Marshroute
 protocol PhotoLibraryAssembly: class {
     
     func viewController(
+        maxItemsCount maxItemsCount: Int?,
         moduleOutput moduleOutput: PhotoLibraryModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController
