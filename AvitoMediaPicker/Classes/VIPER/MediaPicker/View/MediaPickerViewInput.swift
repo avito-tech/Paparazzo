@@ -11,7 +11,6 @@ protocol MediaPickerViewInput: class {
     func setMode(mode: MediaPickerViewMode)
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
 
-    func setCaptureSession(session: AVCaptureSession)
     func setLatestLibraryPhoto(image: ImageSource?)
     
     func setFlashButtonVisible(visible: Bool)
@@ -25,8 +24,6 @@ protocol MediaPickerViewInput: class {
     func stopSpinnerForNewPhoto()
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
-    
-    func setCameraUnavailableMessageVisible(visible: Bool)
     
     // MARK: - Actions in photo ribbon
     var onPhotoSelect: (MediaPickerItem -> ())? { get set }

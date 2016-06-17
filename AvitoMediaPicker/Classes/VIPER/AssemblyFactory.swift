@@ -1,6 +1,10 @@
-public final class AssemblyFactory: MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
+public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
     
     public init() {}
+    
+    func cameraAssembly() -> CameraAssembly {
+        return CameraAssemblyImpl()
+    }
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {
         return MediaPickerAssemblyImpl(assemblyFactory: self)

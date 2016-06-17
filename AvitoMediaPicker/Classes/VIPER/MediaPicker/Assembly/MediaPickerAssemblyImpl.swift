@@ -3,7 +3,7 @@ import Marshroute
 
 public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     
-    typealias AssemblyFactory = protocol<ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
+    typealias AssemblyFactory = protocol<CameraAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
     
     private let assemblyFactory: AssemblyFactory
     
@@ -18,12 +18,9 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         moduleOutput moduleOutput: MediaPickerModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController {
-
-        let cameraService = CameraServiceImpl()
         
         let interactor = MediaPickerInteractorImpl(
             maxItemsCount: maxItemsCount,
-            cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
         )
@@ -33,12 +30,17 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
             routerSeed: routerSeed
         )
         
+        let cameraAssembly = assemblyFactory.cameraAssembly()
+        let (cameraView, cameraModuleInput) = cameraAssembly.module()
+        
         let presenter = MediaPickerPresenter(
             interactor: interactor,
-            router: router
+            router: router,
+            cameraModuleInput: cameraModuleInput
         )
         
         let viewController = MediaPickerViewController()
+        viewController.setCameraView(cameraView)
         viewController.addDisposable(presenter)
         
         presenter.view = viewController

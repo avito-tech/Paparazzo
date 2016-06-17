@@ -1,12 +1,11 @@
 import UIKit
-import AVFoundation
 import AvitoDesignKit
 
 final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
-    private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    private var cameraView: UIView?
     private let photoView = UIImageView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
@@ -98,7 +97,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         let controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
         
         photoView.frame = cameraFrame
-        cameraPreviewLayer?.frame = cameraFrame
+        cameraView?.frame = cameraFrame
         
         cameraControlsView.layout(
             left: bounds.left,
@@ -182,16 +181,6 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func setCaptureSession(session: AVCaptureSession) {
-        
-        let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
-        cameraPreviewLayer.backgroundColor = UIColor.blackColor().CGColor
-        cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        layer.insertSublayer(cameraPreviewLayer, atIndex: 0)
-        
-        self.cameraPreviewLayer = cameraPreviewLayer
-    }
-    
     func setLatestPhotoLibraryItemImage(image: ImageSource?) {
         cameraControlsView.setLatestPhotoLibraryItemImage(image)
     }
@@ -247,6 +236,12 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonLayout.invalidateLayout()
     }
     
+    func setCameraView(view: UIView) {
+        cameraView?.removeFromSuperview()
+        cameraView = view
+        addSubview(view)
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -264,7 +259,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - Private
     
     private func setCameraVisible(visible: Bool) {
-        cameraPreviewLayer?.hidden = !visible
+        cameraView?.hidden = !visible
         onCameraVisibilityChange?(isCameraVisible: visible)
     }
 }

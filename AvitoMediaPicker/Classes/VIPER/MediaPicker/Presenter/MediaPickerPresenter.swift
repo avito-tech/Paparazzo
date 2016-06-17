@@ -6,14 +6,16 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
+    private let cameraModuleInput: CameraModuleInput
 
     weak var moduleOutput: MediaPickerModuleOutput?
     
     // MARK: - Init
     
-    init(interactor: MediaPickerInteractor, router: MediaPickerRouter) {
+    init(interactor: MediaPickerInteractor, router: MediaPickerRouter, cameraModuleInput: CameraModuleInput) {
         self.interactor = interactor
         self.router = router
+        self.cameraModuleInput = cameraModuleInput
     }
     
     weak var view: MediaPickerViewInput? {
@@ -33,15 +35,9 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     private func setUpView() {
         
-        view?.setCameraUnavailableMessageVisible(true)
-        
-        interactor.isFlashAvailable { [weak self] flashAvailable in
+        // TODO: move to viewDidLoad and check cameraModuleInput for nullability
+        cameraModuleInput.isFlashAvailable { [weak self] flashAvailable in
             self?.view?.setFlashButtonVisible(flashAvailable)
-        }
-        
-        interactor.onCaptureSessionReady = { [weak self] session in
-            self?.view?.setCaptureSession(session)
-            self?.view?.setCameraUnavailableMessageVisible(false)
         }
         
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
@@ -53,7 +49,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onCameraVisibilityChange = { [weak self] isCameraVisible in
-            self?.interactor.setCameraOutputNeeded(isCameraVisible)
+            self?.cameraModuleInput.setCameraOutputNeeded(isCameraVisible)
         }
         
         view?.onPhotoLibraryButtonTap = { [weak self] in
@@ -65,7 +61,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             self?.view?.animateFlash()
             self?.view?.startSpinnerForNewPhoto()
             
-            self?.interactor.takePhoto { photo, canTakeMorePhotos in
+            self?.cameraModuleInput.takePhoto { photo in
                 
                 self?.view?.stopSpinnerForNewPhoto()
                 
@@ -76,7 +72,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onFlashToggle = { [weak self] shouldEnableFlash in
-            self?.interactor.setFlashEnabled(shouldEnableFlash) { success in
+            self?.cameraModuleInput.setFlashEnabled(shouldEnableFlash) { success in
                 if !success {
                     self?.view?.setFlashButtonOn(!shouldEnableFlash)
                 }

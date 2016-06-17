@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
@@ -85,10 +84,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         }
     }
     
-    func setCaptureSession(session: AVCaptureSession) {
-        mediaPickerView.setCaptureSession(session)
-    }
-    
     func setLatestLibraryPhoto(image: ImageSource?) {
         mediaPickerView.setLatestPhotoLibraryItemImage(image)
     }
@@ -121,8 +116,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.stopSpinnerForNewPhoto()
     }
     
-    func setCameraUnavailableMessageVisible(visible: Bool) {
-        // TODO
+    // MARK: - MediaPickerViewController
+    
+    func setCameraView(view: UIView) {
+        mediaPickerView.setCameraView(view)
     }
     
     // MARK: - Dispose bag
