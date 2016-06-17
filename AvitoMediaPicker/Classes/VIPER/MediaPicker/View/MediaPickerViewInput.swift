@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 enum MediaPickerViewMode {
     case Camera

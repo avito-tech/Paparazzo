@@ -1,5 +1,3 @@
-import Foundation
-
 final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies

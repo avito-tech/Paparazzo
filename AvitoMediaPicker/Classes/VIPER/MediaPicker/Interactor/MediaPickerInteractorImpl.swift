@@ -1,6 +1,3 @@
-import Foundation
-import AVFoundation
-
 final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider

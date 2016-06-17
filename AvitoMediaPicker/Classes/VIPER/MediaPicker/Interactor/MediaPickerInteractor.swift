@@ -1,5 +1,3 @@
-import UIKit
-
 protocol MediaPickerInteractor: class {
     
     func addPhotoLibraryItems(items: [AnyObject], completion: ())
