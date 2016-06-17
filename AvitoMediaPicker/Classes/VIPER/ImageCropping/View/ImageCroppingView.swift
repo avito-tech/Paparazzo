@@ -1,9 +1,13 @@
 import UIKit
 
 final class ImageCroppingView: UIView {
+    
     // MARK: - Init
-    init() {
-        super.init(frame: .zero)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .whiteColor()
     }
     
     required init?(coder aDecoder: NSCoder) {

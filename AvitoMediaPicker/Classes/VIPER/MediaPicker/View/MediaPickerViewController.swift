@@ -12,7 +12,7 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        onCameraVisibilityChange?(isCameraVisible: true)
+        onCameraVisibilityChange?(isCameraVisible: true)    // TODO: if viewMode == .Camera
     }
     
     override func viewDidDisappear(animated: Bool) {

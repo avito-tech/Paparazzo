@@ -8,6 +8,7 @@
 
 import UIKit
 import Marshroute
+import AvitoMediaPicker
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
