@@ -1,7 +1,7 @@
 import UIKit
 import Marshroute
 
-public protocol ImageCroppingAssembly: class {
+protocol ImageCroppingAssembly: class {
     
     func viewController(
         photo photo: AnyObject, // TODO
@@ -10,6 +10,6 @@ public protocol ImageCroppingAssembly: class {
     ) -> UIViewController
 }
 
-public protocol ImageCroppingAssemblyFactory: class {
+protocol ImageCroppingAssemblyFactory: class {
     func imageCroppingAssembly() -> ImageCroppingAssembly
 }

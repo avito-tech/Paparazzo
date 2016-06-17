@@ -1,4 +1,4 @@
 import Foundation
 
-protocol ImageCroppingViewInput: class, ViewLifecycleObservable {
+protocol ImageCroppingViewInput: class {
 }

@@ -1,14 +1,10 @@
 import UIKit
 
-final class ImageCroppingViewController: BaseViewControllerSwift, ImageCroppingViewInput {
+final class ImageCroppingViewController: UIViewController, ImageCroppingViewInput {
     
     private let imageCroppingView = ImageCroppingView()
     
     // MARK: - CroppingViewInput
-    override init() {
-        super.init()
-        title = "Crop"
-    }
     
     override func loadView() {
         view = imageCroppingView
@@ -17,5 +13,13 @@ final class ImageCroppingViewController: BaseViewControllerSwift, ImageCroppingV
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)    // временно, просто чтобы не застревать на кропе
+    }
+    
+    // MARK: - Dispose bag
+    
+    private var disposables = [AnyObject]()
+    
+    func addDisposable(object: AnyObject) {
+        disposables.append(object)
     }
 }

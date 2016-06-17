@@ -1,7 +1,7 @@
 import UIKit
 import Marshroute
 
-public protocol PhotoLibraryAssembly: class {
+protocol PhotoLibraryAssembly: class {
     
     func viewController(
         moduleOutput moduleOutput: PhotoLibraryModuleOutput,
@@ -9,6 +9,6 @@ public protocol PhotoLibraryAssembly: class {
     ) -> UIViewController
 }
 
-public protocol PhotoLibraryAssemblyFactory: class {
+protocol PhotoLibraryAssemblyFactory: class {
     func photoLibraryAssembly() -> PhotoLibraryAssembly
 }

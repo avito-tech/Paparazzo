@@ -1,9 +1,11 @@
 import UIKit
 import AVFoundation
 
-final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewInput {
+final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     private let mediaPickerView = MediaPickerView()
+    
+    // MARK: - UIViewController
     
     override func loadView() {
         view = mediaPickerView
@@ -121,5 +123,13 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
     
     func setCameraUnavailableMessageVisible(visible: Bool) {
         // TODO
+    }
+    
+    // MARK: - Dispose bag
+    
+    private var disposables = [AnyObject]()
+    
+    func addDisposable(object: AnyObject) {
+        disposables.append(object)
     }
 }

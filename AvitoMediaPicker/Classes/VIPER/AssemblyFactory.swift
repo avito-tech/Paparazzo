@@ -6,11 +6,11 @@ public final class AssemblyFactory: MediaPickerAssemblyFactory, ImageCroppingAss
         return MediaPickerAssemblyImpl(assemblyFactory: self)
     }
 
-    public func imageCroppingAssembly() -> ImageCroppingAssembly {
+    func imageCroppingAssembly() -> ImageCroppingAssembly {
         return ImageCroppingAssemblyImpl()
     }
 
-    public func photoLibraryAssembly() -> PhotoLibraryAssembly {
+    func photoLibraryAssembly() -> PhotoLibraryAssembly {
         return PhotoLibraryAssemblyImpl()
     }
 }
