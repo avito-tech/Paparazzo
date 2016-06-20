@@ -11,25 +11,8 @@ final class CameraCell: UICollectionViewCell {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        backgroundColor = .blackColor()
-        
-        button.tintColor = .whiteColor()
-        button.userInteractionEnabled = false
-        
-        adjustBorderColor()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override var selected: Bool {
-        didSet {
-            layer.borderWidth = selected ? 4 : 0
-        }
+    func setCameraIcon(icon: UIImage?) {
+        button.setImage(icon, forState: .Normal)
     }
     
     func setCaptureSession(session: AVCaptureSession) {
@@ -41,13 +24,42 @@ final class CameraCell: UICollectionViewCell {
 //        capturePreviewLayer.backgroundColor = UIColor.blackColor().CGColor
 //        capturePreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
 //        layer.insertSublayer(capturePreviewLayer, atIndex: 0)
-//        
+//
 //        self.capturePreviewLayer?.removeFromSuperlayer()
 //        self.capturePreviewLayer = capturePreviewLayer
     }
     
+    // MARK: - Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .blackColor()
+        
+        button.tintColor = .whiteColor()
+        button.userInteractionEnabled = false
+        
+        adjustBorderColor()
+        
+        addSubview(button)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - UICollectionViewCell
+    
+    override var selected: Bool {
+        didSet {
+            layer.borderWidth = selected ? 4 : 0
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        button.frame = bounds
     }
     
     // MARK: - Private

@@ -52,9 +52,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onCameraVisibilityChange = newValue }
     }
     
-    var onPhotoSelect: (MediaPickerItem -> ())? {
-        get { return mediaPickerView.onPhotoSelect }
-        set { mediaPickerView.onPhotoSelect = newValue }
+    var onItemSelect: (MediaPickerItem -> ())? {
+        get { return mediaPickerView.onItemSelect }
+        set { mediaPickerView.onItemSelect = newValue }
     }
     
     var onRemoveButtonTap: (() -> ())? {
@@ -105,13 +105,13 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.animateFlash()
     }
 
-    func addPhotoRibbonItem(photo: MediaPickerItem) {
-        mediaPickerView.addPhoto(photo)
+    func addItem(item: MediaPickerItem) {
+        mediaPickerView.addItem(item)
     }
     
-//    func removeSelectionInPhotoRibbon() {
-//        mediaPickerView.removeSelectionInPhotoRibbon()
-//    }
+    func removeItem(item: MediaPickerItem) {
+        mediaPickerView.removeItem(item)
+    }
     
     func startSpinnerForNewPhoto() {
         mediaPickerView.startSpinnerForNewPhoto()

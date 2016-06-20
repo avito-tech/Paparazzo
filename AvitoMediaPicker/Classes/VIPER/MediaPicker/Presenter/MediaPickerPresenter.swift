@@ -25,8 +25,12 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     // MARK: - PhotoLibraryModuleOutput
     
     func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
-        // TODO
-        print("photoLibraryPickerDidFinishWithItems: \(selectedItems)")
+        
+        selectedItems.forEach { item in
+            self.view?.addItem(MediaPickerItem(image: item.image))
+        }
+        
+        router.focusOnCurrentModule()
     }
     
     // MARK: - Private
@@ -69,7 +73,9 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.view?.addPhotoRibbonItem(photo)
+                    self?.interactor.addItems([photo]) {
+                        self?.view?.addItem(photo)
+                    }
                 }
             }
         }
@@ -82,13 +88,15 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             }
         }
         
-        view?.onPhotoSelect = { [weak self] photo in
-            self?.view?.setMode(.PhotoPreview(photo))
-        }
-        
-        view?.onRemoveButtonTap = {
-            // TODO
-            print("onRemoveButtonTap")
+        view?.onItemSelect = { [weak self] item in
+            
+            self?.view?.setMode(.PhotoPreview(item))
+            
+            self?.view?.onRemoveButtonTap = {
+                self?.interactor.removeItem(item) {
+                    self?.view?.removeItem(item)
+                }
+            }
         }
         
         view?.onCropButtonTap = { [weak self] in
@@ -110,7 +118,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     }
     
     private func showCroppingModule() {
-        let photo = NSNumber()  // TODO
-        router.showCroppingModule(photo: photo, moduleOutput: self)
+        // TODO
+//        router.showCroppingModule(photo: photo, moduleOutput: self)
     }
 }

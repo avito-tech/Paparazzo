@@ -4,7 +4,7 @@ import Marshroute
 public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     
     public func viewController(
-        photo photo: AnyObject,
+        photo photo: MediaPickerItem,
         moduleOutput: ImageCroppingModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController {

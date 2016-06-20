@@ -17,8 +17,6 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    var onDataChanged: (() -> ())?
-    
     var colors = MediaPickerColors()
     var images = MediaPickerImages()
     
@@ -31,8 +29,21 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func addItem(item: MediaPickerItem) {
-        mediaPickerItems.append(item)
-        notifyAboutDataChange()
+        collectionView?.performBatchUpdates({
+            let indexPath = NSIndexPath(forItem: self.mediaPickerItems.count, inSection: 0)
+            self.collectionView?.insertItemsAtIndexPaths([indexPath])
+            self.mediaPickerItems.append(item)
+        }, completion: nil)
+    }
+    
+    func removeItem(item: MediaPickerItem) {
+        if let index = mediaPickerItems.indexOf(item) {
+            collectionView?.performBatchUpdates({
+                let indexPath = NSIndexPath(forItem: index, inSection: 0)
+                self.collectionView?.deleteItemsAtIndexPaths([indexPath])
+                self.mediaPickerItems.removeAtIndex(index)
+            }, completion: nil)
+        }
     }
     
     func setUpInCollectionView(collectionView: UICollectionView) {
@@ -91,13 +102,8 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     private func setUpCameraCell(cell: UICollectionViewCell) {
         if let cell = cell as? CameraCell, captureSession = captureSession {
             cell.selectedBorderColor = colors.mediaRibbonSelectionColor
+            cell.setCameraIcon(images.returnToCameraIcon())
             cell.setCaptureSession(captureSession)
-        }
-    }
-    
-    private func notifyAboutDataChange() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.onDataChanged?()
         }
     }
 }

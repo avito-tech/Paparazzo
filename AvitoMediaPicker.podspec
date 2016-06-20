@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source_files = 'AvitoMediaPicker/Classes/**/*'
   s.resources = ['AvitoMediaPicker/Assets/Assets.xcassets']
 
-  s.frameworks = 'UIKit', 'Photos'
+  s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices'
   s.dependency 'AvitoDesignKit', '0.0.6'
   s.dependency 'Marshroute'
 end

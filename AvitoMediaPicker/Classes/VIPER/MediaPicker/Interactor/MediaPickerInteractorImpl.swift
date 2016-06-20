@@ -27,12 +27,16 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         latestLibraryPhotoProvider.observePhoto(handler)
     }
     
-    func addPhotoLibraryItems(items: [AnyObject], completion: ()) {
-        // TODO
+    func addItems(items: [MediaPickerItem], completion: () -> ()) {
+        self.items.appendContentsOf(items)
+        completion()
     }
     
-    func removeItem(item: MediaPickerItem) {
-        // TODO
+    func removeItem(item: MediaPickerItem, completion: () -> ()) {
+        if let index = items.indexOf(item) {
+            items.removeAtIndex(index)
+        }
+        completion()
     }
     
     func numberOfItemsAvailableForAdding(completion: Int? -> ()) {

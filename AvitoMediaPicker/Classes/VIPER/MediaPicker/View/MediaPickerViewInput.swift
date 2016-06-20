@@ -19,16 +19,17 @@ protocol MediaPickerViewInput: class {
     func setFlashButtonOn(isOn: Bool)
     func animateFlash()
     
-    func addPhotoRibbonItem(photo: MediaPickerItem)
-//    func removeSelectionInPhotoRibbon()
-    
+    func addItem(photo: MediaPickerItem)
+    func removeItem(photo: MediaPickerItem)
+
+    // TODO: это по ходу не нужно будет
     func startSpinnerForNewPhoto()
     func stopSpinnerForNewPhoto()
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
     
     // MARK: - Actions in photo ribbon
-    var onPhotoSelect: (MediaPickerItem -> ())? { get set }
+    var onItemSelect: (MediaPickerItem -> ())? { get set }
     
     // MARK: - Camera actions
     var onPhotoLibraryButtonTap: (() -> ())? { get set }

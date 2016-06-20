@@ -57,10 +57,6 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         flashView.alpha = 0
         
         mediaRibbonDataSource.setUpInCollectionView(mediaRibbonView)
-        mediaRibbonDataSource.onDataChanged = { [weak self] in
-            print("collectionViewDataSource.onDataChanged")
-            self?.mediaRibbonView.reloadData()
-        }
         
         mediaRibbonView.dataSource = mediaRibbonDataSource
         mediaRibbonView.delegate = self
@@ -90,15 +86,11 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
             height: bounds.size.width * cameraAspectRatio
         )
         
-        let photoPreviewSize = CGSize(width: cameraFrame.size.height, height: cameraFrame.size.height)
-        let photoPreviewOrigin = CGPoint(x: bounds.centerX - photoPreviewSize.width / 2, y: bounds.top)
-        let photoPreviewFrame = CGRect(origin: photoPreviewOrigin, size: photoPreviewSize)
-        
         let freeSpaceUnderCamera = bounds.bottom - cameraFrame.bottom
         let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
         let controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
         
-        photoView.frame = photoPreviewFrame
+        photoView.frame = cameraFrame
         cameraView?.frame = cameraFrame
         
         cameraControlsView.layout(
@@ -142,7 +134,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())?
-    var onPhotoSelect: (MediaPickerItem -> ())?
+    var onItemSelect: (MediaPickerItem -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
@@ -215,8 +207,12 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func addPhoto(photo: MediaPickerItem) {
-        mediaRibbonDataSource.addItem(photo)
+    func addItem(item: MediaPickerItem) {
+        mediaRibbonDataSource.addItem(item)
+    }
+
+    func removeItem(item: MediaPickerItem) {
+        mediaRibbonDataSource.removeItem(item)
     }
     
 //    func removeSelectionInPhotoRibbon() {
@@ -273,7 +269,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         switch mediaRibbonDataSource[indexPath] {
         case .Photo(let photo):
-            onPhotoSelect?(photo)
+            onItemSelect?(photo)
         case .Camera:
             onReturnToCameraTap?()
         }

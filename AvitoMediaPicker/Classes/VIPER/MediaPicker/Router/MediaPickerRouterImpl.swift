@@ -29,7 +29,7 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
         }
     }
     
-    func showCroppingModule(photo photo: AnyObject, moduleOutput: ImageCroppingModuleOutput) {
+    func showCroppingModule(photo photo: MediaPickerItem, moduleOutput: ImageCroppingModuleOutput) {
         pushViewControllerDerivedFrom { routerSeed in
             let assembly = assemblyFactory.imageCroppingAssembly()
             return assembly.viewController(photo: photo, moduleOutput: moduleOutput, routerSeed: routerSeed)
