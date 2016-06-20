@@ -3,9 +3,15 @@ import Marshroute
 
 public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
     
+    private let colors: PhotoLibraryColors
+    
+    init(colors: PhotoLibraryColors) {
+        self.colors = colors
+    }
+    
     public func viewController(
         maxItemsCount maxItemsCount: Int?,
-        moduleOutput moduleOutput: PhotoLibraryModuleOutput,
+        moduleOutput: PhotoLibraryModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController {
         
@@ -25,6 +31,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         
         let viewController = PhotoLibraryViewController()
         viewController.addDisposable(presenter)
+        viewController.setColors(colors)
         
         presenter.view = viewController
         presenter.moduleOutput = moduleOutput

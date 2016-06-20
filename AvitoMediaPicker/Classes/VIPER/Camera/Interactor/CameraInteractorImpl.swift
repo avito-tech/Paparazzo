@@ -18,15 +18,11 @@ final class CameraInteractorImpl: CameraInteractor {
     }
     
     // MARK: - CameraInteractor
-    
-    var onCaptureSessionReady: (AVCaptureSession -> ())? {
-        didSet {
-            if let captureSession = cameraService.captureSession {
-                onCaptureSessionReady?(captureSession)
-            }
-        }
+
+    func getCaptureSession(completion: AVCaptureSession? -> ()) {
+        completion(cameraService.captureSession)
     }
-    
+
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?) {
         onDeviceOrientationChange = handler
         handler?(deviceOrientationService.currentOrientation)

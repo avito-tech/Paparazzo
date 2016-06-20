@@ -1,20 +1,24 @@
 public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
     
-    public init() {}
+    private let colors: MediaPickerColors
+    
+    public init(colors: MediaPickerColors = MediaPickerColors()) {
+        self.colors = colors
+    }
     
     func cameraAssembly() -> CameraAssembly {
         return CameraAssemblyImpl()
     }
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {
-        return MediaPickerAssemblyImpl(assemblyFactory: self)
+        return MediaPickerAssemblyImpl(assemblyFactory: self, colors: colors)
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {
         return ImageCroppingAssemblyImpl()
     }
 
-    func photoLibraryAssembly() -> PhotoLibraryAssembly {
-        return PhotoLibraryAssemblyImpl()
+    public func photoLibraryAssembly() -> PhotoLibraryAssembly {
+        return PhotoLibraryAssemblyImpl(colors: colors)
     }
 }

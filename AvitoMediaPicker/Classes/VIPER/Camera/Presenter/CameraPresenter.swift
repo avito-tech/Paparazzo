@@ -1,3 +1,5 @@
+import AVFoundation
+
 final class CameraPresenter: CameraModuleInput {
     
     private let interactor: CameraInteractor
@@ -15,6 +17,10 @@ final class CameraPresenter: CameraModuleInput {
     }
     
     // MARK: - CameraModuleInput
+    
+    func getCaptureSession(completion: AVCaptureSession? -> ()) {
+        interactor.getCaptureSession(completion)
+    }
     
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool) {
         interactor.setCameraOutputNeeded(isCameraOutputNeeded)
@@ -38,9 +44,11 @@ final class CameraPresenter: CameraModuleInput {
         
         view?.setCameraUnavailableMessageVisible(true)
         
-        interactor.onCaptureSessionReady = { [weak self] session in
-            self?.view?.setCaptureSession(session)
-            self?.view?.setCameraUnavailableMessageVisible(false)
+        interactor.getCaptureSession { [weak self] session in
+            if let session = session {
+                self?.view?.setCaptureSession(session)
+                self?.view?.setCameraUnavailableMessageVisible(false)
+            }
         }
         
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in

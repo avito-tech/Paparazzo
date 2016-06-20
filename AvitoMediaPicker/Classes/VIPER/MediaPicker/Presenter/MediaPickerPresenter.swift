@@ -33,7 +33,12 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     private func setUpView() {
         
-        // TODO: move to viewDidLoad and check cameraModuleInput for nullability
+        cameraModuleInput.getCaptureSession { [weak self] captureSession in
+            if let captureSession = captureSession {
+                self?.view?.setCaptureSession(captureSession)
+            }
+        }
+        
         cameraModuleInput.isFlashAvailable { [weak self] flashAvailable in
             self?.view?.setFlashButtonVisible(flashAvailable)
         }
@@ -91,7 +96,6 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onReturnToCameraTap = { [weak self] in
-            self?.view?.removeSelectionInPhotoRibbon()
             self?.view?.setMode(.Camera)
         }
     }

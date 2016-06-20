@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 enum MediaPickerViewMode {
     case Camera
@@ -9,6 +10,8 @@ protocol MediaPickerViewInput: class {
     
     func setMode(mode: MediaPickerViewMode)
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
+    
+    func setCaptureSession(session: AVCaptureSession)
 
     func setLatestLibraryPhoto(image: ImageSource?)
     
@@ -17,7 +20,7 @@ protocol MediaPickerViewInput: class {
     func animateFlash()
     
     func addPhotoRibbonItem(photo: MediaPickerItem)
-    func removeSelectionInPhotoRibbon()
+//    func removeSelectionInPhotoRibbon()
     
     func startSpinnerForNewPhoto()
     func stopSpinnerForNewPhoto()

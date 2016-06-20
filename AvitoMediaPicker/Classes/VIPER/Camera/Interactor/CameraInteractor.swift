@@ -2,7 +2,7 @@ import AVFoundation
 
 protocol CameraInteractor: class {
     
-    var onCaptureSessionReady: (AVCaptureSession -> ())? { get set }
+    func getCaptureSession(completion: AVCaptureSession? -> ())
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool)
     
     func isFlashAvailable(completion: Bool -> ())

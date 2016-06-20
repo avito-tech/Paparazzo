@@ -1,15 +1,15 @@
 import UIKit
 import Marshroute
 
-protocol PhotoLibraryAssembly: class {
+public protocol PhotoLibraryAssembly: class {
     
     func viewController(
         maxItemsCount maxItemsCount: Int?,
-        moduleOutput moduleOutput: PhotoLibraryModuleOutput,
+        moduleOutput: PhotoLibraryModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController
 }
 
-protocol PhotoLibraryAssemblyFactory: class {
+public protocol PhotoLibraryAssemblyFactory: class {
     func photoLibraryAssembly() -> PhotoLibraryAssembly
 }

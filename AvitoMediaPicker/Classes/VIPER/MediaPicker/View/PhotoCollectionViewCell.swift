@@ -8,12 +8,18 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var selectedBorderColor: UIColor = .blueColor() {
+        didSet {
+            adjustBorderColor()
+        }
+    }
+    
     private let imageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.borderColor = UIColor.blueColor().CGColor // TODO
+        adjustBorderColor()
         
         imageView.contentMode = .ScaleAspectFill
         imageView.clipsToBounds = true
@@ -48,5 +54,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     private func updateImage() {
         imageView.setImage(image)
+    }
+    
+    private func adjustBorderColor() {
+        layer.borderColor = selectedBorderColor.CGColor
     }
 }

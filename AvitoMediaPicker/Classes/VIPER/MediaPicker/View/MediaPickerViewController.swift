@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
@@ -75,6 +76,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setMode(mode)
     }
     
+    func setCaptureSession(session: AVCaptureSession) {
+        mediaPickerView.setCaptureSession(session)
+    }
+    
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
         
         let transform = CGAffineTransform(deviceOrientation: orientation)
@@ -104,9 +109,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.addPhoto(photo)
     }
     
-    func removeSelectionInPhotoRibbon() {
-        mediaPickerView.removeSelectionInPhotoRibbon()
-    }
+//    func removeSelectionInPhotoRibbon() {
+//        mediaPickerView.removeSelectionInPhotoRibbon()
+//    }
     
     func startSpinnerForNewPhoto() {
         mediaPickerView.startSpinnerForNewPhoto()
@@ -120,6 +125,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setCameraView(view: UIView) {
         mediaPickerView.setCameraView(view)
+    }
+    
+    func setColors(colors: MediaPickerColors) {
+        mediaPickerView.setColors(colors)
     }
     
     // MARK: - Dispose bag

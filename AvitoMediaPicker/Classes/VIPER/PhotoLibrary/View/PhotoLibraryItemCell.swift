@@ -1,8 +1,6 @@
 import UIKit
 
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
-    
-    static let reuseIdentifier = "PhotoLibraryItemCell"
 
     // MARK: - UICollectionViewCell
     
