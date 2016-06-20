@@ -5,12 +5,14 @@ final class CameraControlsView: UIView {
     
     var onShutterButtonTap: (() -> ())?
     var onPhotoLibraryButtonTap: (() -> ())?
+    var onCameraToggleButtonTap: (() -> ())?
     var onFlashToggle: (Bool -> ())?
     
     // MARK: - Subviews
     
     private let photoView = UIImageView()
     private let shutterButton = UIButton()
+    private let cameraToggleButton = UIButton()
     private let flashButton = UIButton()
     
     // MARK: - Constants
@@ -38,7 +40,7 @@ final class CameraControlsView: UIView {
             action: #selector(CameraControlsView.onPhotoViewTap(_:))
         ))
         
-        shutterButton.backgroundColor = .blueColor()    // TODO
+        shutterButton.backgroundColor = .blueColor()
         shutterButton.addTarget(
             self,
             action: #selector(CameraControlsView.onShutterButtonTap(_:)),
@@ -46,18 +48,23 @@ final class CameraControlsView: UIView {
         )
         
         flashButton.hidden = true
-        flashButton.setTitle("ПЫЩ", forState: .Normal)  // TODO
-        flashButton.setTitleColor(.lightGrayColor(), forState: .Normal)
-        flashButton.setTitleColor(.blueColor(), forState: .Selected)
         flashButton.addTarget(
             self,
             action: #selector(CameraControlsView.onFlashButtonTap(_:)),
             forControlEvents: .TouchUpInside
         )
         
+//        cameraToggleButton.hidden = true   // TODO: по умолчанию кнопка должна быть скрыта
+        cameraToggleButton.addTarget(
+            self,
+            action: #selector(CameraControlsView.onCameraToggleButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
         addSubview(photoView)
         addSubview(shutterButton)
         addSubview(flashButton)
+        addSubview(cameraToggleButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -80,6 +87,10 @@ final class CameraControlsView: UIView {
         flashButton.right = bounds.right - insets.right
         flashButton.centerY = bounds.centerY
         
+        cameraToggleButton.sizeToFit()
+        cameraToggleButton.centerY = flashButton.centerY
+        cameraToggleButton.right = flashButton.left - 20    // TODO: проставлено наобум
+        
         photoView.size = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.left = bounds.left + insets.left
         photoView.centerY = bounds.centerY
@@ -89,6 +100,7 @@ final class CameraControlsView: UIView {
     
     func setControlsTransform(transform: CGAffineTransform) {
         flashButton.transform = transform
+        cameraToggleButton.transform = transform
         photoView.transform = transform
     }
     
@@ -105,6 +117,18 @@ final class CameraControlsView: UIView {
         flashButton.selected = isOn
     }
     
+    func setColors(colors: MediaPickerColors) {
+        shutterButton.backgroundColor = colors.shutterButtonColor
+    }
+    
+    func setImages(images: MediaPickerImages) {
+        
+        flashButton.setImage(images.flashOffIcon(), forState: .Normal)
+        flashButton.setImage(images.flashOnIcon(), forState: .Selected)
+        
+        cameraToggleButton.setImage(images.cameraToggleIcon(), forState: .Normal)
+    }
+    
     // MARK: - Private
     
     @objc private func onShutterButtonTap(button: UIButton) {
@@ -118,5 +142,9 @@ final class CameraControlsView: UIView {
     @objc private func onFlashButtonTap(button: UIButton) {
         button.selected = !button.selected
         onFlashToggle?(button.selected)
+    }
+    
+    @objc private func onCameraToggleButtonTap(button: UIButton) {
+        onCameraToggleButtonTap?()
     }
 }

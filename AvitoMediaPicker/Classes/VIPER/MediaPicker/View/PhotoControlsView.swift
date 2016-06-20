@@ -13,24 +13,20 @@ final class PhotoControlsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        removeButton.setTitle("Rem", forState: .Normal)  // TODO
-        removeButton.setTitleColor(.blueColor(), forState: .Normal) // TODO
+        backgroundColor = .whiteColor()
+        
         removeButton.addTarget(
             self,
             action: #selector(PhotoControlsView.onRemoveButtonTap(_:)),
             forControlEvents: .TouchUpInside
         )
         
-        cropButton.setTitle("Crop", forState: .Normal)  // TODO
-        cropButton.setTitleColor(.blueColor(), forState: .Normal) // TODO
         cropButton.addTarget(
             self,
             action: #selector(PhotoControlsView.onCropButtonTap(_:)),
             forControlEvents: .TouchUpInside
         )
         
-        cameraButton.setTitle("Cam", forState: .Normal)  // TODO
-        cameraButton.setTitleColor(.blueColor(), forState: .Normal) // TODO
         cameraButton.addTarget(
             self,
             action: #selector(PhotoControlsView.onCameraButtonTap(_:)),
@@ -83,6 +79,16 @@ final class PhotoControlsView: UIView {
         removeButton.transform = transform
         cropButton.transform = transform
         cameraButton.transform = transform
+    }
+    
+    func setColors(colors: MediaPickerColors) {
+        // TODO
+    }
+    
+    func setImages(images: MediaPickerImages) {
+        removeButton.setImage(images.removePhotoIcon(), forState: .Normal)
+        cropButton.setImage(images.cropPhotoIcon(), forState: .Normal)
+        cameraButton.setImage(images.returnToCameraIcon(), forState: .Normal)
     }
     
     // MARK: - Private

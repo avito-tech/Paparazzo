@@ -12,8 +12,15 @@ protocol CameraService: class {
     
     func takePhoto(completion: PhotoFromCamera? -> ())
     func setCaptureSessionRunning(needsRunning: Bool)
+    
+    func switchToCamera(position: CameraPosition)
 }
 
 struct PhotoFromCamera {
     let url: NSURL
+}
+
+enum CameraPosition {
+    case Front
+    case Back
 }
