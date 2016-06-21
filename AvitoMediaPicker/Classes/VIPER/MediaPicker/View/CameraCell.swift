@@ -5,7 +5,7 @@ final class CameraCell: UICollectionViewCell {
     
     private let button = UIButton()
     
-    var selectedBorderColor: UIColor = .blueColor() {
+    var selectedBorderColor: UIColor? = .blueColor() {
         didSet {
             adjustBorderColor()
         }
@@ -65,6 +65,6 @@ final class CameraCell: UICollectionViewCell {
     // MARK: - Private
     
     private func adjustBorderColor() {
-        layer.borderColor = selectedBorderColor.CGColor
+        layer.borderColor = selectedBorderColor?.CGColor
     }
 }

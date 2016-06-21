@@ -12,6 +12,8 @@ protocol MediaPickerViewInput: class {
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
     
     func setCaptureSession(session: AVCaptureSession)
+    
+    func setContinueButtonTitle(title: String)
 
     func setLatestLibraryPhoto(image: ImageSource?)
     

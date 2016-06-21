@@ -80,12 +80,13 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCaptureSession(session)
     }
     
+    func setContinueButtonTitle(title: String) {
+        mediaPickerView.setContinueButtonTitle(title)
+    }
+    
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
-        
-        let transform = CGAffineTransform(deviceOrientation: orientation)
-        
         UIView.animateWithDuration(0.25) {
-            self.mediaPickerView.setControlsTransform(transform)
+            self.mediaPickerView.adjustForDeviceOrientation(orientation)
         }
     }
     
@@ -127,8 +128,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCameraView(view)
     }
     
-    func setColors(colors: MediaPickerColors) {
-        mediaPickerView.setColors(colors)
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+        mediaPickerView.setTheme(theme)
     }
     
     // MARK: - Dispose bag

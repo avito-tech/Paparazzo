@@ -8,7 +8,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    var selectedBorderColor: UIColor = .blueColor() {
+    var selectedBorderColor: UIColor? = .blueColor() {
         didSet {
             adjustBorderColor()
         }
@@ -57,6 +57,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private func adjustBorderColor() {
-        layer.borderColor = selectedBorderColor.CGColor
+        layer.borderColor = selectedBorderColor?.CGColor
     }
 }

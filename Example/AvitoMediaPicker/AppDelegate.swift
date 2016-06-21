@@ -11,12 +11,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        var colors = MediaPickerColors()
-        // Раскомментить для проверки кастомизации цветов модуля:
-//        colors.shutterButtonColor = .redColor()
-//        colors.mediaRibbonSelectionColor = .greenColor()
-//        colors.photoLibraryItemSelectionColor = .yellowColor()
-        
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
             ExampleAssemblyImpl().viewController(routerSeed: routerSeed)
         }

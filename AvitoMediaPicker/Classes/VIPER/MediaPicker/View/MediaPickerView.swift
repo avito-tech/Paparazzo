@@ -29,6 +29,11 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     private let mediaRibbonInteritemSpacing = CGFloat(7)
     
+    private let closeButtonSize = CGSize(width: 38, height: 38)
+    
+    private let continueButtonHeight = CGFloat(38)
+    private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    
     // MARK: - Helpers
     
     private let mediaRibbonDataSource = MediaRibbonDataSource()
@@ -61,15 +66,22 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonView.dataSource = mediaRibbonDataSource
         mediaRibbonView.delegate = self
         
+        closeButton.backgroundColor = .whiteColor()
+        closeButton.layer.cornerRadius = closeButtonSize.height / 2
+        
+        continueButton.backgroundColor = .whiteColor()
+        continueButton.layer.cornerRadius = continueButtonHeight / 2
+        continueButton.contentEdgeInsets = continueButtonContentInsets
+        
         addSubview(photoView)
         addSubview(mediaRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
+        addSubview(closeButton)
+        addSubview(continueButton)
         addSubview(flashView)
         
         setMode(.Camera)
-        setColors(MediaPickerColors())
-        setImages(MediaPickerImages())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -112,6 +124,14 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         )
 
         mediaRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
+        
+        closeButton.frame = CGRect(
+            origin: CGPoint(x: 8, y: 8),
+            size: closeButtonSize
+        )
+        
+        continueButton.top = 8
+        continueButton.right = bounds.right - 8
 
         flashView.frame = bounds
     }
@@ -224,10 +244,17 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         print("stopSpinnerForNewPhoto")
         // TODO
     }
+    
+    func adjustForDeviceOrientation(orientation: DeviceOrientation) {
+        let transform = CGAffineTransform(deviceOrientation: orientation)
+        setControlsTransform(transform)
+    }
 
     func setControlsTransform(transform: CGAffineTransform) {
         
         photoView.transform = transform
+        closeButton.transform = transform
+        continueButton.transform = transform
         
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
@@ -239,23 +266,28 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     func setCameraView(view: UIView) {
         cameraView?.removeFromSuperview()
         cameraView = view
-        addSubview(view)
+        insertSubview(view, belowSubview: closeButton)
     }
     
     func setCaptureSession(session: AVCaptureSession) {
         mediaRibbonDataSource.captureSession = session
     }
     
-    func setColors(colors: MediaPickerColors) {
-        cameraControlsView.setColors(colors)
-        photoControlsView.setColors(colors)
-        mediaRibbonDataSource.colors = colors
+    func setContinueButtonTitle(title: String) {
+        continueButton.setTitle(title, forState: .Normal)
+        continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
     }
     
-    func setImages(images: MediaPickerImages) {
-        cameraControlsView.setImages(images)
-        photoControlsView.setImages(images)
-        mediaRibbonDataSource.images = images
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+
+        cameraControlsView.setTheme(theme)
+        photoControlsView.setTheme(theme)
+        mediaRibbonDataSource.theme = theme
+
+        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
+        continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
+
+        closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
     }
     
     // MARK: - UICollectionViewDelegate

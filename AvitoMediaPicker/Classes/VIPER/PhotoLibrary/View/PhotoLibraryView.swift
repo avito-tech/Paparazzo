@@ -65,9 +65,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func setColors(colors: PhotoLibraryColors) {
+    func setTheme(theme: PhotoLibraryUITheme) {
         dataSource.additionalCellConfiguration = { cell, item in
-            cell.selectedBorderColor = colors.photoLibraryItemSelectionColor
+            cell.selectedBorderColor = theme.photoLibraryItemSelectionColor
         }
     }
     

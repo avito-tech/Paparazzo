@@ -37,6 +37,8 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     private func setUpView() {
         
+        view?.setContinueButtonTitle("Далее")
+        
         cameraModuleInput.getCaptureSession { [weak self] captureSession in
             if let captureSession = captureSession {
                 self?.view?.setCaptureSession(captureSession)

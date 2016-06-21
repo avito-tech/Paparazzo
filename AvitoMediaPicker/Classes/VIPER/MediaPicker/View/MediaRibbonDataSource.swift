@@ -17,9 +17,8 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    var colors = MediaPickerColors()
-    var images = MediaPickerImages()
-    
+    var theme: MediaPickerRootModuleUITheme?
+
     subscript(indexPath: NSIndexPath) -> MediaRibbonItem {
         if indexPath.item < mediaPickerItems.count {
             return .Photo(mediaPickerItems[indexPath.item])
@@ -80,7 +79,7 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         let item = mediaPickerItems[indexPath.item]
         
         if let cell = cell as? MediaRibbonCell {
-            cell.selectedBorderColor = colors.mediaRibbonSelectionColor
+            cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.customizeWithItem(item)
         }
         
@@ -101,8 +100,8 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     private func setUpCameraCell(cell: UICollectionViewCell) {
         if let cell = cell as? CameraCell, captureSession = captureSession {
-            cell.selectedBorderColor = colors.mediaRibbonSelectionColor
-            cell.setCameraIcon(images.returnToCameraIcon())
+            cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
+            cell.setCameraIcon(theme?.returnToCameraIcon)
             cell.setCaptureSession(captureSession)
         }
     }
