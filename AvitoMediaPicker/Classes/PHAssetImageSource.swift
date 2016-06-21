@@ -13,6 +13,32 @@ final class PHAssetImageSource: ImageSource {
     }
 
     // MARK: - AbstractImage
+    
+    func writeImageToUrl(url: NSURL, completion: Bool -> ()) {
+        
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .HighQualityFormat
+        
+        imageManager.requestImageDataForAsset(asset, options: options) { data, uti, orientation, info in
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
+            
+                var success = false
+                
+                let source = data.flatMap { CGImageSourceCreateWithData($0, nil) }
+                let destination = uti.flatMap { CGImageDestinationCreateWithURL(url, $0, 1, nil) }
+                
+                if let source = source, destination = destination {
+                    // TODO: может, надо юзать `CGImageDestinationAddImageAndMetadata`? Как создать `CGImageMetadata` из словаря `info`?
+                    CGImageDestinationAddImageFromSource(destination, source, 0, nil)
+                    success = CGImageDestinationFinalize(destination)
+                }
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(success)
+                }
+            }
+        }
+    }
 
     func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ()) {
 

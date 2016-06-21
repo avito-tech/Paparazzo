@@ -4,6 +4,8 @@ import CoreGraphics
 /// Позволяет оптимизировать память и абстрагировать источник картинки.
 public protocol ImageSource {
     
+    func writeImageToUrl(url: NSURL, completion: Bool -> ())
+    
     func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ())
     
     func imageFittingSize<T: InitializableWithCGImage>(
@@ -26,7 +28,6 @@ public enum ImageContentMode {
 }
 
 public extension ImageSource {
-    /// Convenience method
     public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, completion: T? -> ()) {
         imageFittingSize(size, contentMode: .AspectFill, completion: completion)
     }

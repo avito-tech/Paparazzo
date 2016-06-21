@@ -1,19 +1,19 @@
-import Foundation
-
 final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies
     
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
+    private let cameraModuleInput: CameraModuleInput
 
     weak var moduleOutput: MediaPickerModuleOutput?
     
     // MARK: - Init
     
-    init(interactor: MediaPickerInteractor, router: MediaPickerRouter) {
+    init(interactor: MediaPickerInteractor, router: MediaPickerRouter, cameraModuleInput: CameraModuleInput) {
         self.interactor = interactor
         self.router = router
+        self.cameraModuleInput = cameraModuleInput
     }
     
     weak var view: MediaPickerViewInput? {
@@ -25,23 +25,26 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     // MARK: - PhotoLibraryModuleOutput
     
     func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
-        // TODO
-        print("photoLibraryPickerDidFinishWithItems: \(selectedItems)")
+        
+        selectedItems.forEach { item in
+            self.view?.addItem(MediaPickerItem(image: item.image))
+        }
+        
+        router.focusOnCurrentModule()
     }
     
     // MARK: - Private
     
     private func setUpView() {
         
-        view?.setCameraUnavailableMessageVisible(true)
-        
-        interactor.isFlashAvailable { [weak self] flashAvailable in
-            self?.view?.setFlashButtonVisible(flashAvailable)
+        cameraModuleInput.getCaptureSession { [weak self] captureSession in
+            if let captureSession = captureSession {
+                self?.view?.setCaptureSession(captureSession)
+            }
         }
         
-        interactor.onCaptureSessionReady = { [weak self] session in
-            self?.view?.setCaptureSession(session)
-            self?.view?.setCameraUnavailableMessageVisible(false)
+        cameraModuleInput.isFlashAvailable { [weak self] flashAvailable in
+            self?.view?.setFlashButtonVisible(flashAvailable)
         }
         
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
@@ -53,7 +56,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onCameraVisibilityChange = { [weak self] isCameraVisible in
-            self?.interactor.setCameraOutputNeeded(isCameraVisible)
+            self?.cameraModuleInput.setCameraOutputNeeded(isCameraVisible)
         }
         
         view?.onPhotoLibraryButtonTap = { [weak self] in
@@ -65,31 +68,35 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             self?.view?.animateFlash()
             self?.view?.startSpinnerForNewPhoto()
             
-            self?.interactor.takePhoto { photo in
+            self?.cameraModuleInput.takePhoto { photo in
                 
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.view?.addPhotoRibbonItem(photo)
+                    self?.interactor.addItems([photo]) {
+                        self?.view?.addItem(photo)
+                    }
                 }
             }
         }
         
         view?.onFlashToggle = { [weak self] shouldEnableFlash in
-            self?.interactor.setFlashEnabled(shouldEnableFlash) { success in
+            self?.cameraModuleInput.setFlashEnabled(shouldEnableFlash) { success in
                 if !success {
                     self?.view?.setFlashButtonOn(!shouldEnableFlash)
                 }
             }
         }
         
-        view?.onPhotoSelect = { [weak self] photo in
-            self?.view?.setMode(.PhotoPreview(photo))
-        }
-        
-        view?.onRemoveButtonTap = {
-            // TODO
-            print("onRemoveButtonTap")
+        view?.onItemSelect = { [weak self] item in
+            
+            self?.view?.setMode(.PhotoPreview(item))
+            
+            self?.view?.onRemoveButtonTap = {
+                self?.interactor.removeItem(item) {
+                    self?.view?.removeItem(item)
+                }
+            }
         }
         
         view?.onCropButtonTap = { [weak self] in
@@ -97,7 +104,6 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onReturnToCameraTap = { [weak self] in
-            self?.view?.removeSelectionInPhotoRibbon()
             self?.view?.setMode(.Camera)
         }
     }
@@ -105,11 +111,14 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     // MARK: - Private
     
     private func showPhotoLibrary() {
-        router.showPhotoLibrary(moduleOutput: self)
+        interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
+            guard let strongSelf = self else { return }
+            strongSelf.router.showPhotoLibrary(maxItemsCount: maxItemsCount, moduleOutput: strongSelf)
+        }
     }
     
     private func showCroppingModule() {
-        let photo = NSNumber()  // TODO
-        router.showCroppingModule(photo: photo, moduleOutput: self)
+        // TODO
+//        router.showCroppingModule(photo: photo, moduleOutput: self)
     }
 }

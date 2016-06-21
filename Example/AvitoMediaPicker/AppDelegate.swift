@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  AvitoMediaPicker
-//
-//  Created by Andrey Yutkin on 05.06.16.
-//  Copyright © 2016 Avito. All rights reserved.
-//
-
 import UIKit
 import Marshroute
 import AvitoMediaPicker
@@ -19,12 +11,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
+        var colors = MediaPickerColors()
+        // Раскомментить для проверки кастомизации цветов модуля:
+//        colors.shutterButtonColor = .redColor()
+//        colors.mediaRibbonSelectionColor = .greenColor()
+//        colors.photoLibraryItemSelectionColor = .yellowColor()
+        
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
             
-            let assemblyFactory = AssemblyFactory()
+            let assemblyFactory = AssemblyFactory(colors: colors)
             let photoPickerAssembly = assemblyFactory.mediaPickerAssembly()
             
-            return photoPickerAssembly.viewController(moduleOutput: self, routerSeed: routerSeed)
+            return photoPickerAssembly.viewController(
+                maxItemsCount: 5,
+                moduleOutput: self,
+                routerSeed: routerSeed
+            )
         }
         
         window?.makeKeyAndVisible()

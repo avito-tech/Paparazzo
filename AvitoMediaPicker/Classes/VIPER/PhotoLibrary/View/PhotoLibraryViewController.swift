@@ -1,6 +1,6 @@
 import UIKit
 
-final class PhotoLibraryViewController: BaseViewControllerSwift, PhotoLibraryViewInput {
+final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput {
     
     private let photoLibraryView = PhotoLibraryView()
     
@@ -45,6 +45,18 @@ final class PhotoLibraryViewController: BaseViewControllerSwift, PhotoLibraryVie
     
     func scrollToBottom() {
         photoLibraryView.scrollToBottom()
+    }
+    
+    func setColors(colors: PhotoLibraryColors) {
+        photoLibraryView.setColors(colors)
+    }
+    
+    // MARK: - Dispose bag
+    
+    private var disposables = [AnyObject]()
+    
+    func addDisposable(object: AnyObject) {
+        disposables.append(object)
     }
     
     // MARK: - Private

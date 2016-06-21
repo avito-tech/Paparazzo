@@ -1,9 +1,11 @@
 import UIKit
 import AVFoundation
 
-final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewInput {
+final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     private let mediaPickerView = MediaPickerView()
+    
+    // MARK: - UIViewController
     
     override func loadView() {
         view = mediaPickerView
@@ -50,9 +52,9 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         set { mediaPickerView.onCameraVisibilityChange = newValue }
     }
     
-    var onPhotoSelect: (MediaPickerItem -> ())? {
-        get { return mediaPickerView.onPhotoSelect }
-        set { mediaPickerView.onPhotoSelect = newValue }
+    var onItemSelect: (MediaPickerItem -> ())? {
+        get { return mediaPickerView.onItemSelect }
+        set { mediaPickerView.onItemSelect = newValue }
     }
     
     var onRemoveButtonTap: (() -> ())? {
@@ -74,6 +76,10 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         mediaPickerView.setMode(mode)
     }
     
+    func setCaptureSession(session: AVCaptureSession) {
+        mediaPickerView.setCaptureSession(session)
+    }
+    
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
         
         let transform = CGAffineTransform(deviceOrientation: orientation)
@@ -81,10 +87,6 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         UIView.animateWithDuration(0.25) {
             self.mediaPickerView.setControlsTransform(transform)
         }
-    }
-    
-    func setCaptureSession(session: AVCaptureSession) {
-        mediaPickerView.setCaptureSession(session)
     }
     
     func setLatestLibraryPhoto(image: ImageSource?) {
@@ -103,12 +105,12 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         mediaPickerView.animateFlash()
     }
 
-    func addPhotoRibbonItem(photo: MediaPickerItem) {
-        mediaPickerView.addPhoto(photo)
+    func addItem(item: MediaPickerItem) {
+        mediaPickerView.addItem(item)
     }
     
-    func removeSelectionInPhotoRibbon() {
-        mediaPickerView.removeSelectionInPhotoRibbon()
+    func removeItem(item: MediaPickerItem) {
+        mediaPickerView.removeItem(item)
     }
     
     func startSpinnerForNewPhoto() {
@@ -119,7 +121,21 @@ final class MediaPickerViewController: BaseViewControllerSwift, MediaPickerViewI
         mediaPickerView.stopSpinnerForNewPhoto()
     }
     
-    func setCameraUnavailableMessageVisible(visible: Bool) {
-        // TODO
+    // MARK: - MediaPickerViewController
+    
+    func setCameraView(view: UIView) {
+        mediaPickerView.setCameraView(view)
+    }
+    
+    func setColors(colors: MediaPickerColors) {
+        mediaPickerView.setColors(colors)
+    }
+    
+    // MARK: - Dispose bag
+    
+    private var disposables = [AnyObject]()
+    
+    func addDisposable(object: AnyObject) {
+        disposables.append(object)
     }
 }

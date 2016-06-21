@@ -13,6 +13,16 @@ public protocol MediaPickerModuleOutput: class {
 }
 
 /// Главная модель, представляющая фотку в пикере
-public struct MediaPickerItem {
-    let image: ImageSource
+public struct MediaPickerItem: Equatable {
+    let identifier: String
+    public let image: ImageSource
+    
+    init(image: ImageSource) {
+        self.identifier = NSUUID().UUIDString
+        self.image = image
+    }
+}
+
+public func ==(item1: MediaPickerItem, item2: MediaPickerItem) -> Bool {
+    return item1.identifier == item2.identifier
 }

@@ -10,26 +10,26 @@ protocol MediaPickerViewInput: class {
     
     func setMode(mode: MediaPickerViewMode)
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
-
+    
     func setCaptureSession(session: AVCaptureSession)
+
     func setLatestLibraryPhoto(image: ImageSource?)
     
     func setFlashButtonVisible(visible: Bool)
     func setFlashButtonOn(isOn: Bool)
     func animateFlash()
     
-    func addPhotoRibbonItem(photo: MediaPickerItem)
-    func removeSelectionInPhotoRibbon()
-    
+    func addItem(photo: MediaPickerItem)
+    func removeItem(photo: MediaPickerItem)
+
+    // TODO: это по ходу не нужно будет
     func startSpinnerForNewPhoto()
     func stopSpinnerForNewPhoto()
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
     
-    func setCameraUnavailableMessageVisible(visible: Bool)
-    
     // MARK: - Actions in photo ribbon
-    var onPhotoSelect: (MediaPickerItem -> ())? { get set }
+    var onItemSelect: (MediaPickerItem -> ())? { get set }
     
     // MARK: - Camera actions
     var onPhotoLibraryButtonTap: (() -> ())? { get set }

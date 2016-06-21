@@ -10,8 +10,9 @@ final class CameraServiceImpl: CameraService {
     private struct Error: ErrorType {}
     
     private let output: AVCaptureStillImageOutput?
-    private let camera: AVCaptureDevice?
-    
+    private let backCamera: AVCaptureDevice?
+    private let frontCamera: AVCaptureDevice?
+
     // MARK: - Init
     
     init() {
@@ -22,9 +23,10 @@ final class CameraServiceImpl: CameraService {
             captureSession.sessionPreset = AVCaptureSessionPresetPhoto
             
             let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice]
-            let camera = videoDevices?.filter({ $0.position == .Back }).first
-            
-            let input = try AVCaptureDeviceInput(device: camera)
+            let backCamera = videoDevices?.filter({ $0.position == .Back }).first
+            let frontCamera = videoDevices?.filter({ $0.position == .Front }).first
+
+            let input = try AVCaptureDeviceInput(device: backCamera)
             
             let output = AVCaptureStillImageOutput()
             output.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
@@ -38,12 +40,14 @@ final class CameraServiceImpl: CameraService {
             
             captureSession.startRunning()
             
-            self.camera = camera
+            self.frontCamera = frontCamera
+            self.backCamera = backCamera
             self.output = output
             self.captureSession = captureSession
             
         } catch {
-            self.camera = nil
+            self.frontCamera = nil
+            self.backCamera = nil
             self.output = nil
             self.captureSession = nil
         }
@@ -59,13 +63,17 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
+    func switchToCamera(position: CameraPosition) {
+        // TODO
+    }
+    
     var isFlashAvailable: Bool {
-        return camera?.flashAvailable == true
+        return backCamera?.flashAvailable == true
     }
     
     func setFlashEnabled(enabled: Bool) -> Bool {
         
-        guard let camera = camera else { return false }
+        guard let camera = backCamera else { return false }
         
         do {
             try camera.lockForConfiguration()
@@ -86,12 +94,31 @@ final class CameraServiceImpl: CameraService {
             return
         }
         
+        if connection.supportsVideoOrientation {
+            connection.videoOrientation = avOrientationForCurrentDeviceOrientation()
+        }
+        
         output.captureStillImageAsynchronouslyFromConnection(connection) { [weak self] sampleBuffer, error in
             self?.savePhoto(sampleBuffer: sampleBuffer) { photo in
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(photo)
                 }
             }
+        }
+    }
+    
+    private func avOrientationForCurrentDeviceOrientation() -> AVCaptureVideoOrientation {
+        switch UIDevice.currentDevice().orientation {
+        case .Portrait:
+            return .Portrait
+        case .PortraitUpsideDown:
+            return .PortraitUpsideDown
+        case .LandscapeLeft:
+            return .LandscapeLeft
+        case .LandscapeRight:
+            return .LandscapeRight
+        default:
+            return .Portrait
         }
     }
     

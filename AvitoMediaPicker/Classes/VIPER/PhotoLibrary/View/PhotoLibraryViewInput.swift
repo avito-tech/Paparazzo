@@ -1,6 +1,6 @@
 import Foundation
 
-protocol PhotoLibraryViewInput: class, ViewLifecycleObservable {
+protocol PhotoLibraryViewInput: class {
     
     func setCellsData(items: [PhotoLibraryItemCellData])
     func setCanSelectMoreItems(canSelectMoreItems: Bool)

@@ -3,15 +3,22 @@ import Marshroute
 
 public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
     
+    private let colors: PhotoLibraryColors
+    
+    init(colors: PhotoLibraryColors) {
+        self.colors = colors
+    }
+    
     public func viewController(
-        moduleOutput moduleOutput: PhotoLibraryModuleOutput,
+        maxItemsCount maxItemsCount: Int?,
+        moduleOutput: PhotoLibraryModuleOutput,
         routerSeed: RouterSeed
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
         let interactor = PhotoLibraryInteractorImpl(
-            maxSelectedItemsCount: 5,   // TODO: брать откуда-нибудь (из конфига? с сервера?)
+            maxSelectedItemsCount: maxItemsCount,
             photoLibraryItemsService: photoLibraryItemsService
         )
         
@@ -24,6 +31,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         
         let viewController = PhotoLibraryViewController()
         viewController.addDisposable(presenter)
+        viewController.setColors(colors)
         
         presenter.view = viewController
         presenter.moduleOutput = moduleOutput

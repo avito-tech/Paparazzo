@@ -11,7 +11,9 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
   s.source_files = 'AvitoMediaPicker/Classes/**/*'
-  s.frameworks = 'UIKit', 'Photos'
+  s.resources = ['AvitoMediaPicker/Assets/Assets.xcassets']
+
+  s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices'
   s.dependency 'AvitoDesignKit', '0.0.6'
   s.dependency 'Marshroute'
 end

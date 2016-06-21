@@ -1,12 +1,12 @@
 import UIKit
-import AVFoundation
 import AvitoDesignKit
+import AVFoundation
 
 final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
-    private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    private var cameraView: UIView?
     private let photoView = UIImageView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
@@ -31,9 +31,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Helpers
     
-    private let mediaRibbonDataSource = CollectionViewDataSource<MediaRibbonCell>(
-        cellReuseIdentifier: MediaRibbonCell.reuseIdentifier
-    )
+    private let mediaRibbonDataSource = MediaRibbonDataSource()
     
     // MARK: - UIView
     
@@ -47,10 +45,6 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonView.backgroundColor = .whiteColor()
         mediaRibbonView.showsHorizontalScrollIndicator = false
         mediaRibbonView.showsVerticalScrollIndicator = false
-        mediaRibbonView.registerClass(
-            MediaRibbonCell.self,
-            forCellWithReuseIdentifier: mediaRibbonDataSource.cellReuseIdentifier
-        )
         
         super.init(frame: .zero)
         
@@ -62,10 +56,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         flashView.backgroundColor = .whiteColor()
         flashView.alpha = 0
         
-        mediaRibbonDataSource.onDataChanged = { [weak self] in
-            print("collectionViewDataSource.onDataChanged")
-            self?.mediaRibbonView.reloadData()
-        }
+        mediaRibbonDataSource.setUpInCollectionView(mediaRibbonView)
         
         mediaRibbonView.dataSource = mediaRibbonDataSource
         mediaRibbonView.delegate = self
@@ -77,6 +68,8 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         addSubview(flashView)
         
         setMode(.Camera)
+        setColors(MediaPickerColors())
+        setImages(MediaPickerImages())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -98,7 +91,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         let controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
         
         photoView.frame = cameraFrame
-        cameraPreviewLayer?.frame = cameraFrame
+        cameraView?.frame = cameraFrame
         
         cameraControlsView.layout(
             left: bounds.left,
@@ -141,7 +134,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())?
-    var onPhotoSelect: (MediaPickerItem -> ())?
+    var onItemSelect: (MediaPickerItem -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
@@ -169,6 +162,12 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
             cameraControlsView.hidden = false
             photoControlsView.hidden = true
             
+            mediaRibbonView.selectItemAtIndexPath(
+                mediaRibbonDataSource.indexPathForCameraCell(),
+                animated: false,
+                scrollPosition: .None
+            )
+            
             setCameraVisible(true)
         
         case .PhotoPreview(let photo):
@@ -180,16 +179,6 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
             
             setCameraVisible(false)
         }
-    }
-    
-    func setCaptureSession(session: AVCaptureSession) {
-        
-        let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
-        cameraPreviewLayer.backgroundColor = UIColor.blackColor().CGColor
-        cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        layer.insertSublayer(cameraPreviewLayer, atIndex: 0)
-        
-        self.cameraPreviewLayer = cameraPreviewLayer
     }
     
     func setLatestPhotoLibraryItemImage(image: ImageSource?) {
@@ -218,15 +207,19 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func addPhoto(photo: MediaPickerItem) {
-        mediaRibbonDataSource.addItem(photo)
+    func addItem(item: MediaPickerItem) {
+        mediaRibbonDataSource.addItem(item)
+    }
+
+    func removeItem(item: MediaPickerItem) {
+        mediaRibbonDataSource.removeItem(item)
     }
     
-    func removeSelectionInPhotoRibbon() {
-        mediaRibbonView.indexPathsForSelectedItems()?.forEach { indexPath in
-            mediaRibbonView.deselectItemAtIndexPath(indexPath, animated: false)
-        }
-    }
+//    func removeSelectionInPhotoRibbon() {
+//        mediaRibbonView.indexPathsForSelectedItems()?.forEach { indexPath in
+//            mediaRibbonView.deselectItemAtIndexPath(indexPath, animated: false)
+//        }
+//    }
     
     func startSpinnerForNewPhoto() {
         print("startSpinnerForNewPhoto")
@@ -240,6 +233,8 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
 
     func setControlsTransform(transform: CGAffineTransform) {
         
+        photoView.transform = transform
+        
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
         
@@ -247,11 +242,37 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonLayout.invalidateLayout()
     }
     
+    func setCameraView(view: UIView) {
+        cameraView?.removeFromSuperview()
+        cameraView = view
+        addSubview(view)
+    }
+    
+    func setCaptureSession(session: AVCaptureSession) {
+        mediaRibbonDataSource.captureSession = session
+    }
+    
+    func setColors(colors: MediaPickerColors) {
+        cameraControlsView.setColors(colors)
+        photoControlsView.setColors(colors)
+        mediaRibbonDataSource.colors = colors
+    }
+    
+    func setImages(images: MediaPickerImages) {
+        cameraControlsView.setImages(images)
+        photoControlsView.setImages(images)
+        mediaRibbonDataSource.images = images
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let photo = mediaRibbonDataSource.item(atIndexPath: indexPath)
-        onPhotoSelect?(photo)
+        switch mediaRibbonDataSource[indexPath] {
+        case .Photo(let photo):
+            onItemSelect?(photo)
+        case .Camera:
+            onReturnToCameraTap?()
+        }
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -264,7 +285,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - Private
     
     private func setCameraVisible(visible: Bool) {
-        cameraPreviewLayer?.hidden = !visible
+        cameraView?.hidden = !visible
         onCameraVisibilityChange?(isCameraVisible: visible)
     }
 }

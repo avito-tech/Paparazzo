@@ -16,9 +16,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: PhotoLibraryLayout())
     
-    private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(
-        cellReuseIdentifier: PhotoLibraryItemCell.reuseIdentifier
-    )
+    private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
     // MARK: - Init
     
@@ -64,6 +62,12 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     func scrollToBottom() {
         dispatch_async(dispatch_get_main_queue()) { [collectionView] in
             collectionView.scrollToBottom()
+        }
+    }
+    
+    func setColors(colors: PhotoLibraryColors) {
+        dataSource.additionalCellConfiguration = { cell, item in
+            cell.selectedBorderColor = colors.photoLibraryItemSelectionColor
         }
     }
     
