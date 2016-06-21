@@ -71,10 +71,20 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         closeButton.backgroundColor = .whiteColor()
         closeButton.layer.cornerRadius = closeButtonSize.height / 2
         closeButton.size = closeButtonSize
+        closeButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
         
         continueButton.backgroundColor = .whiteColor()
         continueButton.layer.cornerRadius = continueButtonHeight / 2
         continueButton.contentEdgeInsets = continueButtonContentInsets
+        continueButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
         
         addSubview(photoView)
         addSubview(mediaRibbonView)
@@ -224,6 +234,9 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
+    var onCloseButtonTap: (() -> ())?
+    var onContinueButtonTap: (() -> ())?
+    
     var onCameraToggleButtonTap: (() -> ())? {
         get { return cameraControlsView.onCameraToggleButtonTap }
         set { cameraControlsView.onCameraToggleButtonTap = newValue }
@@ -344,5 +357,13 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
             width: rightButton.width,
             height: rightButton.height
         )
+    }
+    
+    @objc private func onCloseButtonTap(sender: UIButton) {
+        onCloseButtonTap?()
+    }
+    
+    @objc private func onContinueButtonTap(sender: UIButton) {
+        onContinueButtonTap?()
     }
 }

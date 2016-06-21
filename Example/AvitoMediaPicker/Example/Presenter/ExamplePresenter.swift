@@ -48,6 +48,7 @@ final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput 
     }
 
     func photoPickerDidCancel() {
+        router.focusOnCurrentModule()
     }
 
     // MARK: - PhotoLibraryModuleOutput

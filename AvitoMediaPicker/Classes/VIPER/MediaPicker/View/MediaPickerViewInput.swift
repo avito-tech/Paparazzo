@@ -29,6 +29,9 @@ protocol MediaPickerViewInput: class {
     func startSpinnerForNewPhoto()
     func stopSpinnerForNewPhoto()
     
+    var onCloseButtonTap: (() -> ())? { get set }
+    var onContinueButtonTap: (() -> ())? { get set }
+    
     var onCameraToggleButtonTap: (() -> ())? { get set }
     func setCameraToggleButtonVisible(visible: Bool)
     

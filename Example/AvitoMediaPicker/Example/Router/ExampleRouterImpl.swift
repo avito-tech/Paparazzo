@@ -10,7 +10,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
     func showMediaPicker(maxItemsCount: Int?, output: MediaPickerModuleOutput) {
         
-        pushViewControllerDerivedFrom { routerSeed in
+        presentModalViewControllerDerivedFrom { routerSeed in
         
             let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
             

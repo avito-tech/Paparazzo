@@ -113,6 +113,10 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         view?.onCameraToggleButtonTap = { [weak self] in
             self?.cameraModuleInput.toggleCamera()
         }
+        
+        view?.onCloseButtonTap = { [weak self] in
+            self?.moduleOutput?.photoPickerDidCancel()
+        }
     }
     
     // MARK: - Private

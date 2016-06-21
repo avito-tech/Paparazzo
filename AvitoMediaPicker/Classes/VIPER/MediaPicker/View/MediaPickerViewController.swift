@@ -106,6 +106,16 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.animateFlash()
     }
     
+    var onCloseButtonTap: (() -> ())? {
+        get { return mediaPickerView.onCloseButtonTap }
+        set { mediaPickerView.onCloseButtonTap = newValue }
+    }
+    
+    var onContinueButtonTap: (() -> ())? {
+        get { return mediaPickerView.onContinueButtonTap }
+        set { mediaPickerView.onContinueButtonTap = newValue }
+    }
+    
     var onCameraToggleButtonTap: (() -> ())? {
         get { return mediaPickerView.onCameraToggleButtonTap }
         set { mediaPickerView.onCameraToggleButtonTap = newValue }
