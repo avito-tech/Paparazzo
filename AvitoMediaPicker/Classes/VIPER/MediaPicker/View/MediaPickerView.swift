@@ -18,6 +18,8 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     private let mediaRibbonLayout = MediaRibbonLayout()
     private let mediaRibbonView: UICollectionView
     
+    private var closeAndContinueButtonsSwapped = false
+    
     // MARK: - Constants
     
     private let cameraAspectRatio = CGFloat(4) / CGFloat(3)
@@ -68,6 +70,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         
         closeButton.backgroundColor = .whiteColor()
         closeButton.layer.cornerRadius = closeButtonSize.height / 2
+        closeButton.size = closeButtonSize
         
         continueButton.backgroundColor = .whiteColor()
         continueButton.layer.cornerRadius = continueButtonHeight / 2
@@ -125,13 +128,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
 
         mediaRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
         
-        closeButton.frame = CGRect(
-            origin: CGPoint(x: 8, y: 8),
-            size: closeButtonSize
-        )
-        
-        continueButton.top = 8
-        continueButton.right = bounds.right - 8
+        layoutCloseAndContinueButtons()
 
         flashView.frame = bounds
     }
@@ -246,11 +243,10 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
+        
         let transform = CGAffineTransform(deviceOrientation: orientation)
-        setControlsTransform(transform)
-    }
-
-    func setControlsTransform(transform: CGAffineTransform) {
+        
+        closeAndContinueButtonsSwapped = (orientation == .LandscapeLeft)
         
         photoView.transform = transform
         closeButton.transform = transform
@@ -313,5 +309,25 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     private func setCameraVisible(visible: Bool) {
         cameraView?.hidden = !visible
         onCameraVisibilityChange?(isCameraVisible: visible)
+    }
+    
+    private func layoutCloseAndContinueButtons() {
+        
+        let leftButton = closeAndContinueButtonsSwapped ? continueButton : closeButton
+        let rightButton = closeAndContinueButtonsSwapped ? closeButton : continueButton
+        
+        leftButton.frame = CGRect(
+            x: 8,
+            y: 8,
+            width: leftButton.width,
+            height: leftButton.height
+        )
+        
+        rightButton.frame = CGRect(
+            x: bounds.right - 8 - rightButton.width,
+            y: 8,
+            width: rightButton.width,
+            height: rightButton.height
+        )
     }
 }
