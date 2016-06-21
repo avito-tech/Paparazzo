@@ -3,7 +3,7 @@ import Marshroute
 import AvitoMediaPicker
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -18,23 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
         window?.makeKeyAndVisible()
         
         return true
-    }
-
-    // MARK: - PhotoPickerModuleOutput
-
-    func photoPickerDidAddItem(item: MediaPickerItem) {
-    }
-
-    func photoPickerDidUpdateItem(item: MediaPickerItem) {
-    }
-
-    func photoPickerDidRemoveItem(item: MediaPickerItem) {
-    }
-
-    func photoPickerDidFinish() {
-    }
-
-    func photoPickerDidCancel() {
     }
 }
 
