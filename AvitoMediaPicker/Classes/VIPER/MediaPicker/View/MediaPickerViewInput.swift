@@ -24,6 +24,8 @@ protocol MediaPickerViewInput: class {
     func addItem(item: MediaPickerItem)
     func removeItem(item: MediaPickerItem)
     func selectItem(item: MediaPickerItem)
+    
+    func setShutterButtonEnabled(enabled: Bool)
 
     // TODO: это по ходу не нужно будет
     func startSpinnerForNewPhoto()

@@ -121,6 +121,10 @@ final class CameraControlsView: UIView {
         cameraToggleButton.hidden = !visible
     }
     
+    func setShutterButtonEnabled(enabled: Bool) {
+        shutterButton.enabled = enabled
+    }
+    
     func setTheme(theme: MediaPickerRootModuleUITheme) {
 
         shutterButton.backgroundColor = theme.shutterButtonColor

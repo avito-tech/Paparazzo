@@ -138,6 +138,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onItemSelect?(item)
     }
     
+    func setShutterButtonEnabled(enabled: Bool) {
+        mediaPickerView.setShutterButtonEnabled(enabled)
+    }
+    
     func startSpinnerForNewPhoto() {
         mediaPickerView.startSpinnerForNewPhoto()
     }

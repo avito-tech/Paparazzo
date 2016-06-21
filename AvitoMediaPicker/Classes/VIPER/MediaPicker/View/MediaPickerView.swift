@@ -246,6 +246,10 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         cameraControlsView.setCameraToggleButtonVisible(visible)
     }
     
+    func setShutterButtonEnabled(enabled: Bool) {
+        cameraControlsView.setShutterButtonEnabled(enabled)
+    }
+    
     func addItem(item: MediaPickerItem) {
         mediaRibbonDataSource.addItem(item)
     }

@@ -72,11 +72,15 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         
         view?.onShutterButtonTap = { [weak self] in
             
+            // Если фоткать со вспышкой, это занимает много времени, и если несколько раз подряд быстро тапнуть на кнопку,
+            // он будет потом еще долго фоткать :) Поэтому временно блокируем кнопку.
+            self?.view?.setShutterButtonEnabled(false)
             self?.view?.animateFlash()
             self?.view?.startSpinnerForNewPhoto()
             
             self?.cameraModuleInput.takePhoto { photo in
                 
+                self?.view?.setShutterButtonEnabled(true)
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
