@@ -28,7 +28,9 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
     }
     
     deinit {
-        EAGLContext.setCurrentContext(nil)
+        if EAGLContext.currentContext() == eaglContext {
+            EAGLContext.setCurrentContext(nil)
+        }
     }
     
     func setUpWithAVCaptureSession(session: AVCaptureSession) -> UIView {
