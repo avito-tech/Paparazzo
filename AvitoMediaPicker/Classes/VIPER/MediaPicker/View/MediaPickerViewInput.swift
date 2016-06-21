@@ -21,8 +21,9 @@ protocol MediaPickerViewInput: class {
     func setFlashButtonOn(isOn: Bool)
     func animateFlash()
     
-    func addItem(photo: MediaPickerItem)
-    func removeItem(photo: MediaPickerItem)
+    func addItem(item: MediaPickerItem)
+    func removeItem(item: MediaPickerItem)
+    func selectItem(item: MediaPickerItem)
 
     // TODO: это по ходу не нужно будет
     func startSpinnerForNewPhoto()

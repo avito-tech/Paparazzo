@@ -232,6 +232,12 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonDataSource.removeItem(item)
     }
     
+    func selectItem(item: MediaPickerItem) {
+        if let indexPath = mediaRibbonDataSource.indexPathForItem(item) {
+            mediaRibbonView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
+    }
+    
     func startSpinnerForNewPhoto() {
         print("startSpinnerForNewPhoto")
         // TODO

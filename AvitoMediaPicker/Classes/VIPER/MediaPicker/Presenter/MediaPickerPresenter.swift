@@ -91,13 +91,9 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onItemSelect = { [weak self] item in
-            
             self?.view?.setMode(.PhotoPreview(item))
-            
             self?.view?.onRemoveButtonTap = {
-                self?.interactor.removeItem(item) {
-                    self?.view?.removeItem(item)
-                }
+                self?.removeItem(item)
             }
         }
         
@@ -111,6 +107,20 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     }
     
     // MARK: - Private
+    
+    private func removeItem(item: MediaPickerItem) {
+        
+        interactor.removeItem(item) { [weak self] adjacentItem in
+            
+            self?.view?.removeItem(item)
+            
+            if let adjacentItem = adjacentItem {
+                self?.view?.selectItem(adjacentItem)
+            } else {
+                self?.view?.setMode(.Camera)
+            }
+        }
+    }
     
     private func showPhotoLibrary() {
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in

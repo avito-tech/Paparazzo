@@ -53,6 +53,10 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         self.collectionView = collectionView
     }
     
+    func indexPathForItem(item: MediaPickerItem) -> NSIndexPath? {
+        return mediaPickerItems.indexOf(item).flatMap { NSIndexPath(forItem: $0, inSection: 0) }
+    }
+    
     func indexPathForCameraCell() -> NSIndexPath {
         return NSIndexPath(forItem: mediaPickerItems.count, inSection: 0)
     }

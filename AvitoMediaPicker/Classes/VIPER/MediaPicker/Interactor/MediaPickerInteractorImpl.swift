@@ -32,11 +32,23 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion()
     }
     
-    func removeItem(item: MediaPickerItem, completion: () -> ()) {
+    func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?) -> ()) {
+        
+        var adjacentItem: MediaPickerItem?
+        
         if let index = items.indexOf(item) {
+        
             items.removeAtIndex(index)
+            
+            // Соседним считаем элемент, следующий за удаленным, иначе — предыдущий, если он есть
+            if index < items.count {
+                adjacentItem = items[index]
+            } else if index > 0 {
+                adjacentItem = items[index - 1]
+            }
         }
-        completion()
+        
+        completion(adjacentItem: adjacentItem)
     }
     
     func numberOfItemsAvailableForAdding(completion: Int? -> ()) {

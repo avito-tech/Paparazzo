@@ -114,6 +114,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.removeItem(item)
     }
     
+    func selectItem(item: MediaPickerItem) {
+        mediaPickerView.selectItem(item)
+        onItemSelect?(item)
+    }
+    
     func startSpinnerForNewPhoto() {
         mediaPickerView.startSpinnerForNewPhoto()
     }
