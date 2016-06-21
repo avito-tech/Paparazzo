@@ -1,9 +1,12 @@
-import UIKit.UICollectionView
+import UIKit
 import AVFoundation
 
 final class CameraCell: UICollectionViewCell {
     
     private let button = UIButton()
+    
+    private let cameraOutputBinder = CameraOutputGLKBinder()
+    private var cameraOutputView: UIView?
     
     var selectedBorderColor: UIColor? = .blueColor() {
         didSet {
@@ -17,16 +20,11 @@ final class CameraCell: UICollectionViewCell {
     
     func setCaptureSession(session: AVCaptureSession) {
         
-        // TODO
+        let view = cameraOutputBinder.setUpWithAVCaptureSession(session)
+        view.clipsToBounds = true
         
-        // This steals camera output from the main view
-//        let capturePreviewLayer = AVCaptureVideoPreviewLayer(session: session)
-//        capturePreviewLayer.backgroundColor = UIColor.blackColor().CGColor
-//        capturePreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-//        layer.insertSublayer(capturePreviewLayer, atIndex: 0)
-//
-//        self.capturePreviewLayer?.removeFromSuperlayer()
-//        self.capturePreviewLayer = capturePreviewLayer
+        insertSubview(view, belowSubview: button)
+        cameraOutputView = view
     }
     
     // MARK: - Init
@@ -59,6 +57,7 @@ final class CameraCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        cameraOutputView?.frame = bounds
         button.frame = bounds
     }
     
