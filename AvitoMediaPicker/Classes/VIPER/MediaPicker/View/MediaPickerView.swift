@@ -2,7 +2,7 @@ import UIKit
 import AvitoDesignKit
 import AVFoundation
 
-final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
+final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     // MARK: - Subviews
     
@@ -289,6 +289,10 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         
         mediaRibbonLayout.itemsTransform = transform
         mediaRibbonLayout.invalidateLayout()
+        
+        if let cameraCell = mediaRibbonDataSource.cameraCell() {
+            cameraCell.setCameraIconTransform(transform)
+        }
     }
     
     func setCameraView(view: UIView) {
@@ -329,11 +333,19 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    // MARK: - UICollectionViewDelegateFlowLayout
+    // MARK: - MediaRibbonLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let height = mediaRibbonView.height - mediaRibbonInsets.top - mediaRibbonInsets.bottom
         return CGSize(width: height, height: height)
+    }
+    
+    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool {
+        if case .Photo(_) = mediaRibbonDataSource[indexPath] {
+            return true
+        } else {
+            return false
+        }
     }
     
     // MARK: - Private

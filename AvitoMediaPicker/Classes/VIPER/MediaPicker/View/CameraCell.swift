@@ -18,6 +18,10 @@ final class CameraCell: UICollectionViewCell {
         button.setImage(icon, forState: .Normal)
     }
     
+    func setCameraIconTransform(transform: CGAffineTransform) {
+        button.transform = transform
+    }
+    
     func setCaptureSession(session: AVCaptureSession) {
         
         let view = cameraOutputBinder.setUpWithAVCaptureSession(session)
