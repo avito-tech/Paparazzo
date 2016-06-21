@@ -224,6 +224,15 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
+    var onCameraToggleButtonTap: (() -> ())? {
+        get { return cameraControlsView.onCameraToggleButtonTap }
+        set { cameraControlsView.onCameraToggleButtonTap = newValue }
+    }
+    
+    func setCameraToggleButtonVisible(visible: Bool) {
+        cameraControlsView.setCameraToggleButtonVisible(visible)
+    }
+    
     func addItem(item: MediaPickerItem) {
         mediaRibbonDataSource.addItem(item)
     }

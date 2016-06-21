@@ -34,6 +34,14 @@ final class CameraPresenter: CameraModuleInput {
         interactor.setFlashEnabled(enabled, completion: completion)
     }
     
+    func canToggleCamera(completion: Bool -> ()) {
+        interactor.canToggleCamera(completion)
+    }
+    
+    func toggleCamera() {
+        interactor.toggleCamera()
+    }
+    
     func takePhoto(completion: MediaPickerItem? -> ()) {
         interactor.takePhoto(completion)
     }

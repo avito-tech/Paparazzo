@@ -49,6 +49,10 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             self?.view?.setFlashButtonVisible(flashAvailable)
         }
         
+        cameraModuleInput.canToggleCamera { [weak self] canToggleCamera in
+            self?.view?.setCameraToggleButtonVisible(canToggleCamera)
+        }
+        
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }
@@ -103,6 +107,10 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         
         view?.onReturnToCameraTap = { [weak self] in
             self?.view?.setMode(.Camera)
+        }
+        
+        view?.onCameraToggleButtonTap = { [weak self] in
+            self?.cameraModuleInput.toggleCamera()
         }
     }
     

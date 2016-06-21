@@ -36,6 +36,14 @@ final class CameraInteractorImpl: CameraInteractor {
         completion(success: cameraService.setFlashEnabled(enabled))
     }
     
+    func canToggleCamera(completion: Bool -> ()) {
+        cameraService.canToggleCamera(completion)
+    }
+    
+    func toggleCamera() {
+        cameraService.toggleCamera()
+    }
+    
     func takePhoto(completion: MediaPickerItem? -> ()) {
         cameraService.takePhoto { photo in
             completion(photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url)) })

@@ -105,6 +105,15 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     func animateFlash() {
         mediaPickerView.animateFlash()
     }
+    
+    var onCameraToggleButtonTap: (() -> ())? {
+        get { return mediaPickerView.onCameraToggleButtonTap }
+        set { mediaPickerView.onCameraToggleButtonTap = newValue }
+    }
+    
+    func setCameraToggleButtonVisible(visible: Bool) {
+        mediaPickerView.setCameraToggleButtonVisible(visible)
+    }
 
     func addItem(item: MediaPickerItem) {
         mediaPickerView.addItem(item)

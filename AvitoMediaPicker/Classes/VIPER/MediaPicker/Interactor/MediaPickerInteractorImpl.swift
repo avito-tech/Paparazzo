@@ -39,6 +39,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         if let index = items.indexOf(item) {
         
             items.removeAtIndex(index)
+            // TODO: хорошо бы если это фото с камеры, удалять также и файл из папки temp (куда они сейчас складываются)
             
             // Соседним считаем элемент, следующий за удаленным, иначе — предыдущий, если он есть
             if index < items.count {

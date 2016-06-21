@@ -12,6 +12,7 @@ final class CameraServiceImpl: CameraService {
     private let output: AVCaptureStillImageOutput?
     private let backCamera: AVCaptureDevice?
     private let frontCamera: AVCaptureDevice?
+    private var activeCamera: AVCaptureDevice?
 
     // MARK: - Init
     
@@ -23,7 +24,10 @@ final class CameraServiceImpl: CameraService {
             captureSession.sessionPreset = AVCaptureSessionPresetPhoto
             
             let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice]
+            
             let backCamera = videoDevices?.filter({ $0.position == .Back }).first
+            try CameraServiceImpl.configureCamera(backCamera)
+            
             let frontCamera = videoDevices?.filter({ $0.position == .Front }).first
 
             let input = try AVCaptureDeviceInput(device: backCamera)
@@ -42,6 +46,7 @@ final class CameraServiceImpl: CameraService {
             
             self.frontCamera = frontCamera
             self.backCamera = backCamera
+            self.activeCamera = backCamera
             self.output = output
             self.captureSession = captureSession
             
@@ -63,8 +68,42 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
-    func switchToCamera(position: CameraPosition) {
-        // TODO
+    func canToggleCamera(completion: Bool -> ()) {
+        completion(frontCamera != nil && backCamera != nil)
+    }
+    
+    func toggleCamera() {
+        
+        guard let captureSession = captureSession else { return }
+        
+        do {
+        
+            let targetCamera = (activeCamera == backCamera) ? frontCamera : backCamera
+            let newInput = try AVCaptureDeviceInput(device: targetCamera)
+            
+            captureSession.beginConfiguration()
+            
+            let currentInputs = captureSession.inputs as? [AVCaptureInput]
+            currentInputs?.forEach { captureSession.removeInput($0) }
+            
+            // Always reset preset before testing canAddInput because preset will cause it to return NO
+            captureSession.sessionPreset = AVCaptureSessionPresetHigh
+            
+            if captureSession.canAddInput(newInput) {
+                captureSession.addInput(newInput)
+            }
+            
+            captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+            
+            try CameraServiceImpl.configureCamera(targetCamera)
+            
+            captureSession.commitConfiguration()
+            
+            activeCamera = targetCamera
+
+        } catch {
+            print("Couldn't toggle camera: \(error)")
+        }
     }
     
     var isFlashAvailable: Bool {
@@ -160,6 +199,12 @@ final class CameraServiceImpl: CameraService {
         }
         
         return nil
+    }
+    
+    private static func configureCamera(camera: AVCaptureDevice?) throws {
+        try camera?.lockForConfiguration()
+        camera?.subjectAreaChangeMonitoringEnabled = true
+        camera?.unlockForConfiguration()
     }
     
     private func randomTemporaryPhotoFileUrl() -> NSURL? {

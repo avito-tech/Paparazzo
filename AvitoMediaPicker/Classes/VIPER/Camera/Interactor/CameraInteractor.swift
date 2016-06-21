@@ -8,6 +8,9 @@ protocol CameraInteractor: class {
     func isFlashAvailable(completion: Bool -> ())
     func setFlashEnabled(enabled: Bool, completion: (success: Bool) -> ())
     
+    func canToggleCamera(completion: Bool -> ())
+    func toggleCamera()
+    
     func takePhoto(completion: MediaPickerItem? -> ())
     
     // Set nil handler to stop observing
