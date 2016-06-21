@@ -22,7 +22,7 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     
     private let cameraAspectRatio = CGFloat(4) / CGFloat(3)
     
-    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4 / 3 = 53,333...
+    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
     private let controlsExtendedHeight = CGFloat(83)
     
     private let mediaRibbonMinHeight = CGFloat(72)
@@ -214,12 +214,6 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     func removeItem(item: MediaPickerItem) {
         mediaRibbonDataSource.removeItem(item)
     }
-    
-//    func removeSelectionInPhotoRibbon() {
-//        mediaRibbonView.indexPathsForSelectedItems()?.forEach { indexPath in
-//            mediaRibbonView.deselectItemAtIndexPath(indexPath, animated: false)
-//        }
-//    }
     
     func startSpinnerForNewPhoto() {
         print("startSpinnerForNewPhoto")

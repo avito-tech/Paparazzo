@@ -1,0 +1,3 @@
+protocol ExampleInteractor: class {
+
+}

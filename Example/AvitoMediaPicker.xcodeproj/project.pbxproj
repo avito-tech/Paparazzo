@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		0D4E9DDC6625893D74182636 /* Pods_AvitoMediaPicker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B72127001160FFE91837314D /* Pods_AvitoMediaPicker_Example.framework */; };
+		250DEF3A1D190AE500995D7F /* ExampleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF2A1D190AE500995D7F /* ExampleAssembly.swift */; };
+		250DEF3B1D190AE500995D7F /* ExampleAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF2B1D190AE500995D7F /* ExampleAssemblyImpl.swift */; };
+		250DEF3C1D190AE500995D7F /* ExampleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF2D1D190AE500995D7F /* ExampleInteractor.swift */; };
+		250DEF3D1D190AE500995D7F /* ExampleInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF2E1D190AE500995D7F /* ExampleInteractorImpl.swift */; };
+		250DEF3F1D190AE500995D7F /* ExamplePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF321D190AE500995D7F /* ExamplePresenter.swift */; };
+		250DEF401D190AE500995D7F /* ExampleRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF341D190AE500995D7F /* ExampleRouter.swift */; };
+		250DEF411D190AE500995D7F /* ExampleRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF351D190AE500995D7F /* ExampleRouterImpl.swift */; };
+		250DEF421D190AE500995D7F /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF371D190AE500995D7F /* ExampleView.swift */; };
+		250DEF431D190AE500995D7F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF381D190AE500995D7F /* ExampleViewController.swift */; };
+		250DEF441D190AE500995D7F /* ExampleViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF391D190AE500995D7F /* ExampleViewInput.swift */; };
 		257A1E971D14097100498EB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E921D14097100498EB2 /* AppDelegate.swift */; };
 		257A1E981D14097100498EB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257A1E931D14097100498EB2 /* Assets.xcassets */; };
 		257A1E991D14097100498EB2 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E951D14097100498EB2 /* MarshrouteFacade.swift */; };
@@ -27,6 +37,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		250DEF2A1D190AE500995D7F /* ExampleAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAssembly.swift; sourceTree = "<group>"; };
+		250DEF2B1D190AE500995D7F /* ExampleAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAssemblyImpl.swift; sourceTree = "<group>"; };
+		250DEF2D1D190AE500995D7F /* ExampleInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleInteractor.swift; sourceTree = "<group>"; };
+		250DEF2E1D190AE500995D7F /* ExampleInteractorImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleInteractorImpl.swift; sourceTree = "<group>"; };
+		250DEF321D190AE500995D7F /* ExamplePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamplePresenter.swift; sourceTree = "<group>"; };
+		250DEF341D190AE500995D7F /* ExampleRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleRouter.swift; sourceTree = "<group>"; };
+		250DEF351D190AE500995D7F /* ExampleRouterImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleRouterImpl.swift; sourceTree = "<group>"; };
+		250DEF371D190AE500995D7F /* ExampleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
+		250DEF381D190AE500995D7F /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
+		250DEF391D190AE500995D7F /* ExampleViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewInput.swift; sourceTree = "<group>"; };
 		257A1E921D14097100498EB2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		257A1E931D14097100498EB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		257A1E951D14097100498EB2 /* MarshrouteFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarshrouteFacade.swift; sourceTree = "<group>"; };
@@ -67,6 +87,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		250DEF281D190AE500995D7F /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				250DEF291D190AE500995D7F /* Assembly */,
+				250DEF2C1D190AE500995D7F /* Interactor */,
+				250DEF311D190AE500995D7F /* Presenter */,
+				250DEF331D190AE500995D7F /* Router */,
+				250DEF361D190AE500995D7F /* View */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+		250DEF291D190AE500995D7F /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				250DEF2A1D190AE500995D7F /* ExampleAssembly.swift */,
+				250DEF2B1D190AE500995D7F /* ExampleAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		250DEF2C1D190AE500995D7F /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				250DEF2D1D190AE500995D7F /* ExampleInteractor.swift */,
+				250DEF2E1D190AE500995D7F /* ExampleInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		250DEF311D190AE500995D7F /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				250DEF321D190AE500995D7F /* ExamplePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		250DEF331D190AE500995D7F /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				250DEF341D190AE500995D7F /* ExampleRouter.swift */,
+				250DEF351D190AE500995D7F /* ExampleRouterImpl.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		250DEF361D190AE500995D7F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				250DEF371D190AE500995D7F /* ExampleView.swift */,
+				250DEF381D190AE500995D7F /* ExampleViewController.swift */,
+				250DEF391D190AE500995D7F /* ExampleViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		257A1E941D14097100498EB2 /* MarshrouteHelpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,9 +197,10 @@
 			isa = PBXGroup;
 			children = (
 				257A1E921D14097100498EB2 /* AppDelegate.swift */,
-				257A1E931D14097100498EB2 /* Assets.xcassets */,
-				257A1E941D14097100498EB2 /* MarshrouteHelpers */,
 				257A1E961D14097100498EB2 /* NavigationController.swift */,
+				257A1E931D14097100498EB2 /* Assets.xcassets */,
+				250DEF281D190AE500995D7F /* Example */,
+				257A1E941D14097100498EB2 /* MarshrouteHelpers */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
 			name = "Example for AvitoMediaPicker";
@@ -363,9 +441,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				250DEF3B1D190AE500995D7F /* ExampleAssemblyImpl.swift in Sources */,
+				250DEF401D190AE500995D7F /* ExampleRouter.swift in Sources */,
+				250DEF431D190AE500995D7F /* ExampleViewController.swift in Sources */,
+				250DEF411D190AE500995D7F /* ExampleRouterImpl.swift in Sources */,
+				250DEF441D190AE500995D7F /* ExampleViewInput.swift in Sources */,
+				250DEF3C1D190AE500995D7F /* ExampleInteractor.swift in Sources */,
+				250DEF3D1D190AE500995D7F /* ExampleInteractorImpl.swift in Sources */,
+				250DEF3A1D190AE500995D7F /* ExampleAssembly.swift in Sources */,
+				250DEF3F1D190AE500995D7F /* ExamplePresenter.swift in Sources */,
 				257A1E971D14097100498EB2 /* AppDelegate.swift in Sources */,
 				257A1E9A1D14097100498EB2 /* NavigationController.swift in Sources */,
 				257A1E991D14097100498EB2 /* MarshrouteFacade.swift in Sources */,
+				250DEF421D190AE500995D7F /* ExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

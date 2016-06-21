@@ -18,15 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
 //        colors.photoLibraryItemSelectionColor = .yellowColor()
         
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
-            
-            let assemblyFactory = AssemblyFactory(colors: colors)
-            let photoPickerAssembly = assemblyFactory.mediaPickerAssembly()
-            
-            return photoPickerAssembly.viewController(
-                maxItemsCount: 5,
-                moduleOutput: self,
-                routerSeed: routerSeed
-            )
+            ExampleAssemblyImpl().viewController(routerSeed: routerSeed)
         }
         
         window?.makeKeyAndVisible()
