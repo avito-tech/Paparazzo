@@ -2,6 +2,8 @@ import Foundation
 
 protocol PhotoLibraryInteractor: class {
     
+    func setMaxSelectedItemsCount(count: Int?)
+    
     func observeItems(handler: (items: [PhotoLibraryItem], selectionState: PhotoLibraryItemSelectionState) -> ())
     
     func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())

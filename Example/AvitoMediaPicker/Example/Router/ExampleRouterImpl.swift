@@ -8,7 +8,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
     // MARK: - ExampleRouter
     
-    func showMediaPicker(maxItemsCount: Int?, output: MediaPickerModuleOutput) {
+    func showMediaPicker(maxItemsCount maxItemsCount: Int?, output: MediaPickerModuleOutput) {
         
         presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
         
@@ -23,17 +23,16 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
     }
     
-    func showPhotoLibrary(maxItemsCount: Int?, output: PhotoLibraryModuleOutput) {
+    func showPhotoLibrary(configuration: PhotoLibraryModule -> ()) {
         
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.photoLibraryAssembly()
+            let (viewController, moduleInput) = assembly.module(routerSeed: routerSeed)
             
-            return assembly.viewController(
-                maxItemsCount: maxItemsCount,
-                moduleOutput: output,
-                routerSeed: routerSeed
-            )
+            configuration(moduleInput)
+            
+            return viewController
         }
     }
 }

@@ -1,4 +1,4 @@
-final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
+final class MediaPickerPresenter: MediaPickerModuleInput, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies
     
@@ -20,19 +20,6 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         didSet {
             setUpView()
         }
-    }
-    
-    // MARK: - PhotoLibraryModuleOutput
-    
-    func photoLibraryPickerDidFinishWithItems(photoLibraryItems: [PhotoLibraryItem]) {
-        
-        let mediaPickerItems = photoLibraryItems.map {
-            MediaPickerItem(identifier: $0.identifier, image: $0.image)
-        }
-        
-        addItems(mediaPickerItems)
-        
-        router.focusOnCurrentModule()
     }
     
     // MARK: - Private
@@ -153,9 +140,22 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     }
     
     private func showPhotoLibrary() {
+        
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
-            guard let strongSelf = self else { return }
-            strongSelf.router.showPhotoLibrary(maxItemsCount: maxItemsCount, moduleOutput: strongSelf)
+            
+            self?.router.showPhotoLibrary { module in
+                
+                module.setMaxItemsCount(maxItemsCount)
+                
+                module.onFinish = { photoLibraryItems in
+                    
+                    self?.addItems(photoLibraryItems.map {
+                        MediaPickerItem(identifier: $0.identifier, image: $0.image)
+                    })
+                    
+                    self?.router.focusOnCurrentModule()
+                }
+            }
         }
     }
     

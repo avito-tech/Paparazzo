@@ -4,7 +4,7 @@ import Photos
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     private var selectedItems = [PhotoLibraryItem]()
-    private let maxSelectedItemsCount: Int?
+    private var maxSelectedItemsCount: Int?
     
     // MARK: - Dependencies
     
@@ -18,6 +18,10 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     }
     
     // MARK: - PhotoLibraryInteractor
+    
+    func setMaxSelectedItemsCount(count: Int?) {
+        maxSelectedItemsCount = count
+    }
     
     func observeItems(handler: (items: [PhotoLibraryItem], selectionState: PhotoLibraryItemSelectionState) -> ()) {
         

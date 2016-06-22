@@ -2,7 +2,7 @@ import Marshroute
 
 protocol MediaPickerRouter: class, RouterFocusable {
     
-    func showPhotoLibrary(maxItemsCount maxItemsCount: Int?, moduleOutput: PhotoLibraryModuleOutput)
+    func showPhotoLibrary(_: PhotoLibraryModule -> ())
     
     func showCroppingModule(
         photo photo: MediaPickerItem,

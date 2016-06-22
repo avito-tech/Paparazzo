@@ -1,6 +1,6 @@
 import AvitoMediaPicker
 
-final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput {
+final class ExamplePresenter: MediaPickerModuleOutput {
     
     private let interactor: ExampleInteractor
     private let router: ExampleRouter
@@ -24,12 +24,11 @@ final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput 
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
             guard let strongSelf = self else { return }
-            self?.router.showMediaPicker(5, output: strongSelf)
+            self?.router.showMediaPicker(maxItemsCount: 5, output: strongSelf)
         }
         
         view?.onShowPhotoLibraryButtonTap = { [weak self] in
-            guard let strongSelf = self else { return }
-            self?.router.showPhotoLibrary(5, output: strongSelf)
+            self?.showPhotoLibrary()
         }
     }
     
@@ -56,9 +55,19 @@ final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput 
     func mediaPickerDidCancel() {
         router.focusOnCurrentModule()
     }
-
-    // MARK: - PhotoLibraryModuleOutput
-
-    func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
+    
+    // MARK: - Private
+    
+    func showPhotoLibrary() {
+        interactor.photoLibraryItems { [weak self] selectedItems in
+            self?.router.showPhotoLibrary { module in
+                module.setMaxItemsCount(5)
+                module.selectItems(selectedItems)
+                module.onFinish = { items in
+                    self?.interactor.setPhotoLibraryItems(selectedItems)
+                    self?.router.focusOnCurrentModule()
+                }
+            }
+        }
     }
 }
