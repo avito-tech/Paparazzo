@@ -28,10 +28,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     var onFinish: ((selectedItems: [PhotoLibraryItem]) -> ())?
     
-    func setMaxItemsCount(count: Int?) {
-        interactor.setMaxSelectedItemsCount(count)
-    }
-    
     func selectItems(items: [PhotoLibraryItem]) {
         // TODO
     }

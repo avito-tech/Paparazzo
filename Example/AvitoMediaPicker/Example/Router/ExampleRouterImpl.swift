@@ -23,12 +23,18 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
     }
     
-    func showPhotoLibrary(configuration: PhotoLibraryModule -> ()) {
-        
+    func showPhotoLibrary(
+        maxSelectedItemsCount maxSelectedItemsCount: Int?,
+        configuration: PhotoLibraryModule -> ()
+    ) {
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.photoLibraryAssembly()
-            let (viewController, moduleInput) = assembly.module(routerSeed: routerSeed)
+            
+            let (viewController, moduleInput) = assembly.module(
+                maxSelectedItemsCount: maxSelectedItemsCount,
+                routerSeed: routerSeed
+            )
             
             configuration(moduleInput)
             

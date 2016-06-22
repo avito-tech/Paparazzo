@@ -60,8 +60,7 @@ final class ExamplePresenter: MediaPickerModuleOutput {
     
     func showPhotoLibrary() {
         interactor.photoLibraryItems { [weak self] selectedItems in
-            self?.router.showPhotoLibrary { module in
-                module.setMaxItemsCount(5)
+            self?.router.showPhotoLibrary(maxSelectedItemsCount: 5) { module in
                 module.selectItems(selectedItems)
                 module.onFinish = { items in
                     self?.interactor.setPhotoLibraryItems(selectedItems)
