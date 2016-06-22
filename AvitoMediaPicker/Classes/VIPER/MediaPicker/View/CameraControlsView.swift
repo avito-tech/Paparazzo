@@ -89,7 +89,7 @@ final class CameraControlsView: UIView {
         
         cameraToggleButton.sizeToFit()
         cameraToggleButton.centerY = flashButton.centerY
-        cameraToggleButton.right = flashButton.left - 20    // TODO: проставлено наобум
+        cameraToggleButton.right = flashButton.left - 25
         
         photoView.size = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.left = bounds.left + insets.left
