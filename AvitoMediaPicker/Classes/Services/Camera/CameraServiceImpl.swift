@@ -81,23 +81,22 @@ final class CameraServiceImpl: CameraService {
             let targetCamera = (activeCamera == backCamera) ? frontCamera : backCamera
             let newInput = try AVCaptureDeviceInput(device: targetCamera)
             
-            captureSession.beginConfiguration()
-            
-            let currentInputs = captureSession.inputs as? [AVCaptureInput]
-            currentInputs?.forEach { captureSession.removeInput($0) }
-            
-            // Always reset preset before testing canAddInput because preset will cause it to return NO
-            captureSession.sessionPreset = AVCaptureSessionPresetHigh
-            
-            if captureSession.canAddInput(newInput) {
-                captureSession.addInput(newInput)
+            try captureSession.configure {
+                
+                let currentInputs = captureSession.inputs as? [AVCaptureInput]
+                currentInputs?.forEach { captureSession.removeInput($0) }
+                
+                // Always reset preset before testing canAddInput because preset will cause it to return NO
+                captureSession.sessionPreset = AVCaptureSessionPresetHigh
+                
+                if captureSession.canAddInput(newInput) {
+                    captureSession.addInput(newInput)
+                }
+                
+                captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+                
+                try CameraServiceImpl.configureCamera(targetCamera)
             }
-            
-            captureSession.sessionPreset = AVCaptureSessionPresetPhoto
-            
-            try CameraServiceImpl.configureCamera(targetCamera)
-            
-            captureSession.commitConfiguration()
             
             activeCamera = targetCamera
 

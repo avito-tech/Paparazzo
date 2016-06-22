@@ -2,9 +2,9 @@ import AVFoundation
 
 extension AVCaptureSession {
     
-    func configure(configuration: () -> ()) throws {
+    func configure(@noescape configuration: () throws -> ()) throws {
         try beginConfiguration()
-        configuration()
+        try configuration()
         commitConfiguration()
     }
 }
