@@ -138,6 +138,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onItemSelect?(item)
     }
     
+    func setCameraButtonVisible(visible: Bool) {
+        mediaPickerView.setCameraButtonVisible(visible)
+    }
+    
     func setShutterButtonEnabled(enabled: Bool) {
         mediaPickerView.setShutterButtonEnabled(enabled)
     }

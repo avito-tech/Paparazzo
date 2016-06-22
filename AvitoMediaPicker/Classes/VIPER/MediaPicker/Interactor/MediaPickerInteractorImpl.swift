@@ -27,12 +27,12 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         latestLibraryPhotoProvider.observePhoto(handler)
     }
     
-    func addItems(items: [MediaPickerItem], completion: () -> ()) {
+    func addItems(items: [MediaPickerItem], completion: (canAddItems: Bool) -> ()) {
         self.items.appendContentsOf(items)
-        completion()
+        completion(canAddItems: canAddItems())
     }
     
-    func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?) -> ()) {
+    func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?, canAddItems: Bool) -> ()) {
         
         var adjacentItem: MediaPickerItem?
         
@@ -49,7 +49,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
         }
         
-        completion(adjacentItem: adjacentItem)
+        completion(adjacentItem: adjacentItem, canAddItems: canAddItems())
     }
     
     func items(completion: [MediaPickerItem] -> ()) {
@@ -58,5 +58,11 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     func numberOfItemsAvailableForAdding(completion: Int? -> ()) {
         completion(maxItemsCount.flatMap { $0 - items.count })
+    }
+    
+    // MARK: - Private 
+    
+    private func canAddItems() -> Bool {
+        return maxItemsCount.flatMap { self.items.count < $0 } ?? true
     }
 }

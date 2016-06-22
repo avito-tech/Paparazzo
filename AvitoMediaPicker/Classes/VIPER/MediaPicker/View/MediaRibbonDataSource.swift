@@ -19,6 +19,12 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
+    var cameraCellVisible: Bool = true {
+        didSet {
+            collectionView?.reloadData()
+        }
+    }
+    
     func setTheme(theme: MediaPickerRootModuleUITheme) {
         self.theme = theme
     }
@@ -79,7 +85,7 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mediaPickerItems.count + 1
+        return mediaPickerItems.count + (cameraCellVisible ? 1 : 0)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

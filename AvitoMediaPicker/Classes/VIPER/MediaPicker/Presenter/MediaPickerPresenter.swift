@@ -79,7 +79,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.addItems([photo])
+                    self?.addItems([photo], fromCamera: true)
                 }
             }
         }
@@ -122,18 +122,27 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         }
     }
     
-    private func addItems(items: [MediaPickerItem]) {
-        interactor.addItems(items) { [weak self] in
+    private func addItems(items: [MediaPickerItem], fromCamera: Bool) {
+        
+        interactor.addItems(items) { [weak self] canAddItems in
+            
             self?.view?.addItems(items)
+            self?.view?.setCameraButtonVisible(canAddItems)
+        
+            if let lastItem = items.last where fromCamera && !canAddItems {
+                self?.view?.selectItem(lastItem)
+            }
+            
             self?.onItemsAdd?(items)
         }
     }
     
     private func removeItem(item: MediaPickerItem) {
         
-        interactor.removeItem(item) { [weak self] adjacentItem in
+        interactor.removeItem(item) { [weak self] adjacentItem, canAddItems in
             
             self?.view?.removeItem(item)
+            self?.view?.setCameraButtonVisible(canAddItems)
             
             if let adjacentItem = adjacentItem {
                 self?.view?.selectItem(adjacentItem)
@@ -153,10 +162,11 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
                 
                 module.onFinish = { photoLibraryItems in
                     
-                    self?.addItems(photoLibraryItems.map {
+                    let mediaPickerItems = photoLibraryItems.map {
                         MediaPickerItem(identifier: $0.identifier, image: $0.image)
-                    })
+                    }
                     
+                    self?.addItems(mediaPickerItems, fromCamera: false)
                     self?.router.focusOnCurrentModule()
                 }
             }
