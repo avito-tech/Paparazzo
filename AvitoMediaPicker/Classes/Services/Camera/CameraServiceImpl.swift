@@ -151,10 +151,10 @@ final class CameraServiceImpl: CameraService {
             return .Portrait
         case .PortraitUpsideDown:
             return .PortraitUpsideDown
-        case .LandscapeLeft:
-            return .LandscapeLeft
-        case .LandscapeRight:
-            return .LandscapeRight
+        case .LandscapeLeft:        // да-да
+            return .LandscapeRight  // все именно так
+        case .LandscapeRight:       // иначе получаются перевертыши
+            return .LandscapeLeft   // rotation is hard on iOS (c)
         default:
             return .Portrait
         }
