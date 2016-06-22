@@ -1,12 +1,10 @@
-final class MediaPickerPresenter: MediaPickerModuleInput, ImageCroppingModuleOutput {
+final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies
     
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
     private let cameraModuleInput: CameraModuleInput
-
-    weak var moduleOutput: MediaPickerModuleOutput?
     
     // MARK: - Init
     
@@ -22,6 +20,14 @@ final class MediaPickerPresenter: MediaPickerModuleInput, ImageCroppingModuleOut
         }
     }
     
+    // MARK: - MediaPickerModule
+
+    var onItemsAdd: ([MediaPickerItem] -> ())?
+    var onItemUpdate: (MediaPickerItem -> ())?
+    var onItemRemove: (MediaPickerItem -> ())?
+    var onFinish: ([MediaPickerItem] -> ())?
+    var onCancel: (() -> ())?
+
     // MARK: - Private
     
     private func setUpView() {
@@ -106,12 +112,12 @@ final class MediaPickerPresenter: MediaPickerModuleInput, ImageCroppingModuleOut
         }
         
         view?.onCloseButtonTap = { [weak self] in
-            self?.moduleOutput?.mediaPickerDidCancel()
+            self?.onCancel?()
         }
         
         view?.onContinueButtonTap = { [weak self] in
             self?.interactor.items { items in
-                self?.moduleOutput?.mediaPickerDidFinish(withItems: items)
+                self?.onFinish?(items)
             }
         }
     }
@@ -119,7 +125,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, ImageCroppingModuleOut
     private func addItems(items: [MediaPickerItem]) {
         interactor.addItems(items) { [weak self] in
             self?.view?.addItems(items)
-            self?.moduleOutput?.mediaPickerDidAddItems(items)
+            self?.onItemsAdd?(items)
         }
     }
     
@@ -135,7 +141,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, ImageCroppingModuleOut
                 self?.view?.setMode(.Camera)
             }
             
-            self?.moduleOutput?.mediaPickerDidRemoveItem(item)
+            self?.onItemRemove?(item)
         }
     }
     
