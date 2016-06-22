@@ -290,9 +290,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         mediaRibbonLayout.itemsTransform = transform
         mediaRibbonLayout.invalidateLayout()
         
-        if let cameraCell = mediaRibbonDataSource.cameraCell() {
-            cameraCell.setCameraIconTransform(transform)
-        }
+        mediaRibbonDataSource.cameraIconTransform = transform
     }
     
     func setCameraView(view: UIView) {

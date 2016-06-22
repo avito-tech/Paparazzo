@@ -61,8 +61,10 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         return NSIndexPath(forItem: mediaPickerItems.count, inSection: 0)
     }
     
-    func cameraCell() -> CameraCell? {
-        return collectionView?.cellForItemAtIndexPath(indexPathForCameraCell()) as? CameraCell
+    var cameraIconTransform = CGAffineTransformIdentity {
+        didSet {
+            cameraCell()?.setCameraIconTransform(cameraIconTransform)
+        }
     }
     
     // MARK: - UICollectionViewDataSource
@@ -100,6 +102,10 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         return cell
     }
     
+    private func cameraCell() -> CameraCell? {
+        return collectionView?.cellForItemAtIndexPath(indexPathForCameraCell()) as? CameraCell
+    }
+    
     private func updateCameraCell() {
         if let cell = collectionView?.cellForItemAtIndexPath(indexPathForCameraCell()) {
             setUpCameraCell(cell)
@@ -110,6 +116,7 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         if let cell = cell as? CameraCell, captureSession = captureSession {
             cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.setCameraIcon(theme?.returnToCameraIcon)
+            cell.setCameraIconTransform(cameraIconTransform)
             cell.setCaptureSession(captureSession)
         }
     }
