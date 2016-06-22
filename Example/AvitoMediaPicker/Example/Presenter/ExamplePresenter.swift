@@ -35,19 +35,25 @@ final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput 
     
     // MARK: - MediaPickerModuleOutput
 
-    func photoPickerDidAddItem(item: MediaPickerItem) {
+    func mediaPickerDidAddItems(items: [MediaPickerItem]) {
+        print("mediaPickerDidAddItems")
     }
 
-    func photoPickerDidUpdateItem(item: MediaPickerItem) {
+    func mediaPickerDidUpdateItem(item: MediaPickerItem) {
+        print("mediaPickerDidUpdateItem")
     }
 
-    func photoPickerDidRemoveItem(item: MediaPickerItem) {
+    func mediaPickerDidRemoveItem(item: MediaPickerItem) {
+        print("mediaPickerDidRemoveItem")
     }
 
-    func photoPickerDidFinish() {
+    func mediaPickerDidFinish(withItems items: [MediaPickerItem]) {
+        print("media picker did finish with \(items.count) items:")
+        items.forEach { print($0) }
+        router.focusOnCurrentModule()
     }
 
-    func photoPickerDidCancel() {
+    func mediaPickerDidCancel() {
         router.focusOnCurrentModule()
     }
 

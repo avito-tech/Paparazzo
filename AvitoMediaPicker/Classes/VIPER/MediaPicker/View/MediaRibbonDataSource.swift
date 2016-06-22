@@ -9,6 +9,8 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     private let MediaRibbonCellReuseId = "MediaRibbonCell"
     private let CameraCellReuseId = "CameraCell"
     
+    private var theme: MediaPickerRootModuleUITheme?
+    
     // MARK: - MediaRibbonDataSource
     
     var captureSession: AVCaptureSession? {
@@ -17,7 +19,9 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    var theme: MediaPickerRootModuleUITheme?
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+        self.theme = theme
+    }
 
     subscript(indexPath: NSIndexPath) -> MediaRibbonItem {
         if indexPath.item < mediaPickerItems.count {
@@ -27,11 +31,16 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    func addItem(item: MediaPickerItem) {
+    func addItems(items: [MediaPickerItem]) {
+        
         collectionView?.performBatchUpdates({
-            let indexPath = NSIndexPath(forItem: self.mediaPickerItems.count, inSection: 0)
-            self.collectionView?.insertItemsAtIndexPaths([indexPath])
-            self.mediaPickerItems.append(item)
+            
+            let insertedIndexes = self.mediaPickerItems.count ..< self.mediaPickerItems.count + items.count
+            let indexPaths = insertedIndexes.map { NSIndexPath(forItem: $0, inSection: 0) }
+            
+            self.collectionView?.insertItemsAtIndexPaths(indexPaths)
+            self.mediaPickerItems.appendContentsOf(items)
+            
         }, completion: nil)
     }
     

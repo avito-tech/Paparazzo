@@ -250,8 +250,8 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         cameraControlsView.setShutterButtonEnabled(enabled)
     }
     
-    func addItem(item: MediaPickerItem) {
-        mediaRibbonDataSource.addItem(item)
+    func addItems(items: [MediaPickerItem]) {
+        mediaRibbonDataSource.addItems(items)
     }
 
     func removeItem(item: MediaPickerItem) {
@@ -265,12 +265,12 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     }
     
     func startSpinnerForNewPhoto() {
-        print("startSpinnerForNewPhoto")
+        debugPrint("startSpinnerForNewPhoto")
         // TODO
     }
     
     func stopSpinnerForNewPhoto() {
-        print("stopSpinnerForNewPhoto")
+        debugPrint("stopSpinnerForNewPhoto")
         // TODO
     }
     
@@ -312,7 +312,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
 
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
-        mediaRibbonDataSource.theme = theme
+        mediaRibbonDataSource.setTheme(theme)
 
         continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont

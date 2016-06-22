@@ -49,7 +49,7 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
                     }
                 }
             } catch {
-                print("Couldn't configure AVCaptureSession: \(error)")
+                debugPrint("Couldn't configure AVCaptureSession: \(error)")
             }
             
             dispatch_async(dispatch_get_main_queue()) {
@@ -78,7 +78,7 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
         // we want to maintain the aspect radio of the screen size, so we clip the video image
         var drawRect = sourceExtent
         
-        if (sourceAspect > previewAspect) {
+        if sourceAspect > previewAspect {
             // use full height of the video image, and center crop the width
             drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0
             drawRect.size.width = drawRect.size.height * previewAspect
@@ -124,12 +124,5 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
         view.bindDrawable()
         
         viewBounds = CGRect(x: 0, y: 0, width: view.drawableWidth, height: view.drawableHeight)
-        
-        dispatch_async(dispatch_get_main_queue()) { [view] in
-            let transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
-            
-            view.transform = transform
-            view.frame = view.frame
-        }
     }
 }

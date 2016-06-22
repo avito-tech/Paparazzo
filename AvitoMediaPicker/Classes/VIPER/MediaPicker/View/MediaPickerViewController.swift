@@ -125,8 +125,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCameraToggleButtonVisible(visible)
     }
 
-    func addItem(item: MediaPickerItem) {
-        mediaPickerView.addItem(item)
+    func addItems(items: [MediaPickerItem]) {
+        mediaPickerView.addItems(items)
     }
     
     func removeItem(item: MediaPickerItem) {

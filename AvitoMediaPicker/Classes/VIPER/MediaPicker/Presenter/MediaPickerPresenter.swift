@@ -24,11 +24,13 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     // MARK: - PhotoLibraryModuleOutput
     
-    func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
+    func photoLibraryPickerDidFinishWithItems(photoLibraryItems: [PhotoLibraryItem]) {
         
-        selectedItems.forEach { item in
-            self.view?.addItem(MediaPickerItem(image: item.image))
+        let mediaPickerItems = photoLibraryItems.map {
+            MediaPickerItem(identifier: $0.identifier, image: $0.image)
         }
+        
+        addItems(mediaPickerItems)
         
         router.focusOnCurrentModule()
     }
@@ -84,9 +86,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.interactor.addItems([photo]) {
-                        self?.view?.addItem(photo)
-                    }
+                    self?.addItems([photo])
                 }
             }
         }
@@ -119,11 +119,22 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onCloseButtonTap = { [weak self] in
-            self?.moduleOutput?.photoPickerDidCancel()
+            self?.moduleOutput?.mediaPickerDidCancel()
+        }
+        
+        view?.onContinueButtonTap = { [weak self] in
+            self?.interactor.items { items in
+                self?.moduleOutput?.mediaPickerDidFinish(withItems: items)
+            }
         }
     }
     
-    // MARK: - Private
+    private func addItems(items: [MediaPickerItem]) {
+        interactor.addItems(items) { [weak self] in
+            self?.view?.addItems(items)
+            self?.moduleOutput?.mediaPickerDidAddItems(items)
+        }
+    }
     
     private func removeItem(item: MediaPickerItem) {
         
@@ -136,6 +147,8 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             } else {
                 self?.view?.setMode(.Camera)
             }
+            
+            self?.moduleOutput?.mediaPickerDidRemoveItem(item)
         }
     }
     

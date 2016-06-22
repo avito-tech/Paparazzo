@@ -4,12 +4,12 @@ public protocol MediaPickerModuleInput: class {
 
 public protocol MediaPickerModuleOutput: class {
     
-    func photoPickerDidAddItem(item: MediaPickerItem)
-    func photoPickerDidUpdateItem(item: MediaPickerItem)  // crop/apply filter
-    func photoPickerDidRemoveItem(item: MediaPickerItem)
+    func mediaPickerDidAddItems(items: [MediaPickerItem])
+    func mediaPickerDidUpdateItem(item: MediaPickerItem)  // crop/apply filter
+    func mediaPickerDidRemoveItem(item: MediaPickerItem)
     
-    func photoPickerDidFinish()
-    func photoPickerDidCancel()
+    func mediaPickerDidFinish(withItems items: [MediaPickerItem])
+    func mediaPickerDidCancel()
 }
 
 /// Главная модель, представляющая фотку в пикере
@@ -17,8 +17,8 @@ public struct MediaPickerItem: Equatable {
     let identifier: String
     public let image: ImageSource
     
-    init(image: ImageSource) {
-        self.identifier = NSUUID().UUIDString
+    init(identifier: String = NSUUID().UUIDString, image: ImageSource) {
+        self.identifier = identifier
         self.image = image
     }
 }

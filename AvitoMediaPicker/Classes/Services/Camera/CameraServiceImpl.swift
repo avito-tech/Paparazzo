@@ -101,7 +101,7 @@ final class CameraServiceImpl: CameraService {
             activeCamera = targetCamera
 
         } catch {
-            print("Couldn't toggle camera: \(error)")
+            debugPrint("Couldn't toggle camera: \(error)")
         }
     }
     
