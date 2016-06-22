@@ -32,11 +32,28 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion()
     }
     
-    func removeItem(item: MediaPickerItem, completion: () -> ()) {
+    func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?) -> ()) {
+        
+        var adjacentItem: MediaPickerItem?
+        
         if let index = items.indexOf(item) {
+        
             items.removeAtIndex(index)
+            // TODO: хорошо бы если это фото с камеры, удалять также и файл из папки temp (куда они сейчас складываются)
+            
+            // Соседним считаем элемент, следующий за удаленным, иначе — предыдущий, если он есть
+            if index < items.count {
+                adjacentItem = items[index]
+            } else if index > 0 {
+                adjacentItem = items[index - 1]
+            }
         }
-        completion()
+        
+        completion(adjacentItem: adjacentItem)
+    }
+    
+    func items(completion: [MediaPickerItem] -> ()) {
+        completion(items)
     }
     
     func numberOfItemsAvailableForAdding(completion: Int? -> ()) {

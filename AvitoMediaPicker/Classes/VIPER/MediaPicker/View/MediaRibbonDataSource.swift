@@ -9,6 +9,8 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     private let MediaRibbonCellReuseId = "MediaRibbonCell"
     private let CameraCellReuseId = "CameraCell"
     
+    private var theme: MediaPickerRootModuleUITheme?
+    
     // MARK: - MediaRibbonDataSource
     
     var captureSession: AVCaptureSession? {
@@ -17,9 +19,10 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    var colors = MediaPickerColors()
-    var images = MediaPickerImages()
-    
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+        self.theme = theme
+    }
+
     subscript(indexPath: NSIndexPath) -> MediaRibbonItem {
         if indexPath.item < mediaPickerItems.count {
             return .Photo(mediaPickerItems[indexPath.item])
@@ -28,11 +31,16 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    func addItem(item: MediaPickerItem) {
+    func addItems(items: [MediaPickerItem]) {
+        
         collectionView?.performBatchUpdates({
-            let indexPath = NSIndexPath(forItem: self.mediaPickerItems.count, inSection: 0)
-            self.collectionView?.insertItemsAtIndexPaths([indexPath])
-            self.mediaPickerItems.append(item)
+            
+            let insertedIndexes = self.mediaPickerItems.count ..< self.mediaPickerItems.count + items.count
+            let indexPaths = insertedIndexes.map { NSIndexPath(forItem: $0, inSection: 0) }
+            
+            self.collectionView?.insertItemsAtIndexPaths(indexPaths)
+            self.mediaPickerItems.appendContentsOf(items)
+            
         }, completion: nil)
     }
     
@@ -54,8 +62,18 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         self.collectionView = collectionView
     }
     
+    func indexPathForItem(item: MediaPickerItem) -> NSIndexPath? {
+        return mediaPickerItems.indexOf(item).flatMap { NSIndexPath(forItem: $0, inSection: 0) }
+    }
+    
     func indexPathForCameraCell() -> NSIndexPath {
         return NSIndexPath(forItem: mediaPickerItems.count, inSection: 0)
+    }
+    
+    var cameraIconTransform = CGAffineTransformIdentity {
+        didSet {
+            cameraCell()?.setCameraIconTransform(cameraIconTransform)
+        }
     }
     
     // MARK: - UICollectionViewDataSource
@@ -80,7 +98,7 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         let item = mediaPickerItems[indexPath.item]
         
         if let cell = cell as? MediaRibbonCell {
-            cell.selectedBorderColor = colors.mediaRibbonSelectionColor
+            cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.customizeWithItem(item)
         }
         
@@ -93,6 +111,10 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
         return cell
     }
     
+    private func cameraCell() -> CameraCell? {
+        return collectionView?.cellForItemAtIndexPath(indexPathForCameraCell()) as? CameraCell
+    }
+    
     private func updateCameraCell() {
         if let cell = collectionView?.cellForItemAtIndexPath(indexPathForCameraCell()) {
             setUpCameraCell(cell)
@@ -101,8 +123,9 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     private func setUpCameraCell(cell: UICollectionViewCell) {
         if let cell = cell as? CameraCell, captureSession = captureSession {
-            cell.selectedBorderColor = colors.mediaRibbonSelectionColor
-            cell.setCameraIcon(images.returnToCameraIcon())
+            cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
+            cell.setCameraIcon(theme?.returnToCameraIcon)
+            cell.setCameraIconTransform(cameraIconTransform)
             cell.setCaptureSession(captureSession)
         }
     }

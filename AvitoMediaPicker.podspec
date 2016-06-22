@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'AvitoMediaPicker'
   s.module_name            = 'AvitoMediaPicker'
-  s.version                = '0.0.1'
+  s.version                = '0.0.2'
   s.summary                = 'Avito Media Picker by Avito'
   s.homepage               = 'http://stash.msk.avito.ru/projects/MA/repos/avito-ios-media-picker'
   s.license                = 'Avito'
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source_files = 'AvitoMediaPicker/Classes/**/*'
   s.resources = ['AvitoMediaPicker/Assets/Assets.xcassets']
 
-  s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices'
+  s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices', 'GLKit', 'OpenGLES'
   s.dependency 'AvitoDesignKit', '0.0.6'
   s.dependency 'Marshroute'
 end

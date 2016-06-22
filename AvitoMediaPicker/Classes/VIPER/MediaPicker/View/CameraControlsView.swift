@@ -89,7 +89,7 @@ final class CameraControlsView: UIView {
         
         cameraToggleButton.sizeToFit()
         cameraToggleButton.centerY = flashButton.centerY
-        cameraToggleButton.right = flashButton.left - 20    // TODO: проставлено наобум
+        cameraToggleButton.right = flashButton.left - 24
         
         photoView.size = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.left = bounds.left + insets.left
@@ -117,16 +117,22 @@ final class CameraControlsView: UIView {
         flashButton.selected = isOn
     }
     
-    func setColors(colors: MediaPickerColors) {
-        shutterButton.backgroundColor = colors.shutterButtonColor
+    func setCameraToggleButtonVisible(visible: Bool) {
+        cameraToggleButton.hidden = !visible
     }
     
-    func setImages(images: MediaPickerImages) {
-        
-        flashButton.setImage(images.flashOffIcon(), forState: .Normal)
-        flashButton.setImage(images.flashOnIcon(), forState: .Selected)
-        
-        cameraToggleButton.setImage(images.cameraToggleIcon(), forState: .Normal)
+    func setShutterButtonEnabled(enabled: Bool) {
+        shutterButton.enabled = enabled
+    }
+    
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+
+        shutterButton.backgroundColor = theme.shutterButtonColor
+
+        flashButton.setImage(theme.flashOffIcon, forState: .Normal)
+        flashButton.setImage(theme.flashOnIcon, forState: .Selected)
+
+        cameraToggleButton.setImage(theme.cameraToggleIcon, forState: .Normal)
     }
     
     // MARK: - Private

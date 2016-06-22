@@ -21,8 +21,19 @@ final class MediaRibbonLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        
         let attributes = super.layoutAttributesForElementsInRect(rect)
-        attributes?.forEach { $0.transform = itemsTransform }
+        
+        attributes?.forEach { attributes in
+            
+            let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate
+            let shouldApplyTransform = delegate?.shouldApplyTransformToItemAtIndexPath(attributes.indexPath) ?? true
+            
+            if shouldApplyTransform {
+                attributes.transform = itemsTransform
+            }
+        }
+        
         return attributes
     }
     
@@ -31,4 +42,8 @@ final class MediaRibbonLayout: UICollectionViewFlowLayout {
     private func adjustAttributes(attributes: UICollectionViewLayoutAttributes?) {
         attributes?.transform = itemsTransform
     }
+}
+
+protocol MediaRibbonLayoutDelegate: UICollectionViewDelegateFlowLayout {
+    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool
 }

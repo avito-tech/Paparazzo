@@ -6,11 +6,11 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     typealias AssemblyFactory = protocol<CameraAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
     
     private let assemblyFactory: AssemblyFactory
-    private let colors: MediaPickerColors
+    private let theme: MediaPickerUITheme
     
-    init(assemblyFactory: AssemblyFactory, colors: MediaPickerColors) {
+    init(assemblyFactory: AssemblyFactory, theme: MediaPickerUITheme) {
         self.assemblyFactory = assemblyFactory
-        self.colors = colors
+        self.theme = theme
     }
     
     // MARK: - MediaPickerAssembly
@@ -44,7 +44,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         let viewController = MediaPickerViewController()
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
-        viewController.setColors(colors)
+        viewController.setTheme(theme)
         
         presenter.view = viewController
         presenter.moduleOutput = moduleOutput

@@ -80,12 +80,13 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCaptureSession(session)
     }
     
+    func setContinueButtonTitle(title: String) {
+        mediaPickerView.setContinueButtonTitle(title)
+    }
+    
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
-        
-        let transform = CGAffineTransform(deviceOrientation: orientation)
-        
         UIView.animateWithDuration(0.25) {
-            self.mediaPickerView.setControlsTransform(transform)
+            self.mediaPickerView.adjustForDeviceOrientation(orientation)
         }
     }
     
@@ -104,13 +105,41 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     func animateFlash() {
         mediaPickerView.animateFlash()
     }
+    
+    var onCloseButtonTap: (() -> ())? {
+        get { return mediaPickerView.onCloseButtonTap }
+        set { mediaPickerView.onCloseButtonTap = newValue }
+    }
+    
+    var onContinueButtonTap: (() -> ())? {
+        get { return mediaPickerView.onContinueButtonTap }
+        set { mediaPickerView.onContinueButtonTap = newValue }
+    }
+    
+    var onCameraToggleButtonTap: (() -> ())? {
+        get { return mediaPickerView.onCameraToggleButtonTap }
+        set { mediaPickerView.onCameraToggleButtonTap = newValue }
+    }
+    
+    func setCameraToggleButtonVisible(visible: Bool) {
+        mediaPickerView.setCameraToggleButtonVisible(visible)
+    }
 
-    func addItem(item: MediaPickerItem) {
-        mediaPickerView.addItem(item)
+    func addItems(items: [MediaPickerItem]) {
+        mediaPickerView.addItems(items)
     }
     
     func removeItem(item: MediaPickerItem) {
         mediaPickerView.removeItem(item)
+    }
+    
+    func selectItem(item: MediaPickerItem) {
+        mediaPickerView.selectItem(item)
+        onItemSelect?(item)
+    }
+    
+    func setShutterButtonEnabled(enabled: Bool) {
+        mediaPickerView.setShutterButtonEnabled(enabled)
     }
     
     func startSpinnerForNewPhoto() {
@@ -127,8 +156,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCameraView(view)
     }
     
-    func setColors(colors: MediaPickerColors) {
-        mediaPickerView.setColors(colors)
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+        mediaPickerView.setTheme(theme)
     }
     
     // MARK: - Dispose bag

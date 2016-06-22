@@ -24,11 +24,13 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     
     // MARK: - PhotoLibraryModuleOutput
     
-    func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
+    func photoLibraryPickerDidFinishWithItems(photoLibraryItems: [PhotoLibraryItem]) {
         
-        selectedItems.forEach { item in
-            self.view?.addItem(MediaPickerItem(image: item.image))
+        let mediaPickerItems = photoLibraryItems.map {
+            MediaPickerItem(identifier: $0.identifier, image: $0.image)
         }
+        
+        addItems(mediaPickerItems)
         
         router.focusOnCurrentModule()
     }
@@ -36,6 +38,8 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
     // MARK: - Private
     
     private func setUpView() {
+        
+        view?.setContinueButtonTitle("Далее")
         
         cameraModuleInput.getCaptureSession { [weak self] captureSession in
             if let captureSession = captureSession {
@@ -47,6 +51,10 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
             self?.view?.setFlashButtonVisible(flashAvailable)
         }
         
+        cameraModuleInput.canToggleCamera { [weak self] canToggleCamera in
+            self?.view?.setCameraToggleButtonVisible(canToggleCamera)
+        }
+        
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }
@@ -56,7 +64,8 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onCameraVisibilityChange = { [weak self] isCameraVisible in
-            self?.cameraModuleInput.setCameraOutputNeeded(isCameraVisible)
+            // TODO: этот метод должен теперь вызываться и тогда, когда слот камеры в ленте фоток появляется/исчезает
+//            self?.cameraModuleInput.setCameraOutputNeeded(isCameraVisible)
         }
         
         view?.onPhotoLibraryButtonTap = { [weak self] in
@@ -65,17 +74,19 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         
         view?.onShutterButtonTap = { [weak self] in
             
+            // Если фоткать со вспышкой, это занимает много времени, и если несколько раз подряд быстро тапнуть на кнопку,
+            // он будет потом еще долго фоткать :) Поэтому временно блокируем кнопку.
+            self?.view?.setShutterButtonEnabled(false)
             self?.view?.animateFlash()
             self?.view?.startSpinnerForNewPhoto()
             
             self?.cameraModuleInput.takePhoto { photo in
                 
+                self?.view?.setShutterButtonEnabled(true)
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.interactor.addItems([photo]) {
-                        self?.view?.addItem(photo)
-                    }
+                    self?.addItems([photo])
                 }
             }
         }
@@ -89,13 +100,9 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onItemSelect = { [weak self] item in
-            
             self?.view?.setMode(.PhotoPreview(item))
-            
             self?.view?.onRemoveButtonTap = {
-                self?.interactor.removeItem(item) {
-                    self?.view?.removeItem(item)
-                }
+                self?.removeItem(item)
             }
         }
         
@@ -106,9 +113,44 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         view?.onReturnToCameraTap = { [weak self] in
             self?.view?.setMode(.Camera)
         }
+        
+        view?.onCameraToggleButtonTap = { [weak self] in
+            self?.cameraModuleInput.toggleCamera()
+        }
+        
+        view?.onCloseButtonTap = { [weak self] in
+            self?.moduleOutput?.mediaPickerDidCancel()
+        }
+        
+        view?.onContinueButtonTap = { [weak self] in
+            self?.interactor.items { items in
+                self?.moduleOutput?.mediaPickerDidFinish(withItems: items)
+            }
+        }
     }
     
-    // MARK: - Private
+    private func addItems(items: [MediaPickerItem]) {
+        interactor.addItems(items) { [weak self] in
+            self?.view?.addItems(items)
+            self?.moduleOutput?.mediaPickerDidAddItems(items)
+        }
+    }
+    
+    private func removeItem(item: MediaPickerItem) {
+        
+        interactor.removeItem(item) { [weak self] adjacentItem in
+            
+            self?.view?.removeItem(item)
+            
+            if let adjacentItem = adjacentItem {
+                self?.view?.selectItem(adjacentItem)
+            } else {
+                self?.view?.setMode(.Camera)
+            }
+            
+            self?.moduleOutput?.mediaPickerDidRemoveItem(item)
+        }
+    }
     
     private func showPhotoLibrary() {
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in

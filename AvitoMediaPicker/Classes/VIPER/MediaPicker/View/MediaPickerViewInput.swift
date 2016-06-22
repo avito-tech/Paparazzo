@@ -12,6 +12,8 @@ protocol MediaPickerViewInput: class {
     func adjustForDeviceOrientation(orientation: DeviceOrientation)
     
     func setCaptureSession(session: AVCaptureSession)
+    
+    func setContinueButtonTitle(title: String)
 
     func setLatestLibraryPhoto(image: ImageSource?)
     
@@ -19,12 +21,21 @@ protocol MediaPickerViewInput: class {
     func setFlashButtonOn(isOn: Bool)
     func animateFlash()
     
-    func addItem(photo: MediaPickerItem)
-    func removeItem(photo: MediaPickerItem)
+    func addItems(item: [MediaPickerItem])
+    func removeItem(item: MediaPickerItem)
+    func selectItem(item: MediaPickerItem)
+    
+    func setShutterButtonEnabled(enabled: Bool)
 
     // TODO: это по ходу не нужно будет
     func startSpinnerForNewPhoto()
     func stopSpinnerForNewPhoto()
+    
+    var onCloseButtonTap: (() -> ())? { get set }
+    var onContinueButtonTap: (() -> ())? { get set }
+    
+    var onCameraToggleButtonTap: (() -> ())? { get set }
+    func setCameraToggleButtonVisible(visible: Bool)
     
     var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
     

@@ -47,8 +47,8 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         photoLibraryView.scrollToBottom()
     }
     
-    func setColors(colors: PhotoLibraryColors) {
-        photoLibraryView.setColors(colors)
+    func setTheme(theme: PhotoLibraryUITheme) {
+        photoLibraryView.setTheme(theme)
     }
     
     // MARK: - Dispose bag

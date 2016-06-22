@@ -3,10 +3,10 @@ import Marshroute
 
 public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
     
-    private let colors: PhotoLibraryColors
+    private let theme: PhotoLibraryUITheme
     
-    init(colors: PhotoLibraryColors) {
-        self.colors = colors
+    init(theme: PhotoLibraryUITheme) {
+        self.theme = theme
     }
     
     public func viewController(
@@ -31,7 +31,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         
         let viewController = PhotoLibraryViewController()
         viewController.addDisposable(presenter)
-        viewController.setColors(colors)
+        viewController.setTheme(theme)
         
         presenter.view = viewController
         presenter.moduleOutput = moduleOutput

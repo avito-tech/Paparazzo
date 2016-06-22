@@ -2,7 +2,7 @@ import UIKit
 import AvitoDesignKit
 import AVFoundation
 
-final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
+final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     // MARK: - Subviews
     
@@ -18,16 +18,23 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     private let mediaRibbonLayout = MediaRibbonLayout()
     private let mediaRibbonView: UICollectionView
     
+    private var closeAndContinueButtonsSwapped = false
+    
     // MARK: - Constants
     
     private let cameraAspectRatio = CGFloat(4) / CGFloat(3)
     
-    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4 / 3 = 53,333...
+    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
     private let controlsExtendedHeight = CGFloat(83)
     
     private let mediaRibbonMinHeight = CGFloat(72)
     private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     private let mediaRibbonInteritemSpacing = CGFloat(7)
+    
+    private let closeButtonSize = CGSize(width: 38, height: 38)
+    
+    private let continueButtonHeight = CGFloat(38)
+    private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
     // MARK: - Helpers
     
@@ -61,15 +68,33 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         mediaRibbonView.dataSource = mediaRibbonDataSource
         mediaRibbonView.delegate = self
         
+        closeButton.backgroundColor = .whiteColor()
+        closeButton.layer.cornerRadius = closeButtonSize.height / 2
+        closeButton.size = closeButtonSize
+        closeButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
+        continueButton.backgroundColor = .whiteColor()
+        continueButton.layer.cornerRadius = continueButtonHeight / 2
+        continueButton.contentEdgeInsets = continueButtonContentInsets
+        continueButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
         addSubview(photoView)
         addSubview(mediaRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
+        addSubview(closeButton)
+        addSubview(continueButton)
         addSubview(flashView)
         
         setMode(.Camera)
-        setColors(MediaPickerColors())
-        setImages(MediaPickerImages())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -112,6 +137,8 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         )
 
         mediaRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
+        
+        layoutCloseAndContinueButtons()
 
         flashView.frame = bounds
     }
@@ -207,61 +234,90 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func addItem(item: MediaPickerItem) {
-        mediaRibbonDataSource.addItem(item)
+    var onCloseButtonTap: (() -> ())?
+    var onContinueButtonTap: (() -> ())?
+    
+    var onCameraToggleButtonTap: (() -> ())? {
+        get { return cameraControlsView.onCameraToggleButtonTap }
+        set { cameraControlsView.onCameraToggleButtonTap = newValue }
+    }
+    
+    func setCameraToggleButtonVisible(visible: Bool) {
+        cameraControlsView.setCameraToggleButtonVisible(visible)
+    }
+    
+    func setShutterButtonEnabled(enabled: Bool) {
+        cameraControlsView.setShutterButtonEnabled(enabled)
+    }
+    
+    func addItems(items: [MediaPickerItem]) {
+        mediaRibbonDataSource.addItems(items)
     }
 
     func removeItem(item: MediaPickerItem) {
         mediaRibbonDataSource.removeItem(item)
     }
     
-//    func removeSelectionInPhotoRibbon() {
-//        mediaRibbonView.indexPathsForSelectedItems()?.forEach { indexPath in
-//            mediaRibbonView.deselectItemAtIndexPath(indexPath, animated: false)
-//        }
-//    }
+    func selectItem(item: MediaPickerItem) {
+        if let indexPath = mediaRibbonDataSource.indexPathForItem(item) {
+            mediaRibbonView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
+    }
     
     func startSpinnerForNewPhoto() {
-        print("startSpinnerForNewPhoto")
+        debugPrint("startSpinnerForNewPhoto")
         // TODO
     }
     
     func stopSpinnerForNewPhoto() {
-        print("stopSpinnerForNewPhoto")
+        debugPrint("stopSpinnerForNewPhoto")
         // TODO
     }
-
-    func setControlsTransform(transform: CGAffineTransform) {
+    
+    func adjustForDeviceOrientation(orientation: DeviceOrientation) {
+        
+        let transform = CGAffineTransform(deviceOrientation: orientation)
+        
+        closeAndContinueButtonsSwapped = (orientation == .LandscapeLeft)
         
         photoView.transform = transform
+        closeButton.transform = transform
+        continueButton.transform = transform
         
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
         
         mediaRibbonLayout.itemsTransform = transform
         mediaRibbonLayout.invalidateLayout()
+        
+        mediaRibbonDataSource.cameraIconTransform = transform
     }
     
     func setCameraView(view: UIView) {
         cameraView?.removeFromSuperview()
         cameraView = view
-        addSubview(view)
+        insertSubview(view, belowSubview: closeButton)
     }
     
     func setCaptureSession(session: AVCaptureSession) {
         mediaRibbonDataSource.captureSession = session
     }
     
-    func setColors(colors: MediaPickerColors) {
-        cameraControlsView.setColors(colors)
-        photoControlsView.setColors(colors)
-        mediaRibbonDataSource.colors = colors
+    func setContinueButtonTitle(title: String) {
+        continueButton.setTitle(title, forState: .Normal)
+        continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
     }
     
-    func setImages(images: MediaPickerImages) {
-        cameraControlsView.setImages(images)
-        photoControlsView.setImages(images)
-        mediaRibbonDataSource.images = images
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+
+        cameraControlsView.setTheme(theme)
+        photoControlsView.setTheme(theme)
+        mediaRibbonDataSource.setTheme(theme)
+
+        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
+        continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
+
+        closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
     }
     
     // MARK: - UICollectionViewDelegate
@@ -275,11 +331,19 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
         }
     }
     
-    // MARK: - UICollectionViewDelegateFlowLayout
+    // MARK: - MediaRibbonLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let height = mediaRibbonView.height - mediaRibbonInsets.top - mediaRibbonInsets.bottom
         return CGSize(width: height, height: height)
+    }
+    
+    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool {
+        if case .Photo(_) = mediaRibbonDataSource[indexPath] {
+            return true
+        } else {
+            return false
+        }
     }
     
     // MARK: - Private
@@ -287,5 +351,33 @@ final class MediaPickerView: UIView, UICollectionViewDelegateFlowLayout {
     private func setCameraVisible(visible: Bool) {
         cameraView?.hidden = !visible
         onCameraVisibilityChange?(isCameraVisible: visible)
+    }
+    
+    private func layoutCloseAndContinueButtons() {
+        
+        let leftButton = closeAndContinueButtonsSwapped ? continueButton : closeButton
+        let rightButton = closeAndContinueButtonsSwapped ? closeButton : continueButton
+        
+        leftButton.frame = CGRect(
+            x: 8,
+            y: 8,
+            width: leftButton.width,
+            height: leftButton.height
+        )
+        
+        rightButton.frame = CGRect(
+            x: bounds.right - 8 - rightButton.width,
+            y: 8,
+            width: rightButton.width,
+            height: rightButton.height
+        )
+    }
+    
+    @objc private func onCloseButtonTap(sender: UIButton) {
+        onCloseButtonTap?()
+    }
+    
+    @objc private func onContinueButtonTap(sender: UIButton) {
+        onContinueButtonTap?()
     }
 }

@@ -3,7 +3,7 @@ import Marshroute
 import AvitoMediaPicker
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -11,44 +11,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MediaPickerModuleOutput {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        var colors = MediaPickerColors()
-        // Раскомментить для проверки кастомизации цветов модуля:
-//        colors.shutterButtonColor = .redColor()
-//        colors.mediaRibbonSelectionColor = .greenColor()
-//        colors.photoLibraryItemSelectionColor = .yellowColor()
-        
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
-            
-            let assemblyFactory = AssemblyFactory(colors: colors)
-            let photoPickerAssembly = assemblyFactory.mediaPickerAssembly()
-            
-            return photoPickerAssembly.viewController(
-                maxItemsCount: 5,
-                moduleOutput: self,
-                routerSeed: routerSeed
-            )
+            ExampleAssemblyImpl().viewController(routerSeed: routerSeed)
         }
         
         window?.makeKeyAndVisible()
         
         return true
-    }
-
-    // MARK: - PhotoPickerModuleOutput
-
-    func photoPickerDidAddItem(item: MediaPickerItem) {
-    }
-
-    func photoPickerDidUpdateItem(item: MediaPickerItem) {
-    }
-
-    func photoPickerDidRemoveItem(item: MediaPickerItem) {
-    }
-
-    func photoPickerDidFinish() {
-    }
-
-    func photoPickerDidCancel() {
     }
 }
 

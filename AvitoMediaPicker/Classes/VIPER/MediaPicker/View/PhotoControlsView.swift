@@ -52,12 +52,9 @@ final class PhotoControlsView: UIView {
         cropButton.transform = transform
     }
     
-    func setColors(colors: MediaPickerColors) {
-    }
-    
-    func setImages(images: MediaPickerImages) {
-        removeButton.setImage(images.removePhotoIcon(), forState: .Normal)
-        cropButton.setImage(images.cropPhotoIcon(), forState: .Normal)
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+        removeButton.setImage(theme.removePhotoIcon, forState: .Normal)
+        cropButton.setImage(theme.cropPhotoIcon, forState: .Normal)
     }
     
     // MARK: - Private

@@ -1,9 +1,9 @@
 public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory {
     
-    private let colors: MediaPickerColors
+    private let theme: MediaPickerUITheme
     
-    public init(colors: MediaPickerColors = MediaPickerColors()) {
-        self.colors = colors
+    public init(theme: MediaPickerUITheme = MediaPickerUITheme()) {
+        self.theme = theme
     }
     
     func cameraAssembly() -> CameraAssembly {
@@ -11,7 +11,7 @@ public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFa
     }
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {
-        return MediaPickerAssemblyImpl(assemblyFactory: self, colors: colors)
+        return MediaPickerAssemblyImpl(assemblyFactory: self, theme: theme)
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {
@@ -19,6 +19,6 @@ public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFa
     }
 
     public func photoLibraryAssembly() -> PhotoLibraryAssembly {
-        return PhotoLibraryAssemblyImpl(colors: colors)
+        return PhotoLibraryAssemblyImpl(theme: theme)
     }
 }
