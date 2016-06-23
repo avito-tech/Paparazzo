@@ -208,6 +208,10 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         }
     }
     
+    func setCameraButtonVisible(visible: Bool) {
+        mediaRibbonDataSource.cameraCellVisible = visible
+    }
+    
     func setLatestPhotoLibraryItemImage(image: ImageSource?) {
         cameraControlsView.setLatestPhotoLibraryItemImage(image)
     }

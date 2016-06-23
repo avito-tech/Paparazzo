@@ -1,13 +1,11 @@
 import Foundation
 
-final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
+final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - Dependencies
     
     private let interactor: PhotoLibraryInteractor
     private let router: PhotoLibraryRouter
-    
-    weak var moduleOutput: PhotoLibraryModuleOutput?
     
     weak var view: PhotoLibraryViewInput? {
         didSet {
@@ -24,6 +22,14 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
     init(interactor: PhotoLibraryInteractor, router: PhotoLibraryRouter) {
         self.interactor = interactor
         self.router = router
+    }
+    
+    // MARK: - PhotoLibraryModuleInput
+    
+    var onFinish: ((selectedItems: [PhotoLibraryItem]) -> ())?
+    
+    func selectItems(items: [PhotoLibraryItem]) {
+        // TODO
     }
     
     // MARK: - Private
@@ -43,7 +49,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModuleInput {
         
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
-                self?.moduleOutput?.photoLibraryPickerDidFinishWithItems(items)
+                self?.onFinish?(selectedItems: items)
             }
         }
     }

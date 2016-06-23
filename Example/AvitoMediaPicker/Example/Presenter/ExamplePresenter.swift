@@ -1,6 +1,6 @@
 import AvitoMediaPicker
 
-final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput {
+final class ExamplePresenter {
     
     private let interactor: ExampleInteractor
     private let router: ExampleRouter
@@ -23,42 +23,39 @@ final class ExamplePresenter: MediaPickerModuleOutput, PhotoLibraryModuleOutput 
     private func setUpView() {
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
-            guard let strongSelf = self else { return }
-            self?.router.showMediaPicker(5, output: strongSelf)
+            
+            self?.router.showMediaPicker(maxItemsCount: 5) { module in
+                
+                module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
+                module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
+                module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
+                
+                module.onCancel = { [weak self] in
+                    self?.router.focusOnCurrentModule()
+                }
+                
+                module.onFinish = { [weak self] items in
+                    print("media picker did finish with \(items.count) items:")
+                    items.forEach { print($0) }
+                    self?.router.focusOnCurrentModule()
+                }
+            }
         }
         
         view?.onShowPhotoLibraryButtonTap = { [weak self] in
-            guard let strongSelf = self else { return }
-            self?.router.showPhotoLibrary(5, output: strongSelf)
+            
+            self?.interactor.photoLibraryItems { selectedItems in
+            
+                self?.router.showPhotoLibrary(maxSelectedItemsCount: 5) { module in
+                    
+                    module.selectItems(selectedItems)
+                    
+                    module.onFinish = { items in
+                        self?.interactor.setPhotoLibraryItems(selectedItems)
+                        self?.router.focusOnCurrentModule()
+                    }
+                }
+            }
         }
-    }
-    
-    // MARK: - MediaPickerModuleOutput
-
-    func mediaPickerDidAddItems(items: [MediaPickerItem]) {
-        print("mediaPickerDidAddItems")
-    }
-
-    func mediaPickerDidUpdateItem(item: MediaPickerItem) {
-        print("mediaPickerDidUpdateItem")
-    }
-
-    func mediaPickerDidRemoveItem(item: MediaPickerItem) {
-        print("mediaPickerDidRemoveItem")
-    }
-
-    func mediaPickerDidFinish(withItems items: [MediaPickerItem]) {
-        print("media picker did finish with \(items.count) items:")
-        items.forEach { print($0) }
-        router.focusOnCurrentModule()
-    }
-
-    func mediaPickerDidCancel() {
-        router.focusOnCurrentModule()
-    }
-
-    // MARK: - PhotoLibraryModuleOutput
-
-    func photoLibraryPickerDidFinishWithItems(selectedItems: [PhotoLibraryItem]) {
     }
 }

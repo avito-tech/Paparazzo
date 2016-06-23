@@ -25,6 +25,7 @@ protocol MediaPickerViewInput: class {
     func removeItem(item: MediaPickerItem)
     func selectItem(item: MediaPickerItem)
     
+    func setCameraButtonVisible(visible: Bool)
     func setShutterButtonEnabled(enabled: Bool)
 
     // TODO: это по ходу не нужно будет

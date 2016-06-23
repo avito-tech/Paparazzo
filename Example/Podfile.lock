@@ -1,7 +1,7 @@
 PODS:
   - AvitoDesignKit (0.0.6):
     - TTTAttributedLabel (= 1.13.0)
-  - AvitoMediaPicker (0.0.2):
+  - AvitoMediaPicker (0.0.3):
     - AvitoDesignKit (= 0.0.6)
     - Marshroute
   - Marshroute (0.3.3)
@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AvitoDesignKit: 24b7a9c13ced6f715efc4084b5e1efa24a4b26ef
-  AvitoMediaPicker: ddd9f3cbbc1a9554132d86fc18c39901280e1520
+  AvitoMediaPicker: ecf661a58e3163291c6a37f141ed607dbde0d2c1
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
   TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
 

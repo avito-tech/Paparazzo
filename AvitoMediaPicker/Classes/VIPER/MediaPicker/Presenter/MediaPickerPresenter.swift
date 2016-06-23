@@ -1,12 +1,10 @@
-final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutput, ImageCroppingModuleOutput {
+final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
     
     // MARK: - Dependencies
     
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
     private let cameraModuleInput: CameraModuleInput
-
-    weak var moduleOutput: MediaPickerModuleOutput?
     
     // MARK: - Init
     
@@ -22,19 +20,14 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
     }
     
-    // MARK: - PhotoLibraryModuleOutput
-    
-    func photoLibraryPickerDidFinishWithItems(photoLibraryItems: [PhotoLibraryItem]) {
-        
-        let mediaPickerItems = photoLibraryItems.map {
-            MediaPickerItem(identifier: $0.identifier, image: $0.image)
-        }
-        
-        addItems(mediaPickerItems)
-        
-        router.focusOnCurrentModule()
-    }
-    
+    // MARK: - MediaPickerModule
+
+    var onItemsAdd: ([MediaPickerItem] -> ())?
+    var onItemUpdate: (MediaPickerItem -> ())?
+    var onItemRemove: (MediaPickerItem -> ())?
+    var onFinish: ([MediaPickerItem] -> ())?
+    var onCancel: (() -> ())?
+
     // MARK: - Private
     
     private func setUpView() {
@@ -86,7 +79,7 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
                 self?.view?.stopSpinnerForNewPhoto()
                 
                 if let photo = photo {
-                    self?.addItems([photo])
+                    self?.addItems([photo], fromCamera: true)
                 }
             }
         }
@@ -119,28 +112,37 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
         }
         
         view?.onCloseButtonTap = { [weak self] in
-            self?.moduleOutput?.mediaPickerDidCancel()
+            self?.onCancel?()
         }
         
         view?.onContinueButtonTap = { [weak self] in
             self?.interactor.items { items in
-                self?.moduleOutput?.mediaPickerDidFinish(withItems: items)
+                self?.onFinish?(items)
             }
         }
     }
     
-    private func addItems(items: [MediaPickerItem]) {
-        interactor.addItems(items) { [weak self] in
+    private func addItems(items: [MediaPickerItem], fromCamera: Bool) {
+        
+        interactor.addItems(items) { [weak self] canAddItems in
+            
             self?.view?.addItems(items)
-            self?.moduleOutput?.mediaPickerDidAddItems(items)
+            self?.view?.setCameraButtonVisible(canAddItems)
+        
+            if let lastItem = items.last where fromCamera && !canAddItems {
+                self?.view?.selectItem(lastItem)
+            }
+            
+            self?.onItemsAdd?(items)
         }
     }
     
     private func removeItem(item: MediaPickerItem) {
         
-        interactor.removeItem(item) { [weak self] adjacentItem in
+        interactor.removeItem(item) { [weak self] adjacentItem, canAddItems in
             
             self?.view?.removeItem(item)
+            self?.view?.setCameraButtonVisible(canAddItems)
             
             if let adjacentItem = adjacentItem {
                 self?.view?.selectItem(adjacentItem)
@@ -148,14 +150,26 @@ final class MediaPickerPresenter: MediaPickerModuleInput, PhotoLibraryModuleOutp
                 self?.view?.setMode(.Camera)
             }
             
-            self?.moduleOutput?.mediaPickerDidRemoveItem(item)
+            self?.onItemRemove?(item)
         }
     }
     
     private func showPhotoLibrary() {
+        
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
-            guard let strongSelf = self else { return }
-            strongSelf.router.showPhotoLibrary(maxItemsCount: maxItemsCount, moduleOutput: strongSelf)
+            
+            self?.router.showPhotoLibrary(maxSelectedItemsCount: maxItemsCount) { module in
+                
+                module.onFinish = { photoLibraryItems in
+                    
+                    let mediaPickerItems = photoLibraryItems.map {
+                        MediaPickerItem(identifier: $0.identifier, image: $0.image)
+                    }
+                    
+                    self?.addItems(mediaPickerItems, fromCamera: false)
+                    self?.router.focusOnCurrentModule()
+                }
+            }
         }
     }
     
