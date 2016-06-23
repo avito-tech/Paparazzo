@@ -21,7 +21,11 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     var cameraCellVisible: Bool = true {
         didSet {
-            collectionView?.reloadData()
+            if cameraCellVisible == true && oldValue == false {
+                collectionView?.insertItemsAtIndexPaths([indexPathForCameraCell()])
+            } else if cameraCellVisible == false && oldValue == true {
+                collectionView?.deleteItemsAtIndexPaths([indexPathForCameraCell()])
+            }
         }
     }
     
