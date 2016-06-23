@@ -199,13 +199,14 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             setCameraVisible(true)
         
         case .PhotoPreview(let photo):
-            photoView.hidden = false
-            photoView.setImage(photo.image)
+            
+            photoView.setImage(photo.image, deferredPlaceholder: true) { [weak self] in
+                self?.photoView.hidden = false
+                self?.setCameraVisible(false)
+            }
             
             cameraControlsView.hidden = true
             photoControlsView.hidden = false
-            
-            setCameraVisible(false)
         }
     }
     
