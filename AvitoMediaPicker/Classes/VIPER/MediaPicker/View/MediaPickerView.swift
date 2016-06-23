@@ -228,16 +228,17 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     func animateFlash() {
         
-        let fadeInOptions: UIViewAnimationOptions = [.CurveEaseIn]
-        let fadeOutOptions: UIViewAnimationOptions = [.CurveEaseOut]
+        self.flashView.alpha = 1
         
-        UIView.animateWithDuration(0.1, delay: 0, options: fadeInOptions, animations: {
-            self.flashView.alpha = 1
-        }) { _ in
-            UIView.animateWithDuration(0.2, delay: 0, options: fadeOutOptions, animations: {
+        UIView.animateWithDuration(
+            0.3,
+            delay: 0,
+            options: [.CurveEaseOut],
+            animations: { 
                 self.flashView.alpha = 0
-                }, completion: nil)
-        }
+            },
+            completion: nil
+        )
     }
     
     var onCloseButtonTap: (() -> ())?
