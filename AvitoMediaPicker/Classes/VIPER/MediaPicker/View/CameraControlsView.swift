@@ -25,6 +25,12 @@ final class CameraControlsView: UIView {
     
     private let photoViewDiameter = CGFloat(44)
     
+    // Параметры анимации кнопки съемки (подобраны ikarpov'ым)
+    private let shutterAnimationMinScale = CGFloat(0.842939)
+    private let shutterAnimationDamping = CGFloat(18.6888)
+    private let shutterAnimationStiffness = CGFloat(366.715)
+    private let shutterAnimationMass = CGFloat(0.475504)
+    
     // MARK: - UIView
     
     override init(frame: CGRect) {
@@ -145,7 +151,7 @@ final class CameraControlsView: UIView {
     // MARK: - Private
     
     @objc private func onShutterButtonTouchDown(button: UIButton) {
-        animateShutterButtonToScale(0.75)
+        animateShutterButtonToScale(shutterAnimationMinScale)
     }
     
     @objc private func onShutterButtonTouchUp(button: UIButton) {
@@ -168,22 +174,22 @@ final class CameraControlsView: UIView {
     
     private func animateShutterButtonToScale(_ scale: CGFloat) {
         
+        // Тут пишут о том, чем стандартная spring-анимация плоха:
+        // https://medium.com/@flyosity/your-spring-animations-are-bad-and-it-s-probably-apple-s-fault-784932e51733#.jr5m2x2vl
+        
         let keyPath = "transform.scale"
         
         let animation = JNWSpringAnimation(keyPath: keyPath)
-        animation.damping = 44
-        animation.stiffness = 500
-        animation.mass = 2
+        animation.damping = shutterAnimationDamping
+        animation.stiffness = shutterAnimationStiffness
+        animation.mass = shutterAnimationMass
         
-        let presentationLayer = shutterButton.layer.presentationLayer()
-        let layer = presentationLayer ?? shutterButton.layer
+        let layer = shutterButton.layer.presentationLayer() ?? shutterButton.layer
         
         animation.fromValue = layer.valueForKeyPath(keyPath)
         animation.toValue = scale
         
         shutterButton.layer.setValue(animation.toValue, forKeyPath: keyPath)
-        
-//        print("animate scale from \(animation.fromValue) to \(animation.toValue)")
         
         shutterButton.layer.addAnimation(animation, forKey: keyPath)
     }
