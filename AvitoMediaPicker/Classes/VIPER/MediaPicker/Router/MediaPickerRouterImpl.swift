@@ -21,14 +21,11 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
             
             let assembly = assemblyFactory.photoLibraryAssembly()
             
-            let (viewController, moduleInput) = assembly.module(
+            return assembly.module(
                 maxSelectedItemsCount: maxSelectedItemsCount,
-                routerSeed: routerSeed
+                routerSeed: routerSeed,
+                configuration: configuration
             )
-            
-            configuration(moduleInput)
-            
-            return viewController
         }
     }
     

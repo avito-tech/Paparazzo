@@ -17,8 +17,9 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     
     public func module(
         maxItemsCount maxItemsCount: Int?,
-        routerSeed: RouterSeed
-    ) -> (UIViewController, MediaPickerModule) {
+        routerSeed: RouterSeed,
+        configuration: MediaPickerModule -> ()
+    ) -> UIViewController {
         
         let interactor = MediaPickerInteractorImpl(
             maxItemsCount: maxItemsCount,
@@ -47,6 +48,8 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         
         presenter.view = viewController
         
-        return (viewController, presenter)
+        configuration(presenter)
+        
+        return viewController
     }
 }

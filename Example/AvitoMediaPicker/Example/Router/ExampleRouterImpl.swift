@@ -14,14 +14,11 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         
             let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
             
-            let (viewController, module) = assembly.module(
+            return assembly.module(
                 maxItemsCount: maxItemsCount,
-                routerSeed: routerSeed
+                routerSeed: routerSeed,
+                configuration: configuration
             )
-            
-            configuration(module)
-            
-            return viewController
             
         }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
     }
@@ -34,14 +31,11 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
             
             let assembly = mediaPickerAssemblyFactory.photoLibraryAssembly()
             
-            let (viewController, moduleInput) = assembly.module(
+            return assembly.module(
                 maxSelectedItemsCount: maxSelectedItemsCount,
-                routerSeed: routerSeed
+                routerSeed: routerSeed,
+                configuration: configuration
             )
-            
-            configuration(moduleInput)
-            
-            return viewController
         }
     }
 }
