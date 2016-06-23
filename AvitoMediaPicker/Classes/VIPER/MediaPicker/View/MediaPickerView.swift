@@ -86,13 +86,13 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             forControlEvents: .TouchUpInside
         )
         
+        addSubview(flashView)
         addSubview(photoView)
         addSubview(mediaRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
         addSubview(closeButton)
         addSubview(continueButton)
-        addSubview(flashView)
         
         setMode(.Camera)
     }
@@ -136,11 +136,12 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             height: photoRibbonHeight
         )
 
-        mediaRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
+        let mediaRibbonAlpha: CGFloat = (cameraControlsView.top < cameraFrame.bottom) ? 0.6 : 1
+        mediaRibbonView.backgroundColor = mediaRibbonView.backgroundColor?.colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
 
-        flashView.frame = bounds
+        flashView.frame = cameraFrame
     }
     
     // MARK: - MediaPickerView
@@ -300,7 +301,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     func setCameraView(view: UIView) {
         cameraView?.removeFromSuperview()
         cameraView = view
-        insertSubview(view, belowSubview: closeButton)
+        insertSubview(view, atIndex: 0)
     }
     
     func setCaptureSession(session: AVCaptureSession) {
