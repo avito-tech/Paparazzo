@@ -1,5 +1,6 @@
 import UIKit
 import AvitoDesignKit
+import JNWSpringAnimation
 
 final class CameraControlsView: UIView {
     
@@ -41,9 +42,15 @@ final class CameraControlsView: UIView {
         ))
         
         shutterButton.backgroundColor = .blueColor()
+        shutterButton.clipsToBounds = false
         shutterButton.addTarget(
             self,
-            action: #selector(CameraControlsView.onShutterButtonTap(_:)),
+            action: #selector(CameraControlsView.onShutterButtonTouchDown(_:)),
+            forControlEvents: .TouchDown
+        )
+        shutterButton.addTarget(
+            self,
+            action: #selector(CameraControlsView.onShutterButtonTouchUp(_:)),
             forControlEvents: .TouchUpInside
         )
         
@@ -137,7 +144,12 @@ final class CameraControlsView: UIView {
     
     // MARK: - Private
     
-    @objc private func onShutterButtonTap(button: UIButton) {
+    @objc private func onShutterButtonTouchDown(button: UIButton) {
+        animateShutterButtonToScale(0.75)
+    }
+    
+    @objc private func onShutterButtonTouchUp(button: UIButton) {
+        animateShutterButtonToScale(1)
         onShutterButtonTap?()
     }
     
@@ -152,5 +164,27 @@ final class CameraControlsView: UIView {
     
     @objc private func onCameraToggleButtonTap(button: UIButton) {
         onCameraToggleButtonTap?()
+    }
+    
+    private func animateShutterButtonToScale(_ scale: CGFloat) {
+        
+        let keyPath = "transform.scale"
+        
+        let animation = JNWSpringAnimation(keyPath: keyPath)
+        animation.damping = 44
+        animation.stiffness = 500
+        animation.mass = 2
+        
+        let presentationLayer = shutterButton.layer.presentationLayer()
+        let layer = presentationLayer ?? shutterButton.layer
+        
+        animation.fromValue = layer.valueForKeyPath(keyPath)
+        animation.toValue = scale
+        
+        shutterButton.layer.setValue(animation.toValue, forKeyPath: keyPath)
+        
+//        print("animate scale from \(animation.fromValue) to \(animation.toValue)")
+        
+        shutterButton.layer.addAnimation(animation, forKey: keyPath)
     }
 }
