@@ -1,0 +1,375 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		250E11E01D1BECD1004FEE1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250E11DF1D1BECD1004FEE1F /* AppDelegate.swift */; };
+		250E11E21D1BECD1004FEE1F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250E11E11D1BECD1004FEE1F /* ViewController.swift */; };
+		250E11E51D1BECD1004FEE1F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 250E11E31D1BECD1004FEE1F /* Main.storyboard */; };
+		250E11E71D1BECD1004FEE1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 250E11E61D1BECD1004FEE1F /* Assets.xcassets */; };
+		250E11EA1D1BECD1004FEE1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 250E11E81D1BECD1004FEE1F /* LaunchScreen.storyboard */; };
+		250E11F21D1BEF01004FEE1F /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250E11F11D1BEF01004FEE1F /* ControlView.swift */; };
+		4440A87EB720DC55485F5181 /* Pods_ShutterButtonAnimation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40BFA2F4A2EC7BBBDD78E057 /* Pods_ShutterButtonAnimation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		250E11DC1D1BECD1004FEE1F /* ShutterButtonAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShutterButtonAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		250E11DF1D1BECD1004FEE1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		250E11E11D1BECD1004FEE1F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		250E11E41D1BECD1004FEE1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		250E11E61D1BECD1004FEE1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		250E11E91D1BECD1004FEE1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		250E11EB1D1BECD1004FEE1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		250E11F11D1BEF01004FEE1F /* ControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
+		40BFA2F4A2EC7BBBDD78E057 /* Pods_ShutterButtonAnimation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShutterButtonAnimation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A82446ED00FF40F51022A8DB /* Pods-ShutterButtonAnimation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShutterButtonAnimation.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShutterButtonAnimation/Pods-ShutterButtonAnimation.debug.xcconfig"; sourceTree = "<group>"; };
+		D94745BAEF665E8DB9548BB3 /* Pods-ShutterButtonAnimation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShutterButtonAnimation.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShutterButtonAnimation/Pods-ShutterButtonAnimation.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		250E11D91D1BECD1004FEE1F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4440A87EB720DC55485F5181 /* Pods_ShutterButtonAnimation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		250E11D31D1BECD1004FEE1F = {
+			isa = PBXGroup;
+			children = (
+				250E11DE1D1BECD1004FEE1F /* ShutterButtonAnimation */,
+				250E11DD1D1BECD1004FEE1F /* Products */,
+				BFAA81E03A8425449885D62A /* Pods */,
+				E0D1A08CAD7BB1244E64ADED /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		250E11DD1D1BECD1004FEE1F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				250E11DC1D1BECD1004FEE1F /* ShutterButtonAnimation.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		250E11DE1D1BECD1004FEE1F /* ShutterButtonAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				250E11DF1D1BECD1004FEE1F /* AppDelegate.swift */,
+				250E11E11D1BECD1004FEE1F /* ViewController.swift */,
+				250E11E31D1BECD1004FEE1F /* Main.storyboard */,
+				250E11E61D1BECD1004FEE1F /* Assets.xcassets */,
+				250E11E81D1BECD1004FEE1F /* LaunchScreen.storyboard */,
+				250E11EB1D1BECD1004FEE1F /* Info.plist */,
+				250E11F11D1BEF01004FEE1F /* ControlView.swift */,
+			);
+			path = ShutterButtonAnimation;
+			sourceTree = "<group>";
+		};
+		BFAA81E03A8425449885D62A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A82446ED00FF40F51022A8DB /* Pods-ShutterButtonAnimation.debug.xcconfig */,
+				D94745BAEF665E8DB9548BB3 /* Pods-ShutterButtonAnimation.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E0D1A08CAD7BB1244E64ADED /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40BFA2F4A2EC7BBBDD78E057 /* Pods_ShutterButtonAnimation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		250E11DB1D1BECD1004FEE1F /* ShutterButtonAnimation */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 250E11EE1D1BECD1004FEE1F /* Build configuration list for PBXNativeTarget "ShutterButtonAnimation" */;
+			buildPhases = (
+				CEF739DC68557CCE4864FC26 /* [CP] Check Pods Manifest.lock */,
+				250E11D81D1BECD1004FEE1F /* Sources */,
+				250E11D91D1BECD1004FEE1F /* Frameworks */,
+				250E11DA1D1BECD1004FEE1F /* Resources */,
+				A5EC1575AC991DFA0F3057A4 /* [CP] Embed Pods Frameworks */,
+				91E2C1A3DF6B1DEE1299466A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShutterButtonAnimation;
+			productName = ShutterButtonAnimation;
+			productReference = 250E11DC1D1BECD1004FEE1F /* ShutterButtonAnimation.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		250E11D41D1BECD1004FEE1F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Avito;
+				TargetAttributes = {
+					250E11DB1D1BECD1004FEE1F = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 250E11D71D1BECD1004FEE1F /* Build configuration list for PBXProject "ShutterButtonAnimation" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 250E11D31D1BECD1004FEE1F;
+			productRefGroup = 250E11DD1D1BECD1004FEE1F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				250E11DB1D1BECD1004FEE1F /* ShutterButtonAnimation */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		250E11DA1D1BECD1004FEE1F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				250E11EA1D1BECD1004FEE1F /* LaunchScreen.storyboard in Resources */,
+				250E11E71D1BECD1004FEE1F /* Assets.xcassets in Resources */,
+				250E11E51D1BECD1004FEE1F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		91E2C1A3DF6B1DEE1299466A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShutterButtonAnimation/Pods-ShutterButtonAnimation-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A5EC1575AC991DFA0F3057A4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShutterButtonAnimation/Pods-ShutterButtonAnimation-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CEF739DC68557CCE4864FC26 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		250E11D81D1BECD1004FEE1F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				250E11E21D1BECD1004FEE1F /* ViewController.swift in Sources */,
+				250E11F21D1BEF01004FEE1F /* ControlView.swift in Sources */,
+				250E11E01D1BECD1004FEE1F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		250E11E31D1BECD1004FEE1F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				250E11E41D1BECD1004FEE1F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		250E11E81D1BECD1004FEE1F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				250E11E91D1BECD1004FEE1F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		250E11EC1D1BECD1004FEE1F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		250E11ED1D1BECD1004FEE1F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		250E11EF1D1BECD1004FEE1F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A82446ED00FF40F51022A8DB /* Pods-ShutterButtonAnimation.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ShutterButtonAnimation/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.avito.ShutterButtonAnimation;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		250E11F01D1BECD1004FEE1F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D94745BAEF665E8DB9548BB3 /* Pods-ShutterButtonAnimation.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ShutterButtonAnimation/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.avito.ShutterButtonAnimation;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		250E11D71D1BECD1004FEE1F /* Build configuration list for PBXProject "ShutterButtonAnimation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				250E11EC1D1BECD1004FEE1F /* Debug */,
+				250E11ED1D1BECD1004FEE1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		250E11EE1D1BECD1004FEE1F /* Build configuration list for PBXNativeTarget "ShutterButtonAnimation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				250E11EF1D1BECD1004FEE1F /* Debug */,
+				250E11F01D1BECD1004FEE1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 250E11D41D1BECD1004FEE1F /* Project object */;
+}

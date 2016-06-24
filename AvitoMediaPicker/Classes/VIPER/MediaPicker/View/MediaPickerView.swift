@@ -86,13 +86,13 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             forControlEvents: .TouchUpInside
         )
         
+        addSubview(flashView)
         addSubview(photoView)
         addSubview(mediaRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
         addSubview(closeButton)
         addSubview(continueButton)
-        addSubview(flashView)
         
         setMode(.Camera)
     }
@@ -136,11 +136,12 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             height: photoRibbonHeight
         )
 
-        mediaRibbonView.alpha = (cameraControlsView.top < cameraFrame.bottom) ? 0.25 /* TODO */ : 1
+        let mediaRibbonAlpha: CGFloat = (cameraControlsView.top < cameraFrame.bottom) ? 0.6 : 1
+        mediaRibbonView.backgroundColor = mediaRibbonView.backgroundColor?.colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
 
-        flashView.frame = bounds
+        flashView.frame = cameraFrame
     }
     
     // MARK: - MediaPickerView
@@ -198,13 +199,14 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             setCameraVisible(true)
         
         case .PhotoPreview(let photo):
-            photoView.hidden = false
-            photoView.setImage(photo.image)
+            
+            photoView.setImage(photo.image, deferredPlaceholder: true) { [weak self] in
+                self?.photoView.hidden = false
+                self?.setCameraVisible(false)
+            }
             
             cameraControlsView.hidden = true
             photoControlsView.hidden = false
-            
-            setCameraVisible(false)
         }
     }
     
@@ -226,16 +228,17 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     func animateFlash() {
         
-        let fadeInOptions: UIViewAnimationOptions = [.CurveEaseIn]
-        let fadeOutOptions: UIViewAnimationOptions = [.CurveEaseOut]
+        self.flashView.alpha = 1
         
-        UIView.animateWithDuration(0.1, delay: 0, options: fadeInOptions, animations: {
-            self.flashView.alpha = 1
-        }) { _ in
-            UIView.animateWithDuration(0.2, delay: 0, options: fadeOutOptions, animations: {
+        UIView.animateWithDuration(
+            0.3,
+            delay: 0,
+            options: [.CurveEaseOut],
+            animations: { 
                 self.flashView.alpha = 0
-                }, completion: nil)
-        }
+            },
+            completion: nil
+        )
     }
     
     var onCloseButtonTap: (() -> ())?
@@ -300,7 +303,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     func setCameraView(view: UIView) {
         cameraView?.removeFromSuperview()
         cameraView = view
-        insertSubview(view, belowSubview: closeButton)
+        insertSubview(view, atIndex: 0)
     }
     
     func setCaptureSession(session: AVCaptureSession) {

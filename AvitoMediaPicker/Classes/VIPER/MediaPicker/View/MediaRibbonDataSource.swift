@@ -21,7 +21,9 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     var cameraCellVisible: Bool = true {
         didSet {
-            collectionView?.reloadData()
+            if cameraCellVisible != oldValue {
+                adjustCameraCellVisibility()
+            }
         }
     }
     
@@ -52,11 +54,11 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
     
     func removeItem(item: MediaPickerItem) {
         if let index = mediaPickerItems.indexOf(item) {
-            collectionView?.performBatchUpdates({
+            collectionView?.performNonAnimatedBatchUpdates({
                 let indexPath = NSIndexPath(forItem: index, inSection: 0)
                 self.collectionView?.deleteItemsAtIndexPaths([indexPath])
                 self.mediaPickerItems.removeAtIndex(index)
-            }, completion: nil)
+            })
         }
     }
     
@@ -134,6 +136,16 @@ final class MediaRibbonDataSource: NSObject, UICollectionViewDataSource {
             cell.setCameraIconTransform(cameraIconTransform)
             cell.setCaptureSession(captureSession)
         }
+    }
+    
+    private func adjustCameraCellVisibility() {
+        collectionView?.performNonAnimatedBatchUpdates({ 
+            if self.cameraCellVisible {
+                self.collectionView?.insertItemsAtIndexPaths([self.indexPathForCameraCell()])
+            } else {
+                self.collectionView?.deleteItemsAtIndexPaths([self.indexPathForCameraCell()])
+            }
+        })
     }
 }
 

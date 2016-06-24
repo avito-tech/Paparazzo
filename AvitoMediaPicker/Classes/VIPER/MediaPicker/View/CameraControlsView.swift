@@ -1,5 +1,6 @@
 import UIKit
 import AvitoDesignKit
+import JNWSpringAnimation
 
 final class CameraControlsView: UIView {
     
@@ -24,6 +25,12 @@ final class CameraControlsView: UIView {
     
     private let photoViewDiameter = CGFloat(44)
     
+    // Параметры анимации кнопки съемки (подобраны ikarpov'ым)
+    private let shutterAnimationMinScale = CGFloat(0.842939)
+    private let shutterAnimationDamping = CGFloat(18.6888)
+    private let shutterAnimationStiffness = CGFloat(366.715)
+    private let shutterAnimationMass = CGFloat(0.475504)
+    
     // MARK: - UIView
     
     override init(frame: CGRect) {
@@ -41,9 +48,15 @@ final class CameraControlsView: UIView {
         ))
         
         shutterButton.backgroundColor = .blueColor()
+        shutterButton.clipsToBounds = false
         shutterButton.addTarget(
             self,
-            action: #selector(CameraControlsView.onShutterButtonTap(_:)),
+            action: #selector(CameraControlsView.onShutterButtonTouchDown(_:)),
+            forControlEvents: .TouchDown
+        )
+        shutterButton.addTarget(
+            self,
+            action: #selector(CameraControlsView.onShutterButtonTouchUp(_:)),
             forControlEvents: .TouchUpInside
         )
         
@@ -137,7 +150,12 @@ final class CameraControlsView: UIView {
     
     // MARK: - Private
     
-    @objc private func onShutterButtonTap(button: UIButton) {
+    @objc private func onShutterButtonTouchDown(button: UIButton) {
+        animateShutterButtonToScale(shutterAnimationMinScale)
+    }
+    
+    @objc private func onShutterButtonTouchUp(button: UIButton) {
+        animateShutterButtonToScale(1)
         onShutterButtonTap?()
     }
     
@@ -152,5 +170,27 @@ final class CameraControlsView: UIView {
     
     @objc private func onCameraToggleButtonTap(button: UIButton) {
         onCameraToggleButtonTap?()
+    }
+    
+    private func animateShutterButtonToScale(_ scale: CGFloat) {
+        
+        // Тут пишут о том, чем стандартная spring-анимация плоха:
+        // https://medium.com/@flyosity/your-spring-animations-are-bad-and-it-s-probably-apple-s-fault-784932e51733#.jr5m2x2vl
+        
+        let keyPath = "transform.scale"
+        
+        let animation = JNWSpringAnimation(keyPath: keyPath)
+        animation.damping = shutterAnimationDamping
+        animation.stiffness = shutterAnimationStiffness
+        animation.mass = shutterAnimationMass
+        
+        let layer = shutterButton.layer.presentationLayer() ?? shutterButton.layer
+        
+        animation.fromValue = layer.valueForKeyPath(keyPath)
+        animation.toValue = scale
+        
+        shutterButton.layer.setValue(animation.toValue, forKeyPath: keyPath)
+        
+        shutterButton.layer.addAnimation(animation, forKey: keyPath)
     }
 }
