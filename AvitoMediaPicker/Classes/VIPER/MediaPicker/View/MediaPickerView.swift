@@ -7,7 +7,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     // MARK: - Subviews
     
     private var cameraView: UIView?
-    private let photoView = UIImageView()
+    private let photoView = PhotoPreviewView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
     private let photoLibraryPeepholeView = UIImageView()
@@ -287,9 +287,10 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         
         closeAndContinueButtonsSwapped = (orientation == .LandscapeLeft)
         
-        photoView.transform = transform
         closeButton.transform = transform
         continueButton.transform = transform
+        
+        photoView.setImageTranform(transform)
         
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
