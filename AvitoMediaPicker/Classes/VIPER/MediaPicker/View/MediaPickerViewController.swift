@@ -14,12 +14,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        onCameraVisibilityChange?(isCameraVisible: true)    // TODO: if viewMode == .Camera
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        onCameraVisibilityChange?(isCameraVisible: false)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -45,11 +39,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     var onFlashToggle: (Bool -> ())? {
         get { return mediaPickerView.onFlashToggle }
         set { mediaPickerView.onFlashToggle = newValue }
-    }
-    
-    var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? {
-        get { return mediaPickerView.onCameraVisibilityChange }
-        set { mediaPickerView.onCameraVisibilityChange = newValue }
     }
     
     var onItemSelect: (MediaPickerItem -> ())? {

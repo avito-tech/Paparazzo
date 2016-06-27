@@ -2,12 +2,10 @@ import UIKit
 import AvitoDesignKit
 import AVFoundation
 
-final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
+final class MediaPickerView: UIView {
     
     // MARK: - Subviews
     
-    private var cameraView: UIView?
-    private let photoView = PhotoPreviewView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
     private let photoLibraryPeepholeView = UIImageView()
@@ -15,8 +13,8 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     private let continueButton = UIButton()
     private let flashView = UIView()
     
-    private let mediaRibbonLayout = MediaRibbonLayout()
-    private let mediaRibbonView: UICollectionView
+    private let thumbnailRibbonView: ThumbnailRibbonView
+    private let photoPreviewView: PhotoPreviewView
     
     private var closeAndContinueButtonsSwapped = false
     
@@ -28,8 +26,6 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     private let controlsExtendedHeight = CGFloat(83)
     
     private let mediaRibbonMinHeight = CGFloat(72)
-    private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    private let mediaRibbonInteritemSpacing = CGFloat(7)
     
     private let closeButtonSize = CGSize(width: 38, height: 38)
     
@@ -38,7 +34,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     // MARK: - Helpers
     
-    private let mediaRibbonDataSource = MediaRibbonDataSource()
+    private var mediaRibbonDataSource = MediaRibbonDataSource()
     
     private var mode = MediaPickerViewMode.Camera
     private var deviceOrientation = DeviceOrientation.Portrait
@@ -47,29 +43,15 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     override init(frame: CGRect) {
         
-        mediaRibbonLayout.scrollDirection = .Horizontal
-        mediaRibbonLayout.sectionInset = mediaRibbonInsets
-        mediaRibbonLayout.minimumLineSpacing = mediaRibbonInteritemSpacing
-        
-        mediaRibbonView = UICollectionView(frame: .zero, collectionViewLayout: mediaRibbonLayout)
-        mediaRibbonView.backgroundColor = .whiteColor()
-        mediaRibbonView.showsHorizontalScrollIndicator = false
-        mediaRibbonView.showsVerticalScrollIndicator = false
+        thumbnailRibbonView = ThumbnailRibbonView(dataSource: mediaRibbonDataSource)
+        photoPreviewView = PhotoPreviewView(dataSource: mediaRibbonDataSource)
         
         super.init(frame: .zero)
         
         backgroundColor = .whiteColor()
         
-        photoView.contentMode = .ScaleAspectFill
-        photoView.clipsToBounds = true
-        
         flashView.backgroundColor = .whiteColor()
         flashView.alpha = 0
-        
-        mediaRibbonDataSource.setUpInCollectionView(mediaRibbonView)
-        
-        mediaRibbonView.dataSource = mediaRibbonDataSource
-        mediaRibbonView.delegate = self
         
         closeButton.backgroundColor = .whiteColor()
         closeButton.layer.cornerRadius = closeButtonSize.height / 2
@@ -89,9 +71,17 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             forControlEvents: .TouchUpInside
         )
         
+        thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
+            self?.onItemSelect?(mediaPickerItem)
+        }
+        
+        thumbnailRibbonView.onCameraItemSelect = { [weak self] in
+            self?.onReturnToCameraTap?()
+        }
+        
         addSubview(flashView)
-        addSubview(photoView)
-        addSubview(mediaRibbonView)
+        addSubview(photoPreviewView)
+        addSubview(thumbnailRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
         addSubview(closeButton)
@@ -118,8 +108,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
         let controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
         
-        photoView.frame = cameraFrame
-        cameraView?.frame = cameraFrame
+        photoPreviewView.frame = cameraFrame
         
         cameraControlsView.layout(
             left: bounds.left,
@@ -130,9 +119,9 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         
         photoControlsView.frame = cameraControlsView.frame
 
-        let photoRibbonHeight = max(mediaRibbonMinHeight, cameraControlsView.top - photoView.bottom)
+        let photoRibbonHeight = max(mediaRibbonMinHeight, cameraControlsView.top - photoPreviewView.bottom)
 
-        mediaRibbonView.layout(
+        thumbnailRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
             bottom: cameraControlsView.top,
@@ -140,7 +129,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         )
 
         let mediaRibbonAlpha: CGFloat = (cameraControlsView.top < cameraFrame.bottom) ? 0.6 : 1
-        mediaRibbonView.backgroundColor = mediaRibbonView.backgroundColor?.colorWithAlphaComponent(mediaRibbonAlpha)
+        thumbnailRibbonView.backgroundColor = thumbnailRibbonView.backgroundColor?.colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
 
@@ -164,7 +153,6 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         set { cameraControlsView.onFlashToggle = newValue }
     }
     
-    var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())?
     var onItemSelect: (MediaPickerItem -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
@@ -187,26 +175,20 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         switch mode {
         
         case .Camera:
-            photoView.hidden = true
-            photoView.image = nil
-            
             cameraControlsView.hidden = false
             photoControlsView.hidden = true
             
-            mediaRibbonView.selectItemAtIndexPath(
-                mediaRibbonDataSource.indexPathForCameraCell(),
-                animated: false,
-                scrollPosition: .None
-            )
-            
-            setCameraVisible(true)
+            thumbnailRibbonView.selectCameraItem()
+            photoPreviewView.scrollToCamera()
         
         case .PhotoPreview(let photo):
             
-            photoView.setImage(photo.image, deferredPlaceholder: true) { [weak self] in
-                self?.photoView.hidden = false
-                self?.setCameraVisible(false)
-            }
+            photoPreviewView.scrollToMediaItem(photo)
+            // TODO: перенести всю логику
+//            photoView.setImage(photo.image, deferredPlaceholder: true) { [weak self] in
+//                self?.photoView.hidden = false
+//                self?.setCameraVisible(false)
+//            }
             
             cameraControlsView.hidden = true
             photoControlsView.hidden = false
@@ -273,9 +255,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     }
     
     func selectItem(item: MediaPickerItem) {
-        if let indexPath = mediaRibbonDataSource.indexPathForItem(item) {
-            mediaRibbonView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
-        }
+        thumbnailRibbonView.selectMediaItem(item)
     }
     
     func startSpinnerForNewPhoto() {
@@ -306,21 +286,15 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
-        
-        mediaRibbonLayout.itemsTransform = transform
-        mediaRibbonLayout.invalidateLayout()
-        
-        mediaRibbonDataSource.cameraIconTransform = transform
+        thumbnailRibbonView.setControlsTransform(transform)
     }
     
     func setCameraView(view: UIView) {
-        cameraView?.removeFromSuperview()
-        cameraView = view
-        insertSubview(view, atIndex: 0)
+        photoPreviewView.setCameraView(view)
     }
     
     func setCaptureSession(session: AVCaptureSession) {
-        mediaRibbonDataSource.captureSession = session
+        thumbnailRibbonView.captureSession = session
     }
     
     func setContinueButtonTitle(title: String) {
@@ -332,7 +306,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
 
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
-        mediaRibbonDataSource.setTheme(theme)
+        thumbnailRibbonView.setTheme(theme)
 
         continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
@@ -340,38 +314,7 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
         closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
     }
     
-    // MARK: - UICollectionViewDelegate
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        switch mediaRibbonDataSource[indexPath] {
-        case .Photo(let photo):
-            onItemSelect?(photo)
-        case .Camera:
-            onReturnToCameraTap?()
-        }
-    }
-    
-    // MARK: - MediaRibbonLayoutDelegate
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let height = mediaRibbonView.height - mediaRibbonInsets.top - mediaRibbonInsets.bottom
-        return CGSize(width: height, height: height)
-    }
-    
-    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool {
-        if case .Photo(_) = mediaRibbonDataSource[indexPath] {
-            return true
-        } else {
-            return false
-        }
-    }
-    
     // MARK: - Private
-    
-    private func setCameraVisible(visible: Bool) {
-        cameraView?.hidden = !visible
-        onCameraVisibilityChange?(isCameraVisible: visible)
-    }
     
     private func layoutCloseAndContinueButtons() {
         

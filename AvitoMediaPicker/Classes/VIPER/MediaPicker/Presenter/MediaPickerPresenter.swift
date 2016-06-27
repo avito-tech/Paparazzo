@@ -56,11 +56,6 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
             self?.view?.setLatestLibraryPhoto(image)
         }
         
-        view?.onCameraVisibilityChange = { [weak self] isCameraVisible in
-            // TODO: этот метод должен теперь вызываться и тогда, когда слот камеры в ленте фоток появляется/исчезает
-//            self?.cameraModuleInput.setCameraOutputNeeded(isCameraVisible)
-        }
-        
         view?.onPhotoLibraryButtonTap = { [weak self] in
             self?.showPhotoLibrary()
         }

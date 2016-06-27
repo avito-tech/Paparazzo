@@ -38,8 +38,6 @@ protocol MediaPickerViewInput: class {
     var onCameraToggleButtonTap: (() -> ())? { get set }
     func setCameraToggleButtonVisible(visible: Bool)
     
-    var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
-    
     // MARK: - Actions in photo ribbon
     var onItemSelect: (MediaPickerItem -> ())? { get set }
     

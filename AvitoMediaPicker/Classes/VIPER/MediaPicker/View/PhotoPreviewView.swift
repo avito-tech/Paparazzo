@@ -1,72 +1,115 @@
 import UIKit
 
-final class PhotoPreviewView: UIView {
+final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    private let imageView = UIImageView()
+    private let collectionView: UICollectionView
+    private let dataSource: MediaRibbonDataSource
     
-    private var imageTransform = CGAffineTransformIdentity
+    // MARK: - Constants
     
-    var image: UIImage? {
-        get { return imageView.image }
-        set { imageView.image = newValue }
-    }
+    private var cameraView: UIView?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(imageView)
+    private let photoCellReuseId = "PhotoCell"
+    private let cameraCellReuseId = "CameraCell"
+    
+    // MARK: - Init
+    
+    init(dataSource: MediaRibbonDataSource) {
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.backgroundColor = .whiteColor()
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.pagingEnabled = true
+        collectionView.allowsSelection = false
+        collectionView.registerClass(MediaRibbonCell.self, forCellWithReuseIdentifier: photoCellReuseId)
+        collectionView.registerClass(BlaBlaCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
+        
+        self.dataSource = dataSource
+        
+        super.init(frame: .zero)
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        addSubview(collectionView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setImageTranform(transform: CGAffineTransform) {
-        imageTransform = transform
-        adjustImagePosition()
-    }
-    
-    func setImage(
-        image: ImageSource?,
-        size: CGSize? = nil,
-        placeholder: UIImage? = nil,
-        deferredPlaceholder: Bool = false,
-        completion: (() -> ())? = nil
-    ) {
-        imageView.setImage(
-            image,
-            size: size ?? bounds.size,
-            placeholder: placeholder,
-            deferredPlaceholder: deferredPlaceholder
-        ) { [weak self] in
-            self?.adjustImagePosition()
-            completion?()
-        }
-    }
+    // MARK: - UIView
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        imageView.center = bounds.center
+        collectionView.frame = bounds
     }
     
-    private func adjustImagePosition() {
+    // MARK: - PhotoPreviewView
+    
+    func setCameraView(view: UIView) {
+        cameraView = view
+    }
+    
+    func scrollToCamera(animated animated: Bool = false) {
+        if let indexPath = dataSource.indexPathForCameraItem() {
+            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: animated)
+        }
+    }
+    
+    func scrollToMediaItem(item: MediaPickerItem, animated: Bool = false) {
+        if let indexPath = dataSource.indexPathForItem(item) {
+            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: animated)
+        }
+    }
+    
+    // MARK: - UICollectionViewDataSource
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.numberOfItems
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        guard let image = imageView.image else { return }
+        switch dataSource[indexPath] {
         
-        let viewSize = CGRectApplyAffineTransform(bounds, imageTransform).size
+        case .Camera:
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cameraCellReuseId, forIndexPath: indexPath)
+            
+            if let cell = cell as? BlaBlaCameraCell {
+                cell.cameraView = cameraView
+            }
+            
+            return cell
         
-        let scale = min(
-            min(viewSize.width / image.size.width, 1),
-            min(viewSize.height / image.size.height, 1)
-        )
-        
-        imageView.bounds = CGRect(
-            x: 0,
-            y: 0,
-            width: image.size.width * scale,
-            height: image.size.height * scale
-        )
-        
-        imageView.transform = imageTransform
+        case .Photo(let mediaPickerItem):
+            return UICollectionViewCell()   // TODO
+        }
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return collectionView.bounds.size
+    }
+}
+
+private final class BlaBlaCameraCell: UICollectionViewCell {
+    
+    var cameraView: UIView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+            
+            if let cameraView = cameraView {
+                addSubview(cameraView)
+            }
+        }
+    }
+    
+    private override func layoutSubviews() {
+        super.layoutSubviews()
+        cameraView?.frame = contentView.bounds
     }
 }
