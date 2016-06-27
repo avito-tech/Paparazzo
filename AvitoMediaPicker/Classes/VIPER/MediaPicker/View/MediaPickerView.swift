@@ -40,6 +40,9 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     private let mediaRibbonDataSource = MediaRibbonDataSource()
     
+    private var mode = MediaPickerViewMode.Camera
+    private var deviceOrientation = DeviceOrientation.Portrait
+    
     // MARK: - UIView
     
     override init(frame: CGRect) {
@@ -208,6 +211,10 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
             cameraControlsView.hidden = true
             photoControlsView.hidden = false
         }
+        
+        self.mode = mode
+        
+        adjustForDeviceOrientation(deviceOrientation)
     }
     
     func setCameraButtonVisible(visible: Bool) {
@@ -283,14 +290,19 @@ final class MediaPickerView: UIView, MediaRibbonLayoutDelegate {
     
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
         
+        deviceOrientation = orientation
+        
+        var orientation = orientation
+        if case .PhotoPreview(_) = mode {
+            orientation = .Portrait
+        }
+        
         let transform = CGAffineTransform(deviceOrientation: orientation)
         
         closeAndContinueButtonsSwapped = (orientation == .LandscapeLeft)
         
         closeButton.transform = transform
         continueButton.transform = transform
-        
-        photoView.setImageTranform(transform)
         
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
