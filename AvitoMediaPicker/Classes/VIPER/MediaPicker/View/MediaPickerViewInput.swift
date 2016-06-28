@@ -25,6 +25,8 @@ protocol MediaPickerViewInput: class {
     func removeItem(item: MediaPickerItem)
     func selectItem(item: MediaPickerItem)
     
+    func selectCamera()
+    
     func setCameraButtonVisible(visible: Bool)
     func setShutterButtonEnabled(enabled: Bool)
 
@@ -50,4 +52,7 @@ protocol MediaPickerViewInput: class {
     var onRemoveButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onReturnToCameraTap: (() -> ())? { get set }
+    
+    var onSwipeToItem: (MediaPickerItem -> ())? { get set }
+    var onSwipeToCamera: (() -> ())? { get set }
 }

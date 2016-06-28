@@ -106,6 +106,14 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
             self?.cameraModuleInput.toggleCamera()
         }
         
+        view?.onSwipeToItem = { [weak self] item in
+            self?.view?.selectItem(item)
+        }
+        
+        view?.onSwipeToCamera = { [weak self] in
+            self?.view?.selectCamera()
+        }
+        
         view?.onCloseButtonTap = { [weak self] in
             self?.onCancel?()
         }

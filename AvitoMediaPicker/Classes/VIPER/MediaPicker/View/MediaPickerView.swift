@@ -174,6 +174,16 @@ final class MediaPickerView: UIView {
         set { photoControlsView.onCameraButtonTap = newValue }
     }
     
+    var onSwipeToItem: (MediaPickerItem -> ())? {
+        get { return photoPreviewView.onSwipeToItem }
+        set { photoPreviewView.onSwipeToItem = newValue }
+    }
+    
+    var onSwipeToCamera: (() -> ())? {
+        get { return photoPreviewView.onSwipeToCamera }
+        set { photoPreviewView.onSwipeToCamera = newValue }
+    }
+    
     func setMode(mode: MediaPickerViewMode) {
         
         switch mode {
@@ -260,6 +270,10 @@ final class MediaPickerView: UIView {
     
     func selectItem(item: MediaPickerItem) {
         thumbnailRibbonView.selectMediaItem(item)
+    }
+    
+    func selectCamera() {
+        thumbnailRibbonView.selectCameraItem()
     }
     
     func startSpinnerForNewPhoto() {

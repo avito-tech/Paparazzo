@@ -61,6 +61,16 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onReturnToCameraTap = newValue }
     }
     
+    var onSwipeToItem: (MediaPickerItem -> ())? {
+        get { return mediaPickerView.onSwipeToItem }
+        set { mediaPickerView.onSwipeToItem = newValue }
+    }
+    
+    var onSwipeToCamera: (() -> ())? {
+        get { return mediaPickerView.onSwipeToCamera }
+        set { mediaPickerView.onSwipeToCamera = newValue }
+    }
+    
     func setMode(mode: MediaPickerViewMode) {
         mediaPickerView.setMode(mode)
     }
@@ -125,6 +135,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     func selectItem(item: MediaPickerItem) {
         mediaPickerView.selectItem(item)
         onItemSelect?(item)
+    }
+    
+    func selectCamera() {
+        mediaPickerView.selectCamera()
+        onReturnToCameraTap?()
     }
     
     func setCameraButtonVisible(visible: Bool) {

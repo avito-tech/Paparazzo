@@ -4,6 +4,9 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     let dataSource = MediaRibbonDataSource()
     
+    var onSwipeToItem: (MediaPickerItem -> ())?
+    var onSwipeToCamera: (() -> ())?
+    
     private let collectionView: UICollectionView
     
     // MARK: - Constants
@@ -100,6 +103,18 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         return collectionView.bounds.size
     }
     
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            onSwipeFinished()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        onSwipeFinished()
+    }
+    
     // MARK: - Private
     
     private func setUpDataSourceHandlers() {
@@ -151,6 +166,19 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         }
         
         return cell
+    }
+    
+    private func onSwipeFinished() {
+        
+        let currentPage = Int(floor(collectionView.contentOffset.x / collectionView.width))
+        let indexPath = NSIndexPath(forItem: currentPage, inSection: 0)
+        
+        switch dataSource[indexPath] {
+        case .Photo(let item):
+            onSwipeToItem?(item)
+        case .Camera:
+            onSwipeToCamera?()
+        }
     }
 }
 
