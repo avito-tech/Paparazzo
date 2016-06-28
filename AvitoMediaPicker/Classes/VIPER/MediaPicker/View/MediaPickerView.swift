@@ -83,8 +83,8 @@ final class MediaPickerView: UIView {
             self?.onReturnToCameraTap?()
         }
         
-        addSubview(flashView)
         addSubview(photoPreviewView)
+        addSubview(flashView)
         addSubview(thumbnailRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
