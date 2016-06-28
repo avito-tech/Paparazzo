@@ -3,9 +3,10 @@ import AVFoundation
 
 final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
     
+    let dataSource = MediaRibbonDataSource()
+    
     private let layout: MediaRibbonLayout
     private let collectionView: UICollectionView
-    private var dataSource: MediaRibbonDataSource
     
     private var theme: MediaPickerRootModuleUITheme?
     
@@ -19,14 +20,12 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
     
     // MARK: - Init
     
-    init(dataSource: MediaRibbonDataSource) {
+    init() {
         
         layout = MediaRibbonLayout()
         layout.scrollDirection = .Horizontal
         layout.sectionInset = mediaRibbonInsets
         layout.minimumLineSpacing = mediaRibbonInteritemSpacing
-        
-        self.dataSource = dataSource
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .whiteColor()
@@ -40,12 +39,7 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        self.dataSource.onItemsAdd = { [weak collectionView] indexPaths, handler in
-            collectionView?.performBatchUpdates {
-                collectionView?.insertItemsAtIndexPaths(indexPaths)
-                handler()
-            }
-        }
+        setUpDataSourceHandlers()
         
         addSubview(collectionView)
     }
@@ -143,6 +137,23 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         }
     }
     
+    private func setUpDataSourceHandlers() {
+        
+        dataSource.onItemsAdd = { [weak collectionView] indexPaths, mutateData in
+            collectionView?.performBatchUpdates {
+                collectionView?.insertItemsAtIndexPaths(indexPaths)
+                mutateData()
+            }
+        }
+        
+        dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in
+            collectionView?.performBatchUpdates {
+                collectionView?.deleteItemsAtIndexPaths(indexPaths)
+                mutateData()
+            }
+        }
+    }
+    
     private func photoCell(
         forIndexPath indexPath: NSIndexPath,
         inCollectionView collectionView: UICollectionView,
@@ -194,6 +205,6 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
     
     private func cameraCell() -> CameraCell? {
         let indexPath = dataSource.indexPathForCameraItem()
-        return indexPath.flatMap { collectionView.cellForItemAtIndexPath($0) as? CameraCell }
+        return collectionView.cellForItemAtIndexPath(indexPath) as? CameraCell
     }
 }

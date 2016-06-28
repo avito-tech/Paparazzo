@@ -8,6 +8,8 @@ final class MediaPickerView: UIView {
     
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
+    private let dataSources: [MediaRibbonDataSource]
+    
     private let photoLibraryPeepholeView = UIImageView()
     private let closeButton = UIButton()
     private let continueButton = UIButton()
@@ -34,8 +36,6 @@ final class MediaPickerView: UIView {
     
     // MARK: - Helpers
     
-    private var mediaRibbonDataSource = MediaRibbonDataSource()
-    
     private var mode = MediaPickerViewMode.Camera
     private var deviceOrientation = DeviceOrientation.Portrait
     
@@ -43,8 +43,10 @@ final class MediaPickerView: UIView {
     
     override init(frame: CGRect) {
         
-        thumbnailRibbonView = ThumbnailRibbonView(dataSource: mediaRibbonDataSource)
-        photoPreviewView = PhotoPreviewView(dataSource: mediaRibbonDataSource)
+        thumbnailRibbonView = ThumbnailRibbonView()
+        photoPreviewView = PhotoPreviewView()
+        
+        dataSources = [thumbnailRibbonView.dataSource, photoPreviewView.dataSource]
         
         super.init(frame: .zero)
         
@@ -70,6 +72,8 @@ final class MediaPickerView: UIView {
             action: #selector(MediaPickerView.onContinueButtonTap(_:)),
             forControlEvents: .TouchUpInside
         )
+        
+        photoLibraryPeepholeView.contentMode = .ScaleAspectFill
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
             self?.onItemSelect?(mediaPickerItem)
@@ -200,7 +204,7 @@ final class MediaPickerView: UIView {
     }
     
     func setCameraButtonVisible(visible: Bool) {
-        mediaRibbonDataSource.cameraCellVisible = visible
+        dataSources.forEach { $0.cameraCellVisible = visible }
     }
     
     func setLatestPhotoLibraryItemImage(image: ImageSource?) {
@@ -247,11 +251,11 @@ final class MediaPickerView: UIView {
     }
     
     func addItems(items: [MediaPickerItem]) {
-        mediaRibbonDataSource.addItems(items)
+        dataSources.forEach { $0.addItems(items) }
     }
 
     func removeItem(item: MediaPickerItem) {
-        mediaRibbonDataSource.removeItem(item)
+        dataSources.forEach { $0.removeItem(item) }
     }
     
     func selectItem(item: MediaPickerItem) {

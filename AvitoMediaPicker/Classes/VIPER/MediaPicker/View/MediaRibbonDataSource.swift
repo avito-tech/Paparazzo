@@ -1,7 +1,9 @@
 import UIKit
 import AVFoundation
 
-struct MediaRibbonDataSource {
+final class MediaRibbonDataSource {
+    
+    typealias DataMutationHandler = (indexPaths: [NSIndexPath], mutatingFunc: () -> ()) -> ()
     
     private var mediaPickerItems = [MediaPickerItem]()
     
@@ -27,33 +29,27 @@ struct MediaRibbonDataSource {
         }
     }
     
-    var onItemsAdd: (([NSIndexPath], () -> ()) -> ())?
+    var onItemsAdd: DataMutationHandler?
+    var onItemsRemove: DataMutationHandler?
     
-    mutating func addItems(items: [MediaPickerItem]) {
+    func addItems(items: [MediaPickerItem]) {
         
         let insertedIndexes = mediaPickerItems.count ..< mediaPickerItems.count + items.count
         let indexPaths = insertedIndexes.map { NSIndexPath(forItem: $0, inSection: 0) }
-        var called = false
         
-        func addItems() {
-            mediaPickerItems.appendContentsOf(items)
-            called = true
-        }
-        
-        onItemsAdd?(indexPaths, addItems)
-        
-        if !called {
-            addItems()
+        invokeMutationHandler(onItemsAdd, indexPaths: indexPaths) { [weak self] in
+            self?.mediaPickerItems.appendContentsOf(items)
         }
     }
     
-    mutating func removeItem(item: MediaPickerItem) {
-        if let index = mediaPickerItems.indexOf(item) {
-            collectionView?.performNonAnimatedBatchUpdates({
-                let indexPath = NSIndexPath(forItem: index, inSection: 0)
-                self.collectionView?.deleteItemsAtIndexPaths([indexPath])
-                self.mediaPickerItems.removeAtIndex(index)
-            })
+    func removeItem(item: MediaPickerItem) {
+        
+        guard let index = mediaPickerItems.indexOf(item) else { return }
+        
+        let indexPath = NSIndexPath(forItem: index, inSection: 0)
+        
+        invokeMutationHandler(onItemsRemove, indexPaths: [indexPath]) { [weak self] in
+            self?.mediaPickerItems.removeAtIndex(index)
         }
     }
     
@@ -61,21 +57,36 @@ struct MediaRibbonDataSource {
         return mediaPickerItems.indexOf(item).flatMap { NSIndexPath(forItem: $0, inSection: 0) }
     }
     
-    func indexPathForCameraItem() -> NSIndexPath? {
-        let index: Int? = cameraCellVisible ? mediaPickerItems.count : nil
-        return index.flatMap { NSIndexPath(forItem: $0, inSection: 0) }
+    func indexPathForCameraItem() -> NSIndexPath {
+        return NSIndexPath(forItem: mediaPickerItems.count, inSection: 0)
     }
     
     // MARK: - Private
     
+    private func invokeMutationHandler(handler: DataMutationHandler?, indexPaths: [NSIndexPath], mutationFunction: (() -> ())?) {
+        
+        guard let handler = handler else { return }
+        
+        var mutationFunctionCalled = false
+        
+        let mutationFunctionWrapper = {
+            mutationFunction?()
+            mutationFunctionCalled = true
+        }
+        
+        handler(indexPaths: indexPaths, mutatingFunc: mutationFunctionWrapper)
+        
+        if let mutationFunction = mutationFunction where !mutationFunctionCalled {
+            mutationFunction()
+        }
+    }
+    
     private func adjustCameraCellVisibility() {
-        collectionView?.performNonAnimatedBatchUpdates({ 
-            if self.cameraCellVisible {
-                self.collectionView?.insertItemsAtIndexPaths([self.indexPathForCameraCell()])
-            } else {
-                self.collectionView?.deleteItemsAtIndexPaths([self.indexPathForCameraCell()])
-            }
-        })
+        
+        let handler = cameraCellVisible ? onItemsAdd : onItemsRemove
+        let indexPaths = [indexPathForCameraItem()]
+        
+        invokeMutationHandler(handler, indexPaths: indexPaths, mutationFunction: nil)
     }
 }
 

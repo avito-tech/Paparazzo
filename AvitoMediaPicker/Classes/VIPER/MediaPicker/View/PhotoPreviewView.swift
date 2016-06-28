@@ -2,8 +2,9 @@ import UIKit
 
 final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    let dataSource = MediaRibbonDataSource()
+    
     private let collectionView: UICollectionView
-    private let dataSource: MediaRibbonDataSource
     
     // MARK: - Constants
     
@@ -14,9 +15,15 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     // MARK: - Init
     
-    init(dataSource: MediaRibbonDataSource) {
+    init() {
         
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .Horizontal
+        layout.sectionInset = .zero
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .whiteColor()
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
@@ -26,12 +33,12 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.registerClass(MediaRibbonCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(BlaBlaCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
         
-        self.dataSource = dataSource
-        
         super.init(frame: .zero)
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        setUpDataSourceHandlers()
         
         addSubview(collectionView)
     }
@@ -54,9 +61,8 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     }
     
     func scrollToCamera(animated animated: Bool = false) {
-        if let indexPath = dataSource.indexPathForCameraItem() {
-            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: animated)
-        }
+        let indexPath = dataSource.indexPathForCameraItem()
+        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: animated)
     }
     
     func scrollToMediaItem(item: MediaPickerItem, animated: Bool = false) {
@@ -85,7 +91,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             return cell
         
         case .Photo(let mediaPickerItem):
-            return UICollectionViewCell()   // TODO
+            return photoCell(forIndexPath: indexPath, inCollectionView: collectionView, withItem: mediaPickerItem)
         }
     }
     
@@ -94,8 +100,46 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return collectionView.bounds.size
     }
+    
+    // MARK: - Private
+    
+    private func setUpDataSourceHandlers() {
+        
+        dataSource.onItemsAdd = { [weak collectionView] indexPaths, mutateData in
+            collectionView?.performNonAnimatedBatchUpdates {
+                collectionView?.insertItemsAtIndexPaths(indexPaths)
+                mutateData()
+            }
+        }
+        
+        dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in
+            collectionView?.performNonAnimatedBatchUpdates {
+                collectionView?.deleteItemsAtIndexPaths(indexPaths)
+                mutateData()
+            }
+        }
+    }
+    
+    private func photoCell(
+        forIndexPath indexPath: NSIndexPath,
+        inCollectionView collectionView: UICollectionView,
+        withItem mediaPickerItem: MediaPickerItem
+    ) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
+            photoCellReuseId,
+            forIndexPath: indexPath
+        )
+        
+        if let cell = cell as? MediaRibbonCell {
+            cell.customizeWithItem(mediaPickerItem)
+        }
+        
+        return cell
+    }
 }
 
+// TODO: придумать нормальное название, вынести в отдельный файл
 private final class BlaBlaCameraCell: UICollectionViewCell {
     
     var cameraView: UIView? {
