@@ -6,9 +6,9 @@ extension UICollectionView {
         performBatchUpdates(updates, completion: nil)
     }
     
-    func performNonAnimatedBatchUpdates(updates: (() -> Void)) {
+    func performNonAnimatedBatchUpdates(updates: (() -> Void), completion: (Bool -> ())? = nil) {
         UIView.animateWithDuration(0) { 
-            self.performBatchUpdates(updates, completion: nil)
+            self.performBatchUpdates(updates, completion: completion)
         }
     }
 }

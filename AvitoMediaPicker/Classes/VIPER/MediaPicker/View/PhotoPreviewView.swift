@@ -27,7 +27,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.backgroundColor = .whiteColor()
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.alwaysBounceHorizontal = true
         collectionView.pagingEnabled = true
         collectionView.allowsSelection = false
         collectionView.registerClass(MediaRibbonCell.self, forCellWithReuseIdentifier: photoCellReuseId)
@@ -106,17 +105,33 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     private func setUpDataSourceHandlers() {
         
         dataSource.onItemsAdd = { [weak collectionView] indexPaths, mutateData in
-            collectionView?.performNonAnimatedBatchUpdates {
-                collectionView?.insertItemsAtIndexPaths(indexPaths)
+            
+            guard let collectionView = collectionView else { return }
+            
+            // Сохраняем текущую позицию даже когда ячейки добавляются слева
+            let currentPage = floor(collectionView.contentOffset.x / collectionView.width)
+            let nextPage = currentPage + CGFloat(indexPaths.filter({ $0.item <= Int(currentPage) }).count)
+            
+            collectionView.performNonAnimatedBatchUpdates({
+                collectionView.insertItemsAtIndexPaths(indexPaths)
                 mutateData()
-            }
+            
+            }, completion: { _ in
+                
+                let rect = CGRect(
+                    origin: CGPoint(x: nextPage * collectionView.width, y: collectionView.contentOffset.y),
+                    size: collectionView.bounds.size
+                )
+                
+                collectionView.scrollRectToVisible(rect, animated: false)
+            })
         }
         
         dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in
-            collectionView?.performNonAnimatedBatchUpdates {
+            collectionView?.performNonAnimatedBatchUpdates({
                 collectionView?.deleteItemsAtIndexPaths(indexPaths)
                 mutateData()
-            }
+            })
         }
     }
     
