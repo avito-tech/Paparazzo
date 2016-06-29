@@ -32,7 +32,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.showsVerticalScrollIndicator = false
         collectionView.pagingEnabled = true
         collectionView.allowsSelection = false
-        collectionView.registerClass(MediaRibbonCell.self, forCellWithReuseIdentifier: photoCellReuseId)
+        collectionView.registerClass(PhotoPreviewCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(BlaBlaCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
         
         super.init(frame: .zero)
@@ -161,7 +161,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             forIndexPath: indexPath
         )
         
-        if let cell = cell as? MediaRibbonCell {
+        if let cell = cell as? PhotoPreviewCell {
             cell.customizeWithItem(mediaPickerItem)
         }
         

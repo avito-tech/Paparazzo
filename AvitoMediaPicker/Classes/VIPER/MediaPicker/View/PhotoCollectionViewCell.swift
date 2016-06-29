@@ -14,6 +14,10 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    class var imageViewContentMode: UIViewContentMode {
+        return .ScaleAspectFill
+    }
+    
     private let imageView = UIImageView()
     private var renderedSize: CGSize = .zero
     
@@ -22,7 +26,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         
         adjustBorderColor()
         
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = self.dynamicType.imageViewContentMode
         imageView.clipsToBounds = true
         
         contentView.addSubview(imageView)
