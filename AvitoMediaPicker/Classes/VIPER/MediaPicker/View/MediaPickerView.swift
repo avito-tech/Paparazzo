@@ -229,7 +229,11 @@ final class MediaPickerView: UIView {
         cameraControlsView.setFlashButtonOn(isOn)
     }
     
+    private static var flashCount = 0
+    
     func animateFlash() {
+        
+        print("flash \(MediaPickerView.flashCount++)")
         
         self.flashView.alpha = 1
         
@@ -274,16 +278,6 @@ final class MediaPickerView: UIView {
     
     func selectCamera() {
         thumbnailRibbonView.selectCameraItem()
-    }
-    
-    func startSpinnerForNewPhoto() {
-        debugPrint("startSpinnerForNewPhoto")
-        // TODO
-    }
-    
-    func stopSpinnerForNewPhoto() {
-        debugPrint("stopSpinnerForNewPhoto")
-        // TODO
     }
     
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {

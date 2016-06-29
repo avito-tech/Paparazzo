@@ -140,10 +140,12 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
     private func setUpDataSourceHandlers() {
         
         dataSource.onItemsAdd = { [weak collectionView] indexPaths, mutateData in
-            collectionView?.performBatchUpdates {
+            collectionView?.performBatchUpdates({
                 collectionView?.insertItemsAtIndexPaths(indexPaths)
                 mutateData()
-            }
+            }, completion: { _ in
+                
+            })
         }
         
         dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in

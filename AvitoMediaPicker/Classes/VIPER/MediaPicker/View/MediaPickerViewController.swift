@@ -150,14 +150,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setShutterButtonEnabled(enabled)
     }
     
-    func startSpinnerForNewPhoto() {
-        mediaPickerView.startSpinnerForNewPhoto()
-    }
-    
-    func stopSpinnerForNewPhoto() {
-        mediaPickerView.stopSpinnerForNewPhoto()
-    }
-    
     // MARK: - MediaPickerViewController
     
     func setCameraView(view: UIView) {

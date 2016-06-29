@@ -29,10 +29,6 @@ protocol MediaPickerViewInput: class {
     
     func setCameraButtonVisible(visible: Bool)
     func setShutterButtonEnabled(enabled: Bool)
-
-    // TODO: это по ходу не нужно будет
-    func startSpinnerForNewPhoto()
-    func stopSpinnerForNewPhoto()
     
     var onCloseButtonTap: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }

@@ -123,23 +123,16 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             
             guard let collectionView = collectionView else { return }
             
+            mutateData()
+            
             // Сохраняем текущую позицию даже когда ячейки добавляются слева
             let currentPage = floor(collectionView.contentOffset.x / collectionView.width)
             let nextPage = currentPage + CGFloat(indexPaths.filter({ $0.item <= Int(currentPage) }).count)
+            let indexPath = NSIndexPath(forItem: Int(nextPage), inSection: 0)
             
-            collectionView.performNonAnimatedBatchUpdates({
-                collectionView.insertItemsAtIndexPaths(indexPaths)
-                mutateData()
-            
-            }, completion: { _ in
-                
-                let rect = CGRect(
-                    origin: CGPoint(x: nextPage * collectionView.width, y: collectionView.contentOffset.y),
-                    size: collectionView.bounds.size
-                )
-                
-                collectionView.scrollRectToVisible(rect, animated: false)
-            })
+            collectionView.reloadData()
+            collectionView.layoutIfNeeded()
+            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .None, animated: false)
         }
         
         dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in
@@ -163,6 +156,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         if let cell = cell as? PhotoPreviewCell {
             cell.customizeWithItem(mediaPickerItem)
+            cell.title = "Фото \(indexPath.item + 1)"
         }
         
         return cell
@@ -170,7 +164,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private func onSwipeFinished() {
         
-        let currentPage = Int(floor(collectionView.contentOffset.x / collectionView.width))
+        let currentPage = max(0, Int(floor(collectionView.contentOffset.x / collectionView.width)))
         let indexPath = NSIndexPath(forItem: currentPage, inSection: 0)
         
         switch dataSource[indexPath] {
