@@ -127,7 +127,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         
         interactor.addItems(items) { [weak self] canAddItems in
             
-            self?.view?.addItems(items)
+            self?.view?.addItems(items, animated: fromCamera)
             self?.view?.setCameraButtonVisible(canAddItems)
         
             if let lastItem = items.last where fromCamera && !canAddItems {

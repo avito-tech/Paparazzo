@@ -9,13 +9,7 @@ final class MediaRibbonDataSource {
     
     // MARK: - MediaRibbonDataSource
     
-    var cameraCellVisible: Bool = true {
-        didSet {
-            if cameraCellVisible != oldValue {
-                adjustCameraCellVisibility()
-            }
-        }
-    }
+    var cameraCellVisible: Bool = true
     
     var numberOfItems: Int {
         return mediaPickerItems.count + (cameraCellVisible ? 1 : 0)
@@ -29,27 +23,22 @@ final class MediaRibbonDataSource {
         }
     }
     
-    var onItemsAdd: DataMutationHandler?
-    var onItemsRemove: DataMutationHandler?
-    
-    func addItems(items: [MediaPickerItem]) {
+    func addItems(items: [MediaPickerItem]) -> [NSIndexPath] {
         
         let insertedIndexes = mediaPickerItems.count ..< mediaPickerItems.count + items.count
         let indexPaths = insertedIndexes.map { NSIndexPath(forItem: $0, inSection: 0) }
         
-        invokeMutationHandler(onItemsAdd, indexPaths: indexPaths) { [weak self] in
-            self?.mediaPickerItems.appendContentsOf(items)
-        }
+        mediaPickerItems.appendContentsOf(items)
+        
+        return indexPaths
     }
     
-    func removeItem(item: MediaPickerItem) {
-        
-        guard let index = mediaPickerItems.indexOf(item) else { return }
-        
-        let indexPath = NSIndexPath(forItem: index, inSection: 0)
-        
-        invokeMutationHandler(onItemsRemove, indexPaths: [indexPath]) { [weak self] in
-            self?.mediaPickerItems.removeAtIndex(index)
+    func removeItem(item: MediaPickerItem) -> NSIndexPath? {
+        if let index = mediaPickerItems.indexOf(item) {
+            mediaPickerItems.removeAtIndex(index)
+            return NSIndexPath(forItem: index, inSection: 0)
+        } else {
+            return nil
         }
     }
     
@@ -59,34 +48,6 @@ final class MediaRibbonDataSource {
     
     func indexPathForCameraItem() -> NSIndexPath {
         return NSIndexPath(forItem: mediaPickerItems.count, inSection: 0)
-    }
-    
-    // MARK: - Private
-    
-    private func invokeMutationHandler(handler: DataMutationHandler?, indexPaths: [NSIndexPath], mutationFunction: (() -> ())?) {
-        
-        guard let handler = handler else { return }
-        
-        var mutationFunctionCalled = false
-        
-        let mutationFunctionWrapper = {
-            mutationFunction?()
-            mutationFunctionCalled = true
-        }
-        
-        handler(indexPaths: indexPaths, mutatingFunc: mutationFunctionWrapper)
-        
-        if let mutationFunction = mutationFunction where !mutationFunctionCalled {
-            mutationFunction()
-        }
-    }
-    
-    private func adjustCameraCellVisibility() {
-        
-        let handler = cameraCellVisible ? onItemsAdd : onItemsRemove
-        let indexPaths = [indexPathForCameraItem()]
-        
-        invokeMutationHandler(handler, indexPaths: indexPaths, mutationFunction: nil)
     }
 }
 

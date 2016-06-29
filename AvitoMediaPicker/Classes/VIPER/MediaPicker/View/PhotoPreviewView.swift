@@ -2,12 +2,11 @@ import UIKit
 
 final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    let dataSource = MediaRibbonDataSource()
-    
     var onSwipeToItem: (MediaPickerItem -> ())?
     var onSwipeToCamera: (() -> ())?
     
     private let collectionView: UICollectionView
+    private let dataSource = MediaRibbonDataSource()
     
     // MARK: - Constants
     
@@ -40,8 +39,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        setUpDataSourceHandlers()
-        
         addSubview(collectionView)
     }
     
@@ -70,6 +67,37 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     func scrollToMediaItem(item: MediaPickerItem, animated: Bool = false) {
         if let indexPath = dataSource.indexPathForItem(item) {
             collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: animated)
+        }
+    }
+    
+    func addItems(items: [MediaPickerItem]) {
+        let insertedIndexPaths = dataSource.addItems(items)
+        addCollectionViewItemsAtIndexPaths(insertedIndexPaths)
+    }
+    
+    func removeItem(item: MediaPickerItem, animated: Bool) {
+        collectionView.deleteItems(animated: animated) { [weak self] in
+            let removedIndexPath = self?.dataSource.removeItem(item)
+            return removedIndexPath.flatMap { [$0] }
+        }
+    }
+    
+    func setCameraVisible(visible: Bool) {
+        
+        if dataSource.cameraCellVisible != visible {
+            
+            if visible {
+                
+                dataSource.cameraCellVisible = visible
+                addCollectionViewItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+            
+            } else {
+                
+                collectionView.deleteItems(animated: false) { [weak self] in
+                    self?.dataSource.cameraCellVisible = visible
+                    return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
+                }
+            }
         }
     }
     
@@ -117,32 +145,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     // MARK: - Private
     
-    private func setUpDataSourceHandlers() {
-        
-        dataSource.onItemsAdd = { [weak collectionView] indexPaths, mutateData in
-            
-            guard let collectionView = collectionView else { return }
-            
-            mutateData()
-            
-            // Сохраняем текущую позицию даже когда ячейки добавляются слева
-            let currentPage = floor(collectionView.contentOffset.x / collectionView.width)
-            let nextPage = currentPage + CGFloat(indexPaths.filter({ $0.item <= Int(currentPage) }).count)
-            let indexPath = NSIndexPath(forItem: Int(nextPage), inSection: 0)
-            
-            collectionView.reloadData()
-            collectionView.layoutIfNeeded()
-            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .None, animated: false)
-        }
-        
-        dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in
-            collectionView?.performNonAnimatedBatchUpdates({
-                collectionView?.deleteItemsAtIndexPaths(indexPaths)
-                mutateData()
-            })
-        }
-    }
-    
     private func photoCell(
         forIndexPath indexPath: NSIndexPath,
         inCollectionView collectionView: UICollectionView,
@@ -173,6 +175,17 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         case .Camera:
             onSwipeToCamera?()
         }
+    }
+    
+    private func addCollectionViewItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
+        
+        let currentPage = floor(collectionView.contentOffset.x / collectionView.width)
+        let nextPage = currentPage + CGFloat(indexPaths.filter({ $0.item <= Int(currentPage) }).count)
+        let indexPath = NSIndexPath(forItem: Int(nextPage), inSection: 0)
+        
+        collectionView.reloadData()
+        collectionView.layoutIfNeeded()
+        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .None, animated: false)
     }
 }
 

@@ -8,7 +8,6 @@ final class MediaPickerView: UIView {
     
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
-    private let dataSources: [MediaRibbonDataSource]
     
     private let photoLibraryPeepholeView = UIImageView()
     private let closeButton = UIButton()
@@ -45,8 +44,6 @@ final class MediaPickerView: UIView {
         
         thumbnailRibbonView = ThumbnailRibbonView()
         photoPreviewView = PhotoPreviewView()
-        
-        dataSources = [thumbnailRibbonView.dataSource, photoPreviewView.dataSource]
         
         super.init(frame: .zero)
         
@@ -214,7 +211,8 @@ final class MediaPickerView: UIView {
     }
     
     func setCameraButtonVisible(visible: Bool) {
-        dataSources.forEach { $0.cameraCellVisible = visible }
+        photoPreviewView.setCameraVisible(visible)
+        thumbnailRibbonView.setCameraItemVisible(visible)
     }
     
     func setLatestPhotoLibraryItemImage(image: ImageSource?) {
@@ -264,12 +262,14 @@ final class MediaPickerView: UIView {
         cameraControlsView.setShutterButtonEnabled(enabled)
     }
     
-    func addItems(items: [MediaPickerItem]) {
-        dataSources.forEach { $0.addItems(items) }
+    func addItems(items: [MediaPickerItem], animated: Bool) {
+        photoPreviewView.addItems(items)
+        thumbnailRibbonView.addItems(items, animated: animated)
     }
 
     func removeItem(item: MediaPickerItem) {
-        dataSources.forEach { $0.removeItem(item) }
+        photoPreviewView.removeItem(item, animated: false)
+        thumbnailRibbonView.removeItem(item, animated: false)
     }
     
     func selectItem(item: MediaPickerItem) {

@@ -3,10 +3,9 @@ import AVFoundation
 
 final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
     
-    let dataSource = MediaRibbonDataSource()
-    
     private let layout: MediaRibbonLayout
     private let collectionView: UICollectionView
+    private let dataSource = MediaRibbonDataSource()
     
     private var theme: MediaPickerRootModuleUITheme?
     
@@ -38,8 +37,6 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        
-        setUpDataSourceHandlers()
         
         addSubview(collectionView)
     }
@@ -88,6 +85,35 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         cameraIconTransform = transform
     }
     
+    func addItems(items: [MediaPickerItem], animated: Bool) {
+        collectionView.insertItems(animated: animated) { [weak self] in
+            self?.dataSource.addItems(items)
+        }
+    }
+    
+    func removeItem(item: MediaPickerItem, animated: Bool) {
+        collectionView.deleteItems(animated: animated) { [weak self] in
+            self?.dataSource.removeItem(item).flatMap { [$0] }
+        }
+    }
+    
+    func setCameraItemVisible(visible: Bool) {
+        
+        if dataSource.cameraCellVisible != visible {
+            
+            let updatesFunction = { [weak self] () -> [NSIndexPath]? in
+                self?.dataSource.cameraCellVisible = visible
+                return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
+            }
+            
+            if visible {
+                collectionView.insertItems(animated: false, updatesFunction)
+            } else {
+                collectionView.deleteItems(animated: false, updatesFunction)
+            }
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -134,25 +160,6 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
     private var cameraIconTransform = CGAffineTransformIdentity {
         didSet {
             cameraCell()?.setCameraIconTransform(cameraIconTransform)
-        }
-    }
-    
-    private func setUpDataSourceHandlers() {
-        
-        dataSource.onItemsAdd = { [weak collectionView] indexPaths, mutateData in
-            collectionView?.performBatchUpdates({
-                collectionView?.insertItemsAtIndexPaths(indexPaths)
-                mutateData()
-            }, completion: { _ in
-                
-            })
-        }
-        
-        dataSource.onItemsRemove = { [weak collectionView] indexPaths, mutateData in
-            collectionView?.performBatchUpdates {
-                collectionView?.deleteItemsAtIndexPaths(indexPaths)
-                mutateData()
-            }
         }
     }
     

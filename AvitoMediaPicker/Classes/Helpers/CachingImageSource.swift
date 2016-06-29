@@ -23,17 +23,16 @@ final class CachingImageSource: ImageSource {
         
         let cacheKey = NSValue(CGSize: size)
         
-        if let cachedCGImage = cache.objectForKey(cacheKey) {
-            // Force unwrapping, потому что "Cast to Core Foundation types always succeeds in runtime"
-            completion(T(CGImage: cachedCGImage as! CGImage))
+        if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
+            completion(T(CGImage: cachedImageWrapper.image))
         }
         
         underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (imageWrapper: CGImageWrapper?) in
             
             let cgImage = imageWrapper?.image
             
-            if let cgImage = cgImage {
-                self?.cache.setObject(cgImage, forKey: cacheKey)
+            if let imageWrapper = imageWrapper {
+                self?.cache.setObject(imageWrapper, forKey: cacheKey)
             }
             
             completion(cgImage.flatMap { T(CGImage: $0) })
@@ -41,7 +40,7 @@ final class CachingImageSource: ImageSource {
     }
 }
 
-private struct CGImageWrapper: InitializableWithCGImage {
+private final class CGImageWrapper: InitializableWithCGImage {
     
     let image: CGImage
     

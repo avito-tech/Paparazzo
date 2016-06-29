@@ -8,33 +8,33 @@ enum MediaPickerViewMode {
 
 protocol MediaPickerViewInput: class {
     
-    func setMode(mode: MediaPickerViewMode)
-    func adjustForDeviceOrientation(orientation: DeviceOrientation)
+    func setMode(_: MediaPickerViewMode)
+    func adjustForDeviceOrientation(_: DeviceOrientation)
     
-    func setCaptureSession(session: AVCaptureSession)
+    func setCaptureSession(_: AVCaptureSession)
     
-    func setContinueButtonTitle(title: String)
+    func setContinueButtonTitle(_: String)
 
-    func setLatestLibraryPhoto(image: ImageSource?)
+    func setLatestLibraryPhoto(_: ImageSource?)
     
-    func setFlashButtonVisible(visible: Bool)
-    func setFlashButtonOn(isOn: Bool)
+    func setFlashButtonVisible(_: Bool)
+    func setFlashButtonOn(_: Bool)
     func animateFlash()
     
-    func addItems(item: [MediaPickerItem])
-    func removeItem(item: MediaPickerItem)
-    func selectItem(item: MediaPickerItem)
+    func addItems(_: [MediaPickerItem], animated: Bool)
+    func removeItem(_: MediaPickerItem)
+    func selectItem(_: MediaPickerItem)
     
     func selectCamera()
     
-    func setCameraButtonVisible(visible: Bool)
-    func setShutterButtonEnabled(enabled: Bool)
+    func setCameraButtonVisible(_: Bool)
+    func setShutterButtonEnabled(_: Bool)
     
     var onCloseButtonTap: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }
     
     var onCameraToggleButtonTap: (() -> ())? { get set }
-    func setCameraToggleButtonVisible(visible: Bool)
+    func setCameraToggleButtonVisible(_: Bool)
     
     // MARK: - Actions in photo ribbon
     var onItemSelect: (MediaPickerItem -> ())? { get set }
