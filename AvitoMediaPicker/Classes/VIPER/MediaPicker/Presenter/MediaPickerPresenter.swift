@@ -72,7 +72,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
                 self?.view?.setShutterButtonEnabled(true)
                 
                 if let photo = photo {
-                    self?.addItems([photo], fromCamera: true)
+                    self?.addItems([photo.toItemWithCachingImageSource()], fromCamera: true)
                 }
             }
         }
@@ -164,7 +164,10 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
                 module.onFinish = { photoLibraryItems in
                     
                     let mediaPickerItems = photoLibraryItems.map {
-                        MediaPickerItem(identifier: $0.identifier, image: $0.image)
+                        MediaPickerItem(
+                            identifier: $0.identifier,
+                            image: CachingImageSource(underlyingImageSource: $0.image)
+                        )
                     }
                     
                     self?.addItems(mediaPickerItems, fromCamera: false)

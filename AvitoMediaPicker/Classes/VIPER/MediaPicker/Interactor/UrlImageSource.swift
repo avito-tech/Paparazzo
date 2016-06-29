@@ -5,7 +5,6 @@ import MobileCoreServices
 struct UrlImageSource: ImageSource {
 
     private let url: NSURL
-    private let cache = NSCache()
 
     init(url: NSURL) {
         self.url = url
@@ -48,15 +47,8 @@ struct UrlImageSource: ImageSource {
     }
 
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
-        
-        let cacheKey = NSValue(CGSize: size)
-        
-        if let cachedCGImage = cache.objectForKey(cacheKey) {
-            // Force unwrapping, потому что "Cast to Core Foundation types always succeeds in runtime"
-            completion(T(CGImage: cachedCGImage as! CGImage))
-        }
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url, cache] in
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
             let source = CGImageSourceCreateWithURL(url, nil)
 
@@ -67,10 +59,6 @@ struct UrlImageSource: ImageSource {
             ]
 
             let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
-            
-            if let cgImage = cgImage {
-                cache.setObject(cgImage, forKey: cacheKey)
-            }
 
             dispatch_async(dispatch_get_main_queue()) {
                 completion(cgImage.flatMap { T(CGImage: $0) })
