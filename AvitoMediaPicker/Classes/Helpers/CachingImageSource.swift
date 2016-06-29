@@ -1,4 +1,4 @@
-import UIKit
+import CoreGraphics
 
 final class CachingImageSource: ImageSource {
     
@@ -28,13 +28,24 @@ final class CachingImageSource: ImageSource {
             completion(T(CGImage: cachedCGImage as! CGImage))
         }
         
-        underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (image: UIImage?) in
+        underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (imageWrapper: CGImageWrapper?) in
             
-            if let cgImage = image?.CGImage {
+            let cgImage = imageWrapper?.image
+            
+            if let cgImage = cgImage {
                 self?.cache.setObject(cgImage, forKey: cacheKey)
             }
             
-            completion(image?.CGImage.flatMap { T(CGImage: $0) })
+            completion(cgImage.flatMap { T(CGImage: $0) })
         }
+    }
+}
+
+private struct CGImageWrapper: InitializableWithCGImage {
+    
+    let image: CGImage
+    
+    init(CGImage image: CGImage) {
+        self.image = image
     }
 }
