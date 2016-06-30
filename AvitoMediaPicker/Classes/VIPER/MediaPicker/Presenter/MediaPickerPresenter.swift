@@ -88,6 +88,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         view?.onItemSelect = { [weak self] item in
             self?.adjustPhotoTitleForItem(item)
             self?.view?.setMode(.PhotoPreview(item))
+            self?.view?.scrollToItemThumbnail(item, animated: true)
             self?.view?.onRemoveButtonTap = {
                 self?.removeItem(item)
             }
