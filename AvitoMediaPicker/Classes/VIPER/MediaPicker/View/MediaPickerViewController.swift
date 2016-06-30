@@ -79,7 +79,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCaptureSession(session)
     }
     
-    func setPhotoTitle(title: String?) {
+    func setPhotoTitle(title: String) {
         mediaPickerView.setPhotoTitle(title)
     }
     

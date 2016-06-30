@@ -4,6 +4,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     var onSwipeToItem: (MediaPickerItem -> ())?
     var onSwipeToCamera: (() -> ())?
+    var onSwipeToCameraProgressChange: (CGFloat -> ())?
     
     private let collectionView: UICollectionView
     private let dataSource = MediaRibbonDataSource()
@@ -133,6 +134,29 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     }
     
     // MARK: - UIScrollViewDelegate
+    
+    private var lastOffset: CGFloat?
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        guard let lastOffset = lastOffset else {
+            self.lastOffset = scrollView.contentOffset.x
+            return
+        }
+        
+        let offset = scrollView.contentOffset.x
+        let pageWidth = scrollView.width
+        let direction = offset - lastOffset
+        let numberOfPages = ceil(scrollView.contentSize.width / pageWidth)
+        
+        let penultimatePageOffsetX = pageWidth * (numberOfPages - 2)
+        let isLastPageVisible = (offset >= penultimatePageOffsetX)
+        
+        if isLastPageVisible {
+            let progress = min(1, (offset - penultimatePageOffsetX) / pageWidth)
+            onSwipeToCameraProgressChange?(progress)
+        }
+    }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {

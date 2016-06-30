@@ -110,7 +110,6 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         }
         
         view?.onSwipeToCamera = { [weak self] in
-            self?.view?.setPhotoTitle(nil)
             self?.view?.selectCamera()
         }
         
@@ -127,7 +126,9 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
     
     private func adjustPhotoTitleForItem(item: MediaPickerItem) {
         interactor.indexOfItem(item) { [weak self] index in
-            self?.view?.setPhotoTitle(index.flatMap { "Фото \($0 + 1)" })
+            if let index = index {
+                self?.view?.setPhotoTitle("Фото \(index + 1)")
+            }
         }
     }
     

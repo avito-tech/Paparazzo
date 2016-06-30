@@ -72,11 +72,15 @@ final class MediaPickerView: UIView {
         )
         
         photoTitleLabel.textColor = .whiteColor()
-        photoTitleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.23)
-        photoTitleLabel.shadowOffset = CGSize(width: 0, height: 1)
-        photoTitleLabel.layer.shadowRadius = 2
+        photoTitleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        photoTitleLabel.shadowOffset = .zero
+        photoTitleLabel.layer.shadowRadius = 3
         
         photoLibraryPeepholeView.contentMode = .ScaleAspectFill
+        
+        photoPreviewView.onSwipeToCameraProgressChange = { [weak self] progress in
+            self?.photoTitleLabel.alpha = 1 - progress
+        }
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
             self?.onItemSelect?(mediaPickerItem)
@@ -325,7 +329,7 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.captureSession = session
     }
     
-    func setPhotoTitle(title: String?) {
+    func setPhotoTitle(title: String) {
         photoTitleLabel.text = title
         layoutPhotoTitleLabel()
     }
