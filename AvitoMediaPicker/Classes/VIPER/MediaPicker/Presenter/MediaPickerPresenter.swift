@@ -99,7 +99,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
             self?.showCroppingModule()
         }
         
-        view?.onReturnToCameraTap = { [weak self] in
+        view?.onCameraThumbnailTap = { [weak self] in
             self?.view?.setMode(.Camera)
             self?.view?.scrollToCameraThumbnail(animated: true)
         }

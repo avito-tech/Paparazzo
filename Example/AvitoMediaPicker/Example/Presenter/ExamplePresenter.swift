@@ -35,8 +35,8 @@ final class ExamplePresenter {
                 }
                 
                 module.onFinish = { [weak self] items in
-                    print("media picker did finish with \(items.count) items:")
-                    items.forEach { print($0) }
+                    debugPrint("media picker did finish with \(items.count) items:")
+                    items.forEach { debugPrint($0) }
                     self?.router.focusOnCurrentModule()
                 }
             }

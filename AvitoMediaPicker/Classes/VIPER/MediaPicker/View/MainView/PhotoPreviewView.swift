@@ -34,7 +34,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.allowsSelection = false
         collectionView.registerClass(PhotoPreviewCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(MainCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
-        print("preview collection view: \(collectionView)")
+        debugPrint("preview collection view: \(collectionView)")
         
         super.init(frame: .zero)
         
@@ -168,6 +168,10 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     // MARK: - Private
     
+    private var currentPage: Int {
+        return max(0, Int(floor(collectionView.contentOffset.x / collectionView.width)))
+    }
+    
     private func photoCell(
         forIndexPath indexPath: NSIndexPath,
         inCollectionView collectionView: UICollectionView,
@@ -188,7 +192,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private func onSwipeFinished() {
         
-        let currentPage = max(0, Int(floor(collectionView.contentOffset.x / collectionView.width)))
         let indexPath = NSIndexPath(forItem: currentPage, inSection: 0)
         
         switch dataSource[indexPath] {
@@ -201,7 +204,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private func addCollectionViewItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
         
-        let currentPage = floor(collectionView.contentOffset.x / collectionView.width)
+        let currentPage = CGFloat(self.currentPage)
         let nextPage = currentPage + CGFloat(indexPaths.filter({ $0.item <= Int(currentPage) }).count)
         let indexPath = NSIndexPath(forItem: Int(nextPage), inSection: 0)
         

@@ -56,9 +56,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onCropButtonTap = newValue }
     }
     
-    var onReturnToCameraTap: (() -> ())? {
-        get { return mediaPickerView.onReturnToCameraTap }
-        set { mediaPickerView.onReturnToCameraTap = newValue }
+    var onCameraThumbnailTap: (() -> ())? {
+        get { return mediaPickerView.onCameraThumbnailTap }
+        set { mediaPickerView.onCameraThumbnailTap = newValue }
     }
     
     var onSwipeToItem: (MediaPickerItem -> ())? {
@@ -156,7 +156,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func selectCamera() {
         mediaPickerView.selectCamera()
-        onReturnToCameraTap?()
+        onCameraThumbnailTap?()
     }
     
     func scrollToCameraThumbnail(animated animated: Bool) {

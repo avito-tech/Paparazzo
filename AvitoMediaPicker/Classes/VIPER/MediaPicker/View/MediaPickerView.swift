@@ -85,7 +85,7 @@ final class MediaPickerView: UIView {
         }
         
         thumbnailRibbonView.onCameraItemSelect = { [weak self] in
-            self?.onReturnToCameraTap?()
+            self?.onCameraThumbnailTap?()
         }
         
         addSubview(photoPreviewView)
@@ -176,7 +176,7 @@ final class MediaPickerView: UIView {
         set { photoControlsView.onCropButtonTap = newValue }
     }
     
-    var onReturnToCameraTap: (() -> ())? {
+    var onCameraThumbnailTap: (() -> ())? {
         get { return photoControlsView.onCameraButtonTap }
         set { photoControlsView.onCameraButtonTap = newValue }
     }
@@ -242,13 +242,9 @@ final class MediaPickerView: UIView {
         cameraControlsView.setFlashButtonOn(isOn)
     }
     
-    private static var flashCount = 0
-    
     func animateFlash() {
         
-        print("flash \(MediaPickerView.flashCount++)")
-        
-        self.flashView.alpha = 1
+        flashView.alpha = 1
         
         UIView.animateWithDuration(
             0.3,

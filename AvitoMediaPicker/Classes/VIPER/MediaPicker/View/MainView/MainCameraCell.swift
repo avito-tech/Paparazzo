@@ -4,10 +4,12 @@ final class MainCameraCell: UICollectionViewCell {
 
     var cameraView: UIView? {
         didSet {
-            oldValue?.removeFromSuperview()
-
-            if let cameraView = cameraView {
-                addSubview(cameraView)
+            if cameraView !== oldValue {
+                oldValue?.removeFromSuperview()
+                
+                if let cameraView = cameraView {
+                    addSubview(cameraView)
+                }
             }
         }
     }
