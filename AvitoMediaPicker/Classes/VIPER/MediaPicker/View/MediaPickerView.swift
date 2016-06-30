@@ -72,15 +72,13 @@ final class MediaPickerView: UIView {
         )
         
         photoTitleLabel.textColor = .whiteColor()
-        photoTitleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
-        photoTitleLabel.shadowOffset = .zero
-        photoTitleLabel.layer.shadowRadius = 3
+        photoTitleLabel.layer.shadowOffset = .zero
+        photoTitleLabel.layer.shadowOpacity = 0.5
+        photoTitleLabel.layer.shadowRadius = 2
+        photoTitleLabel.layer.masksToBounds = false
+        photoTitleLabel.alpha = 0
         
         photoLibraryPeepholeView.contentMode = .ScaleAspectFill
-        
-        photoPreviewView.onSwipeToCameraProgressChange = { [weak self] progress in
-            self?.photoTitleLabel.alpha = 1 - progress
-        }
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
             self?.onItemSelect?(mediaPickerItem)
@@ -193,6 +191,11 @@ final class MediaPickerView: UIView {
         set { photoPreviewView.onSwipeToCamera = newValue }
     }
     
+    var onSwipeToCameraProgressChange: (CGFloat -> ())? {
+        get { return photoPreviewView.onSwipeToCameraProgressChange }
+        set { photoPreviewView.onSwipeToCameraProgressChange = newValue }
+    }
+    
     func setMode(mode: MediaPickerViewMode) {
         
         switch mode {
@@ -281,7 +284,7 @@ final class MediaPickerView: UIView {
 
     func removeItem(item: MediaPickerItem) {
         photoPreviewView.removeItem(item, animated: false)
-        thumbnailRibbonView.removeItem(item, animated: false)
+        thumbnailRibbonView.removeItem(item, animated: true)
     }
     
     func selectItem(item: MediaPickerItem) {
@@ -332,6 +335,10 @@ final class MediaPickerView: UIView {
     func setPhotoTitle(title: String) {
         photoTitleLabel.text = title
         layoutPhotoTitleLabel()
+    }
+    
+    func setPhotoTitleAlpha(alpha: CGFloat) {
+        photoTitleLabel.alpha = alpha
     }
     
     func setContinueButtonTitle(title: String) {

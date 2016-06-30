@@ -14,6 +14,7 @@ protocol MediaPickerViewInput: class {
     func setCaptureSession(_: AVCaptureSession)
     
     func setPhotoTitle(_: String)
+    func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
 
     func setLatestLibraryPhoto(_: ImageSource?)
@@ -54,4 +55,5 @@ protocol MediaPickerViewInput: class {
     
     var onSwipeToItem: (MediaPickerItem -> ())? { get set }
     var onSwipeToCamera: (() -> ())? { get set }
+    var onSwipeToCameraProgressChange: (CGFloat -> ())? { get set }
 }

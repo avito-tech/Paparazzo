@@ -71,6 +71,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onSwipeToCamera = newValue }
     }
     
+    var onSwipeToCameraProgressChange: (CGFloat -> ())? {
+        get { return mediaPickerView.onSwipeToCameraProgressChange }
+        set { mediaPickerView.onSwipeToCameraProgressChange = newValue }
+    }
+    
     func setMode(mode: MediaPickerViewMode) {
         mediaPickerView.setMode(mode)
     }
@@ -81,6 +86,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setPhotoTitle(title: String) {
         mediaPickerView.setPhotoTitle(title)
+    }
+    
+    func setPhotoTitleAlpha(alpha: CGFloat) {
+        mediaPickerView.setPhotoTitleAlpha(alpha)
     }
     
     func setContinueButtonTitle(title: String) {

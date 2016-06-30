@@ -33,6 +33,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
     private func setUpView() {
         
         view?.setContinueButtonTitle("Далее")
+        view?.setPhotoTitle("Фото 1")
         
         cameraModuleInput.getCaptureSession { [weak self] captureSession in
             if let captureSession = captureSession {
@@ -114,6 +115,10 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
             self?.view?.selectCamera()
         }
         
+        view?.onSwipeToCameraProgressChange = { [weak self] progress in
+            self?.view?.setPhotoTitleAlpha(1 - progress)
+        }
+        
         view?.onCloseButtonTap = { [weak self] in
             self?.onCancel?()
         }
@@ -147,6 +152,10 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
                 self?.view?.scrollToItemThumbnail(lastItem, animated: true)
             }
             
+            self?.interactor.items { items in
+                self?.view?.setPhotoTitle("Фото \(items.count)")
+            }
+            
             self?.onItemsAdd?(items)
         }
     }
@@ -162,6 +171,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
                 self?.view?.selectItem(adjacentItem)
             } else {
                 self?.view?.setMode(.Camera)
+                self?.view?.setPhotoTitleAlpha(0)
             }
             
             self?.onItemRemove?(item)
