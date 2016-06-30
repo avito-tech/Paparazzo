@@ -12,6 +12,7 @@ final class MediaPickerView: UIView {
     private let photoLibraryPeepholeView = UIImageView()
     private let closeButton = UIButton()
     private let continueButton = UIButton()
+    private let photoTitleLabel = UILabel()
     private let flashView = UIView()
     
     private let thumbnailRibbonView: ThumbnailRibbonView
@@ -70,6 +71,11 @@ final class MediaPickerView: UIView {
             forControlEvents: .TouchUpInside
         )
         
+        photoTitleLabel.textColor = .whiteColor()
+        photoTitleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.23)
+        photoTitleLabel.shadowOffset = CGSize(width: 0, height: 1)
+        photoTitleLabel.layer.shadowRadius = 2
+        
         photoLibraryPeepholeView.contentMode = .ScaleAspectFill
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
@@ -86,6 +92,7 @@ final class MediaPickerView: UIView {
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
         addSubview(closeButton)
+        addSubview(photoTitleLabel)
         addSubview(continueButton)
         
         setMode(.Camera)
@@ -133,6 +140,7 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.backgroundColor = thumbnailRibbonView.backgroundColor?.colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
+        layoutPhotoTitleLabel()
 
         flashView.frame = cameraFrame
     }
@@ -317,6 +325,11 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.captureSession = session
     }
     
+    func setPhotoTitle(title: String?) {
+        photoTitleLabel.text = title
+        layoutPhotoTitleLabel()
+    }
+    
     func setContinueButtonTitle(title: String) {
         continueButton.setTitle(title, forState: .Normal)
         continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
@@ -354,6 +367,12 @@ final class MediaPickerView: UIView {
             width: rightButton.width,
             height: rightButton.height
         )
+    }
+    
+    private func layoutPhotoTitleLabel() {
+        photoTitleLabel.sizeToFit()
+        photoTitleLabel.centerX = bounds.centerX
+        photoTitleLabel.centerY = closeButton.centerY
     }
     
     @objc private func onCloseButtonTap(sender: UIButton) {

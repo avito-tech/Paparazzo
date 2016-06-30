@@ -86,6 +86,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         }
         
         view?.onItemSelect = { [weak self] item in
+            self?.adjustPhotoTitleForItem(item)
             self?.view?.setMode(.PhotoPreview(item))
             self?.view?.onRemoveButtonTap = {
                 self?.removeItem(item)
@@ -109,6 +110,7 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         }
         
         view?.onSwipeToCamera = { [weak self] in
+            self?.view?.setPhotoTitle(nil)
             self?.view?.selectCamera()
         }
         
@@ -120,6 +122,12 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
             self?.interactor.items { items in
                 self?.onFinish?(items)
             }
+        }
+    }
+    
+    private func adjustPhotoTitleForItem(item: MediaPickerItem) {
+        interactor.indexOfItem(item) { [weak self] index in
+            self?.view?.setPhotoTitle(index.flatMap { "Фото \($0 + 1)" })
         }
     }
     

@@ -7,6 +7,8 @@ protocol MediaPickerInteractor: class {
     
     func items(completion: [MediaPickerItem] -> ())
     
+    func indexOfItem(_: MediaPickerItem, completion: Int? -> ())
+    
     func numberOfItemsAvailableForAdding(completion: Int? -> ())
     
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?)

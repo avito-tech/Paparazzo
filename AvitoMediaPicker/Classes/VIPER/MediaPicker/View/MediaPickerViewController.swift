@@ -79,6 +79,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCaptureSession(session)
     }
     
+    func setPhotoTitle(title: String?) {
+        mediaPickerView.setPhotoTitle(title)
+    }
+    
     func setContinueButtonTitle(title: String) {
         mediaPickerView.setContinueButtonTitle(title)
     }

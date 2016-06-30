@@ -13,6 +13,7 @@ protocol MediaPickerViewInput: class {
     
     func setCaptureSession(_: AVCaptureSession)
     
+    func setPhotoTitle(_: String?)
     func setContinueButtonTitle(_: String)
 
     func setLatestLibraryPhoto(_: ImageSource?)

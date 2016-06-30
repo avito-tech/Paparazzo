@@ -159,7 +159,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         if let cell = cell as? PhotoPreviewCell {
             cell.customizeWithItem(mediaPickerItem)
-            cell.title = "Фото \(indexPath.item + 1)"
         }
         
         return cell
