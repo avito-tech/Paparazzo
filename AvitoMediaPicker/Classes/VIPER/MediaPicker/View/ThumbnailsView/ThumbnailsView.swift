@@ -1,9 +1,9 @@
 import UIKit
 import AVFoundation
 
-final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
+final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
     
-    private let layout: MediaRibbonLayout
+    private let layout: ThumbnailsViewLayout
     private let collectionView: UICollectionView
     private let dataSource = MediaRibbonDataSource()
     
@@ -21,7 +21,7 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
     
     init() {
         
-        layout = MediaRibbonLayout()
+        layout = ThumbnailsViewLayout()
         layout.scrollDirection = .Horizontal
         layout.sectionInset = mediaRibbonInsets
         layout.minimumLineSpacing = mediaRibbonInteritemSpacing
@@ -30,8 +30,8 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         collectionView.backgroundColor = .whiteColor()
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.registerClass(MediaRibbonCell.self, forCellWithReuseIdentifier: photoCellReuseId)
-        collectionView.registerClass(CameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
+        collectionView.registerClass(MediaItemThumbnailCell.self, forCellWithReuseIdentifier: photoCellReuseId)
+        collectionView.registerClass(CameraThumbnailCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
         print("thumbnails collection view: \(collectionView)")
         
         super.init(frame: .zero)
@@ -193,7 +193,7 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
             forIndexPath: indexPath
         )
         
-        if let cell = cell as? MediaRibbonCell {
+        if let cell = cell as? MediaItemThumbnailCell {
             cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.customizeWithItem(mediaPickerItem)
         }
@@ -217,7 +217,7 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
     }
     
     private func setUpCameraCell(cell: UICollectionViewCell) {
-        if let cell = cell as? CameraCell, captureSession = captureSession {
+        if let cell = cell as? CameraThumbnailCell, captureSession = captureSession {
             cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.setCameraIcon(theme?.returnToCameraIcon)
             cell.setCameraIconTransform(cameraIconTransform)
@@ -231,8 +231,8 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         }
     }
     
-    private func cameraCell() -> CameraCell? {
+    private func cameraCell() -> CameraThumbnailCell? {
         let indexPath = dataSource.indexPathForCameraItem()
-        return collectionView.cellForItemAtIndexPath(indexPath) as? CameraCell
+        return collectionView.cellForItemAtIndexPath(indexPath) as? CameraThumbnailCell
     }
 }

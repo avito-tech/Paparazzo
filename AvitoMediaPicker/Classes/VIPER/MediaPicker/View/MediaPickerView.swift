@@ -15,7 +15,7 @@ final class MediaPickerView: UIView {
     private let photoTitleLabel = UILabel()
     private let flashView = UIView()
     
-    private let thumbnailRibbonView: ThumbnailRibbonView
+    private let thumbnailRibbonView: ThumbnailsView
     private let photoPreviewView: PhotoPreviewView
     
     private var closeAndContinueButtonsSwapped = false
@@ -43,7 +43,7 @@ final class MediaPickerView: UIView {
     
     override init(frame: CGRect) {
         
-        thumbnailRibbonView = ThumbnailRibbonView()
+        thumbnailRibbonView = ThumbnailsView()
         photoPreviewView = PhotoPreviewView()
         
         super.init(frame: .zero)

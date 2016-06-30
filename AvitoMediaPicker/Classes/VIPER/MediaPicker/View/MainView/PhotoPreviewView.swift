@@ -33,7 +33,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.pagingEnabled = true
         collectionView.allowsSelection = false
         collectionView.registerClass(PhotoPreviewCell.self, forCellWithReuseIdentifier: photoCellReuseId)
-        collectionView.registerClass(BlaBlaCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
+        collectionView.registerClass(MainCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
         print("preview collection view: \(collectionView)")
         
         super.init(frame: .zero)
@@ -116,7 +116,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         case .Camera:
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cameraCellReuseId, forIndexPath: indexPath)
             
-            if let cell = cell as? BlaBlaCameraCell {
+            if let cell = cell as? MainCameraCell {
                 cell.cameraView = cameraView
             }
             
@@ -208,24 +208,5 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .None, animated: false)
-    }
-}
-
-// TODO: придумать нормальное название, вынести в отдельный файл
-private final class BlaBlaCameraCell: UICollectionViewCell {
-    
-    var cameraView: UIView? {
-        didSet {
-            oldValue?.removeFromSuperview()
-            
-            if let cameraView = cameraView {
-                addSubview(cameraView)
-            }
-        }
-    }
-    
-    private override func layoutSubviews() {
-        super.layoutSubviews()
-        cameraView?.frame = contentView.bounds
     }
 }

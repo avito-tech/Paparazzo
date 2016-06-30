@@ -1,4 +1,4 @@
-final class MediaRibbonCell: PhotoCollectionViewCell, Customizable {
+final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - Customizable
     
