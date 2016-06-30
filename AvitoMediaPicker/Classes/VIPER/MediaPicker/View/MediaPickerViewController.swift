@@ -137,9 +137,17 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onItemSelect?(item)
     }
     
+    func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
+        mediaPickerView.scrollToItemThumbnail(item, animated: animated)
+    }
+    
     func selectCamera() {
         mediaPickerView.selectCamera()
         onReturnToCameraTap?()
+    }
+    
+    func scrollToCameraThumbnail(animated animated: Bool) {
+        mediaPickerView.scrollToCameraThumbnail(animated: animated)
     }
     
     func setCameraButtonVisible(visible: Bool) {

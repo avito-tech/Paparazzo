@@ -129,9 +129,12 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
             
             self?.view?.addItems(items, animated: fromCamera)
             self?.view?.setCameraButtonVisible(canAddItems)
-        
-            if let lastItem = items.last where fromCamera && !canAddItems {
+            
+            if canAddItems {
+                self?.view?.scrollToCameraThumbnail(animated: true)
+            } else if let lastItem = items.last {
                 self?.view?.selectItem(lastItem)
+                self?.view?.scrollToItemThumbnail(lastItem, animated: true)
             }
             
             self?.onItemsAdd?(items)

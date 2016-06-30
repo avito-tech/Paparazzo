@@ -276,8 +276,16 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.selectMediaItem(item)
     }
     
+    func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
+        thumbnailRibbonView.scrollToItemThumbnail(item, animated: animated)
+    }
+    
     func selectCamera() {
         thumbnailRibbonView.selectCameraItem()
+    }
+    
+    func scrollToCameraThumbnail(animated animated: Bool) {
+        thumbnailRibbonView.scrollToCameraThumbnail(animated: animated)
     }
     
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {

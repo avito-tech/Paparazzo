@@ -32,6 +32,7 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         collectionView.showsVerticalScrollIndicator = false
         collectionView.registerClass(MediaRibbonCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(CameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
+        print("thumbnails collection view: \(collectionView)")
         
         super.init(frame: .zero)
         
@@ -71,6 +72,24 @@ final class ThumbnailRibbonView: UIView, UICollectionViewDataSource, MediaRibbon
         if let indexPath = dataSource.indexPathForItem(item) {
             collectionView.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: .None)
         }
+    }
+    
+    func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
+        if let indexPath = dataSource.indexPathForItem(item) {
+            collectionView.scrollToItemAtIndexPath(
+                indexPath,
+                atScrollPosition: .CenteredHorizontally,
+                animated: animated
+            )
+        }
+    }
+    
+    func scrollToCameraThumbnail(animated animated: Bool) {
+        collectionView.scrollToItemAtIndexPath(
+            dataSource.indexPathForCameraItem(),
+            atScrollPosition: .CenteredHorizontally,
+            animated: animated
+        )
     }
     
     func setTheme(theme: MediaPickerRootModuleUITheme) {

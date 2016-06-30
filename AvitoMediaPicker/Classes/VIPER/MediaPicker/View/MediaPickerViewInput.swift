@@ -24,8 +24,10 @@ protocol MediaPickerViewInput: class {
     func addItems(_: [MediaPickerItem], animated: Bool)
     func removeItem(_: MediaPickerItem)
     func selectItem(_: MediaPickerItem)
+    func scrollToItemThumbnail(_: MediaPickerItem, animated: Bool)
     
     func selectCamera()
+    func scrollToCameraThumbnail(animated animated: Bool)
     
     func setCameraButtonVisible(_: Bool)
     func setShutterButtonEnabled(_: Bool)
