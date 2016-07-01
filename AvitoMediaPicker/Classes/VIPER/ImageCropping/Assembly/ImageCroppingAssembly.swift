@@ -5,8 +5,8 @@ protocol ImageCroppingAssembly: class {
     
     func viewController(
         photo photo: MediaPickerItem,
-        moduleOutput: ImageCroppingModuleOutput,
-        routerSeed: RouterSeed
+        routerSeed: RouterSeed,
+        configuration: ImageCroppingModule -> ()
     ) -> UIViewController
 }
 

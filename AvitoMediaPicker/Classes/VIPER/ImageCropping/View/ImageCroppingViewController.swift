@@ -4,15 +4,32 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     
     private let imageCroppingView = ImageCroppingView()
     
-    // MARK: - CroppingViewInput
+    // MARK: - UIViewController
     
     override func loadView() {
         view = imageCroppingView
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)    // временно, просто чтобы не застревать на кропе
+    // MARK: - ImageCroppingViewInput
+    
+    var onDiscardButtonTap: (() -> ())? {
+        get { return imageCroppingView.onDiscardButtonTap }
+        set { imageCroppingView.onDiscardButtonTap = newValue }
+    }
+    
+    var onConfirmButtonTap: (() -> ())? {
+        get { return imageCroppingView.onConfirmButtonTap }
+        set { imageCroppingView.onConfirmButtonTap = newValue }
+    }
+    
+    func setImage(image: ImageSource) {
+        imageCroppingView.setImage(image)
+    }
+    
+    // MARK: - ImageCroppingViewController
+    
+    func setTheme(theme: ImageCroppingUITheme) {
+        imageCroppingView.setTheme(theme)
     }
     
     // MARK: - Dispose bag

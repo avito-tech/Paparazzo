@@ -1,13 +1,11 @@
 import Foundation
 
-final class ImageCroppingPresenter: ImageCroppingModuleInput {
+final class ImageCroppingPresenter: ImageCroppingModule {
 
     // MARK: - Dependencies
     
     private var interactor: ImageCroppingInteractor
     private let router: ImageCroppingRouter
-    
-    weak var moduleOutput: ImageCroppingModuleOutput?
     
     weak var view: ImageCroppingViewInput? {
         didSet {
@@ -22,13 +20,25 @@ final class ImageCroppingPresenter: ImageCroppingModuleInput {
         self.router = router
     }
     
+    // MARK: - ImageCroppingModule
+    
+    var onDiscard: (() -> ())?
+    var onConfirm: (() -> ())?
+    
+    func setImage(image: ImageSource) {
+        view?.setImage(image)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {
         
-    }
-    
-    private func setupInteractor() {
+        view?.onDiscardButtonTap = { [weak self] in
+            self?.onDiscard?()
+        }
         
+        view?.onConfirmButtonTap = { [weak self] in
+            self?.onConfirm?()
+        }
     }
 }
