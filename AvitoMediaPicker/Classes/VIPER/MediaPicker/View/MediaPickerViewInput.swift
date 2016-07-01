@@ -8,37 +8,37 @@ enum MediaPickerViewMode {
 
 protocol MediaPickerViewInput: class {
     
-    func setMode(mode: MediaPickerViewMode)
-    func adjustForDeviceOrientation(orientation: DeviceOrientation)
+    func setMode(_: MediaPickerViewMode)
+    func adjustForDeviceOrientation(_: DeviceOrientation)
     
-    func setCaptureSession(session: AVCaptureSession)
+    func setCaptureSession(_: AVCaptureSession)
     
-    func setContinueButtonTitle(title: String)
+    func setPhotoTitle(_: String)
+    func setPhotoTitleAlpha(_: CGFloat)
+    func setContinueButtonTitle(_: String)
 
-    func setLatestLibraryPhoto(image: ImageSource?)
+    func setLatestLibraryPhoto(_: ImageSource?)
     
-    func setFlashButtonVisible(visible: Bool)
-    func setFlashButtonOn(isOn: Bool)
+    func setFlashButtonVisible(_: Bool)
+    func setFlashButtonOn(_: Bool)
     func animateFlash()
     
-    func addItems(item: [MediaPickerItem])
-    func removeItem(item: MediaPickerItem)
-    func selectItem(item: MediaPickerItem)
+    func addItems(_: [MediaPickerItem], animated: Bool)
+    func removeItem(_: MediaPickerItem)
+    func selectItem(_: MediaPickerItem)
+    func scrollToItemThumbnail(_: MediaPickerItem, animated: Bool)
     
-    func setCameraButtonVisible(visible: Bool)
-    func setShutterButtonEnabled(enabled: Bool)
-
-    // TODO: это по ходу не нужно будет
-    func startSpinnerForNewPhoto()
-    func stopSpinnerForNewPhoto()
+    func selectCamera()
+    func scrollToCameraThumbnail(animated animated: Bool)
+    
+    func setCameraButtonVisible(_: Bool)
+    func setShutterButtonEnabled(_: Bool)
     
     var onCloseButtonTap: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }
     
     var onCameraToggleButtonTap: (() -> ())? { get set }
-    func setCameraToggleButtonVisible(visible: Bool)
-    
-    var onCameraVisibilityChange: ((isCameraVisible: Bool) -> ())? { get set }
+    func setCameraToggleButtonVisible(_: Bool)
     
     // MARK: - Actions in photo ribbon
     var onItemSelect: (MediaPickerItem -> ())? { get set }
@@ -51,5 +51,9 @@ protocol MediaPickerViewInput: class {
     // MARK: - Selected photo actions
     var onRemoveButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
-    var onReturnToCameraTap: (() -> ())? { get set }
+    var onCameraThumbnailTap: (() -> ())? { get set }
+    
+    var onSwipeToItem: (MediaPickerItem -> ())? { get set }
+    var onSwipeToCamera: (() -> ())? { get set }
+    var onSwipeToCameraProgressChange: (CGFloat -> ())? { get set }
 }

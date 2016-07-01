@@ -28,7 +28,7 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
     }
     
     deinit {
-        if EAGLContext.currentContext() == eaglContext {
+        if EAGLContext.currentContext() === eaglContext {
             EAGLContext.setCurrentContext(nil)
         }
     }

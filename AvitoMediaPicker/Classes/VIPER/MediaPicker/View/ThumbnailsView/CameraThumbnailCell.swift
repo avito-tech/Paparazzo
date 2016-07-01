@@ -1,7 +1,7 @@
 import UIKit
 import AVFoundation
 
-final class CameraCell: UICollectionViewCell {
+final class CameraThumbnailCell: UICollectionViewCell {
     
     private let button = UIButton()
     

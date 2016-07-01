@@ -56,6 +56,10 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(items)
     }
     
+    func indexOfItem(item: MediaPickerItem, completion: Int? -> ()) {
+        completion(items.indexOf(item))
+    }
+    
     func numberOfItemsAvailableForAdding(completion: Int? -> ()) {
         completion(maxItemsCount.flatMap { $0 - items.count })
     }
