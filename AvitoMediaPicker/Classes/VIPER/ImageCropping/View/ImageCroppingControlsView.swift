@@ -6,6 +6,7 @@ final class ImageCroppingControlsView: UIView {
     
     private let rotationSlider = UISlider()
     private let rotationButton = UIButton()
+    private let rotationCancelButton = ImageRotationCancelButton()
     private let gridButton = UIButton()
     private let discardButton = UIButton()
     private let confirmButton = UIButton()
@@ -18,6 +19,32 @@ final class ImageCroppingControlsView: UIView {
         super.init(frame: .zero)
         
         backgroundColor = .whiteColor()
+        
+        rotationSlider.addTarget(
+            self,
+            action: #selector(onRotationSliderValueChange(_:)),
+            forControlEvents: .ValueChanged
+        )
+        
+        rotationCancelButton.backgroundColor = .blackColor()
+        rotationCancelButton.setTitleColor(.whiteColor(), forState: .Normal)
+        rotationCancelButton.addTarget(
+            self,
+            action: #selector(onRotationCancelButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
+        rotationButton.addTarget(
+            self,
+            action: #selector(onRotationButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
+        gridButton.addTarget(
+            self,
+            action: #selector(onGridButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
         
         discardButton.addTarget(
             self,
@@ -34,6 +61,7 @@ final class ImageCroppingControlsView: UIView {
         addSubview(rotationSlider)
         addSubview(rotationButton)
         addSubview(gridButton)
+        addSubview(rotationCancelButton)
         addSubview(discardButton)
         addSubview(confirmButton)
     }
@@ -73,12 +101,33 @@ final class ImageCroppingControlsView: UIView {
     
     var onDiscardButtonTap: (() -> ())?
     var onConfirmButtonTap: (() -> ())?
+    var onRotationAngleChange: (Float -> ())?
+    var onRotationCancelButtonTap: (() -> ())?
+    var onRotateButtonTap: (() -> ())?
+    var onGridButtonTap: (() -> ())?
     
     func setTheme(theme: ImageCroppingUITheme) {
         rotationButton.setImage(theme.rotationIcon, forState: .Normal)
+        rotationCancelButton.setImage(theme.cropCancelButtonIcon, forState: .Normal)
         gridButton.setImage(theme.gridIcon, forState: .Normal)
         discardButton.setImage(theme.cropperDiscardIcon, forState: .Normal)
         confirmButton.setImage(theme.cropperConfirmIcon, forState: .Normal)
+    }
+    
+    func setMinimumRotation(degrees: Float) {
+        rotationSlider.minimumValue = degrees
+    }
+    
+    func setMaximumRotation(degrees: Float) {
+        rotationSlider.maximumValue = degrees
+    }
+    
+    func setCancelRotationButtonTitle(title: String) {
+        rotationCancelButton.setTitle(title, forState: .Normal)
+    }
+    
+    func setCancelRotationButtonVisible(visible: Bool) {
+        rotationCancelButton.hidden = !visible
     }
     
     // MARK: - Private
@@ -89,5 +138,21 @@ final class ImageCroppingControlsView: UIView {
     
     @objc private func onConfirmButtonTap(sender: UIButton) {
         onConfirmButtonTap?()
+    }
+    
+    @objc private func onRotationSliderValueChange(sender: UISlider) {
+        onRotationAngleChange?(sender.value)
+    }
+    
+    @objc private func onRotationCancelButtonTap(sender: UIButton) {
+        onRotationCancelButtonTap?()
+    }
+    
+    @objc private func onRotationButtonTap(sender: UIButton) {
+        onRotateButtonTap?()
+    }
+    
+    @objc private func onGridButtonTap(sender: UIButton) {
+        onGridButtonTap?()
     }
 }

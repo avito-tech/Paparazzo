@@ -38,7 +38,12 @@ struct UrlImageSource: ImageSource {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
          
             let source = CGImageSourceCreateWithURL(url, nil)
-            let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }
+            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as? NSDictionary
+            
+            
+            debugPrint("orientation == \(options?[kCGImagePropertyOrientation as String])")
+
+            let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
             
             dispatch_async(dispatch_get_main_queue()) {
                 completion(cgImage.flatMap { T(CGImage: $0) })

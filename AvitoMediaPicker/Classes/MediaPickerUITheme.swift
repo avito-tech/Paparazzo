@@ -30,6 +30,7 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var gridIcon: UIImage? { return imageNamed("grid") }
     public var cropperDiscardIcon: UIImage? { return imageNamed("discard") }
     public var cropperConfirmIcon: UIImage? { return imageNamed("confirm") }
+    public var cropCancelButtonIcon: UIImage? { return imageNamed("close-small") }
 
     // MARK: - Private
 
@@ -67,4 +68,5 @@ public protocol ImageCroppingUITheme {
     var gridIcon: UIImage? { get }
     var cropperDiscardIcon: UIImage? { get }
     var cropperConfirmIcon: UIImage? { get }
+    var cropCancelButtonIcon: UIImage? { get }
 }

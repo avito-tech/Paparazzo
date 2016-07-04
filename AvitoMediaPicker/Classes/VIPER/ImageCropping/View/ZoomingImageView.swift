@@ -116,14 +116,14 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
         
         let imageSize = self.imageSize
         
-        var minScale = min(
+        var minScale = max(
             bounds.size.width  / imageSize.width,   // the scale needed to perfectly fit the image width-wise
             bounds.size.height / imageSize.height   // the scale needed to perfectly fit the image height-wise
         )
         
         // on high resolution screens we have double the pixel density, so we will be seeing every pixel if we limit the
         // maximum zoom scale to 0.5.
-        let maxScale = CGFloat(1)
+        let maxScale = CGFloat(1) / UIScreen.mainScreen().scale
         
         // don't let minScale exceed maxScale (if the image is smaller than the screen,
         // we don't want to force it to be zoomed)
@@ -197,14 +197,6 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
     }
     
     // MARK: - UIScrollViewDelegate
-    
-    @objc func scrollViewDidScroll(scrollView: UIScrollView) {
-        print("did scroll to \(scrollView.contentOffset)")
-    }
-    
-    @objc func scrollViewDidZoom(scrollView: UIScrollView) {
-        print("zoom: \(scrollView.zoomScale)")
-    }
     
     @objc func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return imageView
