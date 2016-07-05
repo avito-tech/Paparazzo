@@ -113,6 +113,10 @@ final class ImageCroppingView: UIView {
         }
     }
     
+    func setImageRotation(angle: CGFloat) {
+        previewView.setImageRotation(angle)
+    }
+    
     func setTheme(theme: ImageCroppingUITheme) {
         controlsView.setTheme(theme)
     }

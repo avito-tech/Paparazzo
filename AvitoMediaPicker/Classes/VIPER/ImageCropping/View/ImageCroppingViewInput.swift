@@ -2,8 +2,10 @@ import Foundation
 
 protocol ImageCroppingViewInput: class {
     
-    func setImage(_: ImageSource)
     func setTitle(_: String)
+    
+    func setImage(_: ImageSource)
+    func setImageRotation(_: Float)
     
     func setAspectRatioButtonMode(_: AspectRatioMode)
     func setAspectRatioButtonTitle(_: String)

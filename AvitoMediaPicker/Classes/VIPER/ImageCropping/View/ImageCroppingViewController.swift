@@ -54,6 +54,10 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.setImage(image)
     }
     
+    func setImageRotation(angle: Float) {
+        imageCroppingView.setImageRotation(CGFloat(angle))
+    }
+    
     @nonobjc func setTitle(title: String) {
         imageCroppingView.setTitle(title)
     }

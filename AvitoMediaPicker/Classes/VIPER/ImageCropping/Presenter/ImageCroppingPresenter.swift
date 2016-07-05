@@ -52,8 +52,8 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             
             let displayedAngle = Int(round(angle))
             let shouldShowCancelRotationButton = (displayedAngle != 0)
-            debugPrint("angle = \(displayedAngle); visible = \(shouldShowCancelRotationButton)")
             
+            self?.view?.setImageRotation(angle)
             self?.view?.setCancelRotationButtonTitle("\(displayedAngle)°")
             self?.view?.setCancelRotationButtonVisible(shouldShowCancelRotationButton)
         }
