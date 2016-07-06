@@ -49,18 +49,28 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         view?.onRotationAngleChange = { [weak self] angle in
-            
-            let displayedAngle = Int(round(angle))
-            let shouldShowCancelRotationButton = (displayedAngle != 0)
-            
-            self?.view?.setImageRotation(angle)
-            self?.view?.setCancelRotationButtonTitle("\(displayedAngle)°")
-            self?.view?.setCancelRotationButtonVisible(shouldShowCancelRotationButton)
+            self?.setImageRotation(angle)
         }
         
         view?.onRotateButtonTap = { [weak self] in
             debugPrint("onRotateButtonTap")
+            // TODO
         }
+        
+        view?.onRotationCancelButtonTap = { [weak self] in
+            self?.view?.setRotationSliderValue(0)
+            self?.setImageRotation(0)
+        }
+    }
+    
+    private func setImageRotation(angle: Float) {
+        
+        let displayedAngle = Int(round(angle))
+        let shouldShowCancelRotationButton = (displayedAngle != 0)
+        
+        view?.setImageRotation(angle)
+        view?.setCancelRotationButtonTitle("\(displayedAngle > 0 ? "+" : "")\(displayedAngle)°")
+        view?.setCancelRotationButtonVisible(shouldShowCancelRotationButton)
     }
     
     private func setGridVisible(visible: Bool) {

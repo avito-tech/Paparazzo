@@ -27,8 +27,11 @@ final class ImageViewWrapper: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.bounds = CGRect(origin: .zero, size: bounds.size)
-        imageView.center = bounds.center
+        let initialTransform = imageView.transform
+        
+        imageView.transform = CGAffineTransformIdentity
+        imageView.frame = bounds
+        imageView.transform = initialTransform
     }
     
     // MARK: - ImageViewWrapper
@@ -38,8 +41,42 @@ final class ImageViewWrapper: UIView {
         set { imageView.image = newValue }
     }
     
-    func setImageRotation(angle: CGFloat) {
-        let radians = angle * CGFloat(M_PI / 180)
-        imageView.transform = CGAffineTransformMakeRotation(radians)
+    var imageTransform: CGAffineTransform {
+        get { return imageView.transform }
+        set { imageView.transform = newValue }
+    }
+    
+    func setFocusPoint(point: CGPoint, inView view: UIView) {
+        
+        let point = imageView.convertPoint(point, fromView: view)
+        
+        if imageView.size.width > 0 && imageView.size.height > 0 {
+            
+            let anchorPoint = CGPoint(
+                x: point.x / imageView.size.width,
+                y: point.y / imageView.size.height
+            )
+            
+            setAnchorPoint(anchorPoint, forView: imageView)
+        }
+    }
+    
+    private func setAnchorPoint(anchorPoint: CGPoint, forView view: UIView) {
+        
+        var newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y)
+        var oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y)
+        
+        newPoint = CGPointApplyAffineTransform(newPoint, view.transform)
+        oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform)
+        
+        var position = view.layer.position
+        position.x -= oldPoint.x
+        position.x += newPoint.x
+        
+        position.y -= oldPoint.y
+        position.y += newPoint.y
+        
+        view.layer.position = position
+        view.layer.anchorPoint = anchorPoint
     }
 }

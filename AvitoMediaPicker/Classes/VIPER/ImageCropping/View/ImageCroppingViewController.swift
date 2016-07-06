@@ -45,6 +45,11 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onRotateButtonTap = newValue }
     }
     
+    var onRotationCancelButtonTap: (() -> ())? {
+        get { return imageCroppingView.onRotationCancelButtonTap }
+        set { imageCroppingView.onRotationCancelButtonTap = newValue }
+    }
+    
     var onGridButtonTap: (() -> ())? {
         get { return imageCroppingView.onGridButtonTap }
         set { imageCroppingView.onGridButtonTap = newValue }
@@ -56,6 +61,14 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     
     func setImageRotation(angle: Float) {
         imageCroppingView.setImageRotation(CGFloat(angle))
+    }
+    
+    func setRotationSliderValue(value: Float) {
+        imageCroppingView.setRotationSliderValue(value)
+    }
+    
+    func rotateImageByAngle(angle: Float) {
+        // TODO
     }
     
     @nonobjc func setTitle(title: String) {

@@ -69,6 +69,10 @@ final class RotationSliderView: UIView {
         slider.maximumValue = value
     }
     
+    func setValue(value: Float) {
+        slider.value = value
+    }
+    
     // MARK: - Private
     
     private func setUpSlider() {

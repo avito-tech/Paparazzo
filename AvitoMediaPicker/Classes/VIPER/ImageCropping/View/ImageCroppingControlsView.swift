@@ -128,6 +128,10 @@ final class ImageCroppingControlsView: UIView {
         rotationSliderView.setMaximumValue(degrees)
     }
     
+    func setRotationSliderValue(value: Float) {
+        rotationSliderView.setValue(value)
+    }
+    
     func setCancelRotationButtonTitle(title: String) {
         rotationCancelButton.setTitle(title, forState: .Normal)
         rotationCancelButton.sizeToFit()

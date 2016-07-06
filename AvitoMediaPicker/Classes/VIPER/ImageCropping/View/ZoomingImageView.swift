@@ -25,7 +25,38 @@ final class ZoomingImageView: UIView {
     }
     
     func setImageRotation(angle: CGFloat) {
-        scrollView.imageView.setImageRotation(angle)
+        
+        let radians = Double(angle) * M_PI / 180
+        let scale = scaleToFillSize(frame.size, contentSize: scrollView.imageView.frame.size, angle: radians)
+        debugPrint("angle = \(angle), scale = \(scale)")
+        
+        var transform = CGAffineTransformIdentity
+        transform = CGAffineTransformScale(transform, scale, scale)
+        transform = CGAffineTransformRotate(transform, CGFloat(radians))
+        
+        scrollView.imageView.imageTransform = transform
+    }
+    
+    // MARK: - Private
+    
+    private func scaleToFillSize(containerSize: CGSize, contentSize: CGSize, angle: Double) -> CGFloat {
+        
+        let pi = M_PI
+        
+        var theta = fabs(angle - 2 * pi * trunc(angle / pi / 2) - pi)
+        if theta > pi / 2 {
+            theta = fabs(pi - theta)
+        }
+        
+        let H = Double(containerSize.height)
+        let W = Double(containerSize.width)
+        let h = Double(contentSize.height)
+        let w = Double(contentSize.width)
+        
+        let scale1 = (H * cos(theta) + W * sin(theta)) / h
+        let scale2 = (H * sin(theta) + W * cos(theta)) / w
+        
+        return CGFloat(max(scale1, scale2))
     }
 }
 
@@ -54,6 +85,8 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        alwaysBounceHorizontal = true
+        alwaysBounceVertical = true
         bouncesZoom = true
         decelerationRate = UIScrollViewDecelerationRateFast
         delegate = self
@@ -201,6 +234,10 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
     }
     
     // MARK: - UIScrollViewDelegate
+    
+    @objc func scrollViewDidScroll(scrollView: UIScrollView) {
+        imageView.setFocusPoint(bounds.center, inView: self)
+    }
     
     @objc func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return imageView

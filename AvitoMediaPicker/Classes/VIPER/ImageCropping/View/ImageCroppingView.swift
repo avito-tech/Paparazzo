@@ -100,6 +100,11 @@ final class ImageCroppingView: UIView {
         set { controlsView.onRotateButtonTap = newValue }
     }
     
+    var onRotationCancelButtonTap: (() -> ())? {
+        get { return controlsView.onRotationCancelButtonTap }
+        set { controlsView.onRotationCancelButtonTap = newValue }
+    }
+    
     var onGridButtonTap: (() -> ())? {
         get { return controlsView.onGridButtonTap }
         set { controlsView.onGridButtonTap = newValue }
@@ -115,6 +120,10 @@ final class ImageCroppingView: UIView {
     
     func setImageRotation(angle: CGFloat) {
         previewView.setImageRotation(angle)
+    }
+    
+    func setRotationSliderValue(value: Float) {
+        controlsView.setRotationSliderValue(value)
     }
     
     func setTheme(theme: ImageCroppingUITheme) {
