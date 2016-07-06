@@ -9,6 +9,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        print(UIFont.fontNamesForFamilyName("Latoto"))
+        
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in

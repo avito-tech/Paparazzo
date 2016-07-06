@@ -46,17 +46,15 @@ final class PHAssetImageSource: ImageSource {
         options.deliveryMode = .HighQualityFormat
 
         imageManager.requestImageDataForAsset(asset, options: options) { data, uti, orientation, info in
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+                
+                let source = data.flatMap { CGImageSourceCreateWithData($0, nil) }
+                let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }
 
-            let dataProvider = CGDataProviderCreateWithCFData(data)
-
-            let cgImage = CGImageCreateWithJPEGDataProvider(
-                dataProvider,
-                UnsafePointer<CGFloat>(nil),
-                false,
-                .RenderingIntentDefault
-            )
-
-            completion(cgImage.flatMap { T(CGImage: $0) })
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(cgImage.flatMap { T(CGImage: $0) })
+                }
+            }
         }
     }
 

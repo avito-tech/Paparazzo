@@ -4,9 +4,9 @@ final class ImageCroppingControlsView: UIView {
     
     // MARK: - Subviews
     
-    private let rotationSlider = UISlider()
+    private let rotationSliderView = RotationSliderView()
     private let rotationButton = UIButton()
-    private let rotationCancelButton = ImageRotationCancelButton()
+    private let rotationCancelButton = RightIconButton()
     private let gridButton = UIButton()
     private let discardButton = UIButton()
     private let confirmButton = UIButton()
@@ -20,14 +20,11 @@ final class ImageCroppingControlsView: UIView {
         
         backgroundColor = .whiteColor()
         
-        rotationSlider.addTarget(
-            self,
-            action: #selector(onRotationSliderValueChange(_:)),
-            forControlEvents: .ValueChanged
-        )
-        
-        rotationCancelButton.backgroundColor = .blackColor()
+        rotationCancelButton.backgroundColor = .RGB(red: 25, green: 25, blue: 25, alpha: 1)
         rotationCancelButton.setTitleColor(.whiteColor(), forState: .Normal)
+        rotationCancelButton.contentEdgeInsets = UIEdgeInsets(top: 3, left: 12, bottom: 3, right: 12)
+        rotationCancelButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
+        rotationCancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 2)
         rotationCancelButton.addTarget(
             self,
             action: #selector(onRotationCancelButtonTap(_:)),
@@ -58,7 +55,7 @@ final class ImageCroppingControlsView: UIView {
             forControlEvents: .TouchUpInside
         )
         
-        addSubview(rotationSlider)
+        addSubview(rotationSliderView)
         addSubview(rotationButton)
         addSubview(gridButton)
         addSubview(rotationCancelButton)
@@ -75,20 +72,21 @@ final class ImageCroppingControlsView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // TOO: сделать адекватный layout
-        
-        rotationSlider.frame = CGRect(
-            x: bounds.left + 58,
-            y: bounds.top + 18,
-            width: bounds.size.width - 2 * 58,
+        rotationSliderView.layout(
+            left: bounds.left + 50,
+            right: bounds.right - 50,
+            top: 19,
             height: 44
         )
         
         rotationButton.sizeToFit()
-        rotationButton.center = CGPoint(x: 31, y: rotationSlider.centerY)
+        rotationButton.center = CGPoint(x: 31, y: rotationSliderView.centerY)
         
         gridButton.sizeToFit()
-        gridButton.center = CGPoint(x: bounds.right - 31, y: rotationSlider.centerY)
+        gridButton.center = CGPoint(x: bounds.right - 31, y: rotationSliderView.centerY)
+        
+        rotationCancelButton.centerX = bounds.centerX
+        rotationCancelButton.top = rotationSliderView.bottom + 11
         
         discardButton.sizeToFit()
         discardButton.center = CGPoint(x: bounds.left + 100, y: bounds.bottom - 42)
@@ -101,29 +99,39 @@ final class ImageCroppingControlsView: UIView {
     
     var onDiscardButtonTap: (() -> ())?
     var onConfirmButtonTap: (() -> ())?
-    var onRotationAngleChange: (Float -> ())?
     var onRotationCancelButtonTap: (() -> ())?
     var onRotateButtonTap: (() -> ())?
     var onGridButtonTap: (() -> ())?
     
+    var onRotationAngleChange: (Float -> ())? {
+        get { return rotationSliderView.onSliderValueChange }
+        set { rotationSliderView.onSliderValueChange = newValue }
+    }
+    
     func setTheme(theme: ImageCroppingUITheme) {
         rotationButton.setImage(theme.rotationIcon, forState: .Normal)
-        rotationCancelButton.setImage(theme.cropCancelButtonIcon, forState: .Normal)
         gridButton.setImage(theme.gridIcon, forState: .Normal)
         discardButton.setImage(theme.cropperDiscardIcon, forState: .Normal)
         confirmButton.setImage(theme.cropperConfirmIcon, forState: .Normal)
+        
+        rotationCancelButton.backgroundColor = theme.cancelRotationBackgroundColor
+        rotationCancelButton.titleLabel?.textColor = theme.cancelRotationTitleColor
+        rotationCancelButton.titleLabel?.font = theme.cancelRotationTitleFont
+        rotationCancelButton.setImage(theme.cancelRotationButtonIcon, forState: .Normal)
     }
     
     func setMinimumRotation(degrees: Float) {
-        rotationSlider.minimumValue = degrees
+        rotationSliderView.setMiminumValue(degrees)
     }
     
     func setMaximumRotation(degrees: Float) {
-        rotationSlider.maximumValue = degrees
+        rotationSliderView.setMaximumValue(degrees)
     }
     
     func setCancelRotationButtonTitle(title: String) {
         rotationCancelButton.setTitle(title, forState: .Normal)
+        rotationCancelButton.sizeToFit()
+        rotationCancelButton.layer.cornerRadius = rotationCancelButton.size.height / 2
     }
     
     func setCancelRotationButtonVisible(visible: Bool) {

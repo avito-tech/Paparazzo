@@ -29,39 +29,6 @@ final class ZoomingImageView: UIView {
     }
 }
 
-private final class ImageViewWrapper: UIView {
-    
-    private let imageView = UIImageView()
-    
-    var image: UIImage? {
-        get { return imageView.image }
-        set { imageView.image = newValue }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(imageView)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        return imageView.sizeThatFits(size)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        imageView.bounds = CGRect(origin: .zero, size: bounds.size)
-        imageView.center = bounds.center
-    }
-    
-    func setImageRotation(angle: CGFloat) {
-        imageView.transform = CGAffineTransformMakeRotation(angle * CGFloat(M_PI / 180))
-    }
-}
-
 private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
     
     private var image: UIImage? {

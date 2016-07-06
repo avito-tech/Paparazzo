@@ -4,7 +4,9 @@ import AvitoMediaPicker
 
 final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
-    private let mediaPickerAssemblyFactory = AvitoMediaPicker.AssemblyFactory()
+    private let mediaPickerAssemblyFactory = AvitoMediaPicker.AssemblyFactory(
+        theme: MediaPickerUITheme.appSpecificTheme()
+    )
     
     // MARK: - ExampleRouter
     

@@ -69,7 +69,6 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.setGridButtonSelected(visible)
         
         view?.onGridButtonTap = { [weak self] in
-            debugPrint("onGridButtonTap")
             self?.setGridVisible(!visible)
         }
     }

@@ -30,7 +30,10 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var gridIcon: UIImage? { return imageNamed("grid") }
     public var cropperDiscardIcon: UIImage? { return imageNamed("discard") }
     public var cropperConfirmIcon: UIImage? { return imageNamed("confirm") }
-    public var cropCancelButtonIcon: UIImage? { return imageNamed("close-small") }
+    public var cancelRotationButtonIcon: UIImage? { return imageNamed("close-small") }
+    public var cancelRotationBackgroundColor = UIColor.RGB(red: 25, green: 25, blue: 25, alpha: 1)
+    public var cancelRotationTitleColor = UIColor.whiteColor()
+    public var cancelRotationTitleFont = UIFont.boldSystemFontOfSize(14)
 
     // MARK: - Private
 
@@ -64,9 +67,14 @@ public protocol PhotoLibraryUITheme {
 }
 
 public protocol ImageCroppingUITheme {
+    
     var rotationIcon: UIImage? { get }
     var gridIcon: UIImage? { get }
     var cropperDiscardIcon: UIImage? { get }
     var cropperConfirmIcon: UIImage? { get }
-    var cropCancelButtonIcon: UIImage? { get }
+    
+    var cancelRotationBackgroundColor: UIColor { get }
+    var cancelRotationTitleColor: UIColor { get }
+    var cancelRotationTitleFont: UIFont { get }
+    var cancelRotationButtonIcon: UIImage? { get }
 }
