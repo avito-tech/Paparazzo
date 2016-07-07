@@ -2,8 +2,8 @@ import UIKit
 import AvitoDesignKit
 
 enum AspectRatioMode {
-    case Portrait
-    case Landscape
+    case Portrait_3x4
+    case Landscape_4x3
 }
 
 final class ImageCroppingView: UIView {
@@ -12,14 +12,15 @@ final class ImageCroppingView: UIView {
     
     private let controlsView = ImageCroppingControlsView()
     private let previewView = ZoomingImageView()   // TODO: надо заюзать что-то другое, например, CATiledLayer. Короче, поискать готовое решение.
-    private let stencilView = CropStencilView()
     private let aspectRatioButton = UIButton()
     private let titleLabel = UILabel()
     
+    private let topCurtain = UIView()
+    private let bottomCurtain = UIView()
+    
     // MARK: - Constants
     
-    private let photoAspectRatio = CGFloat(3.0 / 4.0)
-    private let controlsHeight = CGFloat(165)
+    private let controlsMinHeight = CGFloat(165)
     
     // MARK: - Init
     
@@ -27,8 +28,6 @@ final class ImageCroppingView: UIView {
         super.init(frame: frame)
         
         backgroundColor = .whiteColor()
-        
-        stencilView.userInteractionEnabled = false
         
         aspectRatioButton.layer.borderWidth = 1
         aspectRatioButton.setTitleColor(.blackColor(), forState: .Normal)
@@ -38,9 +37,13 @@ final class ImageCroppingView: UIView {
             forControlEvents: .TouchUpInside
         )
         
+        topCurtain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.75)
+        bottomCurtain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.75)
+        
         addSubview(previewView)
+        addSubview(topCurtain)
+        addSubview(bottomCurtain)
         addSubview(controlsView)
-        addSubview(stencilView)
         addSubview(titleLabel)
         addSubview(aspectRatioButton)
     }
@@ -61,21 +64,24 @@ final class ImageCroppingView: UIView {
         titleLabel.centerX = bounds.centerX
         titleLabel.top = 13
         
-        previewView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: bounds.size.width,
-            height: bounds.size.width / photoAspectRatio
+        controlsView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: max(controlsMinHeight, bounds.size.height * 0.25)   // оставляем вверху место под фотку 3:4
         )
         
-        stencilView.frame = previewView.frame
+        let previewViewHeight = bounds.size.width / previewAspectRatio()
         
-        controlsView.frame = CGRect(
-            x: 0,
-            y: bounds.bottom - 165,
-            width: bounds.size.width,
-            height: 165
+        previewView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top + max(0, (controlsView.top - bounds.top - previewViewHeight) / 2),
+            height: previewViewHeight
         )
+        
+        topCurtain.layout(left: bounds.left, right: bounds.right, top: bounds.top, bottom: previewView.top)
+        bottomCurtain.layout(left: bounds.left, right: bounds.right, top: previewView.bottom, bottom: controlsView.top)
     }
     
     // MARK: - ImageCroppingView
@@ -134,18 +140,20 @@ final class ImageCroppingView: UIView {
         titleLabel.text = title
     }
     
-    func setAspectRatioButtonMode(mode: AspectRatioMode) {
+    func setAspectRatioMode(mode: AspectRatioMode) {
         
-        aspectRatioButton.size = aspectRatioButtonSizeForMode(mode)
+        aspectRatioMode = mode
+        
+        aspectRatioButton.size = aspectRatioButtonSize()
         
         switch mode {
         
-        case .Portrait:
+        case .Portrait_3x4:
             titleLabel.textColor = .whiteColor()
             aspectRatioButton.setTitleColor(.whiteColor(), forState: .Normal)
             aspectRatioButton.layer.borderColor = UIColor.whiteColor().CGColor
         
-        case .Landscape:
+        case .Landscape_4x3:
             titleLabel.textColor = .blackColor()
             aspectRatioButton.setTitleColor(.blackColor(), forState: .Normal)
             aspectRatioButton.layer.borderColor = UIColor.blackColor().CGColor
@@ -164,15 +172,6 @@ final class ImageCroppingView: UIView {
         controlsView.setMaximumRotation(degrees)
     }
     
-    func showStencilForAspectRatioMode(mode: AspectRatioMode) {
-        stencilView.aspectRatio = stencilAspectRatioForMode(mode)
-        stencilView.hidden = false
-    }
-    
-    func hideStencil() {
-        stencilView.hidden = true
-    }
-    
     func setCancelRotationButtonTitle(title: String) {
         controlsView.setCancelRotationButtonTitle(title)
     }
@@ -183,20 +182,28 @@ final class ImageCroppingView: UIView {
     
     // MARK: - Private
     
-    private func aspectRatioButtonSizeForMode(mode: AspectRatioMode) -> CGSize {
-        switch mode {
-        case .Portrait:
+    private var aspectRatioMode: AspectRatioMode = .Portrait_3x4 {
+        didSet {
+            if aspectRatioMode != oldValue {
+                setNeedsLayout()
+            }
+        }
+    }
+    
+    private func aspectRatioButtonSize() -> CGSize {
+        switch aspectRatioMode {
+        case .Portrait_3x4:
             return CGSize(width: 34, height: 42)
-        case .Landscape:
+        case .Landscape_4x3:
             return CGSize(width: 42, height: 34)
         }
     }
     
-    private func stencilAspectRatioForMode(mode: AspectRatioMode) -> CGFloat {
-        switch mode {
-        case .Portrait:
+    private func previewAspectRatio() -> CGFloat {
+        switch aspectRatioMode {
+        case .Portrait_3x4:
             return CGFloat(3.0 / 4.0)
-        case .Landscape:
+        case .Landscape_4x3:
             return CGFloat(4.0 / 3.0)
         }
     }

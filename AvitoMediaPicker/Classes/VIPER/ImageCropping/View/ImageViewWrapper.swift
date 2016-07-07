@@ -60,7 +60,8 @@ final class ImageViewWrapper: UIView {
             setAnchorPoint(anchorPoint, forView: imageView)
         }
     }
-    
+
+    // TODO: зарефакторить/вынести в extension setAnchorPointWithoutMoving или что-то типа того
     private func setAnchorPoint(anchorPoint: CGPoint, forView view: UIView) {
         
         var newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y)

@@ -37,7 +37,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.setMinimumRotation(-25)
         view?.setMaximumRotation(+25)
         
-        setAspectRatioButtonMode(.Portrait)
+        setAspectRatioButtonMode(.Portrait_3x4)
         setGridVisible(false)
         
         view?.onDiscardButtonTap = { [weak self] in
@@ -85,10 +85,8 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     
     private func setAspectRatioButtonMode(mode: AspectRatioMode) {
         
-        view?.setAspectRatioButtonMode(mode)
+        view?.setAspectRatioMode(mode)
         view?.setAspectRatioButtonTitle(aspectRatioButtonTitleForMode(mode))
-        
-        adjustStencilForMode(mode)
         
         view?.onAspectRatioButtonTap = { [weak self] in
             if let nextMode = self?.aspectRationButtonTitleModeAfterMode(mode) {
@@ -99,28 +97,19 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     
     private func aspectRatioButtonTitleForMode(mode: AspectRatioMode) -> String {
         switch mode {
-        case .Portrait:
+        case .Portrait_3x4:
             return "3:4"
-        case .Landscape:
+        case .Landscape_4x3:
             return "4:3"
         }
     }
     
     private func aspectRationButtonTitleModeAfterMode(mode: AspectRatioMode) -> AspectRatioMode {
         switch mode {
-        case .Portrait:
-            return .Landscape
-        case .Landscape:
-            return .Portrait
-        }
-    }
-    
-    private func adjustStencilForMode(mode: AspectRatioMode) {
-        switch mode {
-        case .Portrait:
-            view?.hideStencil()
-        case .Landscape:
-            view?.showStencilForAspectRatioMode(mode)
+        case .Portrait_3x4:
+            return .Landscape_4x3
+        case .Landscape_4x3:
+            return .Portrait_3x4
         }
     }
 }

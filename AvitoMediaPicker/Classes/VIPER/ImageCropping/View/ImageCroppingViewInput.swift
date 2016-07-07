@@ -8,14 +8,11 @@ protocol ImageCroppingViewInput: class {
     func setImageRotation(_: Float)
     func setRotationSliderValue(_: Float)
     
-    func setAspectRatioButtonMode(_: AspectRatioMode)
+    func setAspectRatioMode(_: AspectRatioMode)
     func setAspectRatioButtonTitle(_: String)
     
     func setMinimumRotation(degrees: Float)
     func setMaximumRotation(degrees: Float)
-    
-    func showStencilForAspectRatioMode(_: AspectRatioMode)
-    func hideStencil()
     
     func setCancelRotationButtonTitle(_: String)
     func setCancelRotationButtonVisible(_: Bool)

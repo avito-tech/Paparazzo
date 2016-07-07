@@ -74,9 +74,9 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     @nonobjc func setTitle(title: String) {
         imageCroppingView.setTitle(title)
     }
-    
-    func setAspectRatioButtonMode(mode: AspectRatioMode) {
-        imageCroppingView.setAspectRatioButtonMode(mode)
+
+    func setAspectRatioMode(mode: AspectRatioMode) {
+        imageCroppingView.setAspectRatioMode(mode)
     }
     
     func setAspectRatioButtonTitle(title: String) {
@@ -89,14 +89,6 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     
     func setMaximumRotation(degrees: Float) {
         imageCroppingView.setMaximumRotation(degrees)
-    }
-    
-    func showStencilForAspectRatioMode(mode: AspectRatioMode) {
-        imageCroppingView.showStencilForAspectRatioMode(mode)
-    }
-    
-    func hideStencil() {
-        imageCroppingView.hideStencil()
     }
     
     func setCancelRotationButtonTitle(title: String) {

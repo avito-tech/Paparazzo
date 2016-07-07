@@ -7,6 +7,9 @@ final class ZoomingImageView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        scrollView.clipsToBounds = false
+        
         addSubview(scrollView)
     }
     
@@ -27,7 +30,7 @@ final class ZoomingImageView: UIView {
     func setImageRotation(angle: CGFloat) {
         
         let radians = Double(angle) * M_PI / 180
-        let scale = scaleToFillSize(frame.size, contentSize: scrollView.imageView.frame.size, angle: radians)
+        let scale = scaleToFillBoundsWithImageRotatedBy(radians)
         debugPrint("angle = \(angle), scale = \(scale)")
         
         var transform = CGAffineTransformIdentity
@@ -39,25 +42,40 @@ final class ZoomingImageView: UIView {
     
     // MARK: - Private
     
-    private func scaleToFillSize(containerSize: CGSize, contentSize: CGSize, angle: Double) -> CGFloat {
+    // StackOverflow version
+    private func scaleToFillBoundsWithImageRotatedBy(angle: Double) -> CGFloat {
         
         let pi = M_PI
+        let size = bounds.size
         
         var theta = fabs(angle - 2 * pi * trunc(angle / pi / 2) - pi)
         if theta > pi / 2 {
             theta = fabs(pi - theta)
         }
         
-        let H = Double(containerSize.height)
-        let W = Double(containerSize.width)
-        let h = Double(contentSize.height)
-        let w = Double(contentSize.width)
+        let H = Double(size.height)
+        let W = Double(size.width)
+        let h = Double(size.height)
+        let w = Double(size.width)
         
         let scale1 = (H * cos(theta) + W * sin(theta)) / h
         let scale2 = (H * sin(theta) + W * cos(theta)) / w
         
         return CGFloat(max(scale1, scale2))
     }
+    
+    // ayutkin's version
+//    private func scaleToFillBoundsWithImageRotatedBy(angle: Double) -> Double {
+//
+//        let size0 = frame.size
+//        
+//        let a = Double(size0.width) * cos(fabs(angle))
+//        let b = Double(size0.height) * sin(fabs(angle))
+//        
+//        let width1 = a + b
+//        
+//        return width1 / Double(size0.width)
+//    }
 }
 
 private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
@@ -237,6 +255,14 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
     
     @objc func scrollViewDidScroll(scrollView: UIScrollView) {
         imageView.setFocusPoint(bounds.center, inView: self)
+    }
+    
+    @objc func scrollViewWillEndDragging(
+        scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        debugPrint("will end draggin to point \(targetContentOffset.memory)")
     }
     
     @objc func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
