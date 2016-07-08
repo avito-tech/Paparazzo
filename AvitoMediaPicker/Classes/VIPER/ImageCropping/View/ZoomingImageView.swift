@@ -31,13 +31,44 @@ final class ZoomingImageView: UIView {
         
         let radians = Double(angle) * M_PI / 180
         let scale = scaleToFillBoundsWithImageRotatedBy(radians)
-        debugPrint("angle = \(angle), scale = \(scale)")
+//        debugPrint("angle = \(angle), scale = \(scale)")
         
         var transform = CGAffineTransformIdentity
         transform = CGAffineTransformScale(transform, scale, scale)
         transform = CGAffineTransformRotate(transform, CGFloat(radians))
         
         scrollView.imageView.imageTransform = transform
+        
+        cornersOfRect(bounds, withAppliedTransform: transform)
+    }
+    
+    private func cornersOfRect(rect: CGRect, withAppliedTransform transform: CGAffineTransform) {
+        
+        let offsetX = rect.size.width / 2
+        let offsetY = rect.size.height / 2
+        
+        // Трансформация, переносящая центр rect'а в начало координат
+        let moveToZeroTransform = CGAffineTransformMakeTranslation(-offsetX, -offsetY)
+        
+        // Трансформация, которая будет преобразовывать расчитанные точки обратно в исходную систему координат
+        let restorePositionTransform = CGAffineTransformMakeTranslation(offsetX, offsetY)
+        
+        var transform = CGAffineTransformConcat(moveToZeroTransform, transform)
+        transform = CGAffineTransformConcat(transform, restorePositionTransform)
+        
+        let topLeft = CGPoint(x: rect.left, y: rect.top)
+        let topRight = CGPoint(x: rect.right, y: rect.top)
+        let bottomRight = CGPoint(x: rect.right, y: rect.bottom)
+        let bottomLeft = CGPoint(x: rect.left, y: rect.bottom)
+        
+        let corners = (
+            topLeft: CGPointApplyAffineTransform(topLeft, transform),
+            topRight: CGPointApplyAffineTransform(topRight, transform),
+            bottomRight: CGPointApplyAffineTransform(bottomRight, transform),
+            bottomLeft: CGPointApplyAffineTransform(bottomLeft, transform)
+        )
+        
+        debugPrint("rect = \(rect), corners = \(corners)")
     }
     
     // MARK: - Private
