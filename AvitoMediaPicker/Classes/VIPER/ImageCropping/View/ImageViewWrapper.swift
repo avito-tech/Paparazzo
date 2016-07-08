@@ -57,27 +57,7 @@ final class ImageViewWrapper: UIView {
                 y: point.y / imageView.size.height
             )
             
-            setAnchorPoint(anchorPoint, forView: imageView)
+            imageView.setAnchorPointPreservingFrame(anchorPoint)
         }
-    }
-
-    // TODO: зарефакторить/вынести в extension setAnchorPointWithoutMoving или что-то типа того
-    private func setAnchorPoint(anchorPoint: CGPoint, forView view: UIView) {
-        
-        var newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y)
-        var oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y)
-        
-        newPoint = CGPointApplyAffineTransform(newPoint, view.transform)
-        oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform)
-        
-        var position = view.layer.position
-        position.x -= oldPoint.x
-        position.x += newPoint.x
-        
-        position.y -= oldPoint.y
-        position.y += newPoint.y
-        
-        view.layer.position = position
-        view.layer.anchorPoint = anchorPoint
     }
 }
