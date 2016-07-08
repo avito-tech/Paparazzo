@@ -1,6 +1,6 @@
 import UIKit
 
-public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITheme {
+public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITheme, ImageCroppingUITheme {
 
     public init() {}
 
@@ -23,6 +23,17 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     // MARK: - PhotoLibraryUITheme
     
     public var photoLibraryItemSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    
+    // MARK: - ImageCroppingUITheme
+    
+    public var rotationIcon: UIImage? { return imageNamed("rotate") }
+    public var gridIcon: UIImage? { return imageNamed("grid") }
+    public var cropperDiscardIcon: UIImage? { return imageNamed("discard") }
+    public var cropperConfirmIcon: UIImage? { return imageNamed("confirm") }
+    public var cancelRotationButtonIcon: UIImage? { return imageNamed("close-small") }
+    public var cancelRotationBackgroundColor = UIColor.RGB(red: 25, green: 25, blue: 25, alpha: 1)
+    public var cancelRotationTitleColor = UIColor.whiteColor()
+    public var cancelRotationTitleFont = UIFont.boldSystemFontOfSize(14)
 
     // MARK: - Private
 
@@ -53,4 +64,17 @@ public protocol MediaPickerRootModuleUITheme {
 
 public protocol PhotoLibraryUITheme {
     var photoLibraryItemSelectionColor: UIColor { get }
+}
+
+public protocol ImageCroppingUITheme {
+    
+    var rotationIcon: UIImage? { get }
+    var gridIcon: UIImage? { get }
+    var cropperDiscardIcon: UIImage? { get }
+    var cropperConfirmIcon: UIImage? { get }
+    
+    var cancelRotationBackgroundColor: UIColor { get }
+    var cancelRotationTitleColor: UIColor { get }
+    var cancelRotationTitleFont: UIFont { get }
+    var cancelRotationButtonIcon: UIImage? { get }
 }

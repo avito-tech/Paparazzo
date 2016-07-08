@@ -15,7 +15,7 @@ public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFa
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {
-        return ImageCroppingAssemblyImpl()
+        return ImageCroppingAssemblyImpl(theme: theme)
     }
 
     public func photoLibraryAssembly() -> PhotoLibraryAssembly {

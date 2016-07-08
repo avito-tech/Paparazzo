@@ -1,4 +1,4 @@
-final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
+final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - Dependencies
     
@@ -87,16 +87,19 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         }
         
         view?.onItemSelect = { [weak self] item in
+            
             self?.adjustPhotoTitleForItem(item)
+            
             self?.view?.setMode(.PhotoPreview(item))
             self?.view?.scrollToItemThumbnail(item, animated: true)
+            
             self?.view?.onRemoveButtonTap = {
                 self?.removeItem(item)
             }
-        }
-        
-        view?.onCropButtonTap = { [weak self] in
-            self?.showCroppingModule()
+            
+            self?.view?.onCropButtonTap = {
+                self?.showCroppingModule(forItem: item)
+            }
         }
         
         view?.onCameraThumbnailTap = { [weak self] in
@@ -201,8 +204,21 @@ final class MediaPickerPresenter: MediaPickerModule, ImageCroppingModuleOutput {
         }
     }
     
-    private func showCroppingModule() {
-        // TODO
-//        router.showCroppingModule(photo: photo, moduleOutput: self)
+    private func showCroppingModule(forItem item: MediaPickerItem) {
+        
+        router.showCroppingModule(photo: item) { module in
+            
+            module.setImage(item.image)
+            
+            module.onDiscard = { [weak self] in
+                self?.router.focusOnCurrentModule()
+            }
+            
+            module.onConfirm = { [weak self] in
+                // TODO: обновить фотку
+                self?.onItemUpdate?(item)
+                self?.router.focusOnCurrentModule()
+            }
+        }
     }
 }

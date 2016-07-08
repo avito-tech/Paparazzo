@@ -27,7 +27,7 @@ final class PhotoControlsView: UIView {
         )
         
         addSubview(removeButton)
-//        addSubview(cropButton)    // в первой итерации не показываем
+        addSubview(cropButton)    // в первой итерации не показываем
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -39,6 +39,10 @@ final class PhotoControlsView: UIView {
         
         removeButton.sizeToFit()
         removeButton.center = bounds.center
+        
+        cropButton.sizeToFit()
+        cropButton.centerY = bounds.centerY
+        cropButton.centerX = bounds.right - 50
     }
     
     // MARK: - PhotoControlsView

@@ -3,10 +3,16 @@ import Marshroute
 
 public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     
+    private let theme: ImageCroppingUITheme
+    
+    init(theme: ImageCroppingUITheme) {
+        self.theme = theme
+    }
+    
     public func viewController(
         photo photo: MediaPickerItem,
-        moduleOutput: ImageCroppingModuleOutput,
-        routerSeed: RouterSeed
+        routerSeed: RouterSeed,
+        configuration: ImageCroppingModule -> ()
     ) -> UIViewController {
 
         let interactor = ImageCroppingInteractorImpl()
@@ -20,9 +26,11 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
 
         let viewController = ImageCroppingViewController()
         viewController.addDisposable(presenter)
+        viewController.setTheme(theme)
 
         presenter.view = viewController
-        presenter.moduleOutput = moduleOutput
+        
+        configuration(presenter)
 
         return viewController
     }

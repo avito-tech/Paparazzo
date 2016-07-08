@@ -22,6 +22,12 @@
 		257A1E981D14097100498EB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257A1E931D14097100498EB2 /* Assets.xcassets */; };
 		257A1E991D14097100498EB2 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E951D14097100498EB2 /* MarshrouteFacade.swift */; };
 		257A1E9A1D14097100498EB2 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E961D14097100498EB2 /* NavigationController.swift */; };
+		25CE09881D2CFD74008954DB /* Latoto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09831D2CFD74008954DB /* Latoto-Bold.ttf */; };
+		25CE09891D2CFD74008954DB /* Latoto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09841D2CFD74008954DB /* Latoto-Light.ttf */; };
+		25CE098A1D2CFD74008954DB /* Latoto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09851D2CFD74008954DB /* Latoto-Regular.ttf */; };
+		25CE098B1D2CFD74008954DB /* Latoto-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09861D2CFD74008954DB /* Latoto-Semibold.ttf */; };
+		25CE098C1D2CFD74008954DB /* Latoto-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09871D2CFD74008954DB /* Latoto-SemiboldItalic.ttf */; };
+		25CE09901D2CFF68008954DB /* AppSpecificUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE098F1D2CFF68008954DB /* AppSpecificUITheme.swift */; };
 		3D7AA9057090F7AB5E167020 /* Pods_AvitoMediaPicker_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363E83EC91E9F221BCCDCA8D /* Pods_AvitoMediaPicker_Tests.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 /* End PBXBuildFile section */
@@ -51,6 +57,12 @@
 		257A1E931D14097100498EB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		257A1E951D14097100498EB2 /* MarshrouteFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarshrouteFacade.swift; sourceTree = "<group>"; };
 		257A1E961D14097100498EB2 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		25CE09831D2CFD74008954DB /* Latoto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Bold.ttf"; sourceTree = "<group>"; };
+		25CE09841D2CFD74008954DB /* Latoto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Light.ttf"; sourceTree = "<group>"; };
+		25CE09851D2CFD74008954DB /* Latoto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Regular.ttf"; sourceTree = "<group>"; };
+		25CE09861D2CFD74008954DB /* Latoto-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Semibold.ttf"; sourceTree = "<group>"; };
+		25CE09871D2CFD74008954DB /* Latoto-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		25CE098F1D2CFF68008954DB /* AppSpecificUITheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSpecificUITheme.swift; sourceTree = "<group>"; };
 		283E10AF02963EBF4F348B06 /* Pods-AvitoMediaPicker_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker_Example/Pods-AvitoMediaPicker_Example.release.xcconfig"; sourceTree = "<group>"; };
 		34C5F48C2F626B13ADBC0EA7 /* Pods-AvitoMediaPicker_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker_Tests/Pods-AvitoMediaPicker_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		363E83EC91E9F221BCCDCA8D /* Pods_AvitoMediaPicker_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AvitoMediaPicker_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +164,18 @@
 			path = MarshrouteHelpers;
 			sourceTree = "<group>";
 		};
+		25CE09781D2CFD4F008954DB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				25CE09831D2CFD74008954DB /* Latoto-Bold.ttf */,
+				25CE09841D2CFD74008954DB /* Latoto-Light.ttf */,
+				25CE09851D2CFD74008954DB /* Latoto-Regular.ttf */,
+				25CE09861D2CFD74008954DB /* Latoto-Semibold.ttf */,
+				25CE09871D2CFD74008954DB /* Latoto-SemiboldItalic.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		2F303FA022CC87FCB5CEDA2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,8 +220,10 @@
 		607FACD21AFB9204008FA782 /* Example for AvitoMediaPicker */ = {
 			isa = PBXGroup;
 			children = (
+				25CE09781D2CFD4F008954DB /* Resources */,
 				257A1E921D14097100498EB2 /* AppDelegate.swift */,
 				257A1E961D14097100498EB2 /* NavigationController.swift */,
+				25CE098F1D2CFF68008954DB /* AppSpecificUITheme.swift */,
 				257A1E931D14097100498EB2 /* Assets.xcassets */,
 				250DEF281D190AE500995D7F /* Example */,
 				257A1E941D14097100498EB2 /* MarshrouteHelpers */,
@@ -330,6 +356,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25CE098C1D2CFD74008954DB /* Latoto-SemiboldItalic.ttf in Resources */,
+				25CE098A1D2CFD74008954DB /* Latoto-Regular.ttf in Resources */,
+				25CE09891D2CFD74008954DB /* Latoto-Light.ttf in Resources */,
+				25CE09881D2CFD74008954DB /* Latoto-Bold.ttf in Resources */,
+				25CE098B1D2CFD74008954DB /* Latoto-Semibold.ttf in Resources */,
 				257A1E981D14097100498EB2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,6 +481,7 @@
 				250DEF3D1D190AE500995D7F /* ExampleInteractorImpl.swift in Sources */,
 				250DEF3A1D190AE500995D7F /* ExampleAssembly.swift in Sources */,
 				250DEF3F1D190AE500995D7F /* ExamplePresenter.swift in Sources */,
+				25CE09901D2CFF68008954DB /* AppSpecificUITheme.swift in Sources */,
 				257A1E971D14097100498EB2 /* AppDelegate.swift in Sources */,
 				257A1E9A1D14097100498EB2 /* NavigationController.swift in Sources */,
 				257A1E991D14097100498EB2 /* MarshrouteFacade.swift in Sources */,

@@ -22,6 +22,14 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Latoto-Bold.ttf</string>
+		<string>Latoto-Light.ttf</string>
+		<string>Latoto-Regular.ttf</string>
+		<string>Latoto-Semibold.ttf</string>
+		<string>Latoto-Semibolditalic.ttf</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

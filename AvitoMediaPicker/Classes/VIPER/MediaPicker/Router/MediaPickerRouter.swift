@@ -9,6 +9,6 @@ protocol MediaPickerRouter: class, RouterFocusable {
     
     func showCroppingModule(
         photo photo: MediaPickerItem,
-        moduleOutput: ImageCroppingModuleOutput
+        configuration: ImageCroppingModule -> ()
     )
 }
