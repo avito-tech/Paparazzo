@@ -39,36 +39,8 @@ final class ZoomingImageView: UIView {
         
         scrollView.imageView.imageTransform = transform
         
-        cornersOfRect(bounds, withAppliedTransform: transform)
-    }
-    
-    private func cornersOfRect(rect: CGRect, withAppliedTransform transform: CGAffineTransform) {
-        
-        let offsetX = rect.size.width / 2
-        let offsetY = rect.size.height / 2
-        
-        // Трансформация, переносящая центр rect'а в начало координат
-        let moveToZeroTransform = CGAffineTransformMakeTranslation(-offsetX, -offsetY)
-        
-        // Трансформация, которая будет преобразовывать расчитанные точки обратно в исходную систему координат
-        let restorePositionTransform = CGAffineTransformMakeTranslation(offsetX, offsetY)
-        
-        var transform = CGAffineTransformConcat(moveToZeroTransform, transform)
-        transform = CGAffineTransformConcat(transform, restorePositionTransform)
-        
-        let topLeft = CGPoint(x: rect.left, y: rect.top)
-        let topRight = CGPoint(x: rect.right, y: rect.top)
-        let bottomRight = CGPoint(x: rect.right, y: rect.bottom)
-        let bottomLeft = CGPoint(x: rect.left, y: rect.bottom)
-        
-        let corners = (
-            topLeft: CGPointApplyAffineTransform(topLeft, transform),
-            topRight: CGPointApplyAffineTransform(topRight, transform),
-            bottomRight: CGPointApplyAffineTransform(bottomRight, transform),
-            bottomLeft: CGPointApplyAffineTransform(bottomLeft, transform)
-        )
-        
-        debugPrint("rect = \(rect), corners = \(corners)")
+        let corners = bounds.cornersByApplyingTransform(transform)
+        debugPrint("bounds = \(bounds), corners = \(corners)")
     }
     
     // MARK: - Private
@@ -293,7 +265,31 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        debugPrint("will end draggin to point \(targetContentOffset.memory)")
+        let angle = CGFloat(1)   // TODO
+        
+        // 1. Находим прямоугольник, повернутый относительно исходного на угол angle и описанный
+        // вокруг него (все вершины исходного прямоугольника лежат на сторонах искомого)
+        var enclosingRect = bounds.enclosingRectRotatedBy(angle)
+        
+        // 2. Находим frame изображения в повернутой системе координат
+        let imageRect = CGRect.zero // TODO
+        
+        // 3. Двигаем enclosingRect так, чтобы он оказался внутри imageRect
+        enclosingRect.left = max(enclosingRect.left, imageRect.left)
+        enclosingRect.top = max(enclosingRect.top, imageRect.top)
+        enclosingRect.right = min(enclosingRect.right, imageRect.right)
+        enclosingRect.bottom = min(enclosingRect.bottom, imageRect.bottom)
+        
+        // 4. Транслируем центр полученного прямоугольника в исходную систему координат
+        let targetCenter = CGPoint.zero // TODO
+        
+        // 5. Рассчитываем contentOffset, при котором центром bounds окажется targetCenter
+        targetContentOffset.memory = CGPoint(
+            x: targetCenter.x - bounds.size.width / 2,
+            y: targetCenter.y - bounds.size.height / 2
+        )
+        
+        debugPrint("targetContentOffset = \(targetContentOffset.memory)")
     }
     
     @objc func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
