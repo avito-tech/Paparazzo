@@ -28,57 +28,8 @@ final class ZoomingImageView: UIView {
     }
     
     func setImageRotation(angle: CGFloat) {
-        
-        let radians = Double(angle) * M_PI / 180
-        let scale = scaleToFillBoundsWithImageRotatedBy(radians)
-//        debugPrint("angle = \(angle), scale = \(scale)")
-        
-        var transform = CGAffineTransformIdentity
-        transform = CGAffineTransformScale(transform, scale, scale)
-        transform = CGAffineTransformRotate(transform, CGFloat(radians))
-        
-        scrollView.imageView.imageTransform = transform
-        
-        let corners = bounds.cornersByApplyingTransform(transform)
-        debugPrint("bounds = \(bounds), corners = \(corners)")
+        scrollView.setImageRotation(angle)
     }
-    
-    // MARK: - Private
-    
-    // StackOverflow version
-    private func scaleToFillBoundsWithImageRotatedBy(angle: Double) -> CGFloat {
-        
-        let pi = M_PI
-        let size = bounds.size
-        
-        var theta = fabs(angle - 2 * pi * trunc(angle / pi / 2) - pi)
-        if theta > pi / 2 {
-            theta = fabs(pi - theta)
-        }
-        
-        let H = Double(size.height)
-        let W = Double(size.width)
-        let h = Double(size.height)
-        let w = Double(size.width)
-        
-        let scale1 = (H * cos(theta) + W * sin(theta)) / h
-        let scale2 = (H * sin(theta) + W * cos(theta)) / w
-        
-        return CGFloat(max(scale1, scale2))
-    }
-    
-    // ayutkin's version
-//    private func scaleToFillBoundsWithImageRotatedBy(angle: Double) -> Double {
-//
-//        let size0 = frame.size
-//        
-//        let a = Double(size0.width) * cos(fabs(angle))
-//        let b = Double(size0.height) * sin(fabs(angle))
-//        
-//        let width1 = a + b
-//        
-//        return width1 / Double(size0.width)
-//    }
 }
 
 private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
@@ -254,6 +205,24 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
         )
     }
     
+    private var imageRotation = CGFloat(0)
+    
+    func setImageRotation(angle: CGFloat) {
+        
+        let radians = angle * CGFloat(M_PI) / 180
+        let scale = scaleToFillBoundsWithImageRotatedBy(Double(radians))
+        
+        var transform = CGAffineTransformIdentity
+        transform = CGAffineTransformScale(transform, scale, scale)
+        transform = CGAffineTransformRotate(transform, radians)
+        
+        imageView.imageTransform = transform
+        imageRotation = radians
+        
+        let corners = bounds.cornersByApplyingTransform(transform)
+        debugPrint("bounds = \(bounds), corners = \(corners)")
+    }
+    
     // MARK: - UIScrollViewDelegate
     
     @objc func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -265,23 +234,27 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        let angle = CGFloat(1)   // TODO
+        let angle = CGFloat(imageRotation)
         
         // 1. Находим прямоугольник, повернутый относительно исходного на угол angle и описанный
         // вокруг него (все вершины исходного прямоугольника лежат на сторонах искомого)
         var enclosingRect = bounds.enclosingRectRotatedBy(angle)
         
         // 2. Находим frame изображения в повернутой системе координат
-        let imageRect = CGRect.zero // TODO
+        let imageRect = imageView.bounds
+        
+        debugPrint("bounds = \(bounds)")
         
         // 3. Двигаем enclosingRect так, чтобы он оказался внутри imageRect
+        debugPrint("enclosingRect before = \(enclosingRect)")
         enclosingRect.left = max(enclosingRect.left, imageRect.left)
         enclosingRect.top = max(enclosingRect.top, imageRect.top)
         enclosingRect.right = min(enclosingRect.right, imageRect.right)
         enclosingRect.bottom = min(enclosingRect.bottom, imageRect.bottom)
+        debugPrint("enclosingRect after = \(enclosingRect)")
         
         // 4. Транслируем центр полученного прямоугольника в исходную систему координат
-        let targetCenter = CGPoint.zero // TODO
+        let targetCenter = enclosingRect.center
         
         // 5. Рассчитываем contentOffset, при котором центром bounds окажется targetCenter
         targetContentOffset.memory = CGPoint(
@@ -294,5 +267,28 @@ private class ZoomingImageScrollView: UIScrollView, UIScrollViewDelegate {
     
     @objc func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return imageView
+    }
+    
+    // MARK: - Private
+    
+    private func scaleToFillBoundsWithImageRotatedBy(angle: Double) -> CGFloat {
+        
+        let pi = M_PI
+        let size = bounds.size
+        
+        var theta = fabs(angle - 2 * pi * trunc(angle / pi / 2) - pi)
+        if theta > pi / 2 {
+            theta = fabs(pi - theta)
+        }
+        
+        let H = Double(size.height)
+        let W = Double(size.width)
+        let h = Double(size.height)
+        let w = Double(size.width)
+        
+        let scale1 = (H * cos(theta) + W * sin(theta)) / h
+        let scale2 = (H * sin(theta) + W * cos(theta)) / w
+        
+        return CGFloat(max(scale1, scale2))
     }
 }

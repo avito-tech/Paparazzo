@@ -12,7 +12,10 @@ extension CGRect {
             height: size.width * sin(angle) + size.height * cos(angle)
         )
         
-        let origin = CGPoint(x: -newSize.width / 2, y: -newSize.height / 2)
+        let origin = CGPoint(
+            x: center.x - newSize.width / 2,
+            y: center.y - newSize.height / 2
+        )
         
         let enclosingRect = CGRect(origin: origin, size: newSize)
         debugPrint("enclosingRect = \(enclosingRect)")
