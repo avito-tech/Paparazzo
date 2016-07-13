@@ -6,12 +6,12 @@ enum AspectRatioMode {
     case Landscape_4x3
 }
 
-final class ImageCroppingView: UIView {
+final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Subviews
     
+    private let previewView = PhotoTweakView()
     private let controlsView = ImageCroppingControlsView()
-    private let previewView = ZoomingImageView()   // TODO: надо заюзать что-то другое, например, CATiledLayer. Короче, поискать готовое решение.
     private let aspectRatioButton = UIButton()
     private let titleLabel = UILabel()
     
@@ -120,11 +120,12 @@ final class ImageCroppingView: UIView {
     
     func setImage(image: ImageSource) {
         image.fullResolutionImage { [weak self] (image: UIImage?) in
-            self?.previewView.image = image
+            self?.previewView.setImage(image)
         }
     }
     
     func setImageRotation(angle: CGFloat) {
+        let angle = angle * CGFloat(M_PI / 180.0)
         previewView.setImageRotation(angle)
     }
     
