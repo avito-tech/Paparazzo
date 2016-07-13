@@ -15,9 +15,6 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     private let aspectRatioButton = UIButton()
     private let titleLabel = UILabel()
     
-    private let topCurtain = UIView()
-    private let bottomCurtain = UIView()
-    
     // MARK: - Constants
     
     private let controlsMinHeight = CGFloat(165)
@@ -37,12 +34,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             forControlEvents: .TouchUpInside
         )
         
-        topCurtain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.75)
-        bottomCurtain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.75)
-        
         addSubview(previewView)
-        addSubview(topCurtain)
-        addSubview(bottomCurtain)
         addSubview(controlsView)
         addSubview(titleLabel)
         addSubview(aspectRatioButton)
@@ -79,9 +71,6 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             top: bounds.top + max(0, (controlsView.top - bounds.top - previewViewHeight) / 2),
             height: previewViewHeight
         )
-        
-        topCurtain.layout(left: bounds.left, right: bounds.right, top: bounds.top, bottom: previewView.top)
-        bottomCurtain.layout(left: bounds.left, right: bounds.right, top: previewView.bottom, bottom: controlsView.top)
     }
     
     // MARK: - ImageCroppingView
@@ -120,7 +109,9 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     func setImage(image: ImageSource) {
         image.fullResolutionImage { [weak self] (image: UIImage?) in
-            self?.previewView.setImage(image)
+            if let image = image {
+                self?.previewView.setImage(image)
+            }
         }
     }
     

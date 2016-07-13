@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoTweakView : UIView
+@interface PhotoTweakViewObjC : UIView
 
 - (void)setImage:(UIImage *)image;
 - (void)setImageRotation:(CGFloat)angle;

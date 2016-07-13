@@ -6,16 +6,16 @@
 //  Copyright (c) 2014年 Tu You. All rights reserved.
 //
 
-#import "PhotoTweakView.h"
+#import "PhotoTweakViewObjC.h"
 
 
-@interface PhotoScrollView : UIScrollView
+@interface PhotoScrollViewObjC : UIScrollView
 
 @property (nonatomic, strong) UIImageView *photoContentView;
 
 @end
 
-@implementation PhotoScrollView
+@implementation PhotoScrollViewObjC
 
 - (void)setContentOffsetY:(CGFloat)offsetY
 {
@@ -42,11 +42,11 @@
 
 @end
 
-@interface PhotoTweakView () <UIScrollViewDelegate>
+@interface PhotoTweakViewObjC () <UIScrollViewDelegate>
 
 @property (nonatomic, strong, readonly) UIImageView *photoContentView;
 
-@property (nonatomic, strong) PhotoScrollView *scrollView;
+@property (nonatomic, strong) PhotoScrollViewObjC *scrollView;
 @property (nonatomic, strong) UIView *cropView;
 
 @property (nonatomic, strong) UIImage *image;
@@ -65,7 +65,7 @@
 
 @end
 
-@implementation PhotoTweakView {
+@implementation PhotoTweakViewObjC {
     CGSize _maximumCanvasSize;
     CGFloat _centerY;
     CGPoint _originalPoint;
@@ -80,7 +80,7 @@
     {
         _maxRotationAngle = 0.5;    // TODO
 
-        _scrollView = [PhotoScrollView new];
+        _scrollView = [PhotoScrollViewObjC new];
         _scrollView.bounces = YES;
         _scrollView.layer.anchorPoint = CGPointMake(0.5, 0.5);
         _scrollView.alwaysBounceVertical = YES;
