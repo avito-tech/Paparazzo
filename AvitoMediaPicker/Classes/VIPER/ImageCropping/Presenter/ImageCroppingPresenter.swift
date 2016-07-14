@@ -53,8 +53,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         view?.onRotateButtonTap = { [weak self] in
-            debugPrint("onRotateButtonTap")
-            // TODO
+            self?.view?.rotate(by: -90)
         }
         
         view?.onRotationCancelButtonTap = { [weak self] in
