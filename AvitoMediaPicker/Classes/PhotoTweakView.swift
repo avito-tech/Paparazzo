@@ -64,7 +64,10 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     var cropAspectRatio: CGFloat = 4.0 / 3.0 {
         didSet {
             if cropAspectRatio != oldValue {
+                let angle = self.angle
+                setImageRotation(0)
                 calculateFrames()
+                setImageRotation(angle)
             }
         }
     }
@@ -78,25 +81,13 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         
         self.angle = angle
         
-        let width = fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height
-        let height = fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
-        let center = scrollView.center
-        
-        let contentOffsetCenter = CGPoint(
-            x: scrollView.contentOffset.x + scrollView.bounds.size.width / 2,
-            y: scrollView.contentOffset.y + scrollView.bounds.size.height / 2
+        let newSize = CGSize(
+            width: fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height,
+            height: fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
         )
         
-        let newBounds = CGRect(x: 0, y: 0, width: width, height: height)
-        let newContentOffset = CGPoint(
-            x: contentOffsetCenter.x - newBounds.size.width / 2,
-            y: contentOffsetCenter.y - newBounds.size.height / 2
-        )
-        
+        scrollView.setBoundsSizePreservingContentCenter(newSize)
         scrollView.transform = CGAffineTransformMakeRotation(angle)
-        scrollView.bounds = newBounds
-        scrollView.center = center
-        scrollView.contentOffset = newContentOffset
         
         // scale scroll view
         let shouldScale = scrollView.contentSize.width / scrollView.bounds.size.width <= 1.0 || self.scrollView.contentSize.height / self.scrollView.bounds.size.height <= 1.0
@@ -104,6 +95,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         if !manualZoomed || shouldScale {
             
             let zoomScale = scrollView.zoomScaleToBound()
+            debugPrint("zoomScale = \(zoomScale)")
             
             scrollView.setZoomScale(zoomScale, animated: false)
             scrollView.minimumZoomScale = zoomScale
@@ -137,47 +129,42 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - Private
     
-    // layoutSubviews will be called each time scrollView rotates, but we don't want it
+    // We put this code in a separate function instead of layoutSubviews, because the latter will be called
+    // each time scrollView rotates, but we don't want it
     private func calculateFrames() {
         
-        guard let image = scrollView.imageView.image where width > 0 && height > 0 else {
+        guard let imageSize = scrollView.imageView.image?.size where width > 0 && height > 0 else {
             return
         }
         
-        let previousAngle = angle
-        
-        setImageRotation(0)
-        
-        // scale the image
         cropSize = CGSize(
             width: bounds.size.width,
             height: bounds.size.width / cropAspectRatio
         )
         
-        let scaleX = image.size.width / cropSize.width
-        let scaleY = image.size.height / cropSize.height
-        let scale = min(scaleX, scaleY)     // get minimum scale to fill canvas with image
+        // get minimum scale to fill canvas with image
+        let scale = min(
+            imageSize.width / cropSize.width,
+            imageSize.height / cropSize.height
+        )
         
         let minZoomBounds = CGRect(
             x: 0,
             y: 0,
-            width: image.size.width / scale,
-            height: image.size.height / scale
+            width: imageSize.width / scale,
+            height: imageSize.height / scale
         )
         
-        originalSize = minZoomBounds.size
+        scrollView.setBoundsSizePreservingContentCenter(cropSize)
+        scrollView.center = bounds.center
+        scrollView.contentSize = minZoomBounds.size
         
-        scrollView.bounds = minZoomBounds
-        scrollView.center = self.center
-        scrollView.contentSize = scrollView.bounds.size
-        
-        scrollView.imageView.frame = scrollView.bounds
+        scrollView.imageView.frame = minZoomBounds
         
         originalPoint = convertPoint(scrollView.center, toView: self)
+        originalSize = minZoomBounds.size
         
         updateMasks()
-        
-        setImageRotation(previousAngle)
     }
     
     private func updateMasks(animated animated: Bool = false) {
