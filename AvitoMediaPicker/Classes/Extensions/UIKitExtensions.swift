@@ -59,22 +59,3 @@ extension UICollectionView {
         })
     }
 }
-
-extension UIScrollView {
-    
-    // Проставляет bounds, сохраняя центральной точкой ту, что была при старом bounds
-    func setBoundsSizePreservingContentCenter(size: CGSize) {
-        
-        let contentCenter = CGPoint(
-            x: contentOffset.x + bounds.size.width / 2,
-            y: contentOffset.y + bounds.size.height / 2
-        )
-        
-        let newContentOffset = CGPoint(
-            x: contentCenter.x - size.width / 2,
-            y: contentCenter.y - size.height / 2
-        )
-        
-        bounds = CGRect(origin: newContentOffset, size: size)
-    }
-}
