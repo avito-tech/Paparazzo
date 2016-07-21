@@ -45,6 +45,7 @@ extension CGImage {
 }
 
 enum ExifOrientation: Int {
+    
     case Up = 1
     case UpMirrored = 2
     case Down = 3
@@ -53,6 +54,15 @@ enum ExifOrientation: Int {
     case Left = 6
     case RightMirrored = 7
     case Right = 8
+    
+    var dimensionsSwapped: Bool {
+        switch self {
+        case .LeftMirrored, .Left, .RightMirrored, .Right:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension UIImageOrientation {

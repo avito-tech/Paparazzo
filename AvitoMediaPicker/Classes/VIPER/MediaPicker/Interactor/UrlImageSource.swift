@@ -62,13 +62,23 @@ struct UrlImageSource: ImageSource {
             let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
             let width = options?[kCGImagePropertyPixelWidth] as? Int
             let height = options?[kCGImagePropertyPixelHeight] as? Int
+            let orientation = options?[kCGImagePropertyOrientation] as? Int
+            
+            var size: CGSize? = nil
+            
+            if let width = width, height = height {
+                
+                let exifOrientation = orientation.flatMap { ExifOrientation(rawValue: $0) }
+                let dimensionsSwapped = exifOrientation.flatMap { $0.dimensionsSwapped } ?? false
+                
+                size = CGSize(
+                    width: dimensionsSwapped ? height : width,
+                    height: dimensionsSwapped ? width : height
+                )
+            }
             
             dispatch_async(dispatch_get_main_queue()) {
-                if let width = width, height = height {
-                    completion(CGSize(width: width, height: height))
-                } else {
-                    completion(nil)
-                }
+                completion(size)
             }
         }
     }
