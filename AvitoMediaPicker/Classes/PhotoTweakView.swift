@@ -51,7 +51,9 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     override var frame: CGRect {
         didSet {
+            reset()
             calculateFrames()
+            setImageRotation(angle)
         }
     }
     
@@ -103,10 +105,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         
         if !manualZoomed || shouldScale {
             
-            let zoomScale = scrollView.zoomScaleToBound()
-            
-            scrollView.setZoomScale(zoomScale, animated: false)
-            scrollView.minimumZoomScale = zoomScale
+            scrollView.minimumZoomScale = scrollView.zoomScaleToBound()
+            scrollView.zoomScale = scrollView.minimumZoomScale
             
             manualZoomed = false
         }
@@ -144,10 +144,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             return
         }
         
-        let previousAngle = angle
-        
-        setImageRotation(0)
-        
         // scale the image
         cropSize = CGSize(
             width: bounds.size.width,
@@ -176,8 +172,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         originalPoint = convertPoint(scrollView.center, toView: self)
         
         updateMasks()
-        
-        setImageRotation(previousAngle)
     }
     
     private func updateMasks(animated animated: Bool = false) {
@@ -217,6 +211,12 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         if scrollView.contentSize.width - scrollView.contentOffset.x <= scrollView.bounds.size.width {
             scrollView.contentOffset.x = scrollView.contentSize.width - scrollView.bounds.size.width
         }
+    }
+    
+    private func reset() {
+        scrollView.transform = CGAffineTransformIdentity
+        scrollView.minimumZoomScale = 1
+        scrollView.zoomScale = 1
     }
 }
 
