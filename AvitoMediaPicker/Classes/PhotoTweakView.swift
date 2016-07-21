@@ -120,7 +120,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     func photoTranslation() -> CGPoint {
         let rect = scrollView.imageView.convertRect(scrollView.imageView.bounds, toView: self)
-        let point = CGPoint(x: rect.origin.x + rect.size.width / 2, y: rect.origin.y + rect.size.height / 2)
+        let point = CGPoint(x: rect.midX, y: rect.midY)
         let zeroPoint = bounds.center
         return CGPoint(x: point.x - zeroPoint.x, y: point.y - zeroPoint.y)
     }
