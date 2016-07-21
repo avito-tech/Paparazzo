@@ -26,7 +26,15 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     var onConfirm: (() -> ())?
     
     func setImage(image: ImageSource) {
+        
         view?.setImage(image)
+        
+        image.imageSize { [weak self] size in
+            if let size = size {
+                let isPortrait = size.height > size.width
+                self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
+            }
+        }
     }
     
     // MARK: - Private
@@ -37,7 +45,6 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.setMinimumRotation(-25)
         view?.setMaximumRotation(+25)
         
-        setAspectRatioButtonMode(.Portrait_3x4)
         setGridVisible(false)
         
         view?.onDiscardButtonTap = { [weak self] in

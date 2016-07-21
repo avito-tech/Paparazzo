@@ -60,6 +60,10 @@ final class PHAssetImageSource: ImageSource {
             }
         }
     }
+    
+    func imageSize(completion: CGSize? -> ()) {
+        completion(CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
+    }
 
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
 

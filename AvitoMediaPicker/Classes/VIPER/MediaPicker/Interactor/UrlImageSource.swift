@@ -53,6 +53,25 @@ struct UrlImageSource: ImageSource {
             }
         }
     }
+    
+    func imageSize(completion: CGSize? -> ()) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
+            
+            let source = CGImageSourceCreateWithURL(url, nil)
+            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
+            let width = options?[kCGImagePropertyPixelWidth] as? Int
+            let height = options?[kCGImagePropertyPixelHeight] as? Int
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                if let width = width, height = height {
+                    completion(CGSize(width: width, height: height))
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    }
 
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
 
