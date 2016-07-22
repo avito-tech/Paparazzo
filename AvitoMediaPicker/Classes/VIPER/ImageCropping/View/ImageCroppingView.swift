@@ -6,17 +6,14 @@ enum AspectRatioMode {
     case Landscape_4x3
 }
 
-final class ImageCroppingView: UIView {
+final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Subviews
     
+    private let previewView = PhotoTweakView()
     private let controlsView = ImageCroppingControlsView()
-    private let previewView = ZoomingImageView()   // TODO: надо заюзать что-то другое, например, CATiledLayer. Короче, поискать готовое решение.
     private let aspectRatioButton = UIButton()
     private let titleLabel = UILabel()
-    
-    private let topCurtain = UIView()
-    private let bottomCurtain = UIView()
     
     // MARK: - Constants
     
@@ -28,6 +25,7 @@ final class ImageCroppingView: UIView {
         super.init(frame: frame)
         
         backgroundColor = .whiteColor()
+        clipsToBounds = true
         
         aspectRatioButton.layer.borderWidth = 1
         aspectRatioButton.setTitleColor(.blackColor(), forState: .Normal)
@@ -37,12 +35,7 @@ final class ImageCroppingView: UIView {
             forControlEvents: .TouchUpInside
         )
         
-        topCurtain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.75)
-        bottomCurtain.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.75)
-        
         addSubview(previewView)
-        addSubview(topCurtain)
-        addSubview(bottomCurtain)
         addSubview(controlsView)
         addSubview(titleLabel)
         addSubview(aspectRatioButton)
@@ -71,17 +64,12 @@ final class ImageCroppingView: UIView {
             height: max(controlsMinHeight, bounds.size.height * 0.25)   // оставляем вверху место под фотку 3:4
         )
         
-        let previewViewHeight = bounds.size.width / previewAspectRatio()
-        
         previewView.layout(
             left: bounds.left,
             right: bounds.right,
-            top: bounds.top + max(0, (controlsView.top - bounds.top - previewViewHeight) / 2),
-            height: previewViewHeight
+            top: bounds.top,
+            bottom: controlsView.top
         )
-        
-        topCurtain.layout(left: bounds.left, right: bounds.right, top: bounds.top, bottom: previewView.top)
-        bottomCurtain.layout(left: bounds.left, right: bounds.right, top: previewView.bottom, bottom: controlsView.top)
     }
     
     // MARK: - ImageCroppingView
@@ -118,14 +106,27 @@ final class ImageCroppingView: UIView {
     
     var onAspectRatioButtonTap: (() -> ())?
     
+    var onCroppingParametersChange: (ImageCroppingParameters -> ())? {
+        get { return previewView.onCroppingParametersChange }
+        set { previewView.onCroppingParametersChange = newValue }
+    }
+    
     func setImage(image: ImageSource) {
         image.fullResolutionImage { [weak self] (image: UIImage?) in
-            self?.previewView.image = image
+            if let image = image {
+                self?.previewView.setImage(image)
+            }
         }
     }
     
     func setImageRotation(angle: CGFloat) {
+        let angle = angle * CGFloat(M_PI / 180.0)
         previewView.setImageRotation(angle)
+    }
+    
+    func rotate(by angle: CGFloat) {
+        let angle = angle * CGFloat(M_PI / 180.0)
+        previewView.rotate(by: angle)
     }
     
     func setRotationSliderValue(value: Float) {
@@ -145,6 +146,7 @@ final class ImageCroppingView: UIView {
         aspectRatioMode = mode
         
         aspectRatioButton.size = aspectRatioButtonSize()
+        previewView.cropAspectRatio = cropAspectRatio()
         
         switch mode {
         
@@ -182,13 +184,7 @@ final class ImageCroppingView: UIView {
     
     // MARK: - Private
     
-    private var aspectRatioMode: AspectRatioMode = .Portrait_3x4 {
-        didSet {
-            if aspectRatioMode != oldValue {
-                setNeedsLayout()
-            }
-        }
-    }
+    private var aspectRatioMode: AspectRatioMode = .Portrait_3x4
     
     private func aspectRatioButtonSize() -> CGSize {
         switch aspectRatioMode {
@@ -199,7 +195,7 @@ final class ImageCroppingView: UIView {
         }
     }
     
-    private func previewAspectRatio() -> CGFloat {
+    private func cropAspectRatio() -> CGFloat {
         switch aspectRatioMode {
         case .Portrait_3x4:
             return CGFloat(3.0 / 4.0)

@@ -7,6 +7,7 @@ public protocol ImageSource {
     func writeImageToUrl(url: NSURL, completion: Bool -> ())
     
     func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ())
+    func imageSize(completion: CGSize? -> ())
     
     func imageFittingSize<T: InitializableWithCGImage>(
         size: CGSize,

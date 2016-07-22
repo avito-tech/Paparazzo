@@ -54,7 +54,7 @@ final class RotationSliderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        slider.frame = bounds.shrinked(scaleInsets)
+        slider.frame = bounds
     }
     
     // MARK: - RotationSliderView

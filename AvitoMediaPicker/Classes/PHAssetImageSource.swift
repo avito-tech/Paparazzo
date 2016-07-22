@@ -49,13 +49,18 @@ final class PHAssetImageSource: ImageSource {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
                 
                 let source = data.flatMap { CGImageSourceCreateWithData($0, nil) }
-                let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }
+                let exifOrientation = orientation.exifOrientation
+                let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }?.imageFixedForOrientation(exifOrientation)
 
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(cgImage.flatMap { T(CGImage: $0) })
                 }
             }
         }
+    }
+    
+    func imageSize(completion: CGSize? -> ()) {
+        completion(CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
     }
 
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {

@@ -6,6 +6,7 @@ protocol ImageCroppingViewInput: class {
     
     func setImage(_: ImageSource)
     func setImageRotation(_: Float)
+    func rotate(by _: CGFloat)
     func setRotationSliderValue(_: Float)
     
     func setAspectRatioMode(_: AspectRatioMode)
@@ -27,4 +28,5 @@ protocol ImageCroppingViewInput: class {
     var onGridButtonTap: (() -> ())? { get set }
     var onRotationAngleChange: (Float -> ())? { get set }
     var onRotationCancelButtonTap: (() -> ())? { get set }
+    var onCroppingParametersChange: (ImageCroppingParameters -> ())? { get set }
 }

@@ -10,15 +10,15 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var cameraContinueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
-    public var removePhotoIcon: UIImage? { return imageNamed("delete") }
-    public var cropPhotoIcon: UIImage? { return imageNamed("crop") }
-    public var returnToCameraIcon: UIImage? { return imageNamed("camera") }
-    public var closeCameraIcon: UIImage? { return imageNamed("bt-close") }
-    public var flashOnIcon: UIImage? { return imageNamed("light_on") }
-    public var flashOffIcon: UIImage? { return imageNamed("light_off") }
-    public var cameraToggleIcon: UIImage? { return imageNamed("back_front") }
+    public var removePhotoIcon = MediaPickerUITheme.imageNamed("delete")
+    public var cropPhotoIcon = MediaPickerUITheme.imageNamed("crop")
+    public var returnToCameraIcon = MediaPickerUITheme.imageNamed("camera")
+    public var closeCameraIcon = MediaPickerUITheme.imageNamed("bt-close")
+    public var flashOnIcon = MediaPickerUITheme.imageNamed("light_on")
+    public var flashOffIcon = MediaPickerUITheme.imageNamed("light_off")
+    public var cameraToggleIcon = MediaPickerUITheme.imageNamed("back_front")
 
-    public var cameraContinueButtonTitleFont: UIFont { return UIFont.systemFontOfSize(17) }
+    public var cameraContinueButtonTitleFont = UIFont.systemFontOfSize(17)
 
     // MARK: - PhotoLibraryUITheme
     
@@ -26,11 +26,11 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     
     // MARK: - ImageCroppingUITheme
     
-    public var rotationIcon: UIImage? { return imageNamed("rotate") }
-    public var gridIcon: UIImage? { return imageNamed("grid") }
-    public var cropperDiscardIcon: UIImage? { return imageNamed("discard") }
-    public var cropperConfirmIcon: UIImage? { return imageNamed("confirm") }
-    public var cancelRotationButtonIcon: UIImage? { return imageNamed("close-small") }
+    public var rotationIcon = MediaPickerUITheme.imageNamed("rotate")
+    public var gridIcon = MediaPickerUITheme.imageNamed("grid")
+    public var cropperDiscardIcon = MediaPickerUITheme.imageNamed("discard")
+    public var cropperConfirmIcon = MediaPickerUITheme.imageNamed("confirm")
+    public var cancelRotationButtonIcon = MediaPickerUITheme.imageNamed("close-small")
     public var cancelRotationBackgroundColor = UIColor.RGB(red: 25, green: 25, blue: 25, alpha: 1)
     public var cancelRotationTitleColor = UIColor.whiteColor()
     public var cancelRotationTitleFont = UIFont.boldSystemFontOfSize(14)
@@ -39,7 +39,7 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
 
     private class BundleId {}
 
-    private func imageNamed(name: String) -> UIImage? {
+    private static func imageNamed(name: String) -> UIImage? {
         let bundle = NSBundle(forClass: BundleId.self)
         return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
     }

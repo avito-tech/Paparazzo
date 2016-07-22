@@ -38,15 +38,47 @@ struct UrlImageSource: ImageSource {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
          
             let source = CGImageSourceCreateWithURL(url, nil)
-            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as? NSDictionary
             
-            
-            debugPrint("orientation == \(options?[kCGImagePropertyOrientation as String])")
+            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
+            let orientation = options?[kCGImagePropertyOrientation] as? Int
 
-            let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
+            var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
+            
+            if let exifOrientation = orientation.flatMap({ ExifOrientation(rawValue: $0) }) {
+                cgImage = cgImage?.imageFixedForOrientation(exifOrientation)
+            }
             
             dispatch_async(dispatch_get_main_queue()) {
                 completion(cgImage.flatMap { T(CGImage: $0) })
+            }
+        }
+    }
+    
+    func imageSize(completion: CGSize? -> ()) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
+            
+            let source = CGImageSourceCreateWithURL(url, nil)
+            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
+            let width = options?[kCGImagePropertyPixelWidth] as? Int
+            let height = options?[kCGImagePropertyPixelHeight] as? Int
+            let orientation = options?[kCGImagePropertyOrientation] as? Int
+            
+            var size: CGSize? = nil
+            
+            if let width = width, height = height {
+                
+                let exifOrientation = orientation.flatMap { ExifOrientation(rawValue: $0) }
+                let dimensionsSwapped = exifOrientation.flatMap { $0.dimensionsSwapped } ?? false
+                
+                size = CGSize(
+                    width: dimensionsSwapped ? height : width,
+                    height: dimensionsSwapped ? width : height
+                )
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(size)
             }
         }
     }

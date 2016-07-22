@@ -19,6 +19,10 @@ final class CachingImageSource: ImageSource {
         underlyingImageSource.fullResolutionImage(completion)
     }
     
+    func imageSize(completion: CGSize? -> ()) {
+        underlyingImageSource.imageSize(completion)
+    }
+    
     func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
         
         let cacheKey = NSValue(CGSize: size)
@@ -37,14 +41,5 @@ final class CachingImageSource: ImageSource {
             
             completion(cgImage.flatMap { T(CGImage: $0) })
         }
-    }
-}
-
-private final class CGImageWrapper: InitializableWithCGImage {
-    
-    let image: CGImage
-    
-    init(CGImage image: CGImage) {
-        self.image = image
     }
 }
