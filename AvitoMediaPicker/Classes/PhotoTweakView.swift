@@ -137,6 +137,17 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
         manualZoomed = true
+        notifyAboutCroppingParametersChange()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            notifyAboutCroppingParametersChange()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        notifyAboutCroppingParametersChange()
     }
     
     // MARK: - Private

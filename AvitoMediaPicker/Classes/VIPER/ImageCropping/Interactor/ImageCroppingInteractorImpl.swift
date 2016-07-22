@@ -33,6 +33,7 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
                         CGImageDestinationAddImage(destination, image, nil)
                         CGImageDestinationFinalize(destination)
                     }
+                    completion(self!.originalImage) // TODO
                 }
             } else if let originalImage = self?.originalImage {
                 completion(originalImage)

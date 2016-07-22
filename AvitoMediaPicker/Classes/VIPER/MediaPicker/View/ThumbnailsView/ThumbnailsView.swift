@@ -32,7 +32,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         collectionView.showsVerticalScrollIndicator = false
         collectionView.registerClass(MediaItemThumbnailCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(CameraThumbnailCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
-        debugPrint("thumbnails collection view: \(collectionView)")
         
         super.init(frame: .zero)
         
