@@ -277,6 +277,11 @@ final class MediaPickerView: UIView {
         photoPreviewView.addItems(items)
         thumbnailRibbonView.addItems(items, animated: animated)
     }
+    
+    func updateItem(item: MediaPickerItem) {
+        photoPreviewView.updateItem(item)
+        thumbnailRibbonView.updateItem(item)
+    }
 
     func removeItem(item: MediaPickerItem) {
         photoPreviewView.removeItem(item, animated: false)

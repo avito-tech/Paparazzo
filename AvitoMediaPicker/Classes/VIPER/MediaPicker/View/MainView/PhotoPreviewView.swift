@@ -76,6 +76,12 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         addCollectionViewItemsAtIndexPaths(insertedIndexPaths)
     }
     
+    func updateItem(item: MediaPickerItem) {
+        if let indexPath = dataSource.updateItem(item) {
+            collectionView.reloadItemsAtIndexPaths([indexPath])
+        }
+    }
+    
     func removeItem(item: MediaPickerItem, animated: Bool) {
         collectionView.deleteItems(animated: animated) { [weak self] in
             let removedIndexPath = self?.dataSource.removeItem(item)

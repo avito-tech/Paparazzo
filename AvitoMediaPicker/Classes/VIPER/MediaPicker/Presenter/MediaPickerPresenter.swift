@@ -215,8 +215,10 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
             
             module.onConfirm = { [weak self] croppedImageSource in
-                // TODO: обновить фотку
-                self?.onItemUpdate?(item)
+                let croppedItem = MediaPickerItem(identifier: item.identifier, image: croppedImageSource)
+                // TODO: обновить фотку в интеракторе
+                self?.view?.updateItem(croppedItem)
+                self?.onItemUpdate?(croppedItem)
                 self?.router.focusOnCurrentModule()
             }
         }

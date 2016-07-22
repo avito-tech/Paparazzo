@@ -109,6 +109,12 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
+    func updateItem(item: MediaPickerItem) {
+        if let indexPath = dataSource.updateItem(item) {
+            collectionView.reloadItemsAtIndexPaths([indexPath])
+        }
+    }
+    
     func removeItem(item: MediaPickerItem, animated: Bool) {
         collectionView.deleteItems(animated: animated) { [weak self] in
             self?.dataSource.removeItem(item).flatMap { [$0] }

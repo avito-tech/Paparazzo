@@ -146,6 +146,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.addItems(items, animated: animated)
     }
     
+    func updateItem(item: MediaPickerItem) {
+        mediaPickerView.updateItem(item)
+    }
+    
     func removeItem(item: MediaPickerItem) {
         mediaPickerView.removeItem(item)
     }
