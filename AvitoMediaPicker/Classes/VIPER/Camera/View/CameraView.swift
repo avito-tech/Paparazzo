@@ -3,7 +3,8 @@ import AVFoundation
 
 final class CameraView: UIView, CameraViewInput {
     
-    private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    private let cameraOutputBinder = CameraOutputGLKBinder()
+    private var cameraPreviewView: UIView?
     
     // MARK: - Init
     
@@ -20,19 +21,19 @@ final class CameraView: UIView, CameraViewInput {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        cameraPreviewLayer?.frame = bounds
+        cameraPreviewView?.frame = bounds
     }
     
     // MARK: - CameraViewInput
     
     func setCaptureSession(session: AVCaptureSession) {
+
+        let cameraPreviewView = cameraOutputBinder.setUpWithAVCaptureSession(session)
+        cameraPreviewView.clipsToBounds = true
+
+        insertSubview(cameraPreviewView, atIndex: 0)
         
-        let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
-        cameraPreviewLayer.backgroundColor = UIColor.blackColor().CGColor
-        cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        layer.insertSublayer(cameraPreviewLayer, atIndex: 0)
-        
-        self.cameraPreviewLayer = cameraPreviewLayer
+        self.cameraPreviewView = cameraPreviewView
     }
     
     func setCameraUnavailableMessageVisible(visible: Bool) {

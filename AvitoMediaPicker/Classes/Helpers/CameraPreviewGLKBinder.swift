@@ -6,16 +6,15 @@ import AVFoundation
 
 // Штука, которая рендерит аутпут AVCaptureSession в UIView (в данной конкретной реализации — в GLKView)
 // Решение взято отсюда: http://stackoverflow.com/questions/16543075/avcapturesession-with-multiple-previews
-final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+final class CameraOutputGLKBinder {
     
     private let view: GLKView
     private var viewBounds: CGRect = .zero
     
     private let eaglContext: EAGLContext
     private let ciContext: CIContext
-    private let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", nil)
     
-    override init() {
+    init() {
         
         eaglContext = EAGLContext(API: .OpenGLES2)
         EAGLContext.setCurrentContext(eaglContext)
@@ -23,8 +22,6 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
         ciContext = CIContext(EAGLContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
         
         view = GLKView(frame: .zero, context: eaglContext)
-        
-        super.init()
     }
     
     deinit {
@@ -35,17 +32,24 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
     
     func setUpWithAVCaptureSession(session: AVCaptureSession) -> UIView {
         
-        dispatch_async(queue) {
+        let delegate = CameraOutputGLKBinderDelegate.sharedInstance
+        
+        dispatch_async(delegate.queue) {
+            
+            delegate.binders.append(self)
             
             let output = AVCaptureVideoDataOutput()
             // CoreImage wants BGRA pixel format
             output.videoSettings = [kCVPixelBufferPixelFormatTypeKey: NSNumber(unsignedInt: kCVPixelFormatType_32BGRA)]
-            output.setSampleBufferDelegate(self, queue: self.queue)
+            output.setSampleBufferDelegate(delegate, queue: delegate.queue)
             
             do {
                 try session.configure {
                     if session.canAddOutput(output) {
                         session.addOutput(output)
+                        debugPrint("added output to session")
+                    } else {
+                        debugPrint("can't add output to session")
                     }
                 }
             } catch {
@@ -60,17 +64,60 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
         return view
     }
     
+    // MARK: - Private
+    
+    func configureView() {
+        
+        view.enableSetNeedsDisplay = false
+        
+        // because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right),
+        // we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view;
+        // if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror),
+        // you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
+//        view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+        
+        // bind the frame buffer to get the frame buffer width and height;
+        // the bounds used by CIContext when drawing to a GLKView are in pixels (not points),
+        // hence the need to read from the frame buffer's width and height;
+        // in addition, since we will be accessing the bounds in another queue (_captureSessionQueue),
+        // we want to obtain this piece of information so that we won't be
+        // accessing _videoPreviewView's properties from another thread/queue
+        view.bindDrawable()
+        
+        viewBounds = CGRect(x: 0, y: 0, width: view.drawableWidth, height: view.drawableHeight)
+    }
+}
+
+private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+    
+    static let sharedInstance = CameraOutputGLKBinderDelegate()
+    
+    let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", nil)
+    
+    var binders = [CameraOutputGLKBinder]()
+    
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
     
-    func captureOutput(
+    @objc func captureOutput(
         captureOutput: AVCaptureOutput?,
         didOutputSampleBuffer sampleBuffer: CMSampleBuffer?,
         fromConnection connection: AVCaptureConnection?
     ) {
         guard let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }) else { return }
         
-        let sourceImage = CIImage(CVPixelBuffer: imageBuffer)
-        let sourceExtent = sourceImage.extent
+        for binder in binders {
+            drawImageBuffer(imageBuffer, viewBounds: binder.viewBounds, view: binder.view, ciContext: binder.ciContext)
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func drawImageBuffer(imageBuffer: CVImageBuffer, viewBounds: CGRect, view: GLKView, ciContext: CIContext) {
+        
+        let orientation = Int32(ExifOrientation.Left.rawValue)  // камера отдает картинку в этой ориентации
+
+        let sourceImage = CIImage(CVPixelBuffer: imageBuffer).imageByApplyingOrientation(orientation)
+        var sourceExtent = sourceImage.extent
         
         let sourceAspect = sourceExtent.size.width / sourceExtent.size.height
         let previewAspect = viewBounds.size.width  / viewBounds.size.height
@@ -80,11 +127,11 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
         
         if sourceAspect > previewAspect {
             // use full height of the video image, and center crop the width
-            drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0
+            drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2
             drawRect.size.width = drawRect.size.height * previewAspect
         } else {
             // use full width of the video image, and center crop the height
-            drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0
+            drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2
             drawRect.size.height = drawRect.size.width / previewAspect
         }
         
@@ -101,28 +148,5 @@ final class CameraOutputGLKBinder: NSObject, AVCaptureVideoDataOutputSampleBuffe
         ciContext.drawImage(sourceImage, inRect: viewBounds, fromRect: drawRect)
         
         view.display()
-    }
-    
-    // MARK: - Private
-    
-    func configureView() {
-        
-        view.enableSetNeedsDisplay = false
-        
-        // because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right),
-        // we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view;
-        // if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror),
-        // you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
-        view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
-        
-        // bind the frame buffer to get the frame buffer width and height;
-        // the bounds used by CIContext when drawing to a GLKView are in pixels (not points),
-        // hence the need to read from the frame buffer's width and height;
-        // in addition, since we will be accessing the bounds in another queue (_captureSessionQueue),
-        // we want to obtain this piece of information so that we won't be
-        // accessing _videoPreviewView's properties from another thread/queue
-        view.bindDrawable()
-        
-        viewBounds = CGRect(x: 0, y: 0, width: view.drawableWidth, height: view.drawableHeight)
     }
 }
