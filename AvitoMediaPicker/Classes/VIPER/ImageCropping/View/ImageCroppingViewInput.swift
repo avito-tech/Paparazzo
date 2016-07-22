@@ -28,4 +28,5 @@ protocol ImageCroppingViewInput: class {
     var onGridButtonTap: (() -> ())? { get set }
     var onRotationAngleChange: (Float -> ())? { get set }
     var onRotationCancelButtonTap: (() -> ())? { get set }
+    var onCroppingParametersChange: (ImageCroppingParameters -> ())? { get set }
 }

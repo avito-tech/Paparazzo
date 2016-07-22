@@ -214,7 +214,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 self?.router.focusOnCurrentModule()
             }
             
-            module.onConfirm = { [weak self] in
+            module.onConfirm = { [weak self] croppedImageSource in
                 // TODO: обновить фотку
                 self?.onItemUpdate?(item)
                 self?.router.focusOnCurrentModule()

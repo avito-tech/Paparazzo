@@ -15,7 +15,7 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
         configuration: ImageCroppingModule -> ()
     ) -> UIViewController {
 
-        let interactor = ImageCroppingInteractorImpl()
+        let interactor = ImageCroppingInteractorImpl(originalImage: photo.image)
 
         let router = ImageCroppingRouterImpl(routerSeed: routerSeed)
 

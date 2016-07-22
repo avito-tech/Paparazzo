@@ -23,7 +23,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     // MARK: - ImageCroppingModule
     
     var onDiscard: (() -> ())?
-    var onConfirm: (() -> ())?
+    var onConfirm: (ImageSource -> ())?
     
     func setImage(image: ImageSource) {
         
@@ -47,14 +47,6 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         
         setGridVisible(false)
         
-        view?.onDiscardButtonTap = { [weak self] in
-            self?.onDiscard?()
-        }
-        
-        view?.onConfirmButtonTap = { [weak self] in
-            self?.onConfirm?()
-        }
-        
         view?.onRotationAngleChange = { [weak self] angle in
             self?.setImageRotation(angle)
         }
@@ -66,6 +58,20 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.onRotationCancelButtonTap = { [weak self] in
             self?.view?.setRotationSliderValue(0)
             self?.setImageRotation(0)
+        }
+        
+        view?.onCroppingParametersChange = { [weak self] parameters in
+            self?.interactor.setCroppingParameters(parameters)
+        }
+        
+        view?.onDiscardButtonTap = { [weak self] in
+            self?.onDiscard?()
+        }
+        
+        view?.onConfirmButtonTap = { [weak self] in
+            self?.interactor.performCrop { croppedImageSource in
+                self?.onConfirm?(croppedImageSource)
+            }
         }
     }
     

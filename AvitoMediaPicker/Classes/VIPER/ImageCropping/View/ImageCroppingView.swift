@@ -106,6 +106,11 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     var onAspectRatioButtonTap: (() -> ())?
     
+    var onCroppingParametersChange: (ImageCroppingParameters -> ())? {
+        get { return previewView.onCroppingParametersChange }
+        set { previewView.onCroppingParametersChange = newValue }
+    }
+    
     func setImage(image: ImageSource) {
         image.fullResolutionImage { [weak self] (image: UIImage?) in
             if let image = image {

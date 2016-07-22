@@ -9,7 +9,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        print(UIFont.fontNamesForFamilyName("Latoto"))
+//        print(UIFont.fontNamesForFamilyName("Latoto"))
+        cleanTemporaryDirectory()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
@@ -20,6 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    private func cleanTemporaryDirectory() {
+        
+        let fileManager = NSFileManager.defaultManager()
+        let dirPath = NSTemporaryDirectory()
+        
+        if let enumerator = fileManager.enumeratorAtPath(dirPath) {
+            while let filename = enumerator.nextObject() as? String {
+                let path = (dirPath as NSString).stringByAppendingPathComponent(filename)
+                do {
+                    try fileManager.removeItemAtPath(path)
+                } catch {}
+            }
+        }
     }
 }
 

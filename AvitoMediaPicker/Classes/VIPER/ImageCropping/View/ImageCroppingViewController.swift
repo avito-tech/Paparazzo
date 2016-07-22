@@ -55,6 +55,11 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onGridButtonTap = newValue }
     }
     
+    var onCroppingParametersChange: (ImageCroppingParameters -> ())? {
+        get { return imageCroppingView.onCroppingParametersChange }
+        set { imageCroppingView.onCroppingParametersChange = newValue }
+    }
+    
     func setImage(image: ImageSource) {
         imageCroppingView.setImage(image)
     }

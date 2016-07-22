@@ -71,6 +71,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
     }
     
+    var onCroppingParametersChange: (ImageCroppingParameters -> ())?
+    
     func setImage(image: UIImage) {
         scrollView.imageView.image = image
         calculateFrames()
@@ -112,6 +114,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
         
         checkScrollViewContentOffset()
+        
+        notifyAboutCroppingParametersChange()
     }
     
     func rotate(by angle: CGFloat) {
@@ -217,6 +221,37 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         scrollView.transform = CGAffineTransformIdentity
         scrollView.minimumZoomScale = 1
         scrollView.zoomScale = 1
+    }
+    
+    private func notifyAboutCroppingParametersChange() {
+        onCroppingParametersChange?(croppingParameters())
+    }
+    
+    private func croppingParameters() -> ImageCroppingParameters {
+        
+        var transform = CGAffineTransformIdentity
+        
+        // translate
+        let translation = photoTranslation()
+        transform = CGAffineTransformTranslate(transform, translation.x, translation.y)
+        
+        // rotate
+        transform = CGAffineTransformRotate(transform, angle)
+        
+        // scale
+        let t = scrollView.imageView.transform
+        let xScale = sqrt(t.a * t.a + t.c * t.c)
+        let yScale = sqrt(t.b * t.b + t.d * t.d)
+        transform = CGAffineTransformScale(transform, xScale, yScale)
+        
+        return ImageCroppingParameters(
+            transform: transform,
+            sourceSize: scrollView.imageView.image?.size ?? .zero,
+            sourceOrientation: scrollView.imageView.image?.imageOrientation.exifOrientation ?? .Up,
+            outputWidth: scrollView.imageView.image?.size.width ?? 0,
+            cropSize: cropSize,
+            imageViewSize: scrollView.imageView.bounds.size
+        )
     }
 }
 
