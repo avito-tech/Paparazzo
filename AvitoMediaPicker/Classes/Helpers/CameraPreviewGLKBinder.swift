@@ -47,9 +47,6 @@ final class CameraOutputGLKBinder {
                 try session.configure {
                     if session.canAddOutput(output) {
                         session.addOutput(output)
-                        debugPrint("added output to session")
-                    } else {
-                        debugPrint("can't add output to session")
                     }
                 }
             } catch {

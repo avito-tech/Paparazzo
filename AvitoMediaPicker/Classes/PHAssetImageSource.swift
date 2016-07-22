@@ -51,8 +51,6 @@ final class PHAssetImageSource: ImageSource {
                 let source = data.flatMap { CGImageSourceCreateWithData($0, nil) }
                 let exifOrientation = orientation.exifOrientation
                 let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }?.imageFixedForOrientation(exifOrientation)
-                
-                debugPrint("orientation = \(orientation)")
 
                 dispatch_async(dispatch_get_main_queue()) {
                     completion(cgImage.flatMap { T(CGImage: $0) })

@@ -17,10 +17,7 @@ extension CGRect {
             y: center.y - newSize.height / 2
         )
         
-        let enclosingRect = CGRect(origin: origin, size: newSize)
-        debugPrint("enclosingRect = \(enclosingRect)")
-        
-        return enclosingRect
+        return CGRect(origin: origin, size: newSize)
     }
     
     func cornersByApplyingTransform(transform: CGAffineTransform)
