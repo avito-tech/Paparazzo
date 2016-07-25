@@ -5,7 +5,9 @@ protocol ImageCroppingViewInput: class {
     func setTitle(_: String)
     
     func setImage(_: ImageSource)
+    func setImage(_: ImageSource, completion: () -> ())
     func setImageRotation(_: Float)
+    func setCroppingParameters(_: ImageCroppingParameters)
     func rotate(by _: CGFloat)
     func setRotationSliderValue(_: Float)
     

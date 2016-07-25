@@ -32,6 +32,13 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(canAddItems: canAddItems())
     }
     
+    func updateItem(item: MediaPickerItem, completion: () -> ()) {
+        if let index = items.indexOf(item) {
+            items[index] = item
+        }
+        completion()
+    }
+    
     func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?, canAddItems: Bool) -> ()) {
         
         var adjacentItem: MediaPickerItem?

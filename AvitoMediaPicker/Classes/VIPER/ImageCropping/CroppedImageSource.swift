@@ -6,7 +6,7 @@ public final class CroppedImageSource: ImageSource {
     
     public let originalImage: ImageSource
     
-    private let croppingParameters: ImageCroppingParameters
+    let croppingParameters: ImageCroppingParameters
     private var croppedImage: CGImage?
     
     init(originalImage: ImageSource, parameters: ImageCroppingParameters) {

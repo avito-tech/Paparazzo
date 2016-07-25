@@ -15,7 +15,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     private var originalSize: CGSize = .zero
     private var originalPoint: CGPoint = .zero
     private var angle: CGFloat = 0
-    private var manualZoomed: Bool = false
+    private var manuallyZoomed: Bool = false
     
     // MARK: - UIView
     
@@ -79,17 +79,17 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     func setImageRotation(angle: CGFloat) {
+        setImageRotation(angle, contentOffsetCenter: contentOffsetCenter())
+    }
+    
+    func setImageRotation(angle: CGFloat, contentOffsetCenter: CGPoint) {
+        debugPrint("setImageRotation: angle = \(angle), center = \(contentOffsetCenter)")
         
         self.angle = angle
         
         let width = fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height
         let height = fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
         let center = scrollView.center
-        
-        let contentOffsetCenter = CGPoint(
-            x: scrollView.contentOffset.x + scrollView.bounds.size.width / 2,
-            y: scrollView.contentOffset.y + scrollView.bounds.size.height / 2
-        )
         
         let newBounds = CGRect(x: 0, y: 0, width: width, height: height)
         let newContentOffset = CGPoint(
@@ -105,12 +105,12 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         // scale scroll view
         let shouldScale = scrollView.contentSize.width / scrollView.bounds.size.width <= 1.0 || self.scrollView.contentSize.height / self.scrollView.bounds.size.height <= 1.0
         
-        if !manualZoomed || shouldScale {
+        if !manuallyZoomed || shouldScale {
             
             scrollView.minimumZoomScale = scrollView.zoomScaleToBound()
             scrollView.zoomScale = scrollView.minimumZoomScale
             
-            manualZoomed = false
+            manuallyZoomed = false
         }
         
         checkScrollViewContentOffset()
@@ -118,12 +118,26 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         notifyAboutCroppingParametersChange()
     }
     
+    private func contentOffsetCenter() -> CGPoint {
+        return CGPoint(
+            x: scrollView.contentOffset.x + scrollView.bounds.size.width / 2,
+            y: scrollView.contentOffset.y + scrollView.bounds.size.height / 2
+        )
+    }
+    
+    func setCroppingParameters(parameters: ImageCroppingParameters) {
+        scrollView.zoomScale = parameters.zoomScale
+        manuallyZoomed = parameters.manuallyZoomed
+        setImageRotation(parameters.rotation, contentOffsetCenter: parameters.contentOffsetCenter)
+    }
+    
     func rotate(by angle: CGFloat) {
         setImageRotation(self.angle + angle)
     }
     
     func photoTranslation() -> CGPoint {
-        let rect = scrollView.imageView.convertRect(scrollView.imageView.bounds, toView: self)
+        let imageViewBounds = scrollView.imageView.bounds
+        let rect = scrollView.imageView.convertRect(imageViewBounds, toView: self)
         let point = CGPoint(x: rect.midX, y: rect.midY)
         let zeroPoint = bounds.center
         return CGPoint(x: point.x - zeroPoint.x, y: point.y - zeroPoint.y)
@@ -136,7 +150,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
-        manualZoomed = true
+        manuallyZoomed = true
         notifyAboutCroppingParametersChange()
     }
     
@@ -261,7 +275,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             sourceOrientation: scrollView.imageView.image?.imageOrientation.exifOrientation ?? .Up,
             outputWidth: scrollView.imageView.image?.size.width ?? 0,
             cropSize: cropSize,
-            imageViewSize: scrollView.imageView.bounds.size
+            imageViewSize: scrollView.imageView.bounds.size,
+            contentOffsetCenter: contentOffsetCenter(),
+            rotation: angle,
+            zoomScale: scrollView.zoomScale,
+            manuallyZoomed: manuallyZoomed
         )
     }
 }

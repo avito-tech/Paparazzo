@@ -111,17 +111,22 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         set { previewView.onCroppingParametersChange = newValue }
     }
     
-    func setImage(image: ImageSource) {
+    func setImage(image: ImageSource, completion: (() -> ())?) {
         image.fullResolutionImage { [weak self] (image: UIImage?) in
             if let image = image {
                 self?.previewView.setImage(image)
             }
+            completion?()
         }
     }
     
     func setImageRotation(angle: CGFloat) {
         let angle = angle * CGFloat(M_PI / 180.0)
         previewView.setImageRotation(angle)
+    }
+    
+    func setCroppingParameters(parameters: ImageCroppingParameters) {
+        previewView.setCroppingParameters(parameters)
     }
     
     func rotate(by angle: CGFloat) {

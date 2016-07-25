@@ -27,7 +27,13 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     
     func setImage(image: ImageSource) {
         
-        view?.setImage(image)
+        if let image = image as? CroppedImageSource {
+            view?.setImage(image.originalImage) { [weak self] in
+                self?.view?.setCroppingParameters(image.croppingParameters)
+            }
+        } else {
+            view?.setImage(image)
+        }
         
         image.imageSize { [weak self] size in
             if let size = size {
