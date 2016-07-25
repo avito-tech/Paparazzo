@@ -71,7 +71,12 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             self?.interactor.originalImageWithParameters { originalImage, croppingParameters in
                 self?.view?.setImage(originalImage) {
                     if let croppingParameters = croppingParameters {
+                        
                         self?.view?.setCroppingParameters(croppingParameters)
+                        
+                        let angleInDegrees = Float(croppingParameters.rotation).radiansToDegrees()
+                        self?.view?.setRotationSliderValue(angleInDegrees)
+                        self?.adjustCancelRotationButtonForAngle(angleInDegrees)
                     }
                 }
             }
@@ -79,11 +84,15 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     }
     
     private func setImageRotation(angle: Float) {
+        view?.setImageRotation(angle)
+        adjustCancelRotationButtonForAngle(angle)
+    }
+    
+    private func adjustCancelRotationButtonForAngle(angle: Float) {
         
         let displayedAngle = Int(round(angle))
         let shouldShowCancelRotationButton = (displayedAngle != 0)
         
-        view?.setImageRotation(angle)
         view?.setCancelRotationButtonTitle("\(displayedAngle > 0 ? "+" : "")\(displayedAngle)°")
         view?.setCancelRotationButtonVisible(shouldShowCancelRotationButton)
     }
