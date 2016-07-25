@@ -63,14 +63,16 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         interactor.croppedImageAspectRatio { [weak self] aspectRatio in
+            
             let isPortrait = aspectRatio < 1
+            
             self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
-        }
-        
-        interactor.originalImageWithParameters { [weak self] originalImage, croppingParameters in
-            self?.view?.setImage(originalImage) {
-                if let croppingParameters = croppingParameters {
-                    self?.view?.setCroppingParameters(croppingParameters)
+            
+            self?.interactor.originalImageWithParameters { originalImage, croppingParameters in
+                self?.view?.setImage(originalImage) {
+                    if let croppingParameters = croppingParameters {
+                        self?.view?.setCroppingParameters(croppingParameters)
+                    }
                 }
             }
         }

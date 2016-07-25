@@ -83,7 +83,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     func setImageRotation(angle: CGFloat, contentOffsetCenter: CGPoint) {
-        debugPrint("setImageRotation: angle = \(angle), center = \(contentOffsetCenter)")
         
         self.angle = angle
         
@@ -302,8 +301,12 @@ private class PhotoScrollView: UIScrollView {
     }
     
     func zoomScaleToBound() -> CGFloat {
-        var widthScale = bounds.size.width / imageView.bounds.size.width
-        var heightScale = bounds.size.height / imageView.bounds.size.height
-        return max(widthScale, heightScale)
+        if imageView.bounds.size.width > 0 && imageView.bounds.size.height > 0 {
+            let widthScale = bounds.size.width / imageView.bounds.size.width
+            let heightScale = bounds.size.height / imageView.bounds.size.height
+            return max(widthScale, heightScale)
+        } else {
+            return 1
+        }
     }
 }
