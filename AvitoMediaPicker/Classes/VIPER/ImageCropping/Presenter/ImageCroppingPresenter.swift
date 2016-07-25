@@ -25,24 +25,6 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     var onDiscard: (() -> ())?
     var onConfirm: (ImageSource -> ())?
     
-    func setImage(image: ImageSource) {
-        
-        if let image = image as? CroppedImageSource {
-            view?.setImage(image.originalImage) { [weak self] in
-                self?.view?.setCroppingParameters(image.croppingParameters)
-            }
-        } else {
-            view?.setImage(image)
-        }
-        
-        image.imageSize { [weak self] size in
-            if let size = size {
-                let isPortrait = size.height > size.width
-                self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
-            }
-        }
-    }
-    
     // MARK: - Private
     
     private func setUpView() {
@@ -75,8 +57,21 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         view?.onConfirmButtonTap = { [weak self] in
-            self?.interactor.performCrop { croppedImageSource in
-                self?.onConfirm?(croppedImageSource)
+            self?.interactor.croppedImage { image in
+                self?.onConfirm?(image)
+            }
+        }
+        
+        interactor.croppedImageAspectRatio { [weak self] aspectRatio in
+            let isPortrait = aspectRatio < 1
+            self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
+        }
+        
+        interactor.originalImageWithParameters { [weak self] originalImage, croppingParameters in
+            self?.view?.setImage(originalImage) {
+                if let croppingParameters = croppingParameters {
+                    self?.view?.setCroppingParameters(croppingParameters)
+                }
             }
         }
     }

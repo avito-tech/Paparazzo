@@ -4,12 +4,10 @@ import MobileCoreServices
 
 public final class CroppedImageSource: ImageSource {
     
-    public let originalImage: ImageSource
+    let originalImage: ImageSource
+    var croppingParameters: ImageCroppingParameters?
     
-    let croppingParameters: ImageCroppingParameters
-    private var croppedImage: CGImage?
-    
-    init(originalImage: ImageSource, parameters: ImageCroppingParameters) {
+    init(originalImage: ImageSource, parameters: ImageCroppingParameters?) {
         self.originalImage = originalImage
         self.croppingParameters = parameters
     }
@@ -17,27 +15,22 @@ public final class CroppedImageSource: ImageSource {
     // MARK: - ImageSource
     
     public func fullResolutionImage<T : InitializableWithCGImage>(completion: T? -> ()) {
-        if let croppedImage = croppedImage {
-            completion(T(CGImage: croppedImage))
-        } else {
-            performCrop { [weak self] in
-                completion(self?.croppedImage.flatMap { T(CGImage: $0) })
-            }
+        getCroppedImage { cgImage in
+            completion(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     
     public func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
-        if let croppedImage = croppedImage {
-            completion(T(CGImage: croppedImage))
-        } else {
-            performCrop { [weak self] in
-                completion(self?.croppedImage.flatMap { T(CGImage: $0) })
-            }
+        // TODO
+        getCroppedImage { cgImage in
+            completion(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     
     public func imageSize(completion: CGSize? -> ()) {
-        // TODO
+        getCroppedImage { cgImage in
+            completion(cgImage.flatMap { CGSize(width: CGImageGetWidth($0), height: CGImageGetHeight($0)) })
+        }
     }
     
     public func writeImageToUrl(url: NSURL, completion: Bool -> ()) {
@@ -46,11 +39,26 @@ public final class CroppedImageSource: ImageSource {
     
     // MARK: - Private
     
+    private var croppedImage: CGImage?
+    
+    private func getCroppedImage(completion: CGImage? -> ()) {
+        if let croppedImage = croppedImage {
+            completion(croppedImage)
+        } else {
+            performCrop { [weak self] in
+                completion(self?.croppedImage)
+            }
+        }
+    }
+    
     private func performCrop(completion: () -> ()) {
         
         originalImage.fullResolutionImage { [weak self] (imageWrapper: CGImageWrapper?) in
             
-            if let originalCGImage = imageWrapper?.image, croppedCGImage = self?.newTransformedImage(originalCGImage) {
+            if let originalCGImage = imageWrapper?.image,
+                croppingParameters = self?.croppingParameters,
+                croppedCGImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters) {
+                
                 self?.croppedImage = croppedCGImage
             }
             
@@ -58,19 +66,19 @@ public final class CroppedImageSource: ImageSource {
         }
     }
     
-    private func newTransformedImage(sourceImage: CGImage) -> CGImage? {
+    private func newTransformedImage(sourceImage: CGImage, parameters: ImageCroppingParameters) -> CGImage? {
         
         let source = newScaledImage(
             sourceImage,
-            withOrientation: croppingParameters.sourceOrientation,
-            toSize: croppingParameters.sourceSize,
+            withOrientation: parameters.sourceOrientation,
+            toSize: parameters.sourceSize,
             withQuality: .None
         )
         
-        let cropSize = croppingParameters.cropSize
-        let outputWidth = croppingParameters.outputWidth
-        let transform = croppingParameters.transform
-        let imageViewSize = croppingParameters.imageViewSize
+        let cropSize = parameters.cropSize
+        let outputWidth = parameters.outputWidth
+        let transform = parameters.transform
+        let imageViewSize = parameters.imageViewSize
         
         let aspect = cropSize.height / cropSize.width
         let outputSize = CGSize(width: outputWidth, height: outputWidth * aspect)

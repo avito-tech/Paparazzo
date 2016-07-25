@@ -208,8 +208,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         router.showCroppingModule(photo: item) { module in
             
-            module.setImage(item.image)
-            
             module.onDiscard = { [weak self] in
                 self?.router.focusOnCurrentModule()
             }

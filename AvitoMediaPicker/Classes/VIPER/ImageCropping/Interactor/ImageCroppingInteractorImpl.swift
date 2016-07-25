@@ -3,21 +3,40 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     private let originalImage: ImageSource
     private var parameters: ImageCroppingParameters?
     
-    init(originalImage: ImageSource) {
-        self.originalImage = originalImage
+    init(image: ImageSource) {
+        if let image = image as? CroppedImageSource {
+            originalImage = image.originalImage
+            parameters = image.croppingParameters
+        } else {
+            originalImage = image
+        }
     }
     
     // MARK: - CroppingInteractor
     
-    func setCroppingParameters(parameters: ImageCroppingParameters) {
-        self.parameters = parameters
+    func originalImageWithParameters(completion: (ImageSource, ImageCroppingParameters?) -> ()) {
+        completion(originalImage, parameters)
     }
     
-    func performCrop(completion: ImageSource -> ()) {
-        if let parameters = parameters {
-            completion(CroppedImageSource(originalImage: originalImage, parameters: parameters))
+    func croppedImage(completion: CroppedImageSource -> ()) {
+        completion(CroppedImageSource(originalImage: originalImage, parameters: parameters))
+    }
+    
+    func croppedImageAspectRatio(completion: Float -> ()) {
+        if let parameters = parameters where parameters.cropSize.height > 0 {
+            completion(Float(parameters.cropSize.width / parameters.cropSize.height))
         } else {
-            completion(originalImage)
+            originalImage.imageSize { size in
+                if let size = size {
+                    completion(Float(size.width / size.height))
+                } else {
+                    completion(4.0 / 3.0)
+                }
+            }
         }
+    }
+    
+    func setCroppingParameters(parameters: ImageCroppingParameters) {
+        self.parameters = parameters
     }
 }
