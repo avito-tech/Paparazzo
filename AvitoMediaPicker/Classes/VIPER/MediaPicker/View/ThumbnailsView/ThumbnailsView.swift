@@ -110,8 +110,17 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     func updateItem(item: MediaPickerItem) {
+        
         if let indexPath = dataSource.updateItem(item) {
+            
+            let selectedIndexPaths = collectionView.indexPathsForSelectedItems()
+            let cellWasSelected = selectedIndexPaths?.contains(indexPath) == true
+            
             collectionView.reloadItemsAtIndexPaths([indexPath])
+            
+            if cellWasSelected {
+                collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+            }
         }
     }
     

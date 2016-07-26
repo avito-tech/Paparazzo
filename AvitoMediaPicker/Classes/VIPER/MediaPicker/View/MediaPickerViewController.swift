@@ -14,6 +14,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
+        onViewDidLoad?()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -80,6 +81,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         get { return mediaPickerView.onSwipeToCameraProgressChange }
         set { mediaPickerView.onSwipeToCameraProgressChange = newValue }
     }
+    
+    var onViewDidLoad: (() -> ())?
     
     func setMode(mode: MediaPickerViewMode) {
         mediaPickerView.setMode(mode)

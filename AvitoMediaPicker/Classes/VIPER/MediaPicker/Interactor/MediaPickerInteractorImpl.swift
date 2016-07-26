@@ -5,6 +5,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let maxItemsCount: Int?
     private var items = [MediaPickerItem]()
+    private var selectedItem: MediaPickerItem?
     
     init(
         maxItemsCount: Int?,
@@ -33,9 +34,15 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     func updateItem(item: MediaPickerItem, completion: () -> ()) {
+        
         if let index = items.indexOf(item) {
             items[index] = item
         }
+        
+        if let selectedItem = selectedItem where item == selectedItem {
+            self.selectedItem = item
+        }
+        
         completion()
     }
     
@@ -57,6 +64,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         }
         
         completion(adjacentItem: adjacentItem, canAddItems: canAddItems())
+    }
+    
+    func selectItem(item: MediaPickerItem) {
+        selectedItem = item
+    }
+    
+    func selectedItem(completion: MediaPickerItem? -> ()) {
+        completion(selectedItem)
     }
     
     func items(completion: [MediaPickerItem] -> ()) {

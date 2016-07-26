@@ -10,12 +10,12 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     }
     
     public func viewController(
-        photo photo: MediaPickerItem,
+        image image: ImageSource,
         routerSeed: RouterSeed,
         configuration: ImageCroppingModule -> ()
     ) -> UIViewController {
 
-        let interactor = ImageCroppingInteractorImpl(image: photo.image)
+        let interactor = ImageCroppingInteractorImpl(image: image)
 
         let router = ImageCroppingRouterImpl(routerSeed: routerSeed)
 

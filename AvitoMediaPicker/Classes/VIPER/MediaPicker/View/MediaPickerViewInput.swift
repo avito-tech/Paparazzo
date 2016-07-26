@@ -57,4 +57,6 @@ protocol MediaPickerViewInput: class {
     var onSwipeToItem: (MediaPickerItem -> ())? { get set }
     var onSwipeToCamera: (() -> ())? { get set }
     var onSwipeToCameraProgressChange: (CGFloat -> ())? { get set }
+    
+    var onViewDidLoad: (() -> ())? { get set }
 }
