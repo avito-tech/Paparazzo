@@ -151,7 +151,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     func turnCounterclockwise() {
-        turnAngle += CGFloat(Float(90).degreesToRadians())
+        turnAngle += CGFloat(Float(-90).degreesToRadians())
         adjustRotation()
     }
     
