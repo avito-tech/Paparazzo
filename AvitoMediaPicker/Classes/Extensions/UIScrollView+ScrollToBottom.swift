@@ -8,7 +8,7 @@ extension UIScrollView {
         
         contentOffset = CGPoint(
             x: 0,
-            y: bounds.y + contentSize.height + contentInset.top - bounds.size.height
+            y: max(-contentInset.top, bounds.y + contentSize.height + contentInset.top - bounds.size.height)
         )
     }
 }

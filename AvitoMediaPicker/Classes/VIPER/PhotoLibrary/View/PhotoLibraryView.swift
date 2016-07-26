@@ -33,6 +33,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         collectionView.allowsMultipleSelection = true
+        collectionView.alwaysBounceVertical = true
         collectionView.registerClass(
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
