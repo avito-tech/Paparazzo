@@ -5,10 +5,13 @@ protocol PhotoLibraryViewInput: class {
     func setCellsData(items: [PhotoLibraryItemCellData])
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)
+    func setPickButtonEnabled(_: Bool)
     
     func scrollToBottom()
     
     var onPickButtonTap: (() -> ())? { get set }
+    
+    var onViewDidLoad: (() -> ())? { get set }
 }
 
 struct PhotoLibraryItemCellData {

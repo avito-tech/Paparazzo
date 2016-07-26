@@ -9,7 +9,9 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     weak var view: PhotoLibraryViewInput? {
         didSet {
-            setUpView()
+            view?.onViewDidLoad = { [weak self] in
+                self?.setUpView()
+            }
         }
     }
     
@@ -47,6 +49,8 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             }
         }
         
+        view?.setPickButtonEnabled(false)
+        
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
                 self?.onFinish?(selectedItems: items)
@@ -61,6 +65,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     private func adjustViewForSelectionState(state: PhotoLibraryItemSelectionState) {
         view?.setDimsUnselectedItems(!state.canSelectMoreItems)
         view?.setCanSelectMoreItems(state.canSelectMoreItems)
+        view?.setPickButtonEnabled(state.isAnyItemSelected)
     }
     
     private func cellData(item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
