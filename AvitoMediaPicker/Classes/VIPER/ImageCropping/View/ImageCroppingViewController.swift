@@ -68,16 +68,16 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.setImage(image, completion: completion)
     }
     
-    func setImageRotation(angle: Float) {
-        imageCroppingView.setImageRotation(CGFloat(angle))
+    func setImageTiltAngle(angle: Float) {
+        imageCroppingView.setImageTiltAngle(angle)
     }
-    
+
+    func turnImageCounterclockwise() {
+        imageCroppingView.turnCounterclockwise()
+    }
+
     func setCroppingParameters(parameters: ImageCroppingParameters) {
         imageCroppingView.setCroppingParameters(parameters)
-    }
-    
-    func rotate(by angle: CGFloat) {
-        imageCroppingView.rotate(by: angle)
     }
     
     func setRotationSliderValue(value: Float) {

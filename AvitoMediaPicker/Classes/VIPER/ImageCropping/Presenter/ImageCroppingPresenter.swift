@@ -40,7 +40,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         view?.onRotateButtonTap = { [weak self] in
-            self?.view?.rotate(by: -90)
+            self?.view?.turnImageCounterclockwise()
         }
         
         view?.onRotationCancelButtonTap = { [weak self] in
@@ -74,7 +74,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
                         
                         self?.view?.setCroppingParameters(croppingParameters)
                         
-                        let angleInDegrees = Float(croppingParameters.rotation).radiansToDegrees()
+                        let angleInDegrees = Float(croppingParameters.tiltAngle).radiansToDegrees()
                         self?.view?.setRotationSliderValue(angleInDegrees)
                         self?.adjustCancelRotationButtonForAngle(angleInDegrees)
                     }
@@ -84,7 +84,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     }
     
     private func setImageRotation(angle: Float) {
-        view?.setImageRotation(angle)
+        view?.setImageTiltAngle(angle)
         adjustCancelRotationButtonForAngle(angle)
     }
     

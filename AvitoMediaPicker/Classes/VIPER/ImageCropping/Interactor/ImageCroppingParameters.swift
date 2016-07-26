@@ -10,7 +10,8 @@ struct ImageCroppingParameters {
     let imageViewSize: CGSize
     
     let contentOffsetCenter: CGPoint
-    let rotation: CGFloat
+    let turnAngle: CGFloat
+    let tiltAngle: CGFloat
     let zoomScale: CGFloat
     let manuallyZoomed: Bool
 }

@@ -120,18 +120,16 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         }
     }
     
-    func setImageRotation(angle: CGFloat) {
-        let angle = angle * CGFloat(M_PI / 180.0)
-        previewView.setImageRotation(angle)
+    func setImageTiltAngle(angle: Float) {
+        previewView.setTiltAngle(angle.degreesToRadians())
+    }
+
+    func turnCounterclockwise() {
+        previewView.turnCounterclockwise()
     }
     
     func setCroppingParameters(parameters: ImageCroppingParameters) {
         previewView.setCroppingParameters(parameters)
-    }
-    
-    func rotate(by angle: CGFloat) {
-        let angle = angle * CGFloat(M_PI / 180.0)
-        previewView.rotate(by: angle)
     }
     
     func setRotationSliderValue(value: Float) {

@@ -7,15 +7,27 @@ import UIKit
 final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - Subviews
+    
     private let scrollView = PhotoScrollView()
     private let topMask = UIView()
     private let bottomMask = UIView()
     
+    // MARK: - State
+    
     private var cropSize: CGSize = .zero
     private var originalSize: CGSize = .zero
     private var originalPoint: CGPoint = .zero
-    private var angle: CGFloat = 0
     private var manuallyZoomed: Bool = false
+    
+    // Угол поворота фотографии (кратно 90°), non-resettable
+    private var turnAngle: CGFloat = 0
+    // Угол наклона фотографии (меньше 90°), resettable
+    private var tiltAngle: CGFloat = 0
+    
+    // Общий угол поворота фотки
+    private var angle: CGFloat {
+        return turnAngle + tiltAngle
+    }
     
     // MARK: - UIView
     
@@ -53,7 +65,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         didSet {
             reset()
             calculateFrames()
-            setImageRotation(angle)
+            adjustRotation()
         }
     }
     
@@ -78,13 +90,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         calculateFrames()
     }
     
-    func setImageRotation(angle: CGFloat) {
-        setImageRotation(angle, contentOffsetCenter: contentOffsetCenter())
+    private func adjustRotation() {
+        adjustRotation(contentOffsetCenter: contentOffsetCenter())
     }
     
-    func setImageRotation(angle: CGFloat, contentOffsetCenter: CGPoint) {
-        
-        self.angle = angle
+    private func adjustRotation(contentOffsetCenter contentOffsetCenter: CGPoint) {
         
         let width = fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height
         let height = fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
@@ -125,13 +135,24 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     func setCroppingParameters(parameters: ImageCroppingParameters) {
+        
         scrollView.zoomScale = parameters.zoomScale
         manuallyZoomed = parameters.manuallyZoomed
-        setImageRotation(parameters.rotation, contentOffsetCenter: parameters.contentOffsetCenter)
+        
+        turnAngle = parameters.turnAngle
+        tiltAngle = parameters.tiltAngle
+        
+        adjustRotation(contentOffsetCenter: parameters.contentOffsetCenter)
     }
     
-    func rotate(by angle: CGFloat) {
-        setImageRotation(self.angle + angle)
+    func setTiltAngle(angleInRadians: Float) {
+        tiltAngle = CGFloat(angleInRadians)
+        adjustRotation()
+    }
+    
+    func turnCounterclockwise() {
+        turnAngle += CGFloat(Float(90).degreesToRadians())
+        adjustRotation()
     }
     
     func photoTranslation() -> CGPoint {
@@ -268,7 +289,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         let yScale = sqrt(t.b * t.b + t.d * t.d)
         transform = CGAffineTransformScale(transform, xScale, yScale)
         
-        return ImageCroppingParameters(
+        let parameters = ImageCroppingParameters(
             transform: transform,
             sourceSize: scrollView.imageView.image?.size ?? .zero,
             sourceOrientation: scrollView.imageView.image?.imageOrientation.exifOrientation ?? .Up,
@@ -276,10 +297,15 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             cropSize: cropSize,
             imageViewSize: scrollView.imageView.bounds.size,
             contentOffsetCenter: contentOffsetCenter(),
-            rotation: angle,
+            turnAngle: turnAngle,
+            tiltAngle: tiltAngle,
             zoomScale: scrollView.zoomScale,
             manuallyZoomed: manuallyZoomed
         )
+        
+        debugPrint("angle = \(angle), turnAngle = \(turnAngle)")
+        
+        return parameters
     }
 }
 

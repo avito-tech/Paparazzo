@@ -6,9 +6,9 @@ protocol ImageCroppingViewInput: class {
     
     func setImage(_: ImageSource)
     func setImage(_: ImageSource, completion: () -> ())
-    func setImageRotation(_: Float)
+    func setImageTiltAngle(_: Float)
+    func turnImageCounterclockwise()
     func setCroppingParameters(_: ImageCroppingParameters)
-    func rotate(by _: CGFloat)
     func setRotationSliderValue(_: Float)
     
     func setAspectRatioMode(_: AspectRatioMode)
