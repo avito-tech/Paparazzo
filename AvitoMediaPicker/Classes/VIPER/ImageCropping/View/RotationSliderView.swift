@@ -8,10 +8,6 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     private let scaleView = SliderScaleView()
     private let thumbView = UIImageView()
     
-    // MARK: - Constants
-    
-    private let divisionsCount = 17
-    
     // MARK: - Properties
     
     private var minimumValue: Float = 0
@@ -27,7 +23,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.decelerationRate = UIScrollViewDecelerationRateFast
+        scrollView.bounces = false
         scrollView.delegate = self
         
         thumbView.image = UIImage(
@@ -49,7 +45,12 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        scaleView.frame = CGRect(x: 0, y: 0, width: 1000, height: bounds.size.height)
+        // Высчитываем этот inset, чтобы в случаях, когда слайдер находится в крайних положениях,
+        // метки на шкале и указатель текущего значения совпадали
+        let sideInset = (bounds.size.width - scaleView.divisionWidth) / 2 % (scaleView.divisionWidth + scaleView.divisionsSpacing)
+        
+        scaleView.contentInsets = UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
+        scaleView.frame = CGRect(origin: .zero, size: scaleView.sizeThatFits(bounds.size))
         
         scrollView.frame = bounds
         scrollView.contentSize = scaleView.frame.size
@@ -71,19 +72,43 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     }
     
     func setValue(value: Float) {
-        scrollView.contentOffset = .zero    // TODO
+        
+        let value = max(minimumValue, min(maximumValue, value))
+        let percentage = (value - minimumValue) / (maximumValue - minimumValue)
+        
+        scrollView.contentOffset = CGPoint(
+            x: CGFloat(percentage) * (scrollView.contentSize.width - bounds.size.width),
+            y: 0
+        )
+        
+        debugPrint("value = \(value), contentOffset = \(scrollView.contentOffset)")
     }
     
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        onSliderValueChange?(0.5)   // TODO
+        
+        let offset = scrollView.contentOffset.x
+        let significantWidth = scrollView.contentSize.width - bounds.size.width
+        let percentage = offset / significantWidth
+        let value = minimumValue + (maximumValue - minimumValue) * Float(percentage)
+        
+        onSliderValueChange?(value)
+        debugPrint("slider value = \(value)")
+    }
+    
+    // Это отключает deceleration у scroll view
+    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+        scrollView.setContentOffset(scrollView.contentOffset, animated: true)
     }
 }
 
 private final class SliderScaleView: UIView {
     
+    var contentInsets = UIEdgeInsetsZero
+    
     let divisionsSpacing = CGFloat(14)
+    let divisionsCount = 51
     let divisionWidth = CGFloat(2)
     
     override init(frame: CGRect) {
@@ -95,15 +120,22 @@ private final class SliderScaleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        
+        var width = CGFloat(divisionsCount) * divisionWidth
+        width += CGFloat(divisionsCount - 1) * divisionsSpacing
+        width += contentInsets.left + contentInsets.right
+        
+        return CGSize(width: width, height: size.height)
+    }
+    
     override func drawRect(rect: CGRect) {
         super.drawRect(rect)
-        
-        let divisionsCount = Int(floor(bounds.size.width / divisionsSpacing))
         
         for i in 0 ..< divisionsCount {
             
             let rect = CGRect(
-                x: bounds.left + CGFloat(i) * (divisionWidth + divisionsSpacing),
+                x: bounds.left + contentInsets.left + CGFloat(i) * (divisionWidth + divisionsSpacing),
                 y: bounds.top,
                 width: divisionWidth,
                 height: bounds.size.height
