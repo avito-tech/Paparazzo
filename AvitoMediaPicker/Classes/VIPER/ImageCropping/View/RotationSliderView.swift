@@ -12,6 +12,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     
     private var minimumValue: Float = 0
     private var maximumValue: Float = 1
+    private var currentValue: Float = 0
     
     // MARK: - UIView
     
@@ -57,6 +58,8 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         
         thumbView.sizeToFit()
         thumbView.center = bounds.center
+        
+        adjustScrollViewOffset()
     }
     
     // MARK: - RotationSliderView
@@ -72,16 +75,8 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     }
     
     func setValue(value: Float) {
-        
-        let value = max(minimumValue, min(maximumValue, value))
-        let percentage = (value - minimumValue) / (maximumValue - minimumValue)
-        
-        scrollView.contentOffset = CGPoint(
-            x: CGFloat(percentage) * (scrollView.contentSize.width - bounds.size.width),
-            y: 0
-        )
-        
-        debugPrint("value = \(value), contentOffset = \(scrollView.contentOffset)")
+        currentValue = max(minimumValue, min(maximumValue, value))
+        adjustScrollViewOffset()
     }
     
     // MARK: - UIScrollViewDelegate
@@ -94,12 +89,23 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         let value = minimumValue + (maximumValue - minimumValue) * Float(percentage)
         
         onSliderValueChange?(value)
-        debugPrint("slider value = \(value)")
     }
     
     // Это отключает deceleration у scroll view
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
         scrollView.setContentOffset(scrollView.contentOffset, animated: true)
+    }
+    
+    // MARK: - Private
+    
+    private func adjustScrollViewOffset() {
+        
+        let percentage = (currentValue - minimumValue) / (maximumValue - minimumValue)
+        
+        scrollView.contentOffset = CGPoint(
+            x: CGFloat(percentage) * (scrollView.contentSize.width - bounds.size.width),
+            y: 0
+        )
     }
 }
 
