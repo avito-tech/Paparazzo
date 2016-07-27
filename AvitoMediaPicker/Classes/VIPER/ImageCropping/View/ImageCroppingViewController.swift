@@ -113,7 +113,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     }
     
     func setGridVisible(visible: Bool) {
-        // TODO
+        imageCroppingView.setGridVisible(visible)
     }
     
     func setGridButtonSelected(selected: Bool) {

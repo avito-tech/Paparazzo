@@ -185,6 +185,10 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         controlsView.setCancelRotationButtonVisible(visible)
     }
     
+    func setGridVisible(visible: Bool) {
+        previewView.setGridVisible(visible)
+    }
+    
     // MARK: - Private
     
     private var aspectRatioMode: AspectRatioMode = .Portrait_3x4

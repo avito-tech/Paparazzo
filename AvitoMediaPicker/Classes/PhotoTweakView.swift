@@ -11,6 +11,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     private let scrollView = PhotoScrollView()
     private let topMask = UIView()
     private let bottomMask = UIView()
+    private let gridView = GridView()
     
     // MARK: - State
     
@@ -50,7 +51,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         topMask.backgroundColor = maskColor
         bottomMask.backgroundColor = maskColor
         
+        gridView.userInteractionEnabled = false
+        gridView.hidden = true
+        
         addSubview(scrollView)
+        addSubview(gridView)
         addSubview(topMask)
         addSubview(bottomMask)
         
@@ -163,6 +168,10 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         return CGPoint(x: point.x - zeroPoint.x, y: point.y - zeroPoint.y)
     }
     
+    func setGridVisible(visible: Bool) {
+        gridView.hidden = !visible
+    }
+    
     // MARK: - UIScrollViewDelegate
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
@@ -213,10 +222,13 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         originalSize = minZoomBounds.size
         
         scrollView.bounds = minZoomBounds
-        scrollView.center = self.center
+        scrollView.center = center
         scrollView.contentSize = scrollView.bounds.size
         
         scrollView.imageView.frame = scrollView.bounds
+        
+        gridView.bounds = CGRect(origin: .zero, size: cropSize)
+        gridView.center = center
         
         originalPoint = convertPoint(scrollView.center, toView: self)
         
@@ -302,8 +314,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             zoomScale: scrollView.zoomScale,
             manuallyZoomed: manuallyZoomed
         )
-        
-        debugPrint("angle = \(angle), turnAngle = \(turnAngle)")
         
         return parameters
     }
