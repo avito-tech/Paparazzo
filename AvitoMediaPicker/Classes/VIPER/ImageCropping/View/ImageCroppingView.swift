@@ -154,14 +154,24 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         switch mode {
         
         case .Portrait_3x4:
+            
             titleLabel.textColor = .whiteColor()
+            
             aspectRatioButton.setTitleColor(.whiteColor(), forState: .Normal)
             aspectRatioButton.layer.borderColor = UIColor.whiteColor().CGColor
+            
+            setShadowVisible(true, forView: titleLabel)
+            setShadowVisible(true, forView: aspectRatioButton)
         
         case .Landscape_4x3:
+            
             titleLabel.textColor = .blackColor()
+            
             aspectRatioButton.setTitleColor(.blackColor(), forState: .Normal)
             aspectRatioButton.layer.borderColor = UIColor.blackColor().CGColor
+            
+            setShadowVisible(false, forView: titleLabel)
+            setShadowVisible(false, forView: aspectRatioButton)
         }
     }
     
@@ -209,6 +219,13 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         case .Landscape_4x3:
             return CGFloat(4.0 / 3.0)
         }
+    }
+    
+    private func setShadowVisible(visible: Bool, forView view: UIView) {
+        view.layer.shadowOffset = .zero
+        view.layer.shadowOpacity = visible ? 0.5 : 0
+        view.layer.shadowRadius = 1
+        view.layer.masksToBounds = false
     }
     
     @objc private func onAspectRatioButtonTap(sender: UIButton) {

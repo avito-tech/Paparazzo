@@ -38,11 +38,10 @@ final class PhotoControlsView: UIView {
         super.layoutSubviews()
         
         removeButton.sizeToFit()
-        removeButton.center = bounds.center
+        removeButton.center = CGPoint(x: bounds.left + 100, y: bounds.centerY)
         
         cropButton.sizeToFit()
-        cropButton.centerY = bounds.centerY
-        cropButton.centerX = bounds.right - 50
+        cropButton.center = CGPoint(x: bounds.right - 100, y: bounds.centerY)
     }
     
     // MARK: - PhotoControlsView

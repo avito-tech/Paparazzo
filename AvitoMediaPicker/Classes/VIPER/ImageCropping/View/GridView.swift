@@ -10,7 +10,7 @@ final class GridView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        shapeLayer.strokeColor = UIColor.whiteColor().colorWithAlphaComponent(0.5).CGColor
+        shapeLayer.strokeColor = UIColor.whiteColor().colorWithAlphaComponent(0.8).CGColor
         shapeLayer.lineWidth = 1
         shapeLayer.shadowColor = UIColor.blackColor().CGColor
         shapeLayer.shadowOpacity = 0.1
