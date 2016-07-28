@@ -3,17 +3,17 @@ import ImageIO
 import MobileCoreServices
 import AvitoDesignKit
 
-struct UrlImageSource: ImageSource {
+public struct UrlImageSource: ImageSource {
 
     private let url: NSURL
 
-    init(url: NSURL) {
+    public init(url: NSURL) {
         self.url = url
     }
 
     // MARK: - ImageSource
 
-    func fullResolutionImage<T: InitializableWithCGImage>(completion: (T?) -> ()) {
+    public func fullResolutionImage<T: InitializableWithCGImage>(completion: (T?) -> ()) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
          
@@ -34,7 +34,7 @@ struct UrlImageSource: ImageSource {
         }
     }
     
-    func imageSize(completion: CGSize? -> ()) {
+    public func imageSize(completion: CGSize? -> ()) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
             
@@ -63,7 +63,7 @@ struct UrlImageSource: ImageSource {
         }
     }
 
-    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
+    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
@@ -83,7 +83,7 @@ struct UrlImageSource: ImageSource {
         }
     }
     
-    func isEqualTo(other: ImageSource) -> Bool {
+    public func isEqualTo(other: ImageSource) -> Bool {
         if let other = other as? UrlImageSource {
             return other.url == url
         } else {
