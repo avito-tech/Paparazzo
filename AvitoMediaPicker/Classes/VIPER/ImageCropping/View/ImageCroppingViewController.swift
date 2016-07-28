@@ -25,7 +25,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: (() -> ())? {
+    var onConfirmButtonTap: ((previewImage: CGImage) -> ())? {
         get { return imageCroppingView.onConfirmButtonTap }
         set { imageCroppingView.onConfirmButtonTap = newValue }
     }
@@ -61,23 +61,27 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     }
     
     func setImage(image: ImageSource) {
-        imageCroppingView.setImage(image)
+        imageCroppingView.setImage(image, completion: nil)
     }
     
-    func setImageRotation(angle: Float) {
-        imageCroppingView.setImageRotation(CGFloat(angle))
+    func setImage(image: ImageSource, completion: (() -> ())) {
+        imageCroppingView.setImage(image, completion: completion)
     }
     
-    func rotate(by angle: CGFloat) {
-        imageCroppingView.rotate(by: angle)
+    func setImageTiltAngle(angle: Float) {
+        imageCroppingView.setImageTiltAngle(angle)
+    }
+
+    func turnImageCounterclockwise() {
+        imageCroppingView.turnCounterclockwise()
+    }
+
+    func setCroppingParameters(parameters: ImageCroppingParameters) {
+        imageCroppingView.setCroppingParameters(parameters)
     }
     
     func setRotationSliderValue(value: Float) {
         imageCroppingView.setRotationSliderValue(value)
-    }
-    
-    func rotateImageByAngle(angle: Float) {
-        // TODO
     }
     
     @nonobjc func setTitle(title: String) {
@@ -109,7 +113,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     }
     
     func setGridVisible(visible: Bool) {
-        // TODO
+        imageCroppingView.setGridVisible(visible)
     }
     
     func setGridButtonSelected(selected: Bool) {

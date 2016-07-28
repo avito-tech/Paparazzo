@@ -24,6 +24,14 @@ extension UIView {
         
         layer.anchorPoint = anchorPoint
     }
+    
+    func snapshot() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
+        drawViewHierarchyInRect(bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
 }
 
 extension UICollectionView {

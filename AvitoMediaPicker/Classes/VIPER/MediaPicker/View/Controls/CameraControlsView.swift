@@ -39,6 +39,7 @@ final class CameraControlsView: UIView {
         backgroundColor = .whiteColor()
         
         photoView.backgroundColor = .lightGrayColor()
+        photoView.contentMode = .ScaleAspectFill
         photoView.layer.cornerRadius = photoViewDiameter / 2
         photoView.clipsToBounds = true
         photoView.userInteractionEnabled = true
@@ -67,7 +68,7 @@ final class CameraControlsView: UIView {
             forControlEvents: .TouchUpInside
         )
         
-//        cameraToggleButton.hidden = true   // TODO: по умолчанию кнопка должна быть скрыта
+        cameraToggleButton.hidden = true
         cameraToggleButton.addTarget(
             self,
             action: #selector(CameraControlsView.onCameraToggleButtonTap(_:)),

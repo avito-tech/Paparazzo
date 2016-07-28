@@ -1,19 +1,31 @@
 /// Главная модель, представляющая фотку в пикере
 public struct MediaPickerItem: Equatable {
- 
-    let identifier: String
-    public let image: ImageSource
     
-    init(identifier: String = NSUUID().UUIDString, image: ImageSource) {
+    public enum Source {
+        case Camera
+        case PhotoLibrary
+    }
+ 
+    public let image: ImageSource
+    public let source: Source
+    
+    let identifier: String
+    
+    init(identifier: String = NSUUID().UUIDString, image: ImageSource, source: Source) {
         self.identifier = identifier
         self.image = image
+        self.source = source
     }
     
     func toItemWithCachingImageSource() -> MediaPickerItem {
         if image is CachingImageSource {
             return self
         } else {
-            return MediaPickerItem(identifier: identifier, image: CachingImageSource(underlyingImageSource: image))
+            return MediaPickerItem(
+                identifier: identifier,
+                image: CachingImageSource(underlyingImageSource: image),
+                source: source
+            )
         }
     }
 }

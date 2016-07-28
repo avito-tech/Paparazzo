@@ -8,7 +8,7 @@ protocol MediaPickerRouter: class, RouterFocusable {
     )
     
     func showCroppingModule(
-        photo photo: MediaPickerItem,
+        forImage image: ImageSource,
         configuration: ImageCroppingModule -> ()
     )
 }

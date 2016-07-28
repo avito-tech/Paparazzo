@@ -46,7 +46,7 @@ final class CameraInteractorImpl: CameraInteractor {
     
     func takePhoto(completion: MediaPickerItem? -> ()) {
         cameraService.takePhoto { photo in
-            completion(photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url)) })
+            completion(photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url), source: .Camera) })
         }
     }
     

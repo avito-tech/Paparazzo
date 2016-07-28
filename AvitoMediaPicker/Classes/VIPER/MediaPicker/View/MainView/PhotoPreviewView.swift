@@ -34,7 +34,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         collectionView.allowsSelection = false
         collectionView.registerClass(PhotoPreviewCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(MainCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
-        debugPrint("preview collection view: \(collectionView)")
         
         super.init(frame: .zero)
         
@@ -75,6 +74,12 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     func addItems(items: [MediaPickerItem]) {
         let insertedIndexPaths = dataSource.addItems(items)
         addCollectionViewItemsAtIndexPaths(insertedIndexPaths)
+    }
+    
+    func updateItem(item: MediaPickerItem) {
+        if let indexPath = dataSource.updateItem(item) {
+            collectionView.reloadItemsAtIndexPaths([indexPath])
+        }
     }
     
     func removeItem(item: MediaPickerItem, animated: Bool) {

@@ -16,7 +16,9 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     weak var view: MediaPickerViewInput? {
         didSet {
-            setUpView()
+            view?.onViewDidLoad = { [weak self] in
+                self?.setUpView()
+            }
         }
     }
     
@@ -88,6 +90,8 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onItemSelect = { [weak self] item in
             
+            self?.interactor.selectItem(item)
+            
             self?.adjustPhotoTitleForItem(item)
             
             self?.view?.setMode(.PhotoPreview(item))
@@ -95,10 +99,6 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             self?.view?.onRemoveButtonTap = {
                 self?.removeItem(item)
-            }
-            
-            self?.view?.onCropButtonTap = {
-                self?.showCroppingModule(forItem: item)
             }
         }
         
@@ -130,6 +130,14 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onContinueButtonTap = { [weak self] in
             self?.interactor.items { items in
                 self?.onFinish?(items)
+            }
+        }
+        
+        view?.onCropButtonTap = { [weak self] in
+            self?.interactor.selectedItem { item in
+                if let item = item {
+                    self?.showCroppingModule(forItem: item)
+                }
             }
         }
     }
@@ -193,7 +201,8 @@ final class MediaPickerPresenter: MediaPickerModule {
                     let mediaPickerItems = photoLibraryItems.map {
                         MediaPickerItem(
                             identifier: $0.identifier,
-                            image: CachingImageSource(underlyingImageSource: $0.image)
+                            image: CachingImageSource(underlyingImageSource: $0.image),
+                            source: .PhotoLibrary
                         )
                     }
                     
@@ -206,18 +215,25 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func showCroppingModule(forItem item: MediaPickerItem) {
         
-        router.showCroppingModule(photo: item) { module in
-            
-            module.setImage(item.image)
+        router.showCroppingModule(forImage: item.image) { module in
             
             module.onDiscard = { [weak self] in
                 self?.router.focusOnCurrentModule()
             }
             
             module.onConfirm = { [weak self] croppedImageSource in
-                // TODO: обновить фотку
-                self?.onItemUpdate?(item)
-                self?.router.focusOnCurrentModule()
+                
+                let croppedItem = MediaPickerItem(
+                    identifier: item.identifier,
+                    image: croppedImageSource,
+                    source: item.source
+                )
+                
+                self?.interactor.updateItem(croppedItem) {
+                    self?.view?.updateItem(croppedItem)
+                    self?.onItemUpdate?(croppedItem)
+                    self?.router.focusOnCurrentModule()
+                }
             }
         }
     }

@@ -32,7 +32,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         collectionView.showsVerticalScrollIndicator = false
         collectionView.registerClass(MediaItemThumbnailCell.self, forCellWithReuseIdentifier: photoCellReuseId)
         collectionView.registerClass(CameraThumbnailCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
-        debugPrint("thumbnails collection view: \(collectionView)")
         
         super.init(frame: .zero)
         
@@ -107,6 +106,21 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     func addItems(items: [MediaPickerItem], animated: Bool) {
         collectionView.insertItems(animated: animated) { [weak self] in
             self?.dataSource.addItems(items)
+        }
+    }
+    
+    func updateItem(item: MediaPickerItem) {
+        
+        if let indexPath = dataSource.updateItem(item) {
+            
+            let selectedIndexPaths = collectionView.indexPathsForSelectedItems()
+            let cellWasSelected = selectedIndexPaths?.contains(indexPath) == true
+            
+            collectionView.reloadItemsAtIndexPaths([indexPath])
+            
+            if cellWasSelected {
+                collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+            }
         }
     }
     

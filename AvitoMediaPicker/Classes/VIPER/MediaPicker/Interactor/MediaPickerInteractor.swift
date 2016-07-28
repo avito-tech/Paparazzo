@@ -1,9 +1,12 @@
 protocol MediaPickerInteractor: class {
     
-    func addItems(items: [MediaPickerItem], completion: (canAddItems: Bool) -> ())
-    
+    func addItems(_: [MediaPickerItem], completion: (canAddItems: Bool) -> ())
+    func updateItem(_: MediaPickerItem, completion: () -> ())
     // `completion` вызывается с соседним item'ом — это item, который нужно выделить после того, как удалили `item`
-    func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?, canAddItems: Bool) -> ())
+    func removeItem(_: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?, canAddItems: Bool) -> ())
+    
+    func selectItem(_: MediaPickerItem)
+    func selectedItem(completion: MediaPickerItem? -> ())
     
     func items(completion: [MediaPickerItem] -> ())
     

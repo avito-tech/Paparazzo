@@ -25,18 +25,6 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     var onDiscard: (() -> ())?
     var onConfirm: (ImageSource -> ())?
     
-    func setImage(image: ImageSource) {
-        
-        view?.setImage(image)
-        
-        image.imageSize { [weak self] size in
-            if let size = size {
-                let isPortrait = size.height > size.width
-                self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
-            }
-        }
-    }
-    
     // MARK: - Private
     
     private func setUpView() {
@@ -52,7 +40,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         view?.onRotateButtonTap = { [weak self] in
-            self?.view?.rotate(by: -90)
+            self?.view?.turnImageCounterclockwise()
         }
         
         view?.onRotationCancelButtonTap = { [weak self] in
@@ -68,19 +56,43 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             self?.onDiscard?()
         }
         
-        view?.onConfirmButtonTap = { [weak self] in
-            self?.interactor.performCrop { croppedImageSource in
-                self?.onConfirm?(croppedImageSource)
+        view?.onConfirmButtonTap = { [weak self] previewImage in
+            self?.interactor.croppedImage(previewImage: previewImage) { image in
+                self?.onConfirm?(image)
+            }
+        }
+        
+        interactor.croppedImageAspectRatio { [weak self] aspectRatio in
+            
+            let isPortrait = aspectRatio < 1
+            
+            self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
+            
+            self?.interactor.originalImageWithParameters { originalImage, croppingParameters in
+                self?.view?.setImage(originalImage) {
+                    if let croppingParameters = croppingParameters {
+                        
+                        self?.view?.setCroppingParameters(croppingParameters)
+                        
+                        let angleInDegrees = Float(croppingParameters.tiltAngle).radiansToDegrees()
+                        self?.view?.setRotationSliderValue(angleInDegrees)
+                        self?.adjustCancelRotationButtonForAngle(angleInDegrees)
+                    }
+                }
             }
         }
     }
     
     private func setImageRotation(angle: Float) {
+        view?.setImageTiltAngle(angle)
+        adjustCancelRotationButtonForAngle(angle)
+    }
+    
+    private func adjustCancelRotationButtonForAngle(angle: Float) {
         
         let displayedAngle = Int(round(angle))
         let shouldShowCancelRotationButton = (displayedAngle != 0)
         
-        view?.setImageRotation(angle)
         view?.setCancelRotationButtonTitle("\(displayedAngle > 0 ? "+" : "")\(displayedAngle)°")
         view?.setCancelRotationButtonVisible(shouldShowCancelRotationButton)
     }

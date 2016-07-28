@@ -4,43 +4,10 @@ extension CGImage {
     
     func imageFixedForOrientation(orientation: ExifOrientation) -> CGImage? {
         
-        let originalSize = CGSize(width: CGImageGetWidth(self), height: CGImageGetHeight(self))
+        let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: true])
+        var ciImage = CIImage(CGImage: self).imageByApplyingOrientation(Int32(orientation.rawValue))
         
-        var size = originalSize
-        var rotation = CGFloat(0)
-        
-        switch orientation {
-        case .Left:
-            size = CGSize(width: size.height, height: size.width)
-            rotation = CGFloat(-M_PI_2)
-        case .Right:
-            size = CGSize(width: size.height, height: size.width)
-            rotation = CGFloat(M_PI_2)
-        case .Down:
-            rotation = CGFloat(M_PI)
-        default:
-            return self
-        }
-        
-        let contextRect = CGRect(origin: .zero, size: originalSize)
-        
-        let context = CGBitmapContextCreate(
-            nil,
-            Int(size.width),
-            Int(size.height),
-            CGImageGetBitsPerComponent(self),
-            0,
-            CGImageGetColorSpace(self),
-            CGImageGetBitmapInfo(self).rawValue
-        )
-        
-        CGContextTranslateCTM(context, size.width / 2, size.height / 2)
-        CGContextRotateCTM(context, rotation)
-        CGContextTranslateCTM(context, -size.height / 2, -size.width / 2)
-        
-        CGContextDrawImage(context, contextRect, self)
-        
-        return CGBitmapContextCreateImage(context)
+        return ciContext.createCGImage(ciImage, fromRect: ciImage.extent)
     }
 }
 

@@ -7,15 +7,28 @@ import UIKit
 final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - Subviews
+    
     private let scrollView = PhotoScrollView()
     private let topMask = UIView()
     private let bottomMask = UIView()
+    private let gridView = GridView()
+    
+    // MARK: - State
     
     private var cropSize: CGSize = .zero
     private var originalSize: CGSize = .zero
     private var originalPoint: CGPoint = .zero
-    private var angle: CGFloat = 0
-    private var manualZoomed: Bool = false
+    private var manuallyZoomed: Bool = false
+    
+    // Угол поворота фотографии (кратно 90°), non-resettable
+    private var turnAngle: CGFloat = 0
+    // Угол наклона фотографии (меньше 90°), resettable
+    private var tiltAngle: CGFloat = 0
+    
+    // Общий угол поворота фотки
+    private var angle: CGFloat {
+        return turnAngle + tiltAngle
+    }
     
     // MARK: - UIView
     
@@ -38,7 +51,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         topMask.backgroundColor = maskColor
         bottomMask.backgroundColor = maskColor
         
+        gridView.userInteractionEnabled = false
+        gridView.hidden = true
+        
         addSubview(scrollView)
+        addSubview(gridView)
         addSubview(topMask)
         addSubview(bottomMask)
         
@@ -53,7 +70,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         didSet {
             reset()
             calculateFrames()
-            setImageRotation(angle)
+            adjustRotation()
         }
     }
     
@@ -78,18 +95,15 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         calculateFrames()
     }
     
-    func setImageRotation(angle: CGFloat) {
-        
-        self.angle = angle
+    private func adjustRotation() {
+        adjustRotation(contentOffsetCenter: contentOffsetCenter())
+    }
+    
+    private func adjustRotation(contentOffsetCenter contentOffsetCenter: CGPoint) {
         
         let width = fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height
         let height = fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
         let center = scrollView.center
-        
-        let contentOffsetCenter = CGPoint(
-            x: scrollView.contentOffset.x + scrollView.bounds.size.width / 2,
-            y: scrollView.contentOffset.y + scrollView.bounds.size.height / 2
-        )
         
         let newBounds = CGRect(x: 0, y: 0, width: width, height: height)
         let newContentOffset = CGPoint(
@@ -105,12 +119,12 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         // scale scroll view
         let shouldScale = scrollView.contentSize.width / scrollView.bounds.size.width <= 1.0 || self.scrollView.contentSize.height / self.scrollView.bounds.size.height <= 1.0
         
-        if !manualZoomed || shouldScale {
+        if !manuallyZoomed || shouldScale {
             
             scrollView.minimumZoomScale = scrollView.zoomScaleToBound()
             scrollView.zoomScale = scrollView.minimumZoomScale
             
-            manualZoomed = false
+            manuallyZoomed = false
         }
         
         checkScrollViewContentOffset()
@@ -118,15 +132,59 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         notifyAboutCroppingParametersChange()
     }
     
-    func rotate(by angle: CGFloat) {
-        setImageRotation(self.angle + angle)
+    private func contentOffsetCenter() -> CGPoint {
+        return CGPoint(
+            x: scrollView.contentOffset.x + scrollView.bounds.size.width / 2,
+            y: scrollView.contentOffset.y + scrollView.bounds.size.height / 2
+        )
+    }
+    
+    func setCroppingParameters(parameters: ImageCroppingParameters) {
+        
+        scrollView.zoomScale = parameters.zoomScale
+        manuallyZoomed = parameters.manuallyZoomed
+        
+        turnAngle = parameters.turnAngle
+        tiltAngle = parameters.tiltAngle
+        
+        adjustRotation(contentOffsetCenter: parameters.contentOffsetCenter)
+    }
+    
+    func setTiltAngle(angleInRadians: Float) {
+        tiltAngle = CGFloat(angleInRadians)
+        adjustRotation()
+    }
+    
+    func turnCounterclockwise() {
+        turnAngle += CGFloat(Float(-90).degreesToRadians())
+        adjustRotation()
     }
     
     func photoTranslation() -> CGPoint {
-        let rect = scrollView.imageView.convertRect(scrollView.imageView.bounds, toView: self)
+        let imageViewBounds = scrollView.imageView.bounds
+        let rect = scrollView.imageView.convertRect(imageViewBounds, toView: self)
         let point = CGPoint(x: rect.midX, y: rect.midY)
         let zeroPoint = bounds.center
         return CGPoint(x: point.x - zeroPoint.x, y: point.y - zeroPoint.y)
+    }
+    
+    func setGridVisible(visible: Bool) {
+        gridView.hidden = !visible
+    }
+    
+    func cropPreviewImage() -> CGImage? {
+        
+        return snapshot().flatMap { snapshot in
+            
+            let cropRect = CGRect(
+                x: (bounds.left + (bounds.size.width - cropSize.width) / 2) * snapshot.scale,
+                y: (bounds.top + (bounds.size.height - cropSize.height) / 2) * snapshot.scale,
+                width: cropSize.width * snapshot.scale,
+                height: cropSize.height * snapshot.scale
+            )
+            
+            return CGImageCreateWithImageInRect(snapshot.CGImage, cropRect)
+        }
     }
     
     // MARK: - UIScrollViewDelegate
@@ -136,7 +194,18 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
-        manualZoomed = true
+        manuallyZoomed = true
+        notifyAboutCroppingParametersChange()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            notifyAboutCroppingParametersChange()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        notifyAboutCroppingParametersChange()
     }
     
     // MARK: - Private
@@ -168,10 +237,13 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         originalSize = minZoomBounds.size
         
         scrollView.bounds = minZoomBounds
-        scrollView.center = self.center
+        scrollView.center = center
         scrollView.contentSize = scrollView.bounds.size
         
         scrollView.imageView.frame = scrollView.bounds
+        
+        gridView.bounds = CGRect(origin: .zero, size: cropSize)
+        gridView.center = center
         
         originalPoint = convertPoint(scrollView.center, toView: self)
         
@@ -244,14 +316,21 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         let yScale = sqrt(t.b * t.b + t.d * t.d)
         transform = CGAffineTransformScale(transform, xScale, yScale)
         
-        return ImageCroppingParameters(
+        let parameters = ImageCroppingParameters(
             transform: transform,
             sourceSize: scrollView.imageView.image?.size ?? .zero,
             sourceOrientation: scrollView.imageView.image?.imageOrientation.exifOrientation ?? .Up,
             outputWidth: scrollView.imageView.image?.size.width ?? 0,
             cropSize: cropSize,
-            imageViewSize: scrollView.imageView.bounds.size
+            imageViewSize: scrollView.imageView.bounds.size,
+            contentOffsetCenter: contentOffsetCenter(),
+            turnAngle: turnAngle,
+            tiltAngle: tiltAngle,
+            zoomScale: scrollView.zoomScale,
+            manuallyZoomed: manuallyZoomed
         )
+        
+        return parameters
     }
 }
 
@@ -273,8 +352,12 @@ private class PhotoScrollView: UIScrollView {
     }
     
     func zoomScaleToBound() -> CGFloat {
-        var widthScale = bounds.size.width / imageView.bounds.size.width
-        var heightScale = bounds.size.height / imageView.bounds.size.height
-        return max(widthScale, heightScale)
+        if imageView.bounds.size.width > 0 && imageView.bounds.size.height > 0 {
+            let widthScale = bounds.size.width / imageView.bounds.size.width
+            let heightScale = bounds.size.height / imageView.bounds.size.height
+            return max(widthScale, heightScale)
+        } else {
+            return 1
+        }
     }
 }

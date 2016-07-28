@@ -11,6 +11,12 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         view = mediaPickerView
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        automaticallyAdjustsScrollViewInsets = false
+        onViewDidLoad?()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -76,6 +82,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onSwipeToCameraProgressChange = newValue }
     }
     
+    var onViewDidLoad: (() -> ())?
+    
     func setMode(mode: MediaPickerViewMode) {
         mediaPickerView.setMode(mode)
     }
@@ -139,6 +147,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
 
     func addItems(items: [MediaPickerItem], animated: Bool) {
         mediaPickerView.addItems(items, animated: animated)
+    }
+    
+    func updateItem(item: MediaPickerItem) {
+        mediaPickerView.updateItem(item)
     }
     
     func removeItem(item: MediaPickerItem) {

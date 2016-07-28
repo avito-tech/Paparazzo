@@ -19,6 +19,8 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
             target: self,
             action: #selector(PhotoLibraryViewController.onPickButtonTap(_:))
         )
+        
+        onViewDidLoad?()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,6 +32,7 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     var onItemSelect: (PhotoLibraryItem -> ())?
     var onPickButtonTap: (() -> ())?
+    var onViewDidLoad: (() -> ())?
     
     func setCellsData(items: [PhotoLibraryItemCellData]) {
         photoLibraryView.setCellsData(items)
@@ -41,6 +44,10 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     func setDimsUnselectedItems(dimUnselectedItems: Bool) {
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
+    }
+    
+    func setPickButtonEnabled(enabled: Bool) {
+        navigationItem.rightBarButtonItem?.enabled = enabled
     }
     
     func scrollToBottom() {
