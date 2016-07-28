@@ -1,4 +1,5 @@
 import CoreGraphics
+import AvitoDesignKit
 
 final class CachingImageSource: ImageSource {
     
@@ -10,10 +11,6 @@ final class CachingImageSource: ImageSource {
     }
     
     // MARK: - ImageSource
-    
-    func writeImageToUrl(url: NSURL, completion: Bool -> ()) {
-        underlyingImageSource.writeImageToUrl(url, completion: completion)
-    }
     
     func fullResolutionImage<T : InitializableWithCGImage>(completion: T? -> ()) {
         underlyingImageSource.fullResolutionImage(completion)
@@ -41,5 +38,9 @@ final class CachingImageSource: ImageSource {
             
             completion(cgImage.flatMap { T(CGImage: $0) })
         }
+    }
+    
+    func isEqualTo(other: ImageSource) -> Bool {
+        return underlyingImageSource.isEqualTo(other)
     }
 }

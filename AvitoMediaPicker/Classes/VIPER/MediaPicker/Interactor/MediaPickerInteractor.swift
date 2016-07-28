@@ -1,3 +1,5 @@
+import AvitoDesignKit
+
 protocol MediaPickerInteractor: class {
     
     func addItems(_: [MediaPickerItem], completion: (canAddItems: Bool) -> ())

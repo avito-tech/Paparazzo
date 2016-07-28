@@ -1,3 +1,5 @@
+import AvitoDesignKit
+
 final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     private let originalImage: ImageSource

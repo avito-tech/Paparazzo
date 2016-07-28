@@ -1,4 +1,5 @@
 import Foundation
+import AvitoDesignKit
 
 protocol PhotoLibraryInteractor: class {
     

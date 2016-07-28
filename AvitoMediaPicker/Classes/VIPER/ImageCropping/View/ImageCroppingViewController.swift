@@ -1,4 +1,5 @@
 import UIKit
+import AvitoDesignKit
 
 final class ImageCroppingViewController: UIViewController, ImageCroppingViewInput {
     

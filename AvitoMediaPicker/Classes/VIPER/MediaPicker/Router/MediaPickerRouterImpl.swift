@@ -1,4 +1,5 @@
 import Marshroute
+import AvitoDesignKit
 
 final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
     

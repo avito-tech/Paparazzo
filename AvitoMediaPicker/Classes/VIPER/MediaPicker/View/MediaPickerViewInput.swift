@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import AvitoDesignKit
 
 enum MediaPickerViewMode {
     case Camera

@@ -1,6 +1,7 @@
 import Foundation
 import ImageIO
 import MobileCoreServices
+import AvitoDesignKit
 
 struct UrlImageSource: ImageSource {
 
@@ -11,27 +12,6 @@ struct UrlImageSource: ImageSource {
     }
 
     // MARK: - ImageSource
-    
-    func writeImageToUrl(url: NSURL, completion: Bool -> ()) {
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
-            
-            var success = false
-            
-            let source = CGImageSourceCreateWithURL(url, nil)
-            // TODO: тип картинки определять по расширению целевого файла
-            let destination = CGImageDestinationCreateWithURL(url, kUTTypeJPEG, 1, nil)
-            
-            if let source = source, destination = destination {
-                CGImageDestinationAddImageFromSource(destination, source, 0, nil)
-                success = CGImageDestinationFinalize(destination)
-            }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(success)
-            }
-        }
-    }
 
     func fullResolutionImage<T: InitializableWithCGImage>(completion: (T?) -> ()) {
         
@@ -100,6 +80,14 @@ struct UrlImageSource: ImageSource {
             dispatch_async(dispatch_get_main_queue()) {
                 completion(cgImage.flatMap { T(CGImage: $0) })
             }
+        }
+    }
+    
+    func isEqualTo(other: ImageSource) -> Bool {
+        if let other = other as? UrlImageSource {
+            return other.url == url
+        } else {
+            return false
         }
     }
 }

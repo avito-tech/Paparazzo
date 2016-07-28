@@ -1,4 +1,5 @@
 import UIKit
+import AvitoDesignKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
     
