@@ -34,7 +34,8 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
                 if let size = size {
                     completion(Float(size.width / size.height))
                 } else {
-                    completion(4.0 / 3.0)
+                    let defaultAspectRatio = Float(4.0 / 3.0)
+                    completion(defaultAspectRatio)
                 }
             }
         }
