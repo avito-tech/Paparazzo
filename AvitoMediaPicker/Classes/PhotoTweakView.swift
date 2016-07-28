@@ -172,6 +172,21 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         gridView.hidden = !visible
     }
     
+    func cropPreviewImage() -> CGImage? {
+        
+        return snapshot().flatMap { snapshot in
+            
+            let cropRect = CGRect(
+                x: (bounds.left + (bounds.size.width - cropSize.width) / 2) * snapshot.scale,
+                y: (bounds.top + (bounds.size.height - cropSize.height) / 2) * snapshot.scale,
+                width: cropSize.width * snapshot.scale,
+                height: cropSize.height * snapshot.scale
+            )
+            
+            return CGImageCreateWithImageInRect(snapshot.CGImage, cropRect)
+        }
+    }
+    
     // MARK: - UIScrollViewDelegate
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {

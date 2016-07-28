@@ -35,6 +35,12 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             forControlEvents: .TouchUpInside
         )
         
+        controlsView.onConfirmButtonTap = { [weak self] in
+            if let image = self?.previewView.cropPreviewImage() {
+                self?.onConfirmButtonTap?(previewImage: image)
+            }
+        }
+        
         addSubview(previewView)
         addSubview(controlsView)
         addSubview(titleLabel)
@@ -79,10 +85,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         set { controlsView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: (() -> ())? {
-        get { return controlsView.onConfirmButtonTap }
-        set { controlsView.onConfirmButtonTap = newValue }
-    }
+    var onConfirmButtonTap: ((previewImage: CGImage) -> ())?
     
     var onRotationAngleChange: (Float -> ())? {
         get { return controlsView.onRotationAngleChange }

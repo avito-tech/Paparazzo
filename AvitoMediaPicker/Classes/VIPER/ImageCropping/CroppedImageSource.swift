@@ -6,10 +6,12 @@ public final class CroppedImageSource: ImageSource {
     
     let originalImage: ImageSource
     var croppingParameters: ImageCroppingParameters?
+    var previewImage: CGImage?
     
-    init(originalImage: ImageSource, parameters: ImageCroppingParameters?) {
+    init(originalImage: ImageSource, parameters: ImageCroppingParameters?, previewImage: CGImage?) {
         self.originalImage = originalImage
         self.croppingParameters = parameters
+        self.previewImage = previewImage
     }
     
     // MARK: - ImageSource
@@ -21,6 +23,11 @@ public final class CroppedImageSource: ImageSource {
     }
     
     public func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
+        
+        if let previewImage = previewImage {
+            completion(T(CGImage: previewImage))
+        }
+        
         // TODO
         getCroppedImage { cgImage in
             completion(cgImage.flatMap { T(CGImage: $0) })

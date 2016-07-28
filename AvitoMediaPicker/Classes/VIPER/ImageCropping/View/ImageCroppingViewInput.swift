@@ -24,7 +24,7 @@ protocol ImageCroppingViewInput: class {
     func setGridButtonSelected(_: Bool)
     
     var onDiscardButtonTap: (() -> ())? { get set }
-    var onConfirmButtonTap: (() -> ())? { get set }
+    var onConfirmButtonTap: ((previewImage: CGImage) -> ())? { get set }
     var onAspectRatioButtonTap: (() -> ())? { get set }
     var onRotateButtonTap: (() -> ())? { get set }
     var onGridButtonTap: (() -> ())? { get set }

@@ -56,8 +56,8 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             self?.onDiscard?()
         }
         
-        view?.onConfirmButtonTap = { [weak self] in
-            self?.interactor.croppedImage { image in
+        view?.onConfirmButtonTap = { [weak self] previewImage in
+            self?.interactor.croppedImage(previewImage: previewImage) { image in
                 self?.onConfirm?(image)
             }
         }

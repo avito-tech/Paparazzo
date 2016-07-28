@@ -25,7 +25,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: (() -> ())? {
+    var onConfirmButtonTap: ((previewImage: CGImage) -> ())? {
         get { return imageCroppingView.onConfirmButtonTap }
         set { imageCroppingView.onConfirmButtonTap = newValue }
     }

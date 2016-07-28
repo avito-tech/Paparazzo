@@ -18,8 +18,12 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
         completion(originalImage, parameters)
     }
     
-    func croppedImage(completion: CroppedImageSource -> ()) {
-        completion(CroppedImageSource(originalImage: originalImage, parameters: parameters))
+    func croppedImage(previewImage previewImage: CGImage, completion: CroppedImageSource -> ()) {
+        completion(CroppedImageSource(
+            originalImage: originalImage,
+            parameters: parameters,
+            previewImage: previewImage
+        ))
     }
     
     func croppedImageAspectRatio(completion: Float -> ()) {
