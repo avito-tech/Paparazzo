@@ -201,7 +201,8 @@ final class MediaPickerPresenter: MediaPickerModule {
                     let mediaPickerItems = photoLibraryItems.map {
                         MediaPickerItem(
                             identifier: $0.identifier,
-                            image: CachingImageSource(underlyingImageSource: $0.image)
+                            image: CachingImageSource(underlyingImageSource: $0.image),
+                            source: .PhotoLibrary
                         )
                     }
                     
@@ -222,7 +223,11 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             module.onConfirm = { [weak self] croppedImageSource in
                 
-                let croppedItem = MediaPickerItem(identifier: item.identifier, image: croppedImageSource)
+                let croppedItem = MediaPickerItem(
+                    identifier: item.identifier,
+                    image: croppedImageSource,
+                    source: item.source
+                )
                 
                 self?.interactor.updateItem(croppedItem) {
                     self?.view?.updateItem(croppedItem)
