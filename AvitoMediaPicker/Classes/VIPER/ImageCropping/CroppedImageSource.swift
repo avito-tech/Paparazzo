@@ -1,8 +1,9 @@
 import CoreGraphics
 import ImageIO
 import MobileCoreServices
+import AvitoDesignKit
 
-public final class CroppedImageSource: ImageSource {
+final class CroppedImageSource: ImageSource {
     
     let originalImage: ImageSource
     var croppingParameters: ImageCroppingParameters?
@@ -16,13 +17,13 @@ public final class CroppedImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    public func fullResolutionImage<T : InitializableWithCGImage>(completion: T? -> ()) {
+    func fullResolutionImage<T : InitializableWithCGImage>(completion: T? -> ()) {
         getCroppedImage { cgImage in
             completion(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     
-    public func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
+    func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
         
         if let previewImage = previewImage {
             completion(T(CGImage: previewImage))
@@ -34,14 +35,18 @@ public final class CroppedImageSource: ImageSource {
         }
     }
     
-    public func imageSize(completion: CGSize? -> ()) {
+    func imageSize(completion: CGSize? -> ()) {
         getCroppedImage { cgImage in
             completion(cgImage.flatMap { CGSize(width: CGImageGetWidth($0), height: CGImageGetHeight($0)) })
         }
     }
     
-    public func writeImageToUrl(url: NSURL, completion: Bool -> ()) {
-        // TODO
+    func isEqualTo(other: ImageSource) -> Bool {
+        if let other = other as? CroppedImageSource {
+            return originalImage.isEqualTo(other.originalImage) // TODO: сравнить croppingParameters
+        } else {
+            return false
+        }
     }
     
     // MARK: - Private

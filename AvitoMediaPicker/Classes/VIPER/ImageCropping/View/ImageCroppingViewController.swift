@@ -1,4 +1,5 @@
 import UIKit
+import AvitoDesignKit
 
 final class ImageCroppingViewController: UIViewController, ImageCroppingViewInput {
     
@@ -88,8 +89,8 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.setTitle(title)
     }
 
-    func setAspectRatioMode(mode: AspectRatioMode) {
-        imageCroppingView.setAspectRatioMode(mode)
+    func setAspectRatio(aspectRatio: AspectRatio) {
+        imageCroppingView.setAspectRatio(aspectRatio)
     }
     
     func setAspectRatioButtonTitle(title: String) {

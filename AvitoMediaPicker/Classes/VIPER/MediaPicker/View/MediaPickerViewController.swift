@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import AvitoDesignKit
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     

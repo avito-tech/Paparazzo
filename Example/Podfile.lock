@@ -1,29 +1,46 @@
 PODS:
   - AvitoDesignKit (0.0.6):
+    - JVFloatLabeledTextField (= 1.1.0)
+    - SDWebImage (= 3.8.1)
     - TTTAttributedLabel (= 1.13.0)
-  - AvitoMediaPicker (0.0.5):
+  - AvitoMediaPicker (0.0.6):
     - AvitoDesignKit (= 0.0.6)
     - JNWSpringAnimation
     - Marshroute
   - JNWSpringAnimation (0.7.1)
+  - JVFloatLabeledTextField (1.1.0)
   - Marshroute (0.3.3)
+  - SDWebImage (3.8.1):
+    - SDWebImage/Core (= 3.8.1)
+  - SDWebImage/Core (3.8.1)
   - TTTAttributedLabel (1.13.0)
 
 DEPENDENCIES:
+  - AvitoDesignKit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git`, branch `release-6.0`)
   - AvitoMediaPicker (from `../`)
   - Marshroute
 
 EXTERNAL SOURCES:
+  AvitoDesignKit:
+    :branch: release-6.0
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
   AvitoMediaPicker:
     :path: ../
 
+CHECKOUT OPTIONS:
+  AvitoDesignKit:
+    :commit: eb7f9b4136e22a0dc795e953f011763cf3ab897b
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
+
 SPEC CHECKSUMS:
-  AvitoDesignKit: 24b7a9c13ced6f715efc4084b5e1efa24a4b26ef
-  AvitoMediaPicker: 178a60cbf6637dd1c1edb9b35d12db0c2ec7cab0
+  AvitoDesignKit: 60a770dc9b86a0e8e5fb1e696dad41df3bc76a30
+  AvitoMediaPicker: cfc134d5f2fbc41dbd8b53684f6319c4a8bdd2ed
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
+  JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
+  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
 
-PODFILE CHECKSUM: 93a41216df0cc0bc0e579551da4c1b1e242cfc4b
+PODFILE CHECKSUM: 9776ec4978eb1cc786772d6505ba163184fcce37
 
 COCOAPODS: 1.0.1

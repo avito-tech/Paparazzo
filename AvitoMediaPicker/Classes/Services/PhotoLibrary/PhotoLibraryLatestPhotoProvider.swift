@@ -1,5 +1,6 @@
 import Photos
 import UIKit
+import AvitoDesignKit
 
 protocol PhotoLibraryLatestPhotoProvider {
     func observePhoto(handler: (ImageSource? -> ())?)

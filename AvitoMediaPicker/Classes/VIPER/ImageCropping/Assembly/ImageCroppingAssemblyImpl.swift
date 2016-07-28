@@ -1,5 +1,6 @@
 import UIKit
 import Marshroute
+import AvitoDesignKit
 
 public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     

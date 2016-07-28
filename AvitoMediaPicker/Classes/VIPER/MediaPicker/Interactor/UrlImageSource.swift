@@ -1,39 +1,19 @@
 import Foundation
 import ImageIO
 import MobileCoreServices
+import AvitoDesignKit
 
-struct UrlImageSource: ImageSource {
+public struct UrlImageSource: ImageSource {
 
     private let url: NSURL
 
-    init(url: NSURL) {
+    public init(url: NSURL) {
         self.url = url
     }
 
     // MARK: - ImageSource
-    
-    func writeImageToUrl(url: NSURL, completion: Bool -> ()) {
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
-            
-            var success = false
-            
-            let source = CGImageSourceCreateWithURL(url, nil)
-            // TODO: тип картинки определять по расширению целевого файла
-            let destination = CGImageDestinationCreateWithURL(url, kUTTypeJPEG, 1, nil)
-            
-            if let source = source, destination = destination {
-                CGImageDestinationAddImageFromSource(destination, source, 0, nil)
-                success = CGImageDestinationFinalize(destination)
-            }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(success)
-            }
-        }
-    }
 
-    func fullResolutionImage<T: InitializableWithCGImage>(completion: (T?) -> ()) {
+    public func fullResolutionImage<T: InitializableWithCGImage>(completion: (T?) -> ()) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
          
@@ -54,7 +34,7 @@ struct UrlImageSource: ImageSource {
         }
     }
     
-    func imageSize(completion: CGSize? -> ()) {
+    public func imageSize(completion: CGSize? -> ()) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
             
@@ -83,7 +63,7 @@ struct UrlImageSource: ImageSource {
         }
     }
 
-    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
+    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
@@ -100,6 +80,14 @@ struct UrlImageSource: ImageSource {
             dispatch_async(dispatch_get_main_queue()) {
                 completion(cgImage.flatMap { T(CGImage: $0) })
             }
+        }
+    }
+    
+    public func isEqualTo(other: ImageSource) -> Bool {
+        if let other = other as? UrlImageSource {
+            return other.url == url
+        } else {
+            return false
         }
     }
 }

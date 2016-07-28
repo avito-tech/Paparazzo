@@ -1,11 +1,6 @@
 import UIKit
 import AvitoDesignKit
 
-enum AspectRatioMode {
-    case Portrait_3x4
-    case Landscape_4x3
-}
-
 final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Subviews
@@ -147,16 +142,16 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         titleLabel.text = title
     }
     
-    func setAspectRatioMode(mode: AspectRatioMode) {
+    func setAspectRatio(aspectRatio: AspectRatio) {
         
-        aspectRatioMode = mode
+        self.aspectRatio = aspectRatio
         
         aspectRatioButton.size = aspectRatioButtonSize()
-        previewView.cropAspectRatio = cropAspectRatio()
+        previewView.cropAspectRatio = CGFloat(aspectRatio.widthToHeightRatio())
         
-        switch mode {
+        switch aspectRatio {
         
-        case .Portrait_3x4:
+        case .portrait_3x4:
             
             titleLabel.textColor = .whiteColor()
             
@@ -166,7 +161,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             setShadowVisible(true, forView: titleLabel)
             setShadowVisible(true, forView: aspectRatioButton)
         
-        case .Landscape_4x3:
+        case .landscape_4x3:
             
             titleLabel.textColor = .blackColor()
             
@@ -204,26 +199,17 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Private
     
-    private var aspectRatioMode: AspectRatioMode = .Portrait_3x4
+    private var aspectRatio: AspectRatio = .portrait_3x4
     
     private func aspectRatioButtonSize() -> CGSize {
-        switch aspectRatioMode {
-        case .Portrait_3x4:
+        switch aspectRatio {
+        case .portrait_3x4:
             return CGSize(width: 34, height: 42)
-        case .Landscape_4x3:
+        case .landscape_4x3:
             return CGSize(width: 42, height: 34)
         }
     }
-    
-    private func cropAspectRatio() -> CGFloat {
-        switch aspectRatioMode {
-        case .Portrait_3x4:
-            return CGFloat(3.0 / 4.0)
-        case .Landscape_4x3:
-            return CGFloat(4.0 / 3.0)
-        }
-    }
-    
+
     private func setShadowVisible(visible: Bool, forView view: UIView) {
         view.layer.shadowOffset = .zero
         view.layer.shadowOpacity = visible ? 0.5 : 0

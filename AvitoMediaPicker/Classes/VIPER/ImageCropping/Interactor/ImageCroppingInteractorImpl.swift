@@ -1,3 +1,5 @@
+import AvitoDesignKit
+
 final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     private let originalImage: ImageSource
@@ -34,8 +36,7 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
                 if let size = size {
                     completion(Float(size.width / size.height))
                 } else {
-                    let defaultAspectRatio = Float(4.0 / 3.0)
-                    completion(defaultAspectRatio)
+                    completion(AspectRatio.defaultRatio.widthToHeightRatio())
                 }
             }
         }
