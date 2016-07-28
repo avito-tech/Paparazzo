@@ -29,6 +29,14 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onItemRemove: (MediaPickerItem -> ())?
     var onFinish: ([MediaPickerItem] -> ())?
     var onCancel: (() -> ())?
+    
+    func focusOnModule() {
+        router.focusOnCurrentModule()
+    }
+    
+    func dismissModule() {
+        router.dismissCurrentModule()
+    }
 
     // MARK: - Private
     

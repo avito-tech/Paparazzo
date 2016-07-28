@@ -26,12 +26,20 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         self.router = router
     }
     
-    // MARK: - PhotoLibraryModuleInput
+    // MARK: - PhotoLibraryModule
     
     var onFinish: ((selectedItems: [PhotoLibraryItem]) -> ())?
     
     func selectItems(items: [PhotoLibraryItem]) {
         // TODO
+    }
+    
+    func focusOnModule() {
+        router.focusOnCurrentModule()
+    }
+    
+    func dismissModule() {
+        router.dismissCurrentModule()
     }
     
     // MARK: - Private
