@@ -66,7 +66,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             
             let isPortrait = aspectRatio < 1
             
-            self?.setAspectRatioButtonMode(isPortrait ? .Portrait_3x4 : .Landscape_4x3)
+            self?.setAspectRatio(isPortrait ? .portrait_3x4 : .landscape_4x3)
             
             self?.interactor.originalImageWithParameters { originalImage, croppingParameters in
                 self?.view?.setImage(originalImage) {
@@ -107,33 +107,33 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
     }
     
-    private func setAspectRatioButtonMode(mode: AspectRatioMode) {
+    private func setAspectRatio(aspectRatio: AspectRatio) {
         
-        view?.setAspectRatioMode(mode)
-        view?.setAspectRatioButtonTitle(aspectRatioButtonTitleForMode(mode))
+        view?.setAspectRatio(aspectRatio)
+        view?.setAspectRatioButtonTitle(aspectRatioButtonTitle(for: aspectRatio))
         
         view?.onAspectRatioButtonTap = { [weak self] in
-            if let nextMode = self?.aspectRationButtonTitleModeAfterMode(mode) {
-                self?.setAspectRatioButtonMode(nextMode)
+            if let nextRatio = self?.aspectRatioAfter(aspectRatio) {
+                self?.setAspectRatio(nextRatio)
             }
         }
     }
     
-    private func aspectRatioButtonTitleForMode(mode: AspectRatioMode) -> String {
-        switch mode {
-        case .Portrait_3x4:
+    private func aspectRatioButtonTitle(for aspectRatio: AspectRatio) -> String {
+        switch aspectRatio {
+        case .portrait_3x4:
             return "3:4"
-        case .Landscape_4x3:
+        case .landscape_4x3:
             return "4:3"
         }
     }
     
-    private func aspectRationButtonTitleModeAfterMode(mode: AspectRatioMode) -> AspectRatioMode {
-        switch mode {
-        case .Portrait_3x4:
-            return .Landscape_4x3
-        case .Landscape_4x3:
-            return .Portrait_3x4
+    private func aspectRatioAfter(aspectRatio: AspectRatio) -> AspectRatio {
+        switch aspectRatio {
+        case .portrait_3x4:
+            return .landscape_4x3
+        case .landscape_4x3:
+            return .portrait_3x4
         }
     }
 }

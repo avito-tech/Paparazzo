@@ -11,7 +11,7 @@ protocol ImageCroppingViewInput: class {
     func setCroppingParameters(_: ImageCroppingParameters)
     func setRotationSliderValue(_: Float)
     
-    func setAspectRatioMode(_: AspectRatioMode)
+    func setAspectRatio(_: AspectRatio)
     func setAspectRatioButtonTitle(_: String)
     
     func setMinimumRotation(degrees: Float)

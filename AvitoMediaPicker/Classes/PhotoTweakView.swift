@@ -80,7 +80,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - PhotoTweakView
     
-    var cropAspectRatio: CGFloat = 4.0 / 3.0 {
+    var cropAspectRatio = CGFloat(AspectRatio.defaultRatio.widthToHeightRatio()) {
         didSet {
             if cropAspectRatio != oldValue {
                 calculateFrames()
