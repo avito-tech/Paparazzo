@@ -96,8 +96,6 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     ) {
         guard let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }) else { return }
         
-        debugPrint("binders: \(binders.map { $0.value })")
-        
         for binderWrapper in binders {
             if let binder = binderWrapper.value {
                 drawImageBuffer(imageBuffer, viewBounds: binder.viewBounds, view: binder.view, ciContext: binder.ciContext)

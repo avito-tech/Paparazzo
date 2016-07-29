@@ -7,7 +7,12 @@ final class CachingImageSource: ImageSource {
     private let cache = NSCache()
     
     init(underlyingImageSource: ImageSource) {
-        self.underlyingImageSource = underlyingImageSource
+        // Не даем создавать вложенные CachingImageSource
+        if let cachingImageSource = underlyingImageSource as? CachingImageSource {
+            self.underlyingImageSource = cachingImageSource.underlyingImageSource
+        } else {
+            self.underlyingImageSource = underlyingImageSource
+        }
     }
     
     // MARK: - ImageSource
@@ -26,17 +31,17 @@ final class CachingImageSource: ImageSource {
         
         if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
             completion(T(CGImage: cachedImageWrapper.image))
-        }
-        
-        underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (imageWrapper: CGImageWrapper?) in
-            
-            let cgImage = imageWrapper?.image
-            
-            if let imageWrapper = imageWrapper {
-                self?.cache.setObject(imageWrapper, forKey: cacheKey)
+        } else {
+            underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (imageWrapper: CGImageWrapper?) in
+                
+                let cgImage = imageWrapper?.image
+                
+                if let imageWrapper = imageWrapper {
+                    self?.cache.setObject(imageWrapper, forKey: cacheKey)
+                }
+                
+                completion(cgImage.flatMap { T(CGImage: $0) })
             }
-            
-            completion(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     

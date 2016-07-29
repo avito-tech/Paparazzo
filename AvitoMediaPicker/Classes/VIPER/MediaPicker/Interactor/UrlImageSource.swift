@@ -3,7 +3,7 @@ import ImageIO
 import MobileCoreServices
 import AvitoDesignKit
 
-public struct UrlImageSource: ImageSource {
+public class UrlImageSource: ImageSource {
 
     private let url: NSURL
 
@@ -67,6 +67,7 @@ public struct UrlImageSource: ImageSource {
 
     public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
 
+        debugPrint("request imageFittingSize \(size)")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
             let source = CGImageSourceCreateWithURL(url, nil)
@@ -79,6 +80,7 @@ public struct UrlImageSource: ImageSource {
 
             let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
             let image = cgImage.flatMap { T(CGImage: $0) }
+            debugPrint("got imageFittingSize \(size)")
 
             dispatch_async(dispatch_get_main_queue()) {
                 completion(image)
