@@ -37,6 +37,14 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
         }
     }
+    
+    func focusOnModule() {
+        router.focusOnCurrentModule()
+    }
+    
+    func dismissModule() {
+        router.dismissCurrentModule()
+    }
 
     // MARK: - Private
     

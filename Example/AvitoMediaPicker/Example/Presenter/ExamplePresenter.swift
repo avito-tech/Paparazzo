@@ -32,15 +32,15 @@ final class ExamplePresenter {
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
                 module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
                 
-                module.onCancel = { [weak self] in
-                    self?.router.focusOnCurrentModule()
+                module.onCancel = { [weak module] in
+                    module?.dismissModule()
                 }
                 
-                module.onFinish = { [weak self] items in
+                module.onFinish = { [weak module] items in
                     debugPrint("media picker did finish with \(items.count) items:")
                     items.forEach { debugPrint($0) }
                     self?.items = items
-                    self?.router.focusOnCurrentModule()
+                    module?.dismissModule()
                 }
                 
                 if let items = self?.items {
@@ -57,9 +57,9 @@ final class ExamplePresenter {
                     
                     module.selectItems(selectedItems)
                     
-                    module.onFinish = { items in
+                    module.onFinish = { [weak module] items in
                         self?.interactor.setPhotoLibraryItems(selectedItems)
-                        self?.router.focusOnCurrentModule()
+                        module?.dismissModule()
                     }
                 }
             }
