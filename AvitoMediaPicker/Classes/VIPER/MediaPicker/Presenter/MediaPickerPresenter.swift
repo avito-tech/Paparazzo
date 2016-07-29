@@ -29,6 +29,14 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onItemRemove: (MediaPickerItem -> ())?
     var onFinish: ([MediaPickerItem] -> ())?
     var onCancel: (() -> ())?
+    
+    func setItems(items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
+        addItems(items, fromCamera: false) { [weak self] in
+            if let selectedItem = selectedItem {
+                self?.view?.selectItem(selectedItem)
+            }
+        }
+    }
 
     // MARK: - Private
     
@@ -150,7 +158,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
-    private func addItems(items: [MediaPickerItem], fromCamera: Bool) {
+    private func addItems(items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
         
         interactor.addItems(items) { [weak self] canAddItems in
             
@@ -169,6 +177,8 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
             
             self?.onItemsAdd?(items)
+            
+            completion?()
         }
     }
     
