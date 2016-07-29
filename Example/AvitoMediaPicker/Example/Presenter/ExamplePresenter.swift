@@ -20,6 +20,8 @@ final class ExamplePresenter {
     
     // MARK: - Private
     
+    private var items = [MediaPickerItem]()
+    
     private func setUpView() {
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
@@ -37,7 +39,12 @@ final class ExamplePresenter {
                 module.onFinish = { [weak module] items in
                     debugPrint("media picker did finish with \(items.count) items:")
                     items.forEach { debugPrint($0) }
+                    self?.items = items
                     module?.dismissModule()
+                }
+                
+                if let items = self?.items {
+                    module.setItems(items, selectedItem: items.last)
                 }
             }
         }

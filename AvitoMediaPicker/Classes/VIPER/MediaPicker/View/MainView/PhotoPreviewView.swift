@@ -174,7 +174,11 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     // MARK: - Private
     
     private var currentPage: Int {
-        return max(0, Int(floor(collectionView.contentOffset.x / collectionView.width)))
+        if collectionView.width > 0 {
+            return max(0, Int(floor(collectionView.contentOffset.x / collectionView.width)))
+        } else {
+            return 0
+        }
     }
     
     private func photoCell(

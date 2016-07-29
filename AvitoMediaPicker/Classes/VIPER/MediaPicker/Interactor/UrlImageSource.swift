@@ -28,8 +28,10 @@ public struct UrlImageSource: ImageSource {
                 cgImage = cgImage?.imageFixedForOrientation(exifOrientation)
             }
             
+            let image = cgImage.flatMap { T(CGImage: $0) }
+            
             dispatch_async(dispatch_get_main_queue()) {
-                completion(cgImage.flatMap { T(CGImage: $0) })
+                completion(image)
             }
         }
     }
@@ -76,9 +78,10 @@ public struct UrlImageSource: ImageSource {
             ]
 
             let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
+            let image = cgImage.flatMap { T(CGImage: $0) }
 
             dispatch_async(dispatch_get_main_queue()) {
-                completion(cgImage.flatMap { T(CGImage: $0) })
+                completion(image)
             }
         }
     }

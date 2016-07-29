@@ -1,5 +1,7 @@
 public protocol MediaPickerModule: class {
     
+    func setItems(_: [MediaPickerItem], selectedItem: MediaPickerItem?)
+
     func focusOnModule()
     func dismissModule()
     
