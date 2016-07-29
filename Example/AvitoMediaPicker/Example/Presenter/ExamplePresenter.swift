@@ -30,14 +30,14 @@ final class ExamplePresenter {
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
                 module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
                 
-                module.onCancel = {
-                    module.dismissModule()
+                module.onCancel = { [weak module] in
+                    module?.dismissModule()
                 }
                 
-                module.onFinish = { items in
+                module.onFinish = { [weak module] items in
                     debugPrint("media picker did finish with \(items.count) items:")
                     items.forEach { debugPrint($0) }
-                    module.dismissModule()
+                    module?.dismissModule()
                 }
             }
         }
@@ -50,9 +50,9 @@ final class ExamplePresenter {
                     
                     module.selectItems(selectedItems)
                     
-                    module.onFinish = { items in
+                    module.onFinish = { [weak module] items in
                         self?.interactor.setPhotoLibraryItems(selectedItems)
-                        module.dismissModule()
+                        module?.dismissModule()
                     }
                 }
             }
