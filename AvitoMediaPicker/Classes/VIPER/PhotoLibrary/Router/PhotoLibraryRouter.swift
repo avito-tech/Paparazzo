@@ -1,4 +1,4 @@
 import Marshroute
 
-protocol PhotoLibraryRouter: class {
+protocol PhotoLibraryRouter: class, RouterFocusable, RouterDismissable {
 }

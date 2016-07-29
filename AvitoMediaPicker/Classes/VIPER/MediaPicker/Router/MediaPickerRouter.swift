@@ -1,7 +1,7 @@
 import Marshroute
 import AvitoDesignKit
 
-protocol MediaPickerRouter: class, RouterFocusable {
+protocol MediaPickerRouter: class, RouterFocusable, RouterDismissable {
     
     func showPhotoLibrary(
         maxSelectedItemsCount maxSelectedItemsCount: Int?,
