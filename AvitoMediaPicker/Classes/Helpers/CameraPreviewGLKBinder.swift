@@ -36,7 +36,7 @@ final class CameraOutputGLKBinder {
         
         dispatch_async(delegate.queue) {
             
-            delegate.binders.append(self)
+            delegate.binders.append(WeakWrapper(value: self))
             
             let output = AVCaptureVideoDataOutput()
             // CoreImage wants BGRA pixel format
@@ -85,7 +85,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     
     let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", nil)
     
-    var binders = [CameraOutputGLKBinder]()
+    var binders = [WeakWrapper<CameraOutputGLKBinder>]()
     
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
     
@@ -96,8 +96,12 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     ) {
         guard let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }) else { return }
         
-        for binder in binders {
-            drawImageBuffer(imageBuffer, viewBounds: binder.viewBounds, view: binder.view, ciContext: binder.ciContext)
+        debugPrint("binders: \(binders.map { $0.value })")
+        
+        for binderWrapper in binders {
+            if let binder = binderWrapper.value {
+                drawImageBuffer(imageBuffer, viewBounds: binder.viewBounds, view: binder.view, ciContext: binder.ciContext)
+            }
         }
     }
     
