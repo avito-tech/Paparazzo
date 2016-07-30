@@ -41,6 +41,9 @@ final class CachingImageSource: ImageSource {
     }
     
     func isEqualTo(other: ImageSource) -> Bool {
-        return underlyingImageSource.isEqualTo(other)
+        guard let other = other as? CachingImageSource
+            else { return false }
+        
+        return underlyingImageSource.isEqualTo(other.underlyingImageSource)
     }
 }
