@@ -222,7 +222,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     let mediaPickerItems = photoLibraryItems.map {
                         MediaPickerItem(
                             identifier: $0.identifier,
-                            image: CachingImageSource(underlyingImageSource: $0.image),
+                            image: $0.image,
                             source: .PhotoLibrary
                         )
                     }
