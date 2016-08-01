@@ -53,6 +53,10 @@ final class PHAssetImageSource: ImageSource {
     }
 
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
+        
+        // Судя по некоторым сообщениям на форумах, метод requestImageForAsset может временами работать неадекватно,
+        // если запрашиваемый размер меньше чем 500x500
+        let size = CGSize(width: min(500, size.width), height: min(500, size.height))
 
         let options = PHImageRequestOptions()
         options.deliveryMode = .Opportunistic
