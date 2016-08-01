@@ -20,7 +20,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private let imageView = UIImageView()
-    private var renderedSize: CGSize = .zero
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,9 +41,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         
         imageView.frame = contentView.bounds
         
-        if imageView.size != renderedSize {
-            updateImage()
-        }
+        updateImage()
     }
     
     override var selected: Bool {
@@ -53,15 +50,15 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+    
     // MARK: - Private
     
     private func updateImage() {
-        
-        let size = imageView.frame.size
-        
-        imageView.setImage(image, size: size) { [weak self] in
-            self?.renderedSize = size
-        }
+        imageView.setImage(image)
     }
     
     private func adjustBorderColor() {

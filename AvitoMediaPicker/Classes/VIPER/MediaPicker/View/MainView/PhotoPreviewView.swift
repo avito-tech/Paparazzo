@@ -217,13 +217,31 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         // Сдвинуться он может только если добавятся ячейки перед текущей. Поэтому вычисляет новый indexPath
         // текущей ячейки, прибавляя к ее текущему индексу количество элементов, добавленных перед ней.
         
-        let currentPage = self.currentPage
-        let numberOfPagesAddedBeforeCurrentPage = indexPaths.filter({ $0.item <= currentPage }).count
-        let nextPage = currentPage + numberOfPagesAddedBeforeCurrentPage
-        let indexPath = NSIndexPath(forItem: nextPage, inSection: 0)
+        let indexesOfInsertedPages = indexPaths.map { $0.row }
         
+        let indexPath = NSIndexPath(
+            forItem: indexOfPage(currentPage, afterInsertingPagesAtIndexes: indexesOfInsertedPages),
+            inSection: 0
+        )
+
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .None, animated: false)
+    }
+    
+    private func indexOfPage(initialIndex: Int, afterInsertingPagesAtIndexes insertedIndexes: [Int]) -> Int {
+        
+        let sortedIndexes = insertedIndexes.sort(<)
+        var targetIndex = initialIndex
+        
+        for index in sortedIndexes {
+            if index <= targetIndex {
+                targetIndex += 1
+            } else {
+                break
+            }
+        }
+        
+        return targetIndex
     }
 }
