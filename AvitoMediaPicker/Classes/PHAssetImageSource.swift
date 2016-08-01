@@ -20,7 +20,7 @@ final class PHAssetImageSource: ImageSource {
         let options = PHImageRequestOptions()
         options.deliveryMode = .HighQualityFormat
 
-        imageManager.requestImageDataForAsset(asset, options: options) { data, uti, orientation, info in
+        imageManager.requestImageDataForAsset(asset, options: options) { data, _, orientation, _ in
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
                 
                 let source = data.flatMap { CGImageSourceCreateWithData($0, nil) }
@@ -39,7 +39,7 @@ final class PHAssetImageSource: ImageSource {
         let options = PHImageRequestOptions()
         options.deliveryMode = .HighQualityFormat
         
-        imageManager.requestImageDataForAsset(asset, options: options) { data, uti, orientation, info in
+        imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
             dispatch_async(dispatch_get_main_queue()) {
                 completion(data)
             }

@@ -168,12 +168,15 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func addItems(items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
         
-        interactor.addItems(items) { [weak self] canAddItems in
+        guard items.count > 0 else { completion?(); return }
+        
+        interactor.addItems(items) { [weak self] canAddMoreItems in
             
             self?.view?.addItems(items, animated: fromCamera)
-            self?.view?.setCameraButtonVisible(canAddItems)
+            self?.view?.setCameraButtonVisible(canAddMoreItems)
             
-            if canAddItems {
+            if canAddMoreItems {
+                self?.view?.setMode(.Camera)
                 self?.view?.scrollToCameraThumbnail(animated: true)
             } else if let lastItem = items.last {
                 self?.view?.selectItem(lastItem)
@@ -219,7 +222,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     let mediaPickerItems = photoLibraryItems.map {
                         MediaPickerItem(
                             identifier: $0.identifier,
-                            image: CachingImageSource(underlyingImageSource: $0.image),
+                            image: $0.image,
                             source: .PhotoLibrary
                         )
                     }
