@@ -52,13 +52,24 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        image = nil
         imageView.image = nil
     }
     
     // MARK: - Private
     
     private func updateImage() {
-        imageView.setImage(image)
+        
+        let requestedImage = image
+        
+        requestedImage?.imageFittingSize(imageView.bounds.size) { [weak self] (uiImage: UIImage?) in
+            if self?.image === requestedImage {
+                self?.imageView.image = uiImage
+//                debugPrint("set cell image")
+            } else {
+//                debugPrint("image setting cancelled (expected \(unsafeAddressOf(requestedImage!)), actual \(unsafeAddressOf(self!.image!)))")
+            }
+        }
     }
     
     private func adjustBorderColor() {
