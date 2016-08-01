@@ -59,15 +59,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - Private
     
     private func updateImage() {
-        
-        let requestedImage = image
-        
-        requestedImage?.imageFittingSize(imageView.bounds.size) { [weak self] (uiImage: UIImage?) in
-            if self?.image === requestedImage {
-                self?.imageView.image = uiImage
-//                debugPrint("set cell image")
-            } else {
-//                debugPrint("image setting cancelled (expected \(unsafeAddressOf(requestedImage!)), actual \(unsafeAddressOf(self!.image!)))")
+        imageView.setImage(image) { [weak self, requestedImage = image, previousImage = imageView.image] in
+            if self?.image !== requestedImage {
+                self?.imageView.image = previousImage
             }
         }
     }
