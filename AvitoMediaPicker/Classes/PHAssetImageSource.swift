@@ -34,6 +34,18 @@ final class PHAssetImageSource: ImageSource {
         }
     }
     
+    func fullResolutionImageData(completion: NSData? -> ()) {
+        
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .HighQualityFormat
+        
+        imageManager.requestImageDataForAsset(asset, options: options) { data, uti, orientation, info in
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(data)
+            }
+        }
+    }
+    
     func imageSize(completion: CGSize? -> ()) {
         dispatch_async(dispatch_get_main_queue()) { 
             completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
@@ -54,7 +66,6 @@ final class PHAssetImageSource: ImageSource {
         thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, _ in
             self?.thumbnailRequestId = nil
             completion(image?.CGImage.flatMap { T(CGImage: $0) })
-            debugPrint("imageFittingSize \(size) finished")
         }
     }
     

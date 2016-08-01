@@ -21,6 +21,10 @@ final class CachingImageSource: ImageSource {
         underlyingImageSource.fullResolutionImage(completion)
     }
     
+    func fullResolutionImageData(completion: NSData? -> ()) {
+        underlyingImageSource.fullResolutionImageData(completion)
+    }
+    
     func imageSize(completion: CGSize? -> ()) {
         underlyingImageSource.imageSize(completion)
     }
@@ -28,16 +32,20 @@ final class CachingImageSource: ImageSource {
     func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
         
         let cacheKey = NSValue(CGSize: size)
+        debugPrint("Looking for cached image with size \(size)")
         
         if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
+            debugPrint("Found cached image with size \(size)")
             completion(T(CGImage: cachedImageWrapper.image))
         } else {
+            debugPrint("No cached image with size \(size)")
             underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (imageWrapper: CGImageWrapper?) in
                 
                 let cgImage = imageWrapper?.image
                 
                 if let imageWrapper = imageWrapper {
                     self?.cache.setObject(imageWrapper, forKey: cacheKey)
+                    debugPrint("Cache image with size \(size)")
                 }
                 
                 completion(cgImage.flatMap { T(CGImage: $0) })

@@ -36,6 +36,15 @@ public class UrlImageSource: ImageSource {
         }
     }
     
+    public func fullResolutionImageData(completion: NSData? -> ()) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
+            let data = NSData(contentsOfURL: url)
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(data)
+            }
+        }
+    }
+    
     public func imageSize(completion: CGSize? -> ()) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
@@ -67,7 +76,6 @@ public class UrlImageSource: ImageSource {
 
     public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
 
-        debugPrint("request imageFittingSize \(size)")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
             let source = CGImageSourceCreateWithURL(url, nil)
@@ -80,7 +88,6 @@ public class UrlImageSource: ImageSource {
 
             let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
             let image = cgImage.flatMap { T(CGImage: $0) }
-            debugPrint("got imageFittingSize \(size)")
 
             dispatch_async(dispatch_get_main_queue()) {
                 completion(image)
