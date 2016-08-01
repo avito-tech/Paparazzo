@@ -55,7 +55,8 @@ final class PHAssetImageSource: ImageSource {
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
 
         let options = PHImageRequestOptions()
-        options.deliveryMode = .HighQualityFormat
+        options.deliveryMode = .Opportunistic
+        options.networkAccessAllowed = true
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
         
@@ -63,8 +64,11 @@ final class PHAssetImageSource: ImageSource {
             imageManager.cancelImageRequest(thumbnailRequestId)
         }
 
-        thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, _ in
+        thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
             self?.thumbnailRequestId = nil
+            if let error = info?[PHImageErrorKey] as? NSError {
+                debugPrint("error getting image for size \(size): \(error)")
+            }
             completion(image?.CGImage.flatMap { T(CGImage: $0) })
         }
     }

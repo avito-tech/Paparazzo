@@ -3,7 +3,7 @@ import ImageIO
 import MobileCoreServices
 import AvitoDesignKit
 
-public class UrlImageSource: ImageSource {
+public final class UrlImageSource: ImageSource {
 
     private let url: NSURL
 
