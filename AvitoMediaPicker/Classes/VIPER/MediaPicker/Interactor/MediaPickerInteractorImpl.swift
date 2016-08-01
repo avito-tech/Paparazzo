@@ -35,6 +35,21 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(canAddItems: canAddItems())
     }
     
+    func addPhotoLibraryItems(photoLibraryItems: [PhotoLibraryItem], completion: (mediaPickerItems: [MediaPickerItem], canAddItems: Bool) -> ()) {
+        
+        let mediaPickerItems = photoLibraryItems.map {
+            MediaPickerItem(
+                identifier: $0.identifier,
+                image: $0.image,
+                source: .PhotoLibrary
+            )
+        }
+        
+        addItems(mediaPickerItems) { canAddMoreItems in
+            completion(mediaPickerItems: mediaPickerItems, canAddItems: canAddMoreItems)
+        }
+    }
+    
     func updateItem(item: MediaPickerItem, completion: () -> ()) {
         
         if let index = items.indexOf(item) {

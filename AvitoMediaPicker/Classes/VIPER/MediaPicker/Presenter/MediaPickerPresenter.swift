@@ -167,30 +167,33 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func addItems(items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
+        interactor.addItems(items) { [weak self] canAddItems in
+            self?.handleItemsAdded(items, fromCamera: fromCamera, canAddMoreItems: canAddItems, completion: completion)
+        }
+    }
+    
+    private func handleItemsAdded(items: [MediaPickerItem], fromCamera: Bool, canAddMoreItems: Bool, completion: (() -> ())? = nil) {
         
         guard items.count > 0 else { completion?(); return }
         
-        interactor.addItems(items) { [weak self] canAddMoreItems in
-            
-            self?.view?.addItems(items, animated: fromCamera)
-            self?.view?.setCameraButtonVisible(canAddMoreItems)
-            
-            if canAddMoreItems {
-                self?.view?.setMode(.Camera)
-                self?.view?.scrollToCameraThumbnail(animated: true)
-            } else if let lastItem = items.last {
-                self?.view?.selectItem(lastItem)
-                self?.view?.scrollToItemThumbnail(lastItem, animated: true)
-            }
-            
-            self?.interactor.items { items in
-                self?.view?.setPhotoTitle("Фото \(items.count)")
-            }
-            
-            self?.onItemsAdd?(items)
-            
-            completion?()
+        view?.addItems(items, animated: fromCamera)
+        view?.setCameraButtonVisible(canAddMoreItems)
+        
+        if canAddMoreItems {
+            view?.setMode(.Camera)
+            view?.scrollToCameraThumbnail(animated: true)
+        } else if let lastItem = items.last {
+            view?.selectItem(lastItem)
+            view?.scrollToItemThumbnail(lastItem, animated: true)
         }
+        
+        interactor.items { [weak self] items in
+            self?.view?.setPhotoTitle("Фото \(items.count)")
+        }
+        
+        onItemsAdd?(items)
+        
+        completion?()
     }
     
     private func removeItem(item: MediaPickerItem) {
@@ -218,16 +221,11 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.router.showPhotoLibrary(maxSelectedItemsCount: maxItemsCount) { module in
                 
                 module.onFinish = { photoLibraryItems in
-                    
-                    let mediaPickerItems = photoLibraryItems.map {
-                        MediaPickerItem(
-                            identifier: $0.identifier,
-                            image: $0.image,
-                            source: .PhotoLibrary
-                        )
+
+                    self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
+                        self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
                     }
                     
-                    self?.addItems(mediaPickerItems, fromCamera: false)
                     self?.router.focusOnCurrentModule()
                 }
             }
