@@ -23,6 +23,10 @@ final class CroppedImageSource: ImageSource {
         }
     }
     
+    func fullResolutionImageData(completion: NSData? -> ()) {
+        // TODO
+    }
+    
     func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
         
         if let previewImage = previewImage {

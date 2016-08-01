@@ -3,7 +3,7 @@ import ImageIO
 import MobileCoreServices
 import AvitoDesignKit
 
-public struct UrlImageSource: ImageSource {
+public class UrlImageSource: ImageSource {
 
     private let url: NSURL
 
@@ -32,6 +32,15 @@ public struct UrlImageSource: ImageSource {
             
             dispatch_async(dispatch_get_main_queue()) {
                 completion(image)
+            }
+        }
+    }
+    
+    public func fullResolutionImageData(completion: NSData? -> ()) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
+            let data = NSData(contentsOfURL: url)
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(data)
             }
         }
     }

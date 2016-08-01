@@ -3,7 +3,7 @@ PODS:
     - JVFloatLabeledTextField (= 1.1.0)
     - SDWebImage (= 3.8.1)
     - TTTAttributedLabel (= 1.13.0)
-  - AvitoMediaPicker (0.0.7):
+  - AvitoMediaPicker (0.0.8):
     - AvitoDesignKit (= 0.0.6)
     - JNWSpringAnimation
     - Marshroute
@@ -34,7 +34,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AvitoDesignKit: 60a770dc9b86a0e8e5fb1e696dad41df3bc76a30
-  AvitoMediaPicker: ff68ee74068dc780d95f0140dfc43545a63c3926
+  AvitoMediaPicker: 3cc890063deb0de0e2f49f4ec75642e1c43b5406
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52

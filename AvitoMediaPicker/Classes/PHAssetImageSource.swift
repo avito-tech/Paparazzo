@@ -34,14 +34,28 @@ final class PHAssetImageSource: ImageSource {
         }
     }
     
+    func fullResolutionImageData(completion: NSData? -> ()) {
+        
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .HighQualityFormat
+        
+        imageManager.requestImageDataForAsset(asset, options: options) { data, uti, orientation, info in
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(data)
+            }
+        }
+    }
+    
     func imageSize(completion: CGSize? -> ()) {
-        completion(CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
+        dispatch_async(dispatch_get_main_queue()) { 
+            completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
+        }
     }
 
     func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
 
         let options = PHImageRequestOptions()
-        options.deliveryMode = .Opportunistic
+        options.deliveryMode = .HighQualityFormat
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
         

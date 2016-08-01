@@ -213,9 +213,14 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private func addCollectionViewItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
         
-        let currentPage = CGFloat(self.currentPage)
-        let nextPage = currentPage + CGFloat(indexPaths.filter({ $0.item <= Int(currentPage) }).count)
-        let indexPath = NSIndexPath(forItem: Int(nextPage), inSection: 0)
+        // После добавления новых ячеек фокус должен остаться на той ячейке, на которой он был до этого.
+        // Сдвинуться он может только если добавятся ячейки перед текущей. Поэтому вычисляет новый indexPath
+        // текущей ячейки, прибавляя к ее текущему индексу количество элементов, добавленных перед ней.
+        
+        let currentPage = self.currentPage
+        let numberOfPagesAddedBeforeCurrentPage = indexPaths.filter({ $0.item <= currentPage }).count
+        let nextPage = currentPage + numberOfPagesAddedBeforeCurrentPage
+        let indexPath = NSIndexPath(forItem: nextPage, inSection: 0)
         
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
