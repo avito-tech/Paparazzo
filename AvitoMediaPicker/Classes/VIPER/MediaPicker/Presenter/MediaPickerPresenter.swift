@@ -75,6 +75,23 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.view?.setLatestLibraryPhoto(image)
         }
         
+        interactor.items { [weak self] items, canAddMoreItems in
+            guard items.count > 0 else { return }
+            
+            self?.view?.addItems(items, animated: false)
+            self?.view?.setCameraButtonVisible(canAddMoreItems)
+            
+            self?.interactor.selectedItem { selectedItem in
+                if let selectedItem = selectedItem {
+                    self?.selectItem(selectedItem)
+                } else if canAddMoreItems {
+                    self?.selectCamera()
+                } else if let lastItem = items.last {
+                    self?.selectItem(lastItem)
+                }
+            }
+        }
+        
         view?.onPhotoLibraryButtonTap = { [weak self] in
             self?.showPhotoLibrary()
         }
@@ -105,17 +122,8 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onItemSelect = { [weak self] item in
-            
             self?.interactor.selectItem(item)
-            
-            self?.adjustPhotoTitleForItem(item)
-            
-            self?.view?.setMode(.PhotoPreview(item))
-            self?.view?.scrollToItemThumbnail(item, animated: true)
-            
-            self?.view?.onRemoveButtonTap = {
-                self?.removeItem(item)
-            }
+            self?.adjustViewForSelectedItem(item, animated: true)
         }
         
         view?.onCameraThumbnailTap = { [weak self] in
@@ -144,7 +152,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onContinueButtonTap = { [weak self] in
-            self?.interactor.items { items in
+            self?.interactor.items { items, _ in
                 self?.onFinish?(items)
             }
         }
@@ -156,20 +164,46 @@ final class MediaPickerPresenter: MediaPickerModule {
                 }
             }
         }
+        
+        view?.onRemoveButtonTap = { [weak self] in
+            self?.removeSelectedItem()
+        }
+    }
+    
+    private func adjustViewForSelectedItem(item: MediaPickerItem, animated: Bool) {
+        adjustPhotoTitleForItem(item)
+        
+        view?.setMode(.PhotoPreview(item))
+        view?.scrollToItemThumbnail(item, animated: animated)
     }
     
     private func adjustPhotoTitleForItem(item: MediaPickerItem) {
         interactor.indexOfItem(item) { [weak self] index in
             if let index = index {
-                self?.view?.setPhotoTitle("Фото \(index + 1)")
+                self?.setTitleForPhotoWithIndex(index)
+                self?.view?.setPhotoTitleAlpha(1)
             }
         }
+    }
+    
+    private func setTitleForPhotoWithIndex(index: Int) {
+        view?.setPhotoTitle("Фото \(index + 1)")
     }
     
     private func addItems(items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
         interactor.addItems(items) { [weak self] canAddItems in
             self?.handleItemsAdded(items, fromCamera: fromCamera, canAddMoreItems: canAddItems, completion: completion)
         }
+    }
+    
+    private func selectItem(item: MediaPickerItem) {
+        view?.selectItem(item)
+        adjustViewForSelectedItem(item, animated: false)
+    }
+    
+    private func selectCamera() {
+        view?.setMode(.Camera)
+        view?.scrollToCameraThumbnail(animated: false)
     }
     
     private func handleItemsAdded(items: [MediaPickerItem], fromCamera: Bool, canAddMoreItems: Bool, completion: (() -> ())? = nil) {
@@ -187,8 +221,8 @@ final class MediaPickerPresenter: MediaPickerModule {
             view?.scrollToItemThumbnail(lastItem, animated: true)
         }
         
-        interactor.items { [weak self] items in
-            self?.view?.setPhotoTitle("Фото \(items.count)")
+        interactor.items { [weak self] items, _ in
+            self?.setTitleForPhotoWithIndex(items.count - 1)
         }
         
         onItemsAdd?(items)
@@ -196,21 +230,25 @@ final class MediaPickerPresenter: MediaPickerModule {
         completion?()
     }
     
-    private func removeItem(item: MediaPickerItem) {
+    private func removeSelectedItem() {
         
-        interactor.removeItem(item) { [weak self] adjacentItem, canAddItems in
+        interactor.selectedItem { [weak self] item in
+            guard let item = item else { return }
             
-            self?.view?.removeItem(item)
-            self?.view?.setCameraButtonVisible(canAddItems)
-            
-            if let adjacentItem = adjacentItem {
-                self?.view?.selectItem(adjacentItem)
-            } else {
-                self?.view?.setMode(.Camera)
-                self?.view?.setPhotoTitleAlpha(0)
+            self?.interactor.removeItem(item) { adjacentItem, canAddItems in
+                
+                self?.view?.removeItem(item)
+                self?.view?.setCameraButtonVisible(canAddItems)
+                
+                if let adjacentItem = adjacentItem {
+                    self?.view?.selectItem(adjacentItem)
+                } else {
+                    self?.view?.setMode(.Camera)
+                    self?.view?.setPhotoTitleAlpha(0)
+                }
+                
+                self?.onItemRemove?(item)
             }
-            
-            self?.onItemRemove?(item)
         }
     }
     

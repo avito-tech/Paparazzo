@@ -26,7 +26,9 @@ final class ExamplePresenter {
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
             
-            self?.router.showMediaPicker(maxItemsCount: 20) { module in
+            let items = self?.items ?? []
+            
+            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 20) { module in
                 
                 module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
@@ -41,10 +43,6 @@ final class ExamplePresenter {
                     items.forEach { debugPrint($0) }
                     self?.items = items
                     module?.dismissModule()
-                }
-                
-                if let items = self?.items {
-                    module.setItems(items, selectedItem: items.last)
                 }
             }
         }

@@ -4,7 +4,9 @@ import Marshroute
 public protocol MediaPickerAssembly: class {
     
     func module(
-        maxItemsCount maxItemsCount: Int?,
+        items items: [MediaPickerItem],
+        selectedItem: MediaPickerItem?,
+        maxItemsCount: Int?,
         routerSeed: RouterSeed,
         configuration: MediaPickerModule -> ()
     ) -> UIViewController

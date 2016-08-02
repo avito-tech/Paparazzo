@@ -86,7 +86,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     var onViewDidLoad: (() -> ())?
     
     func setMode(mode: MediaPickerViewMode) {
-        mediaPickerView.setMode(mode)
+        // Этот метод может быть вызван до того, как вьюшка обретет frame, что критично для корректной работы
+        // ее метода setMode. dispatch_async спасает ситуацию.
+        dispatch_async(dispatch_get_main_queue()) {
+            self.mediaPickerView.setMode(mode)
+        }
     }
     
     func setCaptureSession(session: AVCaptureSession) {
