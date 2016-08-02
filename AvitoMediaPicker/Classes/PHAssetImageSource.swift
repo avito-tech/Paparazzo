@@ -70,9 +70,6 @@ final class PHAssetImageSource: ImageSource {
 
         thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
             self?.thumbnailRequestId = nil
-            if let error = info?[PHImageErrorKey] as? NSError {
-                debugPrint("error getting image for size \(size): \(error)")
-            }
             completion(image?.CGImage.flatMap { T(CGImage: $0) })
         }
     }

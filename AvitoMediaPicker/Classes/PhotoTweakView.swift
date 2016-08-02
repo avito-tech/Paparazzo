@@ -93,6 +93,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     func setImage(image: UIImage) {
         scrollView.imageView.image = image
         calculateFrames()
+        notifyAboutCroppingParametersChange()
     }
     
     private func adjustRotation() {
