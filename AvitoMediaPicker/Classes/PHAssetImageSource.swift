@@ -19,6 +19,7 @@ final class PHAssetImageSource: ImageSource {
 
         let options = PHImageRequestOptions()
         options.deliveryMode = .HighQualityFormat
+        options.networkAccessAllowed = true
 
         imageManager.requestImageDataForAsset(asset, options: options) { data, _, orientation, _ in
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
@@ -38,6 +39,7 @@ final class PHAssetImageSource: ImageSource {
         
         let options = PHImageRequestOptions()
         options.deliveryMode = .HighQualityFormat
+        options.networkAccessAllowed = true
         
         imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
             dispatch_async(dispatch_get_main_queue()) {
@@ -52,15 +54,25 @@ final class PHAssetImageSource: ImageSource {
         }
     }
 
-    func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
-        
+    func imageFittingSize<T: InitializableWithCGImage>(
+        size: CGSize,
+        contentMode: ImageContentMode,
+        deliveryMode: ImageDeliveryMode,
+        completion: T? -> ()
+    ) {
         // Судя по некоторым сообщениям на форумах, метод requestImageForAsset может временами работать неадекватно,
         // если запрашиваемый размер меньше чем 500x500
         let size = CGSize(width: min(500, size.width), height: min(500, size.height))
 
         let options = PHImageRequestOptions()
-        options.deliveryMode = .Opportunistic
         options.networkAccessAllowed = true
+        
+        switch deliveryMode {
+        case .Progressive:
+            options.deliveryMode = .Opportunistic
+        case .Best:
+            options.deliveryMode = .HighQualityFormat
+        }
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
         

@@ -27,8 +27,12 @@ final class CroppedImageSource: ImageSource {
         // TODO
     }
     
-    func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
-        
+    func imageFittingSize<T: InitializableWithCGImage>(
+        size: CGSize,
+        contentMode: ImageContentMode,
+        deliveryMode: ImageDeliveryMode,
+        completion: T? -> ()
+    ) {
         if let previewImage = previewImage {
             completion(T(CGImage: previewImage))
         }

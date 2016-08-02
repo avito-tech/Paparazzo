@@ -61,10 +61,6 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onCroppingParametersChange = newValue }
     }
     
-    func setImage(image: ImageSource) {
-        imageCroppingView.setImage(image, completion: nil)
-    }
-    
     func setImage(image: ImageSource, completion: (() -> ())) {
         imageCroppingView.setImage(image, completion: completion)
     }
