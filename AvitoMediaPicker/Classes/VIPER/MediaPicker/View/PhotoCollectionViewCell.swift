@@ -52,19 +52,13 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        image = nil
         imageView.image = nil
     }
     
     // MARK: - Private
     
     private func updateImage() {
-        imageView.setImage(image) { [weak self, requestedImage = image, previousImage = imageView.image] in
-            if self?.image !== requestedImage {
-                self?.imageView.image = previousImage
-            }
-        }
-    }
+        imageView.setImage(image)    }
     
     private func adjustBorderColor() {
         layer.borderColor = selectedBorderColor?.CGColor
