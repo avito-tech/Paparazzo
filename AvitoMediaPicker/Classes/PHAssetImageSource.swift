@@ -5,8 +5,6 @@ final class PHAssetImageSource: ImageSource {
 
     private let asset: PHAsset
     private let imageManager: PHImageManager
-    
-    private var thumbnailRequestId: PHImageRequestID?
 
     init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
         self.asset = asset
@@ -81,13 +79,8 @@ final class PHAssetImageSource: ImageSource {
         }
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
-        
-        if let thumbnailRequestId = thumbnailRequestId {
-            imageManager.cancelImageRequest(thumbnailRequestId)
-        }
 
-        thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
-            self?.thumbnailRequestId = nil
+        imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
             completion(image?.CGImage.flatMap { T(CGImage: $0) })
         }
     }
