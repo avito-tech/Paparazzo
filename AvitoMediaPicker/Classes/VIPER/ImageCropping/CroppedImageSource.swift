@@ -24,22 +24,35 @@ final class CroppedImageSource: ImageSource {
     }
     
     func fullResolutionImageData(completion: NSData? -> ()) {
-        // TODO
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+            
+            let data = NSMutableData()
+            let destination = CGImageDestinationCreateWithData(data, kUTTypeJPEG, 1, nil)
+            
+            if let image = self.croppedImage, destination = destination {
+                CGImageDestinationAddImage(destination, image, nil)
+                CGImageDestinationFinalize(destination)
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(data.length > 0 ? NSData(data: data) : nil)
+            }
+        }
     }
     
     func imageFittingSize<T: InitializableWithCGImage>(
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        completion: T? -> ()
+        resultHandler: T? -> ()
     ) {
-        if let previewImage = previewImage {
-            completion(T(CGImage: previewImage))
+        if let previewImage = previewImage where deliveryMode == .Progressive {
+            resultHandler(T(CGImage: previewImage))
         }
         
         // TODO
         getCroppedImage { cgImage in
-            completion(cgImage.flatMap { T(CGImage: $0) })
+            resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     
@@ -59,7 +72,12 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - Private
     
-    private var croppedImage: CGImage?
+    private let croppedImageCache = SingleObjectCache<CGImageWrapper>()
+    
+    private var croppedImage: CGImage? {
+        get { return croppedImageCache.value?.image }
+        set { croppedImageCache.value = newValue.flatMap { CGImageWrapper(CGImage: $0) } }
+    }
     
     private func getCroppedImage(completion: CGImage? -> ()) {
         if let croppedImage = croppedImage {

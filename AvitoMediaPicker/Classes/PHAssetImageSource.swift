@@ -59,7 +59,7 @@ final class PHAssetImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        completion: T? -> ()
+        resultHandler: T? -> ()
     ) {
         // Судя по некоторым сообщениям на форумах, метод requestImageForAsset может временами работать неадекватно,
         // если запрашиваемый размер меньше чем 500x500
@@ -81,7 +81,7 @@ final class PHAssetImageSource: ImageSource {
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
 
         imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
-            completion(image?.CGImage.flatMap { T(CGImage: $0) })
+            resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
         }
     }
     

@@ -43,6 +43,10 @@ final class ExamplePresenter {
                     items.forEach { debugPrint($0) }
                     self?.items = items
                     module?.dismissModule()
+                    
+                    items.first?.image.fullResolutionImageData { data in
+                        debugPrint("first item data size = \(data?.length ?? 0)")
+                    }
                 }
             }
         }
