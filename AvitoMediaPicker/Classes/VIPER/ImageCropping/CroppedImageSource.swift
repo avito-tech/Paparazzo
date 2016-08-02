@@ -24,7 +24,20 @@ final class CroppedImageSource: ImageSource {
     }
     
     func fullResolutionImageData(completion: NSData? -> ()) {
-        // TODO
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+            
+            let data = NSMutableData()
+            let destination = CGImageDestinationCreateWithData(data, kUTTypeJPEG, 1, nil)
+            
+            if let image = self.croppedImage, destination = destination {
+                CGImageDestinationAddImage(destination, image, nil)
+                CGImageDestinationFinalize(destination)
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(data.length > 0 ? NSData(data: data) : nil)
+            }
+        }
     }
     
     func imageFittingSize<T: InitializableWithCGImage>(
