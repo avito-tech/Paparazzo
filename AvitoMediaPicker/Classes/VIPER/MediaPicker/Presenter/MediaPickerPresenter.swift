@@ -217,16 +217,18 @@ final class MediaPickerPresenter: MediaPickerModule {
     private func showPhotoLibrary() {
         
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
-            
-            self?.router.showPhotoLibrary(maxSelectedItemsCount: maxItemsCount) { module in
-                
-                module.onFinish = { photoLibraryItems in
-
-                    self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
-                        self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
-                    }
+            self?.interactor.photoLibraryItems { photoLibraryItems in
+             
+                self?.router.showPhotoLibrary(selectedItems: photoLibraryItems, maxSelectedItemsCount: maxItemsCount) { module in
                     
-                    self?.router.focusOnCurrentModule()
+                    module.onFinish = { photoLibraryItems in
+                        
+                        self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
+                            self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
+                        }
+                        
+                        self?.router.focusOnCurrentModule()
+                    }
                 }
             }
         }

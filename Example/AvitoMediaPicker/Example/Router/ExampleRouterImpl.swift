@@ -26,7 +26,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     }
     
     func showPhotoLibrary(
-        maxSelectedItemsCount maxSelectedItemsCount: Int?,
+        selectedItems selectedItems: [PhotoLibraryItem],
+        maxSelectedItemsCount: Int?,
         configuration: PhotoLibraryModule -> ()
     ) {
         pushViewControllerDerivedFrom { routerSeed in
@@ -34,6 +35,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
             let assembly = mediaPickerAssemblyFactory.photoLibraryAssembly()
             
             return assembly.module(
+                selectedItems: selectedItems,
                 maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,
                 configuration: configuration

@@ -50,16 +50,12 @@ final class ExamplePresenter {
         }
         
         view?.onShowPhotoLibraryButtonTap = { [weak self] in
-            
-            self?.interactor.photoLibraryItems { selectedItems in
-            
-                self?.router.showPhotoLibrary(maxSelectedItemsCount: 5) { module in
-                    
-                    module.selectItems(selectedItems)
-                    
-                    module.onFinish = { [weak module] items in
-                        self?.interactor.setPhotoLibraryItems(selectedItems)
-                        module?.dismissModule()
+            self?.interactor.photoLibraryItems { items in
+                self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
+                    weak var weakModule = module
+                    module.onFinish = { items in
+                        self?.interactor.setPhotoLibraryItems(items)
+                        weakModule?.dismissModule()
                     }
                 }
             }

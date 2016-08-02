@@ -7,6 +7,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let maxItemsCount: Int?
     private var items = [MediaPickerItem]()
+    private var photoLibraryItems = [PhotoLibraryItem]()
     private var selectedItem: MediaPickerItem?
     
     init(
@@ -45,6 +46,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             )
         }
         
+        self.photoLibraryItems.appendContentsOf(photoLibraryItems)
+        
         addItems(mediaPickerItems) { canAddMoreItems in
             completion(mediaPickerItems: mediaPickerItems, canAddItems: canAddMoreItems)
         }
@@ -80,6 +83,10 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
         }
         
+        if let matchingPhotoLibraryItemIndex = photoLibraryItems.indexOf({ $0.identifier == item.identifier }) {
+            photoLibraryItems.removeAtIndex(matchingPhotoLibraryItemIndex)
+        }
+        
         completion(adjacentItem: adjacentItem, canAddItems: canAddItems())
     }
     
@@ -93,6 +100,10 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     func items(completion: [MediaPickerItem] -> ()) {
         completion(items)
+    }
+    
+    func photoLibraryItems(completion: [PhotoLibraryItem] -> ()) {
+        completion(photoLibraryItems)
     }
     
     func indexOfItem(item: MediaPickerItem, completion: Int? -> ()) {
