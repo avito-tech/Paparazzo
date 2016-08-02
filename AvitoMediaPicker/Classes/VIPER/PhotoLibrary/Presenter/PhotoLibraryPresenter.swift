@@ -30,10 +30,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     var onFinish: ((selectedItems: [PhotoLibraryItem]) -> ())?
     
-    func selectItems(items: [PhotoLibraryItem]) {
-        // TODO
-    }
-    
     func focusOnModule() {
         router.focusOnCurrentModule()
     }

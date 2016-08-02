@@ -4,7 +4,8 @@ import AvitoDesignKit
 protocol MediaPickerRouter: class, RouterFocusable, RouterDismissable {
     
     func showPhotoLibrary(
-        maxSelectedItemsCount maxSelectedItemsCount: Int?,
+        selectedItems selectedItems: [PhotoLibraryItem],
+        maxSelectedItemsCount: Int?,
         configuration: PhotoLibraryModule -> ()
     )
     

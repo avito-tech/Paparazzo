@@ -6,7 +6,8 @@ protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
     func showMediaPicker(maxItemsCount maxItemsCount: Int?, configuration: MediaPickerModule -> ())
     
     func showPhotoLibrary(
-        maxSelectedItemsCount maxSelectedItemsCount: Int?,
+        selectedItems selectedItems: [PhotoLibraryItem],
+        maxSelectedItemsCount: Int?,
         configuration: PhotoLibraryModule -> ()
     )
 }

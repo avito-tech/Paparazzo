@@ -6,7 +6,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     
     let cellReuseIdentifier: String
     var onDataChanged: (() -> ())?
-    var additionalCellConfiguration: ((CellType, ItemType) -> ())?
+    var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, NSIndexPath) -> ())?
     
     private var items = [ItemType]()
     
@@ -53,7 +53,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         
         if let cell = cell as? CellType {
             cell.customizeWithItem(item)
-            additionalCellConfiguration?(cell, item)
+            additionalCellConfiguration?(cell, item, collectionView, indexPath)
         }
         
         return cell

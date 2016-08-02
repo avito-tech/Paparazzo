@@ -5,8 +5,6 @@ final class PHAssetImageSource: ImageSource {
 
     private let asset: PHAsset
     private let imageManager: PHImageManager
-    
-    private var thumbnailRequestId: PHImageRequestID?
 
     init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
         self.asset = asset
@@ -20,6 +18,9 @@ final class PHAssetImageSource: ImageSource {
         let options = PHImageRequestOptions()
         options.deliveryMode = .HighQualityFormat
         options.networkAccessAllowed = true
+        options.progressHandler = { progress, _, _, _ in
+            debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
+        }
 
         imageManager.requestImageDataForAsset(asset, options: options) { data, _, orientation, _ in
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
@@ -66,6 +67,9 @@ final class PHAssetImageSource: ImageSource {
 
         let options = PHImageRequestOptions()
         options.networkAccessAllowed = true
+        options.progressHandler = { progress, _, _, _ in
+            debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
+        }
         
         switch deliveryMode {
         case .Progressive:
@@ -75,13 +79,8 @@ final class PHAssetImageSource: ImageSource {
         }
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
-        
-        if let thumbnailRequestId = thumbnailRequestId {
-            imageManager.cancelImageRequest(thumbnailRequestId)
-        }
 
-        thumbnailRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
-            self?.thumbnailRequestId = nil
+        imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
             completion(image?.CGImage.flatMap { T(CGImage: $0) })
         }
     }

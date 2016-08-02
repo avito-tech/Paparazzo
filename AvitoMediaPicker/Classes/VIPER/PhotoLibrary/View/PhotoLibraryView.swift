@@ -26,6 +26,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         dataSource.onDataChanged = { [weak self] in
             self?.collectionView.reloadData()
         }
+        dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
+            self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
+        }
         
         backgroundColor = .whiteColor()
         
@@ -67,9 +70,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func setTheme(theme: PhotoLibraryUITheme) {
-        dataSource.additionalCellConfiguration = { cell, item in
-            cell.selectedBorderColor = theme.photoLibraryItemSelectionColor
-        }
+        self.theme = theme
     }
     
     // MARK: - UICollectionViewDelegate
@@ -100,6 +101,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Private
     
+    private var theme: PhotoLibraryUITheme?
+    
     private func adjustDimmingForCell(cell: UICollectionViewCell) {
         let shouldDimCell = (dimsUnselectedItems && !cell.selected)
         cell.contentView.alpha = shouldDimCell ? 0.3 /* TODO: взято с потолка, нужно взять с пола */ : 1
@@ -113,5 +116,19 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     private func adjustDimmingForVisibleCells() {
         collectionView.visibleCells().forEach { adjustDimmingForCell($0) }
+    }
+    
+    private func configureCell(
+        cell: PhotoLibraryItemCell,
+        wihData data: PhotoLibraryItemCellData,
+        inCollectionView collectionView: UICollectionView,
+        atIndexPath indexPath: NSIndexPath
+    ) {
+        cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
+        
+        // Без этого костыля невозможно снять выделение с preselected ячейки
+        if data.selected {
+            collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
     }
 }

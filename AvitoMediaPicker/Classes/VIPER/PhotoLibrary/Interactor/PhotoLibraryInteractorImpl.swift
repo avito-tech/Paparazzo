@@ -12,7 +12,12 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - Init
     
-    init(maxSelectedItemsCount: Int? = nil, photoLibraryItemsService: PhotoLibraryItemsService) {
+    init(
+        selectedItems: [PhotoLibraryItem],
+        maxSelectedItemsCount: Int? = nil,
+        photoLibraryItemsService: PhotoLibraryItemsService
+    ) {
+        self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService
     }
