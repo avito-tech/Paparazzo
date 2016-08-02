@@ -33,7 +33,7 @@ final class CroppedImageSource: ImageSource {
         deliveryMode: ImageDeliveryMode,
         completion: T? -> ()
     ) {
-        if let previewImage = previewImage {
+        if let previewImage = previewImage where deliveryMode == .Progressive {
             completion(T(CGImage: previewImage))
         }
         
@@ -59,7 +59,12 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - Private
     
-    private var croppedImage: CGImage?
+    private let croppedImageCache = SingleObjectCache<CGImageWrapper>()
+    
+    private var croppedImage: CGImage? {
+        get { return croppedImageCache.value?.image }
+        set { croppedImageCache.value = newValue.flatMap { CGImageWrapper(CGImage: $0) } }
+    }
     
     private func getCroppedImage(completion: CGImage? -> ()) {
         if let croppedImage = croppedImage {
