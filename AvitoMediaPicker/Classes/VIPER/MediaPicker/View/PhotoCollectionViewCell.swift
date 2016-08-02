@@ -58,7 +58,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - Private
     
     private func updateImage() {
-        imageView.setImage(image)    }
+        imageView.setImage(image)
+    }
     
     private func adjustBorderColor() {
         layer.borderColor = selectedBorderColor?.CGColor
