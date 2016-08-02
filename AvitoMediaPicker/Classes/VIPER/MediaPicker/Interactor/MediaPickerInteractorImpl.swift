@@ -11,10 +11,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private var selectedItem: MediaPickerItem?
     
     init(
+        items: [MediaPickerItem],
+        selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         deviceOrientationService: DeviceOrientationService,
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
+        self.items = items
+        self.selectedItem = selectedItem
         self.maxItemsCount = maxItemsCount
         self.deviceOrientationService = deviceOrientationService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
@@ -98,8 +102,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(selectedItem)
     }
     
-    func items(completion: [MediaPickerItem] -> ()) {
-        completion(items)
+    func items(completion: (mediaPickerItems: [MediaPickerItem], canAddItems: Bool) -> ()) {
+        completion(mediaPickerItems: items, canAddItems: canAddItems())
     }
     
     func photoLibraryItems(completion: [PhotoLibraryItem] -> ()) {

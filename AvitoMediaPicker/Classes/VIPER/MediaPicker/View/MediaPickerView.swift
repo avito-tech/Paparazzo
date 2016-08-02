@@ -210,11 +210,6 @@ final class MediaPickerView: UIView {
         case .PhotoPreview(let photo):
             
             photoPreviewView.scrollToMediaItem(photo)
-            // TODO: перенести всю логику
-//            photoView.setImage(photo.image, deferredPlaceholder: true) { [weak self] in
-//                self?.photoView.hidden = false
-//                self?.setCameraVisible(false)
-//            }
             
             cameraControlsView.hidden = true
             photoControlsView.hidden = false

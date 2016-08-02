@@ -12,7 +12,7 @@ protocol MediaPickerInteractor: class {
     func selectItem(_: MediaPickerItem)
     func selectedItem(completion: MediaPickerItem? -> ())
     
-    func items(completion: [MediaPickerItem] -> ())
+    func items(completion: (mediaPickerItems: [MediaPickerItem], canAddItems: Bool) -> ())
     func photoLibraryItems(completion: [PhotoLibraryItem] -> ())
     
     func indexOfItem(_: MediaPickerItem, completion: Int? -> ())

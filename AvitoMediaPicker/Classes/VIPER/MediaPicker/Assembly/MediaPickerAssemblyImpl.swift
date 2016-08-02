@@ -16,12 +16,16 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     // MARK: - MediaPickerAssembly
     
     public func module(
-        maxItemsCount maxItemsCount: Int?,
+        items items: [MediaPickerItem],
+        selectedItem: MediaPickerItem?,
+        maxItemsCount: Int?,
         routerSeed: RouterSeed,
         configuration: MediaPickerModule -> ()
     ) -> UIViewController {
         
         let interactor = MediaPickerInteractorImpl(
+            items: items,
+            selectedItem: selectedItem,
             maxItemsCount: maxItemsCount,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
