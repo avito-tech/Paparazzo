@@ -31,15 +31,15 @@ final class CroppedImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        completion: T? -> ()
+        resultHandler: T? -> ()
     ) {
         if let previewImage = previewImage where deliveryMode == .Progressive {
-            completion(T(CGImage: previewImage))
+            resultHandler(T(CGImage: previewImage))
         }
         
         // TODO
         getCroppedImage { cgImage in
-            completion(cgImage.flatMap { T(CGImage: $0) })
+            resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     

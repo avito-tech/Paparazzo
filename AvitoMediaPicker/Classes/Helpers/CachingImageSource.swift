@@ -38,12 +38,12 @@ final class CachingImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        completion: T? -> ()
+        resultHandler: T? -> ()
     ) {
         let cacheKey = NSValue(CGSize: size)
         
         if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
-            completion(T(CGImage: cachedImageWrapper.image))
+            resultHandler(T(CGImage: cachedImageWrapper.image))
         } else {
             underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode) {
                 [weak self] (imageWrapper: CGImageWrapper?) in
@@ -56,7 +56,7 @@ final class CachingImageSource: ImageSource {
                     debugPrint("NO IMAGE!")
                 }
                 
-                completion(cgImage.flatMap { T(CGImage: $0) })
+                resultHandler(cgImage.flatMap { T(CGImage: $0) })
             }
         }
     }
