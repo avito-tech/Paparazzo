@@ -34,14 +34,19 @@ final class CachingImageSource: ImageSource {
         underlyingImageSource.imageSize(completion)
     }
     
-    func imageFittingSize<T : InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: T? -> ()) {
-        
+    func imageFittingSize<T: InitializableWithCGImage>(
+        size: CGSize,
+        contentMode: ImageContentMode,
+        deliveryMode: ImageDeliveryMode,
+        completion: T? -> ()
+    ) {
         let cacheKey = NSValue(CGSize: size)
         
         if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
             completion(T(CGImage: cachedImageWrapper.image))
         } else {
-            underlyingImageSource.imageFittingSize(size, contentMode: contentMode) { [weak self] (imageWrapper: CGImageWrapper?) in
+            underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode) {
+                [weak self] (imageWrapper: CGImageWrapper?) in
                 
                 let cgImage = imageWrapper?.image
                 

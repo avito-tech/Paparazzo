@@ -74,8 +74,12 @@ public final class UrlImageSource: ImageSource {
         }
     }
 
-    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, contentMode: ImageContentMode, completion: (T?) -> ()) {
-
+    public func imageFittingSize<T: InitializableWithCGImage>(
+        size: CGSize,
+        contentMode: ImageContentMode,
+        deliveryMode: ImageDeliveryMode,
+        completion: T? -> ()
+    ) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
             let source = CGImageSourceCreateWithURL(url, nil)
