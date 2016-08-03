@@ -1,0 +1,78 @@
+import UIKit
+
+public extension UIImageView {
+    
+    func setImage(
+        fromSource imageSource: ImageSource?,
+        size: CGSize? = nil,
+        placeholder: UIImage? = nil,
+        placeholderDeferred: Bool = false,
+        completion: (() -> ())? = nil
+    ) {
+        let pointSize = (size ?? self.bounds.size)
+        
+        guard pointSize.width > 0 && pointSize.height > 0 else {
+            self.image = nil
+            completion?()
+            return
+        }
+        
+        self.imageSource = imageSource
+        
+        let scale = UIScreen.mainScreen().scale
+        let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
+        
+        if !placeholderDeferred {
+            self.image = placeholder
+        }
+        
+        if let imageSource = imageSource {
+            imageSource.imageFittingSize(pixelSize) { [weak self] (image: UIImage?) in
+                if self?.shouldSetImageForImageSource(imageSource) == true {
+                    self?.image = image ?? placeholder
+                }
+                completion?()
+            }
+        } else {
+            completion?()
+        }
+    }
+    
+    @available(*, deprecated=0.0.9, message="Use setImage(fromSource:size:placeholder:placeholderDeferred:completion) instead")
+    func setImage(
+        imageSource: ImageSource?,
+        size: CGSize? = nil,
+        placeholder: UIImage? = nil,
+        deferredPlaceholder: Bool = false,
+        completion: (() -> ())? = nil
+    ) {
+        setImage(
+            fromSource: imageSource,
+            size: size,
+            placeholder: placeholder,
+            placeholderDeferred: deferredPlaceholder,
+            completion: completion
+        )
+    }
+    
+    // MARK: - Private
+    
+    private static var imageSourceKey = "imageSource"
+    
+    private var imageSource: ImageSource? {
+        get {
+            return objc_getAssociatedObject(self, &UIImageView.imageSourceKey) as? ImageSource
+        }
+        set {
+            objc_setAssociatedObject(self, &UIImageView.imageSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    private func shouldSetImageForImageSource(imageSource: ImageSource) -> Bool {
+        if let currentImageSource = self.imageSource {
+            return imageSource == currentImageSource
+        } else {
+            return true
+        }
+    }
+}

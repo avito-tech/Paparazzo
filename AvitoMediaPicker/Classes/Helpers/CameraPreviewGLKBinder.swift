@@ -8,9 +8,7 @@ import AVFoundation
 // Решение взято отсюда: http://stackoverflow.com/questions/16543075/avcapturesession-with-multiple-previews
 final class CameraOutputGLKBinder {
     
-    private let view: GLKView
-    private var viewBounds: CGRect = .zero
-    
+    private let view: SelfBindingGLKView
     private let eaglContext: EAGLContext
     private let ciContext: CIContext
     
@@ -21,7 +19,8 @@ final class CameraOutputGLKBinder {
         
         ciContext = CIContext(EAGLContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
         
-        view = GLKView(frame: .zero, context: eaglContext)
+        view = SelfBindingGLKView(frame: .zero, context: eaglContext)
+        view.enableSetNeedsDisplay = false
     }
     
     deinit {
@@ -52,30 +51,27 @@ final class CameraOutputGLKBinder {
             } catch {
                 debugPrint("Couldn't configure AVCaptureSession: \(error)")
             }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.configureView()
-            }
         }
         
         return view
     }
+}
+
+private final class SelfBindingGLKView: GLKView {
     
-    // MARK: - Private
+    var drawableBounds: CGRect = .zero
     
-    func configureView() {
+    deinit {
+        deleteDrawable()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        view.enableSetNeedsDisplay = false
-        
-        // bind the frame buffer to get the frame buffer width and height;
-        // the bounds used by CIContext when drawing to a GLKView are in pixels (not points),
-        // hence the need to read from the frame buffer's width and height;
-        // in addition, since we will be accessing the bounds in another queue (_captureSessionQueue),
-        // we want to obtain this piece of information so that we won't be
-        // accessing _videoPreviewView's properties from another thread/queue
-        view.bindDrawable()
-        
-        viewBounds = CGRect(x: 0, y: 0, width: view.drawableWidth, height: view.drawableHeight)
+        if bounds.size.width > 0 && bounds.size.height > 0 {
+            bindDrawable()
+            drawableBounds = CGRect(x: 0, y: 0, width: drawableWidth, height: drawableHeight)
+        }
     }
 }
 
@@ -98,14 +94,21 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         
         for binderWrapper in binders {
             if let binder = binderWrapper.value {
-                drawImageBuffer(imageBuffer, viewBounds: binder.viewBounds, view: binder.view, ciContext: binder.ciContext)
+                drawImageBuffer(imageBuffer, binder: binder)
             }
         }
     }
     
     // MARK: - Private
     
-    private func drawImageBuffer(imageBuffer: CVImageBuffer, viewBounds: CGRect, view: GLKView, ciContext: CIContext) {
+    private func drawImageBuffer(imageBuffer: CVImageBuffer, binder: CameraOutputGLKBinder) {
+        
+        let view = binder.view
+        let ciContext = binder.ciContext
+        
+        guard view.drawableBounds.size.width > 0 && view.drawableBounds.size.height > 0 else {
+            return
+        }
         
         let orientation = Int32(ExifOrientation.Left.rawValue)  // камера отдает картинку в этой ориентации
 
@@ -113,7 +116,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         var sourceExtent = sourceImage.extent
         
         let sourceAspect = sourceExtent.size.width / sourceExtent.size.height
-        let previewAspect = viewBounds.size.width  / viewBounds.size.height
+        let previewAspect = view.drawableBounds.size.width  / view.drawableBounds.size.height
         
         // we want to maintain the aspect radio of the screen size, so we clip the video image
         var drawRect = sourceExtent
@@ -128,8 +131,6 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
             drawRect.size.height = drawRect.size.width / previewAspect
         }
         
-        view.bindDrawable()
-        
         // clear eagl view to grey
         glClearColor(0.5, 0.5, 0.5, 1.0)
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
@@ -138,7 +139,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         glEnable(GLenum(GL_BLEND))
         glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE_MINUS_SRC_ALPHA))
         
-        ciContext.drawImage(sourceImage, inRect: viewBounds, fromRect: drawRect)
+        ciContext.drawImage(sourceImage, inRect: view.drawableBounds, fromRect: drawRect)
         
         view.display()
     }

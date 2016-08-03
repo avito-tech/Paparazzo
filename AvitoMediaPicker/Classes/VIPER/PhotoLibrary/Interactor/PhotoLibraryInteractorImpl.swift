@@ -9,6 +9,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     // MARK: - Dependencies
     
     private let photoLibraryItemsService: PhotoLibraryItemsService
+    private let imageManager = PHImageManager()
     
     // MARK: - Init
     
@@ -87,7 +88,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         return assets.map { asset in
             
             let identifier = asset.localIdentifier
-            let image = PHAssetImageSource(asset: asset)
+            let image = PHAssetImageSource(asset: asset, imageManager: imageManager)
             
             return PhotoLibraryItem(
                 identifier: identifier,
