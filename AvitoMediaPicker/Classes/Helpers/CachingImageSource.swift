@@ -23,6 +23,36 @@ final class CachingImageSource: ImageSource {
     // MARK: - ImageSource
     
     func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+        
+        let cacheKey = "fullResolutionImage"
+        
+        if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
+            resultHandler(T(CGImage: cachedImageWrapper.image))
+            
+        } else {
+            
+            switch deliveryMode {
+                
+            case .Progressive:
+                underlyingImageSource.fullResolutionImage(deliveryMode: deliveryMode, resultHandler: resultHandler)
+                
+                // Для кэша нужна самая лучшая версия картинки
+                underlyingImageSource.fullResolutionImage(deliveryMode: .Best) { [weak self] (imageWrapper: CGImageWrapper?) in
+                    if let imageWrapper = imageWrapper {
+                        self?.cache.setObject(imageWrapper, forKey: cacheKey)
+                    }
+                }
+                
+            case .Best:
+                underlyingImageSource.fullResolutionImage(deliveryMode: deliveryMode) { [weak self] (imageWrapper: CGImageWrapper?) in
+                    if let imageWrapper = imageWrapper {
+                        self?.cache.setObject(imageWrapper, forKey: cacheKey)
+                    }
+                    resultHandler(imageWrapper.flatMap { T(CGImage: $0.image) })
+                }
+            }
+        }
+        
         underlyingImageSource.fullResolutionImage(deliveryMode: deliveryMode, resultHandler: resultHandler)
     }
     
