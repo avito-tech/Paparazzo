@@ -168,7 +168,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
-        mediaPickerView.scrollToItemThumbnail(item, animated: animated)
+        dispatch_async(dispatch_get_main_queue()) { 
+            self.mediaPickerView.scrollToItemThumbnail(item, animated: animated)
+        }
     }
     
     func selectCamera() {
@@ -177,7 +179,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     func scrollToCameraThumbnail(animated animated: Bool) {
-        mediaPickerView.scrollToCameraThumbnail(animated: animated)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.mediaPickerView.scrollToCameraThumbnail(animated: animated)
+        }
     }
     
     func setCameraButtonVisible(visible: Bool) {
