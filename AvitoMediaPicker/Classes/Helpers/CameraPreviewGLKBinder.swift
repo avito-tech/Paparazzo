@@ -24,8 +24,6 @@ final class CameraOutputGLKBinder {
     }
     
     deinit {
-        view.deleteDrawable()
-        
         if EAGLContext.currentContext() === eaglContext {
             EAGLContext.setCurrentContext(nil)
         }
@@ -62,6 +60,10 @@ final class CameraOutputGLKBinder {
 private final class SelfBindingGLKView: GLKView {
     
     var drawableBounds: CGRect = .zero
+    
+    deinit {
+        deleteDrawable()
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
