@@ -12,8 +12,8 @@ public final class UrlImageSource: ImageSource {
     }
 
     // MARK: - ImageSource
-
-    public func fullResolutionImage<T: InitializableWithCGImage>(completion: (T?) -> ()) {
+    
+    public func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode _: ImageDeliveryMode, resultHandler: T? -> ()) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
          
@@ -31,7 +31,7 @@ public final class UrlImageSource: ImageSource {
             let image = cgImage.flatMap { T(CGImage: $0) }
             
             dispatch_async(dispatch_get_main_queue()) {
-                completion(image)
+                resultHandler(image)
             }
         }
     }

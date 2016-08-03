@@ -17,9 +17,14 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    func fullResolutionImage<T : InitializableWithCGImage>(completion: T? -> ()) {
+    func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+        if let previewImage = previewImage where deliveryMode == .Progressive {
+            resultHandler(T(CGImage: previewImage))
+        }
+        
+        // TODO
         getCroppedImage { cgImage in
-            completion(cgImage.flatMap { T(CGImage: $0) })
+            resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     

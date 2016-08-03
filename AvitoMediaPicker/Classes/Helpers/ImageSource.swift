@@ -9,7 +9,7 @@ public protocol ImageSource: class {
     
     func imageSize(completion: CGSize? -> ())
     
-    func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ())
+    func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode _: ImageDeliveryMode, resultHandler: T? -> ())
     func fullResolutionImageData(completion: NSData? -> ())
     
     func imageFittingSize<T: InitializableWithCGImage>(
@@ -44,6 +44,11 @@ public enum ImageDeliveryMode {
 }
 
 public extension ImageSource {
+    
+    func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ()) {
+        fullResolutionImage(deliveryMode: .Best, resultHandler: completion)
+    }
+    
     public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) {
         imageFittingSize(size, contentMode: .AspectFill, deliveryMode: .Progressive, resultHandler: resultHandler)
     }

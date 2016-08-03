@@ -12,28 +12,10 @@ final class PHAssetImageSource: ImageSource {
     }
 
     // MARK: - AbstractImage
-
-    func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ()) {
-
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .HighQualityFormat
-        options.networkAccessAllowed = true
-        options.progressHandler = { progress, _, _, _ in
-            debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
-        }
-
-        imageManager.requestImageDataForAsset(asset, options: options) { data, _, orientation, _ in
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-                
-                let source = data.flatMap { CGImageSourceCreateWithData($0, nil) }
-                let exifOrientation = orientation.exifOrientation
-                let cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }?.imageFixedForOrientation(exifOrientation)
-
-                dispatch_async(dispatch_get_main_queue()) {
-                    completion(cgImage.flatMap { T(CGImage: $0) })
-                }
-            }
-        }
+    
+    func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+        let size = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+        imageFittingSize(size, contentMode: .AspectFill, deliveryMode: deliveryMode, resultHandler: resultHandler)
     }
     
     func fullResolutionImageData(completion: NSData? -> ()) {
