@@ -110,7 +110,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     }
     
     func setImage(image: ImageSource, completion: (() -> ())?) {
-        image.fullResolutionImage(deliveryMode: .Progressive) { [weak self] (image: UIImage?) in
+        image.fullResolutionImage { [weak self] (image: UIImage?) in
             if let image = image {
                 self?.previewView.setImage(image)
             }
