@@ -4,8 +4,10 @@ import MobileCoreServices
 import AvitoDesignKit
 
 public final class UrlImageSource: ImageSource {
-    private static let processingQueue = dispatch_queue_create("ru.avito.AvitoMediaPicker.UrlImageSource.processingQueue",
-                                                               dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, 0))
+    private static let processingQueue = dispatch_queue_create(
+        "ru.avito.AvitoMediaPicker.UrlImageSource.processingQueue",
+        dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, 0)
+    )
 
     private let url: NSURL
 
