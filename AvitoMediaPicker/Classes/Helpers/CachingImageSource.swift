@@ -1,11 +1,6 @@
 import CoreGraphics
 import AvitoDesignKit
 
-/**
- * Лучше не оборачивать этой штукой PHAssetImageSource, потому что в ней completion метода imageFittingSize
- * вызывается несколько раз, и каким-то образом может закэшироваться картинка плохого качества. В то же время
- * из-за этой особенности PHAssetImageSource необходимость в дополнительном кэшировании для него вообще пропадет.
- */
 final class CachingImageSource: ImageSource {
     
     private let underlyingImageSource: ImageSource
@@ -52,8 +47,6 @@ final class CachingImageSource: ImageSource {
                 }
             }
         }
-        
-        underlyingImageSource.fullResolutionImage(deliveryMode: deliveryMode, resultHandler: resultHandler)
     }
     
     func fullResolutionImageData(completion: NSData? -> ()) {
