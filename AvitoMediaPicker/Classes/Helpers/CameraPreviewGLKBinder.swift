@@ -82,6 +82,40 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", nil)
     
     var binders = [WeakWrapper<CameraOutputGLKBinder>]()
+    var isInBackground = false
+    
+    override init() {
+        super.init()
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(CameraOutputGLKBinderDelegate.handleAppWillResignActive(_:)),
+            name: UIApplicationWillResignActiveNotification,
+            object: nil
+        )
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(CameraOutputGLKBinderDelegate.handleAppWillEnterForeground(_:)),
+            name: UIApplicationWillEnterForegroundNotification,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    @objc private func handleAppWillResignActive(_: NSNotification) {
+        glFinish()
+        isInBackground = true
+    }
+    
+    @objc private func handleAppWillEnterForeground(_: NSNotification) {
+        isInBackground = false
+    }
     
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
     
@@ -102,6 +136,8 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     // MARK: - Private
     
     private func drawImageBuffer(imageBuffer: CVImageBuffer, binder: CameraOutputGLKBinder) {
+        
+        guard !isInBackground else { return }
         
         let view = binder.view
         let ciContext = binder.ciContext
