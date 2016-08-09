@@ -354,6 +354,10 @@ final class MediaPickerView: UIView {
         closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
     }
     
+    func setShowsCropButton(showsCropButton: Bool) {
+        photoControlsView.setShowsCropButton(showsCropButton)
+    }
+    
     // MARK: - Private
     
     private func layoutCloseAndContinueButtons() {

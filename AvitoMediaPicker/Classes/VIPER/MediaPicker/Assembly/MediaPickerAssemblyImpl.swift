@@ -19,6 +19,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         items items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
+        cropEnabled: Bool,
         routerSeed: RouterSeed,
         configuration: MediaPickerModule -> ()
     ) -> UIViewController {
@@ -49,6 +50,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
         viewController.setTheme(theme)
+        viewController.setShowsCropButton(cropEnabled)
         
         presenter.view = viewController
         
