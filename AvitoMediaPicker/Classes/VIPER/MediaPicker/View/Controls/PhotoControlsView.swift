@@ -38,10 +38,14 @@ final class PhotoControlsView: UIView {
         super.layoutSubviews()
         
         removeButton.sizeToFit()
-        removeButton.center = CGPoint(x: bounds.left + 100, y: bounds.centerY)
-        
         cropButton.sizeToFit()
-        cropButton.center = CGPoint(x: bounds.right - 100, y: bounds.centerY)
+        
+        if cropButton.hidden {
+            removeButton.center = bounds.center
+        } else {
+            removeButton.center = CGPoint(x: bounds.left + 100, y: bounds.centerY)
+            cropButton.center = CGPoint(x: bounds.right - 100, y: bounds.centerY)
+        }
     }
     
     // MARK: - PhotoControlsView
@@ -58,6 +62,11 @@ final class PhotoControlsView: UIView {
     func setTheme(theme: MediaPickerRootModuleUITheme) {
         removeButton.setImage(theme.removePhotoIcon, forState: .Normal)
         cropButton.setImage(theme.cropPhotoIcon, forState: .Normal)
+    }
+    
+    func setShowsCropButton(showsCropButton: Bool) {
+        cropButton.hidden = !showsCropButton
+        setNeedsLayout()
     }
     
     // MARK: - Private

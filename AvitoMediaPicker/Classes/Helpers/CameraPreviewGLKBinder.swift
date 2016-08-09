@@ -137,6 +137,8 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     
     private func drawImageBuffer(imageBuffer: CVImageBuffer, binder: CameraOutputGLKBinder) {
         
+        // After your app exits its applicationDidEnterBackground: method, it must not make any new OpenGL ES calls.
+        // If it makes an OpenGL ES call, it is terminated by iOS.
         guard !isInBackground else { return }
         
         let view = binder.view

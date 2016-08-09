@@ -202,6 +202,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setTheme(theme)
     }
     
+    func setShowsCropButton(showsCropButton: Bool) {
+        mediaPickerView.setShowsCropButton(showsCropButton)
+    }
+    
     // MARK: - Dispose bag
     
     private var disposables = [AnyObject]()

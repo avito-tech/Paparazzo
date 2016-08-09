@@ -24,6 +24,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 items: items,
                 selectedItem: selectedItem,
                 maxItemsCount: maxItemsCount,
+                cropEnabled: true,
                 routerSeed: routerSeed,
                 configuration: configuration
             )
