@@ -1,12 +1,12 @@
 import CoreGraphics
 import AvitoDesignKit
 
-final class CachingImageSource: ImageSource {
+public final class CachingImageSource: ImageSource {
     
     private let underlyingImageSource: ImageSource
     private let cache = NSCache()
     
-    init(underlyingImageSource: ImageSource) {
+    public init(underlyingImageSource: ImageSource) {
         // Не даем создавать вложенные CachingImageSource
         if let cachingImageSource = underlyingImageSource as? CachingImageSource {
             self.underlyingImageSource = cachingImageSource.underlyingImageSource
@@ -17,7 +17,7 @@ final class CachingImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+    public func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
         
         let cacheKey = "fullResolutionImage"
         
@@ -49,15 +49,15 @@ final class CachingImageSource: ImageSource {
         }
     }
     
-    func fullResolutionImageData(completion: NSData? -> ()) {
+    public func fullResolutionImageData(completion: NSData? -> ()) {
         underlyingImageSource.fullResolutionImageData(completion)
     }
     
-    func imageSize(completion: CGSize? -> ()) {
+    public func imageSize(completion: CGSize? -> ()) {
         underlyingImageSource.imageSize(completion)
     }
     
-    func imageFittingSize<T: InitializableWithCGImage>(
+    public func imageFittingSize<T: InitializableWithCGImage>(
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
@@ -93,7 +93,7 @@ final class CachingImageSource: ImageSource {
         }
     }
     
-    func isEqualTo(other: ImageSource) -> Bool {
+    public func isEqualTo(other: ImageSource) -> Bool {
         guard let other = other as? CachingImageSource
             else { return false }
         
