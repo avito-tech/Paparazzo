@@ -13,7 +13,7 @@ public struct MediaPickerItem: Equatable {
     
     let identifier: String
     
-    init(identifier: String = NSUUID().UUIDString, image: ImageSource, source: Source) {
+    public init(identifier: String = NSUUID().UUIDString, image: ImageSource, source: Source) {
         self.identifier = identifier
         self.image = image
         self.source = source
