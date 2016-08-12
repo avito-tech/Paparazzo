@@ -28,7 +28,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - PhotoLibraryModule
     
-    var onFinish: ((selectedItems: [PhotoLibraryItem]) -> ())?
+    var onFinish: (PhotoLibraryModuleResult -> ())?
     
     func focusOnModule() {
         router.focusOnCurrentModule()
@@ -41,6 +41,10 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     // MARK: - Private
     
     private func setUpView() {
+        
+        view?.setTitle("Все фотографии")
+        view?.setDoneButtonTitle("Выбрать")
+        view?.setCancelButtonTitle("Отменить")
         
         interactor.observeItems { [weak self] items, selectionState in
             
@@ -57,8 +61,12 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
-                self?.onFinish?(selectedItems: items)
+                self?.onFinish?(.SelectedItems(items))
             }
+        }
+        
+        view?.onCancelButtonTap = { [weak self] in
+            self?.onFinish?(.Cancelled)
         }
     }
     

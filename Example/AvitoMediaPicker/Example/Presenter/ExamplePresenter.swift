@@ -55,9 +55,15 @@ final class ExamplePresenter {
             self?.interactor.photoLibraryItems { items in
                 self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
                     weak var weakModule = module
-                    module.onFinish = { items in
-                        self?.interactor.setPhotoLibraryItems(items)
+                    module.onFinish = { result in
                         weakModule?.dismissModule()
+                        
+                        switch result {
+                        case .SelectedItems(let items):
+                            self?.interactor.setPhotoLibraryItems(items)
+                        case .Cancelled:
+                            break
+                        }
                     }
                 }
             }

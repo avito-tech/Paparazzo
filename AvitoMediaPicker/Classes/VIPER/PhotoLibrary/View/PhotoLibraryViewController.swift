@@ -12,14 +12,6 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Выбрать",
-            style: .Plain,
-            target: self,
-            action: #selector(PhotoLibraryViewController.onPickButtonTap(_:))
-        )
-        
         onViewDidLoad?()
     }
     
@@ -32,7 +24,30 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     var onItemSelect: (PhotoLibraryItem -> ())?
     var onPickButtonTap: (() -> ())?
+    var onCancelButtonTap: (() -> ())?
     var onViewDidLoad: (() -> ())?
+    
+    @nonobjc func setTitle(title: String) {
+        self.title = title
+    }
+    
+    func setCancelButtonTitle(title: String) {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: title,
+            style: .Plain,
+            target: self,
+            action: #selector(PhotoLibraryViewController.onCancelButtonTap(_:))
+        )
+    }
+    
+    func setDoneButtonTitle(title: String) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: title,
+            style: .Done,
+            target: self,
+            action: #selector(PhotoLibraryViewController.onPickButtonTap(_:))
+        )
+    }
     
     func setCellsData(items: [PhotoLibraryItemCellData]) {
         photoLibraryView.setCellsData(items)
@@ -67,6 +82,10 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     }
     
     // MARK: - Private
+    
+    @objc private func onCancelButtonTap(sender: UIBarButtonItem) {
+        onCancelButtonTap?()
+    }
     
     @objc private func onPickButtonTap(sender: UIBarButtonItem) {
         onPickButtonTap?()

@@ -268,13 +268,17 @@ final class MediaPickerPresenter: MediaPickerModule {
              
                 self?.router.showPhotoLibrary(selectedItems: [], maxSelectedItemsCount: maxItemsCount) { module in
                     
-                    module.onFinish = { photoLibraryItems in
-                        
-                        self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
-                            self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
-                        }
-                        
+                    module.onFinish = { result in
                         self?.router.focusOnCurrentModule()
+                        
+                        switch result {
+                        case .SelectedItems(let photoLibraryItems):
+                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
+                                self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
+                            }
+                        case .Cancelled:
+                            break
+                        }
                     }
                 }
             }

@@ -3,6 +3,10 @@ import AvitoDesignKit
 
 protocol PhotoLibraryViewInput: class {
     
+    func setTitle(_: String)
+    func setCancelButtonTitle(_: String)
+    func setDoneButtonTitle(_: String)
+    
     func setCellsData(items: [PhotoLibraryItemCellData])
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)
@@ -11,6 +15,7 @@ protocol PhotoLibraryViewInput: class {
     func scrollToBottom()
     
     var onPickButtonTap: (() -> ())? { get set }
+    var onCancelButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
 }
