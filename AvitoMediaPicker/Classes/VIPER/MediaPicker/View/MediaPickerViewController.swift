@@ -109,6 +109,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setContinueButtonTitle(title)
     }
     
+    func setContinueButtonEnabled(enabled: Bool) {
+        mediaPickerView.setContinueButtonEnabled(enabled)
+    }
+    
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
         UIView.animateWithDuration(0.25) {
             self.mediaPickerView.adjustForDeviceOrientation(orientation)

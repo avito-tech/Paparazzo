@@ -30,6 +30,10 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onFinish: ([MediaPickerItem] -> ())?
     var onCancel: (() -> ())?
     
+    func setContinueButtonEnabled(enabled: Bool) {
+        view?.setContinueButtonEnabled(enabled)
+    }
+    
     func setItems(items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
         addItems(items, fromCamera: false) { [weak self] in
             if let selectedItem = selectedItem {

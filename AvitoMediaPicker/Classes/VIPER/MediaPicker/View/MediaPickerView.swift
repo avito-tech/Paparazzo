@@ -342,6 +342,10 @@ final class MediaPickerView: UIView {
         continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
     }
     
+    func setContinueButtonEnabled(enabled: Bool) {
+        continueButton.enabled = enabled
+    }
+    
     func setTheme(theme: MediaPickerRootModuleUITheme) {
 
         cameraControlsView.setTheme(theme)
