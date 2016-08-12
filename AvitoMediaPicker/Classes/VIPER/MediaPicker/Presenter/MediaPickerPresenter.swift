@@ -52,6 +52,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.setContinueButtonTitle("Далее")
         view?.setPhotoTitle("Фото 1")
+        view?.setContinueButtonVisible(false)
         
         cameraModuleInput.getCaptureSession { [weak self] captureSession in
             if let captureSession = captureSession {
@@ -80,6 +81,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             self?.view?.addItems(items, animated: false)
             self?.view?.setCameraButtonVisible(canAddMoreItems)
+            self?.view?.setContinueButtonVisible(true)
             
             self?.interactor.selectedItem { selectedItem in
                 if let selectedItem = selectedItem {
@@ -206,6 +208,12 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.scrollToCameraThumbnail(animated: false)
     }
     
+    private func adjustContinueButtonVisibility() {
+        interactor.items { [weak self] mediaPickerItems, canAddItems in
+            self?.view?.setContinueButtonVisible(mediaPickerItems.count > 0)
+        }
+    }
+    
     private func handleItemsAdded(items: [MediaPickerItem], fromCamera: Bool, canAddMoreItems: Bool, completion: (() -> ())? = nil) {
         
         guard items.count > 0 else { completion?(); return }
@@ -224,6 +232,8 @@ final class MediaPickerPresenter: MediaPickerModule {
         interactor.items { [weak self] items, _ in
             self?.setTitleForPhotoWithIndex(items.count - 1)
         }
+        
+        adjustContinueButtonVisibility()
         
         onItemsAdd?(items)
         
@@ -246,6 +256,8 @@ final class MediaPickerPresenter: MediaPickerModule {
                     self?.view?.setMode(.Camera)
                     self?.view?.setPhotoTitleAlpha(0)
                 }
+                
+                self?.adjustContinueButtonVisibility()
                 
                 self?.onItemRemove?(item)
             }
