@@ -101,6 +101,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setPhotoTitle(title)
     }
     
+    func setPhotoTitleStyle(style: MediaPickerTitleStyle) {
+        mediaPickerView.setPhotoTitleStyle(style)
+    }
+    
     func setPhotoTitleAlpha(alpha: CGFloat) {
         mediaPickerView.setPhotoTitleAlpha(alpha)
     }

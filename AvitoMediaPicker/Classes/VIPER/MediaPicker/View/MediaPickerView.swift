@@ -333,6 +333,17 @@ final class MediaPickerView: UIView {
         layoutPhotoTitleLabel()
     }
     
+    func setPhotoTitleStyle(style: MediaPickerTitleStyle) {
+        switch style {
+        case .Dark:
+            photoTitleLabel.textColor = .blackColor()
+            photoTitleLabel.layer.shadowOpacity = 0
+        case .Light:
+            photoTitleLabel.textColor = .whiteColor()
+            photoTitleLabel.layer.shadowOpacity = 0.5
+        }
+    }
+    
     func setPhotoTitleAlpha(alpha: CGFloat) {
         photoTitleLabel.alpha = alpha
     }

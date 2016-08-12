@@ -7,6 +7,11 @@ enum MediaPickerViewMode {
     case PhotoPreview(MediaPickerItem)
 }
 
+enum MediaPickerTitleStyle {
+    case Dark
+    case Light
+}
+
 protocol MediaPickerViewInput: class {
     
     func setMode(_: MediaPickerViewMode)
@@ -15,6 +20,7 @@ protocol MediaPickerViewInput: class {
     func setCaptureSession(_: AVCaptureSession)
     
     func setPhotoTitle(_: String)
+    func setPhotoTitleStyle(_: MediaPickerTitleStyle)
     func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
     func setContinueButtonEnabled(_: Bool)

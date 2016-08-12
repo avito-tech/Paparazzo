@@ -186,6 +186,11 @@ final class MediaPickerPresenter: MediaPickerModule {
             if let index = index {
                 self?.setTitleForPhotoWithIndex(index)
                 self?.view?.setPhotoTitleAlpha(1)
+                
+                item.image.imageSize { size in
+                    let isPortrait = size.flatMap { $0.height > $0.width } ?? true
+                    self?.view?.setPhotoTitleStyle(isPortrait ? .Light : .Dark)
+                }
             }
         }
     }
