@@ -17,7 +17,6 @@ protocol MediaPickerViewInput: class {
     func setPhotoTitle(_: String)
     func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
-    func setContinueButtonVisible(_: Bool)
 
     func setLatestLibraryPhoto(_: ImageSource?)
     
