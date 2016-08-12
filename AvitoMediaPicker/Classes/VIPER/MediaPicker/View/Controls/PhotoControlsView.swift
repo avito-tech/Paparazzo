@@ -37,8 +37,8 @@ final class PhotoControlsView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        removeButton.sizeToFit()
-        cropButton.sizeToFit()
+        removeButton.size = CGSize.minimumTapAreaSize
+        cropButton.size = CGSize.minimumTapAreaSize
         
         if cropButton.hidden {
             removeButton.center = bounds.center
