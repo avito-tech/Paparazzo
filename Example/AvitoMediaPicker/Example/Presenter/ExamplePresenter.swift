@@ -28,7 +28,7 @@ final class ExamplePresenter {
             
             let items = self?.items ?? []
             
-            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 20) { module in
+            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 5) { module in
                 
                 module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
