@@ -23,12 +23,16 @@ final class AccessDeniedView: UIView {
     
     var onButtonTap: (() -> ())?
     
+    // MARK: - UIView
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        titleLabel.font = UIFont.boldSystemFontOfSize(17)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .Center
         
+        messageLabel.font = UIFont.systemFontOfSize(17)
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .Center
         
@@ -60,6 +64,14 @@ final class AccessDeniedView: UIView {
         titleLabel.frame = frames.titleLabelFrame
         messageLabel.frame = frames.messageLabelFrame
         button.frame = frames.buttonFrame
+    }
+    
+    // MARK: - AccessDeniedView
+    
+    func setTheme(theme: MediaPickerRootModuleUITheme) {
+        titleLabel.font = theme.accessDeniedTitleFont
+        messageLabel.font = theme.accessDeniedMessageFont
+        button.titleLabel?.font = theme.accessDeniedButtonFont
     }
     
     // MARK: - Private
