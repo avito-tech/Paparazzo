@@ -17,6 +17,7 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var flashOnIcon = MediaPickerUITheme.imageNamed("light_on")
     public var flashOffIcon = MediaPickerUITheme.imageNamed("light_off")
     public var cameraToggleIcon = MediaPickerUITheme.imageNamed("back_front")
+    public var photoPeepholePlaceholder = MediaPickerUITheme.imageNamed("gallery-placeholder")
 
     public var cameraContinueButtonTitleFont = UIFont.systemFontOfSize(17)
     
@@ -68,6 +69,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var flashOnIcon: UIImage? { get }
     var flashOffIcon: UIImage? { get }
     var cameraToggleIcon: UIImage? { get }
+    var photoPeepholePlaceholder: UIImage? { get }
 
     var cameraContinueButtonTitleFont: UIFont { get }
 }
