@@ -27,6 +27,11 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     var onCancelButtonTap: (() -> ())?
     var onViewDidLoad: (() -> ())?
     
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return photoLibraryView.onAccessDeniedButtonTap }
+        set { photoLibraryView.onAccessDeniedButtonTap = newValue }
+    }
+    
     @nonobjc func setTitle(title: String) {
         self.title = title
     }
@@ -71,6 +76,22 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     func setTheme(theme: PhotoLibraryUITheme) {
         photoLibraryView.setTheme(theme)
+    }
+    
+    func setAccessDeniedViewVisible(visible: Bool) {
+        photoLibraryView.setAccessDeniedViewVisible(visible)
+    }
+    
+    func setAccessDeniedTitle(title: String) {
+        photoLibraryView.setAccessDeniedTitle(title)
+    }
+    
+    func setAccessDeniedMessage(message: String) {
+        photoLibraryView.setAccessDeniedMessage(message)
+    }
+    
+    func setAccessDeniedButtonTitle(title: String) {
+        photoLibraryView.setAccessDeniedButtonTitle(title)
     }
     
     // MARK: - Dispose bag

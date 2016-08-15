@@ -19,6 +19,10 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var cameraToggleIcon = MediaPickerUITheme.imageNamed("back_front")
 
     public var cameraContinueButtonTitleFont = UIFont.systemFontOfSize(17)
+    
+    public var accessDeniedTitleFont = UIFont.boldSystemFontOfSize(17)
+    public var accessDeniedMessageFont = UIFont.systemFontOfSize(17)
+    public var accessDeniedButtonFont = UIFont.systemFontOfSize(17)
 
     // MARK: - PhotoLibraryUITheme
     
@@ -60,6 +64,10 @@ public protocol MediaPickerRootModuleUITheme {
     var cameraToggleIcon: UIImage? { get }
 
     var cameraContinueButtonTitleFont: UIFont { get }
+    
+    var accessDeniedTitleFont: UIFont { get }
+    var accessDeniedMessageFont: UIFont { get }
+    var accessDeniedButtonFont: UIFont { get }
 }
 
 public protocol PhotoLibraryUITheme {

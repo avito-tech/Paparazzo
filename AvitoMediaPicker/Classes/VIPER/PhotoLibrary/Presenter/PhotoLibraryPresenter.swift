@@ -46,7 +46,19 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         view?.setDoneButtonTitle("Выбрать")
         view?.setCancelButtonTitle("Отменить")
         
+        view?.setAccessDeniedTitle("Чтобы выбрать фото из галереи")
+        view?.setAccessDeniedMessage("Разрешите доступ приложению Avito к вашим фотографиям")
+        view?.setAccessDeniedButtonTitle("Разрешить доступ к галерее")
+        
+        interactor.authorizationStatus { [weak self] accessGranted in
+            self?.view?.setAccessDeniedViewVisible(!accessGranted)
+        }
+        
         interactor.observeItems { [weak self] items, selectionState in
+            
+            if items.count > 0 {
+                self?.view?.setAccessDeniedViewVisible(false)
+            }
             
             self?.setCellsDataFromItems(items)
             self?.adjustViewForSelectionState(selectionState)
@@ -67,6 +79,12 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.onCancelButtonTap = { [weak self] in
             self?.onFinish?(.Cancelled)
+        }
+        
+        view?.onAccessDeniedButtonTap = { [weak self] in
+            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.sharedApplication().openURL(url)
+            }
         }
     }
     

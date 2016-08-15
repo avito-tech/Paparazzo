@@ -49,6 +49,14 @@ protocol MediaPickerViewInput: class {
     var onCameraToggleButtonTap: (() -> ())? { get set }
     func setCameraToggleButtonVisible(_: Bool)
     
+    // MARK: - Access denied view
+    var onAccessDeniedButtonTap: (() -> ())? { get set }
+    
+    func setAccessDeniedViewVisible(_: Bool)
+    func setAccessDeniedTitle(_: String)
+    func setAccessDeniedMessage(_: String)
+    func setAccessDeniedButtonTitle(_: String)
+    
     // MARK: - Actions in photo ribbon
     var onItemSelect: (MediaPickerItem -> ())? { get set }
     

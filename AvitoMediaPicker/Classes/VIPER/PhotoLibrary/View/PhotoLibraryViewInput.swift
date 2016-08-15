@@ -18,6 +18,14 @@ protocol PhotoLibraryViewInput: class {
     var onCancelButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
+    
+    // MARK: - Access denied view
+    var onAccessDeniedButtonTap: (() -> ())? { get set }
+    
+    func setAccessDeniedViewVisible(_: Bool)
+    func setAccessDeniedTitle(_: String)
+    func setAccessDeniedMessage(_: String)
+    func setAccessDeniedButtonTitle(_: String)
 }
 
 struct PhotoLibraryItemCellData {
