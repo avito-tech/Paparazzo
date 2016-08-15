@@ -68,7 +68,7 @@ final class AccessDeniedView: UIView {
     
     // MARK: - AccessDeniedView
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
+    func setTheme(theme: AccessDeniedViewTheme) {
         titleLabel.font = theme.accessDeniedTitleFont
         messageLabel.font = theme.accessDeniedMessageFont
         button.titleLabel?.font = theme.accessDeniedButtonFont

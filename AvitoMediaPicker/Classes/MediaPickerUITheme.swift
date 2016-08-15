@@ -49,7 +49,13 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     }
 }
 
-public protocol MediaPickerRootModuleUITheme {
+public protocol AccessDeniedViewTheme {
+    var accessDeniedTitleFont: UIFont { get }
+    var accessDeniedMessageFont: UIFont { get }
+    var accessDeniedButtonFont: UIFont { get }
+}
+
+public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
 
     var shutterButtonColor: UIColor { get }
     var mediaRibbonSelectionColor: UIColor { get }
@@ -64,13 +70,9 @@ public protocol MediaPickerRootModuleUITheme {
     var cameraToggleIcon: UIImage? { get }
 
     var cameraContinueButtonTitleFont: UIFont { get }
-    
-    var accessDeniedTitleFont: UIFont { get }
-    var accessDeniedMessageFont: UIFont { get }
-    var accessDeniedButtonFont: UIFont { get }
 }
 
-public protocol PhotoLibraryUITheme {
+public protocol PhotoLibraryUITheme: AccessDeniedViewTheme {
     var photoLibraryItemSelectionColor: UIColor { get }
 }
 

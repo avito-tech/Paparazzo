@@ -83,6 +83,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     func setTheme(theme: PhotoLibraryUITheme) {
         self.theme = theme
+        accessDeniedView.setTheme(theme)
     }
     
     func setAccessDeniedViewVisible(visible: Bool) {
