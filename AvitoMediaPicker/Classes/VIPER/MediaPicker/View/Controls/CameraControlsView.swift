@@ -97,14 +97,13 @@ final class CameraControlsView: UIView {
         shutterButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
         shutterButton.layer.cornerRadius = shutterButtonDiameter / 2
         
-        let flashButtonSize = flashButton.sizeThatFits(bounds.size)
-        flashButton.size = CGSize(width: flashButtonSize.width, height: flashButtonSize.width)
-        flashButton.right = bounds.right - insets.right
+        flashButton.size = CGSize.minimumTapAreaSize
+        flashButton.centerX = bounds.right - 30
         flashButton.centerY = bounds.centerY
         
-        cameraToggleButton.sizeToFit()
+        cameraToggleButton.size = CGSize.minimumTapAreaSize
+        cameraToggleButton.centerX = flashButton.centerX - 54
         cameraToggleButton.centerY = flashButton.centerY
-        cameraToggleButton.right = flashButton.left - 24
         
         photoView.size = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.left = bounds.left + insets.left
