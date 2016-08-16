@@ -44,7 +44,6 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         
         let mediaPickerItems = photoLibraryItems.map {
             MediaPickerItem(
-                identifier: $0.identifier,
                 image: $0.image,
                 source: .PhotoLibrary
             )
