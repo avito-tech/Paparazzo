@@ -28,7 +28,7 @@ final class ExamplePresenter {
             
             let items = self?.items ?? []
             
-            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 20) { module in
+            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 5) { module in
                 
                 module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
@@ -55,9 +55,15 @@ final class ExamplePresenter {
             self?.interactor.photoLibraryItems { items in
                 self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
                     weak var weakModule = module
-                    module.onFinish = { items in
-                        self?.interactor.setPhotoLibraryItems(items)
+                    module.onFinish = { result in
                         weakModule?.dismissModule()
+                        
+                        switch result {
+                        case .SelectedItems(let items):
+                            self?.interactor.setPhotoLibraryItems(items)
+                        case .Cancelled:
+                            break
+                        }
                     }
                 }
             }

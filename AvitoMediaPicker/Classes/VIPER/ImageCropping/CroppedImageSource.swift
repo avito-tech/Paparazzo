@@ -49,8 +49,9 @@ final class CroppedImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ()
-    ) {
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
         if let previewImage = previewImage where deliveryMode == .Progressive {
             resultHandler(T(CGImage: previewImage))
         }
@@ -59,6 +60,12 @@ final class CroppedImageSource: ImageSource {
         getCroppedImage { cgImage in
             resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
+        
+        return 0    // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
+    }
+    
+    func cancelRequest(requestID: ImageRequestID) {
+        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
     func imageSize(completion: CGSize? -> ()) {

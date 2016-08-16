@@ -27,7 +27,10 @@ public extension UIImageView {
         }
         
         if let imageSource = imageSource {
-            imageSource.imageFittingSize(pixelSize) { [weak self] (image: UIImage?) in
+            
+            imageRequestID.flatMap { imageSource.cancelRequest($0) }
+            
+            imageRequestID = imageSource.imageFittingSize(pixelSize) { [weak self] (image: UIImage?) in
                 if self?.shouldSetImageForImageSource(imageSource) == true {
                     self?.image = image ?? placeholder
                 }
@@ -58,6 +61,7 @@ public extension UIImageView {
     // MARK: - Private
     
     private static var imageSourceKey = "imageSource"
+    private static var imageRequestIdKey = "imageRequestId"
     
     private var imageSource: ImageSource? {
         get {
@@ -65,6 +69,16 @@ public extension UIImageView {
         }
         set {
             objc_setAssociatedObject(self, &UIImageView.imageSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    private var imageRequestID: ImageRequestID? {
+        get {
+            return (objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber)?.intValue
+        }
+        set {
+            let number = newValue.flatMap { NSNumber(int: $0) }
+            objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     

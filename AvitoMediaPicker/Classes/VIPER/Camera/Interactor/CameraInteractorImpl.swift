@@ -20,7 +20,12 @@ final class CameraInteractorImpl: CameraInteractor {
     // MARK: - CameraInteractor
 
     func getCaptureSession(completion: AVCaptureSession? -> ()) {
-        completion(cameraService.captureSession)
+        cameraService.captureSession { captureSession in
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(captureSession)
+            }
+            
+        }
     }
 
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?) {

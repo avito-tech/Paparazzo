@@ -158,7 +158,10 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         let isLastPageVisible = (offset >= penultimatePageOffsetX)
         
         let progress = min(1, (offset - penultimatePageOffsetX) / pageWidth)
-        onSwipeToCameraProgressChange?(progress)
+        
+        if dataSource.cameraCellVisible {
+            onSwipeToCameraProgressChange?(progress)
+        }
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {

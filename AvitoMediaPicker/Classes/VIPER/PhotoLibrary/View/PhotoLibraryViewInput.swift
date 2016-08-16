@@ -3,6 +3,10 @@ import AvitoDesignKit
 
 protocol PhotoLibraryViewInput: class {
     
+    func setTitle(_: String)
+    func setCancelButtonTitle(_: String)
+    func setDoneButtonTitle(_: String)
+    
     func setCellsData(items: [PhotoLibraryItemCellData])
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)
@@ -11,8 +15,17 @@ protocol PhotoLibraryViewInput: class {
     func scrollToBottom()
     
     var onPickButtonTap: (() -> ())? { get set }
+    var onCancelButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
+    
+    // MARK: - Access denied view
+    var onAccessDeniedButtonTap: (() -> ())? { get set }
+    
+    func setAccessDeniedViewVisible(_: Bool)
+    func setAccessDeniedTitle(_: String)
+    func setAccessDeniedMessage(_: String)
+    func setAccessDeniedButtonTitle(_: String)
 }
 
 struct PhotoLibraryItemCellData {

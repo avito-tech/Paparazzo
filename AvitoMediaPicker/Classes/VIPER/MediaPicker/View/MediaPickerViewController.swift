@@ -83,6 +83,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onSwipeToCameraProgressChange = newValue }
     }
     
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return mediaPickerView.onAccessDeniedButtonTap }
+        set { mediaPickerView.onAccessDeniedButtonTap = newValue }
+    }
+    
     var onViewDidLoad: (() -> ())?
     
     func setMode(mode: MediaPickerViewMode) {
@@ -101,12 +106,20 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setPhotoTitle(title)
     }
     
+    func setPhotoTitleStyle(style: MediaPickerTitleStyle) {
+        mediaPickerView.setPhotoTitleStyle(style)
+    }
+    
     func setPhotoTitleAlpha(alpha: CGFloat) {
         mediaPickerView.setPhotoTitleAlpha(alpha)
     }
     
     func setContinueButtonTitle(title: String) {
         mediaPickerView.setContinueButtonTitle(title)
+    }
+    
+    func setContinueButtonEnabled(enabled: Bool) {
+        mediaPickerView.setContinueButtonEnabled(enabled)
     }
     
     func adjustForDeviceOrientation(orientation: DeviceOrientation) {
@@ -148,6 +161,22 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setCameraToggleButtonVisible(visible: Bool) {
         mediaPickerView.setCameraToggleButtonVisible(visible)
+    }
+    
+    func setAccessDeniedViewVisible(visible: Bool) {
+        mediaPickerView.setAccessDeniedViewVisible(visible)
+    }
+    
+    func setAccessDeniedTitle(title: String) {
+        mediaPickerView.setAccessDeniedTitle(title)
+    }
+    
+    func setAccessDeniedMessage(message: String) {
+        mediaPickerView.setAccessDeniedMessage(message)
+    }
+    
+    func setAccessDeniedButtonTitle(title: String) {
+        mediaPickerView.setAccessDeniedButtonTitle(title)
     }
 
     func addItems(items: [MediaPickerItem], animated: Bool) {

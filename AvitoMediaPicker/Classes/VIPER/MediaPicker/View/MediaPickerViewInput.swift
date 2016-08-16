@@ -7,6 +7,11 @@ enum MediaPickerViewMode {
     case PhotoPreview(MediaPickerItem)
 }
 
+enum MediaPickerTitleStyle {
+    case Dark
+    case Light
+}
+
 protocol MediaPickerViewInput: class {
     
     func setMode(_: MediaPickerViewMode)
@@ -15,8 +20,10 @@ protocol MediaPickerViewInput: class {
     func setCaptureSession(_: AVCaptureSession)
     
     func setPhotoTitle(_: String)
+    func setPhotoTitleStyle(_: MediaPickerTitleStyle)
     func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
+    func setContinueButtonEnabled(_: Bool)
 
     func setLatestLibraryPhoto(_: ImageSource?)
     
@@ -41,6 +48,14 @@ protocol MediaPickerViewInput: class {
     
     var onCameraToggleButtonTap: (() -> ())? { get set }
     func setCameraToggleButtonVisible(_: Bool)
+    
+    // MARK: - Access denied view
+    var onAccessDeniedButtonTap: (() -> ())? { get set }
+    
+    func setAccessDeniedViewVisible(_: Bool)
+    func setAccessDeniedTitle(_: String)
+    func setAccessDeniedMessage(_: String)
+    func setAccessDeniedButtonTitle(_: String)
     
     // MARK: - Actions in photo ribbon
     var onItemSelect: (MediaPickerItem -> ())? { get set }

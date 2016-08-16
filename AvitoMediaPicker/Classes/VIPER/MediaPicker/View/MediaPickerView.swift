@@ -14,6 +14,7 @@ final class MediaPickerView: UIView {
     private let continueButton = UIButton()
     private let photoTitleLabel = UILabel()
     private let flashView = UIView()
+    private let accessDeniedView = AccessDeniedView()
     
     private let thumbnailRibbonView: ThumbnailsView
     private let photoPreviewView: PhotoPreviewView
@@ -88,11 +89,14 @@ final class MediaPickerView: UIView {
             self?.onCameraThumbnailTap?()
         }
         
+        accessDeniedView.hidden = true
+        
         addSubview(photoPreviewView)
         addSubview(flashView)
         addSubview(thumbnailRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
+        addSubview(accessDeniedView)
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(continueButton)
@@ -145,6 +149,9 @@ final class MediaPickerView: UIView {
         layoutPhotoTitleLabel()
 
         flashView.frame = cameraFrame
+        
+        accessDeniedView.resizeToFitWidth(bounds.size.width * 0.8)
+        accessDeniedView.center = photoPreviewView.center
     }
     
     // MARK: - MediaPickerView
@@ -194,6 +201,11 @@ final class MediaPickerView: UIView {
     var onSwipeToCameraProgressChange: (CGFloat -> ())? {
         get { return photoPreviewView.onSwipeToCameraProgressChange }
         set { photoPreviewView.onSwipeToCameraProgressChange = newValue }
+    }
+    
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return accessDeniedView.onButtonTap }
+        set { accessDeniedView.onButtonTap = newValue }
     }
     
     func setMode(mode: MediaPickerViewMode) {
@@ -262,6 +274,22 @@ final class MediaPickerView: UIView {
     
     func setCameraToggleButtonVisible(visible: Bool) {
         cameraControlsView.setCameraToggleButtonVisible(visible)
+    }
+    
+    func setAccessDeniedViewVisible(visible: Bool) {
+        accessDeniedView.hidden = !visible
+    }
+    
+    func setAccessDeniedTitle(title: String) {
+        accessDeniedView.title = title
+    }
+    
+    func setAccessDeniedMessage(message: String) {
+        accessDeniedView.message = message
+    }
+    
+    func setAccessDeniedButtonTitle(title: String) {
+        accessDeniedView.buttonTitle = title
     }
     
     func setShutterButtonEnabled(enabled: Bool) {
@@ -333,6 +361,17 @@ final class MediaPickerView: UIView {
         layoutPhotoTitleLabel()
     }
     
+    func setPhotoTitleStyle(style: MediaPickerTitleStyle) {
+        switch style {
+        case .Dark:
+            photoTitleLabel.textColor = .blackColor()
+            photoTitleLabel.layer.shadowOpacity = 0
+        case .Light:
+            photoTitleLabel.textColor = .whiteColor()
+            photoTitleLabel.layer.shadowOpacity = 0.5
+        }
+    }
+    
     func setPhotoTitleAlpha(alpha: CGFloat) {
         photoTitleLabel.alpha = alpha
     }
@@ -342,11 +381,16 @@ final class MediaPickerView: UIView {
         continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
     }
     
+    func setContinueButtonEnabled(enabled: Bool) {
+        continueButton.enabled = enabled
+    }
+    
     func setTheme(theme: MediaPickerRootModuleUITheme) {
 
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
         thumbnailRibbonView.setTheme(theme)
+        accessDeniedView.setTheme(theme)
 
         continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont

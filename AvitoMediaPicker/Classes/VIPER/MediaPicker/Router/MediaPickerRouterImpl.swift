@@ -19,7 +19,7 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
         maxSelectedItemsCount: Int?,
         configuration: PhotoLibraryModule -> ()
     ) {
-        pushViewControllerDerivedFrom { routerSeed in
+        presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
             let assembly = assemblyFactory.photoLibraryAssembly()
             

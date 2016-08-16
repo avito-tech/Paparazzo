@@ -3,13 +3,26 @@ import Photos
 
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
+    private var assets = [PHAsset]()
     private var selectedItems = [PhotoLibraryItem]()
     private var maxSelectedItemsCount: Int?
     
     // MARK: - Dependencies
     
     private let photoLibraryItemsService: PhotoLibraryItemsService
-    private let imageManager = PHImageManager()
+    
+    private var _imageManager: PHCachingImageManager?
+
+    // Нельзя сразу создавать PHImageManager, иначе он крэшнется при деаллокации, если доступ к photo library запрещен
+    private var imageManager: PHCachingImageManager {
+        if let imageManager = _imageManager {
+            return imageManager
+        } else {
+            let imageManager = PHCachingImageManager()
+            _imageManager = imageManager
+            return imageManager
+        }
+    }
     
     // MARK: - Init
     
@@ -29,17 +42,24 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         maxSelectedItemsCount = count
     }
     
+    func authorizationStatus(completion: (accessGranted: Bool) -> ()) {
+        completion(accessGranted: photoLibraryItemsService.authorizationStatus == .Authorized)
+    }
+    
     func observeItems(handler: (items: [PhotoLibraryItem], selectionState: PhotoLibraryItemSelectionState) -> ()) {
         
         photoLibraryItemsService.observePhotos { [weak self] assets in
             guard let strongSelf = self else { return }
             
+            strongSelf.assets = assets
             strongSelf.removeSelectedItemsNotPresentedAmongAssets(assets)
             
-            handler((
-                items: strongSelf.photoLibraryItems(from: assets),
-                selectionState: strongSelf.selectionState()
-            ))
+            dispatch_async(dispatch_get_main_queue()) {
+                handler((
+                    items: strongSelf.photoLibraryItems(from: assets),
+                    selectionState: strongSelf.selectionState()
+                ))
+            }
         }
     }
     

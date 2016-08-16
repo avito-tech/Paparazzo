@@ -17,8 +17,13 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var flashOnIcon = MediaPickerUITheme.imageNamed("light_on")
     public var flashOffIcon = MediaPickerUITheme.imageNamed("light_off")
     public var cameraToggleIcon = MediaPickerUITheme.imageNamed("back_front")
+    public var photoPeepholePlaceholder = MediaPickerUITheme.imageNamed("gallery-placeholder")
 
     public var cameraContinueButtonTitleFont = UIFont.systemFontOfSize(17)
+    
+    public var accessDeniedTitleFont = UIFont.boldSystemFontOfSize(17)
+    public var accessDeniedMessageFont = UIFont.systemFontOfSize(17)
+    public var accessDeniedButtonFont = UIFont.systemFontOfSize(17)
 
     // MARK: - PhotoLibraryUITheme
     
@@ -45,7 +50,13 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     }
 }
 
-public protocol MediaPickerRootModuleUITheme {
+public protocol AccessDeniedViewTheme {
+    var accessDeniedTitleFont: UIFont { get }
+    var accessDeniedMessageFont: UIFont { get }
+    var accessDeniedButtonFont: UIFont { get }
+}
+
+public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
 
     var shutterButtonColor: UIColor { get }
     var mediaRibbonSelectionColor: UIColor { get }
@@ -58,11 +69,12 @@ public protocol MediaPickerRootModuleUITheme {
     var flashOnIcon: UIImage? { get }
     var flashOffIcon: UIImage? { get }
     var cameraToggleIcon: UIImage? { get }
+    var photoPeepholePlaceholder: UIImage? { get }
 
     var cameraContinueButtonTitleFont: UIFont { get }
 }
 
-public protocol PhotoLibraryUITheme {
+public protocol PhotoLibraryUITheme: AccessDeniedViewTheme {
     var photoLibraryItemSelectionColor: UIColor { get }
 }
 

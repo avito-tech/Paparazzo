@@ -14,13 +14,17 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: PhotoLibraryLayout())
+    private let layout = PhotoLibraryLayout()
+    private let collectionView: UICollectionView
+    private let accessDeniedView = AccessDeniedView()
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
     // MARK: - Init
     
     init() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         super.init(frame: .zero)
         
         dataSource.onDataChanged = { [weak self] in
@@ -42,7 +46,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
         )
         
+        accessDeniedView.hidden = true
+        
         addSubview(collectionView)
+        addSubview(accessDeniedView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,9 +62,17 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         super.layoutSubviews()
         
         collectionView.frame = bounds
+        
+        accessDeniedView.frame = CGRect(origin: .zero, size: accessDeniedView.sizeForWidth(bounds.size.width * 0.8))
+        accessDeniedView.center = bounds.center
     }
     
     // MARK: - PhotoLibraryView
+    
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return accessDeniedView.onButtonTap }
+        set { accessDeniedView.onButtonTap = newValue }
+    }
     
     func setCellsData(items: [PhotoLibraryItemCellData]) {
         dataSource.setItems(items)
@@ -71,6 +86,23 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     func setTheme(theme: PhotoLibraryUITheme) {
         self.theme = theme
+        accessDeniedView.setTheme(theme)
+    }
+    
+    func setAccessDeniedViewVisible(visible: Bool) {
+        accessDeniedView.hidden = !visible
+    }
+    
+    func setAccessDeniedTitle(title: String) {
+        accessDeniedView.title = title
+    }
+    
+    func setAccessDeniedMessage(message: String) {
+        accessDeniedView.message = message
+    }
+    
+    func setAccessDeniedButtonTitle(title: String) {
+        accessDeniedView.buttonTitle = title
     }
     
     // MARK: - UICollectionViewDelegate

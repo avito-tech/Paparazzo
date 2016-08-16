@@ -24,6 +24,7 @@ final class CameraControlsView: UIView {
     private let shutterButtonMaxDiameter = CGFloat(64)
     
     private let photoViewDiameter = CGFloat(44)
+    private var photoViewPlaceholder: UIImage?
     
     // Параметры анимации кнопки съемки (подобраны ikarpov'ым)
     private let shutterAnimationMinScale = CGFloat(0.842939)
@@ -96,14 +97,13 @@ final class CameraControlsView: UIView {
         shutterButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
         shutterButton.layer.cornerRadius = shutterButtonDiameter / 2
         
-        let flashButtonSize = flashButton.sizeThatFits(bounds.size)
-        flashButton.size = CGSize(width: flashButtonSize.width, height: flashButtonSize.width)
-        flashButton.right = bounds.right - insets.right
+        flashButton.size = CGSize.minimumTapAreaSize
+        flashButton.centerX = bounds.right - 30
         flashButton.centerY = bounds.centerY
         
-        cameraToggleButton.sizeToFit()
+        cameraToggleButton.size = CGSize.minimumTapAreaSize
+        cameraToggleButton.centerX = flashButton.centerX - 54
         cameraToggleButton.centerY = flashButton.centerY
-        cameraToggleButton.right = flashButton.left - 24
         
         photoView.size = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.left = bounds.left + insets.left
@@ -118,9 +118,14 @@ final class CameraControlsView: UIView {
         photoView.transform = transform
     }
     
-    func setLatestPhotoLibraryItemImage(image: ImageSource?) {
-        let thumbnailSize = CGSize(width: photoViewDiameter, height: photoViewDiameter)
-        photoView.setImage(image, size: thumbnailSize)
+    func setLatestPhotoLibraryItemImage(imageSource: ImageSource?) {
+        photoView.setImage(
+            fromSource: imageSource,
+            size: CGSize(width: photoViewDiameter, height: photoViewDiameter),
+            placeholder: photoViewPlaceholder,
+            placeholderDeferred: false,
+            completion: nil
+        )
     }
     
     func setFlashButtonVisible(visible: Bool) {
@@ -147,6 +152,8 @@ final class CameraControlsView: UIView {
         flashButton.setImage(theme.flashOnIcon, forState: .Selected)
 
         cameraToggleButton.setImage(theme.cameraToggleIcon, forState: .Normal)
+        
+        photoViewPlaceholder = theme.photoPeepholePlaceholder
     }
     
     // MARK: - Private

@@ -79,19 +79,19 @@ final class ImageCroppingControlsView: UIView {
             height: 44
         )
         
-        rotationButton.sizeToFit()
+        rotationButton.size = CGSize.minimumTapAreaSize
         rotationButton.center = CGPoint(x: 31, y: rotationSliderView.centerY)
         
-        gridButton.sizeToFit()
+        gridButton.size = CGSize.minimumTapAreaSize
         gridButton.center = CGPoint(x: bounds.right - 31, y: rotationSliderView.centerY)
         
         rotationCancelButton.centerX = bounds.centerX
         rotationCancelButton.top = rotationSliderView.bottom + 11
         
-        discardButton.sizeToFit()
+        discardButton.size = CGSize.minimumTapAreaSize
         discardButton.center = CGPoint(x: bounds.left + 100, y: bounds.bottom - 42)
         
-        confirmButton.sizeToFit()
+        confirmButton.size = CGSize.minimumTapAreaSize
         confirmButton.center = CGPoint(x: bounds.right - 100, y: discardButton.centerY)
     }
     

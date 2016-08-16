@@ -30,6 +30,10 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onFinish: ([MediaPickerItem] -> ())?
     var onCancel: (() -> ())?
     
+    func setContinueButtonEnabled(enabled: Bool) {
+        view?.setContinueButtonEnabled(enabled)
+    }
+    
     func setItems(items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
         addItems(items, fromCamera: false) { [weak self] in
             if let selectedItem = selectedItem {
@@ -53,9 +57,15 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setContinueButtonTitle("Далее")
         view?.setPhotoTitle("Фото 1")
         
+        view?.setAccessDeniedTitle("Чтобы фотографировать товар")
+        view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
+        view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
+        
         cameraModuleInput.getCaptureSession { [weak self] captureSession in
             if let captureSession = captureSession {
                 self?.view?.setCaptureSession(captureSession)
+            } else {
+                self?.view?.setAccessDeniedViewVisible(true)
             }
         }
         
@@ -168,6 +178,12 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onRemoveButtonTap = { [weak self] in
             self?.removeSelectedItem()
         }
+        
+        view?.onAccessDeniedButtonTap = { [weak self] in
+            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.sharedApplication().openURL(url)
+            }
+        }
     }
     
     private func adjustViewForSelectedItem(item: MediaPickerItem, animated: Bool) {
@@ -182,6 +198,11 @@ final class MediaPickerPresenter: MediaPickerModule {
             if let index = index {
                 self?.setTitleForPhotoWithIndex(index)
                 self?.view?.setPhotoTitleAlpha(1)
+                
+                item.image.imageSize { size in
+                    let isPortrait = size.flatMap { $0.height > $0.width } ?? true
+                    self?.view?.setPhotoTitleStyle(isPortrait ? .Light : .Dark)
+                }
             }
         }
     }
@@ -257,15 +278,19 @@ final class MediaPickerPresenter: MediaPickerModule {
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
             self?.interactor.photoLibraryItems { photoLibraryItems in
              
-                self?.router.showPhotoLibrary(selectedItems: photoLibraryItems, maxSelectedItemsCount: maxItemsCount) { module in
+                self?.router.showPhotoLibrary(selectedItems: [], maxSelectedItemsCount: maxItemsCount) { module in
                     
-                    module.onFinish = { photoLibraryItems in
-                        
-                        self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
-                            self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
-                        }
-                        
+                    module.onFinish = { result in
                         self?.router.focusOnCurrentModule()
+                        
+                        switch result {
+                        case .SelectedItems(let photoLibraryItems):
+                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
+                                self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
+                            }
+                        case .Cancelled:
+                            break
+                        }
                     }
                 }
             }

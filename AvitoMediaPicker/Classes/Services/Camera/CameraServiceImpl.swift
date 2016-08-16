@@ -3,23 +3,51 @@ import ImageIO
 
 final class CameraServiceImpl: CameraService {
     
-    let captureSession: AVCaptureSession?
-    
     // MARK: - Private types and properties
     
     private struct Error: ErrorType {}
     
-    private let output: AVCaptureStillImageOutput?
-    private let backCamera: AVCaptureDevice?
-    private let frontCamera: AVCaptureDevice?
+    private var captureSession: AVCaptureSession?
+    private var output: AVCaptureStillImageOutput?
+    private var backCamera: AVCaptureDevice?
+    private var frontCamera: AVCaptureDevice?
     private var activeCamera: AVCaptureDevice?
 
     // MARK: - Init
     
-    init() {
+    func captureSession(completion: AVCaptureSession? -> ()) {
         
-        do {
+        if let captureSession = captureSession {
+            completion(captureSession)
+        
+        } else {
             
+            let mediaType = AVMediaTypeVideo
+            
+            switch AVCaptureDevice.authorizationStatusForMediaType(mediaType) {
+                
+            case .Authorized:
+                setUpCaptureSession()
+                completion(captureSession)
+                
+            case .NotDetermined:
+                AVCaptureDevice.requestAccessForMediaType(mediaType) { [weak self] granted in
+                    if granted {
+                        self?.setUpCaptureSession()
+                        completion(self?.captureSession)
+                    } else {
+                        completion(nil)
+                    }
+                }
+
+            case .Restricted, .Denied:
+                completion(nil)
+            }
+        }
+    }
+    
+    private func setUpCaptureSession() {
+        do {
             let captureSession = AVCaptureSession()
             captureSession.sessionPreset = AVCaptureSessionPresetPhoto
             
@@ -29,7 +57,7 @@ final class CameraServiceImpl: CameraService {
             try CameraServiceImpl.configureCamera(backCamera)
             
             let frontCamera = videoDevices?.filter({ $0.position == .Front }).first
-
+            
             let input = try AVCaptureDeviceInput(device: backCamera)
             
             let output = AVCaptureStillImageOutput()

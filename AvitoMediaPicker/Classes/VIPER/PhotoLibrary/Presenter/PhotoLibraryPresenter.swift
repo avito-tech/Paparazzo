@@ -28,7 +28,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - PhotoLibraryModule
     
-    var onFinish: ((selectedItems: [PhotoLibraryItem]) -> ())?
+    var onFinish: (PhotoLibraryModuleResult -> ())?
     
     func focusOnModule() {
         router.focusOnCurrentModule()
@@ -42,7 +42,23 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     private func setUpView() {
         
+        view?.setTitle("Все фотографии")
+        view?.setDoneButtonTitle("Выбрать")
+        view?.setCancelButtonTitle("Отменить")
+        
+        view?.setAccessDeniedTitle("Чтобы выбрать фото из галереи")
+        view?.setAccessDeniedMessage("Разрешите доступ приложению Avito к вашим фотографиям")
+        view?.setAccessDeniedButtonTitle("Разрешить доступ к галерее")
+        
+        interactor.authorizationStatus { [weak self] accessGranted in
+            self?.view?.setAccessDeniedViewVisible(!accessGranted)
+        }
+        
         interactor.observeItems { [weak self] items, selectionState in
+            
+            if items.count > 0 {
+                self?.view?.setAccessDeniedViewVisible(false)
+            }
             
             self?.setCellsDataFromItems(items)
             self?.adjustViewForSelectionState(selectionState)
@@ -57,7 +73,17 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
-                self?.onFinish?(selectedItems: items)
+                self?.onFinish?(.SelectedItems(items))
+            }
+        }
+        
+        view?.onCancelButtonTap = { [weak self] in
+            self?.onFinish?(.Cancelled)
+        }
+        
+        view?.onAccessDeniedButtonTap = { [weak self] in
+            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.sharedApplication().openURL(url)
             }
         }
     }
