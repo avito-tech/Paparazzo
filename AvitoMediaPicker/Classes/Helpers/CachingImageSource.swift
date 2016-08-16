@@ -61,19 +61,23 @@ public final class CachingImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ()
-    ) {
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
         let cacheKey = ImageRequestParameters(size: size, contentMode: contentMode)
         
         if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
             resultHandler(T(CGImage: cachedImageWrapper.image))
+            return 0
             
         } else {
+            
+            let requestID: ImageRequestID
             
             switch deliveryMode {
             
             case .Progressive:
-                underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode, resultHandler: resultHandler)
+                requestID = underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode, resultHandler: resultHandler)
                 
                 // Для кэша нужна самая лучшая версия картинки
                 underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: .Best) { [weak self] (imageWrapper: CGImageWrapper?) in
@@ -83,14 +87,20 @@ public final class CachingImageSource: ImageSource {
                 }
                 
             case .Best:
-                underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode) { [weak self] (imageWrapper: CGImageWrapper?) in
+                requestID = underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode) { [weak self] (imageWrapper: CGImageWrapper?) in
                     if let imageWrapper = imageWrapper {
                         self?.cache.setObject(imageWrapper, forKey: cacheKey)
                     }
                     resultHandler(imageWrapper.flatMap { T(CGImage: $0.image) })
                 }
             }
+            
+            return requestID
         }
+    }
+    
+    public func cancelRequest(id: ImageRequestID) {
+        underlyingImageSource.cancelRequest(id)
     }
     
     public func isEqualTo(other: ImageSource) -> Bool {

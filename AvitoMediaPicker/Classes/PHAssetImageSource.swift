@@ -40,8 +40,9 @@ final class PHAssetImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ()
-    ) {
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
         let options = PHImageRequestOptions()
         options.networkAccessAllowed = true
         options.progressHandler = { progress, _, _, _ in
@@ -61,7 +62,7 @@ final class PHAssetImageSource: ImageSource {
 
 //        let assetId = asset.localIdentifier ?? ""
 //        debugPrint("\(assetId): request image fitting size \(size)")
-        imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
 //            if let image = image {
 //                let size = CGSize(width: image.size.width * image.scale, height: image.size.height * image.scale)
 //                debugPrint("\(assetId): image manager returned UIImage with size = \(size)")
@@ -73,6 +74,10 @@ final class PHAssetImageSource: ImageSource {
                 resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
             }
         }
+    }
+    
+    func cancelRequest(id: ImageRequestID) {
+        imageManager.cancelImageRequest(id)
     }
     
     func isEqualTo(other: ImageSource) -> Bool {

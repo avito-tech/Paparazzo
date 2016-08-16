@@ -78,8 +78,9 @@ public final class UrlImageSource: ImageSource {
         size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ()
-    ) {
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [url] in
 
             let source = CGImageSourceCreateWithURL(url, nil)
@@ -97,6 +98,12 @@ public final class UrlImageSource: ImageSource {
                 resultHandler(image)
             }
         }
+        
+        return 0    // TODO
+    }
+    
+    public func cancelRequest(id: ImageRequestID) {
+        // TODO
     }
     
     public func isEqualTo(other: ImageSource) -> Bool {

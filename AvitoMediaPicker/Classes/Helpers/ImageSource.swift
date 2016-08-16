@@ -17,10 +17,14 @@ public protocol ImageSource: class {
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
         resultHandler: T? -> ()
-    )
+    ) -> ImageRequestID
+    
+    func cancelRequest(_: ImageRequestID)
 
     func isEqualTo(other: ImageSource) -> Bool
 }
+
+public typealias ImageRequestID = Int32
 
 public protocol InitializableWithCGImage {
     // Если хотим совсем ни к чему не привязываться (отвязаться от Core Graphics),
@@ -49,7 +53,7 @@ public extension ImageSource {
         fullResolutionImage(deliveryMode: .Best, resultHandler: completion)
     }
     
-    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) {
-        imageFittingSize(size, contentMode: .AspectFill, deliveryMode: .Progressive, resultHandler: resultHandler)
+    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) -> ImageRequestID {
+        return imageFittingSize(size, contentMode: .AspectFill, deliveryMode: .Progressive, resultHandler: resultHandler)
     }
 }
