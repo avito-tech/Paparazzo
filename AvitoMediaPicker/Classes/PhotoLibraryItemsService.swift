@@ -8,7 +8,6 @@ protocol PhotoLibraryItemsService {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
 
     private let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
-    private var receivedPhotoLibraryUpdates = false
 
     private(set) var fetchResult: PHFetchResult? {
         didSet {
