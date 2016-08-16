@@ -10,6 +10,18 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
     private let cellSpacing = CGFloat(5)
     private let numberOfPhotosInRow = 3
     
+    // MARK: - PhotoLibraryLayout
+    
+    func cellSize() -> CGSize {
+        if let collectionView = collectionView {
+            let contentWidth = collectionView.bounds.size.width
+            let itemWidth = (contentWidth - CGFloat(numberOfPhotosInRow - 1) * cellSpacing) / CGFloat(numberOfPhotosInRow)
+            return CGSize(width: itemWidth, height: itemWidth)
+        } else {
+            return .zero
+        }
+    }
+    
     // MARK: - UICollectionViewLayout
     
     override func collectionViewContentSize() -> CGSize {
@@ -26,9 +38,7 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
         
         attributes.removeAll()
         
-        let contentWidth = collectionView.bounds.size.width
-        let itemWidth = (contentWidth - CGFloat(numberOfPhotosInRow - 1) * cellSpacing) / CGFloat(numberOfPhotosInRow)
-        let itemSize = CGSize(width: itemWidth, height: itemWidth)
+        let itemSize = cellSize()
         
         let section = 0
         let numberOfItems = collectionView.numberOfItemsInSection(section)

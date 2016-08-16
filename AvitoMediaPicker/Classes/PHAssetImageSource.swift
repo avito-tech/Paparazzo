@@ -14,8 +14,7 @@ final class PHAssetImageSource: ImageSource {
     // MARK: - AbstractImage
     
     func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
-        let size = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
-        imageFittingSize(size, contentMode: .AspectFill, deliveryMode: deliveryMode, resultHandler: resultHandler)
+        imageFittingSize(PHImageManagerMaximumSize, contentMode: .AspectFill, deliveryMode: deliveryMode, resultHandler: resultHandler)
     }
     
     func fullResolutionImageData(completion: NSData? -> ()) {
@@ -43,10 +42,6 @@ final class PHAssetImageSource: ImageSource {
         deliveryMode: ImageDeliveryMode,
         resultHandler: T? -> ()
     ) {
-        // Судя по некоторым сообщениям на форумах, метод requestImageForAsset может временами работать неадекватно,
-        // если запрашиваемый размер меньше чем 500x500
-        let size = CGSize(width: min(500, size.width), height: min(500, size.height))
-
         let options = PHImageRequestOptions()
         options.networkAccessAllowed = true
         options.progressHandler = { progress, _, _, _ in
@@ -56,14 +51,27 @@ final class PHAssetImageSource: ImageSource {
         switch deliveryMode {
         case .Progressive:
             options.deliveryMode = .Opportunistic
+            options.resizeMode = .Fast
         case .Best:
             options.deliveryMode = .HighQualityFormat
+            options.resizeMode = .Exact
         }
 
         let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
 
+//        let assetId = asset.localIdentifier ?? ""
+//        debugPrint("\(assetId): request image fitting size \(size)")
         imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
-            resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+//            if let image = image {
+//                let size = CGSize(width: image.size.width * image.scale, height: image.size.height * image.scale)
+//                debugPrint("\(assetId): image manager returned UIImage with size = \(size)")
+//            }
+            
+            if let image = image as? T? {
+                resultHandler(image)
+            } else {
+                resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+            }
         }
     }
     

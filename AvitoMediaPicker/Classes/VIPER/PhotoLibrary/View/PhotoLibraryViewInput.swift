@@ -18,6 +18,7 @@ protocol PhotoLibraryViewInput: class {
     var onCancelButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
+    var onDidDetermineThumbnailPixelSize: (CGSize -> ())? { get set }
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }

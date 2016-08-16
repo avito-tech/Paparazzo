@@ -3,6 +3,7 @@ import Photos
 
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
+    private var assets = [PHAsset]()
     private var selectedItems = [PhotoLibraryItem]()
     private var maxSelectedItemsCount: Int?
     
@@ -10,14 +11,14 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     private let photoLibraryItemsService: PhotoLibraryItemsService
     
-    private var _imageManager: PHImageManager?
+    private var _imageManager: PHCachingImageManager?
 
     // Нельзя сразу создавать PHImageManager, иначе он крэшнется при деаллокации, если доступ к photo library запрещен
-    private var imageManager: PHImageManager {
+    private var imageManager: PHCachingImageManager {
         if let imageManager = _imageManager {
             return imageManager
         } else {
-            let imageManager = PHImageManager()
+            let imageManager = PHCachingImageManager()
             _imageManager = imageManager
             return imageManager
         }
@@ -50,6 +51,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         photoLibraryItemsService.observePhotos { [weak self] assets in
             guard let strongSelf = self else { return }
             
+            strongSelf.assets = assets
             strongSelf.removeSelectedItemsNotPresentedAmongAssets(assets)
             
             dispatch_async(dispatch_get_main_queue()) {
@@ -58,6 +60,16 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
                     selectionState: strongSelf.selectionState()
                 ))
             }
+        }
+    }
+    
+    private var sizeForCachingItems = CGSize.zero
+    
+    func startCachingItemsWithSize(size: CGSize) {
+        if size != sizeForCachingItems {
+            debugPrint("startCachingItemsWithSize \(size) (\(assets.count) assets)")
+            imageManager.startCachingImagesForAssets(assets, targetSize: size, contentMode: .AspectFill, options: nil)
+            sizeForCachingItems = size
         }
     }
     

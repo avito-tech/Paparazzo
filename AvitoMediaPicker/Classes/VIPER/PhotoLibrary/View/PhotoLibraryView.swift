@@ -14,7 +14,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Subviews
     
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: PhotoLibraryLayout())
+    private let layout = PhotoLibraryLayout()
+    private let collectionView: UICollectionView
     private let accessDeniedView = AccessDeniedView()
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
@@ -22,6 +23,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - Init
     
     init() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         super.init(frame: .zero)
         
         dataSource.onDataChanged = { [weak self] in
@@ -100,6 +103,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     func setAccessDeniedButtonTitle(title: String) {
         accessDeniedView.buttonTitle = title
+    }
+    
+    func cellSize() -> CGSize {
+        return layout.cellSize()
     }
     
     // MARK: - UICollectionViewDelegate

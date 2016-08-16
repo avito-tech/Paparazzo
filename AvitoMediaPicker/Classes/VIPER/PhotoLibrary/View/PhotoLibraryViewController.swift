@@ -20,12 +20,25 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let cellPointSize = photoLibraryView.cellSize()
+        let scale = UIScreen.mainScreen().scale
+        
+        onDidDetermineThumbnailPixelSize?(CGSize(
+            width: cellPointSize.width * scale,
+            height: cellPointSize.height * scale
+        ))
+    }
+    
     // MARK: - PhotoLibraryViewInput
     
     var onItemSelect: (PhotoLibraryItem -> ())?
     var onPickButtonTap: (() -> ())?
     var onCancelButtonTap: (() -> ())?
     var onViewDidLoad: (() -> ())?
+    var onDidDetermineThumbnailPixelSize: (CGSize -> ())?
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return photoLibraryView.onAccessDeniedButtonTap }
