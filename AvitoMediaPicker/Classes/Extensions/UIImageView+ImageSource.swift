@@ -28,9 +28,7 @@ public extension UIImageView {
         
         if let imageSource = imageSource {
             
-            if let imageRequestID = imageRequestID {
-                imageSource.cancelRequest(imageRequestID)
-            }
+            imageRequestID.flatMap { imageSource.cancelRequest($0) }
             
             imageRequestID = imageSource.imageFittingSize(pixelSize) { [weak self] (image: UIImage?) in
                 if self?.shouldSetImageForImageSource(imageSource) == true {
@@ -80,7 +78,7 @@ public extension UIImageView {
         }
         set {
             let number = newValue.flatMap { NSNumber(int: $0) }
-            objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
