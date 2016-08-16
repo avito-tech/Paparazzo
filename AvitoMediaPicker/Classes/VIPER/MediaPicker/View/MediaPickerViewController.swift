@@ -208,9 +208,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     func scrollToCameraThumbnail(animated animated: Bool) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.mediaPickerView.scrollToCameraThumbnail(animated: animated)
-        }
+        mediaPickerView.scrollToCameraThumbnail(animated: animated)
     }
     
     func setCameraButtonVisible(visible: Bool) {
