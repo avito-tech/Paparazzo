@@ -105,10 +105,6 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         accessDeniedView.buttonTitle = title
     }
     
-    func cellSize() -> CGSize {
-        return layout.cellSize()
-    }
-    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {

@@ -63,16 +63,6 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         }
     }
     
-    private var sizeForCachingItems = CGSize.zero
-    
-    func startCachingItemsWithSize(size: CGSize) {
-        if size != sizeForCachingItems {
-            debugPrint("startCachingItemsWithSize \(size) (\(assets.count) assets)")
-            imageManager.startCachingImagesForAssets(assets, targetSize: size, contentMode: .AspectFill, options: nil)
-            sizeForCachingItems = size
-        }
-    }
-    
     func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ()) {
         
         if canSelectMoreItems() {

@@ -6,8 +6,6 @@ protocol PhotoLibraryInteractor: class {
     func authorizationStatus(completion: (accessGranted: Bool) -> ())
     func observeItems(handler: (items: [PhotoLibraryItem], selectionState: PhotoLibraryItemSelectionState) -> ())
     
-    func startCachingItemsWithSize(size: CGSize)
-    
     func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
     func deselectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
     func selectedItems(completion: [PhotoLibraryItem] -> ())

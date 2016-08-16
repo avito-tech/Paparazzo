@@ -71,10 +71,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.setPickButtonEnabled(false)
         
-        view?.onDidDetermineThumbnailPixelSize = { [weak self] cellSize in
-            self?.interactor.startCachingItemsWithSize(cellSize)
-        }
-        
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
                 self?.onFinish?(.SelectedItems(items))
