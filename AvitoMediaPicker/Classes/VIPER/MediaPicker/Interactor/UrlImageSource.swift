@@ -103,11 +103,11 @@ public final class UrlImageSource: ImageSource {
             }
         }
         
-        return 0    // TODO
+        return 0    // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
     public func cancelRequest(id: ImageRequestID) {
-        // TODO
+        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
     public func isEqualTo(other: ImageSource) -> Bool {

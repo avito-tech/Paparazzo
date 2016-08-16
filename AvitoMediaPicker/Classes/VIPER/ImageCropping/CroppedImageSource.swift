@@ -61,11 +61,11 @@ final class CroppedImageSource: ImageSource {
             resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
         
-        return 0    // TODO
+        return 0    // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
     func cancelRequest(requestID: ImageRequestID) {
-        // TODO
+        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
     func imageSize(completion: CGSize? -> ()) {

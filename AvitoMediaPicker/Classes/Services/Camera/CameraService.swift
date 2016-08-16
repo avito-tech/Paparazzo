@@ -4,7 +4,7 @@ protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
     
-    func captureSession(_: AVCaptureSession? -> ())
+    func captureSession(completion: AVCaptureSession? -> ())
     
     // Returns a flag indicating whether changing flash mode was successful
     func setFlashEnabled(enabled: Bool) -> Bool
