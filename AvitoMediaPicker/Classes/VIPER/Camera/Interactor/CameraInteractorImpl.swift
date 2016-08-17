@@ -68,7 +68,7 @@ final class CameraInteractorImpl: CameraInteractor {
     }
     
     func setPreviewImagesSizeForNewPhotos(size: CGSize) {
-        previewImagesSizeForNewPhotos = size
+        previewImagesSizeForNewPhotos = CGSize(width: ceil(size.width), height: ceil(size.height))
     }
     
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool) {
