@@ -275,12 +275,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_Example" */;
 			buildPhases = (
+				E989CC17E0B11D4ACAAB1783 /* 📦 Check Pods Manifest.lock */,
 				6D4269CDBD5435BC003753B9 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				64D71F6E13D4FB019793D6CC /* [CP] Embed Pods Frameworks */,
 				00CBC8185AF15B3A63746CBC /* [CP] Copy Pods Resources */,
+				5B1C3D26A4FCBD3BBCED4D57 /* 📦 Embed Pods Frameworks */,
+				2DFEDA2331357910894BC228 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -295,12 +298,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_Tests" */;
 			buildPhases = (
+				F999F29B35CF11C26B72B4E4 /* 📦 Check Pods Manifest.lock */,
 				38C4A2637028FF605C043E21 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
 				832F42595CDE2A2136B00576 /* [CP] Embed Pods Frameworks */,
 				94AB12D4C724DE7EF7BD2BE8 /* [CP] Copy Pods Resources */,
+				66A1B55F2144E32E820B0752 /* 📦 Embed Pods Frameworks */,
+				57662A1C6C3030F581F9C9E8 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -390,6 +396,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Example/Pods-AvitoMediaPicker_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		2DFEDA2331357910894BC228 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Example/Pods-AvitoMediaPicker_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		38C4A2637028FF605C043E21 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -405,6 +426,36 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		57662A1C6C3030F581F9C9E8 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Tests/Pods-AvitoMediaPicker_Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5B1C3D26A4FCBD3BBCED4D57 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Example/Pods-AvitoMediaPicker_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		64D71F6E13D4FB019793D6CC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -418,6 +469,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Example/Pods-AvitoMediaPicker_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66A1B55F2144E32E820B0752 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Tests/Pods-AvitoMediaPicker_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6D4269CDBD5435BC003753B9 /* [CP] Check Pods Manifest.lock */ = {
@@ -463,6 +529,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Tests/Pods-AvitoMediaPicker_Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E989CC17E0B11D4ACAAB1783 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F999F29B35CF11C26B72B4E4 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
