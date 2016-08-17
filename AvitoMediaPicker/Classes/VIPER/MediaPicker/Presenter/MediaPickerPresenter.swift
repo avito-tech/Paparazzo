@@ -184,6 +184,10 @@ final class MediaPickerPresenter: MediaPickerModule {
                 UIApplication.sharedApplication().openURL(url)
             }
         }
+        
+        view?.onPreviewSizeDetermined = { [weak self] previewSize in
+            self?.cameraModuleInput.setPreviewImagesSizeForNewPhotos(previewSize)
+        }
     }
     
     private func adjustViewForSelectedItem(item: MediaPickerItem, animated: Bool) {

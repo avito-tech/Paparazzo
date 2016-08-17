@@ -208,6 +208,10 @@ final class MediaPickerView: UIView {
         set { accessDeniedView.onButtonTap = newValue }
     }
     
+    var previewSize: CGSize {
+        return photoPreviewView.size
+    }
+    
     func setMode(mode: MediaPickerViewMode) {
         
         switch mode {

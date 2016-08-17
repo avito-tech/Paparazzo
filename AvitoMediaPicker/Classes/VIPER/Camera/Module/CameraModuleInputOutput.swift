@@ -12,4 +12,6 @@ protocol CameraModuleInput: class {
     func toggleCamera()
     
     func takePhoto(completion: MediaPickerItem? -> ())
+    
+    func setPreviewImagesSizeForNewPhotos(size: CGSize)
 }

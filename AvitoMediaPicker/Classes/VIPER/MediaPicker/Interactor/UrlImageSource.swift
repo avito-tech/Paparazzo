@@ -4,20 +4,29 @@ import MobileCoreServices
 import AvitoDesignKit
 
 public final class UrlImageSource: ImageSource {
+    
     private static let processingQueue = dispatch_queue_create(
         "ru.avito.AvitoMediaPicker.UrlImageSource.processingQueue",
         dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, 0)
     )
 
     private let url: NSURL
+    private let previewImage: SingleObjectCache<CGImageWrapper>?
 
-    public init(url: NSURL) {
+    public init(url: NSURL, previewImage: CGImage? = nil) {
         self.url = url
+        self.previewImage = previewImage.flatMap { SingleObjectCache(value: CGImageWrapper(CGImage: $0)) }
     }
 
     // MARK: - ImageSource
     
-    public func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode _: ImageDeliveryMode, resultHandler: T? -> ()) {
+    public func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+        
+        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
+            dispatch_async(dispatch_get_main_queue()) {
+                resultHandler(T(CGImage: previewImageWrapper.image))
+            }
+        }
         
         dispatch_async(UrlImageSource.processingQueue) { [url] in
          
@@ -85,6 +94,12 @@ public final class UrlImageSource: ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestID
     {
+        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
+            dispatch_async(dispatch_get_main_queue()) {
+                resultHandler(T(CGImage: previewImageWrapper.image))
+            }
+        }
+        
         dispatch_async(UrlImageSource.processingQueue) { [url] in
 
             let source = CGImageSourceCreateWithURL(url, nil)

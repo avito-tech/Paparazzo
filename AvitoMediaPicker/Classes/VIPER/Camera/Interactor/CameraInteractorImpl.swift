@@ -6,6 +6,7 @@ final class CameraInteractorImpl: CameraInteractor {
     private let deviceOrientationService: DeviceOrientationService
     
     private var onDeviceOrientationChange: (DeviceOrientation -> ())?
+    private var previewImagesSizeForNewPhotos: CGSize?
     
     init(cameraService: CameraService, deviceOrientationService: DeviceOrientationService) {
         
@@ -50,9 +51,24 @@ final class CameraInteractorImpl: CameraInteractor {
     }
     
     func takePhoto(completion: MediaPickerItem? -> ()) {
-        cameraService.takePhoto { photo in
-            completion(photo.flatMap { MediaPickerItem(image: UrlImageSource(url: $0.url), source: .Camera) })
+        
+        cameraService.takePhoto { [weak self] photo in
+            
+            let imageSource = photo.flatMap { UrlImageSource(url: $0.url) }
+            
+            if let imageSource = imageSource, previewSize = self?.previewImagesSizeForNewPhotos {
+                imageSource.imageFittingSize(previewSize, contentMode: .AspectFill, deliveryMode: .Best) { (imageWrapper: CGImageWrapper?) in
+                    let imageSource = photo.flatMap { UrlImageSource(url: $0.url, previewImage: imageWrapper?.image) }
+                    completion(imageSource.flatMap { MediaPickerItem(image: $0, source: .Camera) })
+                }
+            } else {
+                completion(imageSource.flatMap { MediaPickerItem(image: $0, source: .Camera) })
+            }
         }
+    }
+    
+    func setPreviewImagesSizeForNewPhotos(size: CGSize) {
+        previewImagesSizeForNewPhotos = size
     }
     
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool) {
