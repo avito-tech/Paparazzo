@@ -9,6 +9,8 @@ final class CroppedImageSource: ImageSource {
     var croppingParameters: ImageCroppingParameters?
     var previewImage: CGImage?
     
+    private let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+    
     init(originalImage: ImageSource, parameters: ImageCroppingParameters?, previewImage: CGImage?) {
         self.originalImage = originalImage
         self.croppingParameters = parameters
@@ -105,11 +107,8 @@ final class CroppedImageSource: ImageSource {
         
         originalImage.fullResolutionImage { [weak self] (imageWrapper: CGImageWrapper?) in
             
-            if let originalCGImage = imageWrapper?.image,
-                croppingParameters = self?.croppingParameters,
-                croppedCGImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters) {
-                
-                self?.croppedImage = croppedCGImage
+            if let originalCGImage = imageWrapper?.image, croppingParameters = self?.croppingParameters {
+                self?.croppedImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters)
             }
             
             completion()
@@ -177,51 +176,18 @@ final class CroppedImageSource: ImageSource {
         withOrientation orientation: ExifOrientation,
         toSize size: CGSize,
         withQuality quality: CGInterpolationQuality
-    ) -> CGImage? {
+    ) -> CGImage {
         
-        var srcSize = size
-        var rotation = CGFloat(0)
+        let ciImage = CIImage(CGImage: source)
         
-        switch(orientation) {
-        case .Up:
-            rotation = 0
-        case .Down:
-            rotation = CGFloat(M_PI)
-        case .Left:
-            rotation = CGFloat(M_PI_2)
-            srcSize = CGSize(width: size.height, height: size.width)
-        case .Right:
-            rotation = -CGFloat(M_PI_2)
-            srcSize = CGSize(width: size.height, height: size.width)
-        default:
-            break
-        }
+        let transform = CGAffineTransformIdentity
+            .translate(dx: size.width / 2, dy: size.height / 2)
+            .append(ciImage.imageTransformForOrientation(Int32(orientation.rawValue)))
+            .translate(dx: -size.width / 2, dy: -size.height / 2)
         
-        let context = CGBitmapContextCreate(
-            nil,
-            Int(size.width),
-            Int(size.height),
-            8,  //CGImageGetBitsPerComponent(source),
-            0,
-            CGImageGetColorSpace(source),
-            CGImageGetBitmapInfo(source).rawValue  // kCGImageAlphaNoneSkipFirst
+        return ciContext.createCGImage(
+            ciImage.imageByApplyingTransform(transform),
+            fromRect: CGRect(origin: .zero, size: size)
         )
-        
-        CGContextSetInterpolationQuality(context, quality)
-        CGContextTranslateCTM(context, size.width / 2, size.height / 2)
-        CGContextRotateCTM(context, rotation)
-        
-        CGContextDrawImage(
-            context,
-            CGRect(
-                x: -srcSize.width / 2,
-                y: -srcSize.height / 2,
-                width: srcSize.width,
-                height: srcSize.height
-            ),
-            source
-        )
-        
-        return CGBitmapContextCreateImage(context)
     }
 }
