@@ -303,7 +303,9 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func showCroppingModule(forItem item: MediaPickerItem) {
         
-        router.showCroppingModule(forImage: item.image) { module in
+        let maxPhotoSizeAcceptedByServer = CGSize(width: 1280, height: 960)
+        
+        router.showCroppingModule(forImage: item.image, canvasSize: maxPhotoSizeAcceptedByServer) { module in
             
             module.onDiscard = { [weak self] in
                 self?.router.focusOnCurrentModule()

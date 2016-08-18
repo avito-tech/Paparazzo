@@ -110,7 +110,12 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     }
     
     func setImage(image: ImageSource, completion: (() -> ())?) {
-        image.fullResolutionImage { [weak self] (image: UIImage?) in
+        image.imageFittingSize(
+            canvasSize,
+            contentMode: .AspectFit,
+            deliveryMode: .Best
+        ) { [weak self] (image: UIImage?) in
+            
             if let image = image {
                 self?.previewView.setImage(image)
             }
@@ -132,6 +137,10 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     func setRotationSliderValue(value: Float) {
         controlsView.setRotationSliderValue(value)
+    }
+    
+    func setCanvasSize(size: CGSize) {
+        canvasSize = size
     }
     
     func setTheme(theme: ImageCroppingUITheme) {
@@ -200,6 +209,9 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     // MARK: - Private
     
     private var aspectRatio: AspectRatio = .portrait_3x4
+    
+    /// Максимальный размер, до которого будет скейлится исходная картинка, чтобы не крэшилось приложение на слабых девайсах (все равно больше этого размера нам не нужно)
+    private var canvasSize = CGSize(width: 1000, height: 1000)
     
     private func aspectRatioButtonSize() -> CGSize {
         switch aspectRatio {

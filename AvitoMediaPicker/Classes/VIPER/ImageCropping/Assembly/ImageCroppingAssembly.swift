@@ -6,6 +6,7 @@ protocol ImageCroppingAssembly: class {
     
     func viewController(
         image image: ImageSource,
+        canvasSize: CGSize,
         routerSeed: RouterSeed,
         configuration: ImageCroppingModule -> ()
     ) -> UIViewController

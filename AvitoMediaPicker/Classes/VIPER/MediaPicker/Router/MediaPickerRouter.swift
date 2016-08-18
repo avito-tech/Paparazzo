@@ -11,6 +11,7 @@ protocol MediaPickerRouter: class, RouterFocusable, RouterDismissable {
     
     func showCroppingModule(
         forImage image: ImageSource,
+        canvasSize: CGSize,
         configuration: ImageCroppingModule -> ()
     )
 }

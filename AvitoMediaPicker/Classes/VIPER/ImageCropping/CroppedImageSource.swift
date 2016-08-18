@@ -6,13 +6,13 @@ import AvitoDesignKit
 final class CroppedImageSource: ImageSource {
     
     let originalImage: ImageSource
+    let sourceSize: CGSize
     var croppingParameters: ImageCroppingParameters?
     var previewImage: CGImage?
     
-    private let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
-    
-    init(originalImage: ImageSource, parameters: ImageCroppingParameters?, previewImage: CGImage?) {
+    init(originalImage: ImageSource, sourceSize: CGSize, parameters: ImageCroppingParameters?, previewImage: CGImage?) {
         self.originalImage = originalImage
+        self.sourceSize = sourceSize
         self.croppingParameters = parameters
         self.previewImage = previewImage
     }
@@ -31,7 +31,7 @@ final class CroppedImageSource: ImageSource {
     }
     
     func fullResolutionImageData(completion: NSData? -> ()) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        dispatch_async(processingQueue) {
             
             let data = NSMutableData()
             let destination = CGImageDestinationCreateWithData(data, kUTTypeJPEG, 1, nil)
@@ -87,6 +87,12 @@ final class CroppedImageSource: ImageSource {
     // MARK: - Private
     
     private let croppedImageCache = SingleObjectCache<CGImageWrapper>()
+    private let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+    
+    private let processingQueue = dispatch_queue_create(
+        "ru.avito.AvitoMediaPicker.CroppedImageSource.processingQueue",
+        dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, 0)
+    )
     
     private var croppedImage: CGImage? {
         get { return croppedImageCache.value?.image }
@@ -105,13 +111,18 @@ final class CroppedImageSource: ImageSource {
     
     private func performCrop(completion: () -> ()) {
         
-        originalImage.fullResolutionImage { [weak self] (imageWrapper: CGImageWrapper?) in
+        originalImage.imageFittingSize(
+            sourceSize,
+            contentMode: .AspectFit,
+            deliveryMode: .Best
+        ) { [weak self, processingQueue] (imageWrapper: CGImageWrapper?) in
             
-            if let originalCGImage = imageWrapper?.image, croppingParameters = self?.croppingParameters {
-                self?.croppedImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters)
+            dispatch_async(processingQueue) {
+                if let originalCGImage = imageWrapper?.image, croppingParameters = self?.croppingParameters {
+                    self?.croppedImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters)
+                }
+                dispatch_async(dispatch_get_main_queue(), completion)
             }
-            
-            completion()
         }
     }
     
