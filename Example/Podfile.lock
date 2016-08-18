@@ -29,7 +29,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AvitoDesignKit:
-    :commit: 86dec717a355447b6a5d838c25af24ccddcb6a6f
+    :commit: b13a2b0dd733c6d4417b7f1b6ac4754f96b8fe16
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
 
 SPEC CHECKSUMS:

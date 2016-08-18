@@ -34,9 +34,6 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
     
     func showCroppingModule(forImage image: ImageSource, canvasSize: CGSize, configuration: ImageCroppingModule -> ()) {
         
-        let animator = NavigationTransitionsAnimator()
-        animator.shouldAnimate = false
-        
         pushViewControllerDerivedFrom({ routerSeed in
             
             let assembly = assemblyFactory.imageCroppingAssembly()
@@ -48,6 +45,6 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
                 configuration: configuration
             )
             
-        }, animator: animator)
+        }, animator: NonAnimatedPushAnimator())
     }
 }
