@@ -110,16 +110,19 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             // Если фоткать со вспышкой, это занимает много времени, и если несколько раз подряд быстро тапнуть на кнопку,
             // он будет потом еще долго фоткать :) Поэтому временно блокируем кнопку.
+            // Кроме того, если быстро нажать "Далее", то фотка не попадет в module result, поэтому "Далее" также блокируем
             self?.view?.setShutterButtonEnabled(false)
+            self?.view?.setContinueButtonEnabled(false)
             self?.view?.animateFlash()
             
             self?.cameraModuleInput.takePhoto { photo in
                 
-                self?.view?.setShutterButtonEnabled(true)
-                
                 if let photo = photo {
                     self?.addItems([photo.toItemWithCachingImageSource()], fromCamera: true)
                 }
+                
+                self?.view?.setShutterButtonEnabled(true)
+                self?.view?.setContinueButtonEnabled(true)
             }
         }
         
