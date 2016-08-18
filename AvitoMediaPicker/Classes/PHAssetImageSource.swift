@@ -13,10 +13,6 @@ final class PHAssetImageSource: ImageSource {
 
     // MARK: - AbstractImage
     
-    func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
-        imageFittingSize(PHImageManagerMaximumSize, contentMode: .AspectFill, deliveryMode: deliveryMode, resultHandler: resultHandler)
-    }
-    
     func fullResolutionImageData(completion: NSData? -> ()) {
         
         let options = PHImageRequestOptions()
@@ -35,39 +31,45 @@ final class PHAssetImageSource: ImageSource {
             completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
         }
     }
-
-    func imageFittingSize<T: InitializableWithCGImage>(
-        size: CGSize,
-        contentMode: ImageContentMode,
-        deliveryMode: ImageDeliveryMode,
+    
+    func requestImage<T : InitializableWithCGImage>(
+        options options: ImageRequestOptions,
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        let options = PHImageRequestOptions()
-        options.networkAccessAllowed = true
-        options.progressHandler = { progress, _, _, _ in
+        let phOptions = PHImageRequestOptions()
+        phOptions.networkAccessAllowed = true
+        phOptions.progressHandler = { progress, _, _, _ in
             debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
         }
         
-        switch deliveryMode {
+        switch options.deliveryMode {
         case .Progressive:
-            options.deliveryMode = .Opportunistic
-            options.resizeMode = .Fast
+            phOptions.deliveryMode = .Opportunistic
+            phOptions.resizeMode = .Fast
         case .Best:
-            options.deliveryMode = .HighQualityFormat
-            options.resizeMode = .Exact
+            phOptions.deliveryMode = .HighQualityFormat
+            phOptions.resizeMode = .Exact
         }
+        
+        let size: CGSize
+        let contentMode: PHImageContentMode
+        
+        switch options.size {
+        case .FullResolution:
+            size = PHImageManagerMaximumSize
+            contentMode = .AspectFill
+        case .FitSize(let sizeToFit):
+            size = sizeToFit
+            contentMode = .AspectFit
+        case .FillSize(let sizeToFill):
+            size = sizeToFill
+            contentMode = .AspectFill
+        }
+        
+        debugPrint("requesting asset image: size = \(size), contentMode = \(contentMode.debugDescription)")
 
-        let contentMode = PHImageContentMode(abstractImageContentMode: contentMode)
-
-//        let assetId = asset.localIdentifier ?? ""
-//        debugPrint("\(assetId): request image fitting size \(size)")
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] image, info in
-//            if let image = image {
-//                let size = CGSize(width: image.size.width * image.scale, height: image.size.height * image.scale)
-//                debugPrint("\(assetId): image manager returned UIImage with size = \(size)")
-//            }
-            
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
             if let image = image as? T? {
                 resultHandler(image)
             } else {
@@ -90,12 +92,12 @@ final class PHAssetImageSource: ImageSource {
 }
 
 private extension PHImageContentMode {
-    init(abstractImageContentMode: ImageContentMode) {
-        switch abstractImageContentMode {
+    var debugDescription: String {
+        switch self {
         case .AspectFit:
-            self = .AspectFit
+            return "AspectFit"
         case .AspectFill:
-            self = .AspectFill
+            return "AspectFill"
         }
     }
 }

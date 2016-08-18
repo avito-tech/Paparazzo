@@ -20,6 +20,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropEnabled: Bool,
+        cropCanvasSize: CGSize,
         routerSeed: RouterSeed,
         configuration: MediaPickerModule -> ()
     ) -> UIViewController {
@@ -28,6 +29,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
             items: items,
             selectedItem: selectedItem,
             maxItemsCount: maxItemsCount,
+            cropCanvasSize: cropCanvasSize,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
         )

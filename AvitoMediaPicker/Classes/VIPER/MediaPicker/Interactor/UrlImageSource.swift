@@ -20,35 +20,6 @@ public final class UrlImageSource: ImageSource {
 
     // MARK: - ImageSource
     
-    public func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
-        
-        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(T(CGImage: previewImageWrapper.image))
-            }
-        }
-        
-        dispatch_async(UrlImageSource.processingQueue) { [url] in
-         
-            let source = CGImageSourceCreateWithURL(url, nil)
-            
-            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
-            let orientation = options?[kCGImagePropertyOrientation] as? Int
-
-            var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
-            
-            if let exifOrientation = orientation.flatMap({ ExifOrientation(rawValue: $0) }) {
-                cgImage = cgImage?.imageFixedForOrientation(exifOrientation)
-            }
-            
-            let image = cgImage.flatMap { T(CGImage: $0) }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(image)
-            }
-        }
-    }
-    
     public func fullResolutionImageData(completion: NSData? -> ()) {
         dispatch_async(UrlImageSource.processingQueue) { [url] in
             let data = NSData(contentsOfURL: url)
@@ -87,38 +58,19 @@ public final class UrlImageSource: ImageSource {
         }
     }
 
-    public func imageFittingSize<T: InitializableWithCGImage>(
-        size: CGSize,
-        contentMode: ImageContentMode,
-        deliveryMode: ImageDeliveryMode,
+    public func requestImage<T : InitializableWithCGImage>(
+        options options: ImageRequestOptions,
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(T(CGImage: previewImageWrapper.image))
-            }
+        switch options.size {
+        case .FullResolution:
+            return requestFullResolutionImage(deliveryMode: options.deliveryMode, resultHandler: resultHandler)
+        case .FillSize(let size):
+            return requestResizedImage(size, deliveryMode: options.deliveryMode, resultHandler: resultHandler)
+        case .FitSize(let size):
+            return requestResizedImage(size, deliveryMode: options.deliveryMode, resultHandler: resultHandler)
         }
-        
-        dispatch_async(UrlImageSource.processingQueue) { [url] in
-
-            let source = CGImageSourceCreateWithURL(url, nil)
-
-            let options: [NSString: NSObject] = [
-                kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
-                kCGImageSourceCreateThumbnailWithTransform: true,
-                kCGImageSourceCreateThumbnailFromImageAlways: true
-            ]
-
-            let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
-            let image = cgImage.flatMap { T(CGImage: $0) }
-
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(image)
-            }
-        }
-        
-        return 0    // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
     public func cancelRequest(id: ImageRequestID) {
@@ -131,5 +83,74 @@ public final class UrlImageSource: ImageSource {
         } else {
             return false
         }
+    }
+    
+    // MARK: - Private
+    
+    private func requestFullResolutionImage<T : InitializableWithCGImage>(
+        deliveryMode deliveryMode: ImageDeliveryMode,
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
+        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
+            dispatch_async(dispatch_get_main_queue()) {
+                resultHandler(T(CGImage: previewImageWrapper.image))
+            }
+        }
+        
+        dispatch_async(UrlImageSource.processingQueue) { [url] in
+            
+            let source = CGImageSourceCreateWithURL(url, nil)
+            
+            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
+            let orientation = options?[kCGImagePropertyOrientation] as? Int
+            
+            var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
+            
+            if let exifOrientation = orientation.flatMap({ ExifOrientation(rawValue: $0) }) {
+                cgImage = cgImage?.imageFixedForOrientation(exifOrientation)
+            }
+            
+            let image = cgImage.flatMap { T(CGImage: $0) }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                resultHandler(image)
+            }
+        }
+        
+        return 0        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
+    }
+    
+    private func requestResizedImage<T : InitializableWithCGImage>(
+        size: CGSize,
+        deliveryMode: ImageDeliveryMode,
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
+        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
+            dispatch_async(dispatch_get_main_queue()) {
+                resultHandler(T(CGImage: previewImageWrapper.image))
+            }
+        }
+        
+        dispatch_async(UrlImageSource.processingQueue) { [url] in
+            
+            let source = CGImageSourceCreateWithURL(url, nil)
+            
+            let options: [NSString: NSObject] = [
+                kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceCreateThumbnailFromImageAlways: true
+            ]
+            
+            let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
+            let image = cgImage.flatMap { T(CGImage: $0) }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                resultHandler(image)
+            }
+        }
+        
+        return 0    // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
 }

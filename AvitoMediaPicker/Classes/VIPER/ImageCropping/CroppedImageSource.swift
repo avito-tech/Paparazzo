@@ -47,14 +47,12 @@ final class CroppedImageSource: ImageSource {
         }
     }
     
-    func imageFittingSize<T: InitializableWithCGImage>(
-        size: CGSize,
-        contentMode: ImageContentMode,
-        deliveryMode: ImageDeliveryMode,
+    func requestImage<T : InitializableWithCGImage>(
+        options options: ImageRequestOptions,
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        if let previewImage = previewImage where deliveryMode == .Progressive {
+        if let previewImage = previewImage where options.deliveryMode == .Progressive {
             resultHandler(T(CGImage: previewImage))
         }
         

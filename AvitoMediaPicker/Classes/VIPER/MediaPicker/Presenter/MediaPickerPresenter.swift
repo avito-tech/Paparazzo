@@ -303,26 +303,27 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func showCroppingModule(forItem item: MediaPickerItem) {
         
-        let maxPhotoSizeAcceptedByServer = CGSize(width: 1280, height: 960)
-        
-        router.showCroppingModule(forImage: item.image, canvasSize: maxPhotoSizeAcceptedByServer) { module in
+        interactor.cropCanvasSize { [weak self] cropCanvasSize in
             
-            module.onDiscard = { [weak self] in
-                self?.router.focusOnCurrentModule()
-            }
-            
-            module.onConfirm = { [weak self] croppedImageSource in
+            self?.router.showCroppingModule(forImage: item.image, canvasSize: cropCanvasSize) { module in
                 
-                let croppedItem = MediaPickerItem(
-                    identifier: item.identifier,
-                    image: croppedImageSource,
-                    source: item.source
-                )
-                
-                self?.interactor.updateItem(croppedItem) {
-                    self?.view?.updateItem(croppedItem)
-                    self?.onItemUpdate?(croppedItem)
+                module.onDiscard = { [weak self] in
                     self?.router.focusOnCurrentModule()
+                }
+                
+                module.onConfirm = { [weak self] croppedImageSource in
+                    
+                    let croppedItem = MediaPickerItem(
+                        identifier: item.identifier,
+                        image: croppedImageSource,
+                        source: item.source
+                    )
+                    
+                    self?.interactor.updateItem(croppedItem) {
+                        self?.view?.updateItem(croppedItem)
+                        self?.onItemUpdate?(croppedItem)
+                        self?.router.focusOnCurrentModule()
+                    }
                 }
             }
         }
