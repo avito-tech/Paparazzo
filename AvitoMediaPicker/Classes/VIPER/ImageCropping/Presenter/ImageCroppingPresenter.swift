@@ -63,6 +63,10 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             }
         }
         
+        interactor.canvasSize { [weak self] canvasSize in
+            self?.view?.setCanvasSize(canvasSize)
+        }
+        
         interactor.croppedImageAspectRatio { [weak self] aspectRatio in
             
             let isPortrait = aspectRatio < 1

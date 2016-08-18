@@ -12,11 +12,12 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     
     public func viewController(
         image image: ImageSource,
+        canvasSize: CGSize,
         routerSeed: RouterSeed,
         configuration: ImageCroppingModule -> ()
     ) -> UIViewController {
 
-        let interactor = ImageCroppingInteractorImpl(image: image)
+        let interactor = ImageCroppingInteractorImpl(image: image, canvasSize: canvasSize)
 
         let router = ImageCroppingRouterImpl(routerSeed: routerSeed)
 

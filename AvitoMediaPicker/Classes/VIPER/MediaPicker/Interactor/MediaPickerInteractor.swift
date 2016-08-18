@@ -19,6 +19,8 @@ protocol MediaPickerInteractor: class {
     
     func numberOfItemsAvailableForAdding(completion: Int? -> ())
     
+    func cropCanvasSize(completion: CGSize -> ())
+    
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?)
     func observeLatestPhotoLibraryItem(handler: (ImageSource? -> ())?)
 }

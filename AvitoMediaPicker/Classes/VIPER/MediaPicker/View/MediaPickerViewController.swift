@@ -23,6 +23,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        onPreviewSizeDetermined?(previewSize: mediaPickerView.previewSize)
+    }
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return .Portrait
     }
@@ -89,6 +94,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     var onViewDidLoad: (() -> ())?
+    var onPreviewSizeDetermined: ((previewSize: CGSize) -> ())?
     
     func setMode(mode: MediaPickerViewMode) {
         // Этот метод может быть вызван до того, как вьюшка обретет frame, что критично для корректной работы
@@ -208,9 +214,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     func scrollToCameraThumbnail(animated animated: Bool) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.mediaPickerView.scrollToCameraThumbnail(animated: animated)
-        }
+        mediaPickerView.scrollToCameraThumbnail(animated: animated)
     }
     
     func setCameraButtonVisible(visible: Bool) {

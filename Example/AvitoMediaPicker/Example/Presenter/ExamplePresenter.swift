@@ -27,8 +27,9 @@ final class ExamplePresenter {
         view?.onShowMediaPickerButtonTap = { [weak self] in
             
             let items = self?.items ?? []
+            let cropCanvasSize = CGSize(width: 1280, height: 960)
             
-            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 5) { module in
+            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 5, cropCanvasSize: cropCanvasSize) { module in
                 
                 module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }

@@ -187,6 +187,10 @@ final class MediaPickerPresenter: MediaPickerModule {
                 UIApplication.sharedApplication().openURL(url)
             }
         }
+        
+        view?.onPreviewSizeDetermined = { [weak self] previewSize in
+            self?.cameraModuleInput.setPreviewImagesSizeForNewPhotos(previewSize)
+        }
     }
     
     private func adjustViewForSelectedItem(item: MediaPickerItem, animated: Bool) {
@@ -302,24 +306,27 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func showCroppingModule(forItem item: MediaPickerItem) {
         
-        router.showCroppingModule(forImage: item.image) { module in
+        interactor.cropCanvasSize { [weak self] cropCanvasSize in
             
-            module.onDiscard = { [weak self] in
-                self?.router.focusOnCurrentModule()
-            }
-            
-            module.onConfirm = { [weak self] croppedImageSource in
+            self?.router.showCroppingModule(forImage: item.image, canvasSize: cropCanvasSize) { module in
                 
-                let croppedItem = MediaPickerItem(
-                    identifier: item.identifier,
-                    image: croppedImageSource,
-                    source: item.source
-                )
-                
-                self?.interactor.updateItem(croppedItem) {
-                    self?.view?.updateItem(croppedItem)
-                    self?.onItemUpdate?(croppedItem)
+                module.onDiscard = { [weak self] in
                     self?.router.focusOnCurrentModule()
+                }
+                
+                module.onConfirm = { [weak self] croppedImageSource in
+                    
+                    let croppedItem = MediaPickerItem(
+                        identifier: item.identifier,
+                        image: croppedImageSource,
+                        source: item.source
+                    )
+                    
+                    self?.interactor.updateItem(croppedItem) {
+                        self?.view?.updateItem(croppedItem)
+                        self?.onItemUpdate?(croppedItem)
+                        self?.router.focusOnCurrentModule()
+                    }
                 }
             }
         }

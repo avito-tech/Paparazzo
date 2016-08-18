@@ -7,6 +7,7 @@ protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
         items items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
+        cropCanvasSize: CGSize,
         configuration: MediaPickerModule -> ()
     )
     

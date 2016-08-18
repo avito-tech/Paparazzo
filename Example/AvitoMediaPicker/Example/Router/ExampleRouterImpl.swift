@@ -14,6 +14,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         items items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
+        cropCanvasSize: CGSize,
         configuration: MediaPickerModule -> ()
     ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
@@ -25,6 +26,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItem: selectedItem,
                 maxItemsCount: maxItemsCount,
                 cropEnabled: true,
+                cropCanvasSize: cropCanvasSize,
                 routerSeed: routerSeed,
                 configuration: configuration
             )

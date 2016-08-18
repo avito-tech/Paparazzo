@@ -46,6 +46,10 @@ final class CameraPresenter: CameraModuleInput {
         interactor.takePhoto(completion)
     }
     
+    func setPreviewImagesSizeForNewPhotos(size: CGSize) {
+        interactor.setPreviewImagesSizeForNewPhotos(size)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {

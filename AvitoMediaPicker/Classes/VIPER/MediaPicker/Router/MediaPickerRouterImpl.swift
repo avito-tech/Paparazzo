@@ -32,13 +32,15 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
         }
     }
     
-    func showCroppingModule(forImage image: ImageSource, configuration: ImageCroppingModule -> ()) {
+    func showCroppingModule(forImage image: ImageSource, canvasSize: CGSize, configuration: ImageCroppingModule -> ()) {
+        
         pushViewControllerDerivedFrom({ routerSeed in
             
             let assembly = assemblyFactory.imageCroppingAssembly()
             
             return assembly.viewController(
                 image: image,
+                canvasSize: canvasSize,
                 routerSeed: routerSeed,
                 configuration: configuration
             )

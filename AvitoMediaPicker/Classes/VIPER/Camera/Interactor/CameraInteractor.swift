@@ -13,6 +13,8 @@ protocol CameraInteractor: class {
     
     func takePhoto(completion: MediaPickerItem? -> ())
     
+    func setPreviewImagesSizeForNewPhotos(size: CGSize)
+    
     // Set nil handler to stop observing
     func observeDeviceOrientation(handler: (DeviceOrientation -> ())?)
 }
