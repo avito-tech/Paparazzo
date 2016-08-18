@@ -5,23 +5,36 @@ import AvitoDesignKit
 
 public final class UrlImageSource: ImageSource {
     
-    private static let processingQueue = dispatch_queue_create(
-        "ru.avito.AvitoMediaPicker.UrlImageSource.processingQueue",
-        dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, 0)
-    )
+    private static let processingQueue: NSOperationQueue = {
+        
+        let queue = NSOperationQueue()
+        queue.qualityOfService = .UserInitiated
+        
+        /*
+         Это фиксит ситуацию на iPhone 4, когда создавалось слишком много потоков для операций запроса фотки,
+         и суммарная используемая ими память порождала крэш из-за нехватки памяти. Данное решение не приводит к
+         лагам, работает шустро даже на iPhone 4.
+         
+         TODO: (ayutkin) В дальнейшем нужно сделать возможность отмены операций, которые создаются в requestImage,
+         и отменять их из UI — например, при переключении между фотками в пикере.
+         */
+        queue.maxConcurrentOperationCount = 3
+        
+        return queue
+    }()
 
     private let url: NSURL
-    private let previewImage: SingleObjectCache<CGImageWrapper>?
+    private let previewImage: CGImage?
 
     public init(url: NSURL, previewImage: CGImage? = nil) {
         self.url = url
-        self.previewImage = previewImage.flatMap { SingleObjectCache(value: CGImageWrapper(CGImage: $0)) }
+        self.previewImage = previewImage
     }
 
     // MARK: - ImageSource
     
     public func fullResolutionImageData(completion: NSData? -> ()) {
-        dispatch_async(UrlImageSource.processingQueue) { [url] in
+        UrlImageSource.processingQueue.addOperationWithBlock { [url] in
             let data = NSData(contentsOfURL: url)
             dispatch_async(dispatch_get_main_queue()) {
                 completion(data)
@@ -31,7 +44,7 @@ public final class UrlImageSource: ImageSource {
     
     public func imageSize(completion: CGSize? -> ()) {
         
-        dispatch_async(UrlImageSource.processingQueue) { [url] in
+        UrlImageSource.processingQueue.addOperationWithBlock { [url] in
             
             let source = CGImageSourceCreateWithURL(url, nil)
             let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
@@ -63,6 +76,16 @@ public final class UrlImageSource: ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestID
     {
+        if let previewImage = previewImage where options.deliveryMode == .Progressive {
+            if NSThread.isMainThread() {    // нужно вернуть результат как можно быстрее
+                resultHandler(T(CGImage: previewImage))
+            } else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    resultHandler(T(CGImage: previewImage))
+                }
+            }
+        }
+        
         switch options.size {
         case .FullResolution:
             return requestFullResolutionImage(deliveryMode: options.deliveryMode, resultHandler: resultHandler)
@@ -92,13 +115,7 @@ public final class UrlImageSource: ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(T(CGImage: previewImageWrapper.image))
-            }
-        }
-        
-        dispatch_async(UrlImageSource.processingQueue) { [url] in
+        UrlImageSource.processingQueue.addOperationWithBlock { [url] in
             
             let source = CGImageSourceCreateWithURL(url, nil)
             
@@ -127,13 +144,7 @@ public final class UrlImageSource: ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        if let previewImageWrapper = previewImage?.value where deliveryMode == .Progressive {
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(T(CGImage: previewImageWrapper.image))
-            }
-        }
-        
-        dispatch_async(UrlImageSource.processingQueue) { [url] in
+        UrlImageSource.processingQueue.addOperationWithBlock { [url] in
             
             let source = CGImageSourceCreateWithURL(url, nil)
             
