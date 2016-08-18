@@ -21,10 +21,10 @@ public typealias ImageRequestID = Int32
 
 public struct ImageRequestOptions {
     
-    var size: ImageSizeOption = .FullResolution
-    var deliveryMode: ImageDeliveryMode = .Best
+    public var size: ImageSizeOption = .FullResolution
+    public var deliveryMode: ImageDeliveryMode = .Best
     
-    var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
+    public var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
     
     public init() {}
 }
