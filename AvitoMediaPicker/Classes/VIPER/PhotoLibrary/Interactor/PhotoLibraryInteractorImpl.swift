@@ -11,14 +11,14 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     private let photoLibraryItemsService: PhotoLibraryItemsService
     
-    private var _imageManager: PHCachingImageManager?
+    private var _imageManager: PHImageManager?
 
     // Нельзя сразу создавать PHImageManager, иначе он крэшнется при деаллокации, если доступ к photo library запрещен
-    private var imageManager: PHCachingImageManager {
+    private var imageManager: PHImageManager {
         if let imageManager = _imageManager {
             return imageManager
         } else {
-            let imageManager = PHCachingImageManager()
+            let imageManager = PHImageManager()
             _imageManager = imageManager
             return imageManager
         }

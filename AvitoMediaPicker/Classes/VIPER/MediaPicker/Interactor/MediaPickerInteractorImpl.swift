@@ -6,6 +6,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private let deviceOrientationService: DeviceOrientationService
     
     private let maxItemsCount: Int?
+    private let cropCanvasSize: CGSize
+    
     private var items = [MediaPickerItem]()
     private var photoLibraryItems = [PhotoLibraryItem]()
     private var selectedItem: MediaPickerItem?
@@ -14,12 +16,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
+        cropCanvasSize: CGSize,
         deviceOrientationService: DeviceOrientationService,
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
         self.items = items
         self.selectedItem = selectedItem
         self.maxItemsCount = maxItemsCount
+        self.cropCanvasSize = cropCanvasSize
         self.deviceOrientationService = deviceOrientationService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
     }
@@ -115,6 +119,10 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     func numberOfItemsAvailableForAdding(completion: Int? -> ()) {
         completion(maxItemsCount.flatMap { $0 - items.count })
+    }
+    
+    func cropCanvasSize(completion: CGSize -> ()) {
+        completion(cropCanvasSize)
     }
     
     // MARK: - Private 

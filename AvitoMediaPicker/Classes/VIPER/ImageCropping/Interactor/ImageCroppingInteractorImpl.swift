@@ -4,17 +4,24 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     private let originalImage: ImageSource
     private var parameters: ImageCroppingParameters?
+    private let canvasSize: CGSize
     
-    init(image: ImageSource) {
+    init(image: ImageSource, canvasSize: CGSize) {
         if let image = image as? CroppedImageSource {
             originalImage = image.originalImage
             parameters = image.croppingParameters
         } else {
             originalImage = image
         }
+        
+        self.canvasSize = canvasSize
     }
     
     // MARK: - CroppingInteractor
+    
+    func canvasSize(completion: CGSize -> ()) {
+        completion(canvasSize)
+    }
     
     func originalImageWithParameters(completion: (ImageSource, ImageCroppingParameters?) -> ()) {
         completion(originalImage, parameters)
@@ -23,6 +30,7 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     func croppedImage(previewImage previewImage: CGImage, completion: CroppedImageSource -> ()) {
         completion(CroppedImageSource(
             originalImage: originalImage,
+            sourceSize: canvasSize,
             parameters: parameters,
             previewImage: previewImage
         ))

@@ -7,24 +7,27 @@ import CoreGraphics
 // TODO: перенести в фреймворк с утилитами
 public protocol ImageSource: class {
     
+    func requestImage<T: InitializableWithCGImage>(options _: ImageRequestOptions, resultHandler: T? -> ()) -> ImageRequestID
+    func cancelRequest(_: ImageRequestID)
+    
     func imageSize(completion: CGSize? -> ())
     
-    func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode _: ImageDeliveryMode, resultHandler: T? -> ())
     func fullResolutionImageData(completion: NSData? -> ())
-    
-    func imageFittingSize<T: InitializableWithCGImage>(
-        size: CGSize,
-        contentMode: ImageContentMode,
-        deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ()
-    ) -> ImageRequestID
-    
-    func cancelRequest(_: ImageRequestID)
 
     func isEqualTo(other: ImageSource) -> Bool
 }
 
 public typealias ImageRequestID = Int32
+
+public struct ImageRequestOptions {
+    
+    var size: ImageSizeOption = .FullResolution
+    var deliveryMode: ImageDeliveryMode = .Best
+    
+    var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
+    
+    public init() {}
+}
 
 public protocol InitializableWithCGImage {
     // Если хотим совсем ни к чему не привязываться (отвязаться от Core Graphics),
@@ -37,9 +40,29 @@ public func ==(lhs: ImageSource, rhs: ImageSource) -> Bool {
     return lhs.isEqualTo(rhs)
 }
 
+@available(*, deprecated, message="Use ImageSizeOption instead (see ImageSource.requestImage(options:resultHandler:))")
 public enum ImageContentMode {
     case AspectFit
     case AspectFill
+}
+
+public enum ImageSizeOption: Equatable {
+    case FitSize(CGSize)
+    case FillSize(CGSize)
+    case FullResolution
+}
+
+public func ==(sizeOption1: ImageSizeOption, sizeOption2: ImageSizeOption) -> Bool {
+    switch (sizeOption1, sizeOption1) {
+    case (.FitSize(let size1), .FitSize(let size2)):
+        return size1 == size2
+    case (.FillSize(let size1), .FillSize(let size2)):
+        return size1 == size2
+    case (.FullResolution, .FullResolution):
+        return true
+    default:
+        return false
+    }
 }
 
 public enum ImageDeliveryMode {
@@ -49,11 +72,41 @@ public enum ImageDeliveryMode {
 
 public extension ImageSource {
     
-    func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ()) {
+    public func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ()) {
         fullResolutionImage(deliveryMode: .Best, resultHandler: completion)
     }
     
     public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) -> ImageRequestID {
         return imageFittingSize(size, contentMode: .AspectFill, deliveryMode: .Progressive, resultHandler: resultHandler)
+    }
+    
+    public func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+    
+        var options = ImageRequestOptions()
+        options.size = .FullResolution
+        options.deliveryMode = deliveryMode
+        
+        requestImage(options: options, resultHandler: resultHandler)
+    }
+    
+    @available(*, deprecated, message="Use ImageSource.requestImage(options:resultHandler:) instead")
+    public func imageFittingSize<T: InitializableWithCGImage>(
+        size: CGSize,
+        contentMode: ImageContentMode,
+        deliveryMode: ImageDeliveryMode,
+        resultHandler: T? -> ())
+        -> ImageRequestID
+    {
+        var options = ImageRequestOptions()
+        options.deliveryMode = deliveryMode
+        
+        switch contentMode {
+        case .AspectFit:
+            options.size = .FitSize(size)
+        case .AspectFill:
+            options.size = .FillSize(size)
+        }
+        
+        return requestImage(options: options, resultHandler: resultHandler)
     }
 }

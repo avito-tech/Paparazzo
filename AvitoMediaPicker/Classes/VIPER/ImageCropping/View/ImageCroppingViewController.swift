@@ -81,6 +81,10 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.setRotationSliderValue(value)
     }
     
+    func setCanvasSize(size: CGSize) {
+        imageCroppingView.setCanvasSize(size)
+    }
+    
     @nonobjc func setTitle(title: String) {
         imageCroppingView.setTitle(title)
     }

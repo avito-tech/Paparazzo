@@ -17,38 +17,6 @@ public final class CachingImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    public func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
-        
-        let cacheKey = "fullResolutionImage"
-        
-        if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
-            resultHandler(T(CGImage: cachedImageWrapper.image))
-            
-        } else {
-            
-            switch deliveryMode {
-                
-            case .Progressive:
-                underlyingImageSource.fullResolutionImage(deliveryMode: deliveryMode, resultHandler: resultHandler)
-                
-                // Для кэша нужна самая лучшая версия картинки
-                underlyingImageSource.fullResolutionImage(deliveryMode: .Best) { [weak self] (imageWrapper: CGImageWrapper?) in
-                    if let imageWrapper = imageWrapper {
-                        self?.cache.setObject(imageWrapper, forKey: cacheKey)
-                    }
-                }
-                
-            case .Best:
-                underlyingImageSource.fullResolutionImage(deliveryMode: deliveryMode) { [weak self] (imageWrapper: CGImageWrapper?) in
-                    if let imageWrapper = imageWrapper {
-                        self?.cache.setObject(imageWrapper, forKey: cacheKey)
-                    }
-                    resultHandler(imageWrapper.flatMap { T(CGImage: $0.image) })
-                }
-            }
-        }
-    }
-    
     public func fullResolutionImageData(completion: NSData? -> ()) {
         underlyingImageSource.fullResolutionImageData(completion)
     }
@@ -57,14 +25,12 @@ public final class CachingImageSource: ImageSource {
         underlyingImageSource.imageSize(completion)
     }
     
-    public func imageFittingSize<T: InitializableWithCGImage>(
-        size: CGSize,
-        contentMode: ImageContentMode,
-        deliveryMode: ImageDeliveryMode,
+    public func requestImage<T : InitializableWithCGImage>(
+        options options: ImageRequestOptions,
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        let cacheKey = ImageRequestParameters(size: size, contentMode: contentMode)
+        let cacheKey = ImageRequestCacheKey(size: options.size)
         
         if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
             resultHandler(T(CGImage: cachedImageWrapper.image))
@@ -74,20 +40,23 @@ public final class CachingImageSource: ImageSource {
             
             let requestID: ImageRequestID
             
-            switch deliveryMode {
+            switch options.deliveryMode {
             
             case .Progressive:
-                requestID = underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode, resultHandler: resultHandler)
+                requestID = underlyingImageSource.requestImage(options: options, resultHandler: resultHandler)
+                
+                var bestImageOptions = options
+                bestImageOptions.deliveryMode = .Best
                 
                 // Для кэша нужна самая лучшая версия картинки
-                underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: .Best) { [weak self] (imageWrapper: CGImageWrapper?) in
+                underlyingImageSource.requestImage(options: bestImageOptions) { [weak self] (imageWrapper: CGImageWrapper?) in
                     if let imageWrapper = imageWrapper {
                         self?.cache.setObject(imageWrapper, forKey: cacheKey)
                     }
                 }
                 
             case .Best:
-                requestID = underlyingImageSource.imageFittingSize(size, contentMode: contentMode, deliveryMode: deliveryMode) { [weak self] (imageWrapper: CGImageWrapper?) in
+                requestID = underlyingImageSource.requestImage(options: options) { [weak self] (imageWrapper: CGImageWrapper?) in
                     if let imageWrapper = imageWrapper {
                         self?.cache.setObject(imageWrapper, forKey: cacheKey)
                     }
@@ -111,17 +80,15 @@ public final class CachingImageSource: ImageSource {
     }
 }
 
-private final class ImageRequestParameters: Equatable {
+private final class ImageRequestCacheKey: Equatable {
     
-    let size: CGSize
-    let contentMode: ImageContentMode
-    
-    init(size: CGSize, contentMode: ImageContentMode) {
+    let size: ImageSizeOption
+
+    init(size: ImageSizeOption) {
         self.size = size
-        self.contentMode = contentMode
     }
 }
 
-private func ==(r1: ImageRequestParameters, r2: ImageRequestParameters) -> Bool {
-    return r1.size == r2.size && r1.contentMode == r2.contentMode
+private func ==(r1: ImageRequestCacheKey, r2: ImageRequestCacheKey) -> Bool {
+    return r1.size == r2.size
 }
