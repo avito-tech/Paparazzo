@@ -24,6 +24,8 @@ public struct ImageRequestOptions {
     var size: ImageSizeOption = .FullResolution
     var deliveryMode: ImageDeliveryMode = .Best
     
+    var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
+    
     public init() {}
 }
 
@@ -38,7 +40,7 @@ public func ==(lhs: ImageSource, rhs: ImageSource) -> Bool {
     return lhs.isEqualTo(rhs)
 }
 
-@available(*, deprecated=1.0, message="Use ImageSizeOption instead")
+@available(*, deprecated, message="Use ImageSizeOption instead (see ImageSource.requestImage(options:resultHandler:))")
 public enum ImageContentMode {
     case AspectFit
     case AspectFill
@@ -87,6 +89,7 @@ public extension ImageSource {
         requestImage(options: options, resultHandler: resultHandler)
     }
     
+    @available(*, deprecated, message="Use ImageSource.requestImage(options:resultHandler:) instead")
     public func imageFittingSize<T: InitializableWithCGImage>(
         size: CGSize,
         contentMode: ImageContentMode,

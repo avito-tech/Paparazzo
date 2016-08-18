@@ -41,6 +41,7 @@ final class PHAssetImageSource: ImageSource {
         phOptions.networkAccessAllowed = true
         phOptions.progressHandler = { progress, _, _, _ in
             debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
+            options.onDownloadProgressChange?(downloadProgress: Float(progress))
         }
         
         switch options.deliveryMode {
