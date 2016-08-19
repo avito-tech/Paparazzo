@@ -25,7 +25,9 @@ public struct ImageRequestOptions {
     public var deliveryMode: ImageDeliveryMode = .Best
     
     /// Called on main thread
-    public var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
+    public var onDownloadStart: (() -> ())?
+    /// Called on main thread
+    public var onDownloadFinish: (() -> ())?
     
     public init() {}
     

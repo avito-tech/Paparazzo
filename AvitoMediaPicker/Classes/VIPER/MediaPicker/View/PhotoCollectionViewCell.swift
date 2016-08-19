@@ -55,8 +55,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    func configureImageRequest(inout options: ImageRequestOptions) {
-    }
+    func configureImageRequest(inout options: ImageRequestOptions) {}
     
     // MARK: - Private
     

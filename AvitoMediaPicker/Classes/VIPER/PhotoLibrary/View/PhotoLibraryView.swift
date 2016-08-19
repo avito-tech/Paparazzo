@@ -162,13 +162,11 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         
         cell.setCloudIcon(theme?.iCloudIcon)
         
-        cell.onLoadingProgress = { [weak self] progress in
-            debugPrint("cell.onLoadingProgress")
-            if progress < 1 {
-                self?.indexPathsForLoadingItems.insert(indexPath)
-            } else {
-                self?.indexPathsForLoadingItems.remove(indexPath)
-            }
+        cell.onLoadingStart = { [weak self] in
+            self?.indexPathsForLoadingItems.insert(indexPath)
+        }
+        cell.onLoadingFinish = { [weak self] in
+            self?.indexPathsForLoadingItems.remove(indexPath)
         }
         
         // Без этого костыля невозможно снять выделение с preselected ячейки

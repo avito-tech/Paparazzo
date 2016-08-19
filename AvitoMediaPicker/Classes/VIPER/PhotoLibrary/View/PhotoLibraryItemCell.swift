@@ -3,17 +3,12 @@ import UIKit
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     private let cloudIconView = UIImageView()
-    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
     
     // MARK: - UICollectionViewCell
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        progressIndicator.hidesWhenStopped = true
-        
         contentView.insertSubview(cloudIconView, atIndex: 0)
-        contentView.addSubview(progressIndicator)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -26,18 +21,19 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.sizeToFit()
         cloudIconView.right = bounds.right
         cloudIconView.bottom = bounds.bottom
-        
-        progressIndicator.center = bounds.center
     }
     
     override func configureImageRequest(inout options: ImageRequestOptions) {
         super.configureImageRequest(&options)
         
-        let superOptions = options
+        options.onDownloadStart = { [onLoadingStart, superOptions = options] in
+            superOptions.onDownloadStart?()
+            onLoadingStart?()
+        }
         
-        options.onDownloadProgressChange = { [weak self] progress in
-            superOptions.onDownloadProgressChange?(downloadProgress: progress)
-            self?.onLoadingProgress?(progress)
+        options.onDownloadFinish = { [onLoadingFinish, superOptions = options] in
+            superOptions.onDownloadFinish?()
+            onLoadingFinish?()
         }
     }
     
@@ -50,7 +46,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - Customizable
     
-    var onLoadingProgress: (Float -> ())?
+    var onLoadingStart: (() -> ())?
+    var onLoadingFinish: (() -> ())?
     
     func customizeWithItem(item: PhotoLibraryItemCellData) {
         image = item.image
