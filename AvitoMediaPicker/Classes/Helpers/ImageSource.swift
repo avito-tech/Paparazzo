@@ -24,6 +24,9 @@ public struct ImageRequestOptions {
     public var size: ImageSizeOption = .FullResolution
     public var deliveryMode: ImageDeliveryMode = .Best
     
+    /// Вызывается, если во время запроса картинки выясняется, что ее нужно скачать из удаленного источника
+    public var onDownloadNeeded: (() -> ())?
+    
     public var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
     
     public init() {}
