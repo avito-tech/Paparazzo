@@ -275,7 +275,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_Example" */;
 			buildPhases = (
-				E989CC17E0B11D4ACAAB1783 /* [CP] Check Pods Manifest.lock */,
+				E989CC17E0B11D4ACAAB1783 /* 📦 Check Pods Manifest.lock */,
 				6D4269CDBD5435BC003753B9 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
@@ -298,7 +298,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_Tests" */;
 			buildPhases = (
-				F999F29B35CF11C26B72B4E4 /* [CP] Check Pods Manifest.lock */,
+				F999F29B35CF11C26B72B4E4 /* 📦 Check Pods Manifest.lock */,
 				38C4A2637028FF605C043E21 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
@@ -531,14 +531,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Tests/Pods-AvitoMediaPicker_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E989CC17E0B11D4ACAAB1783 /* [CP] Check Pods Manifest.lock */ = {
+		E989CC17E0B11D4ACAAB1783 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,14 +546,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F999F29B35CF11C26B72B4E4 /* [CP] Check Pods Manifest.lock */ = {
+		F999F29B35CF11C26B72B4E4 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

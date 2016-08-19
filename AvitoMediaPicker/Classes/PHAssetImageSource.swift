@@ -2,12 +2,9 @@ import Photos
 import AvitoDesignKit
 
 final class PHAssetImageSource: ImageSource {
-    
+
     private let asset: PHAsset
     private let imageManager: PHImageManager
-    
-    private let requestIdGenerator = ThreadSafeIntGenerator()
-    private var imageRequestIdsMap = ThreadSafeMap<ImageRequestID, PHImageRequestID>()
 
     init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
         self.asset = asset
@@ -40,77 +37,12 @@ final class PHAssetImageSource: ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestID
     {
-        let (phOptions, size, contentMode) = photoRequestParameters(from: options)
-        
-        let finalResultHandler = { (image: UIImage?, _: [NSObject : AnyObject]?) in
-            if let image = image as? T? {
-                resultHandler(image)
-            } else {
-                resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
-            }
-        }
-        
-//        debugPrint("requesting asset image: size = \(size), contentMode = \(contentMode.debugDescription)")
-
-        let requestId = ImageRequestID(requestIdGenerator.nextInt())
-        
-        // Сначала пытаемся получить локальную фотку
-        let phRequestId = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self, imageManager, asset] image, info in
-            
-            let needToDownloadImageFromCloud = (image == nil && info?[PHImageResultIsInCloudKey]?.boolValue == true)
-            
-            if needToDownloadImageFromCloud {
-                // Если локальной фотки нет, то уведомляем об этом клиентский код, модифицируем параметры запроса,
-                // чтобы позволить Photos качать фото из сети и повторяем запрос
-                
-                options.onDownloadNeeded?()
-                
-                phOptions.networkAccessAllowed = true
-                phOptions.progressHandler = { progress, _, _, _ in
-                    debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
-                    options.onDownloadProgressChange?(downloadProgress: Float(progress))
-                }
-                
-                let phRequestId = imageManager.requestImageForAsset(
-                    asset,
-                    targetSize: size,
-                    contentMode: contentMode,
-                    options: phOptions,
-                    resultHandler: finalResultHandler
-                )
-                
-                self?.imageRequestIdsMap[requestId] = phRequestId
-                
-            } else {
-                finalResultHandler(image, info)
-            }
-        }
-        
-        imageRequestIdsMap[requestId] = phRequestId
-        
-        return requestId
-    }
-    
-    func cancelRequest(id: ImageRequestID) {
-        if let phRequestId = imageRequestIdsMap[id] {
-            imageManager.cancelImageRequest(phRequestId)
-        }
-    }
-    
-    func isEqualTo(other: ImageSource) -> Bool {
-        if let other = other as? PHAssetImageSource {
-            return other.asset == asset
-        } else {
-            return false
-        }
-    }
-    
-    // MARK: - Private
-    
-    private func photoRequestParameters(from options: ImageRequestOptions)
-        -> (options: PHImageRequestOptions, size: CGSize, contentMode: PHImageContentMode)
-    {
         let phOptions = PHImageRequestOptions()
+        phOptions.networkAccessAllowed = true
+        phOptions.progressHandler = { progress, _, _, _ in
+            debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
+            options.onDownloadProgressChange?(downloadProgress: Float(progress))
+        }
         
         switch options.deliveryMode {
         case .Progressive:
@@ -136,7 +68,27 @@ final class PHAssetImageSource: ImageSource {
             contentMode = .AspectFill
         }
         
-        return (options: phOptions, size: size, contentMode: contentMode)
+        debugPrint("requesting asset image: size = \(size), contentMode = \(contentMode.debugDescription)")
+
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
+            if let image = image as? T? {
+                resultHandler(image)
+            } else {
+                resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+            }
+        }
+    }
+    
+    func cancelRequest(id: ImageRequestID) {
+        imageManager.cancelImageRequest(id)
+    }
+    
+    func isEqualTo(other: ImageSource) -> Bool {
+        if let other = other as? PHAssetImageSource {
+            return other.asset == asset
+        } else {
+            return false
+        }
     }
 }
 
