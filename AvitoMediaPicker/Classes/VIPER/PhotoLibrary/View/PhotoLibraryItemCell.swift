@@ -3,7 +3,7 @@ import UIKit
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     private let cloudIconView = UIImageView()
-    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
     
     // MARK: - UICollectionViewCell
     
@@ -13,7 +13,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         progressIndicator.hidesWhenStopped = true
         
         contentView.insertSubview(cloudIconView, atIndex: 0)
-        contentView.insertSubview(progressIndicator, aboveSubview: cloudIconView)
+        contentView.addSubview(progressIndicator)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,7 +37,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         
         options.onDownloadProgressChange = { [weak self] progress in
             superOptions.onDownloadProgressChange?(downloadProgress: progress)
-            self?.progressIndicator.startAnimating()
+            self?.onLoadingProgress?(progress)
         }
     }
     
@@ -49,6 +49,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     }
     
     // MARK: - Customizable
+    
+    var onLoadingProgress: (Float -> ())?
     
     func customizeWithItem(item: PhotoLibraryItemCellData) {
         image = item.image

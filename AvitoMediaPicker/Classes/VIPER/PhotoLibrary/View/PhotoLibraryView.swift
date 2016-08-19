@@ -5,6 +5,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - State
     
     var canSelectMoreItems = false
+    var indexPathsForLoadingItems = Set<NSIndexPath>()
     
     var dimsUnselectedItems = false {
         didSet {
@@ -112,7 +113,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return canSelectMoreItems
+        return canSelectMoreItems && !indexPathsForLoadingItems.contains(indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -160,6 +161,15 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
         
         cell.setCloudIcon(theme?.iCloudIcon)
+        
+        cell.onLoadingProgress = { [weak self] progress in
+            debugPrint("cell.onLoadingProgress")
+            if progress < 1 {
+                self?.indexPathsForLoadingItems.insert(indexPath)
+            } else {
+                self?.indexPathsForLoadingItems.remove(indexPath)
+            }
+        }
         
         // Без этого костыля невозможно снять выделение с preselected ячейки
         if data.selected {
