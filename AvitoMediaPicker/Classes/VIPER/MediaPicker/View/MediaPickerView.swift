@@ -54,23 +54,7 @@ final class MediaPickerView: UIView {
         flashView.backgroundColor = .whiteColor()
         flashView.alpha = 0
         
-        closeButton.backgroundColor = .whiteColor()
-        closeButton.layer.cornerRadius = closeButtonSize.height / 2
-        closeButton.size = closeButtonSize
-        closeButton.addTarget(
-            self,
-            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
-            forControlEvents: .TouchUpInside
-        )
-        
-        continueButton.backgroundColor = .whiteColor()
-        continueButton.layer.cornerRadius = continueButtonHeight / 2
-        continueButton.contentEdgeInsets = continueButtonContentInsets
-        continueButton.addTarget(
-            self,
-            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
-            forControlEvents: .TouchUpInside
-        )
+        setupButtons()
         
         photoTitleLabel.textColor = .whiteColor()
         photoTitleLabel.layer.shadowOffset = .zero
@@ -102,6 +86,26 @@ final class MediaPickerView: UIView {
         addSubview(continueButton)
         
         setMode(.Camera)
+    }
+    
+    private func setupButtons() {
+        closeButton.layer.cornerRadius = closeButtonSize.height / 2
+        closeButton.layer.masksToBounds = true
+        closeButton.size = closeButtonSize
+        closeButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
+        continueButton.layer.cornerRadius = continueButtonHeight / 2
+        continueButton.layer.masksToBounds = true
+        continueButton.contentEdgeInsets = continueButtonContentInsets
+        continueButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -400,6 +404,31 @@ final class MediaPickerView: UIView {
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
 
         closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
+        
+        continueButton.setTitleColor(
+            theme.cameraContinueButtonTitleColor,
+            forState: .Normal
+        )
+        continueButton.setTitleColor(
+            theme.cameraContinueButtonTitleHighlightedColor,
+            forState: .Highlighted
+        )
+        
+        let onePointSize = CGSize(width: 1, height: 1)
+        for button in [continueButton, closeButton] {
+            button.setBackgroundImage(
+                UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
+                forState: .Normal
+            )
+            button.setBackgroundImage(
+                UIImage.imageWithColor(theme.cameraButtonsBackgroundHighlightedColor, imageSize: onePointSize),
+                forState: .Highlighted
+            )
+            button.setBackgroundImage(
+                UIImage.imageWithColor(theme.cameraButtonsBackgroundDisabledColor, imageSize: onePointSize),
+                forState: .Disabled
+            )
+        }
     }
     
     func setShowsCropButton(showsCropButton: Bool) {
