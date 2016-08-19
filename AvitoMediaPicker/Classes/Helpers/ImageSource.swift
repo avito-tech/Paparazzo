@@ -27,6 +27,11 @@ public struct ImageRequestOptions {
     public var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
     
     public init() {}
+    
+    public init(size: ImageSizeOption, deliveryMode: ImageDeliveryMode) {
+        self.size = size
+        self.deliveryMode = deliveryMode
+    }
 }
 
 public protocol InitializableWithCGImage {
