@@ -54,23 +54,7 @@ final class MediaPickerView: UIView {
         flashView.backgroundColor = .whiteColor()
         flashView.alpha = 0
         
-        closeButton.backgroundColor = .whiteColor()
-        closeButton.layer.cornerRadius = closeButtonSize.height / 2
-        closeButton.size = closeButtonSize
-        closeButton.addTarget(
-            self,
-            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
-            forControlEvents: .TouchUpInside
-        )
-        
-        continueButton.backgroundColor = .whiteColor()
-        continueButton.layer.cornerRadius = continueButtonHeight / 2
-        continueButton.contentEdgeInsets = continueButtonContentInsets
-        continueButton.addTarget(
-            self,
-            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
-            forControlEvents: .TouchUpInside
-        )
+        setupButtons()
         
         photoTitleLabel.textColor = .whiteColor()
         photoTitleLabel.layer.shadowOffset = .zero
@@ -102,6 +86,60 @@ final class MediaPickerView: UIView {
         addSubview(continueButton)
         
         setMode(.Camera)
+    }
+    
+    private func setupButtons() {
+        closeButton.layer.cornerRadius = closeButtonSize.height / 2
+        closeButton.layer.masksToBounds = true
+        closeButton.size = closeButtonSize
+        closeButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
+        closeButton.setBackgroundImage(
+            UIImage.imageWithColor(SpecColors.lightBackground, imageSize: CGSize(width: 1, height: 1)),
+            forState: .Normal
+        )
+        closeButton.setBackgroundImage(
+            UIImage.imageWithColor(SpecColors.photoOverlay, imageSize: CGSize(width: 1, height: 1)),
+            forState: .Highlighted
+        )
+        closeButton.setBackgroundImage(
+            UIImage.imageWithColor(SpecColors.photoOverlay, imageSize: CGSize(width: 1, height: 1)),
+            forState: .Disabled
+        )
+        
+        continueButton.layer.cornerRadius = continueButtonHeight / 2
+        continueButton.layer.masksToBounds = true
+        continueButton.contentEdgeInsets = continueButtonContentInsets
+        continueButton.addTarget(
+            self,
+            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
+            forControlEvents: .TouchUpInside
+        )
+        
+        continueButton.setTitleColor(
+            SpecColors.tint,
+            forState: .Normal
+        )
+        continueButton.setTitleColor(
+            SpecColors.highlightedTint,
+            forState: .Highlighted
+        )
+        continueButton.setBackgroundImage(
+            UIImage.imageWithColor(SpecColors.lightBackground, imageSize: CGSize(width: 1, height: 1)),
+            forState: .Normal
+        )
+        continueButton.setBackgroundImage(
+            UIImage.imageWithColor(SpecColors.photoOverlay, imageSize: CGSize(width: 1, height: 1)),
+            forState: .Highlighted
+        )
+        continueButton.setBackgroundImage(
+            UIImage.imageWithColor(SpecColors.photoOverlay, imageSize: CGSize(width: 1, height: 1)),
+            forState: .Disabled
+        )
     }
     
     required init?(coder aDecoder: NSCoder) {
