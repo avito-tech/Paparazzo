@@ -11,6 +11,7 @@ protocol ImageCroppingViewInput: class {
     func setCroppingParameters(_: ImageCroppingParameters)
     func setRotationSliderValue(_: Float)
     func setCanvasSize(_: CGSize)
+    func setControlsEnabled(_: Bool)
     
     func setAspectRatio(_: AspectRatio)
     func setAspectRatioButtonTitle(_: String)
@@ -25,7 +26,7 @@ protocol ImageCroppingViewInput: class {
     func setGridButtonSelected(_: Bool)
     
     var onDiscardButtonTap: (() -> ())? { get set }
-    var onConfirmButtonTap: ((previewImage: CGImage) -> ())? { get set }
+    var onConfirmButtonTap: ((previewImage: CGImage?) -> ())? { get set }
     var onAspectRatioButtonTap: (() -> ())? { get set }
     var onRotateButtonTap: (() -> ())? { get set }
     var onGridButtonTap: (() -> ())? { get set }

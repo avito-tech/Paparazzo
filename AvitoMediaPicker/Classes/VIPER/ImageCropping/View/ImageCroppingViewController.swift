@@ -26,7 +26,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: ((previewImage: CGImage) -> ())? {
+    var onConfirmButtonTap: ((previewImage: CGImage?) -> ())? {
         get { return imageCroppingView.onConfirmButtonTap }
         set { imageCroppingView.onConfirmButtonTap = newValue }
     }
@@ -83,6 +83,10 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     
     func setCanvasSize(size: CGSize) {
         imageCroppingView.setCanvasSize(size)
+    }
+    
+    func setControlsEnabled(enabled: Bool) {
+        imageCroppingView.setControlsEnabled(enabled)
     }
     
     @nonobjc func setTitle(title: String) {

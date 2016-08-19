@@ -33,6 +33,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.setTitle("Кадрирование")
         view?.setMinimumRotation(-25)
         view?.setMaximumRotation(+25)
+        view?.setControlsEnabled(false)
         
         setGridVisible(false)
         
@@ -58,8 +59,12 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
         
         view?.onConfirmButtonTap = { [weak self] previewImage in
-            self?.interactor.croppedImage(previewImage: previewImage) { image in
-                self?.onConfirm?(image)
+            if let previewImage = previewImage {
+                self?.interactor.croppedImage(previewImage: previewImage) { image in
+                    self?.onConfirm?(image)
+                }
+            } else {    // Фотка для кропа не успела подгрузиться, просто возвращаемся назад
+                self?.onDiscard?()
             }
         }
         
@@ -75,6 +80,8 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             
             self?.interactor.originalImageWithParameters { originalImage, croppingParameters in
                 self?.view?.setImage(originalImage) {
+                    self?.view?.setControlsEnabled(true)
+                    
                     if let croppingParameters = croppingParameters {
                         
                         self?.view?.setCroppingParameters(croppingParameters)

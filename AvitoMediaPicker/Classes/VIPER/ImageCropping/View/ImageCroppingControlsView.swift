@@ -132,6 +132,13 @@ final class ImageCroppingControlsView: UIView {
         rotationSliderView.setValue(value)
     }
     
+    func setControlsEnabled(enabled: Bool) {
+        rotationButton.enabled = enabled
+        gridButton.enabled = enabled
+        rotationSliderView.userInteractionEnabled = enabled
+        rotationCancelButton.enabled = enabled
+    }
+    
     func setCancelRotationButtonTitle(title: String) {
         rotationCancelButton.setTitle(title, forState: .Normal)
         rotationCancelButton.sizeToFit()
