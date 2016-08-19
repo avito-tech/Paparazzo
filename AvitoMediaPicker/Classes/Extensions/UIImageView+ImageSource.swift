@@ -7,6 +7,7 @@ public extension UIImageView {
         size: CGSize? = nil,
         placeholder: UIImage? = nil,
         placeholderDeferred: Bool = false,
+        configureRequest: ((inout options: ImageRequestOptions) -> ())? = nil,
         completion: (() -> ())? = nil
     ) {
         let pointSize = (size ?? self.bounds.size)
@@ -28,11 +29,16 @@ public extension UIImageView {
         
         if let imageSource = imageSource {
             
-            imageRequestID.flatMap { imageSource.cancelRequest($0) }
+            if let imageRequestID = imageRequestID {
+                imageSource.cancelRequest(imageRequestID)
+            }
             
-            imageRequestID = imageSource.imageFittingSize(pixelSize) { [weak self] (image: UIImage?) in
-                if self?.shouldSetImageForImageSource(imageSource) == true {
-                    self?.image = image ?? placeholder
+            var options = ImageRequestOptions(size: .FillSize(pixelSize), deliveryMode: .Progressive)
+            configureRequest?(options: &options)
+            
+            imageRequestID = imageSource.requestImage(options: options) { [weak self] (image: UIImage?) in
+                if let image = image where self?.shouldSetImageForImageSource(imageSource) == true {
+                    self?.image = image
                 }
                 completion?()
             }

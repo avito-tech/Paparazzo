@@ -24,6 +24,7 @@ public struct ImageRequestOptions {
     public var size: ImageSizeOption = .FullResolution
     public var deliveryMode: ImageDeliveryMode = .Best
     
+    /// Called on main thread
     public var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
     
     public init() {}

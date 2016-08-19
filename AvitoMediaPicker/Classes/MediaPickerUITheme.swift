@@ -28,6 +28,9 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     // MARK: - PhotoLibraryUITheme
     
     public var photoLibraryItemSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var photoCellBackgroundColor = UIColor.RGB(red: 215, green: 215, blue: 215)
+    
+    public var iCloudIcon = MediaPickerUITheme.imageNamed("icon-cloud")
     
     // MARK: - ImageCroppingUITheme
     
@@ -75,7 +78,11 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
 }
 
 public protocol PhotoLibraryUITheme: AccessDeniedViewTheme {
+    
     var photoLibraryItemSelectionColor: UIColor { get }
+    var photoCellBackgroundColor: UIColor { get }
+    
+    var iCloudIcon: UIImage? { get }
 }
 
 public protocol ImageCroppingUITheme {

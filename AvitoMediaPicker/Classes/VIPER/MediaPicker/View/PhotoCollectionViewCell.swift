@@ -55,10 +55,15 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
     
+    func configureImageRequest(inout options: ImageRequestOptions) {
+    }
+    
     // MARK: - Private
     
     private func updateImage() {
-        imageView.setImage(image)
+        imageView.setImage(fromSource: image, configureRequest: { [weak self] options in
+            self?.configureImageRequest(&options)
+        })
     }
     
     private func adjustBorderColor() {

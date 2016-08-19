@@ -156,7 +156,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         inCollectionView collectionView: UICollectionView,
         atIndexPath indexPath: NSIndexPath
     ) {
+        cell.backgroundColor = theme?.photoCellBackgroundColor
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
+        
+        cell.setCloudIcon(theme?.iCloudIcon)
         
         // Без этого костыля невозможно снять выделение с preselected ячейки
         if data.selected {
