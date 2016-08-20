@@ -9,7 +9,6 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var shutterButtonDisabledColor = UIColor.lightGrayColor()
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
-    public var cameraContinueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var removePhotoIcon = MediaPickerUITheme.imageNamed("delete")
     public var cropPhotoIcon = MediaPickerUITheme.imageNamed("crop")
@@ -21,6 +20,11 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     public var photoPeepholePlaceholder = MediaPickerUITheme.imageNamed("gallery-placeholder")
 
     public var cameraContinueButtonTitleFont = UIFont.systemFontOfSize(17)
+    public var cameraContinueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var cameraContinueButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
+    public var cameraButtonsBackgroundNormalColor = UIColor.whiteColor()
+    public var cameraButtonsBackgroundHighlightedColor = UIColor(white: 1, alpha: 0.6)
+    public var cameraButtonsBackgroundDisabledColor = UIColor(white: 1, alpha: 0.6)
     
     public var accessDeniedTitleFont = UIFont.boldSystemFontOfSize(17)
     public var accessDeniedMessageFont = UIFont.systemFontOfSize(17)
@@ -66,6 +70,10 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var shutterButtonDisabledColor: UIColor { get }
     var mediaRibbonSelectionColor: UIColor { get }
     var cameraContinueButtonTitleColor: UIColor { get }
+    var cameraContinueButtonTitleHighlightedColor: UIColor { get }
+    var cameraButtonsBackgroundNormalColor: UIColor { get }
+    var cameraButtonsBackgroundHighlightedColor: UIColor { get }
+    var cameraButtonsBackgroundDisabledColor: UIColor { get }
 
     var removePhotoIcon: UIImage? { get }
     var cropPhotoIcon: UIImage? { get }
@@ -75,6 +83,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var flashOffIcon: UIImage? { get }
     var cameraToggleIcon: UIImage? { get }
     var photoPeepholePlaceholder: UIImage? { get }
+    
 
     var cameraContinueButtonTitleFont: UIFont { get }
 }
