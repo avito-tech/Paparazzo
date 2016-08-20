@@ -7,6 +7,7 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     // MARK: - MediaPickerRootModuleUITheme
 
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var shutterButtonDisabledColor = UIColor.lightGrayColor()
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var cameraContinueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
@@ -62,6 +63,7 @@ public protocol AccessDeniedViewTheme {
 public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
 
     var shutterButtonColor: UIColor { get }
+    var shutterButtonDisabledColor: UIColor { get }
     var mediaRibbonSelectionColor: UIColor { get }
     var cameraContinueButtonTitleColor: UIColor { get }
 

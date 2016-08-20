@@ -62,14 +62,12 @@ final class CameraControlsView: UIView {
             forControlEvents: .TouchUpInside
         )
         
-        flashButton.hidden = true
         flashButton.addTarget(
             self,
             action: #selector(CameraControlsView.onFlashButtonTap(_:)),
             forControlEvents: .TouchUpInside
         )
         
-        cameraToggleButton.hidden = true
         cameraToggleButton.addTarget(
             self,
             action: #selector(CameraControlsView.onCameraToggleButtonTap(_:)),
@@ -128,6 +126,14 @@ final class CameraControlsView: UIView {
         )
     }
     
+    func setCameraControlsEnabled(enabled: Bool) {
+        shutterButton.enabled = enabled
+        cameraToggleButton.enabled = enabled
+        flashButton.enabled = enabled
+        
+        adjustShutterButtonColor()
+    }
+    
     func setFlashButtonVisible(visible: Bool) {
         flashButton.hidden = !visible
     }
@@ -145,8 +151,8 @@ final class CameraControlsView: UIView {
     }
     
     func setTheme(theme: MediaPickerRootModuleUITheme) {
-
-        shutterButton.backgroundColor = theme.shutterButtonColor
+        
+        self.theme = theme
 
         flashButton.setImage(theme.flashOffIcon, forState: .Normal)
         flashButton.setImage(theme.flashOnIcon, forState: .Selected)
@@ -154,9 +160,13 @@ final class CameraControlsView: UIView {
         cameraToggleButton.setImage(theme.cameraToggleIcon, forState: .Normal)
         
         photoViewPlaceholder = theme.photoPeepholePlaceholder
+        
+        adjustShutterButtonColor()
     }
     
     // MARK: - Private
+    
+    private var theme: MediaPickerRootModuleUITheme?
     
     @objc private func onShutterButtonTouchDown(button: UIButton) {
         animateShutterButtonToScale(shutterAnimationMinScale)
@@ -200,5 +210,9 @@ final class CameraControlsView: UIView {
         shutterButton.layer.setValue(animation.toValue, forKeyPath: keyPath)
         
         shutterButton.layer.addAnimation(animation, forKey: keyPath)
+    }
+    
+    private func adjustShutterButtonColor() {
+        shutterButton.backgroundColor = shutterButton.enabled ? theme?.shutterButtonColor : theme?.shutterButtonDisabledColor
     }
 }

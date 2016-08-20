@@ -15,6 +15,13 @@ final class CameraServiceImpl: CameraService {
 
     // MARK: - Init
     
+    init() {
+        let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice]
+        
+        backCamera = videoDevices?.filter({ $0.position == .Back }).first
+        frontCamera = videoDevices?.filter({ $0.position == .Front }).first
+    }
+    
     func getCaptureSession(completion: AVCaptureSession? -> ()) {
         
         if let captureSession = captureSession {
@@ -55,12 +62,7 @@ final class CameraServiceImpl: CameraService {
             let captureSession = AVCaptureSession()
             captureSession.sessionPreset = AVCaptureSessionPresetPhoto
             
-            let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice]
-            
-            let backCamera = videoDevices?.filter({ $0.position == .Back }).first
             try CameraServiceImpl.configureCamera(backCamera)
-            
-            let frontCamera = videoDevices?.filter({ $0.position == .Front }).first
             
             let activeCamera = backCamera
             
@@ -78,15 +80,11 @@ final class CameraServiceImpl: CameraService {
             
             captureSession.startRunning()
             
-            self.frontCamera = frontCamera
-            self.backCamera = backCamera
             self.activeCamera = activeCamera
             self.output = output
             self.captureSession = captureSession
             
         } catch {
-            self.frontCamera = nil
-            self.backCamera = nil
             self.output = nil
             self.captureSession = nil
         }

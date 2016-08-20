@@ -150,8 +150,12 @@ final class MediaPickerView: UIView {
 
         flashView.frame = cameraFrame
         
-        accessDeniedView.resizeToFitWidth(bounds.size.width * 0.8)
-        accessDeniedView.center = photoPreviewView.center
+        accessDeniedView.frame = CGRect(
+            x: bounds.minX,
+            y: bounds.minY,
+            width: bounds.size.width,
+            height: cameraControlsView.frame.minY - bounds.minY
+        )
     }
     
     // MARK: - MediaPickerView
@@ -234,6 +238,10 @@ final class MediaPickerView: UIView {
         self.mode = mode
         
         adjustForDeviceOrientation(deviceOrientation)
+    }
+    
+    func setCameraControlsEnabled(enabled: Bool) {
+        cameraControlsView.setCameraControlsEnabled(enabled)
     }
     
     func setCameraButtonVisible(visible: Bool) {

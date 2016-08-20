@@ -41,6 +41,7 @@ protocol MediaPickerViewInput: class {
     func selectCamera()
     func scrollToCameraThumbnail(animated animated: Bool)
     
+    func setCameraControlsEnabled(_: Bool)
     func setCameraButtonVisible(_: Bool)
     func setShutterButtonEnabled(_: Bool)
     

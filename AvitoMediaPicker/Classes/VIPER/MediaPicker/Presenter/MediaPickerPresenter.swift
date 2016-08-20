@@ -61,9 +61,12 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
         view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
         
+        view?.setCameraControlsEnabled(false)
+        
         cameraModuleInput.getOutputParameters { [weak self] parameters in
             if let parameters = parameters {
                 self?.view?.setCameraOutputParameters(parameters)
+                self?.view?.setCameraControlsEnabled(true)
             } else {
                 self?.view?.setAccessDeniedViewVisible(true)
             }
