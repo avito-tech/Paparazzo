@@ -77,12 +77,8 @@ public final class UrlImageSource: ImageSource {
         -> ImageRequestID
     {
         if let previewImage = previewImage where options.deliveryMode == .Progressive {
-            if NSThread.isMainThread() {    // нужно вернуть результат как можно быстрее
+            dispatch_to_main_queue {
                 resultHandler(T(CGImage: previewImage))
-            } else {
-                dispatch_async(dispatch_get_main_queue()) {
-                    resultHandler(T(CGImage: previewImage))
-                }
             }
         }
         

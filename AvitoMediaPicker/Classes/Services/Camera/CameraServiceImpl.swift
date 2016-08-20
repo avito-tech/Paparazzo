@@ -15,7 +15,7 @@ final class CameraServiceImpl: CameraService {
 
     // MARK: - Init
     
-    func captureSession(completion: AVCaptureSession? -> ()) {
+    func getCaptureSession(completion: AVCaptureSession? -> ()) {
         
         if let captureSession = captureSession {
             completion(captureSession)
@@ -46,6 +46,10 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
+    func getOutputOrientation(completion: ExifOrientation -> ()) {
+        completion(outputOrientationForCamera(activeCamera))
+    }
+    
     private func setUpCaptureSession() {
         do {
             let captureSession = AVCaptureSession()
@@ -58,7 +62,9 @@ final class CameraServiceImpl: CameraService {
             
             let frontCamera = videoDevices?.filter({ $0.position == .Front }).first
             
-            let input = try AVCaptureDeviceInput(device: backCamera)
+            let activeCamera = backCamera
+            
+            let input = try AVCaptureDeviceInput(device: activeCamera)
             
             let output = AVCaptureStillImageOutput()
             output.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
@@ -74,7 +80,7 @@ final class CameraServiceImpl: CameraService {
             
             self.frontCamera = frontCamera
             self.backCamera = backCamera
-            self.activeCamera = backCamera
+            self.activeCamera = activeCamera
             self.output = output
             self.captureSession = captureSession
             
@@ -100,7 +106,7 @@ final class CameraServiceImpl: CameraService {
         completion(frontCamera != nil && backCamera != nil)
     }
     
-    func toggleCamera() {
+    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ()) {
         
         guard let captureSession = captureSession else { return }
         
@@ -131,6 +137,8 @@ final class CameraServiceImpl: CameraService {
         } catch {
             debugPrint("Couldn't toggle camera: \(error)")
         }
+        
+        completion(newOutputOrientation: outputOrientationForCamera(activeCamera))
     }
     
     var isFlashAvailable: Bool {
@@ -242,5 +250,13 @@ final class CameraServiceImpl: CameraService {
         let filePath = tempName.flatMap { tempDirPath.stringByAppendingPathComponent($0) }
         
         return filePath.flatMap { NSURL(fileURLWithPath: $0) }
+    }
+    
+    private func outputOrientationForCamera(camera: AVCaptureDevice?) -> ExifOrientation {
+        if camera == frontCamera {
+            return .LeftMirrored
+        } else {
+            return .Left
+        }
     }
 }

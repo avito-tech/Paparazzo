@@ -4,7 +4,8 @@ protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
     
-    func captureSession(completion: AVCaptureSession? -> ())
+    func getCaptureSession(completion: AVCaptureSession? -> ())
+    func getOutputOrientation(completion: ExifOrientation -> ())
     
     // Returns a flag indicating whether changing flash mode was successful
     func setFlashEnabled(enabled: Bool) -> Bool
@@ -13,7 +14,7 @@ protocol CameraService: class {
     func setCaptureSessionRunning(needsRunning: Bool)
     
     func canToggleCamera(completion: Bool -> ())
-    func toggleCamera()
+    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ())
 }
 
 struct PhotoFromCamera {

@@ -18,8 +18,8 @@ final class CameraPresenter: CameraModuleInput {
     
     // MARK: - CameraModuleInput
     
-    func getCaptureSession(completion: AVCaptureSession? -> ()) {
-        interactor.getCaptureSession(completion)
+    func getOutputParameters(completion: CameraOutputParameters? -> ()) {
+        interactor.getOutputParameters(completion)
     }
     
     func setCameraOutputNeeded(isCameraOutputNeeded: Bool) {
@@ -39,7 +39,9 @@ final class CameraPresenter: CameraModuleInput {
     }
     
     func toggleCamera() {
-        interactor.toggleCamera()
+        interactor.toggleCamera { [weak self] newOutputOrientation in
+            self?.view?.setOutputOrientation(newOutputOrientation)
+        }
     }
     
     func takePhoto(completion: MediaPickerItem? -> ()) {
@@ -53,18 +55,10 @@ final class CameraPresenter: CameraModuleInput {
     // MARK: - Private
     
     private func setUpView() {
-        
-        view?.setCameraUnavailableMessageVisible(true)
-        
-        interactor.getCaptureSession { [weak self] session in
-            if let session = session {
-                self?.view?.setCaptureSession(session)
-                self?.view?.setCameraUnavailableMessageVisible(false)
+        interactor.getOutputParameters { [weak self] parameters in
+            if let parameters = parameters {
+                self?.view?.setOutputParameters(parameters)
             }
-        }
-        
-        interactor.observeDeviceOrientation { [weak self] deviceOrientation in
-            self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }
     }
 }

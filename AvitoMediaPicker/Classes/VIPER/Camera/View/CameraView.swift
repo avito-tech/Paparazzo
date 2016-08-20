@@ -3,8 +3,7 @@ import AVFoundation
 
 final class CameraView: UIView, CameraViewInput {
     
-    private let cameraOutputBinder = CameraOutputGLKBinder()
-    private var cameraPreviewView: UIView?
+    private var cameraOutputBinder: CameraOutputGLKBinder?
     
     // MARK: - Init
     
@@ -20,28 +19,27 @@ final class CameraView: UIView, CameraViewInput {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        cameraPreviewView?.frame = bounds
+        cameraOutputBinder?.view.frame = bounds
     }
     
     // MARK: - CameraViewInput
     
-    func setCaptureSession(session: AVCaptureSession) {
-
-        let cameraPreviewView = cameraOutputBinder.setUpWithAVCaptureSession(session)
-        cameraPreviewView.clipsToBounds = true
-
-        insertSubview(cameraPreviewView, atIndex: 0)
+    func setOutputParameters(parameters: CameraOutputParameters) {
         
-        self.cameraPreviewView = cameraPreviewView
+        let cameraOutputBinder = CameraOutputGLKBinder(
+            captureSession: parameters.captureSession,
+            outputOrientation: parameters.orientation
+        )
+        
+        let view = cameraOutputBinder.view
+        view.clipsToBounds = true
+        insertSubview(view, atIndex: 0)
+        
+        self.cameraOutputBinder = cameraOutputBinder
     }
     
-    func setCameraUnavailableMessageVisible(visible: Bool) {
-        // TODO
-    }
-    
-    func adjustForDeviceOrientation(orientation: DeviceOrientation) {
-        // TODO
+    func setOutputOrientation(orientation: ExifOrientation) {
+        cameraOutputBinder?.orientation = orientation
     }
     
     // MARK: - Dispose bag

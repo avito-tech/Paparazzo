@@ -5,8 +5,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     private let button = UIButton()
     
-    private let cameraOutputBinder = CameraOutputGLKBinder()
-    private var cameraOutputView: UIView?
+    private var cameraOutputBinder: CameraOutputGLKBinder?
     
     var selectedBorderColor: UIColor? = .blueColor() {
         didSet {
@@ -22,13 +21,18 @@ final class CameraThumbnailCell: UICollectionViewCell {
         button.transform = transform
     }
     
-    func setCaptureSession(session: AVCaptureSession) {
+    func setOutputParameters(parameters: CameraOutputParameters) {
         
-        let view = cameraOutputBinder.setUpWithAVCaptureSession(session)
+        let cameraOutputBinder = CameraOutputGLKBinder(
+            captureSession: parameters.captureSession,
+            outputOrientation: parameters.orientation
+        )
+        
+        let view = cameraOutputBinder.view
         view.clipsToBounds = true
-        
         insertSubview(view, belowSubview: button)
-        cameraOutputView = view
+        
+        self.cameraOutputBinder = cameraOutputBinder
     }
     
     // MARK: - Init
@@ -61,7 +65,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        cameraOutputView?.frame = bounds
+        cameraOutputBinder?.view.frame = bounds
         button.frame = bounds
     }
     

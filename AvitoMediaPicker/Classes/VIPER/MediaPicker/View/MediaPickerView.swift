@@ -356,8 +356,8 @@ final class MediaPickerView: UIView {
         photoPreviewView.setCameraView(view)
     }
     
-    func setCaptureSession(session: AVCaptureSession) {
-        thumbnailRibbonView.captureSession = session
+    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+        thumbnailRibbonView.setCameraOutputParameters(parameters)
     }
     
     func setPhotoTitle(title: String) {

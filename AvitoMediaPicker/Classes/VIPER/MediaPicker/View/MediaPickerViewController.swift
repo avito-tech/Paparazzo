@@ -104,8 +104,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         }
     }
     
-    func setCaptureSession(session: AVCaptureSession) {
-        mediaPickerView.setCaptureSession(session)
+    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+        mediaPickerView.setCameraOutputParameters(parameters)
     }
     
     func setPhotoTitle(title: String) {
