@@ -23,8 +23,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.bottom = bounds.bottom
     }
     
-    override func configureImageRequest(inout options: ImageRequestOptions) {
-        super.configureImageRequest(&options)
+    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
+        super.adjustImageRequestOptions(&options)
         
         options.onDownloadStart = { [onLoadingStart, superOptions = options] in
             superOptions.onDownloadStart?()

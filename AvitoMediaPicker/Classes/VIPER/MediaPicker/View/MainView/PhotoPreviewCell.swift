@@ -31,8 +31,8 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         return .ScaleAspectFit
     }
     
-    override func configureImageRequest(inout options: ImageRequestOptions) {
-        super.configureImageRequest(&options)
+    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
+        super.adjustImageRequestOptions(&options)
         
         options.onDownloadStart = { [weak self, superOptions = options] in
             superOptions.onDownloadStart?()

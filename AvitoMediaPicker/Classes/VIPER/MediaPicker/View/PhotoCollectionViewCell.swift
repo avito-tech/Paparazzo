@@ -55,13 +55,13 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    func configureImageRequest(inout options: ImageRequestOptions) {}
+    func adjustImageRequestOptions(inout options: ImageRequestOptions) {}
     
     // MARK: - Private
     
     private func updateImage() {
-        imageView.setImage(fromSource: image, configureRequest: { [weak self] options in
-            self?.configureImageRequest(&options)
+        imageView.setImage(fromSource: image, adjustOptions: { [weak self] options in
+            self?.adjustImageRequestOptions(&options)
         })
     }
     

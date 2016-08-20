@@ -121,8 +121,7 @@ final class CameraControlsView: UIView {
             fromSource: imageSource,
             size: CGSize(width: photoViewDiameter, height: photoViewDiameter),
             placeholder: photoViewPlaceholder,
-            placeholderDeferred: false,
-            completion: nil
+            placeholderDeferred: false
         )
     }
     

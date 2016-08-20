@@ -7,6 +7,13 @@ import CoreGraphics
 // TODO: перенести в фреймворк с утилитами
 public protocol ImageSource: class {
     
+    /*
+     TODO: (ayutkin) проверить, чтобы логика вызова resultHandler для всех ImageSource была такой:
+     — вызывается как минимум один раз, кроме случая отмены запроса
+     - после отмены запроса не вызывается
+     — вызывается не более одного раза, если options.deliveryMode == .Best
+     - может вызываться несколько раз, если options.deliveryMode == .Progressive
+    */
     func requestImage<T: InitializableWithCGImage>(options _: ImageRequestOptions, resultHandler: T? -> ()) -> ImageRequestID
     func cancelRequest(_: ImageRequestID)
     

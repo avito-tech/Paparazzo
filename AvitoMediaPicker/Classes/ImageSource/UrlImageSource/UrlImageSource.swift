@@ -5,6 +5,8 @@ import AvitoDesignKit
 
 public final class UrlImageSource: ImageSource {
     
+    private static let requestIdsGenerator = ThreadSafeIntGenerator()
+    
     private static let processingQueue: NSOperationQueue = {
         
         let queue = NSOperationQueue()
@@ -82,18 +84,26 @@ public final class UrlImageSource: ImageSource {
             }
         }
         
-        switch options.size {
-        case .FullResolution:
-            return requestFullResolutionImage(deliveryMode: options.deliveryMode, resultHandler: resultHandler)
-        case .FillSize(let size):
-            return requestResizedImage(size, deliveryMode: options.deliveryMode, resultHandler: resultHandler)
-        case .FitSize(let size):
-            return requestResizedImage(size, deliveryMode: options.deliveryMode, resultHandler: resultHandler)
-        }
+        let requestId = ImageRequestID(UrlImageSource.requestIdsGenerator.nextInt())
+        
+        let operation = UrlImageRequestOperation(
+            id: requestId,
+            url: url,
+            options: options,
+            resultHandler: resultHandler
+        )
+        
+        UrlImageSource.processingQueue.addOperation(operation)
+        
+        return requestId
     }
     
     public func cancelRequest(id: ImageRequestID) {
-        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
+        for operation in UrlImageSource.processingQueue.operations {
+            if let identifiableOperation = operation as? ImageRequestIdentifiable where identifiableOperation.id == id {
+                operation.cancel()
+            }
+        }
     }
     
     public func isEqualTo(other: ImageSource) -> Bool {
@@ -102,62 +112,5 @@ public final class UrlImageSource: ImageSource {
         } else {
             return false
         }
-    }
-    
-    // MARK: - Private
-    
-    private func requestFullResolutionImage<T : InitializableWithCGImage>(
-        deliveryMode deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ())
-        -> ImageRequestID
-    {
-        UrlImageSource.processingQueue.addOperationWithBlock { [url] in
-            
-            let source = CGImageSourceCreateWithURL(url, nil)
-            
-            let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
-            let orientation = options?[kCGImagePropertyOrientation] as? Int
-            
-            var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
-            
-            if let exifOrientation = orientation.flatMap({ ExifOrientation(rawValue: $0) }) {
-                cgImage = cgImage?.imageFixedForOrientation(exifOrientation)
-            }
-            
-            let image = cgImage.flatMap { T(CGImage: $0) }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(image)
-            }
-        }
-        
-        return 0        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
-    }
-    
-    private func requestResizedImage<T : InitializableWithCGImage>(
-        size: CGSize,
-        deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ())
-        -> ImageRequestID
-    {
-        UrlImageSource.processingQueue.addOperationWithBlock { [url] in
-            
-            let source = CGImageSourceCreateWithURL(url, nil)
-            
-            let options: [NSString: NSObject] = [
-                kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
-                kCGImageSourceCreateThumbnailWithTransform: true,
-                kCGImageSourceCreateThumbnailFromImageAlways: true
-            ]
-            
-            let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
-            let image = cgImage.flatMap { T(CGImage: $0) }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(image)
-            }
-        }
-        
-        return 0    // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
 }

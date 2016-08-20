@@ -3,65 +3,42 @@ import UIKit
 public extension UIImageView {
     
     func setImage(
-        fromSource imageSource: ImageSource?,
+        fromSource newImageSource: ImageSource?,
         size: CGSize? = nil,
         placeholder: UIImage? = nil,
         placeholderDeferred: Bool = false,
-        configureRequest: ((inout options: ImageRequestOptions) -> ())? = nil,
-        completion: (() -> ())? = nil
+        adjustOptions: ((inout options: ImageRequestOptions) -> ())? = nil
     ) {
-        let pointSize = (size ?? self.bounds.size)
-        
-        guard pointSize.width > 0 && pointSize.height > 0 else {
-            self.image = nil
-            completion?()
-            return
-        }
-        
-        self.imageSource = imageSource
-        
+        let previousImageSource = imageSource
+        let pointSize = (size ?? bounds.size)
         let scale = UIScreen.mainScreen().scale
         let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
         
-        if !placeholderDeferred {
-            self.image = placeholder
+        if let imageRequestID = imageRequestID {
+            previousImageSource?.cancelRequest(imageRequestID)
+            self.imageRequestID = nil
         }
         
-        if let imageSource = imageSource {
-            
-            if let imageRequestID = imageRequestID {
-                imageSource.cancelRequest(imageRequestID)
-            }
+        if !placeholderDeferred {
+            image = placeholder
+        }
+        
+        imageSource = newImageSource
+        
+        if let newImageSource = newImageSource where pointSize.width > 0 && pointSize.height > 0 {
             
             var options = ImageRequestOptions(size: .FillSize(pixelSize), deliveryMode: .Progressive)
-            configureRequest?(options: &options)
+            adjustOptions?(options: &options)
             
-            imageRequestID = imageSource.requestImage(options: options) { [weak self] (image: UIImage?) in
-                if let image = image where self?.shouldSetImageForImageSource(imageSource) == true {
+            imageRequestID = newImageSource.requestImage(options: options) { [weak self] (image: UIImage?) in
+                if let image = image where self?.shouldSetImageForImageSource(newImageSource) == true {
                     self?.image = image
                 }
-                completion?()
             }
+            
         } else {
-            completion?()
+            image = placeholder
         }
-    }
-    
-    @available(*, deprecated=0.0.9, message="Use setImage(fromSource:size:placeholder:placeholderDeferred:completion) instead")
-    func setImage(
-        imageSource: ImageSource?,
-        size: CGSize? = nil,
-        placeholder: UIImage? = nil,
-        deferredPlaceholder: Bool = false,
-        completion: (() -> ())? = nil
-    ) {
-        setImage(
-            fromSource: imageSource,
-            size: size,
-            placeholder: placeholder,
-            placeholderDeferred: deferredPlaceholder,
-            completion: completion
-        )
     }
     
     // MARK: - Private
