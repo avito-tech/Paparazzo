@@ -9,7 +9,7 @@ protocol CameraModuleInput: class {
     func setFlashEnabled(enabled: Bool, completion: (success: Bool) -> ())
     
     func canToggleCamera(completion: Bool -> ())
-    func toggleCamera()
+    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ())
     
     func takePhoto(completion: MediaPickerItem? -> ())
     

@@ -18,5 +18,5 @@ protocol CameraInteractor: class {
 
 struct CameraOutputParameters {
     let captureSession: AVCaptureSession
-    let orientation: ExifOrientation
+    var orientation: ExifOrientation
 }

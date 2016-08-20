@@ -38,9 +38,10 @@ final class CameraPresenter: CameraModuleInput {
         interactor.canToggleCamera(completion)
     }
     
-    func toggleCamera() {
+    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ()) {
         interactor.toggleCamera { [weak self] newOutputOrientation in
             self?.view?.setOutputOrientation(newOutputOrientation)
+            completion(newOutputOrientation: newOutputOrientation)
         }
     }
     

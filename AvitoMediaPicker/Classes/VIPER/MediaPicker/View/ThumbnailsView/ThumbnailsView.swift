@@ -151,6 +151,13 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         cameraOutputParameters = parameters
     }
     
+    func setCameraOutputOrientation(orientation: ExifOrientation) {
+        cameraOutputParameters?.orientation = orientation
+        if let cell = cameraCell() {
+            cell.setOutputOrientation(orientation)
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

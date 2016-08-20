@@ -35,6 +35,10 @@ final class CameraThumbnailCell: UICollectionViewCell {
         self.cameraOutputBinder = cameraOutputBinder
     }
     
+    func setOutputOrientation(orientation: ExifOrientation) {
+        cameraOutputBinder?.orientation = orientation
+    }
+    
     // MARK: - Init
     
     override init(frame: CGRect) {

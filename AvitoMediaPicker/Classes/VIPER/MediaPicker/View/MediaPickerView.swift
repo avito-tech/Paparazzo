@@ -360,6 +360,10 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.setCameraOutputParameters(parameters)
     }
     
+    func setCameraOutputOrientation(orientation: ExifOrientation) {
+        thumbnailRibbonView.setCameraOutputOrientation(orientation)
+    }
+    
     func setPhotoTitle(title: String) {
         photoTitleLabel.text = title
         layoutPhotoTitleLabel()
