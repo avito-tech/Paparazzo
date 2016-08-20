@@ -24,9 +24,17 @@ public struct ImageRequestOptions {
     public var size: ImageSizeOption = .FullResolution
     public var deliveryMode: ImageDeliveryMode = .Best
     
-    public var onDownloadProgressChange: ((downloadProgress: Float) -> ())?
+    /// Called on main thread
+    public var onDownloadStart: (() -> ())?
+    /// Called on main thread
+    public var onDownloadFinish: (() -> ())?
     
     public init() {}
+    
+    public init(size: ImageSizeOption, deliveryMode: ImageDeliveryMode) {
+        self.size = size
+        self.deliveryMode = deliveryMode
+    }
 }
 
 public protocol InitializableWithCGImage {

@@ -5,6 +5,9 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Subviews
     
+    /// Вьюха, которая показывается до того, как будет доступна полная картинка для редактирования (чтобы избежать моргания)
+    private let splashView = UIImageView()
+    
     private let previewView = PhotoTweakView()
     private let controlsView = ImageCroppingControlsView()
     private let aspectRatioButton = UIButton()
@@ -31,12 +34,13 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         )
         
         controlsView.onConfirmButtonTap = { [weak self] in
-            if let image = self?.previewView.cropPreviewImage() {
-                self?.onConfirmButtonTap?(previewImage: image)
-            }
+            self?.onConfirmButtonTap?(previewImage: self?.previewView.cropPreviewImage())
         }
         
+        splashView.contentMode = .ScaleAspectFit
+        
         addSubview(previewView)
+        addSubview(splashView)
         addSubview(controlsView)
         addSubview(titleLabel)
         addSubview(aspectRatioButton)
@@ -71,6 +75,8 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             top: bounds.top,
             bottom: controlsView.top
         )
+        
+        splashView.frame = previewView.frame
     }
     
     // MARK: - ImageCroppingView
@@ -80,7 +86,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         set { controlsView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: ((previewImage: CGImage) -> ())?
+    var onConfirmButtonTap: ((previewImage: CGImage?) -> ())?
     
     var onRotationAngleChange: (Float -> ())? {
         get { return controlsView.onRotationAngleChange }
@@ -110,14 +116,24 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     }
     
     func setImage(image: ImageSource, completion: (() -> ())?) {
-        image.imageFittingSize(
-            sourceImageMaxSize,
-            contentMode: .AspectFit,
-            deliveryMode: .Best
-        ) { [weak self] (image: UIImage?) in
-            
+        
+        var screenSize = UIScreen.mainScreen().bounds.size
+        let splashOptions = ImageRequestOptions(size: .FitSize(screenSize), deliveryMode: .Progressive)
+        let bestOptions = ImageRequestOptions(size: .FitSize(sourceImageMaxSize), deliveryMode: .Best)
+        
+        splashView.hidden = false
+        
+        image.requestImage(options: splashOptions) { [weak self] (image: UIImage?) in
+            if let image = image where self?.splashView.hidden == false {
+                self?.splashView.image = image
+            }
+        }
+        
+        image.requestImage(options: bestOptions) { [weak self] (image: UIImage?) in
             if let image = image {
                 self?.previewView.setImage(image)
+                self?.splashView.hidden = true
+                self?.splashView.image = image
             }
             completion?()
         }
@@ -141,6 +157,11 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     func setCanvasSize(size: CGSize) {
         sourceImageMaxSize = size
+    }
+    
+    func setControlsEnabled(enabled: Bool) {
+        controlsView.setControlsEnabled(enabled)
+        aspectRatioButton.enabled = enabled
     }
     
     func setTheme(theme: ImageCroppingUITheme) {

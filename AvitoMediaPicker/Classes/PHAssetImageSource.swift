@@ -37,12 +37,69 @@ final class PHAssetImageSource: ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestID
     {
+        let (phOptions, size, contentMode) = imageRequestParameters(from: options)
+        
+        var downloadStarted = false
+        var downloadFinished = false
+        
+        let startDownload = {
+            downloadStarted = true
+            options.onDownloadStart.flatMap { dispatch_async(dispatch_get_main_queue(), $0) }
+        }
+        
+        let finishDownload = {
+            downloadFinished = true
+            options.onDownloadFinish.flatMap { dispatch_async(dispatch_get_main_queue(), $0) }
+        }
+        
+        phOptions.progressHandler = { [asset] progress, _, _, _ in
+            debugPrint("Asset \(asset.localIdentifier): loading from iCloud - \(Int(progress * 100))%")
+            if !downloadStarted {
+                startDownload()
+            }
+            if progress == 1 /* это не reliable, читай ниже */ && !downloadFinished {
+                finishDownload()
+            }
+        }
+
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
+            
+            let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
+            let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
+            let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
+            
+            // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
+            if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
+                finishDownload()
+            }
+            
+            if let image = image as? T? {
+                resultHandler(image)
+            } else {
+                resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+            }
+        }
+    }
+    
+    func cancelRequest(id: ImageRequestID) {
+        imageManager.cancelImageRequest(id)
+    }
+    
+    func isEqualTo(other: ImageSource) -> Bool {
+        if let other = other as? PHAssetImageSource {
+            return other.asset == asset
+        } else {
+            return false
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func imageRequestParameters(from options: ImageRequestOptions)
+        -> (options: PHImageRequestOptions, size: CGSize, contentMode: PHImageContentMode)
+    {
         let phOptions = PHImageRequestOptions()
         phOptions.networkAccessAllowed = true
-        phOptions.progressHandler = { progress, _, _, _ in
-            debugPrint("Loading photo from iCloud: \(Int(progress * 100))%")
-            options.onDownloadProgressChange?(downloadProgress: Float(progress))
-        }
         
         switch options.deliveryMode {
         case .Progressive:
@@ -68,27 +125,7 @@ final class PHAssetImageSource: ImageSource {
             contentMode = .AspectFill
         }
         
-        debugPrint("requesting asset image: size = \(size), contentMode = \(contentMode.debugDescription)")
-
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
-            if let image = image as? T? {
-                resultHandler(image)
-            } else {
-                resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
-            }
-        }
-    }
-    
-    func cancelRequest(id: ImageRequestID) {
-        imageManager.cancelImageRequest(id)
-    }
-    
-    func isEqualTo(other: ImageSource) -> Bool {
-        if let other = other as? PHAssetImageSource {
-            return other.asset == asset
-        } else {
-            return false
-        }
+        return (options: phOptions, size: size, contentMode: contentMode)
     }
 }
 
