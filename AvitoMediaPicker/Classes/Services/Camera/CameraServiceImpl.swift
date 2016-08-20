@@ -200,7 +200,7 @@ final class CameraServiceImpl: CameraService {
     
     private func savePhoto(sampleBuffer sampleBuffer: CMSampleBuffer?, completion: PhotoFromCamera? -> ()) {
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { [weak self] in
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { [weak self] in
             
             if let sampleBuffer = sampleBuffer,
                 url = self?.randomTemporaryPhotoFileUrl(),
