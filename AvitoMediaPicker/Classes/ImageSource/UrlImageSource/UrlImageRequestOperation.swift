@@ -39,7 +39,17 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     
     private func getFullResolutionImage() {
         
+        let isRemoteUrl = !url.fileURL
+        
+        if let onDownloadStart = self.options.onDownloadStart where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadStart)
+        }
+        
         let source = CGImageSourceCreateWithURL(url, nil)
+        
+        if let onDownloadFinish = self.options.onDownloadFinish where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadFinish)
+        }
         
         let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
         let orientation = options?[kCGImagePropertyOrientation] as? Int
@@ -60,7 +70,17 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     
     private func getImageResizedTo(size: CGSize) {
         
+        let isRemoteUrl = !url.fileURL
+        
+        if let onDownloadStart = self.options.onDownloadStart where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadStart)
+        }
+        
         let source = CGImageSourceCreateWithURL(url, nil)
+        
+        if let onDownloadFinish = self.options.onDownloadFinish where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadFinish)
+        }
         
         let options: [NSString: NSObject] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
