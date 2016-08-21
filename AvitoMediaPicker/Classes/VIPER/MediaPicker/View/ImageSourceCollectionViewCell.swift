@@ -33,12 +33,6 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
         updateImage()
     }
     
-    public override var selected: Bool {
-        didSet {
-            layer.borderWidth = selected ? 4 : 0
-        }
-    }
-    
     public override func prepareForReuse() {
         super.prepareForReuse()
         

@@ -8,6 +8,8 @@ class PhotoCollectionViewCell: ImageSourceCollectionViewCell {
         }
     }
     
+    // MARK: - UICollectionViewCell
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -16,6 +18,12 @@ class PhotoCollectionViewCell: ImageSourceCollectionViewCell {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var selected: Bool {
+        didSet {
+            layer.borderWidth = selected ? 4 : 0
+        }
     }
     
     // MARK: - Private
