@@ -7,8 +7,9 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        progressIndicator.hidesWhenStopped = true
+        setImageViewContentMode(.ScaleAspectFit)
         
+        progressIndicator.hidesWhenStopped = true
         addSubview(progressIndicator)
     }
     
@@ -25,10 +26,6 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         progressIndicator.stopAnimating()
-    }
-    
-    override class var imageViewContentMode: UIViewContentMode {
-        return .ScaleAspectFit
     }
     
     override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
@@ -48,6 +45,6 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     // MARK: - Customizable
     
     func customizeWithItem(item: MediaPickerItem) {
-        image = item.image
+        imageSource = item.image
     }
 }

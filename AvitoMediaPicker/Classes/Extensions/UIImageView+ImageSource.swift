@@ -41,6 +41,12 @@ public extension UIImageView {
         }
     }
     
+    func cancelRequestingImageFromSource() {
+        if let imageRequestID = imageRequestID {
+            imageSource?.cancelRequest(imageRequestID)
+        }
+    }
+    
     // MARK: - Private
     
     private static var imageSourceKey = "imageSource"
