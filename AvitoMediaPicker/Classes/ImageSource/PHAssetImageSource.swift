@@ -44,16 +44,15 @@ final class PHAssetImageSource: ImageSource {
         
         let startDownload = {
             downloadStarted = true
-            options.onDownloadStart.flatMap { dispatch_async(dispatch_get_main_queue(), $0) }
+            options.onDownloadStart.flatMap { dispatch_to_main_queue($0) }
         }
         
         let finishDownload = {
             downloadFinished = true
-            options.onDownloadFinish.flatMap { dispatch_async(dispatch_get_main_queue(), $0) }
+            options.onDownloadFinish.flatMap { dispatch_to_main_queue($0) }
         }
         
-        phOptions.progressHandler = { [asset] progress, _, _, _ in
-            debugPrint("Asset \(asset.localIdentifier): loading from iCloud - \(Int(progress * 100))%")
+        phOptions.progressHandler = { progress, _, _, _ in
             if !downloadStarted {
                 startDownload()
             }
