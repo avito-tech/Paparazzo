@@ -61,9 +61,12 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
         view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
         
-        cameraModuleInput.getCaptureSession { [weak self] captureSession in
-            if let captureSession = captureSession {
-                self?.view?.setCaptureSession(captureSession)
+        view?.setCameraControlsEnabled(false)
+        
+        cameraModuleInput.getOutputParameters { [weak self] parameters in
+            if let parameters = parameters {
+                self?.view?.setCameraOutputParameters(parameters)
+                self?.view?.setCameraControlsEnabled(true)
             } else {
                 self?.view?.setAccessDeniedViewVisible(true)
             }
@@ -145,7 +148,9 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onCameraToggleButtonTap = { [weak self] in
-            self?.cameraModuleInput.toggleCamera()
+            self?.cameraModuleInput.toggleCamera { newOutputOrientation in
+                self?.view?.setCameraOutputOrientation(newOutputOrientation)
+            }
         }
         
         view?.onSwipeToItem = { [weak self] item in

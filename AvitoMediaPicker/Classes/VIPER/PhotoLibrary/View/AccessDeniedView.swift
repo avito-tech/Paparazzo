@@ -28,6 +28,8 @@ final class AccessDeniedView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        backgroundColor = .whiteColor()
+        
         titleLabel.font = UIFont.boldSystemFontOfSize(17)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .Center
@@ -81,25 +83,35 @@ final class AccessDeniedView: UIView {
         messageLabelFrame: CGRect,
         buttonFrame: CGRect)
     {
+        let titleBottomMargin: CGFloat = 7
+        let messageBottomMargin: CGFloat = 34
+        let buttonSideMargin: CGFloat = 60
+        let buttonHeight: CGFloat = 52
+        
+        let labelsWidth = bounds.size.width * 0.8
+        let titleSize = titleLabel.sizeForWidth(labelsWidth)
+        let messageSize = messageLabel.sizeForWidth(labelsWidth)
+        
+        let contentHeight = titleSize.height + titleBottomMargin + messageSize.height + messageBottomMargin + buttonHeight
+        let contentTop = max(0, bounds.minY + (bounds.size.height - contentHeight) / 2)
+        
         var titleLabelFrame = CGRect(
-            origin: .zero,
-            size: titleLabel.sizeForWidth(bounds.size.width)
+            origin: CGPoint(x: 0, y: contentTop),
+            size: titleSize
         )
         titleLabelFrame.centerX = bounds.centerX
         
         var messageLabelFrame = CGRect(
             origin: .zero,
-            size: messageLabel.sizeForWidth(bounds.size.width)
+            size: messageSize
         )
         messageLabelFrame.centerX = bounds.centerX
-        messageLabelFrame.top = titleLabelFrame.bottom + 7
-        
-        let buttonSideMargin = CGFloat(60)
+        messageLabelFrame.top = titleLabelFrame.bottom + titleBottomMargin
         
         var buttonFrame = CGRect(origin: .zero, size: button.sizeThatFits(bounds.size))
         buttonFrame.centerX = bounds.centerX
-        buttonFrame.top = messageLabelFrame.bottom + 34
-        buttonFrame.height = 52
+        buttonFrame.top = messageLabelFrame.bottom + messageBottomMargin
+        buttonFrame.height = buttonHeight
         
         return (
             titleLabelFrame: titleLabelFrame,

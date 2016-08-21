@@ -63,9 +63,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         super.layoutSubviews()
         
         collectionView.frame = bounds
-        
-        accessDeniedView.frame = CGRect(origin: .zero, size: accessDeniedView.sizeForWidth(bounds.size.width * 0.8))
-        accessDeniedView.center = bounds.center
+        accessDeniedView.frame = bounds
     }
     
     // MARK: - PhotoLibraryView

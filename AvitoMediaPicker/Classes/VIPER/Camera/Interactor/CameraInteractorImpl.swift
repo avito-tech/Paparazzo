@@ -3,35 +3,22 @@ import AVFoundation
 final class CameraInteractorImpl: CameraInteractor {
     
     private let cameraService: CameraService
-    private let deviceOrientationService: DeviceOrientationService
-    
-    private var onDeviceOrientationChange: (DeviceOrientation -> ())?
     private var previewImagesSizeForNewPhotos: CGSize?
     
     init(cameraService: CameraService, deviceOrientationService: DeviceOrientationService) {
-        
         self.cameraService = cameraService
-        self.deviceOrientationService = deviceOrientationService
-        
-        deviceOrientationService.onOrientationChange = { [weak self] orientation in
-            self?.onDeviceOrientationChange?(orientation)
-        }
     }
     
     // MARK: - CameraInteractor
 
-    func getCaptureSession(completion: AVCaptureSession? -> ()) {
-        cameraService.captureSession { captureSession in
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(captureSession)
+    func getOutputParameters(completion: CameraOutputParameters? -> ()) {
+        cameraService.getCaptureSession { [cameraService] captureSession in
+            cameraService.getOutputOrientation { outputOrientation in
+                dispatch_to_main_queue {
+                    completion(captureSession.flatMap { CameraOutputParameters(captureSession: $0, orientation: outputOrientation) })
+                }
             }
-            
         }
-    }
-
-    func observeDeviceOrientation(handler: (DeviceOrientation -> ())?) {
-        onDeviceOrientationChange = handler
-        handler?(deviceOrientationService.currentOrientation)
     }
     
     func isFlashAvailable(completion: Bool -> ()) {
@@ -46,8 +33,8 @@ final class CameraInteractorImpl: CameraInteractor {
         cameraService.canToggleCamera(completion)
     }
     
-    func toggleCamera() {
-        cameraService.toggleCamera()
+    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ()) {
+        cameraService.toggleCamera(completion)
     }
     
     func takePhoto(completion: MediaPickerItem? -> ()) {

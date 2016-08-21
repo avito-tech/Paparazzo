@@ -54,7 +54,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     // MARK: - ThumbnailRibbonView
     
-    var captureSession: AVCaptureSession? {
+    var cameraOutputParameters: CameraOutputParameters? {
         didSet {
             updateCameraCell()
         }
@@ -147,6 +147,17 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
+    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+        cameraOutputParameters = parameters
+    }
+    
+    func setCameraOutputOrientation(orientation: ExifOrientation) {
+        cameraOutputParameters?.orientation = orientation
+        if let cell = cameraCell() {
+            cell.setOutputOrientation(orientation)
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -231,11 +242,14 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     private func setUpCameraCell(cell: UICollectionViewCell) {
-        if let cell = cell as? CameraThumbnailCell, captureSession = captureSession {
+        if let cell = cell as? CameraThumbnailCell {
             cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.setCameraIcon(theme?.returnToCameraIcon)
             cell.setCameraIconTransform(cameraIconTransform)
-            cell.setCaptureSession(captureSession)
+            
+            if let cameraOutputParameters = cameraOutputParameters {
+                cell.setOutputParameters(cameraOutputParameters)
+            }
         }
     }
     

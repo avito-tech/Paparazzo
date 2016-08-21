@@ -8,19 +8,29 @@ import AVFoundation
 // Решение взято отсюда: http://stackoverflow.com/questions/16543075/avcapturesession-with-multiple-previews
 final class CameraOutputGLKBinder {
     
-    private let view: SelfBindingGLKView
+    var orientation: ExifOrientation
+    
+    var view: UIView {
+        return glkView
+    }
+    
+    private let glkView: SelfBindingGLKView
     private let eaglContext: EAGLContext
     private let ciContext: CIContext
     
-    init() {
+    init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
         
         eaglContext = EAGLContext(API: .OpenGLES2)
         EAGLContext.setCurrentContext(eaglContext)
         
         ciContext = CIContext(EAGLContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
         
-        view = SelfBindingGLKView(frame: .zero, context: eaglContext)
-        view.enableSetNeedsDisplay = false
+        glkView = SelfBindingGLKView(frame: .zero, context: eaglContext)
+        glkView.enableSetNeedsDisplay = false
+        
+        self.orientation = outputOrientation
+        
+        setUpWithAVCaptureSession(captureSession)
     }
     
     deinit {
@@ -29,7 +39,7 @@ final class CameraOutputGLKBinder {
         }
     }
     
-    func setUpWithAVCaptureSession(session: AVCaptureSession) -> UIView {
+    private func setUpWithAVCaptureSession(session: AVCaptureSession) {
         
         let delegate = CameraOutputGLKBinderDelegate.sharedInstance
         
@@ -52,8 +62,6 @@ final class CameraOutputGLKBinder {
                 debugPrint("Couldn't configure AVCaptureSession: \(error)")
             }
         }
-        
-        return view
     }
 }
 
@@ -141,14 +149,14 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         // If it makes an OpenGL ES call, it is terminated by iOS.
         guard !isInBackground else { return }
         
-        let view = binder.view
+        let view = binder.glkView
         let ciContext = binder.ciContext
         
         guard view.drawableBounds.size.width > 0 && view.drawableBounds.size.height > 0 else {
             return
         }
         
-        let orientation = Int32(ExifOrientation.Left.rawValue)  // камера отдает картинку в этой ориентации
+        let orientation = Int32(binder.orientation.rawValue)
 
         let sourceImage = CIImage(CVPixelBuffer: imageBuffer).imageByApplyingOrientation(orientation)
         var sourceExtent = sourceImage.extent

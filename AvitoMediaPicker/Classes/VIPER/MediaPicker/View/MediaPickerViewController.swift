@@ -104,8 +104,12 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         }
     }
     
-    func setCaptureSession(session: AVCaptureSession) {
-        mediaPickerView.setCaptureSession(session)
+    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+        mediaPickerView.setCameraOutputParameters(parameters)
+    }
+    
+    func setCameraOutputOrientation(orientation: ExifOrientation) {
+        mediaPickerView.setCameraOutputOrientation(orientation)
     }
     
     func setPhotoTitle(title: String) {
@@ -215,6 +219,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func scrollToCameraThumbnail(animated animated: Bool) {
         mediaPickerView.scrollToCameraThumbnail(animated: animated)
+    }
+    
+    func setCameraControlsEnabled(enabled: Bool) {
+        mediaPickerView.setCameraControlsEnabled(enabled)
     }
     
     func setCameraButtonVisible(visible: Bool) {

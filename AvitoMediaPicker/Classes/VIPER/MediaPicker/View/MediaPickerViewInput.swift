@@ -17,7 +17,8 @@ protocol MediaPickerViewInput: class {
     func setMode(_: MediaPickerViewMode)
     func adjustForDeviceOrientation(_: DeviceOrientation)
     
-    func setCaptureSession(_: AVCaptureSession)
+    func setCameraOutputParameters(_: CameraOutputParameters)
+    func setCameraOutputOrientation(_: ExifOrientation)
     
     func setPhotoTitle(_: String)
     func setPhotoTitleStyle(_: MediaPickerTitleStyle)
@@ -40,6 +41,7 @@ protocol MediaPickerViewInput: class {
     func selectCamera()
     func scrollToCameraThumbnail(animated animated: Bool)
     
+    func setCameraControlsEnabled(_: Bool)
     func setCameraButtonVisible(_: Bool)
     func setShutterButtonEnabled(_: Bool)
     

@@ -73,10 +73,13 @@ final class PHAssetImageSource: ImageSource {
                 finishDownload()
             }
             
-            if let image = image as? T? {
-                resultHandler(image)
-            } else {
-                resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+            // resultHandler не должен вызываться после отмены запроса
+            if !cancelled {
+                if let image = image as? T? {
+                    resultHandler(image)
+                } else {
+                    resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+                }
             }
         }
     }
