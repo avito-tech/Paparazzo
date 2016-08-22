@@ -20,29 +20,7 @@ class AsynchronousOperation: NSOperation {
         return state == .Finished
     }
     
-    override func start() {
-        if cancelled {
-            state = .Finished
-        } else {
-            state = .Executing
-            
-            let qos = qos_class_t(qualityOfService)
-            let block = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qos, -1) {
-                self.main()
-            }
-            
-            dispatch_async(queue, block)
-        }
-    }
-    
     // MARK: - AsynchronousOperation
-    
-    private let queue: dispatch_queue_t
-    
-    override init() {
-        queue = dispatch_queue_create("ru.avito.\(NSStringFromClass(self.dynamicType)).queue", nil)
-        super.init()
-    }
     
     enum State {
         
