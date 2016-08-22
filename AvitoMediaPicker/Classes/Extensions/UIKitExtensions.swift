@@ -67,3 +67,25 @@ extension UICollectionView {
         })
     }
 }
+
+extension UIImage {
+    
+    func resized(toFit size: CGSize) -> UIImage? {
+        
+        let image = UIKit.CIImage(image: self)
+        let scale = min(size.width / self.size.width, size.height / self.size.height)
+        
+        guard let filter = CIFilter(name: "CILanczosScaleTransform") else { return nil }
+        filter.setValue(image, forKey: kCIInputImageKey)
+        filter.setValue(scale, forKey: kCIInputScaleKey)
+        filter.setValue(1, forKey: kCIInputAspectRatioKey)
+        
+        guard let outputImage = filter.valueForKey(kCIOutputImageKey) as? UIKit.CIImage else { return nil }
+        let cgImage = sharedGPUContext.createCGImage(outputImage, fromRect: outputImage.extent)
+        
+        return UIImage(CGImage: cgImage)
+    }
+}
+
+// Операция создания CIContext дорогостоящая, поэтому рекомендуется хранить его
+private let sharedGPUContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])

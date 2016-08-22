@@ -17,4 +17,5 @@ Pod::Spec.new do |s|
   s.dependency 'AvitoDesignKit', '0.0.6'
   s.dependency 'Marshroute'
   s.dependency 'JNWSpringAnimation'
+  s.dependency 'SDWebImage'
 end
