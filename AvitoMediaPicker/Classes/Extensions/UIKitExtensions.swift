@@ -74,7 +74,11 @@ extension UIImage {
         
         let image = UIKit.CIImage(image: self)
         
-        guard let filter = CIFilter(name: "CILanczosScaleTransform") else { return nil }
+        guard let filter = CIFilter(name: "CILanczosScaleTransform") else {
+            assertionFailure("No CIFilter with name CILanczosScaleTransform found")
+            return nil
+        }
+        
         filter.setValue(image, forKey: kCIInputImageKey)
         filter.setValue(scale, forKey: kCIInputScaleKey)
         filter.setValue(1, forKey: kCIInputAspectRatioKey)

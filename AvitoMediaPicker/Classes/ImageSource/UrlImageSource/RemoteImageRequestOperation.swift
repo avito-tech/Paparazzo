@@ -36,7 +36,6 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Asynchrono
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                     
                     let cgImage = (image as UIImage?).flatMap { self?.finalCGImage(from: $0) }
-                    debugPrint("requested size = \(self?.options.size), imageSize = (\(CGImageGetWidth(cgImage)), \(CGImageGetHeight(cgImage)))")
                     
                     dispatch_async(callbackQueue) {
                         onDownloadFinish?()
