@@ -21,6 +21,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .Fade)
     }
     
     override func viewDidLayoutSubviews() {
