@@ -149,6 +149,10 @@ final class CameraControlsView: UIView {
         shutterButton.enabled = enabled
     }
     
+    func setPhotoLibraryButtonEnabled(enabled: Bool) {
+        photoView.userInteractionEnabled = enabled
+    }
+    
     func setTheme(theme: MediaPickerRootModuleUITheme) {
         
         self.theme = theme

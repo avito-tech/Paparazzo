@@ -1,7 +1,8 @@
 import CoreGraphics
 import AvitoDesignKit
 
-public final class CachingImageSource: ImageSource {
+@available(*, deprecated, message="Оно не очень хорошо работает, лучше для разных ImageSource'ов делать свою логику кэширования")
+final class CachingImageSource: ImageSource {
     
     private let underlyingImageSource: ImageSource
     private let cache = NSCache()

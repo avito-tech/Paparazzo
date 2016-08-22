@@ -115,16 +115,18 @@ final class MediaPickerPresenter: MediaPickerModule {
             // он будет потом еще долго фоткать :) Поэтому временно блокируем кнопку.
             // Кроме того, если быстро нажать "Далее", то фотка не попадет в module result, поэтому "Далее" также блокируем
             self?.view?.setShutterButtonEnabled(false)
+            self?.view?.setPhotoLibraryButtonEnabled(false) // AI-3207
             self?.view?.setContinueButtonEnabled(false)
             self?.view?.animateFlash()
             
             self?.cameraModuleInput.takePhoto { photo in
                 
                 if let photo = photo {
-                    self?.addItems([photo.toItemWithCachingImageSource()], fromCamera: true)
+                    self?.addItems([photo], fromCamera: true)
                 }
                 
                 self?.view?.setShutterButtonEnabled(true)
+                self?.view?.setPhotoLibraryButtonEnabled(true)
                 self?.view?.setContinueButtonEnabled(true)
             }
         }
@@ -224,8 +226,8 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func addItems(items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
-        interactor.addItems(items) { [weak self] canAddItems in
-            self?.handleItemsAdded(items, fromCamera: fromCamera, canAddMoreItems: canAddItems, completion: completion)
+        interactor.addItems(items) { [weak self] addedItems, canAddItems in
+            self?.handleItemsAdded(addedItems, fromCamera: fromCamera, canAddMoreItems: canAddItems, completion: completion)
         }
     }
     
@@ -297,8 +299,8 @@ final class MediaPickerPresenter: MediaPickerModule {
                         
                         switch result {
                         case .SelectedItems(let photoLibraryItems):
-                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { mediaPickerItems, canAddItems in
-                                self?.handleItemsAdded(mediaPickerItems, fromCamera: false, canAddMoreItems: canAddItems)
+                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { addedItems, canAddItems in
+                                self?.handleItemsAdded(addedItems, fromCamera: false, canAddMoreItems: canAddItems)
                             }
                         case .Cancelled:
                             break
