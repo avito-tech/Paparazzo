@@ -1,13 +1,6 @@
 import UIKit
-import AvitoDesignKit
 
-class PhotoCollectionViewCell: UICollectionViewCell {
-    
-    var image: ImageSource? {
-        didSet {
-            updateImage()
-        }
-    }
+class PhotoCollectionViewCell: ImageSourceCollectionViewCell {
     
     var selectedBorderColor: UIColor? = .blueColor() {
         didSet {
@@ -15,33 +8,16 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    class var imageViewContentMode: UIViewContentMode {
-        return .ScaleAspectFill
-    }
-    
-    private let imageView = UIImageView()
+    // MARK: - UICollectionViewCell
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         adjustBorderColor()
-        
-        imageView.contentMode = self.dynamicType.imageViewContentMode
-        imageView.clipsToBounds = true
-        
-        contentView.addSubview(imageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        imageView.frame = contentView.bounds
-        
-        updateImage()
     }
     
     override var selected: Bool {
@@ -50,20 +26,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView.image = nil
-    }
-    
-    func adjustImageRequestOptions(inout options: ImageRequestOptions) {}
-    
     // MARK: - Private
-    
-    private func updateImage() {
-        imageView.setImage(fromSource: image, adjustOptions: { [weak self] options in
-            self?.adjustImageRequestOptions(&options)
-        })
-    }
     
     private func adjustBorderColor() {
         layer.borderColor = selectedBorderColor?.CGColor

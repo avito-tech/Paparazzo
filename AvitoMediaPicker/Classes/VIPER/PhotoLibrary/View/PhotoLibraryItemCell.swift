@@ -50,7 +50,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     var onLoadingFinish: (() -> ())?
     
     func customizeWithItem(item: PhotoLibraryItemCellData) {
-        image = item.image
+        imageSource = item.image
         selected = item.selected
     }
 }

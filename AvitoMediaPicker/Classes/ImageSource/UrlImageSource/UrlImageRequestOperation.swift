@@ -9,19 +9,19 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     private let url: NSURL
     private let options: ImageRequestOptions
     private let resultHandler: T? -> ()
-    private let resultQueue: dispatch_queue_t
+    private let callbackQueue: dispatch_queue_t
     
     init(id: ImageRequestID,
          url: NSURL,
          options: ImageRequestOptions,
          resultHandler: T? -> (),
-         resultQueue: dispatch_queue_t = dispatch_get_main_queue())
+         callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
     {
         self.id = id
         self.url = url
         self.options = options
         self.resultHandler = resultHandler
-        self.resultQueue = resultQueue
+        self.callbackQueue = callbackQueue
     }
     
     override func main() {
@@ -39,7 +39,17 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     
     private func getFullResolutionImage() {
         
+        let isRemoteUrl = !url.fileURL
+        
+        if let onDownloadStart = self.options.onDownloadStart where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadStart)
+        }
+        
         let source = CGImageSourceCreateWithURL(url, nil)
+        
+        if let onDownloadFinish = self.options.onDownloadFinish where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadFinish)
+        }
         
         let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
         let orientation = options?[kCGImagePropertyOrientation] as? Int
@@ -53,14 +63,24 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
         }
         
         guard !cancelled else { return }
-        dispatch_async(resultQueue) { [resultHandler] in
+        dispatch_async(callbackQueue) { [resultHandler] in
             resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
     }
     
     private func getImageResizedTo(size: CGSize) {
         
+        let isRemoteUrl = !url.fileURL
+        
+        if let onDownloadStart = self.options.onDownloadStart where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadStart)
+        }
+        
         let source = CGImageSourceCreateWithURL(url, nil)
+        
+        if let onDownloadFinish = self.options.onDownloadFinish where isRemoteUrl {
+            dispatch_async(callbackQueue, onDownloadFinish)
+        }
         
         let options: [NSString: NSObject] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
@@ -72,7 +92,7 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
         let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
         
         guard !cancelled else { return }
-        dispatch_async(resultQueue) { [resultHandler] in
+        dispatch_async(callbackQueue) { [resultHandler] in
             resultHandler(cgImage.flatMap { T(CGImage: $0) })
         }
     }
