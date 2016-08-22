@@ -49,20 +49,3 @@ class AsynchronousOperation: NSOperation {
         }
     }
 }
-
-extension qos_class_t {
-    init(_ qos: NSQualityOfService) {
-        switch qos {
-        case .UserInteractive:
-            self = QOS_CLASS_USER_INTERACTIVE
-        case .UserInitiated:
-            self = QOS_CLASS_USER_INITIATED
-        case .Utility:
-            self = QOS_CLASS_UTILITY
-        case .Background:
-            self = QOS_CLASS_BACKGROUND
-        case .Default:
-            self = QOS_CLASS_DEFAULT
-        }
-    }
-}

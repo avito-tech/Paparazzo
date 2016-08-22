@@ -93,17 +93,15 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         if dataSource.cameraCellVisible != visible {
             
-            if visible {
-                
-                dataSource.cameraCellVisible = visible
-                addCollectionViewItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+            let updatesFunction = { [weak self] () -> [NSIndexPath]? in
+                self?.dataSource.cameraCellVisible = visible
+                return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
+            }
             
+            if visible {
+                collectionView.insertItems(animated: false, updatesFunction)
             } else {
-                
-                collectionView.deleteItems(animated: false) { [weak self] in
-                    self?.dataSource.cameraCellVisible = visible
-                    return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
-                }
+                collectionView.deleteItems(animated: false, updatesFunction)
             }
         }
     }
