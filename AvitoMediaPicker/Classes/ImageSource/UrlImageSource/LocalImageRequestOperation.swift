@@ -2,7 +2,13 @@ import Foundation
 import ImageIO
 import MobileCoreServices
 
-final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
+/**
+ Operation for requesting images stored in a local file.
+ 
+ Works for remote files too, but doesn't call download callbacks. Instead, use RemoteImageRequestOperation,
+ which also incorporates caching.
+ */
+final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
     
     let id: ImageRequestID
     
@@ -11,6 +17,8 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     private let resultHandler: T? -> ()
     private let callbackQueue: dispatch_queue_t
     
+    // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
+    // но пока не вижу в этом особой необходимости
     init(id: ImageRequestID,
          url: NSURL,
          options: ImageRequestOptions,
@@ -39,17 +47,8 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     
     private func getFullResolutionImage() {
         
-        let isRemoteUrl = !url.fileURL
-        
-        if let onDownloadStart = self.options.onDownloadStart where isRemoteUrl {
-            dispatch_async(callbackQueue, onDownloadStart)
-        }
-        
+        guard !cancelled else { return }
         let source = CGImageSourceCreateWithURL(url, nil)
-        
-        if let onDownloadFinish = self.options.onDownloadFinish where isRemoteUrl {
-            dispatch_async(callbackQueue, onDownloadFinish)
-        }
         
         let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
         let orientation = options?[kCGImagePropertyOrientation] as? Int
@@ -70,17 +69,8 @@ final class UrlImageRequestOperation<T: InitializableWithCGImage>: NSOperation, 
     
     private func getImageResizedTo(size: CGSize) {
         
-        let isRemoteUrl = !url.fileURL
-        
-        if let onDownloadStart = self.options.onDownloadStart where isRemoteUrl {
-            dispatch_async(callbackQueue, onDownloadStart)
-        }
-        
+        guard !cancelled else { return }
         let source = CGImageSourceCreateWithURL(url, nil)
-        
-        if let onDownloadFinish = self.options.onDownloadFinish where isRemoteUrl {
-            dispatch_async(callbackQueue, onDownloadFinish)
-        }
         
         let options: [NSString: NSObject] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
