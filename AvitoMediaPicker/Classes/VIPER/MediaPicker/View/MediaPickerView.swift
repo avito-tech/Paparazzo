@@ -312,6 +312,10 @@ final class MediaPickerView: UIView {
         cameraControlsView.setShutterButtonEnabled(enabled)
     }
     
+    func setPhotoLibraryButtonEnabled(enabled: Bool) {
+        cameraControlsView.setPhotoLibraryButtonEnabled(enabled)
+    }
+    
     func addItems(items: [MediaPickerItem], animated: Bool) {
         photoPreviewView.addItems(items)
         thumbnailRibbonView.addItems(items, animated: animated)

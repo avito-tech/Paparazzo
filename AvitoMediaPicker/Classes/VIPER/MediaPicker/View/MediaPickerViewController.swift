@@ -234,6 +234,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setShutterButtonEnabled(enabled)
     }
     
+    func setPhotoLibraryButtonEnabled(enabled: Bool) {
+        mediaPickerView.setPhotoLibraryButtonEnabled(enabled)
+    }
+    
     // MARK: - MediaPickerViewController
     
     func setCameraView(view: UIView) {

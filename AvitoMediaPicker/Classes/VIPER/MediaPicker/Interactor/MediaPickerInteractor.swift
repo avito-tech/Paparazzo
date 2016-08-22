@@ -2,8 +2,8 @@ import AvitoDesignKit
 
 protocol MediaPickerInteractor: class {
     
-    func addItems(_: [MediaPickerItem], completion: (canAddItems: Bool) -> ())
-    func addPhotoLibraryItems(_: [PhotoLibraryItem], completion: (mediaPickerItems: [MediaPickerItem], canAddItems: Bool) -> ())
+    func addItems(_: [MediaPickerItem], completion: (addedItems: [MediaPickerItem], canAddItems: Bool) -> ())
+    func addPhotoLibraryItems(_: [PhotoLibraryItem], completion: (addedItems: [MediaPickerItem], canAddItems: Bool) -> ())
     
     func updateItem(_: MediaPickerItem, completion: () -> ())
     // `completion` вызывается с соседним item'ом — это item, который нужно выделить после того, как удалили `item`
