@@ -121,7 +121,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.cameraModuleInput.takePhoto { photo in
                 
                 if let photo = photo {
-                    self?.addItems([photo.toItemWithCachingImageSource()], fromCamera: true)
+                    self?.addItems([photo], fromCamera: true)
                 }
                 
                 self?.view?.setShutterButtonEnabled(true)

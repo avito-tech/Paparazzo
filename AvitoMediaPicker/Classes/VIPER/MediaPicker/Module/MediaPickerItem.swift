@@ -18,18 +18,6 @@ public struct MediaPickerItem: Equatable {
         self.image = image
         self.source = source
     }
-    
-    func toItemWithCachingImageSource() -> MediaPickerItem {
-        if image is CachingImageSource {
-            return self
-        } else {
-            return MediaPickerItem(
-                identifier: identifier,
-                image: CachingImageSource(underlyingImageSource: image),
-                source: source
-            )
-        }
-    }
 }
 
 public func ==(item1: MediaPickerItem, item2: MediaPickerItem) -> Bool {
