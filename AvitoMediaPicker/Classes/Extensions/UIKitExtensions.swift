@@ -90,11 +90,19 @@ extension UIImage {
     }
     
     func resized(toFit size: CGSize) -> UIImage? {
-        return scaled(min(size.width / self.size.width, size.height / self.size.height))
+        if self.size.width > 0 && self.size.height > 0 {
+            return scaled(min(size.width / self.size.width, size.height / self.size.height))
+        } else {
+            return nil
+        }
     }
     
     func resized(toFill size: CGSize) -> UIImage? {
-        return scaled(max(size.width / self.size.width, size.height / self.size.height))
+        if self.size.width > 0 && self.size.height > 0 {
+            return scaled(max(size.width / self.size.width, size.height / self.size.height))
+        } else {
+            return nil
+        }
     }
 }
 
