@@ -70,10 +70,9 @@ extension UICollectionView {
 
 extension UIImage {
     
-    func resized(toFit size: CGSize) -> UIImage? {
+    func scaled(scale: CGFloat) -> UIImage? {
         
         let image = UIKit.CIImage(image: self)
-        let scale = min(size.width / self.size.width, size.height / self.size.height)
         
         guard let filter = CIFilter(name: "CILanczosScaleTransform") else { return nil }
         filter.setValue(image, forKey: kCIInputImageKey)
@@ -84,6 +83,14 @@ extension UIImage {
         let cgImage = sharedGPUContext.createCGImage(outputImage, fromRect: outputImage.extent)
         
         return UIImage(CGImage: cgImage)
+    }
+    
+    func resized(toFit size: CGSize) -> UIImage? {
+        return scaled(min(size.width / self.size.width, size.height / self.size.height))
+    }
+    
+    func resized(toFill size: CGSize) -> UIImage? {
+        return scaled(max(size.width / self.size.width, size.height / self.size.height))
     }
 }
 

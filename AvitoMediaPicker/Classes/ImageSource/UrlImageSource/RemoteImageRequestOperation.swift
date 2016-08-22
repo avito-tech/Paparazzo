@@ -84,11 +84,9 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Asynchrono
         case .FullResolution:
             return image.CGImage
         case .FillSize(let size):
-            let scale = max(size.width / image.size.width, size.height / image.size.height)
-            return image.resized(toFit: image.size.scaled(scale))?.CGImage
+            return image.resized(toFill: size)?.CGImage
         case .FitSize(let size):
-            let scale = min(size.width / image.size.width, size.height / image.size.height)
-            return image.resized(toFit: image.size.scaled(scale))?.CGImage
+            return image.resized(toFit: size)?.CGImage
         }
     }
 }
