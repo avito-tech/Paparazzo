@@ -3,6 +3,7 @@ public protocol MediaPickerModule: class {
     func focusOnModule()
     func dismissModule()
     
+    func setContinueButtonTitle(_: String)
     func setContinueButtonEnabled(_: Bool)
     
     var onItemsAdd: ([MediaPickerItem] -> ())? { get set }

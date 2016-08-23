@@ -30,6 +30,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onFinish: ([MediaPickerItem] -> ())?
     var onCancel: (() -> ())?
     
+    func setContinueButtonTitle(title: String) {
+        continueButtonTitle = title
+        view?.setContinueButtonTitle(title)
+    }
+    
     func setContinueButtonEnabled(enabled: Bool) {
         view?.setContinueButtonEnabled(enabled)
     }
@@ -52,9 +57,11 @@ final class MediaPickerPresenter: MediaPickerModule {
 
     // MARK: - Private
     
+    private var continueButtonTitle: String?
+    
     private func setUpView() {
         
-        view?.setContinueButtonTitle("Далее")
+        view?.setContinueButtonTitle(continueButtonTitle ?? "Далее")
         view?.setPhotoTitle("Фото 1")
         
         view?.setAccessDeniedTitle("Чтобы фотографировать товар")
