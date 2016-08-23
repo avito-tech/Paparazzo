@@ -41,11 +41,11 @@ final class CameraInteractorImpl: CameraInteractor {
         
         cameraService.takePhoto { [weak self] photo in
             
-            let imageSource = photo.flatMap { UrlImageSource(url: $0.url) }
+            let imageSource = photo.flatMap { LocalImageSource(path: $0.path) }
             
             if let imageSource = imageSource, previewSize = self?.previewImagesSizeForNewPhotos {
                 imageSource.imageFittingSize(previewSize, contentMode: .AspectFill, deliveryMode: .Best) { (imageWrapper: CGImageWrapper?) in
-                    let imageSource = photo.flatMap { UrlImageSource(url: $0.url, previewImage: imageWrapper?.image) }
+                    let imageSource = photo.flatMap { LocalImageSource(path: $0.path, previewImage: imageWrapper?.image) }
                     completion(imageSource.flatMap { MediaPickerItem(image: $0, source: .Camera) })
                 }
             } else {

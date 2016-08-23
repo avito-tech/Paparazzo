@@ -2,17 +2,12 @@ import Foundation
 import ImageIO
 import MobileCoreServices
 
-/**
- Operation for requesting images stored in a local file.
- 
- Works for remote files too, but doesn't call download callbacks. Instead, use RemoteImageRequestOperation,
- which also incorporates caching.
- */
+/// Operation for requesting images stored in a local file.
 final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
     
     let id: ImageRequestID
     
-    private let url: NSURL
+    private let path: String
     private let options: ImageRequestOptions
     private let resultHandler: T? -> ()
     private let callbackQueue: dispatch_queue_t
@@ -20,13 +15,13 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
     // но пока не вижу в этом особой необходимости
     init(id: ImageRequestID,
-         url: NSURL,
+         path: String,
          options: ImageRequestOptions,
          resultHandler: T? -> (),
          callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
     {
         self.id = id
-        self.url = url
+        self.path = path
         self.options = options
         self.resultHandler = resultHandler
         self.callbackQueue = callbackQueue
@@ -48,6 +43,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
     private func getFullResolutionImage() {
         
         guard !cancelled else { return }
+        let url = NSURL(fileURLWithPath: path)
         let source = CGImageSourceCreateWithURL(url, nil)
         
         let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
@@ -70,6 +66,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
     private func getImageResizedTo(size: CGSize) {
         
         guard !cancelled else { return }
+        let url = NSURL(fileURLWithPath: path)
         let source = CGImageSourceCreateWithURL(url, nil)
         
         let options: [NSString: NSObject] = [

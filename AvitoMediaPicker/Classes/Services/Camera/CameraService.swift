@@ -18,5 +18,5 @@ protocol CameraService: class {
 }
 
 struct PhotoFromCamera {
-    let url: NSURL
+    let path: String
 }
