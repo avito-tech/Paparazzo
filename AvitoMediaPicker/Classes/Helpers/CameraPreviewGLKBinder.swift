@@ -99,15 +99,15 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         
         notificationCenter.addObserver(
             self,
-            selector: #selector(CameraOutputGLKBinderDelegate.handleAppWillResignActive(_:)),
+            selector: #selector(handleAppWillResignActive(_:)),
             name: UIApplicationWillResignActiveNotification,
             object: nil
         )
         
         notificationCenter.addObserver(
             self,
-            selector: #selector(CameraOutputGLKBinderDelegate.handleAppWillEnterForeground(_:)),
-            name: UIApplicationWillEnterForegroundNotification,
+            selector: #selector(handleAppDidBecomeActive(_:)),
+            name: UIApplicationDidBecomeActiveNotification,
             object: nil
         )
     }
@@ -121,7 +121,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         isInBackground = true
     }
     
-    @objc private func handleAppWillEnterForeground(_: NSNotification) {
+    @objc private func handleAppDidBecomeActive(_: NSNotification) {
         isInBackground = false
     }
     
