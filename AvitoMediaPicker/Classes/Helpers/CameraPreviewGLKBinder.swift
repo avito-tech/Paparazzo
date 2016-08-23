@@ -117,12 +117,18 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     }
     
     @objc private func handleAppWillResignActive(_: NSNotification) {
-        glFinish()
-        isInBackground = true
+        // Синхронно, потому что после выхода из этого метода не должно быть никаких обращений к OpenGL
+        // (флаг isInBackground проверяется в очереди `queue`)
+        dispatch_sync(queue) {
+            glFinish()
+            self.isInBackground = true
+        }
     }
     
     @objc private func handleAppDidBecomeActive(_: NSNotification) {
-        isInBackground = false
+        dispatch_async(queue) {
+            self.isInBackground = false
+        }
     }
     
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
