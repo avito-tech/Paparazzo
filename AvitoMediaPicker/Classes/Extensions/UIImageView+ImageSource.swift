@@ -7,8 +7,9 @@ public extension UIImageView {
         size: CGSize? = nil,
         placeholder: UIImage? = nil,
         placeholderDeferred: Bool = false,
-        adjustOptions: ((inout options: ImageRequestOptions) -> ())? = nil
-    ) {
+        adjustOptions: ((inout options: ImageRequestOptions) -> ())? = nil,
+        resultHandler: (() -> ())? = nil)
+    {
         let previousImageSource = imageSource
         let pointSize = (size ?? bounds.size)
         let scale = UIScreen.mainScreen().scale
@@ -27,12 +28,14 @@ public extension UIImageView {
         
         if let newImageSource = newImageSource where pointSize.width > 0 && pointSize.height > 0 {
             
-            var options = ImageRequestOptions(size: .FillSize(pixelSize), deliveryMode: .Progressive)
+            let size: ImageSizeOption = (contentMode == .ScaleAspectFit) ? .FitSize(pixelSize) : .FillSize(pixelSize)
+            var options = ImageRequestOptions(size: size, deliveryMode: .Progressive)
             adjustOptions?(options: &options)
             
             imageRequestID = newImageSource.requestImage(options: options) { [weak self] (image: UIImage?) in
                 if let image = image where self?.shouldSetImageForImageSource(newImageSource) == true {
                     self?.image = image
+                    resultHandler?()
                 }
             }
             

@@ -42,21 +42,27 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Subclasses customization
     
-    // Can be used by subclasses to customize image view content mode. Default mode is .ScaleAspectFill
-    public final func setImageViewContentMode(contentMode: UIViewContentMode) {
-        imageView.contentMode = contentMode
-    }
-    
     /// This method is called right before requesting image from ImageSource and gives you a chance to tweak request options
     public func adjustImageRequestOptions(inout options: ImageRequestOptions) {}
+    public func willSetImageFromSource() {}
+    public func didSetImageFromSource() {}
     
     // MARK: - Private
     
-    private let imageView = UIImageView()
+    let imageView = UIImageView()
     
     private func updateImage() {
-        imageView.setImage(fromSource: imageSource, adjustOptions: { [weak self] options in
-            self?.adjustImageRequestOptions(&options)
-        })
+        
+        willSetImageFromSource()
+        
+        imageView.setImage(
+            fromSource: imageSource,
+            adjustOptions: { [weak self] options in
+                self?.adjustImageRequestOptions(&options)
+            },
+            resultHandler: { [weak self] in
+                self?.didSetImageFromSource()
+            }
+        )
     }
 }

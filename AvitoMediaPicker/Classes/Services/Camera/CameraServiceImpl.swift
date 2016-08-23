@@ -198,16 +198,12 @@ final class CameraServiceImpl: CameraService {
     
     private func savePhoto(sampleBuffer sampleBuffer: CMSampleBuffer?, completion: PhotoFromCamera? -> ()) {
         
+        let path = randomTemporaryPhotoFilePath()
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { [weak self] in
-            
-            if let sampleBuffer = sampleBuffer,
-                url = self?.randomTemporaryPhotoFileUrl(),
-                data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) {
-                
-                data.writeToURL(url, atomically: true)
-                
-                completion(PhotoFromCamera(url: url))
-                
+            if let data = sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) }) {
+                data.writeToFile(path, atomically: true)
+                completion(PhotoFromCamera(path: path))
             } else {
                 completion(nil)
             }
@@ -240,14 +236,10 @@ final class CameraServiceImpl: CameraService {
         camera?.unlockForConfiguration()
     }
     
-    private func randomTemporaryPhotoFileUrl() -> NSURL? {
-        
-        let randomId: NSString = NSUUID().UUIDString
+    private func randomTemporaryPhotoFilePath() -> String {
         let tempDirPath: NSString = NSTemporaryDirectory()
-        let tempName = randomId.stringByAppendingPathExtension("jpg")
-        let filePath = tempName.flatMap { tempDirPath.stringByAppendingPathComponent($0) }
-        
-        return filePath.flatMap { NSURL(fileURLWithPath: $0) }
+        let tempName = "\(NSUUID().UUIDString).jpg"
+        return tempDirPath.stringByAppendingPathComponent(tempName)
     }
     
     private func outputOrientationForCamera(camera: AVCaptureDevice?) -> ExifOrientation {

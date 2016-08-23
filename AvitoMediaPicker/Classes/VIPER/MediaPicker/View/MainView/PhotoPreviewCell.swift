@@ -7,9 +7,11 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setImageViewContentMode(.ScaleAspectFit)
+        imageView.contentMode = .ScaleAspectFit
         
         progressIndicator.hidesWhenStopped = true
+        progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
+        
         addSubview(progressIndicator)
     }
     
