@@ -123,13 +123,13 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         
         splashView.hidden = false
         
-        image.requestImage(options: splashOptions) { [weak self] (image: UIImage?) in
+        image.requestImage(options: splashOptions) { [weak self] (image: UIImage?, _: ImageRequestId) in
             if let image = image where self?.splashView.hidden == false {
                 self?.splashView.image = image
             }
         }
         
-        image.requestImage(options: bestOptions) { [weak self] (image: UIImage?) in
+        image.requestImage(options: bestOptions) { [weak self] (image: UIImage?, _: ImageRequestId) in
             if let image = image {
                 self?.previewView.setImage(image)
                 self?.splashView.hidden = true

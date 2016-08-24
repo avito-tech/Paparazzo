@@ -51,16 +51,16 @@ public class RemoteImageSource: ImageSource {
 
     public func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: T? -> ())
-        -> ImageRequestID
+        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        -> ImageRequestId
     {
+        let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
+        
         if let previewImage = previewImage where options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(T(CGImage: previewImage))
+                resultHandler(image: T(CGImage: previewImage), requestId: requestId)
             }
         }
-        
-        let requestId = ImageRequestID(RemoteImageSource.requestIdsGenerator.nextInt())
         
         let operation = RemoteImageRequestOperation(
             id: requestId,
@@ -74,7 +74,7 @@ public class RemoteImageSource: ImageSource {
         return requestId
     }
     
-    public func cancelRequest(id: ImageRequestID) {
+    public func cancelRequest(id: ImageRequestId) {
         for operation in RemoteImageSource.requestsQueue.operations {
             if let identifiableOperation = operation as? ImageRequestIdentifiable where identifiableOperation.id == id {
                 operation.cancel()
@@ -102,10 +102,17 @@ public class RemoteImageSource: ImageSource {
     
     private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler resultHandler: T? -> ()) -> RemoteImageRequestOperation<T> {
         
-        let requestId = ImageRequestID(RemoteImageSource.requestIdsGenerator.nextInt())
+        let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
         let options = ImageRequestOptions(size: .FullResolution, deliveryMode: .Best)
-
-        return RemoteImageRequestOperation(id: requestId, url: url, options: options, resultHandler: resultHandler)
+        
+        return RemoteImageRequestOperation(
+            id: requestId,
+            url: url,
+            options: options,
+            resultHandler: { (image: T?, requestId: ImageRequestId) in
+                resultHandler(image)
+            }
+        )
     }
 }
 

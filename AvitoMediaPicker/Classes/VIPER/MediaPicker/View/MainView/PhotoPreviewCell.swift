@@ -44,8 +44,8 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         */
         var downloadId: Int?
         
-        options.onDownloadStart = { [weak self, superOptions = options] in
-            superOptions.onDownloadStart?()
+        options.onDownloadStart = { [weak self, superOptions = options] imageRequestId in
+            superOptions.onDownloadStart?(imageRequestId)
             
             self?.imageDownloadId += 1
             downloadId = self?.imageDownloadId
@@ -53,8 +53,8 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
             self?.progressIndicator.startAnimating()
         }
         
-        options.onDownloadFinish = { [weak self, superOptions = options] in
-            superOptions.onDownloadFinish?()
+        options.onDownloadFinish = { [weak self, superOptions = options] imageRequestId in
+            superOptions.onDownloadFinish?(imageRequestId)
             
             if downloadId == self?.imageDownloadId {
                 self?.progressIndicator.stopAnimating()

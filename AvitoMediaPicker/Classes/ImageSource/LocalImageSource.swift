@@ -15,16 +15,16 @@ public final class LocalImageSource: ImageSource {
     
     public func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: T? -> ())
-        -> ImageRequestID
+        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        -> ImageRequestId
     {
+        let requestId = ImageRequestId(LocalImageSource.requestIdsGenerator.nextInt())
+        
         if let previewImage = previewImage where options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(T(CGImage: previewImage))
+                resultHandler(image: T(CGImage: previewImage), requestId: requestId)
             }
         }
-        
-        let requestId = ImageRequestID(LocalImageSource.requestIdsGenerator.nextInt())
         
         let operation = LocalImageRequestOperation(
             id: requestId,
@@ -38,7 +38,7 @@ public final class LocalImageSource: ImageSource {
         return requestId
     }
     
-    public func cancelRequest(id: ImageRequestID) {
+    public func cancelRequest(id: ImageRequestId) {
         for operation in SharedQueues.imageProcessingQueue.operations {
             if let identifiableOperation = operation as? ImageRequestIdentifiable where identifiableOperation.id == id {
                 operation.cancel()

@@ -5,19 +5,19 @@ import MobileCoreServices
 /// Operation for requesting images stored in a local file.
 final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
     
-    let id: ImageRequestID
+    let id: ImageRequestId
     
     private let path: String
     private let options: ImageRequestOptions
-    private let resultHandler: T? -> ()
+    private let resultHandler: (image: T?, requestId: ImageRequestId) -> ()
     private let callbackQueue: dispatch_queue_t
     
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
     // но пока не вижу в этом особой необходимости
-    init(id: ImageRequestID,
+    init(id: ImageRequestId,
          path: String,
          options: ImageRequestOptions,
-         resultHandler: T? -> (),
+         resultHandler: (image: T?, requestId: ImageRequestId) -> (),
          callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
     {
         self.id = id
@@ -58,8 +58,11 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
         }
         
         guard !cancelled else { return }
-        dispatch_async(callbackQueue) { [resultHandler] in
-            resultHandler(cgImage.flatMap { T(CGImage: $0) })
+        dispatch_async(callbackQueue) { [resultHandler, id] in
+            resultHandler(
+                image: cgImage.flatMap { T(CGImage: $0) },
+                requestId: id
+            )
         }
     }
     
@@ -79,12 +82,15 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
         let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
         
         guard !cancelled else { return }
-        dispatch_async(callbackQueue) { [resultHandler] in
-            resultHandler(cgImage.flatMap { T(CGImage: $0) })
+        dispatch_async(callbackQueue) { [resultHandler, id] in
+            resultHandler(
+                image: cgImage.flatMap { T(CGImage: $0) },
+                requestId: id
+            )
         }
     }
 }
 
 protocol ImageRequestIdentifiable {
-    var id: ImageRequestID { get }
+    var id: ImageRequestId { get }
 }

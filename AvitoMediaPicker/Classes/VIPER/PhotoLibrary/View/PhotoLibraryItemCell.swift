@@ -26,13 +26,13 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
         super.adjustImageRequestOptions(&options)
         
-        options.onDownloadStart = { [onLoadingStart, superOptions = options] in
-            superOptions.onDownloadStart?()
+        options.onDownloadStart = { [onLoadingStart, superOptions = options] imageRequestId in
+            superOptions.onDownloadStart?(imageRequestId)
             onLoadingStart?()
         }
         
-        options.onDownloadFinish = { [onLoadingFinish, superOptions = options] in
-            superOptions.onDownloadFinish?()
+        options.onDownloadFinish = { [onLoadingFinish, superOptions = options] imageRequestId in
+            superOptions.onDownloadFinish?(imageRequestId)
             onLoadingFinish?()
         }
     }

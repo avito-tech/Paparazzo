@@ -2,12 +2,12 @@ import SDWebImage
 
 final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
     
-    let id: ImageRequestID
+    let id: ImageRequestId
     
-    init(id: ImageRequestID,
+    init(id: ImageRequestId,
          url: NSURL,
          options: ImageRequestOptions,
-         resultHandler: T? -> (),
+         resultHandler: (image: T?, requestId: ImageRequestId) -> (),
          callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
     {
         self.id = id
@@ -59,7 +59,9 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
                 progress: { receivedSize, expectedSize in
 //                debugPrint("\(url.lastPathComponent) downloaded \(Int(Float(receivedSize) / Float(expectedSize) * 100))%")
                     if let onDownloadStart = self.options.onDownloadStart where !self.downloadStarted {
-                        dispatch_async(self.callbackQueue, onDownloadStart)
+                        dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
+                            onDownloadStart(imageRequestId)
+                        }
                         self.downloadStarted = true
                     }
                 },
@@ -70,9 +72,12 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
                         let cgImage = (image as UIImage?).flatMap { self.finalCGImage(from: $0) }
                         debugPrint("requested size = \(self.options.size), imageSize = (\(CGImageGetWidth(cgImage)), \(CGImageGetHeight(cgImage)))")
                         
-                        dispatch_async(self.callbackQueue) {
-                            self.options.onDownloadFinish?()
-                            self.resultHandler(cgImage.flatMap { T(CGImage: $0) })
+                        dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
+                            self.options.onDownloadFinish?(imageRequestId)
+                            self.resultHandler(
+                                image: cgImage.flatMap { T(CGImage: $0) },
+                                requestId: imageRequestId
+                            )
                         }
                         
                         dispatch_async(self.syncQueue) {
@@ -97,7 +102,9 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
                 // SDWebImageDownloaderOperation will not call its completion block after cancellation,
                 // so we need to call onDownloadFinish here
                 if let onDownloadFinish = self.options.onDownloadFinish where self.downloadStarted {
-                    dispatch_async(self.callbackQueue, onDownloadFinish)
+                    dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
+                        onDownloadFinish(imageRequestId)
+                    }
                 }
                 
                 self.finish()
@@ -109,7 +116,7 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     
     private let url: NSURL
     private let options: ImageRequestOptions
-    private let resultHandler: T? -> ()
+    private let resultHandler: (image: T?, requestId: ImageRequestId) -> ()
     private let callbackQueue: dispatch_queue_t
     
     private let imageManager = SDWebImageManager.sharedManager()
