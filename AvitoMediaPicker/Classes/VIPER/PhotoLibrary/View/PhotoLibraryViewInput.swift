@@ -32,6 +32,7 @@ struct PhotoLibraryItemCellData {
     
     var image: ImageSource
     var selected = false
+    var previewAvailable = false
     
     var onSelect: (() -> ())?
     var onDeselect: (() -> ())?

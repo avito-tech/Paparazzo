@@ -5,7 +5,6 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     // MARK: - State
     
     var canSelectMoreItems = false
-    var indexPathsForLoadingItems = Set<NSIndexPath>()
     
     var dimsUnselectedItems = false {
         didSet {
@@ -111,7 +110,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return canSelectMoreItems && !indexPathsForLoadingItems.contains(indexPath)
+        let cellData = dataSource.item(atIndexPath: indexPath)
+        return canSelectMoreItems && cellData.previewAvailable
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -160,11 +160,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         
         cell.setCloudIcon(theme?.iCloudIcon)
         
-        cell.onLoadingStart = { [weak self] in
-            self?.indexPathsForLoadingItems.insert(indexPath)
-        }
-        cell.onLoadingFinish = { [weak self] in
-            self?.indexPathsForLoadingItems.remove(indexPath)
+        cell.onImageSetFromSource = { [weak self] in
+            self?.dataSource.mutateItem(atIndexPath: indexPath) { cellData in
+                cellData.previewAvailable = true
+            }
         }
         
         // Без этого костыля невозможно снять выделение с preselected ячейки

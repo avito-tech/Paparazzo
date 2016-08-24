@@ -53,18 +53,29 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     private func updateImage() {
         
+        // Этот флажок нужен для того, чтобы гарантировать, что imageRequestResultReceived будет вызван после didRequestImage
+        // (если ImageSource вызовет resultHandler синхронно, то будет наоборот)
+        var didRequestImageCalled = false
+        
         let requestId = imageView.setImage(
             fromSource: imageSource,
             adjustOptions: { [weak self] options in
                 self?.adjustImageRequestOptions(&options)
             },
             resultHandler: { [weak self] result in
-                self?.imageRequestResultReceived(result)
+                if didRequestImageCalled {
+                    self?.imageRequestResultReceived(result)
+                } else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self?.imageRequestResultReceived(result)
+                    }
+                }
             }
         )
         
         if let requestId = requestId {
             didRequestImage(requestId)
+            didRequestImageCalled = true
         }
     }
 }
