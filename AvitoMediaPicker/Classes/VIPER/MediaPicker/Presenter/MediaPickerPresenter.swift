@@ -64,18 +64,12 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setContinueButtonTitle(continueButtonTitle ?? "Далее")
         view?.setPhotoTitle("Фото 1")
         
-        view?.setAccessDeniedTitle("Чтобы фотографировать товар")
-        view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
-        view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
-        
         view?.setCameraControlsEnabled(false)
         
         cameraModuleInput.getOutputParameters { [weak self] parameters in
             if let parameters = parameters {
                 self?.view?.setCameraOutputParameters(parameters)
                 self?.view?.setCameraControlsEnabled(true)
-            } else {
-                self?.view?.setAccessDeniedViewVisible(true)
             }
         }
         
@@ -194,12 +188,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onRemoveButtonTap = { [weak self] in
             self?.removeSelectedItem()
-        }
-        
-        view?.onAccessDeniedButtonTap = { [weak self] in
-            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(url)
-            }
         }
         
         view?.onPreviewSizeDetermined = { [weak self] previewSize in
