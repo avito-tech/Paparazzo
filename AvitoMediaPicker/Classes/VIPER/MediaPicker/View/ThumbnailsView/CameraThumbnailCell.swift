@@ -45,6 +45,8 @@ final class CameraThumbnailCell: UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = .blackColor()
+        layer.cornerRadius = 6
+        layer.masksToBounds = true
         
         button.tintColor = .whiteColor()
         button.userInteractionEnabled = false
