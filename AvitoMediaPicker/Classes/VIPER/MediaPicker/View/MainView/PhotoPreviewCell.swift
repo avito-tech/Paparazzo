@@ -3,11 +3,15 @@ import UIKit
 final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         imageView.contentMode = .ScaleAspectFit
+        imageView.addSubview(blurView)
+        
+        blurView.hidden = true
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -23,6 +27,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         super.layoutSubviews()
         
         progressIndicator.center = bounds.center
+        blurView.frame = imageView.bounds
     }
     
     override func prepareForReuse() {
@@ -30,35 +35,14 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         progressIndicator.stopAnimating()
     }
     
-    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
-        super.adjustImageRequestOptions(&options)
-        
-        /*
-         Вводим downloadId для того чтобы избежать накладывания колбэков от предыдущего и текущего запросов
-         при реюзинге ячейки:
-            1) onDownloadStarted 1
-            2) ячейка реюзается, при этом происходит отмена предыдущих запроса и скачивания
-            3) onDownloadStarted 2
-            4) onDownloadFinish 1 (тут нам не нужно прятать прелоудер, так как активна вторая операция download)
-            5) onDownloadFinish 2 (а здесь уже нужно)
-        */
-        var downloadId: Int?
-        
-        options.onDownloadStart = { [weak self, superOptions = options] in
-            superOptions.onDownloadStart?()
-            
-            self?.imageDownloadId += 1
-            downloadId = self?.imageDownloadId
-            
-            self?.progressIndicator.startAnimating()
-        }
-        
-        options.onDownloadFinish = { [weak self, superOptions = options] in
-            superOptions.onDownloadFinish?()
-            
-            if downloadId == self?.imageDownloadId {
-                self?.progressIndicator.stopAnimating()
-            }
+    override func didRequestImage(imageRequestId: ImageRequestId) {
+        self.imageRequestId = imageRequestId
+        setProgressVisible(true)
+    }
+    
+    override func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {
+        if result.requestId == imageRequestId && !result.degraded {
+            setProgressVisible(false)
         }
     }
     
@@ -70,5 +54,15 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     // MARK: - Private
     
-    private var imageDownloadId = 0
+    private var imageRequestId: ImageRequestId?
+    
+    private func setProgressVisible(visible: Bool) {
+        blurView.hidden = !visible
+        
+        if visible {
+            progressIndicator.startAnimating()
+        } else {
+            progressIndicator.stopAnimating()
+        }
+    }
 }

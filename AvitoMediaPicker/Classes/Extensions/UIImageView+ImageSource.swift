@@ -8,16 +8,17 @@ public extension UIImageView {
         placeholder: UIImage? = nil,
         placeholderDeferred: Bool = false,
         adjustOptions: ((inout options: ImageRequestOptions) -> ())? = nil,
-        resultHandler: (() -> ())? = nil)
+        resultHandler: (ImageRequestResult<UIImage> -> ())? = nil)
+        -> ImageRequestId?
     {
         let previousImageSource = imageSource
         let pointSize = (size ?? bounds.size)
         let scale = UIScreen.mainScreen().scale
         let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
         
-        if let imageRequestID = imageRequestID {
-            previousImageSource?.cancelRequest(imageRequestID)
-            self.imageRequestID = nil
+        if let imageRequestId = imageRequestId {
+            previousImageSource?.cancelRequest(imageRequestId)
+            self.imageRequestId = nil
         }
         
         if !placeholderDeferred {
@@ -32,21 +33,25 @@ public extension UIImageView {
             var options = ImageRequestOptions(size: size, deliveryMode: .Progressive)
             adjustOptions?(options: &options)
             
-            imageRequestID = newImageSource.requestImage(options: options) { [weak self] (image: UIImage?) in
-                if let image = image where self?.shouldSetImageForImageSource(newImageSource) == true {
+            imageRequestId = newImageSource.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
+                let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
+                
+                if let image = result.image where shouldSetImage {
                     self?.image = image
-                    resultHandler?()
+                    resultHandler?(result)
                 }
             }
             
         } else {
             image = placeholder
         }
+        
+        return imageRequestId
     }
     
     func cancelRequestingImageFromSource() {
-        if let imageRequestID = imageRequestID {
-            imageSource?.cancelRequest(imageRequestID)
+        if let imageRequestId = imageRequestId {
+            imageSource?.cancelRequest(imageRequestId)
         }
     }
     
@@ -64,7 +69,7 @@ public extension UIImageView {
         }
     }
     
-    private var imageRequestID: ImageRequestID? {
+    private var imageRequestId: ImageRequestId? {
         get {
             return (objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber)?.intValue
         }
@@ -74,9 +79,11 @@ public extension UIImageView {
         }
     }
     
-    private func shouldSetImageForImageSource(imageSource: ImageSource) -> Bool {
+    private func shouldSetImageForImageSource(imageSource: ImageSource, requestId: ImageRequestId) -> Bool {
         if let currentImageSource = self.imageSource {
-            return imageSource == currentImageSource
+            // Если imageRequestId == nil, это значит, что resultHandler вызвался синхронно — еще до того,
+            // как метод requestImage завершился и вернул нам ImageRequestId. В этом случае картику поставить нужно.
+            return imageSource == currentImageSource && (imageRequestId == nil || requestId == imageRequestId)
         } else {
             return true
         }

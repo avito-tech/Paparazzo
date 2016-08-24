@@ -34,56 +34,67 @@ final class PHAssetImageSource: ImageSource {
     
     func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: T? -> ())
-        -> ImageRequestID
+        resultHandler: ImageRequestResult<T> -> ())
+        -> ImageRequestId
     {
         let (phOptions, size, contentMode) = imageRequestParameters(from: options)
         
         var downloadStarted = false
         var downloadFinished = false
         
-        let startDownload = {
+        let startDownload = { (imageRequestId: ImageRequestId) in
             downloadStarted = true
-            options.onDownloadStart.flatMap { dispatch_to_main_queue($0) }
+            if let onDownloadStart = options.onDownloadStart {
+                dispatch_to_main_queue { onDownloadStart(imageRequestId) }
+            }
         }
         
-        let finishDownload = {
+        let finishDownload = { (imageRequestId: ImageRequestId) in
             downloadFinished = true
-            options.onDownloadFinish.flatMap { dispatch_to_main_queue($0) }
+            if let onDownloadFinish = options.onDownloadFinish {
+                dispatch_to_main_queue { onDownloadFinish(imageRequestId) }
+            }
         }
         
-        phOptions.progressHandler = { progress, _, _, _ in
+        phOptions.progressHandler = { progress, _, _, info in
+            let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
+            
             if !downloadStarted {
-                startDownload()
+                startDownload(imageRequestId)
             }
             if progress == 1 /* это не reliable, читай ниже */ && !downloadFinished {
-                finishDownload()
+                finishDownload(imageRequestId)
             }
         }
 
         return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
             
+            let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
             let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
             let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
             if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
-                finishDownload()
+                finishDownload(imageRequestId)
             }
             
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
                 if let image = image as? T? {
-                    resultHandler(image)
+                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
                 } else {
-                    resultHandler(image?.CGImage.flatMap { T(CGImage: $0) })
+                    resultHandler(ImageRequestResult(
+                        image: image?.CGImage.flatMap { T(CGImage: $0) },
+                        degraded: degraded,
+                        requestId: imageRequestId
+                    ))
                 }
             }
         }
     }
     
-    func cancelRequest(id: ImageRequestID) {
+    func cancelRequest(id: ImageRequestId) {
         imageManager.cancelImageRequest(id)
     }
     

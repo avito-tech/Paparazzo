@@ -14,8 +14,12 @@ public protocol ImageSource: class {
      — вызывается не более одного раза, если options.deliveryMode == .Best
      - может вызываться несколько раз, если options.deliveryMode == .Progressive
     */
-    func requestImage<T: InitializableWithCGImage>(options _: ImageRequestOptions, resultHandler: T? -> ()) -> ImageRequestID
-    func cancelRequest(_: ImageRequestID)
+    func requestImage<T: InitializableWithCGImage>(
+        options _: ImageRequestOptions,
+        resultHandler: ImageRequestResult<T> -> ())
+        -> ImageRequestId
+    
+    func cancelRequest(_: ImageRequestId)
     
     func imageSize(completion: CGSize? -> ())
     
@@ -24,7 +28,14 @@ public protocol ImageSource: class {
     func isEqualTo(other: ImageSource) -> Bool
 }
 
-public typealias ImageRequestID = Int32
+public typealias ImageRequestId = Int32
+
+public struct ImageRequestResult<T> {
+    let image: T?
+    /// Indicates whether `image` is a low quality version of requested image (may be true if delivery mode is .Progressive)
+    let degraded: Bool
+    let requestId: ImageRequestId
+}
 
 public struct ImageRequestOptions {
     
@@ -32,9 +43,9 @@ public struct ImageRequestOptions {
     public var deliveryMode: ImageDeliveryMode = .Best
     
     /// Called on main thread
-    public var onDownloadStart: (() -> ())?
+    public var onDownloadStart: (ImageRequestId -> ())?
     /// Called on main thread
-    public var onDownloadFinish: (() -> ())?
+    public var onDownloadFinish: (ImageRequestId -> ())?
     
     public init() {}
     
@@ -91,7 +102,7 @@ public extension ImageSource {
         fullResolutionImage(deliveryMode: .Best, resultHandler: completion)
     }
     
-    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) -> ImageRequestID {
+    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) -> ImageRequestId {
         return imageFittingSize(size, contentMode: .AspectFill, deliveryMode: .Progressive, resultHandler: resultHandler)
     }
     
@@ -101,7 +112,19 @@ public extension ImageSource {
         options.size = .FullResolution
         options.deliveryMode = deliveryMode
         
-        requestImage(options: options, resultHandler: resultHandler)
+        requestImage(options: options) { (result: ImageRequestResult<T>) in
+            resultHandler(result.image)
+        }
+    }
+    
+    public func requestImage<T: InitializableWithCGImage>(
+        options options: ImageRequestOptions,
+        resultHandler: T? -> ())
+        -> ImageRequestId
+    {
+        return requestImage(options: options) { (result: ImageRequestResult<T>) in
+            resultHandler(result.image)
+        }
     }
     
     @available(*, deprecated, message="Use ImageSource.requestImage(options:resultHandler:) instead")
@@ -110,7 +133,7 @@ public extension ImageSource {
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
         resultHandler: T? -> ())
-        -> ImageRequestID
+        -> ImageRequestId
     {
         var options = ImageRequestOptions()
         options.deliveryMode = deliveryMode
@@ -122,6 +145,8 @@ public extension ImageSource {
             options.size = .FillSize(size)
         }
         
-        return requestImage(options: options, resultHandler: resultHandler)
+        return requestImage(options: options) { (result: ImageRequestResult<T>) in
+            resultHandler(result.image)
+        }
     }
 }
