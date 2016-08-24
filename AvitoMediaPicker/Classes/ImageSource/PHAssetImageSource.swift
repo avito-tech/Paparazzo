@@ -74,8 +74,6 @@ final class PHAssetImageSource: ImageSource {
             let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
-            debugPrint("degraded = \(info?[PHImageResultIsDegradedKey]), cancelled = \(cancelled)")
-            
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
             if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
                 finishDownload(imageRequestId)

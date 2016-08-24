@@ -44,8 +44,8 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     /// This method is called right before requesting image from ImageSource and gives you a chance to tweak request options
     public func adjustImageRequestOptions(inout options: ImageRequestOptions) {}
-    public func willSetImageFromSource() {}
-    public func didSetImageFromSource() {}
+    public func didRequestImage(requestId: ImageRequestId) {}
+    public func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {}
     
     // MARK: - Private
     
@@ -53,16 +53,18 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     private func updateImage() {
         
-        willSetImageFromSource()
-        
-        imageView.setImage(
+        let requestId = imageView.setImage(
             fromSource: imageSource,
             adjustOptions: { [weak self] options in
                 self?.adjustImageRequestOptions(&options)
             },
-            resultHandler: { [weak self] in
-                self?.didSetImageFromSource()
+            resultHandler: { [weak self] result in
+                self?.imageRequestResultReceived(result)
             }
         )
+        
+        if let requestId = requestId {
+            didRequestImage(requestId)
+        }
     }
 }

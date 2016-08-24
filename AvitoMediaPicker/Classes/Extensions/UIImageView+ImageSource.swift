@@ -8,7 +8,8 @@ public extension UIImageView {
         placeholder: UIImage? = nil,
         placeholderDeferred: Bool = false,
         adjustOptions: ((inout options: ImageRequestOptions) -> ())? = nil,
-        resultHandler: (() -> ())? = nil)
+        resultHandler: (ImageRequestResult<UIImage> -> ())? = nil)
+        -> ImageRequestId?
     {
         let previousImageSource = imageSource
         let pointSize = (size ?? bounds.size)
@@ -37,13 +38,15 @@ public extension UIImageView {
                 
                 if let image = result.image where shouldSetImage {
                     self?.image = image
-                    resultHandler?()
+                    resultHandler?(result)
                 }
             }
             
         } else {
             image = placeholder
         }
+        
+        return imageRequestId
     }
     
     func cancelRequestingImageFromSource() {
