@@ -37,7 +37,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             self?.onConfirmButtonTap?(previewImage: self?.previewView.cropPreviewImage())
         }
         
-        splashView.contentMode = .ScaleAspectFit
+        splashView.contentMode = .ScaleAspectFill
         
         addSubview(previewView)
         addSubview(splashView)
@@ -76,7 +76,22 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             bottom: controlsView.top
         )
         
-        splashView.frame = previewView.frame
+        layoutSplashView()
+    }
+    
+    private func layoutSplashView() {
+        
+        let height: CGFloat
+        
+        switch aspectRatio {
+        case .portrait_3x4:
+            height = bounds.size.width * 4 / 3
+        case .landscape_4x3:
+            height = bounds.size.width * 3 / 4
+        }
+        
+        splashView.size = CGSize(width: bounds.size.width, height: height)
+        splashView.center = previewView.center
     }
     
     // MARK: - ImageCroppingView
@@ -201,6 +216,8 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             setShadowVisible(false, forView: titleLabel)
             setShadowVisible(false, forView: aspectRatioButton)
         }
+        
+        layoutSplashView()
     }
     
     func setAspectRatioButtonTitle(title: String) {
