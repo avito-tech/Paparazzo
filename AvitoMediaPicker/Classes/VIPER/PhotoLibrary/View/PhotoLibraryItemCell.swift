@@ -23,17 +23,13 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.bottom = bounds.bottom
     }
     
-    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
-        super.adjustImageRequestOptions(&options)
-        
-        options.onDownloadStart = { [onLoadingStart, superOptions = options] imageRequestId in
-            superOptions.onDownloadStart?(imageRequestId)
-            onLoadingStart?()
-        }
-        
-        options.onDownloadFinish = { [onLoadingFinish, superOptions = options] imageRequestId in
-            superOptions.onDownloadFinish?(imageRequestId)
-            onLoadingFinish?()
+    override func didRequestImage(imageRequestId: ImageRequestId) {
+        self.imageRequestId = imageRequestId
+    }
+    
+    override func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {
+        if result.requestId == self.imageRequestId {
+            onImageSetFromSource?()
         }
     }
     
@@ -46,11 +42,14 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - Customizable
     
-    var onLoadingStart: (() -> ())?
-    var onLoadingFinish: (() -> ())?
+    var onImageSetFromSource: (() -> ())?
     
     func customizeWithItem(item: PhotoLibraryItemCellData) {
         imageSource = item.image
         selected = item.selected
     }
+    
+    // MARK: - Private
+    
+    private var imageRequestId: ImageRequestId?
 }
