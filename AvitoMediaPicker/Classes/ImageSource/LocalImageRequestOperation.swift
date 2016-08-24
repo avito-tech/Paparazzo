@@ -9,7 +9,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
     
     private let path: String
     private let options: ImageRequestOptions
-    private let resultHandler: (image: T?, requestId: ImageRequestId) -> ()
+    private let resultHandler: ImageRequestResult<T> -> ()
     private let callbackQueue: dispatch_queue_t
     
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
@@ -17,7 +17,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
     init(id: ImageRequestId,
          path: String,
          options: ImageRequestOptions,
-         resultHandler: (image: T?, requestId: ImageRequestId) -> (),
+         resultHandler: ImageRequestResult<T> -> (),
          callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
     {
         self.id = id
@@ -59,10 +59,11 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
         
         guard !cancelled else { return }
         dispatch_async(callbackQueue) { [resultHandler, id] in
-            resultHandler(
+            resultHandler(ImageRequestResult(
                 image: cgImage.flatMap { T(CGImage: $0) },
+                degraded: false,
                 requestId: id
-            )
+            ))
         }
     }
     
@@ -83,10 +84,11 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
         
         guard !cancelled else { return }
         dispatch_async(callbackQueue) { [resultHandler, id] in
-            resultHandler(
+            resultHandler(ImageRequestResult(
                 image: cgImage.flatMap { T(CGImage: $0) },
+                degraded: false,
                 requestId: id
-            )
+            ))
         }
     }
 }

@@ -34,7 +34,7 @@ final class PHAssetImageSource: ImageSource {
     
     func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        resultHandler: ImageRequestResult<T> -> ())
         -> ImageRequestId
     {
         let (phOptions, size, contentMode) = imageRequestParameters(from: options)
@@ -74,6 +74,8 @@ final class PHAssetImageSource: ImageSource {
             let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
+            debugPrint("degraded = \(info?[PHImageResultIsDegradedKey]), cancelled = \(cancelled)")
+            
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
             if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
                 finishDownload(imageRequestId)
@@ -82,9 +84,13 @@ final class PHAssetImageSource: ImageSource {
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
                 if let image = image as? T? {
-                    resultHandler(image: image, requestId: imageRequestId)
+                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
                 } else {
-                    resultHandler(image: image?.CGImage.flatMap { T(CGImage: $0) }, requestId: imageRequestId)
+                    resultHandler(ImageRequestResult(
+                        image: image?.CGImage.flatMap { T(CGImage: $0) },
+                        degraded: degraded,
+                        requestId: imageRequestId
+                    ))
                 }
             }
         }

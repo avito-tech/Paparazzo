@@ -49,19 +49,19 @@ final class CroppedImageSource: ImageSource {
     
     func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        resultHandler: ImageRequestResult<T> -> ())
         -> ImageRequestId
     {
         // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
         let requestId = ImageRequestId(0)
         
         if let previewImage = previewImage where options.deliveryMode == .Progressive {
-            resultHandler(image: T(CGImage: previewImage), requestId: requestId)
+            resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
         }
         
         // TODO
         getCroppedImage { cgImage in
-            resultHandler(image: cgImage.flatMap { T(CGImage: $0) }, requestId: requestId)
+            resultHandler(ImageRequestResult(image: cgImage.flatMap { T(CGImage: $0) }, degraded: false, requestId: requestId))
         }
         
         return requestId

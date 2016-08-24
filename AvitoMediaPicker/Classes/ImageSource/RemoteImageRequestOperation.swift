@@ -7,7 +7,7 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     init(id: ImageRequestId,
          url: NSURL,
          options: ImageRequestOptions,
-         resultHandler: (image: T?, requestId: ImageRequestId) -> (),
+         resultHandler: ImageRequestResult<T> -> (),
          callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
     {
         self.id = id
@@ -66,18 +66,19 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
                     }
                 },
                 completed: { image, error, cacheType, finished, url in
-                    debugPrint("imageLoadingOperation completed")
+//                    debugPrint("imageLoadingOperation completed")
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                         
                         let cgImage = (image as UIImage?).flatMap { self.finalCGImage(from: $0) }
-                        debugPrint("requested size = \(self.options.size), imageSize = (\(CGImageGetWidth(cgImage)), \(CGImageGetHeight(cgImage)))")
+//                        debugPrint("requested size = \(self.options.size), imageSize = (\(CGImageGetWidth(cgImage)), \(CGImageGetHeight(cgImage)))")
                         
                         dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
                             self.options.onDownloadFinish?(imageRequestId)
-                            self.resultHandler(
+                            self.resultHandler(ImageRequestResult(
                                 image: cgImage.flatMap { T(CGImage: $0) },
+                                degraded: false,
                                 requestId: imageRequestId
-                            )
+                            ))
                         }
                         
                         dispatch_async(self.syncQueue) {
@@ -116,7 +117,7 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     
     private let url: NSURL
     private let options: ImageRequestOptions
-    private let resultHandler: (image: T?, requestId: ImageRequestId) -> ()
+    private let resultHandler: ImageRequestResult<T> -> ()
     private let callbackQueue: dispatch_queue_t
     
     private let imageManager = SDWebImageManager.sharedManager()

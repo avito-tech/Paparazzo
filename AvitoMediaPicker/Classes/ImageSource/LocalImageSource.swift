@@ -15,14 +15,14 @@ public final class LocalImageSource: ImageSource {
     
     public func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        resultHandler: ImageRequestResult<T> -> ())
         -> ImageRequestId
     {
         let requestId = ImageRequestId(LocalImageSource.requestIdsGenerator.nextInt())
         
         if let previewImage = previewImage where options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(image: T(CGImage: previewImage), requestId: requestId)
+                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         

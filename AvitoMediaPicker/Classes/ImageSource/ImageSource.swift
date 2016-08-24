@@ -16,7 +16,7 @@ public protocol ImageSource: class {
     */
     func requestImage<T: InitializableWithCGImage>(
         options _: ImageRequestOptions,
-        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        resultHandler: ImageRequestResult<T> -> ())
         -> ImageRequestId
     
     func cancelRequest(_: ImageRequestId)
@@ -29,6 +29,13 @@ public protocol ImageSource: class {
 }
 
 public typealias ImageRequestId = Int32
+
+public struct ImageRequestResult<T> {
+    let image: T?
+    /// Indicates whether `image` is a low quality version of requested image (may be true if delivery mode is .Progressive)
+    let degraded: Bool
+    let requestId: ImageRequestId
+}
 
 public struct ImageRequestOptions {
     
@@ -105,8 +112,8 @@ public extension ImageSource {
         options.size = .FullResolution
         options.deliveryMode = deliveryMode
         
-        requestImage(options: options) { (image: T?, requestId: ImageRequestId) in
-            resultHandler(image)
+        requestImage(options: options) { (result: ImageRequestResult<T>) in
+            resultHandler(result.image)
         }
     }
     
@@ -115,8 +122,8 @@ public extension ImageSource {
         resultHandler: T? -> ())
         -> ImageRequestId
     {
-        return requestImage(options: options) { (image: T?, _: ImageRequestId) in
-            resultHandler(image)
+        return requestImage(options: options) { (result: ImageRequestResult<T>) in
+            resultHandler(result.image)
         }
     }
     
@@ -138,8 +145,8 @@ public extension ImageSource {
             options.size = .FillSize(size)
         }
         
-        return requestImage(options: options) { (image: T?, requestId: ImageRequestId) in
-            resultHandler(image)
+        return requestImage(options: options) { (result: ImageRequestResult<T>) in
+            resultHandler(result.image)
         }
     }
 }

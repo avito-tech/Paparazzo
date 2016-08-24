@@ -32,10 +32,10 @@ public extension UIImageView {
             var options = ImageRequestOptions(size: size, deliveryMode: .Progressive)
             adjustOptions?(options: &options)
             
-            imageRequestId = newImageSource.requestImage(options: options) { [weak self] (image: UIImage?, requestId: ImageRequestId) in
-                let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: requestId) == true
+            imageRequestId = newImageSource.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
+                let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
-                if let image = image where shouldSetImage {
+                if let image = result.image where shouldSetImage {
                     self?.image = image
                     resultHandler?()
                 }

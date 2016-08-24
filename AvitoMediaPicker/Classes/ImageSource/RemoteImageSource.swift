@@ -51,14 +51,14 @@ public class RemoteImageSource: ImageSource {
 
     public func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: (image: T?, requestId: ImageRequestId) -> ())
+        resultHandler: ImageRequestResult<T> -> ())
         -> ImageRequestId
     {
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
         
         if let previewImage = previewImage where options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(image: T(CGImage: previewImage), requestId: requestId)
+                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         
@@ -109,8 +109,8 @@ public class RemoteImageSource: ImageSource {
             id: requestId,
             url: url,
             options: options,
-            resultHandler: { (image: T?, requestId: ImageRequestId) in
-                resultHandler(image)
+            resultHandler: { (result: ImageRequestResult<T>) in
+                resultHandler(result.image)
             }
         )
     }
