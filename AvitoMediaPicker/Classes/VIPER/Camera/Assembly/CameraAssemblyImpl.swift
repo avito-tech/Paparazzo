@@ -2,6 +2,12 @@ import UIKit
 
 final class CameraAssemblyImpl: CameraAssembly {
     
+    private let theme: MediaPickerRootModuleUITheme
+    
+    init(theme: MediaPickerRootModuleUITheme) {
+        self.theme = theme
+    }
+    
     // MARK: - CameraAssembly
     
     func module() -> (UIView, CameraModuleInput) {
@@ -20,6 +26,7 @@ final class CameraAssemblyImpl: CameraAssembly {
         
         let view = CameraView()
         view.addDisposable(presenter)
+        view.setTheme(theme)
         
         presenter.view = view
         
