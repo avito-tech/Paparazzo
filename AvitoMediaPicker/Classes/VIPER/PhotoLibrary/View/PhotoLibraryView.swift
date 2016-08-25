@@ -1,5 +1,4 @@
 import UIKit
-import Photos
 
 final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
