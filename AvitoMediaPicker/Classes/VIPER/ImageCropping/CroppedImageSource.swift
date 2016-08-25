@@ -19,14 +19,52 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    func fullResolutionImage<T : InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
-        if let previewImage = previewImage where deliveryMode == .Progressive {
-            resultHandler(T(CGImage: previewImage))
+    func requestImage<T : InitializableWithCGImage>(
+        options options: ImageRequestOptions,
+        resultHandler: ImageRequestResult<T> -> ())
+        -> ImageRequestId
+    {
+        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
+        let requestId = ImageRequestId(0)
+        
+        if let previewImage = previewImage where options.deliveryMode == .Progressive {
+            dispatch_to_main_queue {
+                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
+            }
         }
         
-        // TODO
         getCroppedImage { cgImage in
-            resultHandler(cgImage.flatMap { T(CGImage: $0) })
+            
+            let resizedImage: CGImage?
+            
+            switch options.size {
+            case .FitSize(let size):
+                resizedImage = cgImage.flatMap { $0.resized(toFit: size) }
+            case .FillSize(let size):
+                resizedImage = cgImage.flatMap { $0.resized(toFill: size) }
+            case .FullResolution:
+                resizedImage = cgImage
+            }
+            
+            dispatch_to_main_queue {
+                resultHandler(ImageRequestResult(
+                    image: resizedImage.flatMap { T(CGImage: $0) },
+                    degraded: false,
+                    requestId: requestId
+                ))
+            }
+        }
+        
+        return requestId
+    }
+    
+    func cancelRequest(requestID: ImageRequestId) {
+        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
+    }
+    
+    func imageSize(completion: CGSize? -> ()) {
+        getCroppedImage { cgImage in
+            completion(cgImage.flatMap { CGSize(width: CGImageGetWidth($0), height: CGImageGetHeight($0)) })
         }
     }
     
@@ -44,51 +82,6 @@ final class CroppedImageSource: ImageSource {
             dispatch_async(dispatch_get_main_queue()) {
                 completion(data.length > 0 ? NSData(data: data) : nil)
             }
-        }
-    }
-    
-    func requestImage<T : InitializableWithCGImage>(
-        options options: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
-        -> ImageRequestId
-    {
-        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
-        let requestId = ImageRequestId(0)
-        
-        if let previewImage = previewImage where options.deliveryMode == .Progressive {
-            resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
-        }
-        
-        getCroppedImage { cgImage in
-            
-            let resizedImage: CGImage?
-            
-            switch options.size {
-            case .FitSize(let size):
-                resizedImage = cgImage.flatMap { $0.resized(toFit: size) }
-            case .FillSize(let size):
-                resizedImage = cgImage.flatMap { $0.resized(toFill: size) }
-            case .FullResolution:
-                resizedImage = cgImage
-            }
-            
-            resultHandler(ImageRequestResult(
-                image: resizedImage.flatMap { T(CGImage: $0) },
-                degraded: false,
-                requestId: requestId
-            ))
-        }
-        
-        return requestId
-    }
-    
-    func cancelRequest(requestID: ImageRequestId) {
-        // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
-    }
-    
-    func imageSize(completion: CGSize? -> ()) {
-        getCroppedImage { cgImage in
-            completion(cgImage.flatMap { CGSize(width: CGImageGetWidth($0), height: CGImageGetHeight($0)) })
         }
     }
     
@@ -127,14 +120,13 @@ final class CroppedImageSource: ImageSource {
     
     private func performCrop(completion: () -> ()) {
         
-        originalImage.imageFittingSize(
-            sourceSize,
-            contentMode: .AspectFit,
-            deliveryMode: .Best
-        ) { [weak self, processingQueue] (imageWrapper: CGImageWrapper?) in
+        let options = ImageRequestOptions(size: .FitSize(sourceSize), deliveryMode: .Best)
+        
+        originalImage.requestImage(options: options) {
+            [weak self, processingQueue] (result: ImageRequestResult<CGImageWrapper>) in
             
             dispatch_async(processingQueue) {
-                if let originalCGImage = imageWrapper?.image, croppingParameters = self?.croppingParameters {
+                if let originalCGImage = result.image?.image, croppingParameters = self?.croppingParameters {
                     self?.croppedImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters)
                 }
                 dispatch_async(dispatch_get_main_queue(), completion)

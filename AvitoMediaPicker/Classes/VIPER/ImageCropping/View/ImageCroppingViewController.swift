@@ -67,8 +67,8 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onCroppingParametersChange = newValue }
     }
     
-    func setImage(image: ImageSource, completion: (() -> ())) {
-        imageCroppingView.setImage(image, completion: completion)
+    func setImage(image: ImageSource, previewImage: ImageSource?, completion: () -> ()) {
+        imageCroppingView.setImage(image, previewImage: previewImage, completion: completion)
     }
     
     func setImageTiltAngle(angle: Float) {

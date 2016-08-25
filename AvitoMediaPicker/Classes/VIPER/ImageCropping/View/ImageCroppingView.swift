@@ -130,25 +130,29 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         set { previewView.onCroppingParametersChange = newValue }
     }
     
-    func setImage(image: ImageSource, completion: (() -> ())?) {
+    func setImage(image: ImageSource, previewImage: ImageSource?, completion: (() -> ())?) {
         
-        var screenSize = UIScreen.mainScreen().bounds.size
-        let splashOptions = ImageRequestOptions(size: .FitSize(screenSize), deliveryMode: .Progressive)
-        let bestOptions = ImageRequestOptions(size: .FitSize(sourceImageMaxSize), deliveryMode: .Best)
-        
-        splashView.hidden = false
-        
-        image.requestImage(options: splashOptions) { [weak self] (result: ImageRequestResult<UIImage>) in
-            if let image = result.image where self?.splashView.hidden == false {
-                self?.splashView.image = image
+        if let previewImage = previewImage {
+            
+            let screenSize = UIScreen.mainScreen().bounds.size
+            let previewOptions = ImageRequestOptions(size: .FitSize(screenSize), deliveryMode: .Progressive)
+            
+            splashView.hidden = false
+            
+            previewImage.requestImage(options: previewOptions) { [weak self] (result: ImageRequestResult<UIImage>) in
+                if let image = result.image where self?.splashView.hidden == false {
+                    self?.splashView.image = image
+                }
             }
         }
         
-        image.requestImage(options: bestOptions) { [weak self] (result: ImageRequestResult<UIImage>) in
+        let options = ImageRequestOptions(size: .FitSize(sourceImageMaxSize), deliveryMode: .Best)
+        
+        image.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
             if let image = result.image {
                 self?.previewView.setImage(image)
                 self?.splashView.hidden = true
-                self?.splashView.image = image
+                self?.splashView.image = nil
             }
             completion?()
         }
