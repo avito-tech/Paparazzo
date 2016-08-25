@@ -59,9 +59,24 @@ final class CroppedImageSource: ImageSource {
             resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
         }
         
-        // TODO
         getCroppedImage { cgImage in
-            resultHandler(ImageRequestResult(image: cgImage.flatMap { T(CGImage: $0) }, degraded: false, requestId: requestId))
+            
+            let resizedImage: CGImage?
+            
+            switch options.size {
+            case .FitSize(let size):
+                resizedImage = cgImage.flatMap { $0.resized(toFit: size) }
+            case .FillSize(let size):
+                resizedImage = cgImage.flatMap { $0.resized(toFill: size) }
+            case .FullResolution:
+                resizedImage = cgImage
+            }
+            
+            resultHandler(ImageRequestResult(
+                image: resizedImage.flatMap { T(CGImage: $0) },
+                degraded: false,
+                requestId: requestId
+            ))
         }
         
         return requestId

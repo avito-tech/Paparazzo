@@ -9,6 +9,48 @@ extension CGImage {
         
         return ciContext.createCGImage(ciImage, fromRect: ciImage.extent)
     }
+    
+    func scaled(scale: CGFloat) -> CGImage? {
+        
+        let image = CIImage(CGImage: self)
+        
+        guard let filter = CIFilter(name: "CILanczosScaleTransform") else {
+            assertionFailure("No CIFilter with name CILanczosScaleTransform found")
+            return nil
+        }
+        
+        filter.setValue(image, forKey: kCIInputImageKey)
+        filter.setValue(scale, forKey: kCIInputScaleKey)
+        filter.setValue(1, forKey: kCIInputAspectRatioKey)
+        
+        guard let outputImage = filter.valueForKey(kCIOutputImageKey) as? UIKit.CIImage else { return nil }
+        
+        return sharedGPUContext.createCGImage(outputImage, fromRect: outputImage.extent)
+    }
+    
+    func resized(toFit size: CGSize) -> CGImage? {
+        
+        let sourceWidth = CGFloat(CGImageGetWidth(self))
+        let sourceHeight = CGFloat(CGImageGetHeight(self))
+        
+        if sourceWidth > 0 && sourceHeight > 0 {
+            return scaled(min(size.width / sourceWidth, size.height / sourceHeight))
+        } else {
+            return nil
+        }
+    }
+    
+    func resized(toFill size: CGSize) -> CGImage? {
+        
+        let sourceWidth = CGFloat(CGImageGetWidth(self))
+        let sourceHeight = CGFloat(CGImageGetHeight(self))
+        
+        if sourceWidth > 0 && sourceHeight > 0 {
+            return scaled(max(size.width / sourceWidth, size.height / sourceHeight))
+        } else {
+            return nil
+        }
+    }
 }
 
 enum ExifOrientation: Int {
@@ -54,3 +96,6 @@ extension UIImageOrientation {
         }
     }
 }
+
+// Операция создания CIContext дорогостоящая, поэтому рекомендуется хранить его
+private let sharedGPUContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
