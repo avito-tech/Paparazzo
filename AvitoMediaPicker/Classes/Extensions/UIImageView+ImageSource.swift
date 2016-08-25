@@ -27,7 +27,7 @@ public extension UIImageView {
         
         imageSource = newImageSource
         
-        if let newImageSource = newImageSource where pointSize.width > 0 && pointSize.height > 0 {
+        if let newImageSource = newImageSource where pixelSize.width > 0 && pixelSize.height > 0 {
             
             let size: ImageSizeOption = (contentMode == .ScaleAspectFit) ? .FitSize(pixelSize) : .FillSize(pixelSize)
             var options = ImageRequestOptions(size: size, deliveryMode: .Progressive)
@@ -37,6 +37,7 @@ public extension UIImageView {
                 let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
                 if let image = result.image where shouldSetImage {
+//                    debugPrint("imageSource \(newImageSource), currentImageRequest = \(self?.imageRequestId), imageRequest = \(result.requestId)")
                     self?.image = image
                     resultHandler?(result)
                 }
@@ -47,12 +48,6 @@ public extension UIImageView {
         }
         
         return imageRequestId
-    }
-    
-    func cancelRequestingImageFromSource() {
-        if let imageRequestId = imageRequestId {
-            imageSource?.cancelRequest(imageRequestId)
-        }
     }
     
     // MARK: - Private

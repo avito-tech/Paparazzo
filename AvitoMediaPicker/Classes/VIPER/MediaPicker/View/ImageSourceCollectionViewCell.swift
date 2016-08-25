@@ -35,9 +35,7 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        
-        imageView.cancelRequestingImageFromSource()
-        imageView.image = nil
+        imageView.setImage(fromSource: nil)
     }
     
     // MARK: - Subclasses customization
@@ -55,7 +53,8 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
         
         // Этот флажок нужен для того, чтобы гарантировать, что imageRequestResultReceived будет вызван после didRequestImage
         // (если ImageSource вызовет resultHandler синхронно, то будет наоборот)
-        var didRequestImageCalled = false
+        var didCallRequestImage = false
+        var delayedResult: ImageRequestResult<UIImage>?
         
         let requestId = imageView.setImage(
             fromSource: imageSource,
@@ -63,19 +62,22 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
                 self?.adjustImageRequestOptions(&options)
             },
             resultHandler: { [weak self] result in
-                if didRequestImageCalled {
+                if didCallRequestImage {
                     self?.imageRequestResultReceived(result)
                 } else {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self?.imageRequestResultReceived(result)
-                    }
+                    delayedResult = result
                 }
             }
         )
         
         if let requestId = requestId {
+            
             didRequestImage(requestId)
-            didRequestImageCalled = true
+            didCallRequestImage = true
+            
+            if let delayedResult = delayedResult {
+                imageRequestResultReceived(delayedResult)
+            }
         }
     }
 }

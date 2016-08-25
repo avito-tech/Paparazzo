@@ -1,4 +1,5 @@
 import UIKit
+import Photos
 
 final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
@@ -26,10 +27,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         super.init(frame: .zero)
-        
-        dataSource.onDataChanged = { [weak self] in
-            self?.collectionView.reloadData()
-        }
+
         dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
             self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
         }
@@ -72,8 +70,63 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         set { accessDeniedView.onButtonTap = newValue }
     }
     
-    func setCellsData(items: [PhotoLibraryItemCellData]) {
-        dataSource.setItems(items)
+    func applyChanges(changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+        
+        collectionView.performBatchUpdates({ [collectionView, dataSource] in
+            
+            let toIndexPath = { (index: Int) in
+                NSIndexPath(forItem: index, inSection: 0)
+            }
+            
+            // Order is important!
+            // 1. Removing items
+            let indexPathsToDelete = changes.removedIndexes.map(toIndexPath)
+            
+            if indexPathsToDelete.count > 0 {
+                collectionView.deleteItemsAtIndexPaths(indexPathsToDelete)
+                dataSource.deleteItems(at: indexPathsToDelete)
+            }
+            
+            // 2. Inserting items
+            let indexPathsToInsert = changes.insertedItems.map { toIndexPath($0.index) }
+            
+            if indexPathsToInsert.count > 0 {
+                collectionView.insertItemsAtIndexPaths(indexPathsToInsert)
+                dataSource.insertItems(changes.insertedItems.map { item in
+                    (item: item.cellData, indexPath: toIndexPath(item.index))
+                })
+            }
+            
+            // 3. Updating items
+            let indexPathsToUpdate = changes.updatedItems.map { toIndexPath($0.index) }
+            
+            if indexPathsToUpdate.count > 0 {
+                collectionView.reloadItemsAtIndexPaths(indexPathsToUpdate)
+                
+                changes.updatedItems.forEach { index, newCellData in
+                    
+                    let indexPath = toIndexPath(index)
+                    let oldCellData = dataSource.item(at: indexPath)
+                    
+                    var newCellData = newCellData
+                    newCellData.selected = oldCellData.selected     // preserving selection
+                    
+                    dataSource.replaceItem(at: indexPath, with: newCellData)
+                }
+            }
+            
+            // 4. Moving items
+            changes.movedIndexes.forEach { from, to in
+                let sourceIndexPath = toIndexPath(from)
+                let targetIndexPath = toIndexPath(to)
+                
+                collectionView.moveItemAtIndexPath(sourceIndexPath, toIndexPath: targetIndexPath)
+                dataSource.moveItem(at: sourceIndexPath, to: targetIndexPath)
+            }
+            
+        }, completion: { _ in
+            completion?()
+        })
     }
     
     func scrollToBottom() {
@@ -110,14 +163,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let cellData = dataSource.item(atIndexPath: indexPath)
+        let cellData = dataSource.item(at: indexPath)
         return canSelectMoreItems && cellData.previewAvailable
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         dataSource.mutateItem(atIndexPath: indexPath) { $0.selected = true }
-        dataSource.item(atIndexPath: indexPath).onSelect?()
+        dataSource.item(at: indexPath).onSelect?()
         
         adjustDimmingForCellAtIndexPath(indexPath)
     }
@@ -125,7 +178,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         
         dataSource.mutateItem(atIndexPath: indexPath) { $0.selected = false }
-        dataSource.item(atIndexPath: indexPath).onDeselect?()
+        dataSource.item(at: indexPath).onDeselect?()
         
         adjustDimmingForCellAtIndexPath(indexPath)
     }

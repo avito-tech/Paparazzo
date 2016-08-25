@@ -2,18 +2,13 @@ import Photos
 
 protocol PhotoLibraryItemsService {
     var authorizationStatus: PHAuthorizationStatus { get }
-    func observePhotos(handler: [PHAsset] -> ())
+    func observePhotos(handler: (assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
 
     private let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
-
-    private(set) var fetchResult: PHFetchResult? {
-        didSet {
-            callObserverHandler()
-        }
-    }
+    private var fetchResult: PHFetchResult?
     
     // MARK: - Init
     
@@ -42,23 +37,25 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    private var observerHandler: ([PHAsset] -> ())?
+    private var observerHandler: ((assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ())?
     
     var authorizationStatus: PHAuthorizationStatus {
         return PHPhotoLibrary.authorizationStatus()
     }
     
-    func observePhotos(handler: [PHAsset] -> ()) {
+    func observePhotos(handler: (assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ()) {
         observerHandler = handler
-        callObserverHandler()
+        callObserverHandler(changes: nil)
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
     func photoLibraryDidChange(changeInfo: PHChange) {
         dispatch_async(dispatch_get_main_queue()) {
-            if let fetchResult = self.fetchResult, collectionChanges = changeInfo.changeDetailsForFetchResult(fetchResult) {
-                self.fetchResult = collectionChanges.fetchResultAfterChanges
+            if let fetchResult = self.fetchResult, changes = changeInfo.changeDetailsForFetchResult(fetchResult) {
+                debugPrint("photoLibraryDidChange")
+                self.fetchResult = changes.fetchResultAfterChanges
+                self.callObserverHandler(changes: changes)
             }
         }
     }
@@ -67,13 +64,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     private func setUpFetchRequest() {
         let options = PHFetchOptions()
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         
         fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        callObserverHandler(changes: nil)
     }
 
-    private func callObserverHandler() {
-        observerHandler?(assetsFromFetchResult())
+    private func callObserverHandler(changes changes: PHFetchResultChangeDetails?) {
+        observerHandler?(assets: assetsFromFetchResult(), changes: changes)
     }
     
     private func assetsFromFetchResult() -> [PHAsset] {

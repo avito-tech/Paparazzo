@@ -54,8 +54,8 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         )
     }
     
-    func setCellsData(items: [PhotoLibraryItemCellData]) {
-        photoLibraryView.setCellsData(items)
+    func applyChanges(changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+        photoLibraryView.applyChanges(changes, completion: completion)
     }
     
     func setCanSelectMoreItems(canSelectMoreItems: Bool) {

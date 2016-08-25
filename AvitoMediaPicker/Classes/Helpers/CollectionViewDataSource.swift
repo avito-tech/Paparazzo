@@ -14,30 +14,63 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         self.cellReuseIdentifier = cellReuseIdentifier
     }
     
-    func item(atIndexPath indexPath: NSIndexPath) -> ItemType {
+    func item(at indexPath: NSIndexPath) -> ItemType {
         return items[indexPath.row]
     }
     
-    func replaceItem(atIndexPath indexPath: NSIndexPath, with item: ItemType) {
+    func replaceItem(at indexPath: NSIndexPath, with item: ItemType) {
         items[indexPath.row] = item
+    }
+    
+    func insertItems(items: [(item: ItemType, indexPath: NSIndexPath)]) {
+        let sortedItems = items.sort { $0.indexPath.row < $1.indexPath.row }
+        
+        let appendedItems = sortedItems.filter { $0.indexPath.row >= self.items.count }
+        let insertedItems = sortedItems.filter { $0.indexPath.row < self.items.count }
+        
+        insertedItems.reverse().forEach { item in
+            self.items.insert(item.item, atIndex: item.indexPath.row)
+        }
+        
+        // indexPath'ы тут должны идти последовательно
+        self.items.appendContentsOf(appendedItems.map { $0.item })
+    }
+    
+    func deleteItems(at indexPaths: [NSIndexPath]) {
+        indexPaths.map { $0.row }.sort().reverse().forEach { row in
+            items.removeAtIndex(row)
+        }
+    }
+    
+    func moveItem(at fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath) {
+        guard fromIndexPath != toIndexPath else { return }
+        
+        let fromIndex = fromIndexPath.row
+        let toIndex = toIndexPath.row
+        
+        let item = items.removeAtIndex(fromIndex)
+        
+        if toIndex > fromIndex {
+            items.insert(item, atIndex: toIndex - 1)
+        } else {
+            items.insert(item, atIndex: toIndex)
+        }
     }
     
     func addItem(item: ItemType) {
         items.append(item)
-        notifyAboutDataChange()
     }
 
     func setItems(items: [ItemType]) {
         self.items = items
-        notifyAboutDataChange()
     }
     
     func mutateItem(atIndexPath indexPath: NSIndexPath, mutator: (inout ItemType) -> ()) {
         
-        var item = self.item(atIndexPath: indexPath)
+        var item = self.item(at: indexPath)
         mutator(&item)
         
-        replaceItem(atIndexPath: indexPath, with: item)
+        replaceItem(at: indexPath, with: item)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -49,7 +82,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath)
-        let item = self.item(atIndexPath: indexPath)
+        let item = self.item(at: indexPath)
         
         if let cell = cell as? CellType {
             cell.customizeWithItem(item)
@@ -57,14 +90,6 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         }
         
         return cell
-    }
-
-    // MARK: - Private
-
-    private func notifyAboutDataChange() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.onDataChanged?()
-        }
     }
 }
 

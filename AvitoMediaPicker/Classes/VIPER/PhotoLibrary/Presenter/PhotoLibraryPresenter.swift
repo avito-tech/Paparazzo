@@ -54,19 +54,22 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
         }
         
-        interactor.observeItems { [weak self] items, selectionState in
+        interactor.observeItems { [weak self] changes, selectionState in
+            guard let strongSelf = self else { return }
             
-            if items.count > 0 {
+            if changes.itemsAfterChanges.count > 0 {
                 self?.view?.setAccessDeniedViewVisible(false)
             }
             
-            self?.setCellsDataFromItems(items)
-            self?.adjustViewForSelectionState(selectionState)
-            
-            if self?.shouldScrollToBottomWhenItemsArrive == true {
-                self?.view?.scrollToBottom()
-                self?.shouldScrollToBottomWhenItemsArrive = false
-            }
+            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
+                
+                self?.adjustViewForSelectionState(selectionState)
+                
+                if self?.shouldScrollToBottomWhenItemsArrive == true {
+                    self?.view?.scrollToBottom()
+                    self?.shouldScrollToBottomWhenItemsArrive = false
+                }
+            })
         }
         
         view?.setPickButtonEnabled(false)
@@ -86,10 +89,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 UIApplication.sharedApplication().openURL(url)
             }
         }
-    }
-    
-    private func setCellsDataFromItems(items: [PhotoLibraryItem]) {
-        view?.setCellsData(items.map(cellData))
     }
     
     private func adjustViewForSelectionState(state: PhotoLibraryItemSelectionState) {
@@ -117,5 +116,14 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         }
         
         return cellData
+    }
+    
+    private func viewChanges(from changes: PhotoLibraryChanges) -> PhotoLibraryViewChanges {
+        return PhotoLibraryViewChanges(
+            removedIndexes: changes.removedIndexes,
+            insertedItems: changes.insertedItems.map { (index: $0, cellData: cellData($1)) },
+            updatedItems: changes.updatedItems.map { (index: $0, cellData: cellData($1)) },
+            movedIndexes: changes.movedIndexes
+        )
     }
 }
