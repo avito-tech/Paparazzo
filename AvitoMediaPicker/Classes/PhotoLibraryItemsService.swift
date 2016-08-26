@@ -63,9 +63,23 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     // MARK: - Private
     
     private func setUpFetchRequest() {
-        let options = PHFetchOptions()
         
-        fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        // Сначала пытаемся найти альбом Camera Roll
+        let albums = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumUserLibrary, options: nil)
+
+        albums.enumerateObjectsUsingBlock { collection, _, stop in
+            if let collection = collection as? PHAssetCollection {
+                self.fetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+                // Camera Roll должен идти самым первым, поэтому дальше не продолжаем
+                stop.memory = ObjCBool(true)
+            }
+        }
+        
+        // Fallback на случай, если по какой-то причине не нашли альбом Camera Roll
+        if fetchResult == nil {
+            fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: nil)
+        }
+        
         callObserverHandler(changes: nil)
     }
 
