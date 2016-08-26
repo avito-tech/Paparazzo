@@ -7,7 +7,7 @@ protocol PhotoLibraryViewInput: class {
     func setCancelButtonTitle(_: String)
     func setDoneButtonTitle(_: String)
     
-    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
+    func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
     
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)

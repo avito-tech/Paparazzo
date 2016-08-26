@@ -61,7 +61,9 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 self?.view?.setAccessDeniedViewVisible(false)
             }
             
-            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
+            let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
+            
+            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
                 
                 self?.adjustViewForSelectionState(selectionState)
                 

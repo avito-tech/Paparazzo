@@ -69,9 +69,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         set { accessDeniedView.onButtonTap = newValue }
     }
     
-    func applyChanges(changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+    func applyChanges(changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
         
-        collectionView.performBatchUpdates({ [collectionView, dataSource] in
+        collectionView.performBatchUpdates(animated: animated, { [collectionView, dataSource] in
             
             let toIndexPath = { (index: Int) in
                 NSIndexPath(forItem: index, inSection: 0)
@@ -129,9 +129,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func scrollToBottom() {
-        dispatch_async(dispatch_get_main_queue()) { [collectionView] in
-            collectionView.scrollToBottom()
-        }
+        collectionView.scrollToBottom()
     }
     
     func setTheme(theme: PhotoLibraryUITheme) {
