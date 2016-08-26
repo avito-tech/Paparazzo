@@ -54,8 +54,8 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         )
     }
     
-    func applyChanges(changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
-        photoLibraryView.applyChanges(changes, completion: completion)
+    func applyChanges(changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
+        photoLibraryView.applyChanges(changes, animated: animated, completion: completion)
     }
     
     func setCanSelectMoreItems(canSelectMoreItems: Bool) {
