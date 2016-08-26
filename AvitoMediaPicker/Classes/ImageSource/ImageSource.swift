@@ -31,10 +31,10 @@ public protocol ImageSource: class {
 public typealias ImageRequestId = Int32
 
 public struct ImageRequestResult<T> {
-    let image: T?
+    public let image: T?
     /// Indicates whether `image` is a low quality version of requested image (may be true if delivery mode is .Progressive)
-    let degraded: Bool
-    let requestId: ImageRequestId
+    public let degraded: Bool
+    public let requestId: ImageRequestId
 }
 
 public struct ImageRequestOptions {

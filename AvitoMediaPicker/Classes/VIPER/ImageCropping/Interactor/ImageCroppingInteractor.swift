@@ -5,7 +5,7 @@ protocol ImageCroppingInteractor: class {
     
     func canvasSize(completion: CGSize -> ())
     
-    func originalImageWithParameters(completion: (ImageSource, ImageCroppingParameters?) -> ())
+    func imageWithParameters(completion: (original: ImageSource, preview: ImageSource?, parameters: ImageCroppingParameters?) -> ())
     func croppedImage(previewImage _: CGImage, completion: CroppedImageSource -> ())
     func croppedImageAspectRatio(completion: Float -> ())
     

@@ -7,7 +7,8 @@ protocol PhotoLibraryViewInput: class {
     func setCancelButtonTitle(_: String)
     func setDoneButtonTitle(_: String)
     
-    func setCellsData(items: [PhotoLibraryItemCellData])
+    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
+    
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)
     func setPickButtonEnabled(_: Bool)
@@ -40,4 +41,12 @@ struct PhotoLibraryItemCellData {
     init(image: ImageSource) {
         self.image = image
     }
+}
+
+struct PhotoLibraryViewChanges {
+    // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
+    let removedIndexes: NSIndexSet
+    let insertedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
+    let updatedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
+    let movedIndexes: [(from: Int, to: Int)]
 }

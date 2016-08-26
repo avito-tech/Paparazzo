@@ -78,8 +78,8 @@ final class ImageCroppingPresenter: ImageCroppingModule {
             
             self?.setAspectRatio(isPortrait ? .portrait_3x4 : .landscape_4x3)
             
-            self?.interactor.originalImageWithParameters { originalImage, croppingParameters in
-                self?.view?.setImage(originalImage) {
+            self?.interactor.imageWithParameters { originalImage, previewImage, croppingParameters in
+                self?.view?.setImage(originalImage, previewImage: previewImage) {
                     self?.view?.setControlsEnabled(true)
                     
                     if let croppingParameters = croppingParameters {

@@ -3,15 +3,19 @@ import AvitoDesignKit
 final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     private let originalImage: ImageSource
+    private let previewImage: ImageSource?
     private var parameters: ImageCroppingParameters?
     private let canvasSize: CGSize
     
     init(image: ImageSource, canvasSize: CGSize) {
+        
         if let image = image as? CroppedImageSource {
             originalImage = image.originalImage
+            previewImage = image
             parameters = image.croppingParameters
         } else {
             originalImage = image
+            previewImage = nil
         }
         
         self.canvasSize = canvasSize
@@ -23,8 +27,8 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
         completion(canvasSize)
     }
     
-    func originalImageWithParameters(completion: (ImageSource, ImageCroppingParameters?) -> ()) {
-        completion(originalImage, parameters)
+    func imageWithParameters(completion: (original: ImageSource, preview: ImageSource?, parameters: ImageCroppingParameters?) -> ()) {
+        completion(original: originalImage, preview: previewImage, parameters: parameters)
     }
     
     func croppedImage(previewImage previewImage: CGImage, completion: CroppedImageSource -> ()) {

@@ -46,19 +46,45 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         completion(accessGranted: photoLibraryItemsService.authorizationStatus == .Authorized)
     }
     
-    func observeItems(handler: (items: [PhotoLibraryItem], selectionState: PhotoLibraryItemSelectionState) -> ()) {
+    func observeItems(handler: (changes: PhotoLibraryChanges, selectionState: PhotoLibraryItemSelectionState) -> ()) {
         
-        photoLibraryItemsService.observePhotos { [weak self] assets in
+        photoLibraryItemsService.observePhotos { [weak self] assets, phChanges in
             guard let strongSelf = self else { return }
+            
+            var assets = assets
+            let changes: PhotoLibraryChanges
+            
+            if let phChanges = phChanges {
+                
+                let changesAndAssets = strongSelf.photoLibraryChanges(from: phChanges)
+                
+                changes = changesAndAssets.changes
+                assets = changesAndAssets.assets
+                
+            } else {
+                
+                let items = strongSelf.photoLibraryItems(from: assets)
+                
+                var index = -1
+                let insertedItems = items.map { item -> (index: Int, item: PhotoLibraryItem) in
+                    index += 1
+                    return (index: index, item: item)
+                }
+                
+                changes = PhotoLibraryChanges(
+                    removedIndexes: NSIndexSet(),
+                    insertedItems: insertedItems,
+                    updatedItems: [],
+                    movedIndexes: [],
+                    itemsAfterChanges: items
+                )
+            }
             
             strongSelf.assets = assets
             strongSelf.removeSelectedItemsNotPresentedAmongAssets(assets)
             
-            dispatch_async(dispatch_get_main_queue()) {
-                handler((
-                    items: strongSelf.photoLibraryItems(from: assets),
-                    selectionState: strongSelf.selectionState()
-                ))
+            dispatch_to_main_queue {
+                handler(changes: changes, selectionState: strongSelf.selectionState())
             }
         }
     }
@@ -104,17 +130,72 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     }
     
     private func photoLibraryItems(from assets: [PHAsset]) -> [PhotoLibraryItem] {
+        return assets.map(photoLibraryItem)
+    }
+    
+    private func photoLibraryItem(from asset: PHAsset) -> PhotoLibraryItem {
+        let identifier = asset.localIdentifier
+        let image = PHAssetImageSource(asset: asset, imageManager: imageManager)
         
-        return assets.map { asset in
-            
-            let identifier = asset.localIdentifier
-            let image = PHAssetImageSource(asset: asset, imageManager: imageManager)
-            
-            return PhotoLibraryItem(
-                identifier: identifier,
-                image: image,
-                selected: selectedItems.contains { $0.identifier == identifier }
-            )
+        return PhotoLibraryItem(
+            identifier: identifier,
+            image: image,
+            selected: selectedItems.contains { $0.identifier == identifier }
+        )
+    }
+    
+    private func photoLibraryChanges(from changes: PHFetchResultChangeDetails)
+        -> (changes: PhotoLibraryChanges, assets: [PHAsset])
+    {
+        var assets = [PHAsset?]()
+        
+        var insertedObjects = [(index: Int, item: PhotoLibraryItem)]()
+        var insertedObjectIndex = changes.insertedObjects.count - 1
+        
+        var updatedObjects = [(index: Int, item: PhotoLibraryItem)]()
+        var updatedObjectIndex = changes.changedObjects.count - 1
+        
+        var movedIndexes = [(from: Int, to: Int)]()
+        
+        changes.fetchResultBeforeChanges.enumerateObjectsUsingBlock { object, _, _ in
+            assets.append(object as? PHAsset)
         }
+        
+        changes.removedIndexes?.enumerateIndexesWithOptions(.Reverse) { index, _ in
+            assets.removeAtIndex(index)
+        }
+        
+        changes.insertedIndexes?.enumerateIndexesWithOptions(.Reverse) { index, stop in
+            guard insertedObjectIndex >= 0 else { stop.memory = ObjCBool(true); return }
+            if let asset = changes.insertedObjects[insertedObjectIndex] as? PHAsset {
+                insertedObjects.append((index: index, item: self.photoLibraryItem(from: asset)))
+            }
+            insertedObjectIndex -= 1
+        }
+        
+        changes.changedIndexes?.enumerateIndexesWithOptions(.Reverse) { index, stop in
+            guard updatedObjectIndex >= 0 else { stop.memory = ObjCBool(true); return }
+            if let asset = changes.changedObjects[updatedObjectIndex] as? PHAsset {
+                updatedObjects.append((index: index, item: self.photoLibraryItem(from: asset)))
+            }
+            updatedObjectIndex -= 1
+        }
+        
+        changes.enumerateMovesWithBlock { from, to in
+            movedIndexes.append((from: from, to: to))
+        }
+        
+        let nonNilAssets = assets.flatMap {$0}
+        assert(nonNilAssets.count == assets.count, "Objects other than PHAsset are not supported")
+        
+        let changes = PhotoLibraryChanges(
+            removedIndexes: changes.removedIndexes ?? NSIndexSet(),
+            insertedItems: insertedObjects,
+            updatedItems: updatedObjects,
+            movedIndexes: movedIndexes,
+            itemsAfterChanges: photoLibraryItems(from: nonNilAssets)
+        )
+        
+        return (changes: changes, assets: nonNilAssets)
     }
 }

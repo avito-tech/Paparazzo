@@ -55,6 +55,17 @@ final class ExamplePresenter {
                     
                     items.first?.image.fullResolutionImageData { data in
                         debugPrint("first item data size = \(data?.length ?? 0)")
+                        data?.writeToFile(NSTemporaryDirectory() + "/crop_test1.jpg", atomically: true)
+                    }
+                    
+                    let options = ImageRequestOptions(
+                        size: .FitSize(CGSize(width: 1000, height: 1000)),
+                        deliveryMode: .Best
+                    )
+                    
+                    items.first?.image.requestImage(options: options) { (result: ImageRequestResult<UIImage>) in
+                        let data = result.image.flatMap { UIImagePNGRepresentation($0) }
+                        data?.writeToFile(NSTemporaryDirectory() + "/crop_test2.jpg", atomically: true)
                     }
                 }
             }

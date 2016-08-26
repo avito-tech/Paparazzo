@@ -27,7 +27,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         layout.minimumLineSpacing = mediaRibbonInteritemSpacing
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .whiteColor()
+        collectionView.backgroundColor = .clearColor()
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.registerClass(MediaItemThumbnailCell.self, forCellWithReuseIdentifier: photoCellReuseId)

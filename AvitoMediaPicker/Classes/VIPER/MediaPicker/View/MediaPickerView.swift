@@ -143,7 +143,7 @@ final class MediaPickerView: UIView {
         )
 
         let mediaRibbonAlpha: CGFloat = (cameraControlsView.top < cameraFrame.bottom) ? 0.6 : 1
-        thumbnailRibbonView.backgroundColor = thumbnailRibbonView.backgroundColor?.colorWithAlphaComponent(mediaRibbonAlpha)
+        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
