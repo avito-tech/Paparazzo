@@ -3,7 +3,7 @@ import AvitoDesignKit
 
 final class PHAssetImageSource: ImageSource {
 
-    private let asset: PHAsset
+    let asset: PHAsset
     private let imageManager: PHImageManager
 
     init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
@@ -66,30 +66,35 @@ final class PHAssetImageSource: ImageSource {
                 finishDownload(imageRequestId)
             }
         }
+        
+        var resultCounter = 0
 
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
-            dispatch_to_main_queue { // А что? А вдруг!
-                let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
-                let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
-                let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
-                let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
-                
-                // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
-                if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
-                    finishDownload(imageRequestId)
-                }
-                
-                // resultHandler не должен вызываться после отмены запроса
-                if !cancelled {
-                    if let image = image as? T? {
-                        resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
-                    } else {
-                        resultHandler(ImageRequestResult(
-                            image: image?.CGImage.flatMap { T(CGImage: $0) },
-                            degraded: degraded,
-                            requestId: imageRequestId
-                        ))
-                    }
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) {
+            [weak self, assetId = asset.localIdentifier] image, info in
+
+            print("\(resultCounter) | \(assetId) | image = \(image) | info = \(info)")
+            resultCounter += 1
+            
+            let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
+            let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
+            let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
+            let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
+            
+            // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
+            if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
+                finishDownload(imageRequestId)
+            }
+            
+            // resultHandler не должен вызываться после отмены запроса
+            if !cancelled {
+                if let image = image as? T? {
+                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
+                } else {
+                    resultHandler(ImageRequestResult(
+                        image: image?.CGImage.flatMap { T(CGImage: $0) },
+                        degraded: degraded,
+                        requestId: imageRequestId
+                    ))
                 }
             }
         }
