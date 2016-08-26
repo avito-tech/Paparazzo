@@ -2,7 +2,7 @@ import UIKit
 
 final class PhotoLibraryLayout: UICollectionViewFlowLayout {
     
-    private var attributes = [UICollectionViewLayoutAttributes]()
+    private var attributes = [NSIndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize: CGSize = .zero
     
     // MARK: - Constants
@@ -32,7 +32,7 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
         
         guard let collectionView = collectionView else {
             contentSize = .zero
-            attributes = []
+            attributes = [:]
             return
         }
         
@@ -42,6 +42,8 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
         
         let section = 0
         let numberOfItems = collectionView.numberOfItemsInSection(section)
+        
+        var maxY = CGFloat(0)
         
         for item in 0 ..< numberOfItems {
             
@@ -61,20 +63,22 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
                 size: itemSize
             )
             
-            self.attributes.append(attributes)
+            maxY = max(maxY, attributes.frame.maxY)
+            
+            self.attributes[indexPath] = attributes
         }
         
         contentSize = CGSize(
             width: collectionView.bounds.maxX,
-            height: attributes.last?.frame.maxY ?? 0
+            height: maxY
         )
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return attributes.filter { $0.frame.intersects(rect) }
+        return attributes.filter { $1.frame.intersects(rect) }.map { $1 }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return attributes.filter { $0.indexPath == indexPath }.first
+        return attributes[indexPath]
     }
 }
