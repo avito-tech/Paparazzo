@@ -19,8 +19,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         super.layoutSubviews()
         
         cloudIconView.sizeToFit()
-        cloudIconView.right = bounds.right
-        cloudIconView.bottom = bounds.bottom
+        cloudIconView.right = contentView.bounds.right
+        cloudIconView.bottom = contentView.bounds.bottom
     }
     
     override func didRequestImage(imageRequestId: ImageRequestId) {
