@@ -32,7 +32,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        progressIndicator.stopAnimating()
+        setProgressVisible(false)
     }
     
     override func didRequestImage(imageRequestId: ImageRequestId) {

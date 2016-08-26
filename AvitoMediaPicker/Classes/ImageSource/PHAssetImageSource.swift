@@ -68,27 +68,28 @@ final class PHAssetImageSource: ImageSource {
         }
 
         return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
-            
-            let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
-            let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
-            let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
-            let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
-            
-            // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
-            if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
-                finishDownload(imageRequestId)
-            }
-            
-            // resultHandler не должен вызываться после отмены запроса
-            if !cancelled {
-                if let image = image as? T? {
-                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
-                } else {
-                    resultHandler(ImageRequestResult(
-                        image: image?.CGImage.flatMap { T(CGImage: $0) },
-                        degraded: degraded,
-                        requestId: imageRequestId
-                    ))
+            dispatch_to_main_queue { // А что? А вдруг!
+                let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
+                let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
+                let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
+                let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
+                
+                // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
+                if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
+                    finishDownload(imageRequestId)
+                }
+                
+                // resultHandler не должен вызываться после отмены запроса
+                if !cancelled {
+                    if let image = image as? T? {
+                        resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
+                    } else {
+                        resultHandler(ImageRequestResult(
+                            image: image?.CGImage.flatMap { T(CGImage: $0) },
+                            degraded: degraded,
+                            requestId: imageRequestId
+                        ))
+                    }
                 }
             }
         }
@@ -99,8 +100,10 @@ final class PHAssetImageSource: ImageSource {
     }
     
     func isEqualTo(other: ImageSource) -> Bool {
-        if let other = other as? PHAssetImageSource {
-            return other.asset == asset
+        if other === self {
+            return true
+        } else if let other = other as? PHAssetImageSource {
+            return other.asset.localIdentifier == asset.localIdentifier
         } else {
             return false
         }
