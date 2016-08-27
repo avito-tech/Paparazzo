@@ -68,7 +68,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 self?.adjustViewForSelectionState(selectionState)
                 
                 if self?.shouldScrollToBottomWhenItemsArrive == true {
-//                    self?.view?.scrollToBottom()
+                    self?.view?.scrollToBottom()
                     self?.shouldScrollToBottomWhenItemsArrive = false
                 }
             })

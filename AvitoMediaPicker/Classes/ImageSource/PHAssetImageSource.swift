@@ -3,7 +3,7 @@ import AvitoDesignKit
 
 final class PHAssetImageSource: ImageSource {
 
-    let asset: PHAsset
+    private let asset: PHAsset
     private let imageManager: PHImageManager
 
     init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
@@ -66,14 +66,9 @@ final class PHAssetImageSource: ImageSource {
                 finishDownload(imageRequestId)
             }
         }
-        
-        var resultCounter = 0
 
         return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) {
             [weak self, assetId = asset.localIdentifier] image, info in
-
-            NSLog("\(resultCounter) | \(assetId) | image = \(image) | info = \(info)")
-            resultCounter += 1
             
             let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
             let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
