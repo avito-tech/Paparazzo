@@ -64,36 +64,48 @@ final class PHAssetImageSource: ImageSource {
                 finishDownload(imageRequestId)
             }
         }
+        
+        var resultCounter = 0
 
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) {
+            [weak self, assetId = asset.localIdentifier] image, info in
             
-            let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
+            NSLog("\(resultCounter) | \(assetId) | image = \(image) | info = \(info)")
+            resultCounter += 1
+            
+            let requestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
             let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
-            let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false
+            let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
             if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
-                finishDownload(imageRequestId)
+                finishDownload(requestId)
             }
             
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
                 if let image = image as? T? {
-                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: imageRequestId))
+                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: requestId))
                 } else {
                     resultHandler(ImageRequestResult(
                         image: image?.CGImage.flatMap { T(CGImage: $0) },
                         degraded: degraded,
-                        requestId: imageRequestId
+                        requestId: requestId
                     ))
                 }
+            } else {
+                NSLog("Not invoking resultHandler on PHImageResultRequestIDKey: \(requestId) because it was cancelled")
             }
         }
     }
     
     func cancelRequest(id: ImageRequestId) {
-        imageManager.cancelImageRequest(id)
+        dispatch_to_main_queue {
+            NSLog("Cancel PHImageResultRequestIDKey: \(id)")
+            self.cancelledRequestIds.insert(id)
+            self.imageManager.cancelImageRequest(id)
+        }
     }
     
     func isEqualTo(other: ImageSource) -> Bool {
@@ -107,6 +119,8 @@ final class PHAssetImageSource: ImageSource {
     }
     
     // MARK: - Private
+    
+    private var cancelledRequestIds = Set<ImageRequestId>()
     
     private func imageRequestParameters(from options: ImageRequestOptions)
         -> (options: PHImageRequestOptions, size: CGSize, contentMode: PHImageContentMode)

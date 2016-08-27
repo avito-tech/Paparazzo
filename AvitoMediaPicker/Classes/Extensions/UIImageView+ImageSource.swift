@@ -17,10 +17,7 @@ public extension UIImageView {
         let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
         
         if let imageRequestId = imageRequestId {
-            if let previousImageSource = previousImageSource {
-                previousImageSource.cancelRequest(imageRequestId)
-                NSLog("Cancel request \(imageRequestId)")
-            }
+            previousImageSource?.cancelRequest(imageRequestId)
             self.imageRequestId = nil
         }
         
