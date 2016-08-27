@@ -206,7 +206,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         atIndexPath indexPath: NSIndexPath
     ) {
         let items = data.image as! PHAssetImageSource
-        print("\(indexPath): \(items.asset.localIdentifier)")
+        NSLog("\(indexPath): \(items.asset.localIdentifier)")
         
         cell.backgroundColor = theme?.photoCellBackgroundColor
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
