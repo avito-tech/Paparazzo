@@ -34,6 +34,8 @@ public extension UIImageView {
             adjustOptions?(options: &options)
             
             imageRequestId = newImageSource.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
+                if self == nil { NSLog("UIImageView became nil somehow :\\") }
+                
                 let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
                 if let image = result.image where shouldSetImage {
