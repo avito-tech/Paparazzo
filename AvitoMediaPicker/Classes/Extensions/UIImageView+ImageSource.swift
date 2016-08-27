@@ -17,7 +17,10 @@ public extension UIImageView {
         let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
         
         if let imageRequestId = imageRequestId {
-            previousImageSource?.cancelRequest(imageRequestId)
+            if let previousImageSource = previousImageSource {
+                previousImageSource.cancelRequest(imageRequestId)
+                NSLog("Cancel request \(imageRequestId)")
+            }
             self.imageRequestId = nil
         }
         
@@ -40,6 +43,8 @@ public extension UIImageView {
 //                    debugPrint("imageSource \(newImageSource), currentImageRequest = \(self?.imageRequestId), imageRequest = \(result.requestId)")
                     self?.image = image
                     resultHandler?(result)
+                } else {
+                    NSLog("Will not set image \(result.image): current request \(self?.imageRequestId ?? 0), result for request \(result.requestId)")
                 }
             }
             

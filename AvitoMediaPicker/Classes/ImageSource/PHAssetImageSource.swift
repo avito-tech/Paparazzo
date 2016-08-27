@@ -20,14 +20,12 @@ final class PHAssetImageSource: ImageSource {
         options.networkAccessAllowed = true
         
         imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(data)
-            }
+            completion(data)
         }
     }
     
     func imageSize(completion: CGSize? -> ()) {
-        dispatch_async(dispatch_get_main_queue()) { 
+        dispatch_to_main_queue {
             completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
         }
     }
