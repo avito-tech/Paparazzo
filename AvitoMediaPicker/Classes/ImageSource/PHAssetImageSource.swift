@@ -67,8 +67,7 @@ final class PHAssetImageSource: ImageSource {
             }
         }
 
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) {
-            [weak self, assetId = asset.localIdentifier] image, info in
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
             
             let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
             let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
