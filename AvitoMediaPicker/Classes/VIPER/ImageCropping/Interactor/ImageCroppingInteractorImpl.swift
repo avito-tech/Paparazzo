@@ -11,12 +11,12 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
         
         if let image = image as? CroppedImageSource {
             originalImage = image.originalImage
-            previewImage = image
             parameters = image.croppingParameters
         } else {
             originalImage = image
-            previewImage = nil
         }
+        
+        previewImage = image
         
         self.canvasSize = canvasSize
     }
