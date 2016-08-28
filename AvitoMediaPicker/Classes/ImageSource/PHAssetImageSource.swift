@@ -64,14 +64,8 @@ final class PHAssetImageSource: ImageSource {
                 finishDownload(imageRequestId)
             }
         }
-        
-        var resultCounter = 0
 
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) {
-            [weak self, assetId = asset.localIdentifier] image, info in
-            
-            NSLog("\(resultCounter) | \(assetId) | image = \(image) | info = \(info)")
-            resultCounter += 1
+        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
             
             let requestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
             let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
@@ -94,8 +88,6 @@ final class PHAssetImageSource: ImageSource {
                         requestId: requestId
                     ))
                 }
-            } else {
-                NSLog("Not invoking resultHandler on PHImageResultRequestIDKey: \(requestId) because it was cancelled")
             }
         }
     }
