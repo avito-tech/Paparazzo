@@ -94,7 +94,6 @@ final class PHAssetImageSource: ImageSource {
     
     func cancelRequest(id: ImageRequestId) {
         dispatch_to_main_queue {
-            NSLog("Cancel PHImageResultRequestIDKey: \(id)")
             self.cancelledRequestIds.insert(id)
             self.imageManager.cancelImageRequest(id)
         }
