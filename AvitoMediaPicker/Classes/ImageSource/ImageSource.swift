@@ -13,6 +13,7 @@ public protocol ImageSource: class {
      - после отмены запроса не вызывается
      — вызывается не более одного раза, если options.deliveryMode == .Best
      - может вызываться несколько раз, если options.deliveryMode == .Progressive
+     - может вызваться синхронно до выхода из функции!
     */
     func requestImage<T: InitializableWithCGImage>(
         options _: ImageRequestOptions,

@@ -80,7 +80,7 @@ public extension UIImageView {
             // как метод requestImage завершился и вернул нам ImageRequestId. В этом случае картику поставить нужно.
             return imageSource == currentImageSource && (imageRequestId == nil || requestId == imageRequestId)
         } else {
-            return true
+            return false
         }
     }
 }

@@ -11,7 +11,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         imageView.contentMode = .ScaleAspectFit
         imageView.addSubview(blurView)
         
-        blurView.hidden = true
+        blurView.alpha = 0
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -57,12 +57,15 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     private var imageRequestId: ImageRequestId?
     
     private func setProgressVisible(visible: Bool) {
-        blurView.hidden = !visible
-        
         if visible {
             progressIndicator.startAnimating()
+            blurView.alpha = 1
         } else {
             progressIndicator.stopAnimating()
+            
+            UIView.animateWithDuration(0.25) {
+                self.blurView.alpha = 0
+            }
         }
     }
 }
