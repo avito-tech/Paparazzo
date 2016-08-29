@@ -9,9 +9,12 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     // MARK: - Subviews
     
     private let scrollView = PhotoScrollView()
+    private let gridView = GridView()
+    
     private let topMask = UIView()
     private let bottomMask = UIView()
-    private let gridView = GridView()
+    private let leftMask = UIView()
+    private let rightMask = UIView()
     
     // MARK: - State
     
@@ -50,6 +53,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         
         topMask.backgroundColor = maskColor
         bottomMask.backgroundColor = maskColor
+        leftMask.backgroundColor = maskColor
+        rightMask.backgroundColor = maskColor
         
         gridView.userInteractionEnabled = false
         gridView.hidden = true
@@ -58,6 +63,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         addSubview(gridView)
         addSubview(topMask)
         addSubview(bottomMask)
+        addSubview(leftMask)
+        addSubview(rightMask)
         
         updateMasks()
     }
@@ -224,6 +231,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             height: bounds.size.width / cropAspectRatio
         )
         
+        // size crop area to fit bounds
+        if cropSize.height > bounds.size.height {
+            cropSize = cropSize.scaled(bounds.size.height / cropSize.height)
+        }
+        
         let scaleX = image.size.width / cropSize.width
         let scaleY = image.size.height / cropSize.height
         let scale = min(scaleX, scaleY)     // get minimum scale to fill canvas with image
@@ -253,19 +265,32 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     private func updateMasks(animated animated: Bool = false) {
         
-        let maskSize = CGSize(
+        let horizontalMaskSize = CGSize(
             width: bounds.size.width,
             height: (bounds.size.height - cropSize.height) / 2
         )
         
+        let verticalMaskSize = CGSize(
+            width: (bounds.size.width - cropSize.width) / 2,
+            height: bounds.size.height - horizontalMaskSize.height
+        )
+        
         let animation = {
             self.topMask.frame = CGRect(
-                origin: CGPoint(x: 0, y: self.bounds.top),
-                size: maskSize
+                origin: CGPoint(x: self.bounds.left, y: self.bounds.top),
+                size: horizontalMaskSize
             )
             self.bottomMask.frame = CGRect(
-                origin: CGPoint(x: 0, y: self.bounds.bottom - maskSize.height),
-                size: maskSize
+                origin: CGPoint(x: self.bounds.left, y: self.bounds.bottom - horizontalMaskSize.height),
+                size: horizontalMaskSize
+            )
+            self.leftMask.frame = CGRect(
+                origin: CGPoint(x: self.bounds.left, y: self.topMask.bottom),
+                size: verticalMaskSize
+            )
+            self.rightMask.frame = CGRect(
+                origin: CGPoint(x: self.bounds.right - verticalMaskSize.width, y: self.topMask.bottom),
+                size: verticalMaskSize
             )
         }
         

@@ -3,15 +3,11 @@ import UIKit
 final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         imageView.contentMode = .ScaleAspectFit
-        imageView.addSubview(blurView)
-        
-        blurView.alpha = 0
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -27,7 +23,6 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         super.layoutSubviews()
         
         progressIndicator.center = bounds.center
-        blurView.frame = imageView.bounds
     }
     
     override func prepareForReuse() {
@@ -35,14 +30,20 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         setProgressVisible(false)
     }
     
-    override func didRequestImage(imageRequestId: ImageRequestId) {
-        self.imageRequestId = imageRequestId
-        setProgressVisible(true)
-    }
-    
-    override func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {
-        if result.requestId == imageRequestId && !result.degraded {
-            setProgressVisible(false)
+    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
+        super.adjustImageRequestOptions(&options)
+        
+        options.onDownloadStart = { [weak self, superOptions = options] requestId in
+            superOptions.onDownloadStart?(requestId)
+            self?.imageRequestId = requestId
+            self?.setProgressVisible(true)
+        }
+        
+        options.onDownloadFinish = { [weak self, superOptions = options] requestId in
+            superOptions.onDownloadFinish?(requestId)
+            if requestId == self?.imageRequestId {
+                self?.setProgressVisible(false)
+            }
         }
     }
     
@@ -59,13 +60,8 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     private func setProgressVisible(visible: Bool) {
         if visible {
             progressIndicator.startAnimating()
-            blurView.alpha = 1
         } else {
             progressIndicator.stopAnimating()
-            
-            UIView.animateWithDuration(0.25) {
-                self.blurView.alpha = 0
-            }
         }
     }
 }
