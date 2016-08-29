@@ -90,7 +90,9 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             height = bounds.size.width * 3 / 4
         }
         
-        splashView.size = CGSize(width: bounds.size.width, height: height)
+        let scaleToFit = min(1, previewView.height / height)
+        
+        splashView.size = CGSize(width: bounds.size.width, height: height).scaled(scaleToFit)
         splashView.center = previewView.center
     }
     
