@@ -35,14 +35,20 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         setProgressVisible(false)
     }
     
-    override func didRequestImage(imageRequestId: ImageRequestId) {
-        self.imageRequestId = imageRequestId
-        setProgressVisible(true)
-    }
-    
-    override func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {
-        if result.requestId == imageRequestId && !result.degraded {
-            setProgressVisible(false)
+    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
+        super.adjustImageRequestOptions(&options)
+        
+        options.onDownloadStart = { [weak self, superOptions = options] requestId in
+            superOptions.onDownloadStart?(requestId)
+            self?.imageRequestId = requestId
+            self?.setProgressVisible(true)
+        }
+        
+        options.onDownloadFinish = { [weak self, superOptions = options] requestId in
+            superOptions.onDownloadFinish?(requestId)
+            if requestId == self?.imageRequestId {
+                self?.setProgressVisible(false)
+            }
         }
     }
     
@@ -57,15 +63,15 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     private var imageRequestId: ImageRequestId?
     
     private func setProgressVisible(visible: Bool) {
+        
         if visible {
             progressIndicator.startAnimating()
-            blurView.alpha = 1
         } else {
             progressIndicator.stopAnimating()
-            
-            UIView.animateWithDuration(0.25) {
-                self.blurView.alpha = 0
-            }
+        }
+        
+        UIView.animateWithDuration(0.25) {
+            self.blurView.alpha = visible ? 1 : 0
         }
     }
 }

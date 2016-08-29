@@ -1,5 +1,6 @@
 import ImageIO
 import MobileCoreServices
+import SDWebImage
 
 public class RemoteImageSource: ImageSource {
     
@@ -56,7 +57,7 @@ public class RemoteImageSource: ImageSource {
     {
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
         
-        if let previewImage = previewImage where options.deliveryMode == .Progressive {
+        if let previewImage = (previewImage ?? cachedImage()?.CGImage) where options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
             }
@@ -66,7 +67,8 @@ public class RemoteImageSource: ImageSource {
             id: requestId,
             url: url,
             options: options,
-            resultHandler: resultHandler
+            resultHandler: resultHandler,
+            imageManager: imageManager
         )
         
         RemoteImageSource.requestsQueue.addOperation(operation)
@@ -100,6 +102,8 @@ public class RemoteImageSource: ImageSource {
     private let previewImage: CGImage?
     private var fullSize: CGSize?
     
+    private let imageManager = SDWebImageManager.sharedManager()
+    
     private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler resultHandler: T? -> ()) -> RemoteImageRequestOperation<T> {
         
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
@@ -111,8 +115,15 @@ public class RemoteImageSource: ImageSource {
             options: options,
             resultHandler: { (result: ImageRequestResult<T>) in
                 resultHandler(result.image)
-            }
+            },
+            imageManager: imageManager
         )
+    }
+    
+    private func cachedImage() -> UIImage? {
+        let cache = imageManager.imageCache
+        let cacheKey = imageManager.cacheKeyForURL(url)
+        return cache.imageFromMemoryCacheForKey(cacheKey) ?? cache.imageFromDiskCacheForKey(cacheKey)
     }
 }
 

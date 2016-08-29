@@ -8,13 +8,15 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
          url: NSURL,
          options: ImageRequestOptions,
          resultHandler: ImageRequestResult<T> -> (),
-         callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
+         callbackQueue: dispatch_queue_t = dispatch_get_main_queue(),
+         imageManager: SDWebImageManager)
     {
         self.id = id
         self.url = url
         self.options = options
         self.resultHandler = resultHandler
         self.callbackQueue = callbackQueue
+        self.imageManager = imageManager
         
         super.init()
     }
@@ -120,7 +122,7 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     private let resultHandler: ImageRequestResult<T> -> ()
     private let callbackQueue: dispatch_queue_t
     
-    private let imageManager = SDWebImageManager.sharedManager()
+    private let imageManager: SDWebImageManager
     private weak var imageLoadingOperation: SDWebImageOperation?
     private var downloadStarted = false
     
