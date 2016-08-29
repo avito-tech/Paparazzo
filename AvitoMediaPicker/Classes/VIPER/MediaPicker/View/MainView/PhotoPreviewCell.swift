@@ -3,15 +3,11 @@ import UIKit
 final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         imageView.contentMode = .ScaleAspectFit
-        imageView.addSubview(blurView)
-        
-        blurView.alpha = 0
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -27,7 +23,6 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         super.layoutSubviews()
         
         progressIndicator.center = bounds.center
-        blurView.frame = imageView.bounds
     }
     
     override func prepareForReuse() {
@@ -63,15 +58,10 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     private var imageRequestId: ImageRequestId?
     
     private func setProgressVisible(visible: Bool) {
-        
         if visible {
             progressIndicator.startAnimating()
         } else {
             progressIndicator.stopAnimating()
-        }
-        
-        UIView.animateWithDuration(0.25) {
-            self.blurView.alpha = visible ? 1 : 0
         }
     }
 }
