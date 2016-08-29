@@ -158,6 +158,12 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
+    func reloadCamera() {
+        if dataSource.cameraCellVisible {
+            collectionView.reloadItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

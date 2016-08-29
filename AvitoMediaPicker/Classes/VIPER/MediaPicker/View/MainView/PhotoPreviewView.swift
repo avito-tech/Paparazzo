@@ -106,6 +106,12 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         }
     }
     
+    func reloadCamera() {
+        if dataSource.cameraCellVisible {
+            collectionView.reloadItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

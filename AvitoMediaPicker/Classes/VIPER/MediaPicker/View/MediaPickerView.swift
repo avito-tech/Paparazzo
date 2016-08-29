@@ -418,6 +418,11 @@ final class MediaPickerView: UIView {
         photoControlsView.setShowsCropButton(showsCropButton)
     }
     
+    func reloadCamera() {
+        photoPreviewView.reloadCamera()
+        thumbnailRibbonView.reloadCamera()
+    }
+    
     // MARK: - Private
     
     private func layoutCloseAndContinueButtons() {

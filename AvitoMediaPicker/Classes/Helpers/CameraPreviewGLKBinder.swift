@@ -21,7 +21,6 @@ final class CameraOutputGLKBinder {
     init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
         
         eaglContext = EAGLContext(API: .OpenGLES2)
-        EAGLContext.setCurrentContext(eaglContext)
         
         ciContext = CIContext(EAGLContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
         
@@ -31,12 +30,6 @@ final class CameraOutputGLKBinder {
         self.orientation = outputOrientation
         
         setUpWithAVCaptureSession(captureSession)
-    }
-    
-    deinit {
-        if EAGLContext.currentContext() === eaglContext {
-            EAGLContext.setCurrentContext(nil)
-        }
     }
     
     private func setUpWithAVCaptureSession(session: AVCaptureSession) {
@@ -87,7 +80,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     
     static let sharedInstance = CameraOutputGLKBinderDelegate()
     
-    let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", nil)
+    let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", DISPATCH_QUEUE_SERIAL)
     
     var binders = [WeakWrapper<CameraOutputGLKBinder>]()
     var isInBackground = false
@@ -181,6 +174,11 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
             // use full width of the video image, and center crop the height
             drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2
             drawRect.size.height = drawRect.size.width / previewAspect
+        }
+        
+        if binder.eaglContext != EAGLContext.currentContext() {
+            glFlush()
+            EAGLContext.setCurrentContext(binder.eaglContext)
         }
         
         // clear eagl view to grey
