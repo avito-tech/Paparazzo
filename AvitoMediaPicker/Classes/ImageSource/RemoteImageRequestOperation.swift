@@ -1,5 +1,3 @@
-import SDWebImage
-
 final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
     
     let id: ImageRequestId
@@ -9,14 +7,14 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
          options: ImageRequestOptions,
          resultHandler: ImageRequestResult<T> -> (),
          callbackQueue: dispatch_queue_t = dispatch_get_main_queue(),
-         imageManager: SDWebImageManager)
+         imageDownloader: ImageDownloader)
     {
         self.id = id
         self.url = url
         self.options = options
         self.resultHandler = resultHandler
         self.callbackQueue = callbackQueue
-        self.imageManager = imageManager
+        self.imageDownloader = imageDownloader
         
         super.init()
     }
@@ -55,11 +53,9 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
             
             self.executing = true
             
-            self.imageLoadingOperation = self.imageManager.downloadImageWithURL(
+            self.imageLoadingOperation = self.imageDownloader.downloadImageAtUrl(
                 self.url,
-                options: SDWebImageOptions(),
-                progress: { receivedSize, expectedSize in
-//                debugPrint("\(url.lastPathComponent) downloaded \(Int(Float(receivedSize) / Float(expectedSize) * 100))%")
+                progressHandler: { receivedSize, expectedSize in
                     if let onDownloadStart = self.options.onDownloadStart where !self.downloadStarted {
                         dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
                             onDownloadStart(imageRequestId)
@@ -67,12 +63,10 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
                         self.downloadStarted = true
                     }
                 },
-                completed: { image, error, cacheType, finished, url in
-//                    debugPrint("imageLoadingOperation completed")
+                completion: { image, _ in
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                         
-                        let cgImage = (image as UIImage?).flatMap { self.finalCGImage(from: $0) }
-//                        debugPrint("requested size = \(self.options.size), imageSize = (\(CGImageGetWidth(cgImage)), \(CGImageGetHeight(cgImage)))")
+                        let cgImage = image.flatMap { self.finalCGImage(from: $0) }
                         
                         dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
                             self.options.onDownloadFinish?(imageRequestId)
@@ -122,22 +116,22 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     private let resultHandler: ImageRequestResult<T> -> ()
     private let callbackQueue: dispatch_queue_t
     
-    private let imageManager: SDWebImageManager
-    private weak var imageLoadingOperation: SDWebImageOperation?
+    private let imageDownloader: ImageDownloader
+    private weak var imageLoadingOperation: CancellableImageDownload?
     private var downloadStarted = false
     
     private let syncQueue = dispatch_queue_create("ru.avito.RemoteImageRequestOperation.syncQueue", DISPATCH_QUEUE_SERIAL)
     private var _executing = false
     private var _finished = false
     
-    private func finalCGImage(from image: UIImage) -> CGImage? {
+    private func finalCGImage(from image: CGImage) -> CGImage? {
         switch options.size {
         case .FullResolution:
-            return image.CGImage
+            return image
         case .FillSize(let size):
-            return image.resized(toFill: size)?.CGImage
+            return image.resized(toFill: size)
         case .FitSize(let size):
-            return image.resized(toFit: size)?.CGImage
+            return image.resized(toFit: size)
         }
     }
     

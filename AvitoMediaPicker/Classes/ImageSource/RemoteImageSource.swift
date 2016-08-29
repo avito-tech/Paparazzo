@@ -1,14 +1,14 @@
 import ImageIO
 import MobileCoreServices
-import SDWebImage
 
 public class RemoteImageSource: ImageSource {
     
     // MARK: - Init
-
-    public init(url: NSURL, previewImage: CGImage? = nil) {
+    
+    init(url: NSURL, previewImage: CGImage? = nil, imageDownloader: CachingImageDownloader) {
         self.url = url
         self.previewImage = previewImage
+        self.imageDownloader = imageDownloader
     }
 
     // MARK: - ImageSource
@@ -56,8 +56,9 @@ public class RemoteImageSource: ImageSource {
         -> ImageRequestId
     {
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
+        let cachedImage = imageDownloader.cachedImageForUrl(url)
         
-        if let previewImage = (previewImage ?? cachedImage()?.CGImage) where options.deliveryMode == .Progressive {
+        if let previewImage = previewImage ?? cachedImage where options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
             }
@@ -68,7 +69,7 @@ public class RemoteImageSource: ImageSource {
             url: url,
             options: options,
             resultHandler: resultHandler,
-            imageManager: imageManager
+            imageDownloader: imageDownloader
         )
         
         RemoteImageSource.requestsQueue.addOperation(operation)
@@ -102,7 +103,7 @@ public class RemoteImageSource: ImageSource {
     private let previewImage: CGImage?
     private var fullSize: CGSize?
     
-    private let imageManager = SDWebImageManager.sharedManager()
+    private let imageDownloader: CachingImageDownloader
     
     private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler resultHandler: T? -> ()) -> RemoteImageRequestOperation<T> {
         
@@ -116,14 +117,8 @@ public class RemoteImageSource: ImageSource {
             resultHandler: { (result: ImageRequestResult<T>) in
                 resultHandler(result.image)
             },
-            imageManager: imageManager
+            imageDownloader: imageDownloader
         )
-    }
-    
-    private func cachedImage() -> UIImage? {
-        let cache = imageManager.imageCache
-        let cacheKey = imageManager.cacheKeyForURL(url)
-        return cache.imageFromMemoryCacheForKey(cacheKey) ?? cache.imageFromDiskCacheForKey(cacheKey)
     }
 }
 
