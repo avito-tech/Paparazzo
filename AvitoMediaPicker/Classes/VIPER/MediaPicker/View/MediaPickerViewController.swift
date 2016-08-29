@@ -24,6 +24,14 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .Fade)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // AI-3326: костыль для iOS 8, на котором после дисмисса модального окна или возврата с предыдущего экрана
+        // OpenGL рандомно (не каждый раз) прекращает отрисовку
+        mediaPickerView.reloadCamera()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         onPreviewSizeDetermined?(previewSize: mediaPickerView.previewSize)
