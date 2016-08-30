@@ -18,6 +18,8 @@ final class CameraOutputGLKBinder {
     private let eaglContext: EAGLContext
     private let ciContext: CIContext
     
+    var onFrameDrawn: (() -> ())?
+    
     init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
         
         eaglContext = EAGLContext(API: .OpenGLES2)
@@ -192,5 +194,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         ciContext.drawImage(sourceImage, inRect: view.drawableBounds, fromRect: drawRect)
         
         view.display()
+        
+        binder.onFrameDrawn?()
     }
 }

@@ -53,6 +53,10 @@ final class CameraPresenter: CameraModuleInput {
         interactor.setPreviewImagesSizeForNewPhotos(size)
     }
     
+    func mainModuleDidAppear(animated: Bool) {
+        view?.mainModuleDidAppear(animated)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {

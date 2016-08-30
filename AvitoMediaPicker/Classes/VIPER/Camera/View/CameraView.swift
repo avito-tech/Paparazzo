@@ -5,6 +5,7 @@ final class CameraView: UIView, CameraViewInput {
     
     private let accessDeniedView = AccessDeniedView()
     private var cameraOutputBinder: CameraOutputGLKBinder?
+    private var outputParameters: CameraOutputParameters?
     
     // MARK: - Init
     
@@ -59,15 +60,34 @@ final class CameraView: UIView, CameraViewInput {
             outputOrientation: parameters.orientation
         )
         
+        if let attachedBinder = self.cameraOutputBinder {
+            // AI-3326: костыль для iOS 8.
+            // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
+            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
+                cameraOutputBinder?.onFrameDrawn = nil
+                dispatch_async(dispatch_get_main_queue()) {
+                    attachedBinder.view.removeFromSuperview()
+                }
+            }
+        }
+        
         let view = cameraOutputBinder.view
         view.clipsToBounds = true
-        insertSubview(view, aboveSubview: accessDeniedView)
+        addSubview(view)
         
         self.cameraOutputBinder = cameraOutputBinder
+        self.outputParameters = parameters
     }
     
     func setOutputOrientation(orientation: ExifOrientation) {
         cameraOutputBinder?.orientation = orientation
+    }
+    
+    func mainModuleDidAppear(animated: Bool) {
+        // AI-3326: костыль для iOS 8.
+        if let outputParameters = outputParameters {
+            setOutputParameters(outputParameters)
+        }
     }
     
     // MARK: - CameraView

@@ -30,6 +30,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         // AI-3326: костыль для iOS 8, на котором после дисмисса модального окна или возврата с предыдущего экрана
         // OpenGL рандомно (не каждый раз) прекращает отрисовку
         mediaPickerView.reloadCamera()
+        
+        onViewDidAppear?(animated: animated)
     }
     
     override func viewDidLayoutSubviews() {
@@ -98,6 +100,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     var onViewDidLoad: (() -> ())?
+    var onViewDidAppear: ((animated: Bool) -> ())?
     var onPreviewSizeDetermined: ((previewSize: CGSize) -> ())?
     
     func setMode(mode: MediaPickerViewMode) {
