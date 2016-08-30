@@ -160,7 +160,14 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     func reloadCamera() {
         if dataSource.cameraCellVisible {
+            let cameraIndexPath = dataSource.indexPathForCameraItem()
+            let cameraIsSelected = collectionView.indexPathsForSelectedItems()?.contains(cameraIndexPath) == true
+            
             collectionView.reloadItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+            
+            if cameraIsSelected {
+                collectionView.selectItemAtIndexPath(cameraIndexPath, animated: false, scrollPosition: .None)
+            }
         }
     }
     
