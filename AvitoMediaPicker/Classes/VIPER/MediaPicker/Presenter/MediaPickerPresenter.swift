@@ -193,6 +193,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onPreviewSizeDetermined = { [weak self] previewSize in
             self?.cameraModuleInput.setPreviewImagesSizeForNewPhotos(previewSize)
         }
+        
+        view?.onViewDidAppear = { [weak self] animated in
+            self?.cameraModuleInput.mainModuleDidAppear(animated)
+        }
     }
     
     private func adjustViewForSelectedItem(item: MediaPickerItem, animated: Bool) {

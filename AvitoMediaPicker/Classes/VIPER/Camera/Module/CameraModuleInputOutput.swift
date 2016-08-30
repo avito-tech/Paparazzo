@@ -14,4 +14,6 @@ protocol CameraModuleInput: class {
     func takePhoto(completion: MediaPickerItem? -> ())
     
     func setPreviewImagesSizeForNewPhotos(size: CGSize)
+    
+    func mainModuleDidAppear(animated: Bool)
 }

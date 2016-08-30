@@ -12,4 +12,7 @@ protocol CameraViewInput: class {
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
+    
+    // MARK: - Callbacks from main module
+    func mainModuleDidAppear(animated: Bool)
 }
