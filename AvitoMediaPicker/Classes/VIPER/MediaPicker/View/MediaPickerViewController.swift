@@ -5,7 +5,7 @@ import AvitoDesignKit
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     private let mediaPickerView = MediaPickerView()
-    private var layoutSubviewsPromise = Promise<Bool>()
+    private var layoutSubviewsPromise = Promise<Void>()
     
     // MARK: - UIViewController
     
@@ -39,7 +39,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         super.viewDidLayoutSubviews()
         
         onPreviewSizeDetermined?(previewSize: mediaPickerView.previewSize)
-        layoutSubviewsPromise.fulfill(with: true)
+        layoutSubviewsPromise.fulfill()
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
