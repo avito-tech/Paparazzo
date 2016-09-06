@@ -32,7 +32,7 @@ protocol MediaPickerViewInput: class {
     func setFlashButtonOn(_: Bool)
     func animateFlash()
     
-    func addItems(_: [MediaPickerItem], animated: Bool)
+    func addItems(_: [MediaPickerItem], animated: Bool, completion: () -> ())
     func updateItem(_: MediaPickerItem)
     func removeItem(_: MediaPickerItem)
     func selectItem(_: MediaPickerItem)

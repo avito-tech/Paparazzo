@@ -284,9 +284,9 @@ final class MediaPickerView: UIView {
         cameraControlsView.setPhotoLibraryButtonEnabled(enabled)
     }
     
-    func addItems(items: [MediaPickerItem], animated: Bool) {
+    func addItems(items: [MediaPickerItem], animated: Bool, completion: () -> ()) {
         photoPreviewView.addItems(items)
-        thumbnailRibbonView.addItems(items, animated: animated)
+        thumbnailRibbonView.addItems(items, animated: animated, completion: completion)
     }
     
     func updateItem(item: MediaPickerItem) {

@@ -92,16 +92,16 @@ final class MediaPickerPresenter: MediaPickerModule {
         interactor.items { [weak self] items, canAddMoreItems in
             guard items.count > 0 else { return }
             
-            self?.view?.addItems(items, animated: false)
             self?.view?.setCameraButtonVisible(canAddMoreItems)
-            
-            self?.interactor.selectedItem { selectedItem in
-                if let selectedItem = selectedItem {
-                    self?.selectItem(selectedItem)
-                } else if canAddMoreItems {
-                    self?.selectCamera()
-                } else if let lastItem = items.last {
-                    self?.selectItem(lastItem)
+            self?.view?.addItems(items, animated: false) {
+                self?.interactor.selectedItem { selectedItem in
+                    if let selectedItem = selectedItem {
+                        self?.selectItem(selectedItem)
+                    } else if canAddMoreItems {
+                        self?.selectCamera()
+                    } else if let lastItem = items.last {
+                        self?.selectItem(lastItem)
+                    }
                 }
             }
         }
@@ -244,15 +244,16 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         guard items.count > 0 else { completion?(); return }
         
-        view?.addItems(items, animated: fromCamera)
         view?.setCameraButtonVisible(canAddMoreItems)
         
-        if canAddMoreItems {
-            view?.setMode(.Camera)
-            view?.scrollToCameraThumbnail(animated: true)
-        } else if let lastItem = items.last {
-            view?.selectItem(lastItem)
-            view?.scrollToItemThumbnail(lastItem, animated: true)
+        view?.addItems(items, animated: fromCamera) { [view] in
+            if canAddMoreItems {
+                view?.setMode(.Camera)
+                view?.scrollToCameraThumbnail(animated: true)
+            } else if let lastItem = items.last {
+                view?.selectItem(lastItem)
+                view?.scrollToItemThumbnail(lastItem, animated: true)
+            }
         }
         
         interactor.items { [weak self] items, _ in

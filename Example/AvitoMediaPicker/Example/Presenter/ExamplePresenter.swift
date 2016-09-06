@@ -25,7 +25,9 @@ final class ExamplePresenter {
         MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://www.velvet.by/files/userfiles/19083/ekrk.jpg")!), source: .Camera),
         MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "https://img3.goodfon.ru/original/1920x1080/7/3e/koshki-milye-kotiki.jpg")!), source: .Camera),
         MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://www.catgallery.ru/kototeka/wp-content/uploads/2015/04/Foto-podborka-kosoglazyih-kotikov-3.jpg")!), source: .Camera),
-        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "https://i.ytimg.com/vi/IRSsqnJPBrs/maxresdefault.jpg")!), source: .Camera)
+        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "https://i.ytimg.com/vi/IRSsqnJPBrs/maxresdefault.jpg")!), source: .Camera),
+        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://fonday.ru/images/tmp/16/7/original/16710fBjLzqnJlMXhoFHAG.jpg")!), source: .Camera),
+        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://www.velvet.by/files/userfiles/19083/ekrk.jpg")!), source: .Camera)
     ]
     
     private func setUpView() {
@@ -35,7 +37,7 @@ final class ExamplePresenter {
             let items = self?.items ?? []
             let cropCanvasSize = CGSize(width: 1280, height: 960)
             
-            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 5, cropCanvasSize: cropCanvasSize) { module in
+            self?.router.showMediaPicker(items: items, selectedItem: items.last, maxItemsCount: 10, cropCanvasSize: cropCanvasSize) { module in
                 
                 module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
                 module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
