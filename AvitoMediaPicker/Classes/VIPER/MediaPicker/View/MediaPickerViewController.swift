@@ -5,6 +5,7 @@ import AvitoDesignKit
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     private let mediaPickerView = MediaPickerView()
+    private var layoutSubviewsPromise = Promise<Bool>()
     
     // MARK: - UIViewController
     
@@ -36,7 +37,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         onPreviewSizeDetermined?(previewSize: mediaPickerView.previewSize)
+        layoutSubviewsPromise.fulfill(with: true)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -180,8 +183,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCameraToggleButtonVisible(visible)
     }
 
-    func addItems(items: [MediaPickerItem], animated: Bool) {
-        mediaPickerView.addItems(items, animated: animated)
+    func addItems(items: [MediaPickerItem], animated: Bool, completion: () -> ()) {
+        mediaPickerView.addItems(items, animated: animated, completion: completion)
     }
     
     func updateItem(item: MediaPickerItem) {
@@ -198,8 +201,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
-        dispatch_async(dispatch_get_main_queue()) { 
-            self.mediaPickerView.scrollToItemThumbnail(item, animated: animated)
+        layoutSubviewsPromise.onFulfill { [weak self] _ in
+            self?.mediaPickerView.scrollToItemThumbnail(item, animated: animated)
         }
     }
     
@@ -209,7 +212,9 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     func scrollToCameraThumbnail(animated animated: Bool) {
-        mediaPickerView.scrollToCameraThumbnail(animated: animated)
+        layoutSubviewsPromise.onFulfill { [weak self] _ in
+            self?.mediaPickerView.scrollToCameraThumbnail(animated: animated)
+        }
     }
     
     func setCameraControlsEnabled(enabled: Bool) {
