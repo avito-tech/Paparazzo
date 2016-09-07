@@ -14,18 +14,12 @@ struct Promise<T> {
         }
     }
     
-    mutating func fulfill(with value: T) {
+    mutating func fulfill(value: T) {
         self.value = value
         
         if handlers.count > 0 {
             handlers.forEach { $0(value) }
             handlers.removeAll()
         }
-    }
-}
-
-extension Promise where T: Void {
-    mutating func fulfill() {
-        fulfill(with: ())
     }
 }

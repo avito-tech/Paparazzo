@@ -249,6 +249,6 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             }
         }
         
-        return targetIndex
+        return max(0, min(dataSource.numberOfItems - 1, targetIndex))
     }
 }
