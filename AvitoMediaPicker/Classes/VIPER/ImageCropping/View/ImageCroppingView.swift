@@ -15,7 +15,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Constants
     
-    private let controlsMinHeight = CGFloat(165)
+    private let controlsMinHeight = CGFloat(142)
     
     // MARK: - Init
     
