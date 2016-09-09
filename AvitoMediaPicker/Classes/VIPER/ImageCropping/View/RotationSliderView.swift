@@ -6,7 +6,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     
     private let scrollView = UIScrollView()
     private let scaleView = SliderScaleView()
-    private let thumbView = UIImageView()
+    private let thumbView = UIView()
     
     private let alphaMaskLayer = CAGradientLayer()
     
@@ -29,11 +29,8 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         scrollView.bounces = false
         scrollView.delegate = self
         
-        thumbView.image = UIImage(
-            named: "rotation-slider-thumb",
-            inBundle: NSBundle(forClass: self.dynamicType),
-            compatibleWithTraitCollection: nil
-        )
+        thumbView.backgroundColor = .blackColor()
+        thumbView.layer.cornerRadius = scaleView.divisionWidth / 2
         
         alphaMaskLayer.startPoint = CGPoint(x: 0, y: 0)
         alphaMaskLayer.endPoint = CGPoint(x: 1, y: 0)
@@ -70,7 +67,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         scrollView.frame = bounds
         scrollView.contentSize = scaleView.frame.size
         
-        thumbView.sizeToFit()
+        thumbView.size = CGSize(width: scaleView.divisionWidth, height: scaleView.height)
         thumbView.center = bounds.center
         
         alphaMaskLayer.frame = bounds
