@@ -136,18 +136,31 @@ final class MediaPickerView: UIView {
         
         photoControlsView.frame = cameraControlsView.frame
         
+        let screenIsVerySmall = (cameraControlsView.top < cameraFrame.bottom)
+        
+        let thumbnailRibbonAlpha: CGFloat = screenIsVerySmall ? 0.6 : 1
+        let thumbnailRibbonInsets = UIEdgeInsets(
+            top: 8,
+            left: 8,
+            bottom: thumbnailRibbonAlpha < 1 ? 8 : 0,
+            right: 8
+        )
+        
+        let thumbnailHeightForSmallScreen = CGFloat(56)
         let bottomPanelHeight = max(height - width / 0.75, bottomPanelMinHeight)
-        let photoRibbonHeight = bottomPanelHeight - controlsHeight
-
+        
+        let photoRibbonHeight = screenIsVerySmall
+            ? thumbnailHeightForSmallScreen + thumbnailRibbonInsets.top + thumbnailRibbonInsets.bottom
+            : bottomPanelHeight - controlsHeight
+        
+        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(thumbnailRibbonAlpha)
+        thumbnailRibbonView.contentInsets = thumbnailRibbonInsets
         thumbnailRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
             bottom: cameraControlsView.top,
             height: photoRibbonHeight
         )
-
-        let mediaRibbonAlpha: CGFloat = (cameraControlsView.top < cameraFrame.bottom) ? 0.6 : 1
-        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()

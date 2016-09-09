@@ -43,8 +43,8 @@ final class PhotoControlsView: UIView {
         if cropButton.hidden {
             removeButton.center = bounds.center
         } else {
-            removeButton.center = CGPoint(x: bounds.left + 100, y: bounds.centerY)
-            cropButton.center = CGPoint(x: bounds.right - 100, y: bounds.centerY)
+            removeButton.center = CGPoint(x: bounds.left + bounds.size.width * 0.25, y: bounds.centerY)
+            cropButton.center = CGPoint(x: bounds.right - bounds.size.width * 0.25, y: bounds.centerY)
         }
     }
     

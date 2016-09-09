@@ -11,7 +11,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     // MARK: - Constrants
     
-    private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     private let mediaRibbonInteritemSpacing = CGFloat(7)
     
     private let photoCellReuseId = "PhotoCell"
@@ -23,7 +22,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         
         layout = ThumbnailsViewLayout()
         layout.scrollDirection = .Horizontal
-        layout.sectionInset = mediaRibbonInsets
         layout.minimumLineSpacing = mediaRibbonInteritemSpacing
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -57,6 +55,12 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     var cameraOutputParameters: CameraOutputParameters? {
         didSet {
             updateCameraCell()
+        }
+    }
+    
+    var contentInsets = UIEdgeInsets.zero {
+        didSet {
+            layout.sectionInset = contentInsets
         }
     }
     
@@ -192,7 +196,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     // MARK: - MediaRibbonLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let height = bounds.size.height - mediaRibbonInsets.top - mediaRibbonInsets.bottom
+        let height = bounds.size.height - contentInsets.top - contentInsets.bottom
         return CGSize(width: height, height: height)
     }
     
