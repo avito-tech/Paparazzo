@@ -244,9 +244,9 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         guard items.count > 0 else { completion?(); return }
         
-        view?.setCameraButtonVisible(canAddMoreItems)
-        
         view?.addItems(items, animated: fromCamera) { [view] in
+            view?.setCameraButtonVisible(canAddMoreItems)
+            
             if canAddMoreItems {
                 view?.setMode(.Camera)
                 view?.scrollToCameraThumbnail(animated: true)
