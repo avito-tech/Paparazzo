@@ -15,7 +15,10 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     // MARK: - Constants
     
-    private let controlsMinHeight = CGFloat(142)
+    private let controlsMinHeight: CGFloat = {
+        let iPhone5ScreenSize = CGSize(width: 320, height: 568)
+        return iPhone5ScreenSize.height - iPhone5ScreenSize.width / 0.75
+    }()
     
     // MARK: - Init
     
@@ -66,7 +69,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             left: bounds.left,
             right: bounds.right,
             bottom: bounds.bottom,
-            height: max(controlsMinHeight, bounds.size.height * 0.25)   // оставляем вверху место под фотку 3:4
+            height: max(controlsMinHeight, bounds.size.height - bounds.size.width / 0.75)   // оставляем вверху место под фотку 3:4
         )
         
         previewView.layout(

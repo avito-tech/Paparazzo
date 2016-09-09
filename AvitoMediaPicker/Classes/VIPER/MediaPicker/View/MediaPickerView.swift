@@ -24,10 +24,13 @@ final class MediaPickerView: UIView {
     
     private let cameraAspectRatio = CGFloat(4) / CGFloat(3)
     
-    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
-    private let controlsExtendedHeight = CGFloat(83)
+    private let bottomPanelMinHeight: CGFloat = {
+        let iPhone5ScreenSize = CGSize(width: 320, height: 568)
+        return iPhone5ScreenSize.height - iPhone5ScreenSize.width / 0.75
+    }()
     
-    private let mediaRibbonMinHeight = CGFloat(72)
+    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
+    private let controlsExtendedHeight = CGFloat(80)
     
     private let closeButtonSize = CGSize(width: 38, height: 38)
     
@@ -132,18 +135,32 @@ final class MediaPickerView: UIView {
         )
         
         photoControlsView.frame = cameraControlsView.frame
-
-        let photoRibbonHeight = max(mediaRibbonMinHeight, cameraControlsView.top - photoPreviewView.bottom)
-
+        
+        let screenIsVerySmall = (cameraControlsView.top < cameraFrame.bottom)
+        
+        let thumbnailRibbonAlpha: CGFloat = screenIsVerySmall ? 0.6 : 1
+        let thumbnailRibbonInsets = UIEdgeInsets(
+            top: 8,
+            left: 8,
+            bottom: thumbnailRibbonAlpha < 1 ? 8 : 0,
+            right: 8
+        )
+        
+        let thumbnailHeightForSmallScreen = CGFloat(56)
+        let bottomPanelHeight = max(height - width / 0.75, bottomPanelMinHeight)
+        
+        let photoRibbonHeight = screenIsVerySmall
+            ? thumbnailHeightForSmallScreen + thumbnailRibbonInsets.top + thumbnailRibbonInsets.bottom
+            : bottomPanelHeight - controlsHeight
+        
+        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(thumbnailRibbonAlpha)
+        thumbnailRibbonView.contentInsets = thumbnailRibbonInsets
         thumbnailRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
             bottom: cameraControlsView.top,
             height: photoRibbonHeight
         )
-
-        let mediaRibbonAlpha: CGFloat = (cameraControlsView.top < cameraFrame.bottom) ? 0.6 : 1
-        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(mediaRibbonAlpha)
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
