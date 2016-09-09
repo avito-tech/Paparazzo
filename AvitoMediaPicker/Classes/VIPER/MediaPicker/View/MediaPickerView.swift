@@ -24,10 +24,13 @@ final class MediaPickerView: UIView {
     
     private let cameraAspectRatio = CGFloat(4) / CGFloat(3)
     
-    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
-    private let controlsExtendedHeight = CGFloat(83)
+    private let bottomPanelMinHeight: CGFloat = {
+        let iPhone5ScreenSize = CGSize(width: 320, height: 568)
+        return iPhone5ScreenSize.height - iPhone5ScreenSize.width / 0.75
+    }()
     
-    private let mediaRibbonMinHeight = CGFloat(72)
+    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
+    private let controlsExtendedHeight = CGFloat(80)
     
     private let closeButtonSize = CGSize(width: 38, height: 38)
     
@@ -132,8 +135,9 @@ final class MediaPickerView: UIView {
         )
         
         photoControlsView.frame = cameraControlsView.frame
-
-        let photoRibbonHeight = max(mediaRibbonMinHeight, cameraControlsView.top - photoPreviewView.bottom)
+        
+        let bottomPanelHeight = max(height - width / 0.75, bottomPanelMinHeight)
+        let photoRibbonHeight = bottomPanelHeight - controlsHeight
 
         thumbnailRibbonView.layout(
             left: bounds.left,

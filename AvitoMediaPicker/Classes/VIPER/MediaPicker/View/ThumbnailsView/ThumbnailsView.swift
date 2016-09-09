@@ -11,7 +11,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     // MARK: - Constrants
     
-    private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    private let mediaRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 8)
     private let mediaRibbonInteritemSpacing = CGFloat(7)
     
     private let photoCellReuseId = "PhotoCell"
