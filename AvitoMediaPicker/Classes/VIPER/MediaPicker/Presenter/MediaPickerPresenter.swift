@@ -298,8 +298,25 @@ final class MediaPickerPresenter: MediaPickerModule {
                         self?.router.focusOnCurrentModule()
                         
                         switch result {
+                            
                         case .SelectedItems(let photoLibraryItems):
-                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { addedItems, canAddItems in
+                            
+                            let memorySavingItems = photoLibraryItems.flatMap { item -> PhotoLibraryItem in
+                                if let assetImageSource = item.image as? PHAssetImageSource {
+                                    return PhotoLibraryItem(
+                                        identifier: item.identifier,
+                                        image: MemorySavingAssetImageSource(
+                                            assetImageSource: assetImageSource,
+                                            fileManager: NSFileManager.defaultManager()
+                                        ),
+                                        selected: item.selected
+                                    )
+                                } else {
+                                    return item
+                                }
+                            }
+                            
+                            self?.interactor.addPhotoLibraryItems(memorySavingItems) { addedItems, canAddItems in
                                 self?.handleItemsAdded(addedItems, fromCamera: false, canAddMoreItems: canAddItems)
                             }
                         case .Cancelled:
