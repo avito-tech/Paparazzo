@@ -191,7 +191,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
                 height: cropSize.height * snapshot.scale
             )
             
-            return CGImageCreateWithImageInRect(snapshot.CGImage, cropRect)
+            return snapshot.CGImage.flatMap { CGImageCreateWithImageInRect($0, cropRect) }
         }
     }
     

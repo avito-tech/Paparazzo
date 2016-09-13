@@ -136,12 +136,14 @@ final class CroppedImageSource: ImageSource {
     
     private func newTransformedImage(sourceImage: CGImage, parameters: ImageCroppingParameters) -> CGImage? {
         
-        let source = newScaledImage(
+        guard let source = newScaledImage(
             sourceImage,
             withOrientation: parameters.sourceOrientation,
             toSize: parameters.sourceSize,
             withQuality: .None
-        )
+        ) else {
+            return nil
+        }
         
         let cropSize = parameters.cropSize
         let outputWidth = parameters.outputWidth
@@ -151,15 +153,21 @@ final class CroppedImageSource: ImageSource {
         let aspect = cropSize.height / cropSize.width
         let outputSize = CGSize(width: outputWidth, height: outputWidth * aspect)
         
-        let context = CGBitmapContextCreate(
+        guard let colorSpace = CGImageGetColorSpace(source) else {
+            return nil
+        }
+        
+        guard let context = CGBitmapContextCreate(
             nil,
             Int(outputSize.width),
             Int(outputSize.height),
             CGImageGetBitsPerComponent(source),
             0,
-            CGImageGetColorSpace(source),
+            colorSpace,
             CGImageGetBitmapInfo(source).rawValue
-        )
+        ) else {
+            return nil
+        }
         
         CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor)
         CGContextFillRect(context, CGRect(origin: .zero, size: outputSize))
@@ -195,7 +203,7 @@ final class CroppedImageSource: ImageSource {
         withOrientation orientation: ExifOrientation,
         toSize size: CGSize,
         withQuality quality: CGInterpolationQuality
-    ) -> CGImage {
+    ) -> CGImage? {
         
         let ciImage = CIImage(CGImage: source)
         
