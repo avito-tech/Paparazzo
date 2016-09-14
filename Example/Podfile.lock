@@ -17,20 +17,20 @@ PODS:
   - TTTAttributedLabel (1.13.0)
 
 DEPENDENCIES:
-  - AvitoDesignKit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git`, branch `release-6.0`)
+  - AvitoDesignKit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git`, branch `develop`)
   - AvitoMediaPicker (from `../`)
   - Marshroute
 
 EXTERNAL SOURCES:
   AvitoDesignKit:
-    :branch: release-6.0
+    :branch: develop
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
   AvitoMediaPicker:
     :path: ../
 
 CHECKOUT OPTIONS:
   AvitoDesignKit:
-    :commit: b13a2b0dd733c6d4417b7f1b6ac4754f96b8fe16
+    :commit: d9d790cef7a34c97c73df314601b5bc17b0f3b09
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
 
 SPEC CHECKSUMS:
@@ -42,6 +42,6 @@ SPEC CHECKSUMS:
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
 
-PODFILE CHECKSUM: 9776ec4978eb1cc786772d6505ba163184fcce37
+PODFILE CHECKSUM: d51a58fef70a5070010b2fa9f7d4a28823220820
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.2
