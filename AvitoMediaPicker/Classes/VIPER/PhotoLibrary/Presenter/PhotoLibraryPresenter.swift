@@ -57,9 +57,10 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         interactor.observeItems { [weak self] changes, selectionState in
             guard let strongSelf = self else { return }
             
-            if changes.itemsAfterChanges.count > 0 {
-                self?.view?.setAccessDeniedViewVisible(false)
-            }
+            let hasItems = (changes.itemsAfterChanges.count > 0)
+            
+            self?.view?.setPickButtonVisible(hasItems)
+            self?.view?.setAccessDeniedViewVisible(!hasItems)
             
             let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
             
