@@ -17,7 +17,17 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        navigationController?.navigationBar.backgroundColor = .whiteColor()
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Fade : .None)
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
     // MARK: - PhotoLibraryViewInput
