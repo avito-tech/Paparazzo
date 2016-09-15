@@ -11,6 +11,8 @@ protocol PhotoLibraryViewInput: class {
     
     func setCanSelectMoreItems(canSelectMoreItems: Bool)
     func setDimsUnselectedItems(dimUnselectedItems: Bool)
+    
+    func setPickButtonVisible(_: Bool)
     func setPickButtonEnabled(_: Bool)
     
     func scrollToBottom()

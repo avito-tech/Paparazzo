@@ -19,9 +19,7 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        navigationController?.navigationBar.backgroundColor = .whiteColor()
-        navigationController?.navigationBar.shadowImage = UIImage()
+        hideNavigationBarShadow()
         
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Fade : .None)
     }
@@ -51,16 +49,16 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
             title: title,
             style: .Plain,
             target: self,
-            action: #selector(PhotoLibraryViewController.onCancelButtonTap(_:))
+            action: #selector(onCancelButtonTap(_:))
         )
     }
     
     func setDoneButtonTitle(title: String) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        pickBarButtonItem = UIBarButtonItem(
             title: title,
             style: .Done,
             target: self,
-            action: #selector(PhotoLibraryViewController.onPickButtonTap(_:))
+            action: #selector(onPickButtonTap(_:))
         )
     }
     
@@ -74,6 +72,10 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     func setDimsUnselectedItems(dimUnselectedItems: Bool) {
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
+    }
+    
+    func setPickButtonVisible(visible: Bool) {
+        navigationItem.rightBarButtonItem = visible ? pickBarButtonItem : nil
     }
     
     func setPickButtonEnabled(enabled: Bool) {
@@ -114,11 +116,20 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     // MARK: - Private
     
+    private var pickBarButtonItem: UIBarButtonItem?
+    
     @objc private func onCancelButtonTap(sender: UIBarButtonItem) {
         onCancelButtonTap?()
     }
     
     @objc private func onPickButtonTap(sender: UIBarButtonItem) {
         onPickButtonTap?()
+    }
+    
+    private func hideNavigationBarShadow() {
+        let navigationBar = navigationController?.navigationBar
+        navigationBar?.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        navigationBar?.backgroundColor = .whiteColor()
+        navigationBar?.shadowImage = UIImage()
     }
 }
