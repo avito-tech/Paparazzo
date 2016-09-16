@@ -1,47 +1,42 @@
 PODS:
-  - AvitoDesignKit (0.0.6):
-    - JVFloatLabeledTextField (= 1.1.0)
-    - SDWebImage (= 3.8.1)
-    - TTTAttributedLabel (= 1.13.0)
   - AvitoMediaPicker (1.0.0):
-    - AvitoDesignKit (= 0.0.6)
+    - AvitoToolkit
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
+  - AvitoToolkit (0.0.1)
   - JNWSpringAnimation (0.7.1)
-  - JVFloatLabeledTextField (1.1.0)
   - Marshroute (0.3.3)
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
-  - TTTAttributedLabel (1.13.0)
 
 DEPENDENCIES:
-  - AvitoDesignKit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git`, branch `develop`)
   - AvitoMediaPicker (from `../`)
-  - Marshroute
+  - AvitoToolkit (from `../../avito-ios-toolkit`)
+  - Marshroute (from `https://github.com/avito-tech/Marshroute`, branch `swift-3-syntax`)
 
 EXTERNAL SOURCES:
-  AvitoDesignKit:
-    :branch: develop
-    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
   AvitoMediaPicker:
     :path: ../
+  AvitoToolkit:
+    :path: ../../avito-ios-toolkit
+  Marshroute:
+    :branch: swift-3-syntax
+    :git: https://github.com/avito-tech/Marshroute
 
 CHECKOUT OPTIONS:
-  AvitoDesignKit:
-    :commit: d9d790cef7a34c97c73df314601b5bc17b0f3b09
-    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
+  Marshroute:
+    :commit: c84b8f9dca0c684b00cb6303ad5733e039bd3027
+    :git: https://github.com/avito-tech/Marshroute
 
 SPEC CHECKSUMS:
-  AvitoDesignKit: 60a770dc9b86a0e8e5fb1e696dad41df3bc76a30
-  AvitoMediaPicker: c143d2e8d0e4f20d32ee1505d00d9b5288219f70
+  AvitoMediaPicker: af84c7ffb50dd1bba946b9069068bf1ae5cc3759
+  AvitoToolkit: c2b148b7af8c93986183b4ba318ae6d5b5b09ec9
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
-  JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
-  TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
 
-PODFILE CHECKSUM: d51a58fef70a5070010b2fa9f7d4a28823220820
+PODFILE CHECKSUM: 7b4ac0bb3c6a3dfef9aed8c5ade960763bd99375
 
 COCOAPODS: 1.1.0.rc.2

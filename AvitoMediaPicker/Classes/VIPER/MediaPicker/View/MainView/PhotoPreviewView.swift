@@ -2,9 +2,9 @@ import UIKit
 
 final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var onSwipeToItem: (MediaPickerItem -> ())?
+    var onSwipeToItem: ((MediaPickerItem) -> ())?
     var onSwipeToCamera: (() -> ())?
-    var onSwipeToCameraProgressChange: (CGFloat -> ())?
+    var onSwipeToCameraProgressChange: ((CGFloat) -> ())?
     
     private let collectionView: UICollectionView
     private let dataSource = MediaRibbonDataSource()

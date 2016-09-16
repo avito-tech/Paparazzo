@@ -5,7 +5,7 @@ final class CameraServiceImpl: CameraService {
     
     // MARK: - Private types and properties
     
-    private struct Error: ErrorType {}
+    private struct Error: Swift.Error {}
     
     private var captureSession: AVCaptureSession?
     private var output: AVCaptureStillImageOutput?
@@ -16,13 +16,13 @@ final class CameraServiceImpl: CameraService {
     // MARK: - Init
     
     init() {
-        let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice]
+        let videoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as? [AVCaptureDevice]
         
-        backCamera = videoDevices?.filter({ $0.position == .Back }).first
-        frontCamera = videoDevices?.filter({ $0.position == .Front }).first
+        backCamera = videoDevices?.filter({ $0.position == .back }).first
+        frontCamera = videoDevices?.filter({ $0.position == .front }).first
     }
     
-    func getCaptureSession(completion: AVCaptureSession? -> ()) {
+    func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ()) {
         
         if let captureSession = captureSession {
             completion(captureSession)
@@ -31,14 +31,14 @@ final class CameraServiceImpl: CameraService {
             
             let mediaType = AVMediaTypeVideo
             
-            switch AVCaptureDevice.authorizationStatusForMediaType(mediaType) {
+            switch AVCaptureDevice.authorizationStatus(forMediaType: mediaType) {
                 
-            case .Authorized:
+            case .authorized:
                 setUpCaptureSession()
                 completion(captureSession)
                 
-            case .NotDetermined:
-                AVCaptureDevice.requestAccessForMediaType(mediaType) { [weak self] granted in
+            case .notDetermined:
+                AVCaptureDevice.requestAccess(forMediaType: mediaType) { [weak self] granted in
                     if granted {
                         self?.setUpCaptureSession()
                         completion(self?.captureSession)
@@ -47,13 +47,13 @@ final class CameraServiceImpl: CameraService {
                     }
                 }
 
-            case .Restricted, .Denied:
+            case .restricted, .denied:
                 completion(nil)
             }
         }
     }
     
-    func getOutputOrientation(completion: ExifOrientation -> ()) {
+    func getOutputOrientation(completion: @escaping (ExifOrientation) -> ()) {
         completion(outputOrientationForCamera(activeCamera))
     }
     
@@ -92,7 +92,7 @@ final class CameraServiceImpl: CameraService {
     
     // MARK: - CameraService
     
-    func setCaptureSessionRunning(needsRunning: Bool) {
+    func setCaptureSessionRunning(_ needsRunning: Bool) {
         if needsRunning {
             captureSession?.startRunning()
         } else {
@@ -100,11 +100,11 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
-    func canToggleCamera(completion: Bool -> ()) {
+    func canToggleCamera(completion: @escaping (Bool) -> ()) {
         completion(frontCamera != nil && backCamera != nil)
     }
     
-    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ()) {
+    func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
         
         guard let captureSession = captureSession else { return }
         
@@ -136,20 +136,20 @@ final class CameraServiceImpl: CameraService {
             debugPrint("Couldn't toggle camera: \(error)")
         }
         
-        completion(newOutputOrientation: outputOrientationForCamera(activeCamera))
+        completion(outputOrientationForCamera(activeCamera))
     }
     
     var isFlashAvailable: Bool {
-        return backCamera?.flashAvailable == true
+        return backCamera?.isFlashAvailable == true
     }
     
-    func setFlashEnabled(enabled: Bool) -> Bool {
+    func setFlashEnabled(_ enabled: Bool) -> Bool {
         
         guard let camera = backCamera else { return false }
         
         do {
             try camera.lockForConfiguration()
-            camera.flashMode = enabled ? .On : .Off
+            camera.flashMode = enabled ? .on : .off
             camera.unlockForConfiguration()
             
             return true
@@ -159,20 +159,20 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
-    func takePhoto(completion: PhotoFromCamera? -> ()) {
+    func takePhoto(completion: @escaping (PhotoFromCamera?) -> ()) {
         
-        guard let output = output, connection = videoOutputConnection() else {
+        guard let output = output, let connection = videoOutputConnection() else {
             completion(nil)
             return
         }
         
-        if connection.supportsVideoOrientation {
+        if connection.isVideoOrientationSupported {
             connection.videoOrientation = avOrientationForCurrentDeviceOrientation()
         }
         
-        output.captureStillImageAsynchronouslyFromConnection(connection) { [weak self] sampleBuffer, error in
+        output.captureStillImageAsynchronously(from: connection) { [weak self] sampleBuffer, error in
             self?.savePhoto(sampleBuffer: sampleBuffer) { photo in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completion(photo)
                 }
             }
@@ -180,30 +180,34 @@ final class CameraServiceImpl: CameraService {
     }
     
     private func avOrientationForCurrentDeviceOrientation() -> AVCaptureVideoOrientation {
-        switch UIDevice.currentDevice().orientation {
-        case .Portrait:
-            return .Portrait
-        case .PortraitUpsideDown:
-            return .PortraitUpsideDown
-        case .LandscapeLeft:        // да-да
-            return .LandscapeRight  // все именно так
-        case .LandscapeRight:       // иначе получаются перевертыши
-            return .LandscapeLeft   // rotation is hard on iOS (c)
+        switch UIDevice.current.orientation {
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft:        // да-да
+            return .landscapeRight  // все именно так
+        case .landscapeRight:       // иначе получаются перевертыши
+            return .landscapeLeft   // rotation is hard on iOS (c)
         default:
-            return .Portrait
+            return .portrait
         }
     }
     
     // MARK: - Private
     
-    private func savePhoto(sampleBuffer sampleBuffer: CMSampleBuffer?, completion: PhotoFromCamera? -> ()) {
+    private func savePhoto(sampleBuffer: CMSampleBuffer?, completion: @escaping (PhotoFromCamera?) -> ()) {
         
         let path = randomTemporaryPhotoFilePath()
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { [weak self] in
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             if let data = sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) }) {
-                data.writeToFile(path, atomically: true)
-                completion(PhotoFromCamera(path: path))
+                do {
+                    try data.write(to: URL(fileURLWithPath: path), options: [.atomicWrite])
+                    completion(PhotoFromCamera(path: path))
+                } catch {
+                    completion(nil)
+                }
             } else {
                 completion(nil)
             }
@@ -217,7 +221,7 @@ final class CameraServiceImpl: CameraService {
         for connection in output.connections {
             
             if let connection = connection as? AVCaptureConnection,
-                inputPorts = connection.inputPorts as? [AVCaptureInputPort] {
+               let inputPorts = connection.inputPorts as? [AVCaptureInputPort] {
                 
                 let connectionContainsVideoPort = inputPorts.filter({ $0.mediaType == AVMediaTypeVideo }).count > 0
                 
@@ -230,23 +234,23 @@ final class CameraServiceImpl: CameraService {
         return nil
     }
     
-    private static func configureCamera(camera: AVCaptureDevice?) throws {
+    private static func configureCamera(_ camera: AVCaptureDevice?) throws {
         try camera?.lockForConfiguration()
-        camera?.subjectAreaChangeMonitoringEnabled = true
+        camera?.isSubjectAreaChangeMonitoringEnabled = true
         camera?.unlockForConfiguration()
     }
     
     private func randomTemporaryPhotoFilePath() -> String {
-        let tempDirPath: NSString = NSTemporaryDirectory()
-        let tempName = "\(NSUUID().UUIDString).jpg"
-        return tempDirPath.stringByAppendingPathComponent(tempName)
+        let tempDirPath = NSTemporaryDirectory() as NSString
+        let tempName = "\(NSUUID().uuidString).jpg"
+        return tempDirPath.appendingPathComponent(tempName)
     }
     
-    private func outputOrientationForCamera(camera: AVCaptureDevice?) -> ExifOrientation {
+    private func outputOrientationForCamera(_ camera: AVCaptureDevice?) -> ExifOrientation {
         if camera == frontCamera {
-            return .LeftMirrored
+            return .leftMirrored
         } else {
-            return .Left
+            return .left
         }
     }
 }

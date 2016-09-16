@@ -1,5 +1,4 @@
 import CoreGraphics
-import AvitoDesignKit
 
 final class CGImageWrapper: InitializableWithCGImage {
     

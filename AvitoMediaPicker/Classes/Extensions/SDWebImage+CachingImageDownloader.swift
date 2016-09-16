@@ -3,21 +3,21 @@ import SDWebImage
 extension SDWebImageManager: CachingImageDownloader {
     
     func downloadImageAtUrl(
-        url: NSURL,
-        progressHandler: ((receivedSize: Int, expectedSize: Int) -> ())?,
-        completion: (image: CGImage?, error: NSError?) -> ())
+        _ url: URL,
+        progressHandler: ((_ receivedSize: Int, _ expectedSize: Int) -> ())?,
+        completion: @escaping (_ image: CGImage?, _ error: NSError?) -> ())
         -> CancellableImageDownload
     {
         return SDCancellableImageDownloadAdapter(
             operation: downloadImageWithURL(url, options: SDWebImageOptions(), progress: progressHandler) { image, error, _, _, _ in
-                completion(image: image?.CGImage, error: error)
+                completion(image?.CGImage, error)
             }
         )
     }
     
-    func cachedImageForUrl(url: NSURL) -> CGImage? {
-        if let key = cacheKeyForURL(url) {
-            return (imageCache?.imageFromMemoryCacheForKey(key) ?? imageCache?.imageFromDiskCacheForKey(key))?.CGImage
+    func cachedImageForUrl(url: URL) -> CGImage? {
+        if let key = cacheKey(for: url) {
+            return (imageCache?.imageFromMemoryCacheForKey(key) ?? imageCache?.imageFromDiskCacheForKey(key))?.cgImage
         } else {
             return nil
         }

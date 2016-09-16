@@ -1,13 +1,13 @@
 protocol ImageDownloader {
     func downloadImageAtUrl(
-        url: NSURL,
-        progressHandler: ((receivedSize: Int, expectedSize: Int) -> ())?,
-        completion: (image: CGImage?, error: NSError?) -> ()
+        _: URL,
+        progressHandler: ((_ receivedSize: Int, _ expectedSize: Int) -> ())?,
+        completion: @escaping (_ image: CGImage?, _ error: NSError?) -> ()
     ) -> CancellableImageDownload
 }
 
 protocol CachingImageDownloader: ImageDownloader {
-    func cachedImageForUrl(_: NSURL) -> CGImage?
+    func cachedImageForUrl(_: URL) -> CGImage?
 }
 
 protocol CancellableImageDownload: class {

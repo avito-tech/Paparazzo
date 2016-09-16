@@ -27,13 +27,13 @@ extension CGRect {
         let offsetY = size.height / 2
         
         // Трансформация, переносящая центр rect'а в начало координат
-        let moveToZeroTransform = CGAffineTransformMakeTranslation(-offsetX, -offsetY)
+        let moveToZeroTransform = CGAffineTransform(translationX: -offsetX, y: -offsetY)
         
         // Трансформация, которая будет преобразовывать расчитанные точки обратно в исходную систему координат
-        let restorePositionTransform = CGAffineTransformMakeTranslation(offsetX, offsetY)
+        let restorePositionTransform = CGAffineTransform(translationX: offsetX, y: offsetY)
         
-        var transform = CGAffineTransformConcat(moveToZeroTransform, transform)
-        transform = CGAffineTransformConcat(transform, restorePositionTransform)
+        var transform = moveToZeroTransform.concatenating(transform)
+        transform = transform.concatenating(restorePositionTransform)
         
         let topLeft = CGPoint(x: left, y: top)
         let topRight = CGPoint(x: right, y: top)
@@ -41,16 +41,16 @@ extension CGRect {
         let bottomLeft = CGPoint(x: left, y: bottom)
         
         return (
-            topLeft: CGPointApplyAffineTransform(topLeft, transform),
-            topRight: CGPointApplyAffineTransform(topRight, transform),
-            bottomRight: CGPointApplyAffineTransform(bottomRight, transform),
-            bottomLeft: CGPointApplyAffineTransform(bottomLeft, transform)
+            topLeft: topLeft.applying(transform),
+            topRight: topRight.applying(transform),
+            bottomRight: bottomRight.applying(transform),
+            bottomLeft: bottomLeft.applying(transform)
         )
     }
 }
 
 extension CGSize {
-    func scaled(scale: CGFloat) -> CGSize {
+    func scaled(_ scale: CGFloat) -> CGSize {
         return CGSize(width: width * scale, height: height * scale)
     }
 }

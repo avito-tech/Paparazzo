@@ -2,16 +2,16 @@ import AVFoundation
 
 protocol CameraModuleInput: class {
     
-    func getOutputParameters(completion: CameraOutputParameters? -> ())
-    func setCameraOutputNeeded(isCameraOutputNeeded: Bool)
+    func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
+    func setCameraOutputNeeded(_: Bool)
     
-    func isFlashAvailable(completion: Bool -> ())
-    func setFlashEnabled(enabled: Bool, completion: (success: Bool) -> ())
+    func isFlashAvailable(completion: @escaping (Bool) -> ())
+    func setFlashEnabled(_: Bool, completion: @escaping (_ success: Bool) -> ())
     
-    func canToggleCamera(completion: Bool -> ())
-    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ())
+    func canToggleCamera(completion: @escaping (Bool) -> ())
+    func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ())
     
-    func takePhoto(completion: MediaPickerItem? -> ())
+    func takePhoto(completion: @escaping (MediaPickerItem?) -> ())
     
     func setPreviewImagesSizeForNewPhotos(size: CGSize)
     

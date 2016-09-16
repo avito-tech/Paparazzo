@@ -1,5 +1,4 @@
 import Foundation
-import AvitoDesignKit
 
 protocol PhotoLibraryViewInput: class {
     
@@ -9,8 +8,8 @@ protocol PhotoLibraryViewInput: class {
     
     func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
     
-    func setCanSelectMoreItems(canSelectMoreItems: Bool)
-    func setDimsUnselectedItems(dimUnselectedItems: Bool)
+    func setCanSelectMoreItems(_: Bool)
+    func setDimsUnselectedItems(_: Bool)
     
     func setPickButtonVisible(_: Bool)
     func setPickButtonEnabled(_: Bool)

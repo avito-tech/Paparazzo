@@ -4,7 +4,7 @@ import AvitoMediaPicker
 protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
 
     func showMediaPicker(
-        items items: [MediaPickerItem],
+        items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
@@ -12,7 +12,7 @@ protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
     )
     
     func showPhotoLibrary(
-        selectedItems selectedItems: [PhotoLibraryItem],
+        selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         configuration: PhotoLibraryModule -> ()
     )

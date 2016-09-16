@@ -1,4 +1,5 @@
 import UIKit
+import AvitoToolkit
 
 public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITheme, ImageCroppingUITheme {
 
@@ -7,54 +8,54 @@ public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITh
     // MARK: - MediaPickerRootModuleUITheme
 
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
-    public var shutterButtonDisabledColor = UIColor.lightGrayColor()
+    public var shutterButtonDisabledColor = UIColor.lightGray
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
-    public var removePhotoIcon = MediaPickerUITheme.imageNamed("delete")
-    public var cropPhotoIcon = MediaPickerUITheme.imageNamed("crop")
-    public var returnToCameraIcon = MediaPickerUITheme.imageNamed("camera")
-    public var closeCameraIcon = MediaPickerUITheme.imageNamed("bt-close")
-    public var flashOnIcon = MediaPickerUITheme.imageNamed("light_on")
-    public var flashOffIcon = MediaPickerUITheme.imageNamed("light_off")
-    public var cameraToggleIcon = MediaPickerUITheme.imageNamed("back_front")
-    public var photoPeepholePlaceholder = MediaPickerUITheme.imageNamed("gallery-placeholder")
+    public var removePhotoIcon = MediaPickerUITheme.image(named: "delete")
+    public var cropPhotoIcon = MediaPickerUITheme.image(named: "crop")
+    public var returnToCameraIcon = MediaPickerUITheme.image(named: "camera")
+    public var closeCameraIcon = MediaPickerUITheme.image(named: "bt-close")
+    public var flashOnIcon = MediaPickerUITheme.image(named: "light_on")
+    public var flashOffIcon = MediaPickerUITheme.image(named: "light_off")
+    public var cameraToggleIcon = MediaPickerUITheme.image(named: "back_front")
+    public var photoPeepholePlaceholder = MediaPickerUITheme.image(named: "gallery-placeholder")
 
-    public var cameraContinueButtonTitleFont = UIFont.systemFontOfSize(17)
+    public var cameraContinueButtonTitleFont = UIFont.systemFont(ofSize: 17)
     public var cameraContinueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var cameraContinueButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
-    public var cameraButtonsBackgroundNormalColor = UIColor.whiteColor()
+    public var cameraButtonsBackgroundNormalColor = UIColor.white
     public var cameraButtonsBackgroundHighlightedColor = UIColor(white: 1, alpha: 0.6)
     public var cameraButtonsBackgroundDisabledColor = UIColor(white: 1, alpha: 0.6)
     
-    public var accessDeniedTitleFont = UIFont.boldSystemFontOfSize(17)
-    public var accessDeniedMessageFont = UIFont.systemFontOfSize(17)
-    public var accessDeniedButtonFont = UIFont.systemFontOfSize(17)
+    public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
+    public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)
+    public var accessDeniedButtonFont = UIFont.systemFont(ofSize: 17)
 
     // MARK: - PhotoLibraryUITheme
     
     public var photoLibraryItemSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var photoCellBackgroundColor = UIColor.RGB(red: 215, green: 215, blue: 215)
     
-    public var iCloudIcon = MediaPickerUITheme.imageNamed("icon-cloud")
+    public var iCloudIcon = MediaPickerUITheme.image(named: "icon-cloud")
     
     // MARK: - ImageCroppingUITheme
     
-    public var rotationIcon = MediaPickerUITheme.imageNamed("rotate")
-    public var gridIcon = MediaPickerUITheme.imageNamed("grid")
-    public var cropperDiscardIcon = MediaPickerUITheme.imageNamed("discard")
-    public var cropperConfirmIcon = MediaPickerUITheme.imageNamed("confirm")
-    public var cancelRotationButtonIcon = MediaPickerUITheme.imageNamed("close-small")
+    public var rotationIcon = MediaPickerUITheme.image(named: "rotate")
+    public var gridIcon = MediaPickerUITheme.image(named: "grid")
+    public var cropperDiscardIcon = MediaPickerUITheme.image(named: "discard")
+    public var cropperConfirmIcon = MediaPickerUITheme.image(named: "confirm")
+    public var cancelRotationButtonIcon = MediaPickerUITheme.image(named: "close-small")
     public var cancelRotationBackgroundColor = UIColor.RGB(red: 25, green: 25, blue: 25, alpha: 1)
-    public var cancelRotationTitleColor = UIColor.whiteColor()
-    public var cancelRotationTitleFont = UIFont.boldSystemFontOfSize(14)
+    public var cancelRotationTitleColor = UIColor.white
+    public var cancelRotationTitleFont = UIFont.boldSystemFont(ofSize: 14)
 
     // MARK: - Private
 
     private class BundleId {}
 
-    private static func imageNamed(name: String) -> UIImage? {
-        let bundle = NSBundle(forClass: BundleId.self)
-        return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
+    private static func image(named name: String) -> UIImage? {
+        let bundle = Bundle(for: BundleId.self)
+        return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
 }
 

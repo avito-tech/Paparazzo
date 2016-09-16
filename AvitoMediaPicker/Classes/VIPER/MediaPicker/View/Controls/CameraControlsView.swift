@@ -1,5 +1,4 @@
 import UIKit
-import AvitoDesignKit
 import JNWSpringAnimation
 
 final class CameraControlsView: UIView {
@@ -7,7 +6,7 @@ final class CameraControlsView: UIView {
     var onShutterButtonTap: (() -> ())?
     var onPhotoLibraryButtonTap: (() -> ())?
     var onCameraToggleButtonTap: (() -> ())?
-    var onFlashToggle: (Bool -> ())?
+    var onFlashToggle: ((Bool) -> ())?
     
     // MARK: - Subviews
     
@@ -37,41 +36,41 @@ final class CameraControlsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
         
-        photoView.backgroundColor = .lightGrayColor()
-        photoView.contentMode = .ScaleAspectFill
+        photoView.backgroundColor = .lightGray
+        photoView.contentMode = .scaleAspectFill
         photoView.layer.cornerRadius = photoViewDiameter / 2
         photoView.clipsToBounds = true
-        photoView.userInteractionEnabled = true
+        photoView.isUserInteractionEnabled = true
         photoView.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
-            action: #selector(CameraControlsView.onPhotoViewTap(_:))
+            action: #selector(onPhotoViewTap(_:))
         ))
         
-        shutterButton.backgroundColor = .blueColor()
+        shutterButton.backgroundColor = .blue
         shutterButton.clipsToBounds = false
         shutterButton.addTarget(
             self,
-            action: #selector(CameraControlsView.onShutterButtonTouchDown(_:)),
-            forControlEvents: .TouchDown
+            action: #selector(onShutterButtonTouchDown(_:)),
+            for: .touchDown
         )
         shutterButton.addTarget(
             self,
-            action: #selector(CameraControlsView.onShutterButtonTouchUp(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onShutterButtonTouchUp(_:)),
+            for: .touchUpInside
         )
         
         flashButton.addTarget(
             self,
-            action: #selector(CameraControlsView.onFlashButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onFlashButtonTap(_:)),
+            for: .touchUpInside
         )
         
         cameraToggleButton.addTarget(
             self,
-            action: #selector(CameraControlsView.onCameraToggleButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onCameraToggleButtonTap(_:)),
+            for: .touchUpInside
         )
         
         addSubview(photoView)
@@ -126,41 +125,41 @@ final class CameraControlsView: UIView {
     }
     
     func setCameraControlsEnabled(enabled: Bool) {
-        shutterButton.enabled = enabled
-        cameraToggleButton.enabled = enabled
-        flashButton.enabled = enabled
+        shutterButton.isEnabled = enabled
+        cameraToggleButton.isEnabled = enabled
+        flashButton.isEnabled = enabled
         
         adjustShutterButtonColor()
     }
     
     func setFlashButtonVisible(visible: Bool) {
-        flashButton.hidden = !visible
+        flashButton.isHidden = !visible
     }
     
     func setFlashButtonOn(isOn: Bool) {
-        flashButton.selected = isOn
+        flashButton.isSelected = isOn
     }
     
     func setCameraToggleButtonVisible(visible: Bool) {
-        cameraToggleButton.hidden = !visible
+        cameraToggleButton.isHidden = !visible
     }
     
     func setShutterButtonEnabled(enabled: Bool) {
-        shutterButton.enabled = enabled
+        shutterButton.isEnabled = enabled
     }
     
     func setPhotoLibraryButtonEnabled(enabled: Bool) {
-        photoView.userInteractionEnabled = enabled
+        photoView.isUserInteractionEnabled = enabled
     }
     
     func setTheme(theme: MediaPickerRootModuleUITheme) {
         
         self.theme = theme
 
-        flashButton.setImage(theme.flashOffIcon, forState: .Normal)
-        flashButton.setImage(theme.flashOnIcon, forState: .Selected)
+        flashButton.setImage(theme.flashOffIcon, for: .normal)
+        flashButton.setImage(theme.flashOnIcon, for: .selected)
 
-        cameraToggleButton.setImage(theme.cameraToggleIcon, forState: .Normal)
+        cameraToggleButton.setImage(theme.cameraToggleIcon, for: .normal)
         
         photoViewPlaceholder = theme.photoPeepholePlaceholder
         
@@ -171,25 +170,25 @@ final class CameraControlsView: UIView {
     
     private var theme: MediaPickerRootModuleUITheme?
     
-    @objc private func onShutterButtonTouchDown(button: UIButton) {
+    @objc private func onShutterButtonTouchDown(_ button: UIButton) {
         animateShutterButtonToScale(shutterAnimationMinScale)
     }
     
-    @objc private func onShutterButtonTouchUp(button: UIButton) {
+    @objc private func onShutterButtonTouchUp(_ button: UIButton) {
         animateShutterButtonToScale(1)
         onShutterButtonTap?()
     }
     
-    @objc private func onPhotoViewTap(tapRecognizer: UITapGestureRecognizer) {
+    @objc private func onPhotoViewTap(_ tapRecognizer: UITapGestureRecognizer) {
         onPhotoLibraryButtonTap?()
     }
     
-    @objc private func onFlashButtonTap(button: UIButton) {
-        button.selected = !button.selected
-        onFlashToggle?(button.selected)
+    @objc private func onFlashButtonTap(_ button: UIButton) {
+        button.isSelected = !button.isSelected
+        onFlashToggle?(button.isSelected)
     }
     
-    @objc private func onCameraToggleButtonTap(button: UIButton) {
+    @objc private func onCameraToggleButtonTap(_ button: UIButton) {
         onCameraToggleButtonTap?()
     }
     
@@ -200,22 +199,26 @@ final class CameraControlsView: UIView {
         
         let keyPath = "transform.scale"
         
-        let animation = JNWSpringAnimation(keyPath: keyPath)
+        guard let animation = JNWSpringAnimation(keyPath: keyPath) else {
+            shutterButton.transform = CGAffineTransform(scaleX: scale, y: scale)
+            return
+        }
+        
         animation.damping = shutterAnimationDamping
         animation.stiffness = shutterAnimationStiffness
         animation.mass = shutterAnimationMass
         
-        let layer = shutterButton.layer.presentationLayer() ?? shutterButton.layer
+        let layer = shutterButton.layer.presentation() ?? shutterButton.layer
         
-        animation.fromValue = layer.valueForKeyPath(keyPath)
+        animation.fromValue = layer.value(forKeyPath: keyPath)
         animation.toValue = scale
         
         shutterButton.layer.setValue(animation.toValue, forKeyPath: keyPath)
         
-        shutterButton.layer.addAnimation(animation, forKey: keyPath)
+        shutterButton.layer.add(animation, forKey: keyPath)
     }
     
     private func adjustShutterButtonColor() {
-        shutterButton.backgroundColor = shutterButton.enabled ? theme?.shutterButtonColor : theme?.shutterButtonDisabledColor
+        shutterButton.backgroundColor = shutterButton.isEnabled ? theme?.shutterButtonColor : theme?.shutterButtonDisabledColor
     }
 }

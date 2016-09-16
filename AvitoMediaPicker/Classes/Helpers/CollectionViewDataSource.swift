@@ -6,7 +6,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     
     let cellReuseIdentifier: String
     var onDataChanged: (() -> ())?
-    var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, NSIndexPath) -> ())?
+    var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, IndexPath) -> ())?
     
     private var items = [ItemType]()
     
@@ -14,46 +14,46 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         self.cellReuseIdentifier = cellReuseIdentifier
     }
     
-    func item(at indexPath: NSIndexPath) -> ItemType {
+    func item(at indexPath: IndexPath) -> ItemType {
         return items[indexPath.row]
     }
     
-    func replaceItem(at indexPath: NSIndexPath, with item: ItemType) {
+    func replaceItem(at indexPath: IndexPath, with item: ItemType) {
         items[indexPath.row] = item
     }
     
-    func insertItems(items: [(item: ItemType, indexPath: NSIndexPath)]) {
-        let sortedItems = items.sort { $0.indexPath.row < $1.indexPath.row }
+    func insertItems(items: [(item: ItemType, indexPath: IndexPath)]) {
+        let sortedItems = items.sorted { $0.indexPath.row < $1.indexPath.row }
         
         let appendedItems = sortedItems.filter { $0.indexPath.row >= self.items.count }
         let insertedItems = sortedItems.filter { $0.indexPath.row < self.items.count }
         
-        insertedItems.reverse().forEach { item in
-            self.items.insert(item.item, atIndex: item.indexPath.row)
+        insertedItems.reversed().forEach { item in
+            self.items.insert(item.item, at: item.indexPath.row)
         }
         
         // indexPath'ы тут должны идти последовательно
-        self.items.appendContentsOf(appendedItems.map { $0.item })
+        self.items.append(contentsOf: appendedItems.map { $0.item })
     }
     
-    func deleteItems(at indexPaths: [NSIndexPath]) {
-        indexPaths.map { $0.row }.sort().reverse().forEach { row in
-            items.removeAtIndex(row)
+    func deleteItems(at indexPaths: [IndexPath]) {
+        indexPaths.map { $0.row }.sorted().reversed().forEach { row in
+            items.remove(at: row)
         }
     }
     
-    func moveItem(at fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath) {
+    func moveItem(at fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         guard fromIndexPath != toIndexPath else { return }
         
         let fromIndex = fromIndexPath.row
         let toIndex = toIndexPath.row
         
-        let item = items.removeAtIndex(fromIndex)
+        let item = items.remove(at: fromIndex)
         
         if toIndex > fromIndex {
-            items.insert(item, atIndex: toIndex - 1)
+            items.insert(item, at: toIndex - 1)
         } else {
-            items.insert(item, atIndex: toIndex)
+            items.insert(item, at: toIndex)
         }
     }
     
@@ -65,7 +65,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         self.items = items
     }
     
-    func mutateItem(atIndexPath indexPath: NSIndexPath, mutator: (inout ItemType) -> ()) {
+    func mutateItem(atIndexPath indexPath: IndexPath, mutator: (inout ItemType) -> ()) {
         
         var item = self.item(at: indexPath)
         mutator(&item)
@@ -75,13 +75,13 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     
     // MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellReuseIdentifier, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath)
         let item = self.item(at: indexPath)
         
         if let cell = cell as? CellType {
@@ -96,5 +96,5 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
 protocol Customizable {
     associatedtype ItemType
     
-    func customizeWithItem(item: ItemType)
+    func customizeWithItem(_ item: ItemType)
 }

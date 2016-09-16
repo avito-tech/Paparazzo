@@ -1,13 +1,12 @@
 import Foundation
-import AvitoDesignKit
 
 protocol ImageCroppingInteractor: class {
     
-    func canvasSize(completion: CGSize -> ())
+    func canvasSize(completion: @escaping (CGSize) -> ())
     
-    func imageWithParameters(completion: (original: ImageSource, preview: ImageSource?, parameters: ImageCroppingParameters?) -> ())
-    func croppedImage(previewImage _: CGImage, completion: CroppedImageSource -> ())
-    func croppedImageAspectRatio(completion: Float -> ())
+    func imageWithParameters(completion: @escaping (_ original: ImageSource, _ preview: ImageSource?, _ parameters: ImageCroppingParameters?) -> ())
+    func croppedImage(previewImage: CGImage, completion: @escaping (CroppedImageSource) -> ())
+    func croppedImageAspectRatio(completion: @escaping (Float) -> ())
     
     func setCroppingParameters(_: ImageCroppingParameters)
 }

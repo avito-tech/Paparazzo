@@ -1,7 +1,7 @@
 final class SingleObjectCache<T: AnyObject> {
     
-    private let cacheKey = "key"
-    private let cache = NSCache()
+    private let cacheKey = "key" as NSString
+    private let cache = NSCache<NSString, T>()
     
     init(value: T? = nil) {
         self.value = value
@@ -9,13 +9,13 @@ final class SingleObjectCache<T: AnyObject> {
     
     var value: T? {
         get {
-            return cache.objectForKey(cacheKey) as? T
+            return cache.object(forKey: cacheKey)
         }
         set {
             if let newValue = newValue {
                 cache.setObject(newValue, forKey: cacheKey)
             } else {
-                cache.removeObjectForKey(cacheKey)
+                cache.removeObject(forKey: cacheKey)
             }
         }
     }

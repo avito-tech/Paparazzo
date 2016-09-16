@@ -1,14 +1,13 @@
 import Foundation
-import AvitoDesignKit
 
 protocol PhotoLibraryInteractor: class {
     
-    func authorizationStatus(completion: (accessGranted: Bool) -> ())
-    func observeItems(handler: (changes: PhotoLibraryChanges, selectionState: PhotoLibraryItemSelectionState) -> ())
+    func authorizationStatus(completion: @escaping (_ accessGranted: Bool) -> ())
+    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     
-    func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
-    func deselectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
-    func selectedItems(completion: [PhotoLibraryItem] -> ())
+    func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
+    func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
+    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ())
 }
 
 public struct PhotoLibraryItem: Equatable {

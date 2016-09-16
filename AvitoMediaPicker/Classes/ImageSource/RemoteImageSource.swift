@@ -5,7 +5,7 @@ public class RemoteImageSource: ImageSource {
     
     // MARK: - Init
     
-    init(url: NSURL, previewImage: CGImage? = nil, imageDownloader: CachingImageDownloader) {
+    init(url: URL, previewImage: CGImage? = nil, imageDownloader: CachingImageDownloader) {
         self.url = url
         self.previewImage = previewImage
         self.imageDownloader = imageDownloader
@@ -13,21 +13,21 @@ public class RemoteImageSource: ImageSource {
 
     // MARK: - ImageSource
     
-    public func fullResolutionImageData(completion: NSData? -> ()) {
+    public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
         
         let operation = fullResolutionImageRequestOperation(resultHandler: { (imageWrapper: CGImageWrapper?) in
-            SharedQueues.imageProcessingQueue.addOperationWithBlock {
+            SharedQueues.imageProcessingQueue.addOperation {
                 let data = NSMutableData()
                 let cgImage = imageWrapper?.image
                 let destination = CGImageDestinationCreateWithData(data, kUTTypeJPEG, 1, nil)
                 
-                if let cgImage = cgImage, destination = destination {
+                if let cgImage = cgImage, let destination = destination {
                     CGImageDestinationAddImage(destination, cgImage, nil)
                     CGImageDestinationFinalize(destination)
                     
-                    dispatch_async(dispatch_get_main_queue()) { completion(NSData(data: data)) }
+                    DispatchQueue.main.async { completion(data as Data) }
                 } else {
-                    dispatch_async(dispatch_get_main_queue()) { completion(nil) }
+                    DispatchQueue.main.async { completion(nil) }
                 }
             }
         })
@@ -35,12 +35,12 @@ public class RemoteImageSource: ImageSource {
         RemoteImageSource.requestsQueue.addOperation(operation)
     }
     
-    public func imageSize(completion: CGSize? -> ()) {
+    public func imageSize(completion: @escaping (CGSize?) -> ()) {
         if let fullSize = fullSize {
             dispatch_to_main_queue { completion(fullSize) }
         } else {
             let operation = fullResolutionImageRequestOperation(resultHandler: { [weak self] (image: UIImage?) in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self?.fullSize = image?.size
                     completion(image?.size)
                 }
@@ -51,14 +51,14 @@ public class RemoteImageSource: ImageSource {
     }
 
     public func requestImage<T : InitializableWithCGImage>(
-        options options: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
+        options: ImageRequestOptions,
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
         let cachedImage = imageDownloader.cachedImageForUrl(url)
         
-        if let previewImage = previewImage ?? cachedImage where options.deliveryMode == .Progressive {
+        if let previewImage = previewImage ?? cachedImage, options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
             }
@@ -79,7 +79,7 @@ public class RemoteImageSource: ImageSource {
     
     public func cancelRequest(id: ImageRequestId) {
         for operation in RemoteImageSource.requestsQueue.operations {
-            if let identifiableOperation = operation as? ImageRequestIdentifiable where identifiableOperation.id == id {
+            if let identifiableOperation = operation as? ImageRequestIdentifiable, identifiableOperation.id == id {
                 operation.cancel()
             }
         }
@@ -93,19 +93,19 @@ public class RemoteImageSource: ImageSource {
     
     private static let requestIdsGenerator = ThreadSafeIntGenerator()
     
-    private static let requestsQueue: NSOperationQueue = {
-        let queue = NSOperationQueue()
-        queue.qualityOfService = .UserInitiated
+    private static let requestsQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
         return queue
     }()
     
-    private let url: NSURL
+    private let url: URL
     private let previewImage: CGImage?
     private var fullSize: CGSize?
     
     private let imageDownloader: CachingImageDownloader
     
-    private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler resultHandler: T? -> ()) -> RemoteImageRequestOperation<T> {
+    private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler: (T?) -> ()) -> RemoteImageRequestOperation<T> {
         
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
         let options = ImageRequestOptions(size: .FullResolution, deliveryMode: .Best)

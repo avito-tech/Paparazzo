@@ -17,7 +17,7 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        selected = false
+        isSelected = false
     }
     
     // MARK: - Customizable

@@ -7,14 +7,14 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     private var cameraOutputBinder: CameraOutputGLKBinder?
     
-    var selectedBorderColor: UIColor? = .blueColor() {
+    var selectedBorderColor: UIColor? = .blue {
         didSet {
             adjustBorderColor()
         }
     }
     
     func setCameraIcon(icon: UIImage?) {
-        button.setImage(icon, forState: .Normal)
+        button.setImage(icon, for: .normal)
     }
     
     func setCameraIconTransform(transform: CGAffineTransform) {
@@ -44,12 +44,12 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .blackColor()
+        backgroundColor = .black
         layer.cornerRadius = 6
         layer.masksToBounds = true
         
-        button.tintColor = .whiteColor()
-        button.userInteractionEnabled = false
+        button.tintColor = .white
+        button.isUserInteractionEnabled = false
         
         adjustBorderColor()
         
@@ -62,9 +62,9 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     // MARK: - UICollectionViewCell
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            layer.borderWidth = selected ? 4 : 0
+            layer.borderWidth = isSelected ? 4 : 0
         }
     }
     
@@ -78,6 +78,6 @@ final class CameraThumbnailCell: UICollectionViewCell {
     // MARK: - Private
     
     private func adjustBorderColor() {
-        layer.borderColor = selectedBorderColor?.CGColor
+        layer.borderColor = selectedBorderColor?.cgColor
     }
 }

@@ -64,7 +64,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
-    var onPhotoItemSelect: (MediaPickerItem -> ())?
+    var onPhotoItemSelect: ((MediaPickerItem) -> ())?
     var onCameraItemSelect: (() -> ())?
     
     func selectCameraItem() {

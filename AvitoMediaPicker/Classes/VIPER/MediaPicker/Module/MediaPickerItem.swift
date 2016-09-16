@@ -1,5 +1,3 @@
-import AvitoDesignKit
-
 /// Главная модель, представляющая фотку в пикере
 public struct MediaPickerItem: Equatable {
     
@@ -13,7 +11,7 @@ public struct MediaPickerItem: Equatable {
     
     let identifier: String
     
-    public init(identifier: String = NSUUID().UUIDString, image: ImageSource, source: Source) {
+    public init(identifier: String = NSUUID().uuidString, image: ImageSource, source: Source) {
         self.identifier = identifier
         self.image = image
         self.source = source

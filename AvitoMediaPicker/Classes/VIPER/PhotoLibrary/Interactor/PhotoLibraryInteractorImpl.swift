@@ -42,11 +42,11 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         maxSelectedItemsCount = count
     }
     
-    func authorizationStatus(completion: (accessGranted: Bool) -> ()) {
-        completion(accessGranted: photoLibraryItemsService.authorizationStatus == .Authorized)
+    func authorizationStatus(completion: (_ accessGranted: Bool) -> ()) {
+        completion(photoLibraryItemsService.authorizationStatus == .authorized)
     }
     
-    func observeItems(handler: (changes: PhotoLibraryChanges, selectionState: PhotoLibraryItemSelectionState) -> ()) {
+    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ()) {
         
         photoLibraryItemsService.observePhotos { [weak self] assets, phChanges in
             guard let strongSelf = self else { return }
@@ -84,12 +84,12 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
             strongSelf.removeSelectedItemsNotPresentedAmongAssets(assets)
             
             dispatch_to_main_queue {
-                handler(changes: changes, selectionState: strongSelf.selectionState())
+                handler(changes, strongSelf.selectionState())
             }
         }
     }
     
-    func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ()) {
+    func selectItem(item: PhotoLibraryItem, completion: (PhotoLibraryItemSelectionState) -> ()) {
         
         if canSelectMoreItems() {
             selectedItems.append(item)
@@ -98,7 +98,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         completion(selectionState())
     }
     
-    func deselectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ()) {
+    func deselectItem(item: PhotoLibraryItem, completion: (PhotoLibraryItemSelectionState) -> ()) {
         
         if let index = selectedItems.indexOf(item) {
             selectedItems.removeAtIndex(index)
@@ -124,7 +124,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         )
     }
     
-    private func removeSelectedItemsNotPresentedAmongAssets(assets: [PHAsset]) {
+    private func removeSelectedItemsNotPresentedAmongAssets(_ assets: [PHAsset]) {
         let assetIds = Set(assets.map { $0.localIdentifier })
         selectedItems = selectedItems.filter { assetIds.contains($0.identifier) }
     }

@@ -1,5 +1,4 @@
 import Foundation
-import AvitoDesignKit
 
 protocol ImageCroppingViewInput: class {
     
@@ -26,11 +25,11 @@ protocol ImageCroppingViewInput: class {
     func setGridButtonSelected(_: Bool)
     
     var onDiscardButtonTap: (() -> ())? { get set }
-    var onConfirmButtonTap: ((previewImage: CGImage?) -> ())? { get set }
+    var onConfirmButtonTap: ((_ previewImage: CGImage?) -> ())? { get set }
     var onAspectRatioButtonTap: (() -> ())? { get set }
     var onRotateButtonTap: (() -> ())? { get set }
     var onGridButtonTap: (() -> ())? { get set }
-    var onRotationAngleChange: (Float -> ())? { get set }
+    var onRotationAngleChange: ((Float) -> ())? { get set }
     var onRotationCancelButtonTap: (() -> ())? { get set }
-    var onCroppingParametersChange: (ImageCroppingParameters -> ())? { get set }
+    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? { get set }
 }

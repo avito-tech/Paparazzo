@@ -1,8 +1,8 @@
 struct SharedQueues {
     
-    static let imageProcessingQueue: NSOperationQueue = {
-        let queue = NSOperationQueue()
-        queue.qualityOfService = .UserInitiated
+    static let imageProcessingQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
         
         /*
          Это фиксит ситуацию на iPhone 4, когда создавалось слишком много потоков для операций запроса фотки,

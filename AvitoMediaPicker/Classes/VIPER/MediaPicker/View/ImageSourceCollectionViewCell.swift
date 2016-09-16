@@ -15,7 +15,7 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
         contentView.addSubview(imageView)
@@ -41,9 +41,9 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     // MARK: - Subclasses customization
     
     /// This method is called right before requesting image from ImageSource and gives you a chance to tweak request options
-    public func adjustImageRequestOptions(inout options: ImageRequestOptions) {}
+    public func adjustImageRequestOptions(_ options: inout ImageRequestOptions) {}
     public func didRequestImage(requestId: ImageRequestId) {}
-    public func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {}
+    public func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {}
     
     // MARK: - Private
     
@@ -72,7 +72,7 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
         
         if let requestId = requestId {
             
-            didRequestImage(requestId)
+            didRequestImage(requestId: requestId)
             didCallRequestImage = true
             
             if let delayedResult = delayedResult {

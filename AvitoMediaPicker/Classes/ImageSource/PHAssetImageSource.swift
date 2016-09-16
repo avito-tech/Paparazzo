@@ -1,5 +1,4 @@
 import Photos
-import AvitoDesignKit
 
 final class PHAssetImageSource: ImageSource {
 

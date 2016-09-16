@@ -1,6 +1,5 @@
 import UIKit
 import Marshroute
-import AvitoDesignKit
 
 public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     
@@ -11,10 +10,10 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     }
     
     public func viewController(
-        image image: ImageSource,
+        image: ImageSource,
         canvasSize: CGSize,
         routerSeed: RouterSeed,
-        configuration: ImageCroppingModule -> ()
+        configuration: (ImageCroppingModule) -> ()
     ) -> UIViewController {
 
         let interactor = ImageCroppingInteractorImpl(image: image, canvasSize: canvasSize)

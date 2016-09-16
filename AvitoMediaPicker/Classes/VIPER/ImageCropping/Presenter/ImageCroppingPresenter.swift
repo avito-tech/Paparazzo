@@ -1,5 +1,4 @@
 import Foundation
-import AvitoDesignKit
 
 final class ImageCroppingPresenter: ImageCroppingModule {
 
@@ -24,15 +23,15 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     // MARK: - ImageCroppingModule
     
     var onDiscard: (() -> ())?
-    var onConfirm: (ImageSource -> ())?
+    var onConfirm: ((ImageSource) -> ())?
     
     // MARK: - Private
     
     private func setUpView() {
         
         view?.setTitle("Кадрирование")
-        view?.setMinimumRotation(-25)
-        view?.setMaximumRotation(+25)
+        view?.setMinimumRotation(degrees: -25)
+        view?.setMaximumRotation(degrees: +25)
         view?.setControlsEnabled(false)
         
         setGridVisible(false)
@@ -88,19 +87,19 @@ final class ImageCroppingPresenter: ImageCroppingModule {
                         
                         let angleInDegrees = Float(croppingParameters.tiltAngle).radiansToDegrees()
                         self?.view?.setRotationSliderValue(angleInDegrees)
-                        self?.adjustCancelRotationButtonForAngle(angleInDegrees)
+                        self?.adjustCancelRotationButton(forAngle: angleInDegrees)
                     }
                 }
             }
         }
     }
     
-    private func setImageRotation(angle: Float) {
+    private func setImageRotation(_ angle: Float) {
         view?.setImageTiltAngle(angle)
-        adjustCancelRotationButtonForAngle(angle)
+        adjustCancelRotationButton(forAngle: angle)
     }
     
-    private func adjustCancelRotationButtonForAngle(angle: Float) {
+    private func adjustCancelRotationButton(forAngle angle: Float) {
         
         let displayedAngle = Int(round(angle))
         let shouldShowCancelRotationButton = (displayedAngle != 0)
@@ -109,7 +108,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.setCancelRotationButtonVisible(shouldShowCancelRotationButton)
     }
     
-    private func setGridVisible(visible: Bool) {
+    private func setGridVisible(_ visible: Bool) {
         
         view?.setGridVisible(visible)
         view?.setGridButtonSelected(visible)
@@ -119,7 +118,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
     }
     
-    private func setAspectRatio(aspectRatio: AspectRatio) {
+    private func setAspectRatio(_ aspectRatio: AspectRatio) {
         
         view?.setAspectRatio(aspectRatio)
         view?.setAspectRatioButtonTitle(aspectRatioButtonTitle(for: aspectRatio))
@@ -140,7 +139,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         }
     }
     
-    private func aspectRatioAfter(aspectRatio: AspectRatio) -> AspectRatio {
+    private func aspectRatioAfter(_ aspectRatio: AspectRatio) -> AspectRatio {
         switch aspectRatio {
         case .portrait_3x4:
             return .landscape_4x3

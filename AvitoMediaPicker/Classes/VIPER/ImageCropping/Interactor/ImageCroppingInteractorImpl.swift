@@ -1,5 +1,3 @@
-import AvitoDesignKit
-
 final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     private let originalImage: ImageSource
@@ -23,15 +21,15 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     // MARK: - CroppingInteractor
     
-    func canvasSize(completion: CGSize -> ()) {
+    func canvasSize(completion: @escaping (CGSize) -> ()) {
         completion(canvasSize)
     }
     
-    func imageWithParameters(completion: (original: ImageSource, preview: ImageSource?, parameters: ImageCroppingParameters?) -> ()) {
-        completion(original: originalImage, preview: previewImage, parameters: parameters)
+    func imageWithParameters(completion: @escaping (_ original: ImageSource, _ preview: ImageSource?, _ parameters: ImageCroppingParameters?) -> ()) {
+        completion(originalImage, previewImage, parameters)
     }
     
-    func croppedImage(previewImage previewImage: CGImage, completion: CroppedImageSource -> ()) {
+    func croppedImage(previewImage: CGImage, completion: @escaping (CroppedImageSource) -> ()) {
         completion(CroppedImageSource(
             originalImage: originalImage,
             sourceSize: canvasSize,
@@ -40,8 +38,8 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
         ))
     }
     
-    func croppedImageAspectRatio(completion: Float -> ()) {
-        if let parameters = parameters where parameters.cropSize.height > 0 {
+    func croppedImageAspectRatio(completion: @escaping (Float) -> ()) {
+        if let parameters = parameters, parameters.cropSize.height > 0 {
             completion(Float(parameters.cropSize.width / parameters.cropSize.height))
         } else {
             originalImage.imageSize { size in
@@ -54,7 +52,7 @@ final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
         }
     }
     
-    func setCroppingParameters(parameters: ImageCroppingParameters) {
+    func setCroppingParameters(_ parameters: ImageCroppingParameters) {
         self.parameters = parameters
     }
 }
