@@ -46,8 +46,8 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let url = NSURL(fileURLWithPath: path)
         let source = CGImageSourceCreateWithURL(url, nil)
         
-        let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
-        let orientation = options?[kCGImagePropertyOrientation] as? Int
+        let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
+        let orientation = (options as Dictionary?)?[kCGImagePropertyOrientation] as? Int
         
         guard !isCancelled else { return }
         var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
@@ -73,14 +73,14 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let url = NSURL(fileURLWithPath: path)
         let source = CGImageSourceCreateWithURL(url, nil)
         
-        let options: [NSString: NSObject] = [
+        let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceCreateThumbnailFromImageAlways: true
         ]
         
         guard !isCancelled else { return }
-        let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
+        let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options as CFDictionary) }
         
         guard !isCancelled else { return }
         callbackQueue.async { [resultHandler, id] in

@@ -115,7 +115,7 @@ final class CameraControlsView: UIView {
         photoView.transform = transform
     }
     
-    func setLatestPhotoLibraryItemImage(imageSource: ImageSource?) {
+    func setLatestPhotoLibraryItemImage(_ imageSource: ImageSource?) {
         photoView.setImage(
             fromSource: imageSource,
             size: CGSize(width: photoViewDiameter, height: photoViewDiameter),
@@ -124,7 +124,7 @@ final class CameraControlsView: UIView {
         )
     }
     
-    func setCameraControlsEnabled(enabled: Bool) {
+    func setCameraControlsEnabled(_ enabled: Bool) {
         shutterButton.isEnabled = enabled
         cameraToggleButton.isEnabled = enabled
         flashButton.isEnabled = enabled
@@ -132,27 +132,27 @@ final class CameraControlsView: UIView {
         adjustShutterButtonColor()
     }
     
-    func setFlashButtonVisible(visible: Bool) {
+    func setFlashButtonVisible(_ visible: Bool) {
         flashButton.isHidden = !visible
     }
     
-    func setFlashButtonOn(isOn: Bool) {
+    func setFlashButtonOn(_ isOn: Bool) {
         flashButton.isSelected = isOn
     }
     
-    func setCameraToggleButtonVisible(visible: Bool) {
+    func setCameraToggleButtonVisible(_ visible: Bool) {
         cameraToggleButton.isHidden = !visible
     }
     
-    func setShutterButtonEnabled(enabled: Bool) {
+    func setShutterButtonEnabled(_ enabled: Bool) {
         shutterButton.isEnabled = enabled
     }
     
-    func setPhotoLibraryButtonEnabled(enabled: Bool) {
+    func setPhotoLibraryButtonEnabled(_ enabled: Bool) {
         photoView.isUserInteractionEnabled = enabled
     }
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
+    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
         
         self.theme = theme
 

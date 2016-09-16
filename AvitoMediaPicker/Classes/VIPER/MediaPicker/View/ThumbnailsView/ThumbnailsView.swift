@@ -73,15 +73,15 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     func selectMediaItem(_ item: MediaPickerItem, animated: Bool = false) {
         if let indexPath = dataSource.indexPathForItem(item) {
-            collectionView.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: .None)
+            collectionView.selectItem(at: indexPath, animated: animated, scrollPosition: [])
         }
     }
     
     func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
         if let indexPath = dataSource.indexPathForItem(item) {
-            collectionView.scrollToItemAtIndexPath(
-                indexPath,
-                atScrollPosition: .CenteredHorizontally,
+            collectionView.scrollToItem(
+                at: indexPath,
+                at: .centeredHorizontally,
                 animated: animated
             )
         }
@@ -110,7 +110,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         collectionView.performBatchUpdates(animated: animated, { [weak self] in
             if let indexPaths = self?.dataSource.addItems(items) {
-                self?.collectionView.insertItemsAtIndexPaths(indexPaths)
+                self?.collectionView.insertItems(at: indexPaths)
             }
         }, completion: { _ in completion() })
     }
@@ -122,10 +122,10 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
             let selectedIndexPaths = collectionView.indexPathsForSelectedItems
             let cellWasSelected = selectedIndexPaths?.contains(indexPath) == true
             
-            collectionView.reloadItemsAtIndexPaths([indexPath])
+            collectionView.reloadItems(at: [indexPath])
             
             if cellWasSelected {
-                collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             }
         }
     }
@@ -140,7 +140,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         
         if dataSource.cameraCellVisible != visible {
             
-            let updatesFunction = { [weak self] () -> [NSIndexPath]? in
+            let updatesFunction = { [weak self] () -> [IndexPath]? in
                 self?.dataSource.cameraCellVisible = visible
                 return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
             }
@@ -185,9 +185,9 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch dataSource[indexPath] {
-        case .Camera:
+        case .camera:
             return cameraCell(forIndexPath: indexPath, inCollectionView: collectionView)
-        case .Photo(let mediaPickerItem):
+        case .photo(let mediaPickerItem):
             return photoCell(forIndexPath: indexPath, inCollectionView: collectionView, withItem: mediaPickerItem)
         }
     }
@@ -199,20 +199,20 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         return CGSize(width: height, height: height)
     }
     
-    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool {
+    func shouldApplyTransformToItemAtIndexPath(_ indexPath: IndexPath) -> Bool {
         switch dataSource[indexPath] {
-        case .Photo(_):
+        case .photo:
             return true
-        default:
+        case .camera:
             return false
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch dataSource[indexPath] {
-        case .Photo(let photo):
+        case .photo(let photo):
             onPhotoItemSelect?(photo)
-        case .Camera:
+        case .camera:
             onCameraItemSelect?()
         }
     }
@@ -226,14 +226,14 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     private func photoCell(
-        forIndexPath indexPath: NSIndexPath,
+        forIndexPath indexPath: IndexPath,
         inCollectionView collectionView: UICollectionView,
         withItem mediaPickerItem: MediaPickerItem
     ) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            photoCellReuseId,
-            forIndexPath: indexPath
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: photoCellReuseId,
+            for: indexPath
         )
         
         if let cell = cell as? MediaItemThumbnailCell {
@@ -245,13 +245,13 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     private func cameraCell(
-        forIndexPath indexPath: NSIndexPath,
+        forIndexPath indexPath: IndexPath,
         inCollectionView collectionView: UICollectionView
     ) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            cameraCellReuseId,
-            forIndexPath: indexPath
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: cameraCellReuseId,
+            for: indexPath
         )
         
         setUpCameraCell(cell)

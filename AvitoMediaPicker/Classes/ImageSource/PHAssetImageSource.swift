@@ -12,25 +12,25 @@ final class PHAssetImageSource: ImageSource {
 
     // MARK: - AbstractImage
     
-    func fullResolutionImageData(completion: (Data?) -> ()) {
+    func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
         
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         
-        imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
+        imageManager.requestImageData(for: asset, options: options) { data, _, _, _ in
             completion(data)
         }
     }
     
-    func imageSize(completion: (CGSize?) -> ()) {
+    func imageSize(completion: @escaping (CGSize?) -> ()) {
         dispatch_to_main_queue {
             completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
         }
     }
     
     func requestImage<T : InitializableWithCGImage>(
-        options options: ImageRequestOptions,
+        options: ImageRequestOptions,
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
@@ -54,7 +54,7 @@ final class PHAssetImageSource: ImageSource {
         }
         
         phOptions.progressHandler = { progress, _, _, info in
-            let imageRequestId = info?[PHImageResultRequestIDKey] as? Int ?? 0
+            let imageRequestId = info?[PHImageResultRequestIDKey] as? Int32 ?? 0
             
             if !downloadStarted {
                 startDownload(imageRequestId)
@@ -66,9 +66,9 @@ final class PHAssetImageSource: ImageSource {
 
         return imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
             
-            let requestId = info?[PHImageResultRequestIDKey] as? Int ?? 0
+            let requestId = info?[PHImageResultRequestIDKey] as? Int32 ?? 0
             let degraded = info?[PHImageResultIsDegradedKey] as? Bool ?? false
-            let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId) == true
+            let cancelled = info?[PHImageCancelledKey] as? Bool ?? false || self?.cancelledRequestIds.contains(requestId) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
@@ -82,7 +82,7 @@ final class PHAssetImageSource: ImageSource {
                     resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: requestId))
                 } else {
                     resultHandler(ImageRequestResult(
-                        image: image?.CGImage.flatMap { T(CGImage: $0) },
+                        image: image?.cgImage.flatMap { T(CGImage: $0) },
                         degraded: degraded,
                         requestId: requestId
                     ))

@@ -22,7 +22,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         items[indexPath.row] = item
     }
     
-    func insertItems(items: [(item: ItemType, indexPath: IndexPath)]) {
+    func insertItems(_ items: [(item: ItemType, indexPath: IndexPath)]) {
         let sortedItems = items.sorted { $0.indexPath.row < $1.indexPath.row }
         
         let appendedItems = sortedItems.filter { $0.indexPath.row >= self.items.count }
@@ -57,15 +57,15 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         }
     }
     
-    func addItem(item: ItemType) {
+    func addItem(_ item: ItemType) {
         items.append(item)
     }
 
-    func setItems(items: [ItemType]) {
+    func setItems(_ items: [ItemType]) {
         self.items = items
     }
     
-    func mutateItem(atIndexPath indexPath: IndexPath, mutator: (inout ItemType) -> ()) {
+    func mutateItem(at indexPath: IndexPath, mutator: (inout ItemType) -> ()) {
         
         var item = self.item(at: indexPath)
         mutator(&item)

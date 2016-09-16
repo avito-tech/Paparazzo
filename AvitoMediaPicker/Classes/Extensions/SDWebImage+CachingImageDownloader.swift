@@ -9,8 +9,8 @@ extension SDWebImageManager: CachingImageDownloader {
         -> CancellableImageDownload
     {
         return SDCancellableImageDownloadAdapter(
-            operation: downloadImageWithURL(url, options: SDWebImageOptions(), progress: progressHandler) { image, error, _, _, _ in
-                completion(image?.CGImage, error)
+            operation: downloadImageWithURL(url, options: [], progress: progressHandler) { image, error, _, _, _ in
+                completion(image?.cgImage, error)
             }
         )
     }

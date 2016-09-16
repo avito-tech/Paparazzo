@@ -36,7 +36,7 @@ struct PhotoLibraryItemSelectionState {
 struct PhotoLibraryChanges {
     
     // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
-    let removedIndexes: NSIndexSet
+    let removedIndexes: IndexSet
     let insertedItems: [(index: Int, item: PhotoLibraryItem)]
     let updatedItems: [(index: Int, item: PhotoLibraryItem)]
     let movedIndexes: [(from: Int, to: Int)]

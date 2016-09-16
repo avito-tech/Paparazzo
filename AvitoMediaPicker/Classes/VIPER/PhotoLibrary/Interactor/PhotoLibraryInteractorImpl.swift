@@ -42,7 +42,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         maxSelectedItemsCount = count
     }
     
-    func authorizationStatus(completion: (_ accessGranted: Bool) -> ()) {
+    func authorizationStatus(completion: @escaping (_ accessGranted: Bool) -> ()) {
         completion(photoLibraryItemsService.authorizationStatus == .authorized)
     }
     
@@ -72,7 +72,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
                 }
                 
                 changes = PhotoLibraryChanges(
-                    removedIndexes: NSIndexSet(),
+                    removedIndexes: IndexSet(),
                     insertedItems: insertedItems,
                     updatedItems: [],
                     movedIndexes: [],
@@ -89,7 +89,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         }
     }
     
-    func selectItem(item: PhotoLibraryItem, completion: (PhotoLibraryItemSelectionState) -> ()) {
+    func selectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
         
         if canSelectMoreItems() {
             selectedItems.append(item)
@@ -98,7 +98,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         completion(selectionState())
     }
     
-    func deselectItem(item: PhotoLibraryItem, completion: (PhotoLibraryItemSelectionState) -> ()) {
+    func deselectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
         
         if let index = selectedItems.index(of: item) {
             selectedItems.remove(at: index)
@@ -107,7 +107,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         completion(selectionState())
     }
     
-    func selectedItems(completion: ([PhotoLibraryItem]) -> ()) {
+    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ()) {
         completion(selectedItems)
     }
     
@@ -157,31 +157,29 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         
         var movedIndexes = [(from: Int, to: Int)]()
         
-        changes.fetchResultBeforeChanges.enumerateObjects { object, _, _ in
+        changes.fetchResultBeforeChanges.enumerateObjects(using: { object, _, _ in
             assets.append(object as? PHAsset)
+        })
+        
+        changes.removedIndexes?.reversed().forEach { index in
+            assets.remove(at: index)
         }
         
-        changes.removedIndexes?.enumerateIndexesWithOptions(.Reverse) { index, _ in
-            assets.removeAtIndex(index)
-        }
-        
-        changes.insertedIndexes?.enumerateIndexesWithOptions(.Reverse) { index, stop in
-            guard insertedObjectIndex >= 0 else { stop.memory = ObjCBool(true); return }
-            if let asset = changes.insertedObjects[insertedObjectIndex] as? PHAsset {
-                insertedObjects.append((index: index, item: self.photoLibraryItem(from: asset)))
-            }
+        changes.insertedIndexes?.reversed().forEach { index in
+            guard insertedObjectIndex >= 0 else { return }
+            let asset = changes.insertedObjects[insertedObjectIndex]
+            insertedObjects.append((index: index, item: photoLibraryItem(from: asset)))
             insertedObjectIndex -= 1
         }
         
-        changes.changedIndexes?.enumerateIndexesWithOptions(.Reverse) { index, stop in
-            guard updatedObjectIndex >= 0 else { stop.memory = ObjCBool(true); return }
-            if let asset = changes.changedObjects[updatedObjectIndex] as? PHAsset {
-                updatedObjects.append((index: index, item: self.photoLibraryItem(from: asset)))
-            }
+        changes.changedIndexes?.reversed().forEach { index in
+            guard updatedObjectIndex >= 0 else { return }
+            let asset = changes.changedObjects[updatedObjectIndex]
+            updatedObjects.append((index: index, item: self.photoLibraryItem(from: asset)))
             updatedObjectIndex -= 1
         }
         
-        changes.enumerateMovesWithBlock { from, to in
+        changes.enumerateMoves { from, to in
             movedIndexes.append((from: from, to: to))
         }
         
@@ -189,7 +187,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         assert(nonNilAssets.count == assets.count, "Objects other than PHAsset are not supported")
         
         let changes = PhotoLibraryChanges(
-            removedIndexes: changes.removedIndexes ?? NSIndexSet(),
+            removedIndexes: changes.removedIndexes ?? IndexSet(),
             insertedItems: insertedObjects,
             updatedItems: updatedObjects,
             movedIndexes: movedIndexes,

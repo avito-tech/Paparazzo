@@ -2,7 +2,7 @@ import UIKit
 
 final class PhotoLibraryLayout: UICollectionViewFlowLayout {
     
-    private var attributes = [NSIndexPath: UICollectionViewLayoutAttributes]()
+    private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize: CGSize = .zero
     
     // MARK: - Constants
@@ -24,11 +24,11 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
     
     // MARK: - UICollectionViewLayout
     
-    override func collectionViewContentSize() -> CGSize {
+    override var collectionViewContentSize: CGSize {
         return contentSize
     }
     
-    override func prepareLayout() {
+    override func prepare() {
         
         guard let collectionView = collectionView else {
             contentSize = .zero
@@ -41,7 +41,7 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
         let itemSize = cellSize()
         
         let section = 0
-        let numberOfItems = collectionView.numberOfItemsInSection(section)
+        let numberOfItems = collectionView.numberOfItems(inSection: section)
         
         var maxY = CGFloat(0)
         
@@ -55,9 +55,9 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
                 y: row * (itemSize.height + cellSpacing)
             )
             
-            let indexPath = NSIndexPath(forItem: item, inSection: section)
+            let indexPath = IndexPath(item: item, section: section)
             
-            let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = CGRect(
                 origin: origin,
                 size: itemSize
@@ -74,11 +74,11 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
         )
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return attributes.filter { $1.frame.intersects(rect) }.map { $1 }
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return attributes[indexPath]
     }
 }

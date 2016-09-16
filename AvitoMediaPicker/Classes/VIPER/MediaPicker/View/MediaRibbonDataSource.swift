@@ -17,13 +17,13 @@ final class MediaRibbonDataSource {
     
     subscript(indexPath: IndexPath) -> MediaRibbonItem {
         if indexPath.item < mediaPickerItems.count {
-            return .Photo(mediaPickerItems[indexPath.item])
+            return .photo(mediaPickerItems[indexPath.item])
         } else {
-            return .Camera
+            return .camera
         }
     }
     
-    func addItems(items: [MediaPickerItem]) -> [IndexPath] {
+    func addItems(_ items: [MediaPickerItem]) -> [IndexPath] {
         
         let insertedIndexes = mediaPickerItems.count ..< mediaPickerItems.count + items.count
         let indexPaths = insertedIndexes.map { IndexPath(item: $0, section: 0) }
@@ -33,7 +33,7 @@ final class MediaRibbonDataSource {
         return indexPaths
     }
     
-    func updateItem(item: MediaPickerItem) -> IndexPath? {
+    func updateItem(_ item: MediaPickerItem) -> IndexPath? {
         if let index = mediaPickerItems.index(of: item) {
             mediaPickerItems[index] = item
             return IndexPath(item: index, section: 0)
@@ -42,7 +42,7 @@ final class MediaRibbonDataSource {
         }
     }
     
-    func removeItem(item: MediaPickerItem) -> IndexPath? {
+    func removeItem(_ item: MediaPickerItem) -> IndexPath? {
         if let index = mediaPickerItems.index(of: item) {
             mediaPickerItems.remove(at: index)
             return IndexPath(item: index, section: 0)
@@ -51,7 +51,7 @@ final class MediaRibbonDataSource {
         }
     }
     
-    func indexPathForItem(item: MediaPickerItem) -> IndexPath? {
+    func indexPathForItem(_ item: MediaPickerItem) -> IndexPath? {
         return mediaPickerItems.index(of: item).flatMap { IndexPath(item: $0, section: 0) }
     }
     
@@ -61,6 +61,6 @@ final class MediaRibbonDataSource {
 }
 
 enum MediaRibbonItem {
-    case Photo(MediaPickerItem)
-    case Camera
+    case photo(MediaPickerItem)
+    case camera
 }

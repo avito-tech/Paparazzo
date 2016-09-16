@@ -49,7 +49,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     // MARK: - Customizable
     
-    func customizeWithItem(item: MediaPickerItem) {
+    func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
     }
     
@@ -57,7 +57,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     private var imageRequestId: ImageRequestId?
     
-    private func setProgressVisible(visible: Bool) {
+    private func setProgressVisible(_ visible: Bool) {
         if visible {
             progressIndicator.startAnimating()
         } else {

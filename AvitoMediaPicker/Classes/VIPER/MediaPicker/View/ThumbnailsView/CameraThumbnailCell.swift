@@ -13,15 +13,15 @@ final class CameraThumbnailCell: UICollectionViewCell {
         }
     }
     
-    func setCameraIcon(icon: UIImage?) {
+    func setCameraIcon(_ icon: UIImage?) {
         button.setImage(icon, for: .normal)
     }
     
-    func setCameraIconTransform(transform: CGAffineTransform) {
+    func setCameraIconTransform(_ transform: CGAffineTransform) {
         button.transform = transform
     }
     
-    func setOutputParameters(parameters: CameraOutputParameters) {
+    func setOutputParameters(_ parameters: CameraOutputParameters) {
         
         let cameraOutputBinder = CameraOutputGLKBinder(
             captureSession: parameters.captureSession,
@@ -35,7 +35,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
         self.cameraOutputBinder = cameraOutputBinder
     }
     
-    func setOutputOrientation(orientation: ExifOrientation) {
+    func setOutputOrientation(_ orientation: ExifOrientation) {
         cameraOutputBinder?.orientation = orientation
     }
     

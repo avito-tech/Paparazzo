@@ -22,7 +22,7 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - Customizable
     
-    func customizeWithItem(item: MediaPickerItem) {
+    func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
     }
 }

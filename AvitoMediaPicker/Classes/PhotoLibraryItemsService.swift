@@ -2,7 +2,7 @@ import Photos
 
 protocol PhotoLibraryItemsService {
     var authorizationStatus: PHAuthorizationStatus { get }
-    func observePhotos(handler: (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())
+    func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
@@ -67,11 +67,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         // Сначала пытаемся найти альбом Camera Roll
         let albums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
         
-        albums.enumerateObjects { collection, _, stop in
-            self.fetchResult = PHAsset.fetchAssets(in: collection, options: nil)
-            // Camera Roll должен идти самым первым, поэтому дальше не продолжаем
-            stop.memory = ObjCBool(true)
-        }
+        fetchResult = albums.firstObject.flatMap { PHAsset.fetchAssets(in: $0, options: nil) }
         
         // Fallback на случай, если по какой-то причине не нашли альбом Camera Roll
         if fetchResult == nil {
@@ -81,15 +77,15 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         callObserverHandler(changes: nil)
     }
 
-    private func callObserverHandler(changes: PHFetchResultChangeDetails?) {
-        observerHandler?(assets: assetsFromFetchResult(), changes: changes)
+    private func callObserverHandler(changes: PHFetchResultChangeDetails<PHAsset>?) {
+        observerHandler?(assetsFromFetchResult(), changes)
     }
     
     private func assetsFromFetchResult() -> [PHAsset] {
         var images = [PHAsset]()
-        fetchResult?.enumerateObjects { asset, _, _ in
+        fetchResult?.enumerateObjects(using: { asset, _, _ in
             images.append(asset)
-        }
+        })
         return images
     }
 }

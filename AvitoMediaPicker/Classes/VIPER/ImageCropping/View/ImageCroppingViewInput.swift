@@ -4,7 +4,7 @@ protocol ImageCroppingViewInput: class {
     
     func setTitle(_: String)
     
-    func setImage(_: ImageSource, previewImage: ImageSource?, completion: () -> ())
+    func setImage(_: ImageSource, previewImage: ImageSource?, completion: @escaping () -> ())
     func setImageTiltAngle(_: Float)
     func turnImageCounterclockwise()
     func setCroppingParameters(_: ImageCroppingParameters)

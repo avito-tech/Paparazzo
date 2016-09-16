@@ -85,7 +85,7 @@ public class RemoteImageSource: ImageSource {
         }
     }
     
-    public func isEqualTo(other: ImageSource) -> Bool {
+    public func isEqualTo(_ other: ImageSource) -> Bool {
         return (other as? RemoteImageSource).flatMap { $0.url == url } ?? false
     }
     
@@ -105,7 +105,7 @@ public class RemoteImageSource: ImageSource {
     
     private let imageDownloader: CachingImageDownloader
     
-    private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler: (T?) -> ()) -> RemoteImageRequestOperation<T> {
+    private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler: @escaping (T?) -> ()) -> RemoteImageRequestOperation<T> {
         
         let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
         let options = ImageRequestOptions(size: .FullResolution, deliveryMode: .Best)

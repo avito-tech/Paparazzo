@@ -8,7 +8,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.insertSubview(cloudIconView, atIndex: 0)
+        contentView.insertSubview(cloudIconView, at: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -23,11 +23,11 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.bottom = contentView.bounds.bottom
     }
     
-    override func didRequestImage(imageRequestId: ImageRequestId) {
+    override func didRequestImage(requestId imageRequestId: ImageRequestId) {
         self.imageRequestId = imageRequestId
     }
     
-    override func imageRequestResultReceived(result: ImageRequestResult<UIImage>) {
+    override func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {
         if result.requestId == self.imageRequestId {
             onImageSetFromSource?()
         }
@@ -35,7 +35,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - PhotoLibraryItemCell
     
-    func setCloudIcon(icon: UIImage?) {
+    func setCloudIcon(_ icon: UIImage?) {
         cloudIconView.image = icon
         setNeedsLayout()
     }
@@ -44,9 +44,9 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     var onImageSetFromSource: (() -> ())?
     
-    func customizeWithItem(item: PhotoLibraryItemCellData) {
+    func customizeWithItem(_ item: PhotoLibraryItemCellData) {
         imageSource = item.image
-        selected = item.selected
+        isSelected = item.selected
     }
     
     // MARK: - Private

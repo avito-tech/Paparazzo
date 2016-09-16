@@ -46,7 +46,7 @@ struct PhotoLibraryItemCellData {
 
 struct PhotoLibraryViewChanges {
     // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
-    let removedIndexes: NSIndexSet
+    let removedIndexes: IndexSet
     let insertedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let updatedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let movedIndexes: [(from: Int, to: Int)]

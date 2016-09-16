@@ -14,8 +14,8 @@ extension UIView {
             y: bounds.size.height * layer.anchorPoint.y
         )
         
-        newPoint = CGPointApplyAffineTransform(newPoint, transform)
-        oldPoint = CGPointApplyAffineTransform(oldPoint, transform)
+        newPoint = newPoint.applying(transform)
+        oldPoint = oldPoint.applying(transform)
         
         layer.position = CGPoint(
             x: layer.position.x - oldPoint.x + newPoint.x,
@@ -27,7 +27,7 @@ extension UIView {
     
     func snapshot() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
-        drawViewHierarchyInRect(bounds, afterScreenUpdates: true)
+        drawHierarchy(in: bounds, afterScreenUpdates: true)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
@@ -40,15 +40,15 @@ extension UICollectionView {
         performBatchUpdates(updates, completion: nil)
     }
     
-    func performNonAnimatedBatchUpdates(updates: @escaping () -> Void, completion: (Bool -> ())? = nil) {
+    func performNonAnimatedBatchUpdates(updates: @escaping () -> Void, completion: ((Bool) -> ())? = nil) {
         UIView.animate(withDuration: 0) { 
             self.performBatchUpdates(updates, completion: completion)
         }
     }
     
-    func performBatchUpdates(animated: Bool, _ updates: @escaping () -> Void, completion: (Bool -> ())? = nil) {
+    func performBatchUpdates(animated: Bool, _ updates: @escaping () -> Void, completion: ((Bool) -> ())? = nil) {
         let updateCollectionView = animated ? performBatchUpdates : performNonAnimatedBatchUpdates
-        updateCollectionView(updates, completion: completion)
+        updateCollectionView(updates, completion)
     }
     
     func insertItems(animated: Bool, _ updates: @escaping () -> [IndexPath]?) {
@@ -71,14 +71,14 @@ extension UICollectionView {
 extension UIImage {
     
     func scaled(scale: CGFloat) -> UIImage? {
-        return cgImage?.scaled(scale).flatMap { UIImage(CGImage: $0) }
+        return cgImage?.scaled(scale).flatMap { UIImage(cgImage: $0) }
     }
     
     func resized(toFit size: CGSize) -> UIImage? {
-        return cgImage?.resized(toFit: size).flatMap { UIImage(CGImage: $0) }
+        return cgImage?.resized(toFit: size).flatMap { UIImage(cgImage: $0) }
     }
     
     func resized(toFill size: CGSize) -> UIImage? {
-        return cgImage?.resized(toFill: size).flatMap { UIImage(CGImage: $0) }
+        return cgImage?.resized(toFill: size).flatMap { UIImage(cgImage: $0) }
     }
 }

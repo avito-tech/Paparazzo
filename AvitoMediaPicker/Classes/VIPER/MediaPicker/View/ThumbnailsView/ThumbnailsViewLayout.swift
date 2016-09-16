@@ -2,7 +2,7 @@ import UIKit
 
 final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
-    var itemsTransform = CGAffineTransformIdentity
+    var itemsTransform = CGAffineTransform.identity
     
     override init() {
         super.init()
@@ -14,15 +14,15 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     // MARK: - UICollectionViewLayout
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        let attributes = super.layoutAttributesForItem(at: indexPath)
         adjustAttributes(attributes)
         return attributes
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
-        let attributes = super.layoutAttributesForElementsInRect(rect)
+        let attributes = super.layoutAttributesForElements(in: rect)
         
         attributes?.forEach { attributes in
             
@@ -39,11 +39,11 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     // MARK: - Private
     
-    private func adjustAttributes(attributes: UICollectionViewLayoutAttributes?) {
+    private func adjustAttributes(_ attributes: UICollectionViewLayoutAttributes?) {
         attributes?.transform = itemsTransform
     }
 }
 
 protocol MediaRibbonLayoutDelegate: UICollectionViewDelegateFlowLayout {
-    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool
+    func shouldApplyTransformToItemAtIndexPath(_ indexPath: IndexPath) -> Bool
 }

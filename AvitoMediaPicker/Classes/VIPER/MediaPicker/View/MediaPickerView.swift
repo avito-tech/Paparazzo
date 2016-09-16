@@ -231,12 +231,12 @@ final class MediaPickerView: UIView {
             thumbnailRibbonView.selectCameraItem()
             photoPreviewView.scrollToCamera()
         
-        case .PhotoPreview(let photo):
+        case .photoPreview(let photo):
             
             photoPreviewView.scrollToMediaItem(photo)
             
-            cameraControlsView.hidden = true
-            photoControlsView.hidden = false
+            cameraControlsView.isHidden = true
+            photoControlsView.isHidden = false
         }
         
         self.mode = mode
@@ -269,8 +269,8 @@ final class MediaPickerView: UIView {
         
         flashView.alpha = 1
         
-        UIView.animateWithDuration(
-            0.3,
+        UIView.animate(
+            withDuration: 0.3,
             delay: 0,
             options: [.curveEaseOut],
             animations: { 
@@ -300,7 +300,7 @@ final class MediaPickerView: UIView {
         cameraControlsView.setPhotoLibraryButtonEnabled(enabled)
     }
     
-    func addItems(_ items: [MediaPickerItem], animated: Bool, completion: () -> ()) {
+    func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         photoPreviewView.addItems(items)
         thumbnailRibbonView.addItems(items, animated: animated, completion: completion)
     }
@@ -399,10 +399,10 @@ final class MediaPickerView: UIView {
         photoControlsView.setTheme(theme)
         thumbnailRibbonView.setTheme(theme)
 
-        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
+        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
 
-        closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
+        closeButton.setImage(theme.closeCameraIcon, for: .normal)
         
         continueButton.setTitleColor(
             theme.cameraContinueButtonTitleColor,
