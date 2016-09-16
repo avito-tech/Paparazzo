@@ -195,7 +195,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onViewDidAppear = { [weak self] animated in
-            self?.cameraModuleInput.mainModuleDidAppear(animated)
+            self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
         }
     }
     

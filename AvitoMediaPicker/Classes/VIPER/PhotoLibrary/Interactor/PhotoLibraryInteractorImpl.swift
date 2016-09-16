@@ -100,14 +100,14 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     func deselectItem(item: PhotoLibraryItem, completion: (PhotoLibraryItemSelectionState) -> ()) {
         
-        if let index = selectedItems.indexOf(item) {
-            selectedItems.removeAtIndex(index)
+        if let index = selectedItems.index(of: item) {
+            selectedItems.remove(at: index)
         }
         
         completion(selectionState())
     }
     
-    func selectedItems(completion: [PhotoLibraryItem] -> ()) {
+    func selectedItems(completion: ([PhotoLibraryItem]) -> ()) {
         completion(selectedItems)
     }
     
@@ -144,7 +144,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         )
     }
     
-    private func photoLibraryChanges(from changes: PHFetchResultChangeDetails)
+    private func photoLibraryChanges(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> (changes: PhotoLibraryChanges, assets: [PHAsset])
     {
         var assets = [PHAsset?]()
@@ -157,7 +157,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         
         var movedIndexes = [(from: Int, to: Int)]()
         
-        changes.fetchResultBeforeChanges.enumerateObjectsUsingBlock { object, _, _ in
+        changes.fetchResultBeforeChanges.enumerateObjects { object, _, _ in
             assets.append(object as? PHAsset)
         }
         

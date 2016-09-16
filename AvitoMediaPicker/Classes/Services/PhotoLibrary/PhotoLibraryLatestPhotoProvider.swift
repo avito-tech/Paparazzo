@@ -24,7 +24,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
             options.fetchLimit = 1
         }
         
-        fetchResult = PHAsset.fetchAssets(with: .Image, options: options)
+        fetchResult = PHAsset.fetchAssets(with: .image, options: options)
         
         super.init()
         
@@ -37,7 +37,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     // MARK: - PhotoLibraryLatestPhotoProvider
     
-    private var photoObserverHandler: (ImageSource? -> ())?
+    private var photoObserverHandler: ((ImageSource?) -> ())?
     
     func observePhoto(handler: ((ImageSource?) -> ())?) {
         photoObserverHandler = handler
@@ -57,7 +57,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     // MARK: - Private
     
     private func callObserver() {
-        let asset = fetchResult.firstObject as? PHAsset
+        let asset = fetchResult.firstObject
         let image = asset.flatMap { PHAssetImageSource(asset: $0) }
         photoObserverHandler?(image)
     }

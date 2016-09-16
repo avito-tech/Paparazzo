@@ -109,7 +109,7 @@ final class CameraControlsView: UIView {
     
     // MARK: - CameraControlsView
     
-    func setControlsTransform(transform: CGAffineTransform) {
+    func setControlsTransform(_ transform: CGAffineTransform) {
         flashButton.transform = transform
         cameraToggleButton.transform = transform
         photoView.transform = transform

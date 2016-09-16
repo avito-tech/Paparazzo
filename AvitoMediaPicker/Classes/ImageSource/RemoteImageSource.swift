@@ -77,7 +77,7 @@ public class RemoteImageSource: ImageSource {
         return requestId
     }
     
-    public func cancelRequest(id: ImageRequestId) {
+    public func cancelRequest(_ id: ImageRequestId) {
         for operation in RemoteImageSource.requestsQueue.operations {
             if let identifiableOperation = operation as? ImageRequestIdentifiable, identifiableOperation.id == id {
                 operation.cancel()

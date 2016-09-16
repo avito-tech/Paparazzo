@@ -15,9 +15,9 @@ extension SDWebImageManager: CachingImageDownloader {
         )
     }
     
-    func cachedImageForUrl(url: URL) -> CGImage? {
+    func cachedImageForUrl(_ url: URL) -> CGImage? {
         if let key = cacheKey(for: url) {
-            return (imageCache?.imageFromMemoryCacheForKey(key) ?? imageCache?.imageFromDiskCacheForKey(key))?.cgImage
+            return (imageCache?.imageFromMemoryCache(forKey: key) ?? imageCache?.imageFromDiskCache(forKey: key))?.cgImage
         } else {
             return nil
         }

@@ -21,19 +21,19 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     init() {
         
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .Horizontal
+        layout.scrollDirection = .horizontal
         layout.sectionInset = .zero
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .whiteColor()
+        collectionView.backgroundColor = .white
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.pagingEnabled = true
+        collectionView.isPagingEnabled = true
         collectionView.allowsSelection = false
-        collectionView.registerClass(PhotoPreviewCell.self, forCellWithReuseIdentifier: photoCellReuseId)
-        collectionView.registerClass(MainCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
+        collectionView.register(PhotoPreviewCell.self, forCellWithReuseIdentifier: photoCellReuseId)
+        collectionView.register(MainCameraCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
         
         super.init(frame: .zero)
         
@@ -60,9 +60,9 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         cameraView = view
     }
     
-    func scrollToCamera(animated animated: Bool = false) {
+    func scrollToCamera(animated: Bool = false) {
         let indexPath = dataSource.indexPathForCameraItem()
-        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: animated)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: animated)
     }
     
     func scrollToMediaItem(item: MediaPickerItem, animated: Bool = false) {
@@ -93,7 +93,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         if dataSource.cameraCellVisible != visible {
             
-            let updatesFunction = { [weak self] () -> [NSIndexPath]? in
+            let updatesFunction = { [weak self] () -> [IndexPath]? in
                 self?.dataSource.cameraCellVisible = visible
                 return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
             }
@@ -108,17 +108,17 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     func reloadCamera() {
         if dataSource.cameraCellVisible {
-            collectionView.reloadItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+            collectionView.reloadItems(at: [dataSource.indexPathForCameraItem()])
         }
     }
     
     // MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource.numberOfItems
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         switch dataSource[indexPath] {
         
@@ -238,7 +238,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private func indexOfPage(initialIndex: Int, afterInsertingPagesAtIndexes insertedIndexes: [Int]) -> Int {
         
-        let sortedIndexes = insertedIndexes.sort(<)
+        let sortedIndexes = insertedIndexes.sorted(by: <)
         var targetIndex = initialIndex
         
         for index in sortedIndexes {

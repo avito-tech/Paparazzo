@@ -34,7 +34,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     func observeLatestPhotoLibraryItem(handler: ((ImageSource?) -> ())?) {
-        latestLibraryPhotoProvider.observePhoto(handler)
+        latestLibraryPhotoProvider.observePhoto(handler: handler)
     }
     
     func addItems(_ items: [MediaPickerItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
@@ -43,7 +43,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         let itemsToAdd = items[0..<numberOfItemsToAdd]
         
         self.items.append(contentsOf: itemsToAdd)
-        completion(addedItems: Array(itemsToAdd), canAddItems: canAddItems())
+        completion(Array(itemsToAdd), canAddItems())
     }
     
     func addPhotoLibraryItems(_ photoLibraryItems: [PhotoLibraryItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {

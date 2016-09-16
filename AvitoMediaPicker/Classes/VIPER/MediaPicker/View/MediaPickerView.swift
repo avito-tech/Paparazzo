@@ -152,7 +152,7 @@ final class MediaPickerView: UIView {
             ? thumbnailHeightForSmallScreen + thumbnailRibbonInsets.top + thumbnailRibbonInsets.bottom
             : bottomPanelHeight - controlsHeight
         
-        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(thumbnailRibbonAlpha)
+        thumbnailRibbonView.backgroundColor = UIColor.white.withAlphaComponent(thumbnailRibbonAlpha)
         thumbnailRibbonView.contentInsets = thumbnailRibbonInsets
         thumbnailRibbonView.layout(
             left: bounds.left,
@@ -184,7 +184,7 @@ final class MediaPickerView: UIView {
         set { cameraControlsView.onFlashToggle = newValue }
     }
     
-    var onItemSelect: (MediaPickerItem -> ())?
+    var onItemSelect: ((MediaPickerItem) -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
@@ -201,7 +201,7 @@ final class MediaPickerView: UIView {
         set { photoControlsView.onCameraButtonTap = newValue }
     }
     
-    var onSwipeToItem: (MediaPickerItem -> ())? {
+    var onSwipeToItem: ((MediaPickerItem) -> ())? {
         get { return photoPreviewView.onSwipeToItem }
         set { photoPreviewView.onSwipeToItem = newValue }
     }
@@ -211,7 +211,7 @@ final class MediaPickerView: UIView {
         set { photoPreviewView.onSwipeToCamera = newValue }
     }
     
-    var onSwipeToCameraProgressChange: (CGFloat -> ())? {
+    var onSwipeToCameraProgressChange: ((CGFloat) -> ())? {
         get { return photoPreviewView.onSwipeToCameraProgressChange }
         set { photoPreviewView.onSwipeToCameraProgressChange = newValue }
     }
@@ -224,9 +224,9 @@ final class MediaPickerView: UIView {
         
         switch mode {
         
-        case .Camera:
-            cameraControlsView.hidden = false
-            photoControlsView.hidden = true
+        case .camera:
+            cameraControlsView.isHidden = false
+            photoControlsView.isHidden = true
             
             thumbnailRibbonView.selectCameraItem()
             photoPreviewView.scrollToCamera()
@@ -272,7 +272,7 @@ final class MediaPickerView: UIView {
         UIView.animateWithDuration(
             0.3,
             delay: 0,
-            options: [.CurveEaseOut],
+            options: [.curveEaseOut],
             animations: { 
                 self.flashView.alpha = 0
             },
@@ -336,13 +336,13 @@ final class MediaPickerView: UIView {
         deviceOrientation = orientation
         
         var orientation = orientation
-        if case .PhotoPreview(_) = mode {
-            orientation = .Portrait
+        if case .photoPreview = mode {
+            orientation = .portrait
         }
         
         let transform = CGAffineTransform(deviceOrientation: orientation)
         
-        closeAndContinueButtonsSwapped = (orientation == .LandscapeLeft)
+        closeAndContinueButtonsSwapped = (orientation == .landscapeLeft)
         
         closeButton.transform = transform
         continueButton.transform = transform
@@ -385,12 +385,12 @@ final class MediaPickerView: UIView {
     }
     
     func setContinueButtonTitle(_ title: String) {
-        continueButton.setTitle(title, forState: .Normal)
-        continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
+        continueButton.setTitle(title, for: .normal)
+        continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
     func setContinueButtonEnabled(_ enabled: Bool) {
-        continueButton.enabled = enabled
+        continueButton.isEnabled = enabled
     }
     
     func setTheme(_ theme: MediaPickerRootModuleUITheme) {
@@ -406,26 +406,26 @@ final class MediaPickerView: UIView {
         
         continueButton.setTitleColor(
             theme.cameraContinueButtonTitleColor,
-            forState: .Normal
+            for: .normal
         )
         continueButton.setTitleColor(
             theme.cameraContinueButtonTitleHighlightedColor,
-            forState: .Highlighted
+            for: .highlighted
         )
         
         let onePointSize = CGSize(width: 1, height: 1)
         for button in [continueButton, closeButton] {
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
-                forState: .Normal
+                for: .normal
             )
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundHighlightedColor, imageSize: onePointSize),
-                forState: .Highlighted
+                for: .highlighted
             )
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundDisabledColor, imageSize: onePointSize),
-                forState: .Disabled
+                for: .disabled
             )
         }
     }

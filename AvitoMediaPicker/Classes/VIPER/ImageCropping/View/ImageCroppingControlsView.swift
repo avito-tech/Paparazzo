@@ -108,7 +108,7 @@ final class ImageCroppingControlsView: UIView {
         set { rotationSliderView.onSliderValueChange = newValue }
     }
     
-    func setTheme(theme: ImageCroppingUITheme) {
+    func setTheme(_ theme: ImageCroppingUITheme) {
         rotationButton.setImage(theme.rotationIcon, for: .normal)
         gridButton.setImage(theme.gridIcon, for: .normal)
         discardButton.setImage(theme.cropperDiscardIcon, for: .normal)
@@ -128,24 +128,24 @@ final class ImageCroppingControlsView: UIView {
         rotationSliderView.setMaximumValue(degrees)
     }
     
-    func setRotationSliderValue(value: Float) {
+    func setRotationSliderValue(_ value: Float) {
         rotationSliderView.setValue(value)
     }
     
-    func setControlsEnabled(enabled: Bool) {
+    func setControlsEnabled(_ enabled: Bool) {
         rotationButton.isEnabled = enabled
         gridButton.isEnabled = enabled
         rotationSliderView.isUserInteractionEnabled = enabled
         rotationCancelButton.isEnabled = enabled
     }
     
-    func setCancelRotationButtonTitle(title: String) {
+    func setCancelRotationButtonTitle(_ title: String) {
         rotationCancelButton.setTitle(title, for: .normal)
         rotationCancelButton.sizeToFit()
         rotationCancelButton.layer.cornerRadius = rotationCancelButton.size.height / 2
     }
     
-    func setCancelRotationButtonVisible(visible: Bool) {
+    func setCancelRotationButtonVisible(_ visible: Bool) {
         rotationCancelButton.isHidden = !visible
     }
     

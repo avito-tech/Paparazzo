@@ -5,25 +5,25 @@ final class PHAssetImageSource: ImageSource {
     private let asset: PHAsset
     private let imageManager: PHImageManager
 
-    init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.defaultManager()) {
+    init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.default()) {
         self.asset = asset
         self.imageManager = imageManager
     }
 
     // MARK: - AbstractImage
     
-    func fullResolutionImageData(completion: NSData? -> ()) {
+    func fullResolutionImageData(completion: (Data?) -> ()) {
         
         let options = PHImageRequestOptions()
-        options.deliveryMode = .HighQualityFormat
-        options.networkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
         
         imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
             completion(data)
         }
     }
     
-    func imageSize(completion: CGSize? -> ()) {
+    func imageSize(completion: (CGSize?) -> ()) {
         dispatch_to_main_queue {
             completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
         }
@@ -31,7 +31,7 @@ final class PHAssetImageSource: ImageSource {
     
     func requestImage<T : InitializableWithCGImage>(
         options options: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
         let (phOptions, size, contentMode) = imageRequestParameters(from: options)
@@ -54,7 +54,7 @@ final class PHAssetImageSource: ImageSource {
         }
         
         phOptions.progressHandler = { progress, _, _, info in
-            let imageRequestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
+            let imageRequestId = info?[PHImageResultRequestIDKey] as? Int ?? 0
             
             if !downloadStarted {
                 startDownload(imageRequestId)
@@ -64,10 +64,10 @@ final class PHAssetImageSource: ImageSource {
             }
         }
 
-        return imageManager.requestImageForAsset(asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
+        return imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
             
-            let requestId = info?[PHImageResultRequestIDKey]?.intValue ?? 0
-            let degraded = info?[PHImageResultIsDegradedKey]?.boolValue ?? false
+            let requestId = info?[PHImageResultRequestIDKey] as? Int ?? 0
+            let degraded = info?[PHImageResultIsDegradedKey] as? Bool ?? false
             let cancelled = info?[PHImageCancelledKey]?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
@@ -91,14 +91,14 @@ final class PHAssetImageSource: ImageSource {
         }
     }
     
-    func cancelRequest(id: ImageRequestId) {
+    func cancelRequest(_ id: ImageRequestId) {
         dispatch_to_main_queue {
             self.cancelledRequestIds.insert(id)
             self.imageManager.cancelImageRequest(id)
         }
     }
     
-    func isEqualTo(other: ImageSource) -> Bool {
+    func isEqualTo(_ other: ImageSource) -> Bool {
         if other === self {
             return true
         } else if let other = other as? PHAssetImageSource {
@@ -116,15 +116,15 @@ final class PHAssetImageSource: ImageSource {
         -> (options: PHImageRequestOptions, size: CGSize, contentMode: PHImageContentMode)
     {
         let phOptions = PHImageRequestOptions()
-        phOptions.networkAccessAllowed = true
+        phOptions.isNetworkAccessAllowed = true
         
         switch options.deliveryMode {
         case .Progressive:
-            phOptions.deliveryMode = .Opportunistic
-            phOptions.resizeMode = .Fast
+            phOptions.deliveryMode = .opportunistic
+            phOptions.resizeMode = .fast
         case .Best:
-            phOptions.deliveryMode = .HighQualityFormat
-            phOptions.resizeMode = .Exact
+            phOptions.deliveryMode = .highQualityFormat
+            phOptions.resizeMode = .exact
         }
         
         let size: CGSize
@@ -133,13 +133,13 @@ final class PHAssetImageSource: ImageSource {
         switch options.size {
         case .FullResolution:
             size = PHImageManagerMaximumSize
-            contentMode = .AspectFill
+            contentMode = .aspectFill
         case .FitSize(let sizeToFit):
             size = sizeToFit
-            contentMode = .AspectFit
+            contentMode = .aspectFit
         case .FillSize(let sizeToFill):
             size = sizeToFill
-            contentMode = .AspectFill
+            contentMode = .aspectFill
         }
         
         return (options: phOptions, size: size, contentMode: contentMode)
@@ -149,9 +149,9 @@ final class PHAssetImageSource: ImageSource {
 private extension PHImageContentMode {
     var debugDescription: String {
         switch self {
-        case .AspectFit:
+        case .aspectFit:
             return "AspectFit"
-        case .AspectFill:
+        case .aspectFill:
             return "AspectFill"
         }
     }

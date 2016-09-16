@@ -36,33 +36,33 @@ extension UIView {
 
 extension UICollectionView {
     
-    func performBatchUpdates(updates: () -> Void) {
+    func performBatchUpdates(updates: @escaping () -> Void) {
         performBatchUpdates(updates, completion: nil)
     }
     
-    func performNonAnimatedBatchUpdates(updates: (() -> Void), completion: (Bool -> ())? = nil) {
-        UIView.animateWithDuration(0) { 
+    func performNonAnimatedBatchUpdates(updates: @escaping () -> Void, completion: (Bool -> ())? = nil) {
+        UIView.animate(withDuration: 0) { 
             self.performBatchUpdates(updates, completion: completion)
         }
     }
     
-    func performBatchUpdates(animated animated: Bool, _ updates: (() -> Void), completion: (Bool -> ())? = nil) {
+    func performBatchUpdates(animated: Bool, _ updates: @escaping () -> Void, completion: (Bool -> ())? = nil) {
         let updateCollectionView = animated ? performBatchUpdates : performNonAnimatedBatchUpdates
         updateCollectionView(updates, completion: completion)
     }
     
-    func insertItems(animated animated: Bool, _ updates: () -> [NSIndexPath]?) {
+    func insertItems(animated: Bool, _ updates: @escaping () -> [IndexPath]?) {
         performBatchUpdates(animated: animated, { [weak self] in
             if let indexPaths = updates() {
-                self?.insertItemsAtIndexPaths(indexPaths)
+                self?.insertItems(at: indexPaths)
             }
         })
     }
     
-    func deleteItems(animated animated: Bool, _ updates: () -> [NSIndexPath]?) {
+    func deleteItems(animated: Bool, _ updates: @escaping () -> [IndexPath]?) {
         performBatchUpdates(animated: animated, { [weak self] in
             if let indexPaths = updates() {
-                self?.deleteItemsAtIndexPaths(indexPaths)
+                self?.deleteItems(at: indexPaths)
             }
         })
     }
@@ -71,14 +71,14 @@ extension UICollectionView {
 extension UIImage {
     
     func scaled(scale: CGFloat) -> UIImage? {
-        return CGImage?.scaled(scale).flatMap { UIImage(CGImage: $0) }
+        return cgImage?.scaled(scale).flatMap { UIImage(CGImage: $0) }
     }
     
     func resized(toFit size: CGSize) -> UIImage? {
-        return CGImage?.resized(toFit: size).flatMap { UIImage(CGImage: $0) }
+        return cgImage?.resized(toFit: size).flatMap { UIImage(CGImage: $0) }
     }
     
     func resized(toFill size: CGSize) -> UIImage? {
-        return CGImage?.resized(toFill: size).flatMap { UIImage(CGImage: $0) }
+        return cgImage?.resized(toFill: size).flatMap { UIImage(CGImage: $0) }
     }
 }

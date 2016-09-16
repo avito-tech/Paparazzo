@@ -45,18 +45,18 @@ final class MediaRibbonDataSource {
     func removeItem(item: MediaPickerItem) -> IndexPath? {
         if let index = mediaPickerItems.index(of: item) {
             mediaPickerItems.remove(at: index)
-            return IndexPath(forItem: index, inSection: 0)
+            return IndexPath(item: index, section: 0)
         } else {
             return nil
         }
     }
     
     func indexPathForItem(item: MediaPickerItem) -> IndexPath? {
-        return mediaPickerItems.indexOf(item).flatMap { IndexPath(forItem: $0, inSection: 0) }
+        return mediaPickerItems.index(of: item).flatMap { IndexPath(item: $0, section: 0) }
     }
     
     func indexPathForCameraItem() -> IndexPath {
-        return IndexPath(forItem: mediaPickerItems.count, inSection: 0)
+        return IndexPath(item: mediaPickerItems.count, section: 0)
     }
 }
 

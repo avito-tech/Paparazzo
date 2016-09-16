@@ -54,7 +54,7 @@ final class PhotoControlsView: UIView {
     var onCropButtonTap: (() -> ())?
     var onCameraButtonTap: (() -> ())?
     
-    func setControlsTransform(transform: CGAffineTransform) {
+    func setControlsTransform(_ transform: CGAffineTransform) {
         removeButton.transform = transform
         cropButton.transform = transform
     }

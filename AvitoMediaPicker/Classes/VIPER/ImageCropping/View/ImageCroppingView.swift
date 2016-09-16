@@ -216,7 +216,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         
         case .landscape_4x3:
             
-            titleLabel.textColor = .blackColor()
+            titleLabel.textColor = .black
             
             aspectRatioButton.setTitleColor(.black, for: .normal)
             aspectRatioButton.layer.borderColor = UIColor.black.cgColor
@@ -229,15 +229,15 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     }
     
     func setAspectRatioButtonTitle(_ title: String) {
-        aspectRatioButton.setTitle(title, forState: .Normal)
+        aspectRatioButton.setTitle(title, for: .normal)
     }
     
     func setMinimumRotation(_ degrees: Float) {
-        controlsView.setMinimumRotation(degrees)
+        controlsView.setMinimumRotation(degrees: degrees)
     }
     
     func setMaximumRotation(_ degrees: Float) {
-        controlsView.setMaximumRotation(degrees)
+        controlsView.setMaximumRotation(degrees: degrees)
     }
     
     func setCancelRotationButtonTitle(_ title: String) {
