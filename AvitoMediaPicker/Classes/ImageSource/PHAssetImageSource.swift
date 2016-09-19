@@ -54,7 +54,7 @@ final class PHAssetImageSource: ImageSource {
         }
         
         phOptions.progressHandler = { progress, _, _, info in
-            let imageRequestId = info?[PHImageResultRequestIDKey] as? Int32 ?? 0
+            let imageRequestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
             
             if !downloadStarted {
                 startDownload(imageRequestId)
