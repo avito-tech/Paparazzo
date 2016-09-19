@@ -11,11 +11,11 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     // MARK: - ExampleRouter
     
     func showMediaPicker(
-        items items: [MediaPickerItem],
+        items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
-        configuration: MediaPickerModule -> ()
+        configuration: (MediaPickerModule) -> ()
     ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
         
@@ -35,9 +35,9 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     }
     
     func showPhotoLibrary(
-        selectedItems selectedItems: [PhotoLibraryItem],
+        selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: PhotoLibraryModule -> ()
+        configuration: (PhotoLibraryModule) -> ()
     ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             

@@ -10,7 +10,7 @@ final class ExampleViewController: UIViewController, ExampleViewInput {
         view = ExampleView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
@@ -19,7 +19,7 @@ final class ExampleViewController: UIViewController, ExampleViewInput {
     
     private var disposables = [AnyObject]()
     
-    func addDisposable(disposable: AnyObject) {
+    func addDisposable(_ disposable: AnyObject) {
         disposables.append(disposable)
     }
     

@@ -7,14 +7,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
 //        print(UIFont.fontNamesForFamilyName("Latoto"))
         debugPrint(NSTemporaryDirectory())
         
         cleanTemporaryDirectory()
         
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
             ExampleAssemblyImpl().viewController(routerSeed: routerSeed)
@@ -27,14 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func cleanTemporaryDirectory() {
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         let dirPath = NSTemporaryDirectory()
         
-        if let enumerator = fileManager.enumeratorAtPath(dirPath) {
+        if let enumerator = fileManager.enumerator(atPath: dirPath) {
             while let filename = enumerator.nextObject() as? String {
-                let path = (dirPath as NSString).stringByAppendingPathComponent(filename)
+                let path = (dirPath as NSString).appendingPathComponent(filename)
                 do {
-                    try fileManager.removeItemAtPath(path)
+                    try fileManager.removeItem(atPath: path)
                 } catch {}
             }
         }

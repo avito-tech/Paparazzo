@@ -13,18 +13,18 @@ final class ExampleView: UIView {
     init() {
         super.init(frame: .zero)
         
-        mediaPickerButton.setTitle("Show Media Picker", forState: .Normal)
+        mediaPickerButton.setTitle("Show Media Picker", for: .normal)
         mediaPickerButton.addTarget(
             self,
-            action: #selector(ExampleView.onShowMediaPickerButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onShowMediaPickerButtonTap(_:)),
+            for: .touchUpInside
         )
         
-        photoLibraryButton.setTitle("Show Photo Library", forState: .Normal)
+        photoLibraryButton.setTitle("Show Photo Library", for: .normal)
         photoLibraryButton.addTarget(
             self,
-            action: #selector(ExampleView.onShowPhotoLibraryButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onShowPhotoLibraryButtonTap(_:)),
+            for: .touchUpInside
         )
         
         addSubview(mediaPickerButton)
@@ -49,11 +49,11 @@ final class ExampleView: UIView {
     
     // MARK: - Private
     
-    @objc private func onShowMediaPickerButtonTap(sender: UIButton) {
+    @objc private func onShowMediaPickerButtonTap(_: UIButton) {
         onShowMediaPickerButtonTap?()
     }
     
-    @objc private func onShowPhotoLibraryButtonTap(sender: UIButton) {
+    @objc private func onShowPhotoLibraryButtonTap(_: UIButton) {
         onShowPhotoLibraryButtonTap?()
     }
 }
