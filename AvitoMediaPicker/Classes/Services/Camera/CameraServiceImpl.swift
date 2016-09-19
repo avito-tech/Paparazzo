@@ -200,7 +200,7 @@ final class CameraServiceImpl: CameraService {
         
         let path = randomTemporaryPhotoFilePath()
         
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        DispatchQueue.global(qos: .userInitiated).async {
             if let data = sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) }) {
                 do {
                     try data.write(to: URL(fileURLWithPath: path), options: [.atomicWrite])

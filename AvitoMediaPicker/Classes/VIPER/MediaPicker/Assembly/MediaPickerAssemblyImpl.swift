@@ -3,7 +3,7 @@ import Marshroute
 
 public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     
-    typealias AssemblyFactory = protocol<CameraAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
+    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     private let theme: MediaPickerUITheme

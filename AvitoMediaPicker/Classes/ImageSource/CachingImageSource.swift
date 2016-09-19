@@ -36,7 +36,7 @@ final class CachingImageSource: ImageSource {
             
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(
-                    image: T(CGImage: cachedImageWrapper.image),
+                    image: T(cgImage: cachedImageWrapper.image),
                     degraded: false,
                     requestId: 0
                 ))
@@ -55,7 +55,7 @@ final class CachingImageSource: ImageSource {
                 }
                 
                 resultHandler(ImageRequestResult(
-                    image: (result.image?.image).flatMap { T(CGImage: $0) },
+                    image: (result.image?.image).flatMap { T(cgImage: $0) },
                     degraded: result.degraded,
                     requestId: result.requestId
                 ))

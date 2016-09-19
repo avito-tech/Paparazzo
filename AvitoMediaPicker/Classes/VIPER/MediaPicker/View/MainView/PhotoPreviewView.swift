@@ -146,20 +146,18 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private var lastOffset: CGFloat?
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        guard let lastOffset = lastOffset else {
+        guard lastOffset != nil else {
             self.lastOffset = scrollView.contentOffset.x
             return
         }
         
         let offset = scrollView.contentOffset.x
         let pageWidth = scrollView.width
-        let direction = offset - lastOffset
         let numberOfPages = ceil(scrollView.contentSize.width / pageWidth)
         
         let penultimatePageOffsetX = pageWidth * (numberOfPages - 2)
-        let isLastPageVisible = (offset >= penultimatePageOffsetX)
         
         let progress = min(1, (offset - penultimatePageOffsetX) / pageWidth)
         
@@ -168,13 +166,13 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             onSwipeFinished()
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         onSwipeFinished()
     }
     

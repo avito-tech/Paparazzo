@@ -67,7 +67,8 @@ public extension UIImageView {
     
     private var imageRequestId: ImageRequestId? {
         get {
-            return (objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber)?.intValue
+            let intAsNSNumber = objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber
+            return (intAsNSNumber?.intValue).flatMap { ImageRequestId($0) }
         }
         set {
             let number = newValue.flatMap { NSNumber(value: $0) }

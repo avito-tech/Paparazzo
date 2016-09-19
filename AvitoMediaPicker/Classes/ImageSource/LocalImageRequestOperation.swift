@@ -60,7 +60,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         guard !isCancelled else { return }
         callbackQueue.async { [resultHandler, id] in
             resultHandler(ImageRequestResult(
-                image: cgImage.flatMap { T(CGImage: $0) },
+                image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
                 requestId: id
             ))
@@ -85,7 +85,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         guard !isCancelled else { return }
         callbackQueue.async { [resultHandler, id] in
             resultHandler(ImageRequestResult(
-                image: cgImage.flatMap { T(CGImage: $0) },
+                image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
                 requestId: id
             ))

@@ -71,7 +71,7 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Operation,
                         self.callbackQueue.async { [imageRequestId = self.id] in
                             self.options.onDownloadFinish?(imageRequestId)
                             self.resultHandler(ImageRequestResult(
-                                image: cgImage.flatMap { T(CGImage: $0) },
+                                image: cgImage.flatMap { T(cgImage: $0) },
                                 degraded: false,
                                 requestId: imageRequestId
                             ))

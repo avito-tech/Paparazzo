@@ -5,7 +5,7 @@ public protocol PhotoLibraryAssembly: class {
     func module(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        routerSeed routerSeed: RouterSeed,
+        routerSeed: RouterSeed,
         configuration: (PhotoLibraryModule) -> ()
     ) -> UIViewController
 }

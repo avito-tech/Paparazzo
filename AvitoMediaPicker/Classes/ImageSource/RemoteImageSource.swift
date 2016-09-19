@@ -60,7 +60,7 @@ public class RemoteImageSource: ImageSource {
         
         if let previewImage = previewImage ?? cachedImage, options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
+                resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         

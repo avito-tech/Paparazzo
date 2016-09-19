@@ -158,7 +158,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         var movedIndexes = [(from: Int, to: Int)]()
         
         changes.fetchResultBeforeChanges.enumerateObjects(using: { object, _, _ in
-            assets.append(object as? PHAsset)
+            assets.append(object)
         })
         
         changes.removedIndexes?.reversed().forEach { index in

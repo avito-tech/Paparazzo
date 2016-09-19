@@ -28,7 +28,7 @@ final class CroppedImageSource: ImageSource {
         
         if let previewImage = previewImage, options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
+                resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         
@@ -47,7 +47,7 @@ final class CroppedImageSource: ImageSource {
             
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(
-                    image: resizedImage.flatMap { T(CGImage: $0) },
+                    image: resizedImage.flatMap { T(cgImage: $0) },
                     degraded: false,
                     requestId: requestId
                 ))
@@ -105,7 +105,7 @@ final class CroppedImageSource: ImageSource {
     
     private var croppedImage: CGImage? {
         get { return croppedImageCache.value?.image }
-        set { croppedImageCache.value = newValue.flatMap { CGImageWrapper(CGImage: $0) } }
+        set { croppedImageCache.value = newValue.flatMap { CGImageWrapper(cgImage: $0) } }
     }
     
     private func getCroppedImage(completion: @escaping (CGImage?) -> ()) {

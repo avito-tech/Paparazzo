@@ -82,7 +82,7 @@ final class PHAssetImageSource: ImageSource {
                     resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: requestId))
                 } else {
                     resultHandler(ImageRequestResult(
-                        image: image?.cgImage.flatMap { T(CGImage: $0) },
+                        image: image?.cgImage.flatMap { T(cgImage: $0) },
                         degraded: degraded,
                         requestId: requestId
                     ))

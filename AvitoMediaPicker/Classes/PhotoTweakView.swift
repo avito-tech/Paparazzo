@@ -197,22 +197,22 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - UIScrollViewDelegate
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.scrollView.imageView
     }
     
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         manuallyZoomed = true
         notifyAboutCroppingParametersChange()
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             notifyAboutCroppingParametersChange()
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         notifyAboutCroppingParametersChange()
     }
     
@@ -263,7 +263,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         updateMasks()
     }
     
-    private func updateMasks(animated animated: Bool = false) {
+    private func updateMasks(animated: Bool = false) {
         
         let horizontalMaskSize = CGSize(
             width: bounds.size.width,

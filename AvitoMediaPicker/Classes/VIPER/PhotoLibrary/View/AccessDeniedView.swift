@@ -86,7 +86,6 @@ final class AccessDeniedView: UIView {
     {
         let titleBottomMargin: CGFloat = 7
         let messageBottomMargin: CGFloat = 34
-        let buttonSideMargin: CGFloat = 60
         let buttonHeight: CGFloat = 52
         
         let labelsWidth = bounds.size.width * 0.8

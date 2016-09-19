@@ -5,11 +5,11 @@ extension SDWebImageManager: CachingImageDownloader {
     func downloadImageAtUrl(
         _ url: URL,
         progressHandler: ((_ receivedSize: Int, _ expectedSize: Int) -> ())?,
-        completion: @escaping (_ image: CGImage?, _ error: NSError?) -> ())
+        completion: @escaping (_ image: CGImage?, _ error: Error?) -> ())
         -> CancellableImageDownload
     {
         return SDCancellableImageDownloadAdapter(
-            operation: downloadImageWithURL(url, options: [], progress: progressHandler) { image, error, _, _, _ in
+            operation: downloadImage(with: url, options: [], progress: progressHandler) { image, error, _, _, _ in
                 completion(image?.cgImage, error)
             }
         )

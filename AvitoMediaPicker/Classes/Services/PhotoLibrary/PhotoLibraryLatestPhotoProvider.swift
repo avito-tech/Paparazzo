@@ -2,7 +2,7 @@ import Photos
 import UIKit
 
 protocol PhotoLibraryLatestPhotoProvider {
-    func observePhoto(handler: ((ImageSource?) -> ())?)
+    func observePhoto(handler: @escaping (ImageSource?) -> ())
 }
 
 final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPhotoProvider, PHPhotoLibraryChangeObserver {
@@ -39,7 +39,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     private var photoObserverHandler: ((ImageSource?) -> ())?
     
-    func observePhoto(handler: ((ImageSource?) -> ())?) {
+    func observePhoto(handler: @escaping (ImageSource?) -> ()) {
         photoObserverHandler = handler
         callObserver()
     }

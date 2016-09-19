@@ -19,6 +19,6 @@ protocol MediaPickerInteractor: class {
     
     func cropCanvasSize(completion: @escaping (CGSize) -> ())
     
-    func observeDeviceOrientation(handler: (@escaping (DeviceOrientation) -> ())?)
-    func observeLatestPhotoLibraryItem(handler: (@escaping (ImageSource?) -> ())?)
+    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
+    func observeLatestPhotoLibraryItem(handler: @escaping (ImageSource?) -> ())
 }

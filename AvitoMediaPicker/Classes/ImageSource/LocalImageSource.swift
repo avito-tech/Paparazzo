@@ -23,7 +23,7 @@ public final class LocalImageSource: ImageSource {
         
         if let previewImage = previewImage, options.deliveryMode == .Progressive {
             dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
+                resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         

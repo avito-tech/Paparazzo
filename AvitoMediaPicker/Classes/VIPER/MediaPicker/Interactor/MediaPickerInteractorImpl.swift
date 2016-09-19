@@ -28,12 +28,12 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     // MARK: - MediaPickerInteractor
     
-    func observeDeviceOrientation(handler: ((DeviceOrientation) -> ())?) {
+    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
         deviceOrientationService.onOrientationChange = handler
-        handler?(deviceOrientationService.currentOrientation)
+        handler(deviceOrientationService.currentOrientation)
     }
     
-    func observeLatestPhotoLibraryItem(handler: ((ImageSource?) -> ())?) {
+    func observeLatestPhotoLibraryItem(handler: @escaping (ImageSource?) -> ()) {
         latestLibraryPhotoProvider.observePhoto(handler: handler)
     }
     

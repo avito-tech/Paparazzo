@@ -59,7 +59,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         
         // Высчитываем этот inset, чтобы в случаях, когда слайдер находится в крайних положениях,
         // метки на шкале и указатель текущего значения совпадали
-        let sideInset = (bounds.size.width - scaleView.divisionWidth) / 2 % (scaleView.divisionWidth + scaleView.divisionsSpacing)
+        let sideInset = ((bounds.size.width - scaleView.divisionWidth) / 2).truncatingRemainder(dividingBy: scaleView.divisionWidth + scaleView.divisionsSpacing)
         
         scaleView.contentInsets = UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
         scaleView.frame = CGRect(origin: .zero, size: scaleView.sizeThatFits(bounds.size))
@@ -94,7 +94,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     
     // MARK: - UIScrollViewDelegate
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         let offset = scrollView.contentOffset.x
         let significantWidth = scrollView.contentSize.width - bounds.size.width
@@ -105,7 +105,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     }
     
     // Это отключает deceleration у scroll view
-    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(scrollView.contentOffset, animated: true)
     }
     
