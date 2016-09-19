@@ -15,18 +15,19 @@ public protocol ImageSource: class {
      - может вызываться несколько раз, если options.deliveryMode == .Progressive
      - может вызваться синхронно до выхода из функции!
     */
+    @discardableResult
     func requestImage<T: InitializableWithCGImage>(
-        options _: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
+        options: ImageRequestOptions,
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     
     func cancelRequest(_: ImageRequestId)
     
-    func imageSize(completion: CGSize? -> ())
+    func imageSize(completion: @escaping (CGSize?) -> ())
     
-    func fullResolutionImageData(completion: NSData? -> ())
+    func fullResolutionImageData(completion: @escaping (Data?) -> ())
 
-    func isEqualTo(other: ImageSource) -> Bool
+    func isEqualTo(_ other: ImageSource) -> Bool
 }
 
 public typealias ImageRequestId = Int32
@@ -44,9 +45,9 @@ public struct ImageRequestOptions {
     public var deliveryMode: ImageDeliveryMode = .Best
     
     /// Called on main thread
-    public var onDownloadStart: (ImageRequestId -> ())?
+    public var onDownloadStart: ((ImageRequestId) -> ())?
     /// Called on main thread
-    public var onDownloadFinish: (ImageRequestId -> ())?
+    public var onDownloadFinish: ((ImageRequestId) -> ())?
     
     public init() {}
     
@@ -60,14 +61,14 @@ public protocol InitializableWithCGImage {
     // Если хотим совсем ни к чему не привязываться (отвязаться от Core Graphics),
     // нужно создать свою структуру, представляющую bitmap, а потом реализовать
     // для UIImage и NSImage конструкторы, позволяющие инициализировать их из этой структуры.
-    init(CGImage: CGImage)
+    init(cgImage: CGImage)
 }
 
 public func ==(lhs: ImageSource, rhs: ImageSource) -> Bool {
     return lhs.isEqualTo(rhs)
 }
 
-@available(*, deprecated, message="Use ImageSizeOption instead (see ImageSource.requestImage(options:resultHandler:))")
+@available(*, deprecated, message: "Use ImageSizeOption instead (see ImageSource.requestImage(options:resultHandler:))")
 public enum ImageContentMode {
     case AspectFit
     case AspectFill
@@ -99,15 +100,15 @@ public enum ImageDeliveryMode {
 
 public extension ImageSource {
     
-    public func fullResolutionImage<T: InitializableWithCGImage>(completion: T? -> ()) {
+    public func fullResolutionImage<T: InitializableWithCGImage>(_ completion: @escaping (T?) -> ()) {
         fullResolutionImage(deliveryMode: .Best, resultHandler: completion)
     }
     
-    public func imageFittingSize<T: InitializableWithCGImage>(size: CGSize, resultHandler: T? -> ()) -> ImageRequestId {
+    public func imageFittingSize<T: InitializableWithCGImage>(_ size: CGSize, resultHandler: @escaping (T?) -> ()) -> ImageRequestId {
         return imageFittingSize(size, contentMode: .AspectFill, deliveryMode: .Progressive, resultHandler: resultHandler)
     }
     
-    public func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode deliveryMode: ImageDeliveryMode, resultHandler: T? -> ()) {
+    public func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode: ImageDeliveryMode, resultHandler: @escaping (T?) -> ()) {
     
         var options = ImageRequestOptions()
         options.size = .FullResolution
@@ -119,8 +120,8 @@ public extension ImageSource {
     }
     
     public func requestImage<T: InitializableWithCGImage>(
-        options options: ImageRequestOptions,
-        resultHandler: T? -> ())
+        options: ImageRequestOptions,
+        resultHandler: @escaping (T?) -> ())
         -> ImageRequestId
     {
         return requestImage(options: options) { (result: ImageRequestResult<T>) in
@@ -128,12 +129,12 @@ public extension ImageSource {
         }
     }
     
-    @available(*, deprecated, message="Use ImageSource.requestImage(options:resultHandler:) instead")
+    @available(*, deprecated, message: "Use ImageSource.requestImage(options:resultHandler:) instead")
     public func imageFittingSize<T: InitializableWithCGImage>(
-        size: CGSize,
+        _ size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
-        resultHandler: T? -> ())
+        resultHandler: @escaping (T?) -> ())
         -> ImageRequestId
     {
         var options = ImageRequestOptions()

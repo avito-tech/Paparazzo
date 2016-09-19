@@ -2,12 +2,12 @@ import UIKit
 
 final class PhotoPreviewCell: PhotoCollectionViewCell {
     
-    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        imageView.contentMode = .ScaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -30,7 +30,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
         setProgressVisible(false)
     }
     
-    override func adjustImageRequestOptions(inout options: ImageRequestOptions) {
+    override func adjustImageRequestOptions(_ options: inout ImageRequestOptions) {
         super.adjustImageRequestOptions(&options)
         
         options.onDownloadStart = { [weak self, superOptions = options] requestId in
@@ -49,7 +49,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     // MARK: - Customizable
     
-    func customizeWithItem(item: MediaPickerItem) {
+    func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
     }
     
@@ -57,7 +57,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     private var imageRequestId: ImageRequestId?
     
-    private func setProgressVisible(visible: Bool) {
+    private func setProgressVisible(_ visible: Bool) {
         if visible {
             progressIndicator.startAnimating()
         } else {

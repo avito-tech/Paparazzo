@@ -1,16 +1,15 @@
 import Photos
 import UIKit
-import AvitoDesignKit
 
 protocol PhotoLibraryLatestPhotoProvider {
-    func observePhoto(handler: (ImageSource? -> ())?)
+    func observePhoto(handler: @escaping (ImageSource?) -> ())
 }
 
 final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPhotoProvider, PHPhotoLibraryChangeObserver {
     
-    private let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
+    private let photoLibrary = PHPhotoLibrary.shared()
     
-    private(set) var fetchResult: PHFetchResult {
+    private(set) var fetchResult: PHFetchResult<PHAsset> {
         didSet {
             callObserver()
         }
@@ -25,11 +24,11 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
             options.fetchLimit = 1
         }
         
-        fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        fetchResult = PHAsset.fetchAssets(with: .image, options: options)
         
         super.init()
         
-        photoLibrary.registerChangeObserver(self)
+        photoLibrary.register(self)
     }
     
     deinit {
@@ -38,18 +37,18 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     // MARK: - PhotoLibraryLatestPhotoProvider
     
-    private var photoObserverHandler: (ImageSource? -> ())?
+    private var photoObserverHandler: ((ImageSource?) -> ())?
     
-    func observePhoto(handler: (ImageSource? -> ())?) {
+    func observePhoto(handler: @escaping (ImageSource?) -> ()) {
         photoObserverHandler = handler
         callObserver()
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
-    func photoLibraryDidChange(changeInfo: PHChange) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if let collectionChanges = changeInfo.changeDetailsForFetchResult(self.fetchResult) {
+    func photoLibraryDidChange(_ changeInfo: PHChange) {
+        DispatchQueue.main.async {
+            if let collectionChanges = changeInfo.changeDetails(for: self.fetchResult) {
                 self.fetchResult = collectionChanges.fetchResultAfterChanges
             }
         }
@@ -58,7 +57,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     // MARK: - Private
     
     private func callObserver() {
-        let asset = fetchResult.firstObject as? PHAsset
+        let asset = fetchResult.firstObject
         let image = asset.flatMap { PHAssetImageSource(asset: $0) }
         photoObserverHandler?(image)
     }

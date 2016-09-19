@@ -21,15 +21,15 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     init() {
         
         layout = ThumbnailsViewLayout()
-        layout.scrollDirection = .Horizontal
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = mediaRibbonInteritemSpacing
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clearColor()
+        collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.registerClass(MediaItemThumbnailCell.self, forCellWithReuseIdentifier: photoCellReuseId)
-        collectionView.registerClass(CameraThumbnailCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
+        collectionView.register(MediaItemThumbnailCell.self, forCellWithReuseIdentifier: photoCellReuseId)
+        collectionView.register(CameraThumbnailCell.self, forCellWithReuseIdentifier: cameraCellReuseId)
         
         super.init(frame: .zero)
         
@@ -64,42 +64,42 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
-    var onPhotoItemSelect: (MediaPickerItem -> ())?
+    var onPhotoItemSelect: ((MediaPickerItem) -> ())?
     var onCameraItemSelect: (() -> ())?
     
     func selectCameraItem() {
-        collectionView.selectItemAtIndexPath(dataSource.indexPathForCameraItem(), animated: false, scrollPosition: .None)
+        collectionView.selectItem(at: dataSource.indexPathForCameraItem(), animated: false, scrollPosition: [])
     }
     
-    func selectMediaItem(item: MediaPickerItem, animated: Bool = false) {
+    func selectMediaItem(_ item: MediaPickerItem, animated: Bool = false) {
         if let indexPath = dataSource.indexPathForItem(item) {
-            collectionView.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: .None)
+            collectionView.selectItem(at: indexPath, animated: animated, scrollPosition: [])
         }
     }
     
-    func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
+    func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
         if let indexPath = dataSource.indexPathForItem(item) {
-            collectionView.scrollToItemAtIndexPath(
-                indexPath,
-                atScrollPosition: .CenteredHorizontally,
+            collectionView.scrollToItem(
+                at: indexPath,
+                at: .centeredHorizontally,
                 animated: animated
             )
         }
     }
     
-    func scrollToCameraThumbnail(animated animated: Bool) {
-        collectionView.scrollToItemAtIndexPath(
-            dataSource.indexPathForCameraItem(),
-            atScrollPosition: .CenteredHorizontally,
+    func scrollToCameraThumbnail(animated: Bool) {
+        collectionView.scrollToItem(
+            at: dataSource.indexPathForCameraItem(),
+            at: .centeredHorizontally,
             animated: animated
         )
     }
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
+    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
         self.theme = theme
     }
     
-    func setControlsTransform(transform: CGAffineTransform) {
+    func setControlsTransform(_ transform: CGAffineTransform) {
         
         layout.itemsTransform = transform
         layout.invalidateLayout()
@@ -107,40 +107,40 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         cameraIconTransform = transform
     }
     
-    func addItems(items: [MediaPickerItem], animated: Bool, completion: () -> ()) {
+    func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         collectionView.performBatchUpdates(animated: animated, { [weak self] in
             if let indexPaths = self?.dataSource.addItems(items) {
-                self?.collectionView.insertItemsAtIndexPaths(indexPaths)
+                self?.collectionView.insertItems(at: indexPaths)
             }
         }, completion: { _ in completion() })
     }
     
-    func updateItem(item: MediaPickerItem) {
+    func updateItem(_ item: MediaPickerItem) {
         
         if let indexPath = dataSource.updateItem(item) {
             
-            let selectedIndexPaths = collectionView.indexPathsForSelectedItems()
+            let selectedIndexPaths = collectionView.indexPathsForSelectedItems
             let cellWasSelected = selectedIndexPaths?.contains(indexPath) == true
             
-            collectionView.reloadItemsAtIndexPaths([indexPath])
+            collectionView.reloadItems(at: [indexPath])
             
             if cellWasSelected {
-                collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             }
         }
     }
     
-    func removeItem(item: MediaPickerItem, animated: Bool) {
+    func removeItem(_ item: MediaPickerItem, animated: Bool) {
         collectionView.deleteItems(animated: animated) { [weak self] in
             self?.dataSource.removeItem(item).flatMap { [$0] }
         }
     }
     
-    func setCameraItemVisible(visible: Bool) {
+    func setCameraItemVisible(_ visible: Bool) {
         
         if dataSource.cameraCellVisible != visible {
             
-            let updatesFunction = { [weak self] () -> [NSIndexPath]? in
+            let updatesFunction = { [weak self] () -> [IndexPath]? in
                 self?.dataSource.cameraCellVisible = visible
                 return (self?.dataSource.indexPathForCameraItem()).flatMap { [$0] }
             }
@@ -153,11 +153,11 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
-    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+    func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         cameraOutputParameters = parameters
     }
     
-    func setCameraOutputOrientation(orientation: ExifOrientation) {
+    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
         cameraOutputParameters?.orientation = orientation
         if let cell = cameraCell() {
             cell.setOutputOrientation(orientation)
@@ -167,74 +167,73 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     func reloadCamera() {
         if dataSource.cameraCellVisible {
             let cameraIndexPath = dataSource.indexPathForCameraItem()
-            let cameraIsSelected = collectionView.indexPathsForSelectedItems()?.contains(cameraIndexPath) == true
+            let cameraIsSelected = collectionView.indexPathsForSelectedItems?.contains(cameraIndexPath) == true
             
-            collectionView.reloadItemsAtIndexPaths([dataSource.indexPathForCameraItem()])
+            collectionView.reloadItems(at: [dataSource.indexPathForCameraItem()])
             
             if cameraIsSelected {
-                collectionView.selectItemAtIndexPath(cameraIndexPath, animated: false, scrollPosition: .None)
+                collectionView.selectItem(at: cameraIndexPath, animated: false, scrollPosition: [])
             }
         }
     }
     
     // MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource.numberOfItems
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch dataSource[indexPath] {
-        case .Camera:
+        case .camera:
             return cameraCell(forIndexPath: indexPath, inCollectionView: collectionView)
-        case .Photo(let mediaPickerItem):
+        case .photo(let mediaPickerItem):
             return photoCell(forIndexPath: indexPath, inCollectionView: collectionView, withItem: mediaPickerItem)
         }
     }
     
     // MARK: - MediaRibbonLayoutDelegate
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = bounds.size.height - contentInsets.top - contentInsets.bottom
         return CGSize(width: height, height: height)
     }
     
-    func shouldApplyTransformToItemAtIndexPath(indexPath: NSIndexPath) -> Bool {
+    func shouldApplyTransformToItemAtIndexPath(_ indexPath: IndexPath) -> Bool {
         switch dataSource[indexPath] {
-        case .Photo(_):
+        case .photo:
             return true
-        default:
+        case .camera:
             return false
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch dataSource[indexPath] {
-        case .Photo(let photo):
+        case .photo(let photo):
             onPhotoItemSelect?(photo)
-        case .Camera:
+        case .camera:
             onCameraItemSelect?()
         }
     }
     
     // MARK: - Private
     
-    private var cameraIconTransform = CGAffineTransformIdentity {
+    private var cameraIconTransform = CGAffineTransform.identity {
         didSet {
             cameraCell()?.setCameraIconTransform(cameraIconTransform)
         }
     }
     
     private func photoCell(
-        forIndexPath indexPath: NSIndexPath,
+        forIndexPath indexPath: IndexPath,
         inCollectionView collectionView: UICollectionView,
         withItem mediaPickerItem: MediaPickerItem
     ) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            photoCellReuseId,
-            forIndexPath: indexPath
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: photoCellReuseId,
+            for: indexPath
         )
         
         if let cell = cell as? MediaItemThumbnailCell {
@@ -246,13 +245,13 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     private func cameraCell(
-        forIndexPath indexPath: NSIndexPath,
+        forIndexPath indexPath: IndexPath,
         inCollectionView collectionView: UICollectionView
     ) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            cameraCellReuseId,
-            forIndexPath: indexPath
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: cameraCellReuseId,
+            for: indexPath
         )
         
         setUpCameraCell(cell)
@@ -260,7 +259,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         return cell
     }
     
-    private func setUpCameraCell(cell: UICollectionViewCell) {
+    private func setUpCameraCell(_ cell: UICollectionViewCell) {
         if let cell = cell as? CameraThumbnailCell {
             cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.setCameraIcon(theme?.returnToCameraIcon)
@@ -280,6 +279,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     private func cameraCell() -> CameraThumbnailCell? {
         let indexPath = dataSource.indexPathForCameraItem()
-        return collectionView.cellForItemAtIndexPath(indexPath) as? CameraThumbnailCell
+        return collectionView.cellForItem(at: indexPath) as? CameraThumbnailCell
     }
 }

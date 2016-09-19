@@ -56,8 +56,9 @@ final class ExamplePresenter {
                     module?.dismissModule()
                     
                     items.first?.image.fullResolutionImageData { data in
-                        debugPrint("first item data size = \(data?.length ?? 0)")
-                        data?.writeToFile(NSTemporaryDirectory() + "/crop_test1.jpg", atomically: true)
+                        debugPrint("first item data size = \(data?.count ?? 0)")
+                        let url = URL(fileURLWithPath: NSTemporaryDirectory() + "/crop_test1.jpg")
+                        try! data?.write(to: url, options: [.atomic])
                     }
                     
                     let options = ImageRequestOptions(
@@ -67,7 +68,8 @@ final class ExamplePresenter {
                     
                     items.first?.image.requestImage(options: options) { (result: ImageRequestResult<UIImage>) in
                         let data = result.image.flatMap { UIImagePNGRepresentation($0) }
-                        data?.writeToFile(NSTemporaryDirectory() + "/crop_test2.jpg", atomically: true)
+                        let url = URL(fileURLWithPath: NSTemporaryDirectory() + "/crop_test2.jpg")
+                        try! data?.write(to: url, options: [.atomic])
                     }
                 }
             }

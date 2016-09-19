@@ -49,15 +49,15 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         scrollView.clipsToBounds = false
         scrollView.delegate = self
         
-        let maskColor = UIColor.whiteColor().colorWithAlphaComponent(0.9)
+        let maskColor = UIColor.white.withAlphaComponent(0.9)
         
         topMask.backgroundColor = maskColor
         bottomMask.backgroundColor = maskColor
         leftMask.backgroundColor = maskColor
         rightMask.backgroundColor = maskColor
         
-        gridView.userInteractionEnabled = false
-        gridView.hidden = true
+        gridView.isUserInteractionEnabled = false
+        gridView.isHidden = true
         
         addSubview(scrollView)
         addSubview(gridView)
@@ -81,7 +81,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
     }
     
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         return scrollView
     }
     
@@ -95,9 +95,9 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
     }
     
-    var onCroppingParametersChange: (ImageCroppingParameters -> ())?
+    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())?
     
-    func setImage(image: UIImage) {
+    func setImage(_ image: UIImage) {
         scrollView.imageView.image = image
         calculateFrames()
         notifyAboutCroppingParametersChange()
@@ -107,7 +107,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         adjustRotation(contentOffsetCenter: contentOffsetCenter())
     }
     
-    private func adjustRotation(contentOffsetCenter contentOffsetCenter: CGPoint) {
+    private func adjustRotation(contentOffsetCenter: CGPoint) {
         
         let width = fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height
         let height = fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
@@ -119,7 +119,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             y: contentOffsetCenter.y - newBounds.size.height / 2
         )
         
-        scrollView.transform = CGAffineTransformMakeRotation(angle)
+        scrollView.transform = CGAffineTransform(rotationAngle: angle)
         scrollView.bounds = newBounds
         scrollView.center = center
         scrollView.contentOffset = newContentOffset
@@ -147,7 +147,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         )
     }
     
-    func setCroppingParameters(parameters: ImageCroppingParameters) {
+    func setCroppingParameters(_ parameters: ImageCroppingParameters) {
         
         scrollView.zoomScale = parameters.zoomScale
         manuallyZoomed = parameters.manuallyZoomed
@@ -158,7 +158,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         adjustRotation(contentOffsetCenter: parameters.contentOffsetCenter)
     }
     
-    func setTiltAngle(angleInRadians: Float) {
+    func setTiltAngle(_ angleInRadians: Float) {
         tiltAngle = CGFloat(angleInRadians)
         adjustRotation()
     }
@@ -170,14 +170,14 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     func photoTranslation() -> CGPoint {
         let imageViewBounds = scrollView.imageView.bounds
-        let rect = scrollView.imageView.convertRect(imageViewBounds, toView: self)
+        let rect = scrollView.imageView.convert(imageViewBounds, to: self)
         let point = CGPoint(x: rect.midX, y: rect.midY)
         let zeroPoint = bounds.center
         return CGPoint(x: point.x - zeroPoint.x, y: point.y - zeroPoint.y)
     }
     
-    func setGridVisible(visible: Bool) {
-        gridView.hidden = !visible
+    func setGridVisible(_ visible: Bool) {
+        gridView.isHidden = !visible
     }
     
     func cropPreviewImage() -> CGImage? {
@@ -191,28 +191,28 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
                 height: cropSize.height * snapshot.scale
             )
             
-            return snapshot.CGImage.flatMap { CGImageCreateWithImageInRect($0, cropRect) }
+            return snapshot.cgImage.flatMap { $0.cropping(to: cropRect) }
         }
     }
     
     // MARK: - UIScrollViewDelegate
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.scrollView.imageView
     }
     
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         manuallyZoomed = true
         notifyAboutCroppingParametersChange()
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             notifyAboutCroppingParametersChange()
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         notifyAboutCroppingParametersChange()
     }
     
@@ -221,7 +221,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     // layoutSubviews will be called each time scrollView rotates, but we don't want it
     private func calculateFrames() {
         
-        guard let image = scrollView.imageView.image where width > 0 && height > 0 else {
+        guard let image = scrollView.imageView.image, width > 0 && height > 0 else {
             return
         }
         
@@ -258,12 +258,12 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         gridView.bounds = CGRect(origin: .zero, size: cropSize)
         gridView.center = center
         
-        originalPoint = convertPoint(scrollView.center, toView: self)
+        originalPoint = convert(scrollView.center, to: self)
         
         updateMasks()
     }
     
-    private func updateMasks(animated animated: Bool = false) {
+    private func updateMasks(animated: Bool = false) {
         
         let horizontalMaskSize = CGSize(
             width: bounds.size.width,
@@ -295,7 +295,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
         
         if animated {
-            UIView.animateWithDuration(0.25, animations: animation)
+            UIView.animate(withDuration: 0.25, animations: animation)
         } else {
             animation()
         }
@@ -316,7 +316,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     private func reset() {
-        scrollView.transform = CGAffineTransformIdentity
+        scrollView.transform = .identity
         scrollView.minimumZoomScale = 1
         scrollView.zoomScale = 1
     }
@@ -327,25 +327,25 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     private func croppingParameters() -> ImageCroppingParameters {
         
-        var transform = CGAffineTransformIdentity
+        var transform = CGAffineTransform.identity
         
         // translate
         let translation = photoTranslation()
-        transform = CGAffineTransformTranslate(transform, translation.x, translation.y)
+        transform = transform.translatedBy(x: translation.x, y: translation.y)
         
         // rotate
-        transform = CGAffineTransformRotate(transform, angle)
+        transform = transform.rotated(by: angle)
         
         // scale
         let t = scrollView.imageView.transform
         let xScale = sqrt(t.a * t.a + t.c * t.c)
         let yScale = sqrt(t.b * t.b + t.d * t.d)
-        transform = CGAffineTransformScale(transform, xScale, yScale)
+        transform = transform.scaledBy(x: xScale, y: yScale)
         
         let parameters = ImageCroppingParameters(
             transform: transform,
             sourceSize: scrollView.imageView.image?.size ?? .zero,
-            sourceOrientation: scrollView.imageView.image?.imageOrientation.exifOrientation ?? .Up,
+            sourceOrientation: scrollView.imageView.image?.imageOrientation.exifOrientation ?? .up,
             outputWidth: scrollView.imageView.image?.size.width ?? 0,
             cropSize: cropSize,
             imageViewSize: scrollView.imageView.bounds.size,
@@ -367,8 +367,8 @@ private class PhotoScrollView: UIScrollView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        imageView.backgroundColor = .clearColor()
-        imageView.userInteractionEnabled = false
+        imageView.backgroundColor = .clear
+        imageView.isUserInteractionEnabled = false
         
         addSubview(imageView)
     }

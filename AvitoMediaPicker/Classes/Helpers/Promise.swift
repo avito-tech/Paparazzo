@@ -6,7 +6,7 @@ struct Promise<T> {
     private var handlers = [Handler]()
     private var value: T?
     
-    mutating func onFulfill(handler: Handler) {
+    mutating func onFulfill(handler: @escaping Handler) {
         if let value = value {  // already fulfilled
             handler(value)
         } else {
@@ -14,7 +14,7 @@ struct Promise<T> {
         }
     }
     
-    mutating func fulfill(value: T) {
+    mutating func fulfill(_ value: T) {
         self.value = value
         
         if handlers.count > 0 {

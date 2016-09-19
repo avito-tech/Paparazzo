@@ -18,41 +18,41 @@ final class ImageCroppingControlsView: UIView {
     init() {
         super.init(frame: .zero)
         
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
         
         rotationCancelButton.backgroundColor = .RGB(red: 25, green: 25, blue: 25, alpha: 1)
-        rotationCancelButton.setTitleColor(.whiteColor(), forState: .Normal)
+        rotationCancelButton.setTitleColor(.white, for: .normal)
         rotationCancelButton.contentEdgeInsets = UIEdgeInsets(top: 3, left: 12, bottom: 3, right: 12)
         rotationCancelButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
         rotationCancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 2)
         rotationCancelButton.addTarget(
             self,
             action: #selector(onRotationCancelButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            for: .touchUpInside
         )
         
         rotationButton.addTarget(
             self,
             action: #selector(onRotationButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            for: .touchUpInside
         )
         
         gridButton.addTarget(
             self,
             action: #selector(onGridButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            for: .touchUpInside
         )
         
         discardButton.addTarget(
             self,
             action: #selector(onDiscardButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            for: .touchUpInside
         )
         
         confirmButton.addTarget(
             self,
             action: #selector(onConfirmButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            for: .touchUpInside
         )
         
         addSubview(rotationSliderView)
@@ -103,21 +103,21 @@ final class ImageCroppingControlsView: UIView {
     var onRotateButtonTap: (() -> ())?
     var onGridButtonTap: (() -> ())?
     
-    var onRotationAngleChange: (Float -> ())? {
+    var onRotationAngleChange: ((Float) -> ())? {
         get { return rotationSliderView.onSliderValueChange }
         set { rotationSliderView.onSliderValueChange = newValue }
     }
     
-    func setTheme(theme: ImageCroppingUITheme) {
-        rotationButton.setImage(theme.rotationIcon, forState: .Normal)
-        gridButton.setImage(theme.gridIcon, forState: .Normal)
-        discardButton.setImage(theme.cropperDiscardIcon, forState: .Normal)
-        confirmButton.setImage(theme.cropperConfirmIcon, forState: .Normal)
+    func setTheme(_ theme: ImageCroppingUITheme) {
+        rotationButton.setImage(theme.rotationIcon, for: .normal)
+        gridButton.setImage(theme.gridIcon, for: .normal)
+        discardButton.setImage(theme.cropperDiscardIcon, for: .normal)
+        confirmButton.setImage(theme.cropperConfirmIcon, for: .normal)
         
         rotationCancelButton.backgroundColor = theme.cancelRotationBackgroundColor
         rotationCancelButton.titleLabel?.textColor = theme.cancelRotationTitleColor
         rotationCancelButton.titleLabel?.font = theme.cancelRotationTitleFont
-        rotationCancelButton.setImage(theme.cancelRotationButtonIcon, forState: .Normal)
+        rotationCancelButton.setImage(theme.cancelRotationButtonIcon, for: .normal)
     }
     
     func setMinimumRotation(degrees: Float) {
@@ -128,50 +128,50 @@ final class ImageCroppingControlsView: UIView {
         rotationSliderView.setMaximumValue(degrees)
     }
     
-    func setRotationSliderValue(value: Float) {
+    func setRotationSliderValue(_ value: Float) {
         rotationSliderView.setValue(value)
     }
     
-    func setControlsEnabled(enabled: Bool) {
-        rotationButton.enabled = enabled
-        gridButton.enabled = enabled
-        rotationSliderView.userInteractionEnabled = enabled
-        rotationCancelButton.enabled = enabled
+    func setControlsEnabled(_ enabled: Bool) {
+        rotationButton.isEnabled = enabled
+        gridButton.isEnabled = enabled
+        rotationSliderView.isUserInteractionEnabled = enabled
+        rotationCancelButton.isEnabled = enabled
     }
     
-    func setCancelRotationButtonTitle(title: String) {
-        rotationCancelButton.setTitle(title, forState: .Normal)
+    func setCancelRotationButtonTitle(_ title: String) {
+        rotationCancelButton.setTitle(title, for: .normal)
         rotationCancelButton.sizeToFit()
         rotationCancelButton.layer.cornerRadius = rotationCancelButton.size.height / 2
     }
     
-    func setCancelRotationButtonVisible(visible: Bool) {
-        rotationCancelButton.hidden = !visible
+    func setCancelRotationButtonVisible(_ visible: Bool) {
+        rotationCancelButton.isHidden = !visible
     }
     
     // MARK: - Private
     
-    @objc private func onDiscardButtonTap(sender: UIButton) {
+    @objc private func onDiscardButtonTap(_: UIButton) {
         onDiscardButtonTap?()
     }
     
-    @objc private func onConfirmButtonTap(sender: UIButton) {
+    @objc private func onConfirmButtonTap(_: UIButton) {
         onConfirmButtonTap?()
     }
     
-    @objc private func onRotationSliderValueChange(sender: UISlider) {
+    @objc private func onRotationSliderValueChange(_ sender: UISlider) {
         onRotationAngleChange?(sender.value)
     }
     
-    @objc private func onRotationCancelButtonTap(sender: UIButton) {
+    @objc private func onRotationCancelButtonTap(_: UIButton) {
         onRotationCancelButtonTap?()
     }
     
-    @objc private func onRotationButtonTap(sender: UIButton) {
+    @objc private func onRotationButtonTap(_: UIButton) {
         onRotateButtonTap?()
     }
     
-    @objc private func onGridButtonTap(sender: UIButton) {
+    @objc private func onGridButtonTap(_: UIButton) {
         onGridButtonTap?()
     }
 }

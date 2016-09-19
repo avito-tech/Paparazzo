@@ -1,5 +1,4 @@
 import UIKit
-import AvitoDesignKit
 
 final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
@@ -25,22 +24,22 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
         clipsToBounds = true
         
         aspectRatioButton.layer.borderWidth = 1
-        aspectRatioButton.setTitleColor(.blackColor(), forState: .Normal)
+        aspectRatioButton.setTitleColor(.black, for: .normal)
         aspectRatioButton.addTarget(
             self,
             action: #selector(onAspectRatioButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            for: .touchUpInside
         )
         
         controlsView.onConfirmButtonTap = { [weak self] in
-            self?.onConfirmButtonTap?(previewImage: self?.previewView.cropPreviewImage())
+            self?.onConfirmButtonTap?(self?.previewView.cropPreviewImage())
         }
         
-        splashView.contentMode = .ScaleAspectFill
+        splashView.contentMode = .scaleAspectFill
         
         addSubview(previewView)
         addSubview(splashView)
@@ -106,9 +105,9 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         set { controlsView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: ((previewImage: CGImage?) -> ())?
+    var onConfirmButtonTap: ((_ previewImage: CGImage?) -> ())?
     
-    var onRotationAngleChange: (Float -> ())? {
+    var onRotationAngleChange: ((Float) -> ())? {
         get { return controlsView.onRotationAngleChange }
         set { controlsView.onRotationAngleChange = newValue }
     }
@@ -130,22 +129,22 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     
     var onAspectRatioButtonTap: (() -> ())?
     
-    var onCroppingParametersChange: (ImageCroppingParameters -> ())? {
+    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? {
         get { return previewView.onCroppingParametersChange }
         set { previewView.onCroppingParametersChange = newValue }
     }
     
-    func setImage(image: ImageSource, previewImage: ImageSource?, completion: (() -> ())?) {
+    func setImage(_ image: ImageSource, previewImage: ImageSource?, completion: (() -> ())?) {
         
         if let previewImage = previewImage {
             
-            let screenSize = UIScreen.mainScreen().bounds.size
+            let screenSize = UIScreen.main.bounds.size
             let previewOptions = ImageRequestOptions(size: .FitSize(screenSize), deliveryMode: .Progressive)
             
-            splashView.hidden = false
+            splashView.isHidden = false
             
             previewImage.requestImage(options: previewOptions) { [weak self] (result: ImageRequestResult<UIImage>) in
-                if let image = result.image where self?.splashView.hidden == false {
+                if let image = result.image, self?.splashView.isHidden == false {
                     self?.splashView.image = image
                 }
             }
@@ -156,14 +155,14 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         image.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
             if let image = result.image {
                 self?.previewView.setImage(image)
-                self?.splashView.hidden = true
+                self?.splashView.isHidden = true
                 self?.splashView.image = nil
             }
             completion?()
         }
     }
     
-    func setImageTiltAngle(angle: Float) {
+    func setImageTiltAngle(_ angle: Float) {
         previewView.setTiltAngle(angle.degreesToRadians())
     }
 
@@ -171,32 +170,32 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         previewView.turnCounterclockwise()
     }
     
-    func setCroppingParameters(parameters: ImageCroppingParameters) {
+    func setCroppingParameters(_ parameters: ImageCroppingParameters) {
         previewView.setCroppingParameters(parameters)
     }
     
-    func setRotationSliderValue(value: Float) {
+    func setRotationSliderValue(_ value: Float) {
         controlsView.setRotationSliderValue(value)
     }
     
-    func setCanvasSize(size: CGSize) {
+    func setCanvasSize(_ size: CGSize) {
         sourceImageMaxSize = size
     }
     
-    func setControlsEnabled(enabled: Bool) {
+    func setControlsEnabled(_ enabled: Bool) {
         controlsView.setControlsEnabled(enabled)
-        aspectRatioButton.enabled = enabled
+        aspectRatioButton.isEnabled = enabled
     }
     
-    func setTheme(theme: ImageCroppingUITheme) {
+    func setTheme(_ theme: ImageCroppingUITheme) {
         controlsView.setTheme(theme)
     }
     
-    func setTitle(title: String) {
+    func setTitle(_ title: String) {
         titleLabel.text = title
     }
     
-    func setAspectRatio(aspectRatio: AspectRatio) {
+    func setAspectRatio(_ aspectRatio: AspectRatio) {
         
         self.aspectRatio = aspectRatio
         
@@ -207,20 +206,20 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         
         case .portrait_3x4:
             
-            titleLabel.textColor = .whiteColor()
+            titleLabel.textColor = .white
             
-            aspectRatioButton.setTitleColor(.whiteColor(), forState: .Normal)
-            aspectRatioButton.layer.borderColor = UIColor.whiteColor().CGColor
+            aspectRatioButton.setTitleColor(.white, for: .normal)
+            aspectRatioButton.layer.borderColor = UIColor.white.cgColor
             
             setShadowVisible(true, forView: titleLabel)
             setShadowVisible(true, forView: aspectRatioButton)
         
         case .landscape_4x3:
             
-            titleLabel.textColor = .blackColor()
+            titleLabel.textColor = .black
             
-            aspectRatioButton.setTitleColor(.blackColor(), forState: .Normal)
-            aspectRatioButton.layer.borderColor = UIColor.blackColor().CGColor
+            aspectRatioButton.setTitleColor(.black, for: .normal)
+            aspectRatioButton.layer.borderColor = UIColor.black.cgColor
             
             setShadowVisible(false, forView: titleLabel)
             setShadowVisible(false, forView: aspectRatioButton)
@@ -229,27 +228,27 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         layoutSplashView()
     }
     
-    func setAspectRatioButtonTitle(title: String) {
-        aspectRatioButton.setTitle(title, forState: .Normal)
+    func setAspectRatioButtonTitle(_ title: String) {
+        aspectRatioButton.setTitle(title, for: .normal)
     }
     
-    func setMinimumRotation(degrees: Float) {
-        controlsView.setMinimumRotation(degrees)
+    func setMinimumRotation(_ degrees: Float) {
+        controlsView.setMinimumRotation(degrees: degrees)
     }
     
-    func setMaximumRotation(degrees: Float) {
-        controlsView.setMaximumRotation(degrees)
+    func setMaximumRotation(_ degrees: Float) {
+        controlsView.setMaximumRotation(degrees: degrees)
     }
     
-    func setCancelRotationButtonTitle(title: String) {
+    func setCancelRotationButtonTitle(_ title: String) {
         controlsView.setCancelRotationButtonTitle(title)
     }
     
-    func setCancelRotationButtonVisible(visible: Bool) {
+    func setCancelRotationButtonVisible(_ visible: Bool) {
         controlsView.setCancelRotationButtonVisible(visible)
     }
     
-    func setGridVisible(visible: Bool) {
+    func setGridVisible(_ visible: Bool) {
         previewView.setGridVisible(visible)
     }
     
@@ -258,7 +257,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
     private var aspectRatio: AspectRatio = .portrait_3x4
     
     /// Максимальный размер оригинальной картинки. Если меньше размера самой картинки, она будет даунскейлиться.
-    private var sourceImageMaxSize = CGSize(width: CGFloat.max, height: CGFloat.max)
+    private var sourceImageMaxSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
     
     private func aspectRatioButtonSize() -> CGSize {
         switch aspectRatio {
@@ -269,14 +268,14 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         }
     }
 
-    private func setShadowVisible(visible: Bool, forView view: UIView) {
+    private func setShadowVisible(_ visible: Bool, forView view: UIView) {
         view.layer.shadowOffset = .zero
         view.layer.shadowOpacity = visible ? 0.5 : 0
         view.layer.shadowRadius = 1
         view.layer.masksToBounds = false
     }
     
-    @objc private func onAspectRatioButtonTap(sender: UIButton) {
+    @objc private func onAspectRatioButtonTap(_ sender: UIButton) {
         onAspectRatioButtonTap?()
     }
 }

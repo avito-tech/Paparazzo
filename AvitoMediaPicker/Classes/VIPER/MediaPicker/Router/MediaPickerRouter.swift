@@ -1,17 +1,16 @@
 import Marshroute
-import AvitoDesignKit
 
 protocol MediaPickerRouter: class, RouterFocusable, RouterDismissable {
     
     func showPhotoLibrary(
-        selectedItems selectedItems: [PhotoLibraryItem],
+        selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: PhotoLibraryModule -> ()
+        configuration: (PhotoLibraryModule) -> ()
     )
     
     func showCroppingModule(
-        forImage image: ImageSource,
+        forImage: ImageSource,
         canvasSize: CGSize,
-        configuration: ImageCroppingModule -> ()
+        configuration: (ImageCroppingModule) -> ()
     )
 }

@@ -2,11 +2,11 @@
 class ThreadSafeIntGenerator {
     
     private var nextValue = 1
-    private let queue = dispatch_queue_create("ru.avito.ThreadSafeIntGenerator.queue", DISPATCH_QUEUE_SERIAL)
+    private let queue = DispatchQueue(label: "ru.avito.ThreadSafeIntGenerator.queue")
     
     func nextInt() -> Int {
         var value: Int = 0
-        dispatch_sync(queue) {
+        queue.sync {
             value = self.nextValue
             self.nextValue += 1
         }

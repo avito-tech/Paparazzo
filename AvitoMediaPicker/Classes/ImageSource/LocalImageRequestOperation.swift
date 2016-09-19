@@ -3,22 +3,22 @@ import ImageIO
 import MobileCoreServices
 
 /// Operation for requesting images stored in a local file.
-final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
+final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, ImageRequestIdentifiable {
     
     let id: ImageRequestId
     
     private let path: String
     private let options: ImageRequestOptions
-    private let resultHandler: ImageRequestResult<T> -> ()
-    private let callbackQueue: dispatch_queue_t
+    private let resultHandler: (ImageRequestResult<T>) -> ()
+    private let callbackQueue: DispatchQueue
     
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
     // но пока не вижу в этом особой необходимости
     init(id: ImageRequestId,
          path: String,
          options: ImageRequestOptions,
-         resultHandler: ImageRequestResult<T> -> (),
-         callbackQueue: dispatch_queue_t = dispatch_get_main_queue())
+         resultHandler: @escaping (ImageRequestResult<T>) -> (),
+         callbackQueue: DispatchQueue = .main)
     {
         self.id = id
         self.path = path
@@ -32,9 +32,9 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
         case .FullResolution:
             getFullResolutionImage()
         case .FillSize(let size):
-            getImageResizedTo(size)
+            getImage(resizedTo: size)
         case .FitSize(let size):
-            getImageResizedTo(size)
+            getImage(resizedTo: size)
         }
     }
     
@@ -42,50 +42,50 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: NSOperation
     
     private func getFullResolutionImage() {
         
-        guard !cancelled else { return }
+        guard !isCancelled else { return }
         let url = NSURL(fileURLWithPath: path)
         let source = CGImageSourceCreateWithURL(url, nil)
         
-        let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
-        let orientation = options?[kCGImagePropertyOrientation] as? Int
+        let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
+        let orientation = (options as Dictionary?)?[kCGImagePropertyOrientation] as? Int
         
-        guard !cancelled else { return }
+        guard !isCancelled else { return }
         var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
         
         if let exifOrientation = orientation.flatMap({ ExifOrientation(rawValue: $0) }) {
-            guard !cancelled else { return }
+            guard !isCancelled else { return }
             cgImage = cgImage?.imageFixedForOrientation(exifOrientation)
         }
         
-        guard !cancelled else { return }
-        dispatch_async(callbackQueue) { [resultHandler, id] in
+        guard !isCancelled else { return }
+        callbackQueue.async { [resultHandler, id] in
             resultHandler(ImageRequestResult(
-                image: cgImage.flatMap { T(CGImage: $0) },
+                image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
                 requestId: id
             ))
         }
     }
     
-    private func getImageResizedTo(size: CGSize) {
+    private func getImage(resizedTo size: CGSize) {
         
-        guard !cancelled else { return }
+        guard !isCancelled else { return }
         let url = NSURL(fileURLWithPath: path)
         let source = CGImageSourceCreateWithURL(url, nil)
         
-        let options: [NSString: NSObject] = [
+        let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceCreateThumbnailFromImageAlways: true
         ]
         
-        guard !cancelled else { return }
-        let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options) }
+        guard !isCancelled else { return }
+        let cgImage = source.flatMap { CGImageSourceCreateThumbnailAtIndex($0, 0, options as CFDictionary) }
         
-        guard !cancelled else { return }
-        dispatch_async(callbackQueue) { [resultHandler, id] in
+        guard !isCancelled else { return }
+        callbackQueue.async { [resultHandler, id] in
             resultHandler(ImageRequestResult(
-                image: cgImage.flatMap { T(CGImage: $0) },
+                image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
                 requestId: id
             ))

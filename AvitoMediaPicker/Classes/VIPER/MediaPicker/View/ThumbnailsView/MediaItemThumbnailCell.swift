@@ -17,12 +17,12 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        selected = false
+        isSelected = false
     }
     
     // MARK: - Customizable
     
-    func customizeWithItem(item: MediaPickerItem) {
+    func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
     }
 }

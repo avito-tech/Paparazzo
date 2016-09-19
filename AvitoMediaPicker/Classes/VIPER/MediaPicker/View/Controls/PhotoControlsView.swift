@@ -12,18 +12,18 @@ final class PhotoControlsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
         
         removeButton.addTarget(
             self,
-            action: #selector(PhotoControlsView.onRemoveButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onRemoveButtonTap(_:)),
+            for: .touchUpInside
         )
         
         cropButton.addTarget(
             self,
-            action: #selector(PhotoControlsView.onCropButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onCropButtonTap(_:)),
+            for: .touchUpInside
         )
         
         addSubview(removeButton)
@@ -40,7 +40,7 @@ final class PhotoControlsView: UIView {
         removeButton.size = CGSize.minimumTapAreaSize
         cropButton.size = CGSize.minimumTapAreaSize
         
-        if cropButton.hidden {
+        if cropButton.isHidden {
             removeButton.center = bounds.center
         } else {
             removeButton.center = CGPoint(x: bounds.left + bounds.size.width * 0.25, y: bounds.centerY)
@@ -54,28 +54,28 @@ final class PhotoControlsView: UIView {
     var onCropButtonTap: (() -> ())?
     var onCameraButtonTap: (() -> ())?
     
-    func setControlsTransform(transform: CGAffineTransform) {
+    func setControlsTransform(_ transform: CGAffineTransform) {
         removeButton.transform = transform
         cropButton.transform = transform
     }
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
-        removeButton.setImage(theme.removePhotoIcon, forState: .Normal)
-        cropButton.setImage(theme.cropPhotoIcon, forState: .Normal)
+    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
+        removeButton.setImage(theme.removePhotoIcon, for: .normal)
+        cropButton.setImage(theme.cropPhotoIcon, for: .normal)
     }
     
-    func setShowsCropButton(showsCropButton: Bool) {
-        cropButton.hidden = !showsCropButton
+    func setShowsCropButton(_ showsCropButton: Bool) {
+        cropButton.isHidden = !showsCropButton
         setNeedsLayout()
     }
     
     // MARK: - Private
     
-    @objc private func onRemoveButtonTap(sender: UIButton) {
+    @objc private func onRemoveButtonTap(_: UIButton) {
         onRemoveButtonTap?()
     }
     
-    @objc private func onCropButtonTap(sender: UIButton) {
+    @objc private func onCropButtonTap(_: UIButton) {
         onCropButtonTap?()
     }
 }

@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.resources = ['AvitoMediaPicker/Assets/Assets.xcassets']
 
   s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices', 'GLKit', 'OpenGLES'
-  s.dependency 'AvitoDesignKit', '0.0.6'
+  s.dependency 'AvitoToolkit'
   s.dependency 'Marshroute'
   s.dependency 'JNWSpringAnimation'
   s.dependency 'SDWebImage'

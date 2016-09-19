@@ -1,12 +1,12 @@
-final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperation, ImageRequestIdentifiable {
+final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Operation, ImageRequestIdentifiable {
     
     let id: ImageRequestId
     
     init(id: ImageRequestId,
-         url: NSURL,
+         url: URL,
          options: ImageRequestOptions,
-         resultHandler: ImageRequestResult<T> -> (),
-         callbackQueue: dispatch_queue_t = dispatch_get_main_queue(),
+         resultHandler: @escaping (ImageRequestResult<T>) -> (),
+         callbackQueue: DispatchQueue = .main,
          imageDownloader: ImageDownloader)
     {
         self.id = id
@@ -21,63 +21,63 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     
     // MARK: - NSOperation
     
-    override var asynchronous: Bool {
+    override var isAsynchronous: Bool {
         return true
     }
     
-    override var executing: Bool {
+    override var isExecuting: Bool {
         get { return _executing }
         set {
-            willChangeValueForKey("isExecuting")
+            willChangeValue(forKey: "isExecuting")
             _executing = newValue
-            didChangeValueForKey("isExecuting")
+            didChangeValue(forKey: "isExecuting")
         }
     }
     
-    override var finished: Bool {
+    override var isFinished: Bool {
         get { return _finished }
         set {
-            willChangeValueForKey("isFinished")
+            willChangeValue(forKey: "isFinished")
             _finished = newValue
-            didChangeValueForKey("isFinished")
+            didChangeValue(forKey: "isFinished")
         }
     }
     
     override func start() {
-        dispatch_async(syncQueue) { 
+        syncQueue.async {
             
-            if self.cancelled {
-                self.finished = true
+            if self.isCancelled {
+                self.isFinished = true
                 return
             }
             
-            self.executing = true
+            self.isExecuting = true
             
             self.imageLoadingOperation = self.imageDownloader.downloadImageAtUrl(
                 self.url,
                 progressHandler: { receivedSize, expectedSize in
-                    if let onDownloadStart = self.options.onDownloadStart where !self.downloadStarted {
-                        dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
+                    if let onDownloadStart = self.options.onDownloadStart, !self.downloadStarted {
+                        self.callbackQueue.async { [imageRequestId = self.id] in
                             onDownloadStart(imageRequestId)
                         }
                         self.downloadStarted = true
                     }
                 },
                 completion: { image, _ in
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+                    DispatchQueue.global(qos: .userInitiated).async {
                         
                         let cgImage = image.flatMap { self.finalCGImage(from: $0) }
                         
-                        dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
+                        self.callbackQueue.async { [imageRequestId = self.id] in
                             self.options.onDownloadFinish?(imageRequestId)
                             self.resultHandler(ImageRequestResult(
-                                image: cgImage.flatMap { T(CGImage: $0) },
+                                image: cgImage.flatMap { T(cgImage: $0) },
                                 degraded: false,
                                 requestId: imageRequestId
                             ))
                         }
                         
-                        dispatch_async(self.syncQueue) {
+                        self.syncQueue.async {
                             self.finish()
                         }
                     }
@@ -87,19 +87,19 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     }
     
     override func cancel() {
-        dispatch_async(syncQueue) {
-            guard !self.finished else { return }
+        syncQueue.async {
+            guard !self.isFinished else { return }
             
             super.cancel()
             
-            if self.executing {
+            if self.isExecuting {
                 
                 self.imageLoadingOperation?.cancel()
                 
                 // SDWebImageDownloaderOperation will not call its completion block after cancellation,
                 // so we need to call onDownloadFinish here
-                if let onDownloadFinish = self.options.onDownloadFinish where self.downloadStarted {
-                    dispatch_async(self.callbackQueue) { [imageRequestId = self.id] in
+                if let onDownloadFinish = self.options.onDownloadFinish, self.downloadStarted {
+                    self.callbackQueue.async { [imageRequestId = self.id] in
                         onDownloadFinish(imageRequestId)
                     }
                 }
@@ -111,16 +111,15 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     
     // MARK: - Private
     
-    private let url: NSURL
+    private let url: URL
     private let options: ImageRequestOptions
-    private let resultHandler: ImageRequestResult<T> -> ()
-    private let callbackQueue: dispatch_queue_t
+    private let resultHandler: (ImageRequestResult<T>) -> ()
+    private let callbackQueue: DispatchQueue
     
     private let imageDownloader: ImageDownloader
     private weak var imageLoadingOperation: CancellableImageDownload?
     private var downloadStarted = false
-    
-    private let syncQueue = dispatch_queue_create("ru.avito.RemoteImageRequestOperation.syncQueue", DISPATCH_QUEUE_SERIAL)
+    private let syncQueue = DispatchQueue(label: "ru.avito.RemoteImageRequestOperation.syncQueue")
     private var _executing = false
     private var _finished = false
     
@@ -136,7 +135,7 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: NSOperatio
     }
     
     private func finish() {
-        executing = false
-        finished = true
+        isExecuting = false
+        isFinished = true
     }
 }

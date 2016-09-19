@@ -11,7 +11,7 @@ final class CameraInteractorImpl: CameraInteractor {
     
     // MARK: - CameraInteractor
 
-    func getOutputParameters(completion: CameraOutputParameters? -> ()) {
+    func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ()) {
         cameraService.getCaptureSession { [cameraService] captureSession in
             cameraService.getOutputOrientation { outputOrientation in
                 dispatch_to_main_queue {
@@ -21,29 +21,29 @@ final class CameraInteractorImpl: CameraInteractor {
         }
     }
     
-    func isFlashAvailable(completion: Bool -> ()) {
+    func isFlashAvailable(completion: (Bool) -> ()) {
         completion(cameraService.isFlashAvailable)
     }
     
-    func setFlashEnabled(enabled: Bool, completion: (success: Bool) -> ()) {
-        completion(success: cameraService.setFlashEnabled(enabled))
+    func setFlashEnabled(_ enabled: Bool, completion: @escaping (_ success: Bool) -> ()) {
+        completion(cameraService.setFlashEnabled(enabled))
     }
     
-    func canToggleCamera(completion: Bool -> ()) {
-        cameraService.canToggleCamera(completion)
+    func canToggleCamera(completion: @escaping (Bool) -> ()) {
+        cameraService.canToggleCamera(completion: completion)
     }
     
-    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ()) {
-        cameraService.toggleCamera(completion)
+    func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
+        cameraService.toggleCamera(completion: completion)
     }
     
-    func takePhoto(completion: MediaPickerItem? -> ()) {
+    func takePhoto(completion: @escaping (MediaPickerItem?) -> ()) {
         
         cameraService.takePhoto { [weak self] photo in
             
             let imageSource = photo.flatMap { LocalImageSource(path: $0.path) }
             
-            if let imageSource = imageSource, previewSize = self?.previewImagesSizeForNewPhotos {
+            if let imageSource = imageSource, let previewSize = self?.previewImagesSizeForNewPhotos {
                 
                 let previewOptions = ImageRequestOptions(size: .FillSize(previewSize), deliveryMode: .Best)
                 
@@ -60,11 +60,11 @@ final class CameraInteractorImpl: CameraInteractor {
         }
     }
     
-    func setPreviewImagesSizeForNewPhotos(size: CGSize) {
+    func setPreviewImagesSizeForNewPhotos(_ size: CGSize) {
         previewImagesSizeForNewPhotos = CGSize(width: ceil(size.width), height: ceil(size.height))
     }
     
-    func setCameraOutputNeeded(isCameraOutputNeeded: Bool) {
+    func setCameraOutputNeeded(_ isCameraOutputNeeded: Bool) {
         cameraService.setCaptureSessionRunning(isCameraOutputNeeded)
     }
 }

@@ -12,7 +12,7 @@ final class CameraView: UIView, CameraViewInput {
     init() {
         super.init(frame: .zero)
         
-        accessDeniedView.hidden = true
+        accessDeniedView.isHidden = true
         
         addSubview(accessDeniedView)
     }
@@ -37,23 +37,23 @@ final class CameraView: UIView, CameraViewInput {
         set { accessDeniedView.onButtonTap = newValue }
     }
     
-    func setAccessDeniedViewVisible(visible: Bool) {
-        accessDeniedView.hidden = !visible
+    func setAccessDeniedViewVisible(_ visible: Bool) {
+        accessDeniedView.isHidden = !visible
     }
     
-    func setAccessDeniedTitle(title: String) {
+    func setAccessDeniedTitle(_ title: String) {
         accessDeniedView.title = title
     }
     
-    func setAccessDeniedMessage(message: String) {
+    func setAccessDeniedMessage(_ message: String) {
         accessDeniedView.message = message
     }
     
-    func setAccessDeniedButtonTitle(title: String) {
+    func setAccessDeniedButtonTitle(_ title: String) {
         accessDeniedView.buttonTitle = title
     }
     
-    func setOutputParameters(parameters: CameraOutputParameters) {
+    func setOutputParameters(_ parameters: CameraOutputParameters) {
         
         let cameraOutputBinder = CameraOutputGLKBinder(
             captureSession: parameters.captureSession,
@@ -65,7 +65,7 @@ final class CameraView: UIView, CameraViewInput {
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
             cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
                 cameraOutputBinder?.onFrameDrawn = nil
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     attachedBinder.view.removeFromSuperview()
                 }
             }
@@ -79,7 +79,7 @@ final class CameraView: UIView, CameraViewInput {
         self.outputParameters = parameters
     }
     
-    func setOutputOrientation(orientation: ExifOrientation) {
+    func setOutputOrientation(_ orientation: ExifOrientation) {
         cameraOutputBinder?.orientation = orientation
     }
     
@@ -92,7 +92,7 @@ final class CameraView: UIView, CameraViewInput {
     
     // MARK: - CameraView
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
+    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
         accessDeniedView.setTheme(theme)
     }
     
@@ -100,7 +100,7 @@ final class CameraView: UIView, CameraViewInput {
     
     private var disposables = [AnyObject]()
     
-    func addDisposable(object: AnyObject) {
+    func addDisposable(_ object: AnyObject) {
         disposables.append(object)
     }
 }

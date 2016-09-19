@@ -3,7 +3,7 @@ import AVFoundation
 
 final class MediaRibbonDataSource {
     
-    typealias DataMutationHandler = (indexPaths: [NSIndexPath], mutatingFunc: () -> ()) -> ()
+    typealias DataMutationHandler = (_ indexPaths: [IndexPath], _ mutatingFunc: () -> ()) -> ()
     
     private var mediaPickerItems = [MediaPickerItem]()
     
@@ -15,52 +15,52 @@ final class MediaRibbonDataSource {
         return mediaPickerItems.count + (cameraCellVisible ? 1 : 0)
     }
     
-    subscript(indexPath: NSIndexPath) -> MediaRibbonItem {
+    subscript(indexPath: IndexPath) -> MediaRibbonItem {
         if indexPath.item < mediaPickerItems.count {
-            return .Photo(mediaPickerItems[indexPath.item])
+            return .photo(mediaPickerItems[indexPath.item])
         } else {
-            return .Camera
+            return .camera
         }
     }
     
-    func addItems(items: [MediaPickerItem]) -> [NSIndexPath] {
+    func addItems(_ items: [MediaPickerItem]) -> [IndexPath] {
         
         let insertedIndexes = mediaPickerItems.count ..< mediaPickerItems.count + items.count
-        let indexPaths = insertedIndexes.map { NSIndexPath(forItem: $0, inSection: 0) }
+        let indexPaths = insertedIndexes.map { IndexPath(item: $0, section: 0) }
         
-        mediaPickerItems.appendContentsOf(items)
+        mediaPickerItems.append(contentsOf: items)
         
         return indexPaths
     }
     
-    func updateItem(item: MediaPickerItem) -> NSIndexPath? {
-        if let index = mediaPickerItems.indexOf(item) {
+    func updateItem(_ item: MediaPickerItem) -> IndexPath? {
+        if let index = mediaPickerItems.index(of: item) {
             mediaPickerItems[index] = item
-            return NSIndexPath(forItem: index, inSection: 0)
+            return IndexPath(item: index, section: 0)
         } else {
             return nil
         }
     }
     
-    func removeItem(item: MediaPickerItem) -> NSIndexPath? {
-        if let index = mediaPickerItems.indexOf(item) {
-            mediaPickerItems.removeAtIndex(index)
-            return NSIndexPath(forItem: index, inSection: 0)
+    func removeItem(_ item: MediaPickerItem) -> IndexPath? {
+        if let index = mediaPickerItems.index(of: item) {
+            mediaPickerItems.remove(at: index)
+            return IndexPath(item: index, section: 0)
         } else {
             return nil
         }
     }
     
-    func indexPathForItem(item: MediaPickerItem) -> NSIndexPath? {
-        return mediaPickerItems.indexOf(item).flatMap { NSIndexPath(forItem: $0, inSection: 0) }
+    func indexPathForItem(_ item: MediaPickerItem) -> IndexPath? {
+        return mediaPickerItems.index(of: item).flatMap { IndexPath(item: $0, section: 0) }
     }
     
-    func indexPathForCameraItem() -> NSIndexPath {
-        return NSIndexPath(forItem: mediaPickerItems.count, inSection: 0)
+    func indexPathForCameraItem() -> IndexPath {
+        return IndexPath(item: mediaPickerItems.count, section: 0)
     }
 }
 
 enum MediaRibbonItem {
-    case Photo(MediaPickerItem)
-    case Camera
+    case photo(MediaPickerItem)
+    case camera
 }

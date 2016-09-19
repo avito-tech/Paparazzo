@@ -1,15 +1,14 @@
 import UIKit
 import AVFoundation
-import AvitoDesignKit
 
 enum MediaPickerViewMode {
-    case Camera
-    case PhotoPreview(MediaPickerItem)
+    case camera
+    case photoPreview(MediaPickerItem)
 }
 
 enum MediaPickerTitleStyle {
-    case Dark
-    case Light
+    case dark
+    case light
 }
 
 protocol MediaPickerViewInput: class {
@@ -32,14 +31,14 @@ protocol MediaPickerViewInput: class {
     func setFlashButtonOn(_: Bool)
     func animateFlash()
     
-    func addItems(_: [MediaPickerItem], animated: Bool, completion: () -> ())
+    func addItems(_: [MediaPickerItem], animated: Bool, completion: @escaping () -> ())
     func updateItem(_: MediaPickerItem)
     func removeItem(_: MediaPickerItem)
     func selectItem(_: MediaPickerItem)
     func scrollToItemThumbnail(_: MediaPickerItem, animated: Bool)
     
     func selectCamera()
-    func scrollToCameraThumbnail(animated animated: Bool)
+    func scrollToCameraThumbnail(animated: Bool)
     
     func setCameraControlsEnabled(_: Bool)
     func setCameraButtonVisible(_: Bool)
@@ -53,24 +52,24 @@ protocol MediaPickerViewInput: class {
     func setCameraToggleButtonVisible(_: Bool)
     
     // MARK: - Actions in photo ribbon
-    var onItemSelect: (MediaPickerItem -> ())? { get set }
+    var onItemSelect: ((MediaPickerItem) -> ())? { get set }
     
     // MARK: - Camera actions
     var onPhotoLibraryButtonTap: (() -> ())? { get set }
     var onShutterButtonTap: (() -> ())? { get set }
-    var onFlashToggle: (Bool -> ())? { get set }
+    var onFlashToggle: ((Bool) -> ())? { get set }
     
     // MARK: - Selected photo actions
     var onRemoveButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onCameraThumbnailTap: (() -> ())? { get set }
     
-    var onSwipeToItem: (MediaPickerItem -> ())? { get set }
+    var onSwipeToItem: ((MediaPickerItem) -> ())? { get set }
     var onSwipeToCamera: (() -> ())? { get set }
-    var onSwipeToCameraProgressChange: (CGFloat -> ())? { get set }
+    var onSwipeToCameraProgressChange: ((CGFloat) -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
-    var onViewDidAppear: ((animated: Bool) -> ())? { get set }
+    var onViewDidAppear: ((_ animated: Bool) -> ())? { get set }
     
-    var onPreviewSizeDetermined: ((previewSize: CGSize) -> ())? { get set }
+    var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())? { get set }
 }

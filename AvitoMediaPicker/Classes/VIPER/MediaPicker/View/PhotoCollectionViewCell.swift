@@ -2,7 +2,7 @@ import UIKit
 
 class PhotoCollectionViewCell: ImageSourceCollectionViewCell {
     
-    var selectedBorderColor: UIColor? = .blueColor() {
+    var selectedBorderColor: UIColor? = .blue {
         didSet {
             adjustBorderColor()
         }
@@ -20,15 +20,15 @@ class PhotoCollectionViewCell: ImageSourceCollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            layer.borderWidth = selected ? 4 : 0
+            layer.borderWidth = isSelected ? 4 : 0
         }
     }
     
     // MARK: - Private
     
     private func adjustBorderColor() {
-        layer.borderColor = selectedBorderColor?.CGColor
+        layer.borderColor = selectedBorderColor?.cgColor
     }
 }

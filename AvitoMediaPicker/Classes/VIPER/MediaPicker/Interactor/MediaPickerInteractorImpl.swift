@@ -1,5 +1,3 @@
-import AvitoDesignKit
-
 final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
@@ -30,25 +28,25 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     // MARK: - MediaPickerInteractor
     
-    func observeDeviceOrientation(handler: (DeviceOrientation -> ())?) {
+    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
         deviceOrientationService.onOrientationChange = handler
-        handler?(deviceOrientationService.currentOrientation)
+        handler(deviceOrientationService.currentOrientation)
     }
     
-    func observeLatestPhotoLibraryItem(handler: (ImageSource? -> ())?) {
-        latestLibraryPhotoProvider.observePhoto(handler)
+    func observeLatestPhotoLibraryItem(handler: @escaping (ImageSource?) -> ()) {
+        latestLibraryPhotoProvider.observePhoto(handler: handler)
     }
     
-    func addItems(items: [MediaPickerItem], completion: (addedItems: [MediaPickerItem], canAddItems: Bool) -> ()) {
+    func addItems(_ items: [MediaPickerItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
         
         let numberOfItemsToAdd = min(items.count, maxItemsCount.flatMap { $0 - self.items.count } ?? Int.max)
         let itemsToAdd = items[0..<numberOfItemsToAdd]
         
-        self.items.appendContentsOf(itemsToAdd)
-        completion(addedItems: Array(itemsToAdd), canAddItems: canAddItems())
+        self.items.append(contentsOf: itemsToAdd)
+        completion(Array(itemsToAdd), canAddItems())
     }
     
-    func addPhotoLibraryItems(photoLibraryItems: [PhotoLibraryItem], completion: (addedItems: [MediaPickerItem], canAddItems: Bool) -> ()) {
+    func addPhotoLibraryItems(_ photoLibraryItems: [PhotoLibraryItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
         
         let mediaPickerItems = photoLibraryItems.map {
             MediaPickerItem(
@@ -57,33 +55,33 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             )
         }
         
-        self.photoLibraryItems.appendContentsOf(photoLibraryItems)
+        self.photoLibraryItems.append(contentsOf: photoLibraryItems)
         
         addItems(mediaPickerItems) { addedItems, canAddMoreItems in
-            completion(addedItems: addedItems, canAddItems: canAddMoreItems)
+            completion(addedItems, canAddMoreItems)
         }
     }
     
-    func updateItem(item: MediaPickerItem, completion: () -> ()) {
+    func updateItem(_ item: MediaPickerItem, completion: @escaping () -> ()) {
         
-        if let index = items.indexOf(item) {
+        if let index = items.index(of: item) {
             items[index] = item
         }
         
-        if let selectedItem = selectedItem where item == selectedItem {
+        if let selectedItem = selectedItem, item == selectedItem {
             self.selectedItem = item
         }
         
         completion()
     }
     
-    func removeItem(item: MediaPickerItem, completion: (adjacentItem: MediaPickerItem?, canAddItems: Bool) -> ()) {
+    func removeItem(_ item: MediaPickerItem, completion: @escaping (_ adjacentItem: MediaPickerItem?, _ canAddItems: Bool) -> ()) {
         
         var adjacentItem: MediaPickerItem?
         
-        if let index = items.indexOf(item) {
+        if let index = items.index(of: item) {
         
-            items.removeAtIndex(index)
+            items.remove(at: index)
             // TODO: хорошо бы если это фото с камеры, удалять также и файл из папки temp (куда они сейчас складываются)
             
             // Соседним считаем элемент, следующий за удаленным, иначе — предыдущий, если он есть
@@ -94,38 +92,38 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
         }
         
-        if let matchingPhotoLibraryItemIndex = photoLibraryItems.indexOf({ $0.identifier == item.identifier }) {
-            photoLibraryItems.removeAtIndex(matchingPhotoLibraryItemIndex)
+        if let matchingPhotoLibraryItemIndex = photoLibraryItems.index(where: { $0.identifier == item.identifier }) {
+            photoLibraryItems.remove(at: matchingPhotoLibraryItemIndex)
         }
         
-        completion(adjacentItem: adjacentItem, canAddItems: canAddItems())
+        completion(adjacentItem, canAddItems())
     }
     
-    func selectItem(item: MediaPickerItem) {
+    func selectItem(_ item: MediaPickerItem) {
         selectedItem = item
     }
     
-    func selectedItem(completion: MediaPickerItem? -> ()) {
+    func selectedItem(completion: @escaping (MediaPickerItem?) -> ()) {
         completion(selectedItem)
     }
     
-    func items(completion: (mediaPickerItems: [MediaPickerItem], canAddItems: Bool) -> ()) {
-        completion(mediaPickerItems: items, canAddItems: canAddItems())
+    func items(completion: @escaping (_ mediaPickerItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
+        completion(items, canAddItems())
     }
     
-    func photoLibraryItems(completion: [PhotoLibraryItem] -> ()) {
+    func photoLibraryItems(completion: @escaping ([PhotoLibraryItem]) -> ()) {
         completion(photoLibraryItems)
     }
     
-    func indexOfItem(item: MediaPickerItem, completion: Int? -> ()) {
-        completion(items.indexOf(item))
+    func indexOfItem(_ item: MediaPickerItem, completion: @escaping (Int?) -> ()) {
+        completion(items.index(of: item))
     }
     
-    func numberOfItemsAvailableForAdding(completion: Int? -> ()) {
+    func numberOfItemsAvailableForAdding(completion: @escaping (Int?) -> ()) {
         completion(maxItemsCount.flatMap { $0 - items.count })
     }
     
-    func cropCanvasSize(completion: CGSize -> ()) {
+    func cropCanvasSize(completion: @escaping (CGSize) -> ()) {
         completion(cropCanvasSize)
     }
     

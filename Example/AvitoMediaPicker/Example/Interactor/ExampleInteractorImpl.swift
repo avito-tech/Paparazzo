@@ -6,11 +6,11 @@ final class ExampleInteractorImpl: ExampleInteractor {
     
     // MARK: - ExampleInteractor
     
-    func photoLibraryItems(completion: [PhotoLibraryItem] -> ()) {
+    func photoLibraryItems(completion: ([PhotoLibraryItem]) -> ()) {
         completion(photoLibraryItems)
     }
     
-    func setPhotoLibraryItems(items: [PhotoLibraryItem]) {
+    func setPhotoLibraryItems(_ items: [PhotoLibraryItem]) {
         photoLibraryItems = items
     }
 }

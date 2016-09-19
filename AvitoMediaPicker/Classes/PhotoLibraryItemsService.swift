@@ -2,31 +2,31 @@ import Photos
 
 protocol PhotoLibraryItemsService {
     var authorizationStatus: PHAuthorizationStatus { get }
-    func observePhotos(handler: (assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ())
+    func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
 
-    private let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
-    private var fetchResult: PHFetchResult?
+    private let photoLibrary = PHPhotoLibrary.shared()
+    private var fetchResult: PHFetchResult<PHAsset>?
     
     // MARK: - Init
     
     override init() {
         super.init()
         
-        photoLibrary.registerChangeObserver(self)
+        photoLibrary.register(self)
         
         switch PHPhotoLibrary.authorizationStatus() {
-        case .Authorized:
+        case .authorized:
             setUpFetchRequest()
-        case .NotDetermined:
+        case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] status in
-                if case .Authorized = status {
+                if case .authorized = status {
                     self?.setUpFetchRequest()
                 }
             }
-        case .Restricted, .Denied:
+        case .restricted, .denied:
             break
         }
     }
@@ -37,22 +37,22 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    private var observerHandler: ((assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ())?
+    private var observerHandler: ((_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())?
     
     var authorizationStatus: PHAuthorizationStatus {
         return PHPhotoLibrary.authorizationStatus()
     }
     
-    func observePhotos(handler: (assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ()) {
+    func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ()) {
         observerHandler = handler
         callObserverHandler(changes: nil)
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
-    func photoLibraryDidChange(changeInfo: PHChange) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if let fetchResult = self.fetchResult, changes = changeInfo.changeDetailsForFetchResult(fetchResult) {
+    func photoLibraryDidChange(_ changeInfo: PHChange) {
+        DispatchQueue.main.async {
+            if let fetchResult = self.fetchResult, let changes = changeInfo.changeDetails(for: fetchResult) {
                 debugPrint("photoLibraryDidChange")
                 self.fetchResult = changes.fetchResultAfterChanges
                 self.callObserverHandler(changes: changes)
@@ -65,38 +65,27 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func setUpFetchRequest() {
         
         // Сначала пытаемся найти альбом Camera Roll
-        let albums = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumUserLibrary, options: nil)
-
-        albums.enumerateObjectsUsingBlock { collection, _, stop in
-            if let collection = collection as? PHAssetCollection {
-                self.fetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
-                // Camera Roll должен идти самым первым, поэтому дальше не продолжаем
-                stop.memory = ObjCBool(true)
-            }
-        }
+        let albums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+        
+        fetchResult = albums.firstObject.flatMap { PHAsset.fetchAssets(in: $0, options: nil) }
         
         // Fallback на случай, если по какой-то причине не нашли альбом Camera Roll
         if fetchResult == nil {
-            fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: nil)
+            fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
         }
         
         callObserverHandler(changes: nil)
     }
 
-    private func callObserverHandler(changes changes: PHFetchResultChangeDetails?) {
-        observerHandler?(assets: assetsFromFetchResult(), changes: changes)
+    private func callObserverHandler(changes: PHFetchResultChangeDetails<PHAsset>?) {
+        observerHandler?(assetsFromFetchResult(), changes)
     }
     
     private func assetsFromFetchResult() -> [PHAsset] {
-        
         var images = [PHAsset]()
-        
-        fetchResult?.enumerateObjectsUsingBlock { asset, _, _ in
-            if let asset = asset as? PHAsset {
-                images.append(asset)
-            }
-        }
-        
+        fetchResult?.enumerateObjects(using: { asset, _, _ in
+            images.append(asset)
+        })
         return images
     }
 }

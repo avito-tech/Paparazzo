@@ -1,14 +1,13 @@
 import Foundation
-import AvitoDesignKit
 
 protocol PhotoLibraryInteractor: class {
     
-    func authorizationStatus(completion: (accessGranted: Bool) -> ())
-    func observeItems(handler: (changes: PhotoLibraryChanges, selectionState: PhotoLibraryItemSelectionState) -> ())
+    func authorizationStatus(completion: @escaping (_ accessGranted: Bool) -> ())
+    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     
-    func selectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
-    func deselectItem(item: PhotoLibraryItem, completion: PhotoLibraryItemSelectionState -> ())
-    func selectedItems(completion: [PhotoLibraryItem] -> ())
+    func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
+    func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
+    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ())
 }
 
 public struct PhotoLibraryItem: Equatable {
@@ -37,7 +36,7 @@ struct PhotoLibraryItemSelectionState {
 struct PhotoLibraryChanges {
     
     // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
-    let removedIndexes: NSIndexSet
+    let removedIndexes: IndexSet
     let insertedItems: [(index: Int, item: PhotoLibraryItem)]
     let updatedItems: [(index: Int, item: PhotoLibraryItem)]
     let movedIndexes: [(from: Int, to: Int)]

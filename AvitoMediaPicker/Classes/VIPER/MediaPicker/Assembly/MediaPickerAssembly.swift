@@ -4,13 +4,13 @@ import Marshroute
 public protocol MediaPickerAssembly: class {
     
     func module(
-        items items: [MediaPickerItem],
+        items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
         routerSeed: RouterSeed,
-        configuration: MediaPickerModule -> ()
+        configuration: (MediaPickerModule) -> ()
     ) -> UIViewController
 }
 

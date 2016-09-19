@@ -14,17 +14,17 @@ final class CameraOutputGLKBinder {
         return glkView
     }
     
-    private let glkView: SelfBindingGLKView
-    private let eaglContext: EAGLContext
-    private let ciContext: CIContext
+    fileprivate let glkView: SelfBindingGLKView
+    fileprivate let eaglContext: EAGLContext
+    fileprivate let ciContext: CIContext
     
     var onFrameDrawn: (() -> ())?
     
     init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
         
-        eaglContext = EAGLContext(API: .OpenGLES2)
+        eaglContext = EAGLContext(api: .openGLES2)
         
-        ciContext = CIContext(EAGLContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
+        ciContext = CIContext(eaglContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
         
         glkView = SelfBindingGLKView(frame: .zero, context: eaglContext)
         glkView.enableSetNeedsDisplay = false
@@ -34,17 +34,19 @@ final class CameraOutputGLKBinder {
         setUpWithAVCaptureSession(captureSession)
     }
     
-    private func setUpWithAVCaptureSession(session: AVCaptureSession) {
+    private func setUpWithAVCaptureSession(_ session: AVCaptureSession) {
         
         let delegate = CameraOutputGLKBinderDelegate.sharedInstance
         
-        dispatch_async(delegate.queue) {
+        delegate.queue.async {
             
             delegate.binders.append(WeakWrapper(value: self))
             
             let output = AVCaptureVideoDataOutput()
             // CoreImage wants BGRA pixel format
-            output.videoSettings = [kCVPixelBufferPixelFormatTypeKey: NSNumber(unsignedInt: kCVPixelFormatType_32BGRA)]
+            output.videoSettings = [
+                kCVPixelBufferPixelFormatTypeKey as AnyHashable: NSNumber(value: kCVPixelFormatType_32BGRA)
+            ]
             output.setSampleBufferDelegate(delegate, queue: delegate.queue)
             
             do {
@@ -82,7 +84,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     
     static let sharedInstance = CameraOutputGLKBinderDelegate()
     
-    let queue = dispatch_queue_create("ru.avito.MediaPicker.CameraOutputGLKBinder.queue", DISPATCH_QUEUE_SERIAL)
+    let queue = DispatchQueue(label: "ru.avito.MediaPicker.CameraOutputGLKBinder.queue")
     
     var binders = [WeakWrapper<CameraOutputGLKBinder>]()
     var isInBackground = false
@@ -90,38 +92,38 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     override init() {
         super.init()
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default
         
         notificationCenter.addObserver(
             self,
             selector: #selector(handleAppWillResignActive(_:)),
-            name: UIApplicationWillResignActiveNotification,
+            name: .UIApplicationWillResignActive,
             object: nil
         )
         
         notificationCenter.addObserver(
             self,
             selector: #selector(handleAppDidBecomeActive(_:)),
-            name: UIApplicationDidBecomeActiveNotification,
+            name: .UIApplicationDidBecomeActive,
             object: nil
         )
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc private func handleAppWillResignActive(_: NSNotification) {
         // Синхронно, потому что после выхода из этого метода не должно быть никаких обращений к OpenGL
         // (флаг isInBackground проверяется в очереди `queue`)
-        dispatch_sync(queue) {
+        queue.sync {
             glFinish()
             self.isInBackground = true
         }
     }
     
     @objc private func handleAppDidBecomeActive(_: NSNotification) {
-        dispatch_async(queue) {
+        queue.async {
             self.isInBackground = false
         }
     }
@@ -129,10 +131,10 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
     
     @objc func captureOutput(
-        captureOutput: AVCaptureOutput?,
+        _ captureOutput: AVCaptureOutput?,
         didOutputSampleBuffer sampleBuffer: CMSampleBuffer?,
-        fromConnection connection: AVCaptureConnection?
-    ) {
+        from connection: AVCaptureConnection?)
+    {
         guard let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }) else { return }
         
         for binderWrapper in binders {
@@ -144,7 +146,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
     
     // MARK: - Private
     
-    private func drawImageBuffer(imageBuffer: CVImageBuffer, binder: CameraOutputGLKBinder) {
+    private func drawImageBuffer(_ imageBuffer: CVImageBuffer, binder: CameraOutputGLKBinder) {
         
         // After your app exits its applicationDidEnterBackground: method, it must not make any new OpenGL ES calls.
         // If it makes an OpenGL ES call, it is terminated by iOS.
@@ -159,8 +161,8 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         
         let orientation = Int32(binder.orientation.rawValue)
 
-        let sourceImage = CIImage(CVPixelBuffer: imageBuffer).imageByApplyingOrientation(orientation)
-        var sourceExtent = sourceImage.extent
+        let sourceImage = CIImage(cvPixelBuffer: imageBuffer).applyingOrientation(orientation)
+        let sourceExtent = sourceImage.extent
         
         let sourceAspect = sourceExtent.size.width / sourceExtent.size.height
         let previewAspect = view.drawableBounds.size.width  / view.drawableBounds.size.height
@@ -178,9 +180,9 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
             drawRect.size.height = drawRect.size.width / previewAspect
         }
         
-        if binder.eaglContext != EAGLContext.currentContext() {
+        if binder.eaglContext != EAGLContext.current() {
             glFlush()
-            EAGLContext.setCurrentContext(binder.eaglContext)
+            EAGLContext.setCurrent(binder.eaglContext)
         }
         
         // clear eagl view to grey
@@ -191,7 +193,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         glEnable(GLenum(GL_BLEND))
         glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE_MINUS_SRC_ALPHA))
         
-        ciContext.drawImage(sourceImage, inRect: view.drawableBounds, fromRect: drawRect)
+        ciContext.draw(sourceImage, in: view.drawableBounds, from: drawRect)
         
         view.display()
         

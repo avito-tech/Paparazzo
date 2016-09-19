@@ -28,7 +28,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - PhotoLibraryModule
     
-    var onFinish: (PhotoLibraryModuleResult -> ())?
+    var onFinish: ((PhotoLibraryModuleResult) -> ())?
     
     func focusOnModule() {
         router.focusOnCurrentModule()
@@ -87,20 +87,20 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             self?.onFinish?(.Cancelled)
         }
         
-        view?.onAccessDeniedButtonTap = { [weak self] in
-            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(url)
+        view?.onAccessDeniedButtonTap = {
+            if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.shared.openURL(url)
             }
         }
     }
     
-    private func adjustViewForSelectionState(state: PhotoLibraryItemSelectionState) {
+    private func adjustViewForSelectionState(_ state: PhotoLibraryItemSelectionState) {
         view?.setDimsUnselectedItems(!state.canSelectMoreItems)
         view?.setCanSelectMoreItems(state.canSelectMoreItems)
         view?.setPickButtonEnabled(state.isAnyItemSelected)
     }
     
-    private func cellData(item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
+    private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
         var cellData = PhotoLibraryItemCellData(image: item.image)
 

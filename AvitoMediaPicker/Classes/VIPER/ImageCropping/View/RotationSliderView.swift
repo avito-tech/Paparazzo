@@ -21,25 +21,25 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .clearColor()
-        contentMode = .Redraw
+        backgroundColor = .clear
+        contentMode = .redraw
         
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.bounces = false
         scrollView.delegate = self
         
-        thumbView.backgroundColor = .blackColor()
+        thumbView.backgroundColor = .black
         thumbView.layer.cornerRadius = scaleView.divisionWidth / 2
         
         alphaMaskLayer.startPoint = CGPoint(x: 0, y: 0)
         alphaMaskLayer.endPoint = CGPoint(x: 1, y: 0)
         alphaMaskLayer.locations = [0, 0.2, 0.8, 1]
         alphaMaskLayer.colors = [
-            UIColor.clearColor().CGColor,
-            UIColor.whiteColor().CGColor,
-            UIColor.whiteColor().CGColor,
-            UIColor.clearColor().CGColor
+            UIColor.clear.cgColor,
+            UIColor.white.cgColor,
+            UIColor.white.cgColor,
+            UIColor.clear.cgColor
         ]
         
         layer.mask = alphaMaskLayer
@@ -59,7 +59,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
         
         // Высчитываем этот inset, чтобы в случаях, когда слайдер находится в крайних положениях,
         // метки на шкале и указатель текущего значения совпадали
-        let sideInset = (bounds.size.width - scaleView.divisionWidth) / 2 % (scaleView.divisionWidth + scaleView.divisionsSpacing)
+        let sideInset = ((bounds.size.width - scaleView.divisionWidth) / 2).truncatingRemainder(dividingBy: scaleView.divisionWidth + scaleView.divisionsSpacing)
         
         scaleView.contentInsets = UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
         scaleView.frame = CGRect(origin: .zero, size: scaleView.sizeThatFits(bounds.size))
@@ -77,24 +77,24 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     
     // MARK: - RotationSliderView
     
-    var onSliderValueChange: (Float -> ())?
+    var onSliderValueChange: ((Float) -> ())?
     
-    func setMiminumValue(value: Float) {
+    func setMiminumValue(_ value: Float) {
         minimumValue = value
     }
     
-    func setMaximumValue(value: Float) {
+    func setMaximumValue(_ value: Float) {
         maximumValue = value
     }
     
-    func setValue(value: Float) {
+    func setValue(_ value: Float) {
         currentValue = max(minimumValue, min(maximumValue, value))
         adjustScrollViewOffset()
     }
     
     // MARK: - UIScrollViewDelegate
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         let offset = scrollView.contentOffset.x
         let significantWidth = scrollView.contentSize.width - bounds.size.width
@@ -105,7 +105,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
     }
     
     // Это отключает deceleration у scroll view
-    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(scrollView.contentOffset, animated: true)
     }
     
@@ -124,7 +124,7 @@ final class RotationSliderView: UIView, UIScrollViewDelegate {
 
 private final class SliderScaleView: UIView {
     
-    var contentInsets = UIEdgeInsetsZero
+    var contentInsets = UIEdgeInsets.zero
     
     let divisionsSpacing = CGFloat(14)
     let divisionsCount = 51
@@ -132,14 +132,14 @@ private final class SliderScaleView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
         
         var width = CGFloat(divisionsCount) * divisionWidth
         width += CGFloat(divisionsCount - 1) * divisionsSpacing
@@ -148,8 +148,8 @@ private final class SliderScaleView: UIView {
         return CGSize(width: width, height: size.height)
     }
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
         for i in 0 ..< divisionsCount {
             
