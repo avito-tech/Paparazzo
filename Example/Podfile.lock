@@ -13,19 +13,23 @@ PODS:
 
 DEPENDENCIES:
   - AvitoMediaPicker (from `../`)
-  - AvitoToolkit (from `../../avito-ios-toolkit`)
+  - AvitoToolkit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git`, branch `develop`)
   - Marshroute (from `https://github.com/avito-tech/Marshroute`, branch `swift-3-syntax`)
 
 EXTERNAL SOURCES:
   AvitoMediaPicker:
     :path: ../
   AvitoToolkit:
-    :path: ../../avito-ios-toolkit
+    :branch: develop
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
   Marshroute:
     :branch: swift-3-syntax
     :git: https://github.com/avito-tech/Marshroute
 
 CHECKOUT OPTIONS:
+  AvitoToolkit:
+    :commit: b25db84f8523492710eac6092c236e6088290640
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
   Marshroute:
     :commit: c84b8f9dca0c684b00cb6303ad5733e039bd3027
     :git: https://github.com/avito-tech/Marshroute
@@ -37,6 +41,6 @@ SPEC CHECKSUMS:
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
 
-PODFILE CHECKSUM: 7b4ac0bb3c6a3dfef9aed8c5ade960763bd99375
+PODFILE CHECKSUM: 6431d803c16cf10e0c08160457c9c8eac93aa9ba
 
 COCOAPODS: 1.1.0.rc.2
