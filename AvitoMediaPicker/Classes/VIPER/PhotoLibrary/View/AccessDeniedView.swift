@@ -111,7 +111,7 @@ final class AccessDeniedView: UIView {
         var buttonFrame = CGRect(origin: .zero, size: button.sizeThatFits(bounds.size))
         buttonFrame.centerX = bounds.centerX
         buttonFrame.top = messageLabelFrame.bottom + messageBottomMargin
-        buttonFrame.height = buttonHeight
+        buttonFrame.size.height = buttonHeight
         
         return (
             titleLabelFrame: titleLabelFrame,
