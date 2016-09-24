@@ -62,8 +62,8 @@ final class ExamplePresenter {
                     }
                     
                     let options = ImageRequestOptions(
-                        size: .FitSize(CGSize(width: 1000, height: 1000)),
-                        deliveryMode: .Best
+                        size: .fitSize(CGSize(width: 1000, height: 1000)),
+                        deliveryMode: .best
                     )
                     
                     items.first?.image.requestImage(options: options) { (result: ImageRequestResult<UIImage>) in
@@ -83,9 +83,9 @@ final class ExamplePresenter {
                         weakModule?.dismissModule()
                         
                         switch result {
-                        case .SelectedItems(let items):
+                        case .selectedItems(let items):
                             self?.interactor.setPhotoLibraryItems(items)
-                        case .Cancelled:
+                        case .cancelled:
                             break
                         }
                     }

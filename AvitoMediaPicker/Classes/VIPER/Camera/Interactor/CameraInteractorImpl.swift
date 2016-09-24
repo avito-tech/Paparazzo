@@ -45,17 +45,17 @@ final class CameraInteractorImpl: CameraInteractor {
             
             if let imageSource = imageSource, let previewSize = self?.previewImagesSizeForNewPhotos {
                 
-                let previewOptions = ImageRequestOptions(size: .FillSize(previewSize), deliveryMode: .Best)
+                let previewOptions = ImageRequestOptions(size: .fillSize(previewSize), deliveryMode: .best)
                 
                 imageSource.requestImage(options: previewOptions) { (result: ImageRequestResult<CGImageWrapper>) in
                     let imageSourceWithPreview = photo.flatMap {
                         LocalImageSource(path: $0.path, previewImage: result.image?.image)
                     }
-                    completion(imageSourceWithPreview.flatMap { MediaPickerItem(image: $0, source: .Camera) })
+                    completion(imageSourceWithPreview.flatMap { MediaPickerItem(image: $0, source: .camera) })
                 }
                 
             } else {
-                completion(imageSource.flatMap { MediaPickerItem(image: $0, source: .Camera) })
+                completion(imageSource.flatMap { MediaPickerItem(image: $0, source: .camera) })
             }
         }
     }

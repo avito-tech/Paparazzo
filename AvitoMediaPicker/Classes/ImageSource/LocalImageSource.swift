@@ -21,7 +21,7 @@ public final class LocalImageSource: ImageSource {
     {
         let requestId = ImageRequestId(LocalImageSource.requestIdsGenerator.nextInt())
         
-        if let previewImage = previewImage, options.deliveryMode == .Progressive {
+        if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }

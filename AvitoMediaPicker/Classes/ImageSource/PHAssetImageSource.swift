@@ -119,10 +119,10 @@ final class PHAssetImageSource: ImageSource {
         phOptions.isNetworkAccessAllowed = true
         
         switch options.deliveryMode {
-        case .Progressive:
+        case .progressive:
             phOptions.deliveryMode = .opportunistic
             phOptions.resizeMode = .fast
-        case .Best:
+        case .best:
             phOptions.deliveryMode = .highQualityFormat
             phOptions.resizeMode = .exact
         }
@@ -131,13 +131,13 @@ final class PHAssetImageSource: ImageSource {
         let contentMode: PHImageContentMode
         
         switch options.size {
-        case .FullResolution:
+        case .fullResolution:
             size = PHImageManagerMaximumSize
             contentMode = .aspectFill
-        case .FitSize(let sizeToFit):
+        case .fitSize(let sizeToFit):
             size = sizeToFit
             contentMode = .aspectFit
-        case .FillSize(let sizeToFill):
+        case .fillSize(let sizeToFill):
             size = sizeToFill
             contentMode = .aspectFill
         }

@@ -9,6 +9,6 @@ public protocol PhotoLibraryModule: class {
 }
 
 public enum PhotoLibraryModuleResult {
-    case SelectedItems([PhotoLibraryItem])
-    case Cancelled
+    case selectedItems([PhotoLibraryItem])
+    case cancelled
 }

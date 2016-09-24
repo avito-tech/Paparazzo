@@ -139,7 +139,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
         if let previewImage = previewImage {
             
             let screenSize = UIScreen.main.bounds.size
-            let previewOptions = ImageRequestOptions(size: .FitSize(screenSize), deliveryMode: .Progressive)
+            let previewOptions = ImageRequestOptions(size: .fitSize(screenSize), deliveryMode: .progressive)
             
             splashView.isHidden = false
             
@@ -150,7 +150,7 @@ final class ImageCroppingView: UIView, UIScrollViewDelegate {
             }
         }
         
-        let options = ImageRequestOptions(size: .FitSize(sourceImageMaxSize), deliveryMode: .Best)
+        let options = ImageRequestOptions(size: .fitSize(sourceImageMaxSize), deliveryMode: .best)
         
         image.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
             if let image = result.image {
