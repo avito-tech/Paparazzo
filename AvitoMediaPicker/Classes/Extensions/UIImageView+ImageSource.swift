@@ -30,8 +30,8 @@ public extension UIImageView {
         
         if let newImageSource = newImageSource, pixelSize.width > 0 && pixelSize.height > 0 {
             
-            let size: ImageSizeOption = (contentMode == .scaleAspectFit) ? .FitSize(pixelSize) : .FillSize(pixelSize)
-            var options = ImageRequestOptions(size: size, deliveryMode: .Progressive)
+            let size: ImageSizeOption = (contentMode == .scaleAspectFit) ? .fitSize(pixelSize) : .fillSize(pixelSize)
+            var options = ImageRequestOptions(size: size, deliveryMode: .progressive)
             adjustOptions?(&options)
             
             imageRequestId = newImageSource.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in

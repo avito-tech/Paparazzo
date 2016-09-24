@@ -79,12 +79,12 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
-                self?.onFinish?(.SelectedItems(items))
+                self?.onFinish?(.selectedItems(items))
             }
         }
         
         view?.onCancelButtonTap = { [weak self] in
-            self?.onFinish?(.Cancelled)
+            self?.onFinish?(.cancelled)
         }
         
         view?.onAccessDeniedButtonTap = {

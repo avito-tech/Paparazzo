@@ -26,7 +26,7 @@ final class CroppedImageSource: ImageSource {
         // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
         let requestId = ImageRequestId(0)
         
-        if let previewImage = previewImage, options.deliveryMode == .Progressive {
+        if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }
@@ -37,11 +37,11 @@ final class CroppedImageSource: ImageSource {
             let resizedImage: CGImage?
             
             switch options.size {
-            case .FitSize(let size):
+            case .fitSize(let size):
                 resizedImage = cgImage.flatMap { $0.resized(toFit: size) }
-            case .FillSize(let size):
+            case .fillSize(let size):
                 resizedImage = cgImage.flatMap { $0.resized(toFill: size) }
-            case .FullResolution:
+            case .fullResolution:
                 resizedImage = cgImage
             }
             
@@ -120,7 +120,7 @@ final class CroppedImageSource: ImageSource {
     
     private func performCrop(completion: @escaping () -> ()) {
         
-        let options = ImageRequestOptions(size: .FitSize(sourceSize), deliveryMode: .Best)
+        let options = ImageRequestOptions(size: .fitSize(sourceSize), deliveryMode: .best)
         
         originalImage.requestImage(options: options) {
             [weak self, processingQueue] (result: ImageRequestResult<CGImageWrapper>) in

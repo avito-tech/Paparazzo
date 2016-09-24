@@ -298,11 +298,11 @@ final class MediaPickerPresenter: MediaPickerModule {
                         self?.router.focusOnCurrentModule()
                         
                         switch result {
-                        case .SelectedItems(let photoLibraryItems):
+                        case .selectedItems(let photoLibraryItems):
                             self?.interactor.addPhotoLibraryItems(photoLibraryItems) { addedItems, canAddItems in
                                 self?.handleItemsAdded(addedItems, fromCamera: false, canAddMoreItems: canAddItems)
                             }
-                        case .Cancelled:
+                        case .cancelled:
                             break
                         }
                     }

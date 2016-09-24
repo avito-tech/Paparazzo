@@ -29,11 +29,11 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
     
     override func main() {
         switch options.size {
-        case .FullResolution:
+        case .fullResolution:
             getFullResolutionImage()
-        case .FillSize(let size):
+        case .fillSize(let size):
             getImage(resizedTo: size)
-        case .FitSize(let size):
+        case .fitSize(let size):
             getImage(resizedTo: size)
         }
     }

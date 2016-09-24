@@ -2,8 +2,8 @@
 public struct MediaPickerItem: Equatable {
     
     public enum Source {
-        case Camera
-        case PhotoLibrary
+        case camera
+        case photoLibrary
     }
  
     public let image: ImageSource

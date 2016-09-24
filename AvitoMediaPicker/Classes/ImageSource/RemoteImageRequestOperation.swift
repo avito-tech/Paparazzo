@@ -125,11 +125,11 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Operation,
     
     private func finalCGImage(from image: CGImage) -> CGImage? {
         switch options.size {
-        case .FullResolution:
+        case .fullResolution:
             return image
-        case .FillSize(let size):
+        case .fillSize(let size):
             return image.resized(toFill: size)
-        case .FitSize(let size):
+        case .fitSize(let size):
             return image.resized(toFit: size)
         }
     }
