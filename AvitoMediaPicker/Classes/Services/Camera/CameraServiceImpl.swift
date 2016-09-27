@@ -59,6 +59,11 @@ final class CameraServiceImpl: CameraService {
     
     private func setUpCaptureSession() {
         do {
+            #if arch(i386) || arch(x86_64)
+                // Preventing crash in simulator
+                throw Error()
+            #endif
+            
             let captureSession = AVCaptureSession()
             captureSession.sessionPreset = AVCaptureSessionPresetPhoto
             
