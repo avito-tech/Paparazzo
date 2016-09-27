@@ -25,6 +25,7 @@ final class CachingImageSource: ImageSource {
         underlyingImageSource.imageSize(completion: completion)
     }
     
+    @discardableResult
     public func requestImage<T : InitializableWithCGImage>(
         options: ImageRequestOptions,
         resultHandler: @escaping (ImageRequestResult<T>) -> ())

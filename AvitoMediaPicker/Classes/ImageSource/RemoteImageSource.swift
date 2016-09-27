@@ -50,6 +50,7 @@ public class RemoteImageSource: ImageSource {
         }
     }
 
+    @discardableResult
     public func requestImage<T : InitializableWithCGImage>(
         options: ImageRequestOptions,
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
