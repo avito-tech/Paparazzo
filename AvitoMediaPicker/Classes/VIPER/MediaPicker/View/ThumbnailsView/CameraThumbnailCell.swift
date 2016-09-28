@@ -48,6 +48,9 @@ final class CameraThumbnailCell: UICollectionViewCell {
         layer.cornerRadius = 6
         layer.masksToBounds = true
         
+        contentView.layer.cornerRadius = 6
+        contentView.layer.masksToBounds = true
+        
         button.tintColor = .white
         button.isUserInteractionEnabled = false
         
