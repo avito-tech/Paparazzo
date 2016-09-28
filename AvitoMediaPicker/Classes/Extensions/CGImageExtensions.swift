@@ -4,7 +4,7 @@ extension CGImage {
     
     func imageFixedForOrientation(_ orientation: ExifOrientation) -> CGImage? {
         
-        let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+        let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
         let ciImage = CIImage(cgImage: self).applyingOrientation(Int32(orientation.rawValue))
         
         return ciContext.createCGImage(ciImage, from: ciImage.extent)
@@ -98,4 +98,4 @@ extension UIImageOrientation {
 }
 
 // Операция создания CIContext дорогостоящая, поэтому рекомендуется хранить его
-private let sharedGPUContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+private let sharedGPUContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])

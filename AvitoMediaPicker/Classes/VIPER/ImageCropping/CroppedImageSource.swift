@@ -95,7 +95,7 @@ final class CroppedImageSource: ImageSource {
     // MARK: - Private
     
     private let croppedImageCache = SingleObjectCache<CGImageWrapper>()
-    private let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+    private let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
     
     private let processingQueue = DispatchQueue(
         label: "ru.avito.AvitoMediaPicker.CroppedImageSource.processingQueue",

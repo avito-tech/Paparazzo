@@ -28,7 +28,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AvitoToolkit:
-    :commit: b25db84f8523492710eac6092c236e6088290640
+    :commit: 9ec23d668101a964009a41877775d2353d016e4f
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
   Marshroute:
     :commit: c84b8f9dca0c684b00cb6303ad5733e039bd3027
