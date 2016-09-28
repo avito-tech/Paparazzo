@@ -60,6 +60,10 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
             target: self,
             action: #selector(onPickButtonTap(_:))
         )
+        
+        if let font = theme?.photoLibraryDoneButtonFont {
+            pickBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: font], for: .normal)
+        }
     }
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
@@ -87,6 +91,7 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     }
     
     func setTheme(_ theme: PhotoLibraryUITheme) {
+        self.theme = theme
         photoLibraryView.setTheme(theme)
     }
     
@@ -117,6 +122,7 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     // MARK: - Private
     
     private var pickBarButtonItem: UIBarButtonItem?
+    private var theme: PhotoLibraryUITheme?
     
     @objc private func onCancelButtonTap(_ sender: UIBarButtonItem) {
         onCancelButtonTap?()
