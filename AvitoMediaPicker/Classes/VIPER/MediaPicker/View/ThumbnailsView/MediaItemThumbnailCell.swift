@@ -7,6 +7,9 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
         
         layer.cornerRadius = 6
         layer.masksToBounds = true
+        
+        contentView.layer.cornerRadius = 6
+        contentView.layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
