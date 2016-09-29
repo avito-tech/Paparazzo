@@ -10,6 +10,8 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    public var imageViewInsets = UIEdgeInsets.zero
+    
     // MARK: - UICollectionViewCell
     
     public override init(frame: CGRect) {
@@ -28,7 +30,7 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = contentView.bounds
+        imageView.frame = contentView.bounds.shrinked(imageViewInsets)
         
         updateImage()
     }
