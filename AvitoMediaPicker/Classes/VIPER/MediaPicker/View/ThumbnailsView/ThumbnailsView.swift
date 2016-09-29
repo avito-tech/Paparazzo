@@ -108,11 +108,18 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
-        collectionView.performBatchUpdates(animated: animated, { [weak self] in
-            if let indexPaths = self?.dataSource.addItems(items) {
-                self?.collectionView.insertItems(at: indexPaths)
+        collectionView.performBatchUpdates(
+            animated: animated,
+            { [weak self] in
+                if let indexPaths = self?.dataSource.addItems(items) {
+                    self?.collectionView.insertItems(at: indexPaths)
+                }
+            },
+            completion: { [collectionView] _ in
+                collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+                completion()
             }
-        }, completion: { _ in completion() })
+        )
     }
     
     func updateItem(_ item: MediaPickerItem) {

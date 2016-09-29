@@ -67,11 +67,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         // Сначала пытаемся найти альбом Camera Roll
         let albums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
         
-        fetchResult = albums.firstObject.flatMap { PHAsset.fetchAssets(in: $0, options: nil) }
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        
+        fetchResult = albums.firstObject.flatMap { PHAsset.fetchAssets(in: $0, options: fetchOptions) }
         
         // Fallback на случай, если по какой-то причине не нашли альбом Camera Roll
         if fetchResult == nil {
-            fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
+            fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         }
         
         callObserverHandler(changes: nil)
