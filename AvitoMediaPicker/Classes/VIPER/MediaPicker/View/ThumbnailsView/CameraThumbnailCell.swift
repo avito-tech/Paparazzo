@@ -3,7 +3,6 @@ import AVFoundation
 
 final class CameraThumbnailCell: UICollectionViewCell {
     
-    private let backView = UIView()
     private let button = UIButton()
     
     private var cameraOutputBinder: CameraOutputGLKBinder?
@@ -30,12 +29,12 @@ final class CameraThumbnailCell: UICollectionViewCell {
         )
         
         let view = cameraOutputBinder.view
+        view.clipsToBounds = true
         view.layer.cornerRadius = 6
-        view.layer.masksToBounds = true
         insertSubview(view, belowSubview: button)
         
         self.cameraOutputBinder = cameraOutputBinder
-        self.backView.isHidden = true
+        self.backgroundColor = .white
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
@@ -47,19 +46,15 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        backgroundColor = .black
         layer.cornerRadius = 6
         layer.masksToBounds = true
-        
-        backView.backgroundColor = .black
-        backView.layer.cornerRadius = 6
-        backView.layer.masksToBounds = true
         
         button.tintColor = .white
         button.isUserInteractionEnabled = false
         
         adjustBorderColor()
         
-        addSubview(backView)
         addSubview(button)
     }
     
@@ -78,8 +73,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        backView.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
-        cameraOutputBinder?.view.frame = backView.frame
+        cameraOutputBinder?.view.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         button.frame = bounds
     }
     
