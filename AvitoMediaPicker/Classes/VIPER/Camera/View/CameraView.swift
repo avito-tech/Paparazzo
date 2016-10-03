@@ -80,6 +80,7 @@ final class CameraView: UIView, CameraViewInput {
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
+        outputParameters?.orientation = orientation
         cameraOutputBinder?.orientation = orientation
     }
     
