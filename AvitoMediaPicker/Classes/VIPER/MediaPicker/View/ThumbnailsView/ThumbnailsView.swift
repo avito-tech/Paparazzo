@@ -113,10 +113,15 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
             { [weak self] in
                 if let indexPaths = self?.dataSource.addItems(items) {
                     self?.collectionView.insertItems(at: indexPaths)
+                    
+                    if let indexPathsToReload = self?.collectionView.indexPathsForVisibleItems.filter({ !indexPaths.contains($0) }),
+                        indexPathsToReload.count > 0
+                    {
+                        self?.collectionView.reloadItems(at: indexPathsToReload)
+                    }
                 }
             },
-            completion: { [collectionView] _ in
-                collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+            completion: { _ in
                 completion()
             }
         )
