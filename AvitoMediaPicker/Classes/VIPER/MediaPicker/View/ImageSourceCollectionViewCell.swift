@@ -1,6 +1,6 @@
 import UIKit
 
-public class ImageSourceCollectionViewCell: UICollectionViewCell {
+open class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     public var imageSource: ImageSource? {
         didSet {
@@ -27,7 +27,7 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         
         imageView.frame = contentView.bounds.shrinked(imageViewInsets)
@@ -35,7 +35,7 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
         updateImage()
     }
     
-    public override func prepareForReuse() {
+    open override func prepareForReuse() {
         super.prepareForReuse()
         imageView.setImage(fromSource: nil)
     }
@@ -43,9 +43,9 @@ public class ImageSourceCollectionViewCell: UICollectionViewCell {
     // MARK: - Subclasses customization
     
     /// This method is called right before requesting image from ImageSource and gives you a chance to tweak request options
-    public func adjustImageRequestOptions(_ options: inout ImageRequestOptions) {}
-    public func didRequestImage(requestId: ImageRequestId) {}
-    public func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {}
+    open func adjustImageRequestOptions(_ options: inout ImageRequestOptions) {}
+    open func didRequestImage(requestId: ImageRequestId) {}
+    open func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {}
     
     // MARK: - Private
     
