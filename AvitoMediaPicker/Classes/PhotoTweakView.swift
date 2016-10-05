@@ -182,7 +182,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     func cropPreviewImage() -> CGImage? {
         
-        return snapshot().flatMap { snapshot in
+        // Hide grid for it to be hidden on preview image
+        let gridWasHidden = gridView.isHidden
+        gridView.isHidden = true
+        
+        let previewImage = snapshot().flatMap { snapshot -> CGImage? in
             
             let cropRect = CGRect(
                 x: (bounds.left + (bounds.size.width - cropSize.width) / 2) * snapshot.scale,
@@ -193,6 +197,10 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             
             return snapshot.cgImage.flatMap { $0.cropping(to: cropRect) }
         }
+        
+        gridView.isHidden = gridWasHidden
+        
+        return previewImage
     }
     
     // MARK: - UIScrollViewDelegate

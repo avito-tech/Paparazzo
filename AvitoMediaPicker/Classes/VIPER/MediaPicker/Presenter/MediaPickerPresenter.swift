@@ -331,6 +331,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     
                     self?.interactor.updateItem(croppedItem) {
                         self?.view?.updateItem(croppedItem)
+                        self?.adjustPhotoTitleForItem(croppedItem)
                         self?.onItemUpdate?(croppedItem)
                         self?.router.focusOnCurrentModule()
                     }
