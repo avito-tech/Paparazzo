@@ -3,6 +3,7 @@ import AVFoundation
 protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
+    var isFlashEnabled: Bool { get }
     
     func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ())
     func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())

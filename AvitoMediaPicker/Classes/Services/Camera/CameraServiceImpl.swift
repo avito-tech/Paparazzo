@@ -148,6 +148,10 @@ final class CameraServiceImpl: CameraService {
         return backCamera?.isFlashAvailable == true
     }
     
+    var isFlashEnabled: Bool {
+        return backCamera?.flashMode == .on
+    }
+    
     func setFlashEnabled(_ enabled: Bool) -> Bool {
         
         guard let camera = backCamera else { return false }

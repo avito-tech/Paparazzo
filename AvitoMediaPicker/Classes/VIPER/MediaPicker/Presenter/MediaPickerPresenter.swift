@@ -77,6 +77,10 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.view?.setFlashButtonVisible(flashAvailable)
         }
         
+        cameraModuleInput.isFlashEnabled { [weak self] isFlashEnabled in
+            self?.view?.setFlashButtonOn(isFlashEnabled)
+        }
+        
         cameraModuleInput.canToggleCamera { [weak self] canToggleCamera in
             self?.view?.setCameraToggleButtonVisible(canToggleCamera)
         }
