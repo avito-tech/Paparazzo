@@ -30,6 +30,10 @@ final class CameraPresenter: CameraModuleInput {
         interactor.isFlashAvailable(completion: completion)
     }
     
+    func isFlashEnabled(completion: @escaping (Bool) -> ()) {
+        interactor.isFlashEnabled(completion: completion)
+    }
+    
     func setFlashEnabled(_ enabled: Bool, completion: @escaping (_ success: Bool) -> ()) {
         interactor.setFlashEnabled(enabled, completion: completion)
     }
