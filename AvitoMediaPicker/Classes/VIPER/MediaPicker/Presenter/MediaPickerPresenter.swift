@@ -173,10 +173,12 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onCloseButtonTap = { [weak self] in
+            self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
             self?.onCancel?()
         }
         
         view?.onContinueButtonTap = { [weak self] in
+            self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
             self?.interactor.items { items, _ in
                 self?.onFinish?(items)
             }

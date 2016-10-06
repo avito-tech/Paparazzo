@@ -29,8 +29,9 @@ final class CameraInteractorImpl: CameraInteractor {
         completion(cameraService.isFlashEnabled)
     }
     
-    func setFlashEnabled(_ enabled: Bool, completion: @escaping (_ success: Bool) -> ()) {
-        completion(cameraService.setFlashEnabled(enabled))
+    func setFlashEnabled(_ enabled: Bool, completion: ((_ success: Bool) -> ())?) {
+        let success = cameraService.setFlashEnabled(enabled)
+        completion?(success)
     }
     
     func canToggleCamera(completion: @escaping (Bool) -> ()) {
