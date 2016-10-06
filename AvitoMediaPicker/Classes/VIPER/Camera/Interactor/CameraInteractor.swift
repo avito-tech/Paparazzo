@@ -7,7 +7,7 @@ protocol CameraInteractor: class {
     
     func isFlashAvailable(completion: (Bool) -> ())
     func isFlashEnabled(completion: @escaping (Bool) -> ())
-    func setFlashEnabled(_: Bool, completion: @escaping (_ success: Bool) -> ())
+    func setFlashEnabled(_: Bool, completion: ((_ success: Bool) -> ())?)
     
     func canToggleCamera(completion: @escaping (Bool) -> ())
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ())
