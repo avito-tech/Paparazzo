@@ -50,7 +50,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         view?.setAccessDeniedMessage("Разрешите доступ приложению Avito к вашим фотографиям")
         view?.setAccessDeniedButtonTitle("Разрешить доступ к галерее")
         
-        interactor.authorizationStatus { [weak self] accessGranted in
+        interactor.observeAuthorizationStatus { [weak self] accessGranted in
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
         }
         
@@ -60,7 +60,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             let hasItems = (changes.itemsAfterChanges.count > 0)
             
             self?.view?.setPickButtonVisible(hasItems)
-            self?.view?.setAccessDeniedViewVisible(!hasItems)
             
             let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
             
