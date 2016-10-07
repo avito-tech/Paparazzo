@@ -1,7 +1,7 @@
 import Photos
 
 protocol PhotoLibraryItemsService {
-    var authorizationStatus: PHAuthorizationStatus { get }
+    func observeAuthorizationStatus(handler: @escaping (PHAuthorizationStatus) -> ())
     func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())
 }
 
@@ -25,6 +25,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 if case .authorized = status {
                     self?.setUpFetchRequest()
                 }
+                self?.onAuthorizationStatusChange?(status)
             }
         case .restricted, .denied:
             break
@@ -37,14 +38,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    private var observerHandler: ((_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())?
-    
-    var authorizationStatus: PHAuthorizationStatus {
-        return PHPhotoLibrary.authorizationStatus()
+    func observeAuthorizationStatus(handler: @escaping (PHAuthorizationStatus) -> ()) {
+        onAuthorizationStatusChange = handler
+        handler(PHPhotoLibrary.authorizationStatus())
     }
     
     func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ()) {
-        observerHandler = handler
+        onPhotosChange = handler
         callObserverHandler(changes: nil)
     }
     
@@ -61,6 +61,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
 
     // MARK: - Private
+    
+    private var onPhotosChange: ((_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())?
+    private var onAuthorizationStatusChange: ((PHAuthorizationStatus) -> ())?
     
     private func setUpFetchRequest() {
         
@@ -81,7 +84,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
 
     private func callObserverHandler(changes: PHFetchResultChangeDetails<PHAsset>?) {
-        observerHandler?(assetsFromFetchResult(), changes)
+        onPhotosChange?(assetsFromFetchResult(), changes)
     }
     
     private func assetsFromFetchResult() -> [PHAsset] {

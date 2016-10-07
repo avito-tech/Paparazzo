@@ -2,7 +2,7 @@ import Foundation
 
 protocol PhotoLibraryInteractor: class {
     
-    func authorizationStatus(completion: @escaping (_ accessGranted: Bool) -> ())
+    func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     
     func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
