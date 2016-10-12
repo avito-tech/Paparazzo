@@ -66,20 +66,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private var onAuthorizationStatusChange: ((PHAuthorizationStatus) -> ())?
     
     private func setUpFetchRequest() {
-        
-        // Сначала пытаемся найти альбом Camera Roll
-        let albums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
-        
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-        
-        fetchResult = albums.firstObject.flatMap { PHAsset.fetchAssets(in: $0, options: fetchOptions) }
-        
-        // Fallback на случай, если по какой-то причине не нашли альбом Camera Roll
-        if fetchResult == nil {
-            fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        }
-        
+        fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
         callObserverHandler(changes: nil)
     }
 
