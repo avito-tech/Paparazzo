@@ -66,7 +66,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private var onAuthorizationStatusChange: ((PHAuthorizationStatus) -> ())?
     
     private func setUpFetchRequest() {
-        fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
+        let options: PHFetchOptions?
+        
+        if #available(iOS 9.0, *) {
+            options = PHFetchOptions()
+            options?.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
+        } else {
+            options = nil
+        }
+        
+        fetchResult = PHAsset.fetchAssets(with: .image, options: options)
         callObserverHandler(changes: nil)
     }
 
