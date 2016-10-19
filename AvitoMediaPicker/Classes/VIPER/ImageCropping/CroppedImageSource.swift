@@ -6,14 +6,26 @@ final class CroppedImageSource: ImageSource {
     
     let originalImage: ImageSource
     let sourceSize: CGSize
-    var croppingParameters: ImageCroppingParameters?
-    var previewImage: CGImage?
+    let croppingParameters: ImageCroppingParameters?
+    let previewImage: CGImage?
     
-    init(originalImage: ImageSource, sourceSize: CGSize, parameters: ImageCroppingParameters?, previewImage: CGImage?) {
+    init(originalImage: ImageSource,
+         sourceSize: CGSize,
+         parameters: ImageCroppingParameters?,
+         previewImage: CGImage?,
+         fileManager: FileManager = .default)
+    {
         self.originalImage = originalImage
         self.sourceSize = sourceSize
         self.croppingParameters = parameters
         self.previewImage = previewImage
+        self.fileManager = fileManager
+    }
+    
+    deinit {
+        if let croppedImage = croppedImage {
+            try? fileManager.removeItem(atPath: croppedImage.path)
+        }
     }
     
     // MARK: - ImageSource
@@ -32,25 +44,11 @@ final class CroppedImageSource: ImageSource {
             }
         }
         
-        getCroppedImage { cgImage in
-            
-            let resizedImage: CGImage?
-            
-            switch options.size {
-            case .fitSize(let size):
-                resizedImage = cgImage.flatMap { $0.resized(toFit: size) }
-            case .fillSize(let size):
-                resizedImage = cgImage.flatMap { $0.resized(toFill: size) }
-            case .fullResolution:
-                resizedImage = cgImage
-            }
-            
-            dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(
-                    image: resizedImage.flatMap { T(cgImage: $0) },
-                    degraded: false,
-                    requestId: requestId
-                ))
+        getCroppedImage { croppedImageSource in
+            if let croppedImageSource = croppedImageSource {
+                croppedImageSource.requestImage(options: options, resultHandler: resultHandler)
+            } else {
+                resultHandler(ImageRequestResult<T>(image: nil, degraded: false, requestId: requestId))
             }
         }
         
@@ -62,24 +60,21 @@ final class CroppedImageSource: ImageSource {
     }
     
     func imageSize(completion: @escaping (CGSize?) -> ()) {
-        getCroppedImage { cgImage in
-            completion(cgImage.flatMap { CGSize(width: $0.width, height: $0.height) })
+        getCroppedImage { croppedImageSource in
+            if let croppedImageSource = croppedImageSource {
+                croppedImageSource.imageSize(completion: completion)
+            } else {
+                completion(nil)
+            }
         }
     }
     
     func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
-        processingQueue.async {
-            
-            let data = NSMutableData()
-            let destination = CGImageDestinationCreateWithData(data, kUTTypeJPEG, 1, nil)
-            
-            if let image = self.croppedImage, let destination = destination {
-                CGImageDestinationAddImage(destination, image, nil)
-                CGImageDestinationFinalize(destination)
-            }
-            
-            DispatchQueue.main.async {
-                completion(data.length > 0 ? data as Data : nil)
+        getCroppedImage { croppedImageSource in
+            if let croppedImageSource = croppedImageSource {
+                croppedImageSource.fullResolutionImageData(completion: completion)
+            } else {
+                completion(nil)
             }
         }
     }
@@ -94,8 +89,9 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - Private
     
-    private let croppedImageCache = SingleObjectCache<CGImageWrapper>()
     private let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
+    private let fileManager: FileManager
+    private var croppedImage: LocalImageSource?
     
     private let processingQueue = DispatchQueue(
         label: "ru.avito.AvitoMediaPicker.CroppedImageSource.processingQueue",
@@ -103,12 +99,7 @@ final class CroppedImageSource: ImageSource {
         attributes: [.concurrent]
     )
     
-    private var croppedImage: CGImage? {
-        get { return croppedImageCache.value?.image }
-        set { croppedImageCache.value = newValue.flatMap { CGImageWrapper(cgImage: $0) } }
-    }
-    
-    private func getCroppedImage(completion: @escaping (CGImage?) -> ()) {
+    private func getCroppedImage(completion: @escaping (ImageSource?) -> ()) {
         if let croppedImage = croppedImage {
             completion(croppedImage)
         } else {
@@ -126,9 +117,24 @@ final class CroppedImageSource: ImageSource {
             [weak self, processingQueue] (result: ImageRequestResult<CGImageWrapper>) in
             
             processingQueue.async {
-                if let originalCGImage = result.image?.image, let croppingParameters = self?.croppingParameters {
-                    self?.croppedImage = self?.newTransformedImage(sourceImage: originalCGImage, parameters: croppingParameters)
+                
+                if let originalCGImage = result.image?.image,
+                   let croppingParameters = self?.croppingParameters,
+                   let croppedCgImage = self?.newTransformedImage(sourceImage: originalCGImage, parameters: croppingParameters)
+                {
+                    let path = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString).jpg")
+                    let url = URL(fileURLWithPath: path)
+                    let destination = CGImageDestinationCreateWithURL(url as CFURL, kUTTypeJPEG, 1, nil)
+                    
+                    if let destination = destination {
+                        CGImageDestinationAddImage(destination, croppedCgImage, nil)
+                        
+                        if CGImageDestinationFinalize(destination) {
+                            self?.croppedImage = LocalImageSource(path: path, previewImage: self?.previewImage)
+                        }
+                    }
                 }
+                
                 DispatchQueue.main.async(execute: completion)
             }
         }

@@ -4,6 +4,8 @@ import MobileCoreServices
 
 public final class LocalImageSource: ImageSource {
     
+    let path: String
+    
     // MARK: - Init
     
     public init(path: String, previewImage: CGImage? = nil) {
@@ -98,7 +100,6 @@ public final class LocalImageSource: ImageSource {
     
     private static let requestIdsGenerator = ThreadSafeIntGenerator()
     
-    private let path: String
     private let previewImage: CGImage?
     private var fullSize: CGSize?
 }
