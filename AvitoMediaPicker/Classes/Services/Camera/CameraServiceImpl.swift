@@ -157,8 +157,14 @@ final class CameraServiceImpl: CameraService {
         guard let camera = backCamera else { return false }
         
         do {
+            let flashMode: AVCaptureFlashMode = enabled ? .on : .off
+            
             try camera.lockForConfiguration()
-            camera.flashMode = enabled ? .on : .off
+            
+            if camera.isFlashModeSupported(flashMode) {
+                camera.flashMode = flashMode
+            }
+            
             camera.unlockForConfiguration()
             
             return true
