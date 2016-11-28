@@ -12,26 +12,21 @@ extension CGImage {
     
     func scaled(_ scale: CGFloat) -> CGImage? {
         
-        let width = Int(CGFloat(self.width) * scale)
-        let height = Int(CGFloat(self.height) * scale)
-        let bitsPerComponent = self.bitsPerComponent
-        let bytesPerRow = self.bytesPerRow
-        let bitmapInfo = self.bitmapInfo
-        
-        guard let colorSpace = self.colorSpace else { return nil }
-        
-        guard let context = CGContext(
-            data: nil,
-            width: width,
-            height: height,
-            bitsPerComponent: bitsPerComponent,
-            bytesPerRow: bytesPerRow,
-            space: colorSpace,
-            bitmapInfo: bitmapInfo.rawValue
-        ) else { return nil }
+        guard let outputWidth = (CGFloat(width) * scale).toInt(),
+              let outputHeight = (CGFloat(height) * scale).toInt(),
+              let colorSpace = colorSpace,
+              let context = CGContext(
+                  data: nil,
+                  width: outputWidth,
+                  height: outputHeight,
+                  bitsPerComponent: bitsPerComponent,
+                  bytesPerRow: bytesPerRow,
+                  space: colorSpace,
+                  bitmapInfo: bitmapInfo.rawValue
+              ) else { return nil }
         
         context.interpolationQuality = .high
-        context.draw(self, in: CGRect(origin: .zero, size: CGSize(width: CGFloat(width), height: CGFloat(height))))
+        context.draw(self, in: CGRect(origin: .zero, size: CGSize(width: CGFloat(outputWidth), height: CGFloat(outputHeight))))
         
         return context.makeImage()
     }
