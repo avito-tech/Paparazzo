@@ -12,20 +12,23 @@ extension CGImage {
     
     func scaled(_ scale: CGFloat) -> CGImage? {
         
-        let image = CIImage(cgImage: self)
+        guard let outputWidth = (CGFloat(width) * scale).toInt(),
+              let outputHeight = (CGFloat(height) * scale).toInt(),
+              let colorSpace = colorSpace,
+              let context = CGContext(
+                  data: nil,
+                  width: outputWidth,
+                  height: outputHeight,
+                  bitsPerComponent: bitsPerComponent,
+                  bytesPerRow: bytesPerRow,
+                  space: colorSpace,
+                  bitmapInfo: bitmapInfo.rawValue
+              ) else { return nil }
         
-        guard let filter = CIFilter(name: "CILanczosScaleTransform") else {
-            assertionFailure("No CIFilter with name CILanczosScaleTransform found")
-            return nil
-        }
+        context.interpolationQuality = .high
+        context.draw(self, in: CGRect(origin: .zero, size: CGSize(width: CGFloat(outputWidth), height: CGFloat(outputHeight))))
         
-        filter.setValue(image, forKey: kCIInputImageKey)
-        filter.setValue(scale, forKey: kCIInputScaleKey)
-        filter.setValue(1, forKey: kCIInputAspectRatioKey)
-        
-        guard let outputImage = filter.value(forKey: kCIOutputImageKey) as? UIKit.CIImage else { return nil }
-        
-        return sharedGPUContext.createCGImage(outputImage, from: outputImage.extent)
+        return context.makeImage()
     }
     
     func resized(toFit size: CGSize) -> CGImage? {
@@ -96,6 +99,3 @@ extension UIImageOrientation {
         }
     }
 }
-
-// Операция создания CIContext дорогостоящая, поэтому рекомендуется хранить его
-private let sharedGPUContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
