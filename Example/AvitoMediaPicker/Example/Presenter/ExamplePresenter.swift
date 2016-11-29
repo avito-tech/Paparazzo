@@ -21,7 +21,7 @@ final class ExamplePresenter {
     // MARK: - Private
     
     private var items: [MediaPickerItem] = [
-//        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://fonday.ru/images/tmp/16/7/original/16710fBjLzqnJlMXhoFHAG.jpg")!), source: .Camera),
+//        MediaPickerItem(image: RemoteImageSource(url: URL(string: "http://51.img.avito.st/640x480/3171237651.jpg")!), source: .camera)
 //        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://www.velvet.by/files/userfiles/19083/ekrk.jpg")!), source: .Camera),
 //        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "https://img3.goodfon.ru/original/1920x1080/7/3e/koshki-milye-kotiki.jpg")!), source: .Camera),
 //        MediaPickerItem(image: RemoteImageSource(url: NSURL(string: "http://www.catgallery.ru/kototeka/wp-content/uploads/2015/04/Foto-podborka-kosoglazyih-kotikov-3.jpg")!), source: .Camera),
