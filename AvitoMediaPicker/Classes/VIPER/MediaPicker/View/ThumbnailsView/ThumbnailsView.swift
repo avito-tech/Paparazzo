@@ -181,11 +181,16 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
             let cameraIndexPath = dataSource.indexPathForCameraItem()
             let cameraIsSelected = collectionView.indexPathsForSelectedItems?.contains(cameraIndexPath) == true
             
-            collectionView.reloadItems(at: [dataSource.indexPathForCameraItem()])
-            
-            if cameraIsSelected {
-                collectionView.selectItem(at: cameraIndexPath, animated: false, scrollPosition: [])
-            }
+            collectionView.performNonAnimatedBatchUpdates(
+                updates: {
+                    self.collectionView.reloadItems(at: [cameraIndexPath])
+                },
+                completion: { _ in
+                    if cameraIsSelected {
+                        self.collectionView.selectItem(at: cameraIndexPath, animated: false, scrollPosition: [])
+                    }
+                }
+            )
         }
     }
     

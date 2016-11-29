@@ -29,9 +29,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate
             let shouldApplyTransform = delegate?.shouldApplyTransformToItemAtIndexPath(attributes.indexPath) ?? true
             
-            if shouldApplyTransform {
-                attributes.transform = itemsTransform
-            }
+            attributes.transform = shouldApplyTransform ? itemsTransform : .identity
         }
         
         return attributes
