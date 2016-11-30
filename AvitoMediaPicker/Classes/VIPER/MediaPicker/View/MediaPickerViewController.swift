@@ -45,6 +45,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         return .portrait
     }
     
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }

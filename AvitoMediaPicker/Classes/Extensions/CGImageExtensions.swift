@@ -1,4 +1,5 @@
 import CoreGraphics
+import UIKit
 
 extension CGImage {
     
@@ -20,7 +21,7 @@ extension CGImage {
                   width: outputWidth,
                   height: outputHeight,
                   bitsPerComponent: bitsPerComponent,
-                  bytesPerRow: bytesPerRow,
+                  bytesPerRow: bytesPerRow * Int(UIScreen.main.scale),   // AI-4111
                   space: colorSpace,
                   bitmapInfo: bitmapInfo.rawValue
               ) else { return nil }
