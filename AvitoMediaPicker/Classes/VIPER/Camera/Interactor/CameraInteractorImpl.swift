@@ -3,10 +3,12 @@ import AVFoundation
 final class CameraInteractorImpl: CameraInteractor {
     
     private let cameraService: CameraService
+    private let deviceOrientationService: DeviceOrientationService
     private var previewImagesSizeForNewPhotos: CGSize?
     
     init(cameraService: CameraService, deviceOrientationService: DeviceOrientationService) {
         self.cameraService = cameraService
+        self.deviceOrientationService = deviceOrientationService
     }
     
     // MARK: - CameraInteractor
@@ -71,5 +73,10 @@ final class CameraInteractorImpl: CameraInteractor {
     
     func setCameraOutputNeeded(_ isCameraOutputNeeded: Bool) {
         cameraService.setCaptureSessionRunning(isCameraOutputNeeded)
+    }
+    
+    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
+        deviceOrientationService.onOrientationChange = handler
+        handler(deviceOrientationService.currentOrientation)
     }
 }

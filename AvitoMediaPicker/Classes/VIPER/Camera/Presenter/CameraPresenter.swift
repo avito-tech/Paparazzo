@@ -61,10 +61,6 @@ final class CameraPresenter: CameraModuleInput {
         view?.mainModuleDidAppear(animated: animated)
     }
     
-    func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
-        view?.adjustForDeviceOrientation(orientation)
-    }
-    
     // MARK: - Private
     
     private func setUpView() {
@@ -85,6 +81,10 @@ final class CameraPresenter: CameraModuleInput {
             } else {
                 self?.view?.setAccessDeniedViewVisible(true)
             }
+        }
+        
+        interactor.observeDeviceOrientation { [weak self] deviceOrientation in
+            self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }
     }
 }
