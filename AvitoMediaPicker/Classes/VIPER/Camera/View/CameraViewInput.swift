@@ -15,4 +15,5 @@ protocol CameraViewInput: class {
     
     // MARK: - Callbacks from main module
     func mainModuleDidAppear(animated: Bool)
+    func adjustForDeviceOrientation(_: DeviceOrientation)
 }

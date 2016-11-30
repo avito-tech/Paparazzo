@@ -61,6 +61,10 @@ final class CameraPresenter: CameraModuleInput {
         view?.mainModuleDidAppear(animated: animated)
     }
     
+    func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
+        view?.adjustForDeviceOrientation(orientation)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {

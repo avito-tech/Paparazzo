@@ -87,6 +87,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
+            self?.cameraModuleInput.adjustForDeviceOrientation(deviceOrientation)
         }
         
         interactor.observeLatestPhotoLibraryItem { [weak self] image in
