@@ -82,5 +82,9 @@ final class CameraPresenter: CameraModuleInput {
                 self?.view?.setAccessDeniedViewVisible(true)
             }
         }
+        
+        interactor.observeDeviceOrientation { [weak self] deviceOrientation in
+            self?.view?.adjustForDeviceOrientation(deviceOrientation)
+        }
     }
 }

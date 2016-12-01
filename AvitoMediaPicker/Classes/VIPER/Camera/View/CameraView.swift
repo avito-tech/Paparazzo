@@ -26,7 +26,9 @@ final class CameraView: UIView, CameraViewInput {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        accessDeniedView.frame = bounds
+        accessDeniedView.bounds = bounds
+        accessDeniedView.center = bounds.center
+        
         cameraOutputBinder?.view.frame = bounds
     }
     
@@ -88,6 +90,12 @@ final class CameraView: UIView, CameraViewInput {
         // AI-3326: костыль для iOS 8.
         if let outputParameters = outputParameters {
             setOutputParameters(outputParameters)
+        }
+    }
+    
+    func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
+        UIView.animate(withDuration: 0.25) {
+            self.accessDeniedView.transform = CGAffineTransform(deviceOrientation: orientation)
         }
     }
     

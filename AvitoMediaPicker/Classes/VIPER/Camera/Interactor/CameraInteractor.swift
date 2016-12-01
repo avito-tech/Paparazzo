@@ -15,6 +15,8 @@ protocol CameraInteractor: class {
     func takePhoto(completion: @escaping (MediaPickerItem?) -> ())
     
     func setPreviewImagesSizeForNewPhotos(_: CGSize)
+    
+    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
 }
 
 struct CameraOutputParameters {
