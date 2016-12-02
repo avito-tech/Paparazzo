@@ -38,9 +38,9 @@ let viewController = assembly.module(
 * _cropEnabled_ — флаг, указывающий на то, должен ли пользователь иметь возможность кадрировать фотографии.
 * _cropCanvasSize_ — максимальный размер "холста" при кадрировании фотографии (см. [Memory constraints при кадрировании](#memory-constraints)).
 * _routerSeed_ — routerSeed, полученный из Marshroute.
-* _configuration_ — блок, позволяющий настроить [дополнительные параметры модуля](#Дополнительные-параметры-модуля-MediaPicker).
+* _configuration_ — блок, позволяющий настроить [дополнительные параметры модуля](#MediaPickerModule).
 
-#### Дополнительные параметры модуля MediaPicker
+#### <a name="MediaPickerModule" /> Дополнительные параметры модуля MediaPicker
 Дополнительные параметры подуля описаны в протоколе `MediaPickerModule`:
 
 * Методы `setContinueButtonTitle(_:)` и `setContinueButtonEnabled(_:)` позволяют кастомизировать названиетекст и активность кнопки "Продолжить".
