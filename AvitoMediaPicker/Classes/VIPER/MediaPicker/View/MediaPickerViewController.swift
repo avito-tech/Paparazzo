@@ -41,6 +41,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         layoutSubviewsPromise.fulfill()
     }
     
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }

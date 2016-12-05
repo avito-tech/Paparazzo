@@ -4,8 +4,10 @@ PODS:
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
-  - AvitoToolkit (0.0.1)
+  - AvitoToolkit (0.0.1):
+    - KeychainAccess
   - JNWSpringAnimation (0.7.1)
+  - KeychainAccess (3.0.1)
   - Marshroute (0.3.3)
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
@@ -28,7 +30,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AvitoToolkit:
-    :commit: 9ec23d668101a964009a41877775d2353d016e4f
+    :commit: ea1afb20c6d3b0bdb39fd713de9ed8ece0b16d79
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
   Marshroute:
     :commit: c84b8f9dca0c684b00cb6303ad5733e039bd3027
@@ -36,8 +38,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AvitoMediaPicker: af84c7ffb50dd1bba946b9069068bf1ae5cc3759
-  AvitoToolkit: c2b148b7af8c93986183b4ba318ae6d5b5b09ec9
+  AvitoToolkit: dadc6c4cd7a52bcc444577244042ee17ffc3732b
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
+  KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
 
