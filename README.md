@@ -3,17 +3,25 @@ AvitoMediaPicker — это модуль для выбора и редактир
 * выбор фотографий из пользовательской галереи
 * кадрирование и поворот фотографий
 
-## Установка
+* [Установка](#installation)
+* [Использование](#usage)
+  * [Показ всего модуля](#present-whole-module)
+    * [Дополнительные параметры модуля MediaPicker](#MediaPickerModule)
+    * [Memory constraints при кадрировании](#memory-constraints)
+  * [Показ галереи](#present-gallery)
+  * [Кастомизация UI](#ui-customization)
+
+## <a name="installation" /> Установка
 Для установки модуля с помощью [CocoaPods](http://cocoapods.org) добавьте следующую строку в свой Podfile:
 
 ```ruby
 pod "AvitoMediaPicker"
 ```
 
-## Использование
+## <a name="usage" /> Использование
 Можно использовать либо модуль целиком (камера + галерея), либо только галерею.
 
-### Показ всего модуля
+### <a name="present-whole-module" /> Показ всего модуля
 Инициализируйте ассамблею модуля, используя идущую в составе модуля фабрику `AvitoMediaPicker.AssemblyFactory`:
 ```swift
 let factory = AvitoMediaPicker.AssemblyFactory()
@@ -52,7 +60,7 @@ let viewController = assembly.module(
 #### <a name="memory-constraints" /> Memory constraints при кадрировании
 При кадрировании фотографии на устройствах с малым объемом оперативной памяти приложение может крэшиться по memory warning. Происходит это из-за того, что для кадрирования в память помещается достаточно тяжелый bitmap оригинальной фотографии. Чтобы уменьшить вероятность крэша на "старых" девайсах (вроде iPhone 4 и 4s), можно масштабировать исходную фотографию перед кадрированием, тогда ее bitmap будет занимать меньше места в оперативной памяти. Параметр модуля _cropCanvasSize_ предназначен именно для этого и обозначает размер, до которого будет производится масштабирование оригинальной фотографии перед кадрированием.
 
-### Показ галереи
+### <a name="present-gallery" /> Показ галереи
 Инициализируйте ассамблею модуля, используя идущую в составе модуля фабрику `AvitoMediaPicker.AssemblyFactory`:
 ```swift
 let factory = AvitoMediaPicker.AssemblyFactory()
@@ -72,5 +80,17 @@ let viewController = assembly.module(
 * _routerSeed_ — routerSeed, полученный из Marshroute.
 * _configuration_ — блок, позволяющий настроить дополнительные параметры модуля.
 
-### Кастомизация UI
-TODO
+### <a name="ui-customization" /> Кастомизация UI
+Существует возможность кастомизировать цвета, шрифты и иконки, используемые в пикере. Для этого при инициализации `AvitoMediaPicker.AssemblyFactory` необходимо передать в конструктор структуру `MediaPickerUITheme`, в которой описаны указанные артефакты.
+
+```swift
+var theme = MediaPickerUITheme()
+theme.shutterButtonColor = SpecColors.tint
+theme.accessDeniedTitleFont = SpecFonts.bold(17)
+theme.accessDeniedMessageFont = SpecFonts.regular(17)
+theme.accessDeniedButtonFont = SpecFonts.regular(17)
+theme.cameraContinueButtonTitleFont = SpecFonts.regular(17)
+theme.cancelRotationTitleFont = SpecFonts.bold(14)
+
+let assemblyFactory = AvitoMediaPicker.AssemblyFactory(theme)
+```
