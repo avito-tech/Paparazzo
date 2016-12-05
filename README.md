@@ -43,7 +43,7 @@ let viewController = assembly.module(
 #### <a name="MediaPickerModule" /> Дополнительные параметры модуля MediaPicker
 Дополнительные параметры подуля описаны в протоколе `MediaPickerModule`:
 
-* Методы `setContinueButtonTitle(_:)` и `setContinueButtonEnabled(_:)` позволяют кастомизировать названиетекст и активность кнопки "Продолжить".
+* Методы `setContinueButtonTitle(_:)` и `setContinueButtonEnabled(_:)` позволяют кастомизировать текст и активность кнопки "Продолжить".
 * `onItemsAdd` вызывается, когда пользователь добавляет фотографии из галереи или делает новый снимок.
 * `onItemUpdate` вызывается после того, как пользователь произвел кадрирование фотографии.
 * `onItemRemove` вызывается после удаления фотографии пользователем.
