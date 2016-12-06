@@ -28,6 +28,10 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         return true
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .all
+    }
+    
     // MARK: - PhotoLibraryViewInput
     
     var onItemSelect: ((PhotoLibraryItem) -> ())?
