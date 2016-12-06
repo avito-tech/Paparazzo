@@ -21,6 +21,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        forcePortraitOrientation()  // kludge for AI-4054, AI-4069
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
     
@@ -39,10 +40,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
-    }
-    
-    override var shouldAutorotate: Bool {
-        return false
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -260,5 +257,24 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func addDisposable(_ object: AnyObject) {
         disposables.append(object)
+    }
+    
+    // MARK: - Private
+    
+    private func forcePortraitOrientation() {
+        
+        let initialDeviceOrientation = UIDevice.current.orientation
+        let targetDeviceOrientation = UIDeviceOrientation.portrait
+        let targetInterfaceOrientation = UIInterfaceOrientation.portrait
+        
+        if UIDevice.current.orientation != targetDeviceOrientation {
+            
+            UIApplication.shared.setStatusBarOrientation(targetInterfaceOrientation, animated: true)
+            UIDevice.current.setValue(NSNumber(value: targetInterfaceOrientation.rawValue as Int), forKey: "orientation")
+            
+            DispatchQueue.main.async {
+                UIDevice.current.setValue(NSNumber(value: initialDeviceOrientation.rawValue as Int), forKey: "orientation")
+            }
+        }
     }
 }
