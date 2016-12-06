@@ -17,8 +17,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         cropCanvasSize: CGSize,
         configuration: (MediaPickerModule) -> ()
     ) {
-        presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
-        
+        pushViewControllerDerivedFrom { routerSeed in
+            
             let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
             
             return assembly.module(
@@ -30,8 +30,23 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 routerSeed: routerSeed,
                 configuration: configuration
             )
-            
-        }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
+        }
+        
+//        presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
+//        
+//            let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
+//            
+//            return assembly.module(
+//                items: items,
+//                selectedItem: selectedItem,
+//                maxItemsCount: maxItemsCount,
+//                cropEnabled: true,
+//                cropCanvasSize: cropCanvasSize,
+//                routerSeed: routerSeed,
+//                configuration: configuration
+//            )
+//            
+//        }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
     }
     
     func showPhotoLibrary(
