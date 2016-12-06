@@ -263,17 +263,17 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     private func forcePortraitOrientation() {
         
-        let initialOrientation = UIDevice.current.orientation
-        let orientation = UIInterfaceOrientation.portrait
-        let deviceOrientation = UIDeviceOrientation.portrait
+        let initialDeviceOrientation = UIDevice.current.orientation
+        let targetDeviceOrientation = UIDeviceOrientation.portrait
+        let targetInterfaceOrientation = UIInterfaceOrientation.portrait
         
-        if UIDevice.current.orientation != deviceOrientation {
+        if UIDevice.current.orientation != targetDeviceOrientation {
             
-            UIApplication.shared.setStatusBarOrientation(orientation, animated: true)
-            UIDevice.current.setValue(NSNumber(value: orientation.rawValue as Int), forKey: "orientation")
+            UIApplication.shared.setStatusBarOrientation(targetInterfaceOrientation, animated: true)
+            UIDevice.current.setValue(NSNumber(value: targetInterfaceOrientation.rawValue as Int), forKey: "orientation")
             
             DispatchQueue.main.async {
-                UIDevice.current.setValue(NSNumber(value: initialOrientation.rawValue as Int), forKey: "orientation")
+                UIDevice.current.setValue(NSNumber(value: initialDeviceOrientation.rawValue as Int), forKey: "orientation")
             }
         }
     }
