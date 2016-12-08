@@ -14,7 +14,7 @@ final class CameraOutputGLKBinder {
         return glkView
     }
     
-    fileprivate let glkView: SelfBindingGLKView
+    fileprivate let glkView: CameraOutputView
     fileprivate let eaglContext: EAGLContext
     fileprivate let ciContext: CIContext
     
@@ -26,12 +26,14 @@ final class CameraOutputGLKBinder {
         
         ciContext = CIContext(eaglContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
         
-        glkView = SelfBindingGLKView(frame: .zero, context: eaglContext)
+        glkView = CameraOutputView(frame: .zero, context: eaglContext)
         glkView.enableSetNeedsDisplay = false
         
         self.orientation = outputOrientation
         
         setUpWithAVCaptureSession(captureSession)
+        
+        glkView.binder = self
     }
     
     private func setUpWithAVCaptureSession(_ session: AVCaptureSession) {
@@ -58,24 +60,6 @@ final class CameraOutputGLKBinder {
             } catch {
                 debugPrint("Couldn't configure AVCaptureSession: \(error)")
             }
-        }
-    }
-}
-
-private final class SelfBindingGLKView: GLKView {
-    
-    var drawableBounds: CGRect = .zero
-    
-    deinit {
-        deleteDrawable()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if bounds.size.width > 0 && bounds.size.height > 0 {
-            bindDrawable()
-            drawableBounds = CGRect(x: 0, y: 0, width: drawableWidth, height: drawableHeight)
         }
     }
 }
@@ -152,20 +136,37 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         // If it makes an OpenGL ES call, it is terminated by iOS.
         guard !isInBackground else { return }
         
-        let view = binder.glkView
-        let ciContext = binder.ciContext
+        binder.glkView.imageBuffer = imageBuffer
+        binder.glkView.display()
+    }
+}
+
+private final class CameraOutputView: GLKView {
+    
+    weak var binder: CameraOutputGLKBinder?
+    var imageBuffer: CVImageBuffer?
+    
+    override func draw(_ rect: CGRect) {
         
-        guard view.drawableBounds.size.width > 0 && view.drawableBounds.size.height > 0 else {
+        guard let binder = binder, let imageBuffer = imageBuffer else {
             return
         }
         
+        let ciContext = binder.ciContext
+        
         let orientation = Int32(binder.orientation.rawValue)
-
+        
+        let screenScale = UIScreen.main.scale
+        
+        var drawableBounds = rect
+        drawableBounds.size.width *= screenScale
+        drawableBounds.size.height *= screenScale
+        
         let sourceImage = CIImage(cvPixelBuffer: imageBuffer).applyingOrientation(orientation)
         let sourceExtent = sourceImage.extent
         
         let sourceAspect = sourceExtent.size.width / sourceExtent.size.height
-        let previewAspect = view.drawableBounds.size.width  / view.drawableBounds.size.height
+        let previewAspect = rect.size.width  / rect.size.height
         
         // we want to maintain the aspect radio of the screen size, so we clip the video image
         var drawRect = sourceExtent
@@ -180,11 +181,6 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
             drawRect.size.height = drawRect.size.width / previewAspect
         }
         
-        if binder.eaglContext != EAGLContext.current() {
-            glFlush()
-            EAGLContext.setCurrent(binder.eaglContext)
-        }
-        
         // clear eagl view to grey
         glClearColor(0.5, 0.5, 0.5, 1.0)
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
@@ -193,9 +189,7 @@ private final class CameraOutputGLKBinderDelegate: NSObject, AVCaptureVideoDataO
         glEnable(GLenum(GL_BLEND))
         glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE_MINUS_SRC_ALPHA))
         
-        ciContext.draw(sourceImage, in: view.drawableBounds, from: drawRect)
-        
-        view.display()
+        ciContext.draw(sourceImage, in: drawableBounds, from: drawRect)
         
         binder.onFrameDrawn?()
     }

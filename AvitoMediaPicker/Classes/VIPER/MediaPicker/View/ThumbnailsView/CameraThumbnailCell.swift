@@ -28,6 +28,17 @@ final class CameraThumbnailCell: UICollectionViewCell {
             outputOrientation: parameters.orientation
         )
         
+        if var attachedBinder = self.cameraOutputBinder {
+            // AI-3326: костыль для iOS 8.
+            // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
+            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
+                cameraOutputBinder?.onFrameDrawn = nil
+                DispatchQueue.main.async {
+                    attachedBinder.view.removeFromSuperview()
+                }
+            }
+        }
+        
         let view = cameraOutputBinder.view
         view.clipsToBounds = true
         view.layer.cornerRadius = 6
