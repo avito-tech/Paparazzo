@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 final class CameraThumbnailCell: UICollectionViewCell {
     
@@ -23,36 +22,29 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         
-        let cameraOutputBinder = CameraOutputGLKBinder(
-            captureSession: parameters.captureSession,
-            outputOrientation: parameters.orientation
-        )
+        let newOutputBinder = CameraOutputGLKBinder(imageOutput: parameters.imageOutput)
         
-        if var attachedBinder = self.cameraOutputBinder {
+        if let previousOutputBinder = cameraOutputBinder {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
-            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
-                cameraOutputBinder?.onFrameDrawn = nil
+            newOutputBinder.onFrameDrawn = { [weak newOutputBinder] in
+                newOutputBinder?.onFrameDrawn = nil
                 DispatchQueue.main.async {
-                    attachedBinder.view.removeFromSuperview()
+                    previousOutputBinder.view.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
         }
         
-        let view = cameraOutputBinder.view
+        let view = newOutputBinder.view
         view.clipsToBounds = true
         view.layer.cornerRadius = 6
-        insertSubview(view, belowSubview: button)
+        insertSubview(view, belowSubview: cameraOutputBinder?.view ?? button)
         
-        self.cameraOutputBinder = cameraOutputBinder
+        cameraOutputBinder = newOutputBinder
         
         // AI-3610: костыль для iPhone 4, чтобы не было белой рамки вокруг ячейки.
         // Если ставить clearColor, скругление углов теряется на iOS 9.
         self.backgroundColor = UIColor.white.withAlphaComponent(0.1)
-    }
-    
-    func setOutputOrientation(_ orientation: ExifOrientation) {
-        cameraOutputBinder?.orientation = orientation
     }
     
     // MARK: - Init

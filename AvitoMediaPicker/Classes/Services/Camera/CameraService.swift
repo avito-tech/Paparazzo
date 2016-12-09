@@ -1,11 +1,11 @@
-import AVFoundation
+import GPUImage
 
 protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
     var isFlashEnabled: Bool { get }
     
-    func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ())
+    func getImageOutput(completion: @escaping (GPUImageOutput?) -> ())
     func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())
     
     // Returns a flag indicating whether changing flash mode was successful

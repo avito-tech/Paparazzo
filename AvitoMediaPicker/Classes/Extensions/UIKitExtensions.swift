@@ -32,6 +32,19 @@ extension UIView {
         UIGraphicsEndImageContext()
         return image
     }
+    
+    func removeFromSuperviewAfterFadingOut(withDuration duration: TimeInterval) {
+        
+        UIView.animate(
+            withDuration: duration,
+            animations: {
+                self.alpha = 0
+            },
+            completion: { _ in
+                self.removeFromSuperview()
+            }
+        )
+    }
 }
 
 extension UICollectionView {
