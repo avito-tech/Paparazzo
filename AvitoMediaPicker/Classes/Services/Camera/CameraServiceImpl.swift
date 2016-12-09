@@ -71,6 +71,8 @@ final class CameraServiceImpl: CameraService {
         cameraOutput?.startCapture()
         
         output = cameraOutput?.captureSession.outputs.flatMap { $0 as? AVCaptureStillImageOutput }.first
+        // Эта настройка необходима, иначе AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(_:) будет крэшиться
+        output?.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
     }
     
     // MARK: - CameraService
