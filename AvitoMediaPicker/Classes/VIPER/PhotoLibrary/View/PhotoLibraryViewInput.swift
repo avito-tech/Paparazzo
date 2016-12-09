@@ -1,5 +1,4 @@
 import Foundation
-import AvitoDesignKit
 
 protocol PhotoLibraryViewInput: class {
     
@@ -9,8 +8,10 @@ protocol PhotoLibraryViewInput: class {
     
     func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
     
-    func setCanSelectMoreItems(canSelectMoreItems: Bool)
-    func setDimsUnselectedItems(dimUnselectedItems: Bool)
+    func setCanSelectMoreItems(_: Bool)
+    func setDimsUnselectedItems(_: Bool)
+    
+    func setPickButtonVisible(_: Bool)
     func setPickButtonEnabled(_: Bool)
     
     func scrollToBottom()
@@ -45,7 +46,7 @@ struct PhotoLibraryItemCellData {
 
 struct PhotoLibraryViewChanges {
     // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
-    let removedIndexes: NSIndexSet
+    let removedIndexes: IndexSet
     let insertedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let updatedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let movedIndexes: [(from: Int, to: Int)]

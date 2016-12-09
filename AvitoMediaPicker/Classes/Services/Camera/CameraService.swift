@@ -3,18 +3,19 @@ import AVFoundation
 protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
+    var isFlashEnabled: Bool { get }
     
-    func getCaptureSession(completion: AVCaptureSession? -> ())
-    func getOutputOrientation(completion: ExifOrientation -> ())
+    func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ())
+    func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())
     
     // Returns a flag indicating whether changing flash mode was successful
-    func setFlashEnabled(enabled: Bool) -> Bool
+    func setFlashEnabled(_: Bool) -> Bool
     
-    func takePhoto(completion: PhotoFromCamera? -> ())
-    func setCaptureSessionRunning(needsRunning: Bool)
+    func takePhoto(completion: @escaping (PhotoFromCamera?) -> ())
+    func setCaptureSessionRunning(_: Bool)
     
-    func canToggleCamera(completion: Bool -> ())
-    func toggleCamera(completion: (newOutputOrientation: ExifOrientation) -> ())
+    func canToggleCamera(completion: @escaping (Bool) -> ())
+    func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ())
 }
 
 struct PhotoFromCamera {

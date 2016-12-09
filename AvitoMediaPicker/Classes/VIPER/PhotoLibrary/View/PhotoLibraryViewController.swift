@@ -15,14 +15,22 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         onViewDidLoad?()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        hideNavigationBarShadow()
+        
+        UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     // MARK: - PhotoLibraryViewInput
     
-    var onItemSelect: (PhotoLibraryItem -> ())?
+    var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onPickButtonTap: (() -> ())?
     var onCancelButtonTap: (() -> ())?
     var onViewDidLoad: (() -> ())?
@@ -32,65 +40,74 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         set { photoLibraryView.onAccessDeniedButtonTap = newValue }
     }
     
-    @nonobjc func setTitle(title: String) {
+    @nonobjc func setTitle(_ title: String) {
         self.title = title
     }
     
-    func setCancelButtonTitle(title: String) {
+    func setCancelButtonTitle(_ title: String) {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: title,
-            style: .Plain,
+            style: .plain,
             target: self,
-            action: #selector(PhotoLibraryViewController.onCancelButtonTap(_:))
+            action: #selector(onCancelButtonTap(_:))
         )
     }
     
-    func setDoneButtonTitle(title: String) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+    func setDoneButtonTitle(_ title: String) {
+        pickBarButtonItem = UIBarButtonItem(
             title: title,
-            style: .Done,
+            style: .done,
             target: self,
-            action: #selector(PhotoLibraryViewController.onPickButtonTap(_:))
+            action: #selector(onPickButtonTap(_:))
         )
+        
+        if let font = theme?.photoLibraryDoneButtonFont {
+            pickBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: font], for: .normal)
+        }
     }
     
-    func applyChanges(changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
+    func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
         photoLibraryView.applyChanges(changes, animated: animated, completion: completion)
     }
     
-    func setCanSelectMoreItems(canSelectMoreItems: Bool) {
+    func setCanSelectMoreItems(_ canSelectMoreItems: Bool) {
         photoLibraryView.canSelectMoreItems = canSelectMoreItems
     }
     
-    func setDimsUnselectedItems(dimUnselectedItems: Bool) {
+    func setDimsUnselectedItems(_ dimUnselectedItems: Bool) {
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
     }
     
-    func setPickButtonEnabled(enabled: Bool) {
-        navigationItem.rightBarButtonItem?.enabled = enabled
+    func setPickButtonVisible(_ visible: Bool) {
+        navigationItem.rightBarButtonItem = visible ? pickBarButtonItem : nil
+    }
+    
+    func setPickButtonEnabled(_ enabled: Bool) {
+        navigationItem.rightBarButtonItem?.isEnabled = enabled
     }
     
     func scrollToBottom() {
         photoLibraryView.scrollToBottom()
     }
     
-    func setTheme(theme: PhotoLibraryUITheme) {
+    func setTheme(_ theme: PhotoLibraryUITheme) {
+        self.theme = theme
         photoLibraryView.setTheme(theme)
     }
     
-    func setAccessDeniedViewVisible(visible: Bool) {
+    func setAccessDeniedViewVisible(_ visible: Bool) {
         photoLibraryView.setAccessDeniedViewVisible(visible)
     }
     
-    func setAccessDeniedTitle(title: String) {
+    func setAccessDeniedTitle(_ title: String) {
         photoLibraryView.setAccessDeniedTitle(title)
     }
     
-    func setAccessDeniedMessage(message: String) {
+    func setAccessDeniedMessage(_ message: String) {
         photoLibraryView.setAccessDeniedMessage(message)
     }
     
-    func setAccessDeniedButtonTitle(title: String) {
+    func setAccessDeniedButtonTitle(_ title: String) {
         photoLibraryView.setAccessDeniedButtonTitle(title)
     }
     
@@ -98,17 +115,27 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     private var disposables = [AnyObject]()
     
-    func addDisposable(object: AnyObject) {
+    func addDisposable(_ object: AnyObject) {
         disposables.append(object)
     }
     
     // MARK: - Private
     
-    @objc private func onCancelButtonTap(sender: UIBarButtonItem) {
+    private var pickBarButtonItem: UIBarButtonItem?
+    private var theme: PhotoLibraryUITheme?
+    
+    @objc private func onCancelButtonTap(_ sender: UIBarButtonItem) {
         onCancelButtonTap?()
     }
     
-    @objc private func onPickButtonTap(sender: UIBarButtonItem) {
+    @objc private func onPickButtonTap(_ sender: UIBarButtonItem) {
         onPickButtonTap?()
+    }
+    
+    private func hideNavigationBarShadow() {
+        let navigationBar = navigationController?.navigationBar
+        navigationBar?.setBackgroundImage(UIImage(), for: .default)
+        navigationBar?.backgroundColor = .white
+        navigationBar?.shadowImage = UIImage()
     }
 }

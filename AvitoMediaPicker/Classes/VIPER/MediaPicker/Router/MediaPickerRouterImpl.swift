@@ -1,9 +1,8 @@
 import Marshroute
-import AvitoDesignKit
 
 final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
     
-    typealias AssemblyFactory = protocol<ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
+    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
 
     private let assemblyFactory: AssemblyFactory
 
@@ -15,9 +14,9 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
     // MARK: - PhotoPickerRouter
 
     func showPhotoLibrary(
-        selectedItems selectedItems: [PhotoLibraryItem],
+        selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: PhotoLibraryModule -> ()
+        configuration: (PhotoLibraryModule) -> ()
     ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
@@ -32,7 +31,7 @@ final class MediaPickerRouterImpl: BaseRouter, MediaPickerRouter {
         }
     }
     
-    func showCroppingModule(forImage image: ImageSource, canvasSize: CGSize, configuration: ImageCroppingModule -> ()) {
+    func showCroppingModule(forImage image: ImageSource, canvasSize: CGSize, configuration: (ImageCroppingModule) -> ()) {
         
         pushViewControllerDerivedFrom({ routerSeed in
             

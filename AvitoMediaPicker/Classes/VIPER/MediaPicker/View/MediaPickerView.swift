@@ -1,5 +1,4 @@
 import UIKit
-import AvitoDesignKit
 import AVFoundation
 
 final class MediaPickerView: UIView {
@@ -39,8 +38,8 @@ final class MediaPickerView: UIView {
     
     // MARK: - Helpers
     
-    private var mode = MediaPickerViewMode.Camera
-    private var deviceOrientation = DeviceOrientation.Portrait
+    private var mode = MediaPickerViewMode.camera
+    private var deviceOrientation = DeviceOrientation.portrait
     
     // MARK: - UIView
     
@@ -51,21 +50,21 @@ final class MediaPickerView: UIView {
         
         super.init(frame: .zero)
         
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
         
-        flashView.backgroundColor = .whiteColor()
+        flashView.backgroundColor = .white
         flashView.alpha = 0
         
         setupButtons()
         
-        photoTitleLabel.textColor = .whiteColor()
+        photoTitleLabel.textColor = .white
         photoTitleLabel.layer.shadowOffset = .zero
         photoTitleLabel.layer.shadowOpacity = 0.5
         photoTitleLabel.layer.shadowRadius = 2
         photoTitleLabel.layer.masksToBounds = false
         photoTitleLabel.alpha = 0
         
-        photoLibraryPeepholeView.contentMode = .ScaleAspectFill
+        photoLibraryPeepholeView.contentMode = .scaleAspectFill
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
             self?.onItemSelect?(mediaPickerItem)
@@ -84,7 +83,7 @@ final class MediaPickerView: UIView {
         addSubview(photoTitleLabel)
         addSubview(continueButton)
         
-        setMode(.Camera)
+        setMode(.camera)
     }
     
     private func setupButtons() {
@@ -93,8 +92,8 @@ final class MediaPickerView: UIView {
         closeButton.size = closeButtonSize
         closeButton.addTarget(
             self,
-            action: #selector(MediaPickerView.onCloseButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onCloseButtonTap(_:)),
+            for: .touchUpInside
         )
         
         continueButton.layer.cornerRadius = continueButtonHeight / 2
@@ -102,8 +101,8 @@ final class MediaPickerView: UIView {
         continueButton.contentEdgeInsets = continueButtonContentInsets
         continueButton.addTarget(
             self,
-            action: #selector(MediaPickerView.onContinueButtonTap(_:)),
-            forControlEvents: .TouchUpInside
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
         )
     }
     
@@ -153,7 +152,7 @@ final class MediaPickerView: UIView {
             ? thumbnailHeightForSmallScreen + thumbnailRibbonInsets.top + thumbnailRibbonInsets.bottom
             : bottomPanelHeight - controlsHeight
         
-        thumbnailRibbonView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(thumbnailRibbonAlpha)
+        thumbnailRibbonView.backgroundColor = UIColor.white.withAlphaComponent(thumbnailRibbonAlpha)
         thumbnailRibbonView.contentInsets = thumbnailRibbonInsets
         thumbnailRibbonView.layout(
             left: bounds.left,
@@ -180,12 +179,12 @@ final class MediaPickerView: UIView {
         set { cameraControlsView.onPhotoLibraryButtonTap = newValue }
     }
     
-    var onFlashToggle: (Bool -> ())? {
+    var onFlashToggle: ((Bool) -> ())? {
         get { return cameraControlsView.onFlashToggle }
         set { cameraControlsView.onFlashToggle = newValue }
     }
     
-    var onItemSelect: (MediaPickerItem -> ())?
+    var onItemSelect: ((MediaPickerItem) -> ())?
     
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
@@ -202,7 +201,7 @@ final class MediaPickerView: UIView {
         set { photoControlsView.onCameraButtonTap = newValue }
     }
     
-    var onSwipeToItem: (MediaPickerItem -> ())? {
+    var onSwipeToItem: ((MediaPickerItem) -> ())? {
         get { return photoPreviewView.onSwipeToItem }
         set { photoPreviewView.onSwipeToItem = newValue }
     }
@@ -212,7 +211,7 @@ final class MediaPickerView: UIView {
         set { photoPreviewView.onSwipeToCamera = newValue }
     }
     
-    var onSwipeToCameraProgressChange: (CGFloat -> ())? {
+    var onSwipeToCameraProgressChange: ((CGFloat) -> ())? {
         get { return photoPreviewView.onSwipeToCameraProgressChange }
         set { photoPreviewView.onSwipeToCameraProgressChange = newValue }
     }
@@ -221,23 +220,23 @@ final class MediaPickerView: UIView {
         return photoPreviewView.size
     }
     
-    func setMode(mode: MediaPickerViewMode) {
+    func setMode(_ mode: MediaPickerViewMode) {
         
         switch mode {
         
-        case .Camera:
-            cameraControlsView.hidden = false
-            photoControlsView.hidden = true
+        case .camera:
+            cameraControlsView.isHidden = false
+            photoControlsView.isHidden = true
             
             thumbnailRibbonView.selectCameraItem()
             photoPreviewView.scrollToCamera()
         
-        case .PhotoPreview(let photo):
+        case .photoPreview(let photo):
             
             photoPreviewView.scrollToMediaItem(photo)
             
-            cameraControlsView.hidden = true
-            photoControlsView.hidden = false
+            cameraControlsView.isHidden = true
+            photoControlsView.isHidden = false
         }
         
         self.mode = mode
@@ -245,24 +244,24 @@ final class MediaPickerView: UIView {
         adjustForDeviceOrientation(deviceOrientation)
     }
     
-    func setCameraControlsEnabled(enabled: Bool) {
+    func setCameraControlsEnabled(_ enabled: Bool) {
         cameraControlsView.setCameraControlsEnabled(enabled)
     }
     
-    func setCameraButtonVisible(visible: Bool) {
+    func setCameraButtonVisible(_ visible: Bool) {
         photoPreviewView.setCameraVisible(visible)
         thumbnailRibbonView.setCameraItemVisible(visible)
     }
     
-    func setLatestPhotoLibraryItemImage(image: ImageSource?) {
+    func setLatestPhotoLibraryItemImage(_ image: ImageSource?) {
         cameraControlsView.setLatestPhotoLibraryItemImage(image)
     }
     
-    func setFlashButtonVisible(visible: Bool) {
+    func setFlashButtonVisible(_ visible: Bool) {
         cameraControlsView.setFlashButtonVisible(visible)
     }
     
-    func setFlashButtonOn(isOn: Bool) {
+    func setFlashButtonOn(_ isOn: Bool) {
         cameraControlsView.setFlashButtonOn(isOn)
     }
     
@@ -270,10 +269,10 @@ final class MediaPickerView: UIView {
         
         flashView.alpha = 1
         
-        UIView.animateWithDuration(
-            0.3,
+        UIView.animate(
+            withDuration: 0.3,
             delay: 0,
-            options: [.CurveEaseOut],
+            options: [.curveEaseOut],
             animations: { 
                 self.flashView.alpha = 0
             },
@@ -289,38 +288,38 @@ final class MediaPickerView: UIView {
         set { cameraControlsView.onCameraToggleButtonTap = newValue }
     }
     
-    func setCameraToggleButtonVisible(visible: Bool) {
+    func setCameraToggleButtonVisible(_ visible: Bool) {
         cameraControlsView.setCameraToggleButtonVisible(visible)
     }
     
-    func setShutterButtonEnabled(enabled: Bool) {
+    func setShutterButtonEnabled(_ enabled: Bool) {
         cameraControlsView.setShutterButtonEnabled(enabled)
     }
     
-    func setPhotoLibraryButtonEnabled(enabled: Bool) {
+    func setPhotoLibraryButtonEnabled(_ enabled: Bool) {
         cameraControlsView.setPhotoLibraryButtonEnabled(enabled)
     }
     
-    func addItems(items: [MediaPickerItem], animated: Bool, completion: () -> ()) {
+    func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         photoPreviewView.addItems(items)
         thumbnailRibbonView.addItems(items, animated: animated, completion: completion)
     }
     
-    func updateItem(item: MediaPickerItem) {
+    func updateItem(_ item: MediaPickerItem) {
         photoPreviewView.updateItem(item)
         thumbnailRibbonView.updateItem(item)
     }
 
-    func removeItem(item: MediaPickerItem) {
+    func removeItem(_ item: MediaPickerItem) {
         photoPreviewView.removeItem(item, animated: false)
         thumbnailRibbonView.removeItem(item, animated: true)
     }
     
-    func selectItem(item: MediaPickerItem) {
+    func selectItem(_ item: MediaPickerItem) {
         thumbnailRibbonView.selectMediaItem(item)
     }
     
-    func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
+    func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
         thumbnailRibbonView.scrollToItemThumbnail(item, animated: animated)
     }
     
@@ -328,22 +327,22 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.selectCameraItem()
     }
     
-    func scrollToCameraThumbnail(animated animated: Bool) {
+    func scrollToCameraThumbnail(animated: Bool) {
         thumbnailRibbonView.scrollToCameraThumbnail(animated: animated)
     }
     
-    func adjustForDeviceOrientation(orientation: DeviceOrientation) {
+    func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
         
         deviceOrientation = orientation
         
         var orientation = orientation
-        if case .PhotoPreview(_) = mode {
-            orientation = .Portrait
+        if case .photoPreview = mode {
+            orientation = .portrait
         }
         
         let transform = CGAffineTransform(deviceOrientation: orientation)
         
-        closeAndContinueButtonsSwapped = (orientation == .LandscapeLeft)
+        closeAndContinueButtonsSwapped = (orientation == .landscapeLeft)
         
         closeButton.transform = transform
         continueButton.transform = transform
@@ -353,85 +352,85 @@ final class MediaPickerView: UIView {
         thumbnailRibbonView.setControlsTransform(transform)
     }
     
-    func setCameraView(view: UIView) {
+    func setCameraView(_ view: UIView) {
         photoPreviewView.setCameraView(view)
     }
     
-    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+    func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         thumbnailRibbonView.setCameraOutputParameters(parameters)
     }
     
-    func setCameraOutputOrientation(orientation: ExifOrientation) {
+    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
         thumbnailRibbonView.setCameraOutputOrientation(orientation)
     }
     
-    func setPhotoTitle(title: String) {
+    func setPhotoTitle(_ title: String) {
         photoTitleLabel.text = title
         layoutPhotoTitleLabel()
     }
     
-    func setPhotoTitleStyle(style: MediaPickerTitleStyle) {
+    func setPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
         switch style {
-        case .Dark:
-            photoTitleLabel.textColor = .blackColor()
+        case .dark:
+            photoTitleLabel.textColor = .black
             photoTitleLabel.layer.shadowOpacity = 0
-        case .Light:
-            photoTitleLabel.textColor = .whiteColor()
+        case .light:
+            photoTitleLabel.textColor = .white
             photoTitleLabel.layer.shadowOpacity = 0.5
         }
     }
     
-    func setPhotoTitleAlpha(alpha: CGFloat) {
+    func setPhotoTitleAlpha(_ alpha: CGFloat) {
         photoTitleLabel.alpha = alpha
     }
     
-    func setContinueButtonTitle(title: String) {
-        continueButton.setTitle(title, forState: .Normal)
-        continueButton.size = CGSizeMake(continueButton.sizeThatFits().width, continueButtonHeight)
+    func setContinueButtonTitle(_ title: String) {
+        continueButton.setTitle(title, for: .normal)
+        continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
-    func setContinueButtonEnabled(enabled: Bool) {
-        continueButton.enabled = enabled
+    func setContinueButtonEnabled(_ enabled: Bool) {
+        continueButton.isEnabled = enabled
     }
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
+    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
 
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
         thumbnailRibbonView.setTheme(theme)
 
-        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, forState: .Normal)
+        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
 
-        closeButton.setImage(theme.closeCameraIcon, forState: .Normal)
+        closeButton.setImage(theme.closeCameraIcon, for: .normal)
         
         continueButton.setTitleColor(
             theme.cameraContinueButtonTitleColor,
-            forState: .Normal
+            for: .normal
         )
         continueButton.setTitleColor(
             theme.cameraContinueButtonTitleHighlightedColor,
-            forState: .Highlighted
+            for: .highlighted
         )
         
         let onePointSize = CGSize(width: 1, height: 1)
         for button in [continueButton, closeButton] {
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
-                forState: .Normal
+                for: .normal
             )
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundHighlightedColor, imageSize: onePointSize),
-                forState: .Highlighted
+                for: .highlighted
             )
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundDisabledColor, imageSize: onePointSize),
-                forState: .Disabled
+                for: .disabled
             )
         }
     }
     
-    func setShowsCropButton(showsCropButton: Bool) {
+    func setShowsCropButton(_ showsCropButton: Bool) {
         photoControlsView.setShowsCropButton(showsCropButton)
     }
     
@@ -468,11 +467,11 @@ final class MediaPickerView: UIView {
         photoTitleLabel.centerY = closeButton.centerY
     }
     
-    @objc private func onCloseButtonTap(sender: UIButton) {
+    @objc private func onCloseButtonTap(_: UIButton) {
         onCloseButtonTap?()
     }
     
-    @objc private func onContinueButtonTap(sender: UIButton) {
+    @objc private func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
     }
 }

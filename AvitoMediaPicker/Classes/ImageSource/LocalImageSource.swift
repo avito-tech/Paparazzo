@@ -4,6 +4,8 @@ import MobileCoreServices
 
 public final class LocalImageSource: ImageSource {
     
+    let path: String
+    
     // MARK: - Init
     
     public init(path: String, previewImage: CGImage? = nil) {
@@ -13,16 +15,17 @@ public final class LocalImageSource: ImageSource {
     
     // MARK: - ImageSource
     
+    @discardableResult
     public func requestImage<T : InitializableWithCGImage>(
-        options options: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
+        options: ImageRequestOptions,
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
         let requestId = ImageRequestId(LocalImageSource.requestIdsGenerator.nextInt())
         
-        if let previewImage = previewImage where options.deliveryMode == .Progressive {
+        if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
+                resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         
@@ -38,19 +41,19 @@ public final class LocalImageSource: ImageSource {
         return requestId
     }
     
-    public func cancelRequest(id: ImageRequestId) {
+    public func cancelRequest(_ id: ImageRequestId) {
         for operation in SharedQueues.imageProcessingQueue.operations {
-            if let identifiableOperation = operation as? ImageRequestIdentifiable where identifiableOperation.id == id {
+            if let identifiableOperation = operation as? ImageRequestIdentifiable, identifiableOperation.id == id {
                 operation.cancel()
             }
         }
     }
     
-    public func imageSize(completion: CGSize? -> ()) {
+    public func imageSize(completion: @escaping (CGSize?) -> ()) {
         if let fullSize = fullSize {
             dispatch_to_main_queue { completion(fullSize) }
         } else {
-            SharedQueues.imageProcessingQueue.addOperationWithBlock { [weak self, path] in
+            SharedQueues.imageProcessingQueue.addOperation { [weak self, path] in
                 
                 let url = NSURL(fileURLWithPath: path)
                 let source = CGImageSourceCreateWithURL(url, nil)
@@ -61,7 +64,7 @@ public final class LocalImageSource: ImageSource {
                 
                 var size: CGSize? = nil
                 
-                if let width = width, height = height {
+                if let width = width, let height = height {
                     
                     let exifOrientation = orientation.flatMap { ExifOrientation(rawValue: $0) }
                     let dimensionsSwapped = exifOrientation.flatMap { $0.dimensionsSwapped } ?? false
@@ -72,7 +75,7 @@ public final class LocalImageSource: ImageSource {
                     )
                 }
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self?.fullSize = size
                     completion(size)
                 }
@@ -80,16 +83,16 @@ public final class LocalImageSource: ImageSource {
         }
     }
     
-    public func fullResolutionImageData(completion: NSData? -> ()) {
-        SharedQueues.imageProcessingQueue.addOperationWithBlock { [path] in
-            let data = NSData(contentsOfFile: path)
-            dispatch_async(dispatch_get_main_queue()) {
+    public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
+        SharedQueues.imageProcessingQueue.addOperation { [path] in
+            let data = try? Data(contentsOf: URL(fileURLWithPath: path))
+            DispatchQueue.main.async {
                 completion(data)
             }
         }
     }
     
-    public func isEqualTo(other: ImageSource) -> Bool {
+    public func isEqualTo(_ other: ImageSource) -> Bool {
         return (other as? LocalImageSource).flatMap { $0.path == path } ?? false
     }
     
@@ -97,7 +100,6 @@ public final class LocalImageSource: ImageSource {
     
     private static let requestIdsGenerator = ThreadSafeIntGenerator()
     
-    private let path: String
     private let previewImage: CGImage?
     private var fullSize: CGSize?
 }

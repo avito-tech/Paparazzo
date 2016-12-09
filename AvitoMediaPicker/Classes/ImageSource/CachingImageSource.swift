@@ -4,7 +4,7 @@ import CoreGraphics
 final class CachingImageSource: ImageSource {
     
     private let underlyingImageSource: ImageSource
-    private let cache = NSCache()
+    private let cache = NSCache<ImageRequestCacheKey, CGImageWrapper>()
     
     public init(underlyingImageSource: ImageSource) {
         // Не даем создавать вложенные CachingImageSource
@@ -17,26 +17,27 @@ final class CachingImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    public func fullResolutionImageData(completion: NSData? -> ()) {
-        underlyingImageSource.fullResolutionImageData(completion)
+    public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
+        underlyingImageSource.fullResolutionImageData(completion: completion)
     }
     
-    public func imageSize(completion: CGSize? -> ()) {
-        underlyingImageSource.imageSize(completion)
+    public func imageSize(completion: @escaping (CGSize?) -> ()) {
+        underlyingImageSource.imageSize(completion: completion)
     }
     
+    @discardableResult
     public func requestImage<T : InitializableWithCGImage>(
-        options options: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
+        options: ImageRequestOptions,
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
         let cacheKey = ImageRequestCacheKey(size: options.size)
         
-        if let cachedImageWrapper = cache.objectForKey(cacheKey) as? CGImageWrapper {
+        if let cachedImageWrapper = cache.object(forKey: cacheKey) {
             
             dispatch_to_main_queue {
                 resultHandler(ImageRequestResult(
-                    image: T(CGImage: cachedImageWrapper.image),
+                    image: T(cgImage: cachedImageWrapper.image),
                     degraded: false,
                     requestId: 0
                 ))
@@ -50,12 +51,12 @@ final class CachingImageSource: ImageSource {
                 [weak self] (result: ImageRequestResult<CGImageWrapper>) in
                 
                 // Cache the highest quality image
-                if let image = result.image where !result.degraded {
+                if let image = result.image, !result.degraded {
                     self?.cache.setObject(image, forKey: cacheKey)
                 }
                 
                 resultHandler(ImageRequestResult(
-                    image: (result.image?.image).flatMap { T(CGImage: $0) },
+                    image: (result.image?.image).flatMap { T(cgImage: $0) },
                     degraded: result.degraded,
                     requestId: result.requestId
                 ))
@@ -63,11 +64,11 @@ final class CachingImageSource: ImageSource {
         }
     }
     
-    public func cancelRequest(id: ImageRequestId) {
+    public func cancelRequest(_ id: ImageRequestId) {
         underlyingImageSource.cancelRequest(id)
     }
     
-    public func isEqualTo(other: ImageSource) -> Bool {
+    public func isEqualTo(_ other: ImageSource) -> Bool {
         return (other as? CachingImageSource).flatMap { underlyingImageSource.isEqualTo($0.underlyingImageSource) } ?? false
     }
 }

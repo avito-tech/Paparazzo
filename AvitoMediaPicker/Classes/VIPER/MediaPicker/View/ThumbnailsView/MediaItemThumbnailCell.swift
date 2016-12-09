@@ -7,6 +7,11 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
         
         layer.cornerRadius = 6
         layer.masksToBounds = true
+        
+        imageView.layer.cornerRadius = 6
+        imageView.layer.masksToBounds = true
+        
+        imageViewInsets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -17,12 +22,12 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        selected = false
+        isSelected = false
     }
     
     // MARK: - Customizable
     
-    func customizeWithItem(item: MediaPickerItem) {
+    func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
     }
 }

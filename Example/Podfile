@@ -6,12 +6,10 @@ use_frameworks!
 
 target 'AvitoMediaPicker_Example' do
   pod 'AvitoMediaPicker', :path => '../'
-  pod 'Marshroute'
-  pod 'AvitoDesignKit', :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git', :branch => 'release-6.0'
+  pod 'Marshroute', :git => 'https://github.com/avito-tech/Marshroute', :branch => 'swift-3-syntax'
+  pod 'AvitoToolkit', :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git', :branch => 'develop'
 
   target 'AvitoMediaPicker_Tests' do
     inherit! :search_paths
-
-    
   end
 end

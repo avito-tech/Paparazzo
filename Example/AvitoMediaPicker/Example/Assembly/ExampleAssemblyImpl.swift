@@ -5,7 +5,7 @@ final class ExampleAssemblyImpl: ExampleAssembly {
     
     // MARK: - ExampleAssembly
     
-    func viewController(routerSeed routerSeed: RouterSeed) -> UIViewController {
+    func viewController(routerSeed: RouterSeed) -> UIViewController {
         
         let interactor = ExampleInteractorImpl()
         

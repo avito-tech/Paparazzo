@@ -1,91 +1,85 @@
 import CoreGraphics
 import ImageIO
 import MobileCoreServices
-import AvitoDesignKit
 
 final class CroppedImageSource: ImageSource {
     
     let originalImage: ImageSource
     let sourceSize: CGSize
-    var croppingParameters: ImageCroppingParameters?
-    var previewImage: CGImage?
+    let croppingParameters: ImageCroppingParameters?
+    let previewImage: CGImage?
     
-    init(originalImage: ImageSource, sourceSize: CGSize, parameters: ImageCroppingParameters?, previewImage: CGImage?) {
+    init(originalImage: ImageSource,
+         sourceSize: CGSize,
+         parameters: ImageCroppingParameters?,
+         previewImage: CGImage?,
+         fileManager: FileManager = .default)
+    {
         self.originalImage = originalImage
         self.sourceSize = sourceSize
         self.croppingParameters = parameters
         self.previewImage = previewImage
+        self.fileManager = fileManager
+    }
+    
+    deinit {
+        if let croppedImage = croppedImage {
+            try? fileManager.removeItem(atPath: croppedImage.path)
+        }
     }
     
     // MARK: - ImageSource
     
     func requestImage<T : InitializableWithCGImage>(
-        options options: ImageRequestOptions,
-        resultHandler: ImageRequestResult<T> -> ())
+        options: ImageRequestOptions,
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
         // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
         let requestId = ImageRequestId(0)
         
-        if let previewImage = previewImage where options.deliveryMode == .Progressive {
+        if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(image: T(CGImage: previewImage), degraded: true, requestId: requestId))
+                resultHandler(ImageRequestResult(image: T(cgImage: previewImage), degraded: true, requestId: requestId))
             }
         }
         
-        getCroppedImage { cgImage in
-            
-            let resizedImage: CGImage?
-            
-            switch options.size {
-            case .FitSize(let size):
-                resizedImage = cgImage.flatMap { $0.resized(toFit: size) }
-            case .FillSize(let size):
-                resizedImage = cgImage.flatMap { $0.resized(toFill: size) }
-            case .FullResolution:
-                resizedImage = cgImage
-            }
-            
-            dispatch_to_main_queue {
-                resultHandler(ImageRequestResult(
-                    image: resizedImage.flatMap { T(CGImage: $0) },
-                    degraded: false,
-                    requestId: requestId
-                ))
+        getCroppedImage { croppedImageSource in
+            if let croppedImageSource = croppedImageSource {
+                croppedImageSource.requestImage(options: options, resultHandler: resultHandler)
+            } else {
+                resultHandler(ImageRequestResult<T>(image: nil, degraded: false, requestId: requestId))
             }
         }
         
         return requestId
     }
     
-    func cancelRequest(requestID: ImageRequestId) {
+    func cancelRequest(_ requestID: ImageRequestId) {
         // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
-    func imageSize(completion: CGSize? -> ()) {
-        getCroppedImage { cgImage in
-            completion(cgImage.flatMap { CGSize(width: CGImageGetWidth($0), height: CGImageGetHeight($0)) })
-        }
-    }
-    
-    func fullResolutionImageData(completion: NSData? -> ()) {
-        dispatch_async(processingQueue) {
-            
-            let data = NSMutableData()
-            let destination = CGImageDestinationCreateWithData(data, kUTTypeJPEG, 1, nil)
-            
-            if let image = self.croppedImage, destination = destination {
-                CGImageDestinationAddImage(destination, image, nil)
-                CGImageDestinationFinalize(destination)
-            }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(data.length > 0 ? NSData(data: data) : nil)
+    func imageSize(completion: @escaping (CGSize?) -> ()) {
+        getCroppedImage { croppedImageSource in
+            if let croppedImageSource = croppedImageSource {
+                croppedImageSource.imageSize(completion: completion)
+            } else {
+                completion(nil)
             }
         }
     }
     
-    func isEqualTo(other: ImageSource) -> Bool {
+    func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
+        getCroppedImage { croppedImageSource in
+            if let croppedImageSource = croppedImageSource {
+                croppedImageSource.fullResolutionImageData(completion: completion)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    func isEqualTo(_ other: ImageSource) -> Bool {
         if let other = other as? CroppedImageSource {
             return originalImage.isEqualTo(other.originalImage) // TODO: сравнить croppingParameters
         } else {
@@ -95,20 +89,17 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - Private
     
-    private let croppedImageCache = SingleObjectCache<CGImageWrapper>()
-    private let ciContext = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+    private let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
+    private let fileManager: FileManager
+    private var croppedImage: LocalImageSource?
     
-    private let processingQueue = dispatch_queue_create(
-        "ru.avito.AvitoMediaPicker.CroppedImageSource.processingQueue",
-        dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, 0)
+    private let processingQueue = DispatchQueue(
+        label: "ru.avito.AvitoMediaPicker.CroppedImageSource.processingQueue",
+        qos: .userInitiated,
+        attributes: [.concurrent]
     )
     
-    private var croppedImage: CGImage? {
-        get { return croppedImageCache.value?.image }
-        set { croppedImageCache.value = newValue.flatMap { CGImageWrapper(CGImage: $0) } }
-    }
-    
-    private func getCroppedImage(completion: CGImage? -> ()) {
+    private func getCroppedImage(completion: @escaping (ImageSource?) -> ()) {
         if let croppedImage = croppedImage {
             completion(croppedImage)
         } else {
@@ -118,30 +109,47 @@ final class CroppedImageSource: ImageSource {
         }
     }
     
-    private func performCrop(completion: () -> ()) {
+    private func performCrop(completion: @escaping () -> ()) {
         
-        let options = ImageRequestOptions(size: .FitSize(sourceSize), deliveryMode: .Best)
+        let options = ImageRequestOptions(size: .fitSize(sourceSize), deliveryMode: .best)
         
         originalImage.requestImage(options: options) {
             [weak self, processingQueue] (result: ImageRequestResult<CGImageWrapper>) in
             
-            dispatch_async(processingQueue) {
-                if let originalCGImage = result.image?.image, croppingParameters = self?.croppingParameters {
-                    self?.croppedImage = self?.newTransformedImage(originalCGImage, parameters: croppingParameters)
+            processingQueue.async {
+                
+                if let originalCGImage = result.image?.image,
+                   let croppingParameters = self?.croppingParameters,
+                   let croppedCgImage = self?.newTransformedImage(sourceImage: originalCGImage, parameters: croppingParameters)
+                {
+                    let path = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString).jpg")
+                    let url = URL(fileURLWithPath: path)
+                    let destination = CGImageDestinationCreateWithURL(url as CFURL, kUTTypeJPEG, 1, nil)
+                    
+                    if let destination = destination {
+                        CGImageDestinationAddImage(destination, croppedCgImage, nil)
+                        
+                        if CGImageDestinationFinalize(destination) {
+                            self?.croppedImage = LocalImageSource(path: path, previewImage: self?.previewImage)
+                        }
+                    }
                 }
-                dispatch_async(dispatch_get_main_queue(), completion)
+                
+                DispatchQueue.main.async(execute: completion)
             }
         }
     }
     
     private func newTransformedImage(sourceImage: CGImage, parameters: ImageCroppingParameters) -> CGImage? {
         
-        let source = newScaledImage(
-            sourceImage,
+        guard let source = newScaledImage(
+            source: sourceImage,
             withOrientation: parameters.sourceOrientation,
             toSize: parameters.sourceSize,
-            withQuality: .None
-        )
+            withQuality: .none
+        ) else {
+            return nil
+        }
         
         let cropSize = parameters.cropSize
         let outputWidth = parameters.outputWidth
@@ -151,43 +159,41 @@ final class CroppedImageSource: ImageSource {
         let aspect = cropSize.height / cropSize.width
         let outputSize = CGSize(width: outputWidth, height: outputWidth * aspect)
         
-        let context = CGBitmapContextCreate(
-            nil,
-            Int(outputSize.width),
-            Int(outputSize.height),
-            CGImageGetBitsPerComponent(source),
-            0,
-            CGImageGetColorSpace(source),
-            CGImageGetBitmapInfo(source).rawValue
+        guard let colorSpace = source.colorSpace, let context = CGContext(
+            data: nil,
+            width: Int(outputSize.width),
+            height: Int(outputSize.height),
+            bitsPerComponent: source.bitsPerComponent,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: source.bitmapInfo.rawValue
+        ) else {
+            return nil
+        }
+        
+        context.setFillColor(UIColor.clear.cgColor)
+        context.fill(CGRect(origin: .zero, size: outputSize))
+        
+        var uiCoords = CGAffineTransform(
+            scaleX: outputSize.width / cropSize.width,
+            y: outputSize.height / cropSize.height
         )
         
-        CGContextSetFillColorWithColor(context, UIColor.clearColor().CGColor)
-        CGContextFillRect(context, CGRect(origin: .zero, size: outputSize))
+        uiCoords = uiCoords.translatedBy(x: cropSize.width / 2, y: cropSize.height / 2)
+        uiCoords = uiCoords.scaledBy(x: 1, y: -1)
         
-        var uiCoords = CGAffineTransformMakeScale(
-            outputSize.width / cropSize.width,
-            outputSize.height / cropSize.height
-        )
+        context.concatenate(uiCoords)
+        context.concatenate(transform)
+        context.scaleBy(x: 1, y: -1)
         
-        uiCoords = CGAffineTransformTranslate(uiCoords, cropSize.width / 2, cropSize.height / 2)
-        uiCoords = CGAffineTransformScale(uiCoords, 1, -1)
+        context.draw(source, in: CGRect(
+            x: -imageViewSize.width / 2,
+            y: -imageViewSize.height / 2,
+            width: imageViewSize.width,
+            height: imageViewSize.height
+        ))
         
-        CGContextConcatCTM(context, uiCoords)
-        CGContextConcatCTM(context, transform)
-        CGContextScaleCTM(context, 1, -1)
-        
-        CGContextDrawImage(
-            context,
-            CGRect(
-                x: -imageViewSize.width / 2,
-                y: -imageViewSize.height / 2,
-                width: imageViewSize.width,
-                height: imageViewSize.height
-            ),
-            source
-        )
-        
-        return CGBitmapContextCreateImage(context)
+        return context.makeImage()
     }
     
     private func newScaledImage(
@@ -195,18 +201,18 @@ final class CroppedImageSource: ImageSource {
         withOrientation orientation: ExifOrientation,
         toSize size: CGSize,
         withQuality quality: CGInterpolationQuality
-    ) -> CGImage {
+    ) -> CGImage? {
         
-        let ciImage = CIImage(CGImage: source)
+        let ciImage = CIImage(cgImage: source)
         
-        let transform = CGAffineTransformIdentity
-            .translate(dx: size.width / 2, dy: size.height / 2)
-            .append(ciImage.imageTransformForOrientation(Int32(orientation.rawValue)))
-            .translate(dx: -size.width / 2, dy: -size.height / 2)
+        let transform = CGAffineTransform.identity
+            .translatedBy(x: size.width / 2, y: size.height / 2)
+            .concatenating(ciImage.imageTransform(forOrientation: Int32(orientation.rawValue)))
+            .translatedBy(x: -size.width / 2, y: -size.height / 2)
         
         return ciContext.createCGImage(
-            ciImage.imageByApplyingTransform(transform),
-            fromRect: CGRect(origin: .zero, size: size)
+            ciImage.applying(transform),
+            from: CGRect(origin: .zero, size: size)
         )
     }
 }

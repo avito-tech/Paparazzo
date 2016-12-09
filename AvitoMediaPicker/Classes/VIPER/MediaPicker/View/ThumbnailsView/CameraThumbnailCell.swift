@@ -7,35 +7,51 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     private var cameraOutputBinder: CameraOutputGLKBinder?
     
-    var selectedBorderColor: UIColor? = .blueColor() {
+    var selectedBorderColor: UIColor? = .blue {
         didSet {
             adjustBorderColor()
         }
     }
     
-    func setCameraIcon(icon: UIImage?) {
-        button.setImage(icon, forState: .Normal)
+    func setCameraIcon(_ icon: UIImage?) {
+        button.setImage(icon, for: .normal)
     }
     
-    func setCameraIconTransform(transform: CGAffineTransform) {
+    func setCameraIconTransform(_ transform: CGAffineTransform) {
         button.transform = transform
     }
     
-    func setOutputParameters(parameters: CameraOutputParameters) {
+    func setOutputParameters(_ parameters: CameraOutputParameters) {
         
         let cameraOutputBinder = CameraOutputGLKBinder(
             captureSession: parameters.captureSession,
             outputOrientation: parameters.orientation
         )
         
+        if var attachedBinder = self.cameraOutputBinder {
+            // AI-3326: костыль для iOS 8.
+            // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
+            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
+                cameraOutputBinder?.onFrameDrawn = nil
+                DispatchQueue.main.async {
+                    attachedBinder.view.removeFromSuperview()
+                }
+            }
+        }
+        
         let view = cameraOutputBinder.view
         view.clipsToBounds = true
+        view.layer.cornerRadius = 6
         insertSubview(view, belowSubview: button)
         
         self.cameraOutputBinder = cameraOutputBinder
+        
+        // AI-3610: костыль для iPhone 4, чтобы не было белой рамки вокруг ячейки.
+        // Если ставить clearColor, скругление углов теряется на iOS 9.
+        self.backgroundColor = UIColor.white.withAlphaComponent(0.1)
     }
     
-    func setOutputOrientation(orientation: ExifOrientation) {
+    func setOutputOrientation(_ orientation: ExifOrientation) {
         cameraOutputBinder?.orientation = orientation
     }
     
@@ -44,12 +60,12 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .blackColor()
+        backgroundColor = .black
         layer.cornerRadius = 6
         layer.masksToBounds = true
         
-        button.tintColor = .whiteColor()
-        button.userInteractionEnabled = false
+        button.tintColor = .white
+        button.isUserInteractionEnabled = false
         
         adjustBorderColor()
         
@@ -62,22 +78,22 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     // MARK: - UICollectionViewCell
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            layer.borderWidth = selected ? 4 : 0
+            layer.borderWidth = isSelected ? 4 : 0
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        cameraOutputBinder?.view.frame = bounds
+        cameraOutputBinder?.view.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         button.frame = bounds
     }
     
     // MARK: - Private
     
     private func adjustBorderColor() {
-        layer.borderColor = selectedBorderColor?.CGColor
+        layer.borderColor = selectedBorderColor?.cgColor
     }
 }

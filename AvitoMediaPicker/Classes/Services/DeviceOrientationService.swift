@@ -2,29 +2,29 @@ import UIKit
 
 protocol DeviceOrientationService: class {
     var currentOrientation: DeviceOrientation { get }
-    var onOrientationChange: (DeviceOrientation -> ())? { get set }
+    var onOrientationChange: ((DeviceOrientation) -> ())? { get set }
 }
 
 enum DeviceOrientation {
     
-    case Unknown
-    case Portrait // Device oriented vertically, home button on the bottom
-    case PortraitUpsideDown // Device oriented vertically, home button on the top
-    case LandscapeLeft // Device oriented horizontally, home button on the right
-    case LandscapeRight // Device oriented horizontally, home button on the left
+    case unknown
+    case portrait // Device oriented vertically, home button on the bottom
+    case portraitUpsideDown // Device oriented vertically, home button on the top
+    case landscapeLeft // Device oriented horizontally, home button on the right
+    case landscapeRight // Device oriented horizontally, home button on the left
     
-    private init(_ orientation: UIDeviceOrientation) {
+    fileprivate init(_ orientation: UIDeviceOrientation) {
         switch orientation {
-        case .Portrait:
-            self = .Portrait
-        case .PortraitUpsideDown:
-            self = .PortraitUpsideDown
-        case .LandscapeLeft:
-            self = .LandscapeLeft
-        case .LandscapeRight:
-            self = .LandscapeRight
+        case .portrait:
+            self = .portrait
+        case .portraitUpsideDown:
+            self = .portraitUpsideDown
+        case .landscapeLeft:
+            self = .landscapeLeft
+        case .landscapeRight:
+            self = .landscapeRight
         default:
-            self = .Unknown
+            self = .unknown
         }
     }
 }
@@ -35,29 +35,29 @@ final class DeviceOrientationServiceImpl: DeviceOrientationService {
         return DeviceOrientation(device.orientation)
     }
     
-    var onOrientationChange: (DeviceOrientation -> ())?
+    var onOrientationChange: ((DeviceOrientation) -> ())?
     
-    private let device = UIDevice.currentDevice()
+    private let device = UIDevice.current
     
     init() {
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
-            selector: #selector(DeviceOrientationServiceImpl.onOrientationChange(_:)),
-            name: UIDeviceOrientationDidChangeNotification,
+            selector: #selector(onOrientationChange(_:)),
+            name: .UIDeviceOrientationDidChange,
             object: device
         )
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    @objc private func onOrientationChange(notification: NSNotification) {
+    @objc private func onOrientationChange(_ notification: NSNotification) {
         
         let newOrientation = device.orientation
         
         // Если новая ориентация .FaceUp или .FaceDown, то считаем, что ничего не изменилось
-        if newOrientation != .FaceUp && newOrientation != .FaceDown {
+        if newOrientation != .faceUp && newOrientation != .faceDown {
             onOrientationChange?(DeviceOrientation(newOrientation))
         }
     }

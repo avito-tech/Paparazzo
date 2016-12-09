@@ -3,10 +3,10 @@ import Marshroute
 final class MarshrouteFacade {
     
     func navigationController(
-        navigationController: UINavigationController? = nil,
-        @noescape withRootViewControllerDerivedFrom deriveViewController: RouterSeed -> UIViewController
-    ) -> UIViewController {
-        
+        _ navigationController: UINavigationController? = nil,
+        withRootViewControllerDerivedFrom deriveViewController: (RouterSeed) -> UIViewController)
+        -> UIViewController
+    {
         let marshrouteSetupService = MarshrouteSetupServiceImpl()
         
         let marshrouteStack = marshrouteSetupService.marshrouteStack()

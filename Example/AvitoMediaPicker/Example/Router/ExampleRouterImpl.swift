@@ -11,14 +11,14 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     // MARK: - ExampleRouter
     
     func showMediaPicker(
-        items items: [MediaPickerItem],
+        items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
-        configuration: MediaPickerModule -> ()
+        configuration: (MediaPickerModule) -> ()
     ) {
-        presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
-        
+        pushViewControllerDerivedFrom { routerSeed in
+            
             let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
             
             return assembly.module(
@@ -30,14 +30,29 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 routerSeed: routerSeed,
                 configuration: configuration
             )
-            
-        }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
+        }
+        
+//        presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
+//        
+//            let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
+//            
+//            return assembly.module(
+//                items: items,
+//                selectedItem: selectedItem,
+//                maxItemsCount: maxItemsCount,
+//                cropEnabled: true,
+//                cropCanvasSize: cropCanvasSize,
+//                routerSeed: routerSeed,
+//                configuration: configuration
+//            )
+//            
+//        }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
     }
     
     func showPhotoLibrary(
-        selectedItems selectedItems: [PhotoLibraryItem],
+        selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: PhotoLibraryModule -> ()
+        configuration: (PhotoLibraryModule) -> ()
     ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             

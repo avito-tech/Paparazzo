@@ -1,11 +1,10 @@
 import CoreGraphics
-import AvitoDesignKit
 
 final class CGImageWrapper: InitializableWithCGImage {
     
     let image: CGImage
     
-    init(CGImage image: CGImage) {
+    init(cgImage image: CGImage) {
         self.image = image
     }
 }

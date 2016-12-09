@@ -1,5 +1,4 @@
 import UIKit
-import AvitoDesignKit
 
 final class ImageCroppingViewController: UIViewController, ImageCroppingViewInput {
     
@@ -11,18 +10,18 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         view = imageCroppingView
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .Fade)
+        UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden: Bool {
         return true
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
     // MARK: - ImageCroppingViewInput
@@ -32,7 +31,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onDiscardButtonTap = newValue }
     }
     
-    var onConfirmButtonTap: ((previewImage: CGImage?) -> ())? {
+    var onConfirmButtonTap: ((_ previewImage: CGImage?) -> ())? {
         get { return imageCroppingView.onConfirmButtonTap }
         set { imageCroppingView.onConfirmButtonTap = newValue }
     }
@@ -42,7 +41,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onAspectRatioButtonTap = newValue }
     }
     
-    var onRotationAngleChange: (Float -> ())? {
+    var onRotationAngleChange: ((Float) -> ())? {
         get { return imageCroppingView.onRotationAngleChange }
         set { imageCroppingView.onRotationAngleChange = newValue }
     }
@@ -62,16 +61,16 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         set { imageCroppingView.onGridButtonTap = newValue }
     }
     
-    var onCroppingParametersChange: (ImageCroppingParameters -> ())? {
+    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? {
         get { return imageCroppingView.onCroppingParametersChange }
         set { imageCroppingView.onCroppingParametersChange = newValue }
     }
     
-    func setImage(image: ImageSource, previewImage: ImageSource?, completion: () -> ()) {
+    func setImage(_ image: ImageSource, previewImage: ImageSource?, completion: @escaping () -> ()) {
         imageCroppingView.setImage(image, previewImage: previewImage, completion: completion)
     }
     
-    func setImageTiltAngle(angle: Float) {
+    func setImageTiltAngle(_ angle: Float) {
         imageCroppingView.setImageTiltAngle(angle)
     }
 
@@ -79,31 +78,31 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.turnCounterclockwise()
     }
 
-    func setCroppingParameters(parameters: ImageCroppingParameters) {
+    func setCroppingParameters(_ parameters: ImageCroppingParameters) {
         imageCroppingView.setCroppingParameters(parameters)
     }
     
-    func setRotationSliderValue(value: Float) {
+    func setRotationSliderValue(_ value: Float) {
         imageCroppingView.setRotationSliderValue(value)
     }
     
-    func setCanvasSize(size: CGSize) {
+    func setCanvasSize(_ size: CGSize) {
         imageCroppingView.setCanvasSize(size)
     }
     
-    func setControlsEnabled(enabled: Bool) {
+    func setControlsEnabled(_ enabled: Bool) {
         imageCroppingView.setControlsEnabled(enabled)
     }
     
-    @nonobjc func setTitle(title: String) {
+    @nonobjc func setTitle(_ title: String) {
         imageCroppingView.setTitle(title)
     }
 
-    func setAspectRatio(aspectRatio: AspectRatio) {
+    func setAspectRatio(_ aspectRatio: AspectRatio) {
         imageCroppingView.setAspectRatio(aspectRatio)
     }
     
-    func setAspectRatioButtonTitle(title: String) {
+    func setAspectRatioButtonTitle(_ title: String) {
         imageCroppingView.setAspectRatioButtonTitle(title)
     }
     
@@ -115,25 +114,25 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.setMaximumRotation(degrees)
     }
     
-    func setCancelRotationButtonTitle(title: String) {
+    func setCancelRotationButtonTitle(_ title: String) {
         imageCroppingView.setCancelRotationButtonTitle(title)
     }
     
-    func setCancelRotationButtonVisible(visible: Bool) {
+    func setCancelRotationButtonVisible(_ visible: Bool) {
         imageCroppingView.setCancelRotationButtonVisible(visible)
     }
     
-    func setGridVisible(visible: Bool) {
+    func setGridVisible(_ visible: Bool) {
         imageCroppingView.setGridVisible(visible)
     }
     
-    func setGridButtonSelected(selected: Bool) {
+    func setGridButtonSelected(_ selected: Bool) {
         // TODO
     }
     
     // MARK: - ImageCroppingViewController
     
-    func setTheme(theme: ImageCroppingUITheme) {
+    func setTheme(_ theme: ImageCroppingUITheme) {
         imageCroppingView.setTheme(theme)
     }
     
@@ -141,7 +140,7 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
     
     private var disposables = [AnyObject]()
     
-    func addDisposable(object: AnyObject) {
+    func addDisposable(_ object: AnyObject) {
         disposables.append(object)
     }
 }

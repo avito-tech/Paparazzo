@@ -28,7 +28,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - PhotoLibraryModule
     
-    var onFinish: (PhotoLibraryModuleResult -> ())?
+    var onFinish: ((PhotoLibraryModuleResult) -> ())?
     
     func focusOnModule() {
         router.focusOnCurrentModule()
@@ -50,16 +50,16 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         view?.setAccessDeniedMessage("Разрешите доступ приложению Avito к вашим фотографиям")
         view?.setAccessDeniedButtonTitle("Разрешить доступ к галерее")
         
-        interactor.authorizationStatus { [weak self] accessGranted in
+        interactor.observeAuthorizationStatus { [weak self] accessGranted in
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
         }
         
         interactor.observeItems { [weak self] changes, selectionState in
             guard let strongSelf = self else { return }
             
-            if changes.itemsAfterChanges.count > 0 {
-                self?.view?.setAccessDeniedViewVisible(false)
-            }
+            let hasItems = (changes.itemsAfterChanges.count > 0)
+            
+            self?.view?.setPickButtonVisible(hasItems)
             
             let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
             
@@ -78,28 +78,28 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
-                self?.onFinish?(.SelectedItems(items))
+                self?.onFinish?(.selectedItems(items))
             }
         }
         
         view?.onCancelButtonTap = { [weak self] in
-            self?.onFinish?(.Cancelled)
+            self?.onFinish?(.cancelled)
         }
         
-        view?.onAccessDeniedButtonTap = { [weak self] in
-            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(url)
+        view?.onAccessDeniedButtonTap = {
+            if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.shared.openURL(url)
             }
         }
     }
     
-    private func adjustViewForSelectionState(state: PhotoLibraryItemSelectionState) {
+    private func adjustViewForSelectionState(_ state: PhotoLibraryItemSelectionState) {
         view?.setDimsUnselectedItems(!state.canSelectMoreItems)
         view?.setCanSelectMoreItems(state.canSelectMoreItems)
         view?.setPickButtonEnabled(state.isAnyItemSelected)
     }
     
-    private func cellData(item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
+    private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
         var cellData = PhotoLibraryItemCellData(image: item.image)
 

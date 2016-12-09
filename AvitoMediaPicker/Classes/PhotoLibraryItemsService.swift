@@ -1,32 +1,33 @@
 import Photos
 
 protocol PhotoLibraryItemsService {
-    var authorizationStatus: PHAuthorizationStatus { get }
-    func observePhotos(handler: (assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ())
+    func observeAuthorizationStatus(handler: @escaping (PHAuthorizationStatus) -> ())
+    func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
 
-    private let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
-    private var fetchResult: PHFetchResult?
+    private let photoLibrary = PHPhotoLibrary.shared()
+    private var fetchResult: PHFetchResult<PHAsset>?
     
     // MARK: - Init
     
     override init() {
         super.init()
         
-        photoLibrary.registerChangeObserver(self)
+        photoLibrary.register(self)
         
         switch PHPhotoLibrary.authorizationStatus() {
-        case .Authorized:
+        case .authorized:
             setUpFetchRequest()
-        case .NotDetermined:
+        case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] status in
-                if case .Authorized = status {
+                if case .authorized = status {
                     self?.setUpFetchRequest()
                 }
+                self?.onAuthorizationStatusChange?(status)
             }
-        case .Restricted, .Denied:
+        case .restricted, .denied:
             break
         }
     }
@@ -37,22 +38,21 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    private var observerHandler: ((assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ())?
-    
-    var authorizationStatus: PHAuthorizationStatus {
-        return PHPhotoLibrary.authorizationStatus()
+    func observeAuthorizationStatus(handler: @escaping (PHAuthorizationStatus) -> ()) {
+        onAuthorizationStatusChange = handler
+        handler(PHPhotoLibrary.authorizationStatus())
     }
     
-    func observePhotos(handler: (assets: [PHAsset], changes: PHFetchResultChangeDetails?) -> ()) {
-        observerHandler = handler
+    func observePhotos(handler: @escaping (_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ()) {
+        onPhotosChange = handler
         callObserverHandler(changes: nil)
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
-    func photoLibraryDidChange(changeInfo: PHChange) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if let fetchResult = self.fetchResult, changes = changeInfo.changeDetailsForFetchResult(fetchResult) {
+    func photoLibraryDidChange(_ changeInfo: PHChange) {
+        DispatchQueue.main.async {
+            if let fetchResult = self.fetchResult, let changes = changeInfo.changeDetails(for: fetchResult) {
                 debugPrint("photoLibraryDidChange")
                 self.fetchResult = changes.fetchResultAfterChanges
                 self.callObserverHandler(changes: changes)
@@ -62,41 +62,32 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
 
     // MARK: - Private
     
+    private var onPhotosChange: ((_ assets: [PHAsset], _ changes: PHFetchResultChangeDetails<PHAsset>?) -> ())?
+    private var onAuthorizationStatusChange: ((PHAuthorizationStatus) -> ())?
+    
     private func setUpFetchRequest() {
+        let options: PHFetchOptions?
         
-        // Сначала пытаемся найти альбом Camera Roll
-        let albums = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumUserLibrary, options: nil)
-
-        albums.enumerateObjectsUsingBlock { collection, _, stop in
-            if let collection = collection as? PHAssetCollection {
-                self.fetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
-                // Camera Roll должен идти самым первым, поэтому дальше не продолжаем
-                stop.memory = ObjCBool(true)
-            }
+        if #available(iOS 9.0, *) {
+            options = PHFetchOptions()
+            options?.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
+        } else {
+            options = nil
         }
         
-        // Fallback на случай, если по какой-то причине не нашли альбом Camera Roll
-        if fetchResult == nil {
-            fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: nil)
-        }
-        
+        fetchResult = PHAsset.fetchAssets(with: .image, options: options)
         callObserverHandler(changes: nil)
     }
 
-    private func callObserverHandler(changes changes: PHFetchResultChangeDetails?) {
-        observerHandler?(assets: assetsFromFetchResult(), changes: changes)
+    private func callObserverHandler(changes: PHFetchResultChangeDetails<PHAsset>?) {
+        onPhotosChange?(assetsFromFetchResult(), changes)
     }
     
     private func assetsFromFetchResult() -> [PHAsset] {
-        
         var images = [PHAsset]()
-        
-        fetchResult?.enumerateObjectsUsingBlock { asset, _, _ in
-            if let asset = asset as? PHAsset {
-                images.append(asset)
-            }
-        }
-        
+        fetchResult?.enumerateObjects(using: { asset, _, _ in
+            images.append(asset)
+        })
         return images
     }
 }

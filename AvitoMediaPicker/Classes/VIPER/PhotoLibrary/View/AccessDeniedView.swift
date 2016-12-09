@@ -1,4 +1,5 @@
 import UIKit
+import AvitoToolkit
 
 final class AccessDeniedView: UIView {
     
@@ -17,8 +18,8 @@ final class AccessDeniedView: UIView {
     }
     
     var buttonTitle: String? {
-        get { return button.titleForState(.Normal) }
-        set { button.setTitle(newValue, forState: .Normal) }
+        get { return button.title(for: .normal) }
+        set { button.setTitle(newValue, for: .normal) }
     }
     
     var onButtonTap: (() -> ())?
@@ -28,21 +29,21 @@ final class AccessDeniedView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
         
-        titleLabel.font = UIFont.boldSystemFontOfSize(17)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
         titleLabel.numberOfLines = 0
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         
-        messageLabel.font = UIFont.systemFontOfSize(17)
+        messageLabel.font = UIFont.systemFont(ofSize: 17)
         messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .Center
+        messageLabel.textAlignment = .center
         
         button.backgroundColor = UIColor.RGB(red: 0, green: 170, blue: 255, alpha: 1)
         button.layer.cornerRadius = 4
-        button.setTitleColor(.whiteColor(), forState: .Normal)
+        button.setTitleColor(.white, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        button.addTarget(self, action: #selector(onButtonTap(_:)), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
         
         addSubview(titleLabel)
         addSubview(messageLabel)
@@ -53,7 +54,7 @@ final class AccessDeniedView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
         let frames = calculateFrames(forBounds: CGRect(origin: .zero, size: size))
         return CGSize(width: size.width, height: frames.buttonFrame.bottom)
     }
@@ -70,7 +71,7 @@ final class AccessDeniedView: UIView {
     
     // MARK: - AccessDeniedView
     
-    func setTheme(theme: AccessDeniedViewTheme) {
+    func setTheme(_ theme: AccessDeniedViewTheme) {
         titleLabel.font = theme.accessDeniedTitleFont
         messageLabel.font = theme.accessDeniedMessageFont
         button.titleLabel?.font = theme.accessDeniedButtonFont
@@ -85,7 +86,6 @@ final class AccessDeniedView: UIView {
     {
         let titleBottomMargin: CGFloat = 7
         let messageBottomMargin: CGFloat = 34
-        let buttonSideMargin: CGFloat = 60
         let buttonHeight: CGFloat = 52
         
         let labelsWidth = bounds.size.width * 0.8
@@ -111,7 +111,7 @@ final class AccessDeniedView: UIView {
         var buttonFrame = CGRect(origin: .zero, size: button.sizeThatFits(bounds.size))
         buttonFrame.centerX = bounds.centerX
         buttonFrame.top = messageLabelFrame.bottom + messageBottomMargin
-        buttonFrame.height = buttonHeight
+        buttonFrame.size.height = buttonHeight
         
         return (
             titleLabelFrame: titleLabelFrame,

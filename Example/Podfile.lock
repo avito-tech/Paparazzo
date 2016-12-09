@@ -1,47 +1,49 @@
 PODS:
-  - AvitoDesignKit (0.0.6):
-    - JVFloatLabeledTextField (= 1.1.0)
-    - SDWebImage (= 3.8.1)
-    - TTTAttributedLabel (= 1.13.0)
   - AvitoMediaPicker (1.0.0):
-    - AvitoDesignKit (= 0.0.6)
+    - AvitoToolkit
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
+  - AvitoToolkit (0.0.1):
+    - KeychainAccess
   - JNWSpringAnimation (0.7.1)
-  - JVFloatLabeledTextField (1.1.0)
+  - KeychainAccess (3.0.1)
   - Marshroute (0.3.3)
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
-  - TTTAttributedLabel (1.13.0)
 
 DEPENDENCIES:
-  - AvitoDesignKit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git`, branch `release-6.0`)
   - AvitoMediaPicker (from `../`)
-  - Marshroute
+  - AvitoToolkit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git`, branch `develop`)
+  - Marshroute (from `https://github.com/avito-tech/Marshroute`, branch `swift-3-syntax`)
 
 EXTERNAL SOURCES:
-  AvitoDesignKit:
-    :branch: release-6.0
-    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
   AvitoMediaPicker:
     :path: ../
+  AvitoToolkit:
+    :branch: develop
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
+  Marshroute:
+    :branch: swift-3-syntax
+    :git: https://github.com/avito-tech/Marshroute
 
 CHECKOUT OPTIONS:
-  AvitoDesignKit:
-    :commit: b13a2b0dd733c6d4417b7f1b6ac4754f96b8fe16
-    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-design-kit.git
+  AvitoToolkit:
+    :commit: ea1afb20c6d3b0bdb39fd713de9ed8ece0b16d79
+    :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
+  Marshroute:
+    :commit: c84b8f9dca0c684b00cb6303ad5733e039bd3027
+    :git: https://github.com/avito-tech/Marshroute
 
 SPEC CHECKSUMS:
-  AvitoDesignKit: 60a770dc9b86a0e8e5fb1e696dad41df3bc76a30
-  AvitoMediaPicker: c143d2e8d0e4f20d32ee1505d00d9b5288219f70
+  AvitoMediaPicker: af84c7ffb50dd1bba946b9069068bf1ae5cc3759
+  AvitoToolkit: dadc6c4cd7a52bcc444577244042ee17ffc3732b
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
-  JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
+  KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
-  TTTAttributedLabel: 8aeaf67481bb38970711e2641211cba912bd5239
 
-PODFILE CHECKSUM: 9776ec4978eb1cc786772d6505ba163184fcce37
+PODFILE CHECKSUM: 6431d803c16cf10e0c08160457c9c8eac93aa9ba
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

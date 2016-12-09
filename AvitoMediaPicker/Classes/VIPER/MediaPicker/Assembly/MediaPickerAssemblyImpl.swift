@@ -3,7 +3,7 @@ import Marshroute
 
 public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     
-    typealias AssemblyFactory = protocol<CameraAssemblyFactory, ImageCroppingAssemblyFactory, PhotoLibraryAssemblyFactory>
+    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     private let theme: MediaPickerUITheme
@@ -16,13 +16,13 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     // MARK: - MediaPickerAssembly
     
     public func module(
-        items items: [MediaPickerItem],
+        items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
         routerSeed: RouterSeed,
-        configuration: MediaPickerModule -> ()
+        configuration: (MediaPickerModule) -> ()
     ) -> UIViewController {
         
         let interactor = MediaPickerInteractorImpl(

@@ -1,6 +1,5 @@
 import UIKit
 import AVFoundation
-import AvitoDesignKit
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
@@ -19,34 +18,39 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onViewDidLoad?()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .Fade)
+        forcePortraitOrientation()  // kludge for AI-4054, AI-4069
+        UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // AI-3326: костыль для iOS 8, на котором после дисмисса модального окна или возврата с предыдущего экрана
         // OpenGL рандомно (не каждый раз) прекращает отрисовку
         mediaPickerView.reloadCamera()
         
-        onViewDidAppear?(animated: animated)
+        onViewDidAppear?(animated)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        onPreviewSizeDetermined?(previewSize: mediaPickerView.previewSize)
+        onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+    }
+    
+    override var prefersStatusBarHidden: Bool {
         return true
     }
     
@@ -62,12 +66,12 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onPhotoLibraryButtonTap = newValue }
     }
 
-    var onFlashToggle: (Bool -> ())? {
+    var onFlashToggle: ((Bool) -> ())? {
         get { return mediaPickerView.onFlashToggle }
         set { mediaPickerView.onFlashToggle = newValue }
     }
     
-    var onItemSelect: (MediaPickerItem -> ())? {
+    var onItemSelect: ((MediaPickerItem) -> ())? {
         get { return mediaPickerView.onItemSelect }
         set { mediaPickerView.onItemSelect = newValue }
     }
@@ -87,7 +91,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onCameraThumbnailTap = newValue }
     }
     
-    var onSwipeToItem: (MediaPickerItem -> ())? {
+    var onSwipeToItem: ((MediaPickerItem) -> ())? {
         get { return mediaPickerView.onSwipeToItem }
         set { mediaPickerView.onSwipeToItem = newValue }
     }
@@ -97,66 +101,66 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onSwipeToCamera = newValue }
     }
     
-    var onSwipeToCameraProgressChange: (CGFloat -> ())? {
+    var onSwipeToCameraProgressChange: ((CGFloat) -> ())? {
         get { return mediaPickerView.onSwipeToCameraProgressChange }
         set { mediaPickerView.onSwipeToCameraProgressChange = newValue }
     }
     
     var onViewDidLoad: (() -> ())?
-    var onViewDidAppear: ((animated: Bool) -> ())?
-    var onPreviewSizeDetermined: ((previewSize: CGSize) -> ())?
+    var onViewDidAppear: ((_ animated: Bool) -> ())?
+    var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())?
     
-    func setMode(mode: MediaPickerViewMode) {
+    func setMode(_ mode: MediaPickerViewMode) {
         // Этот метод может быть вызван до того, как вьюшка обретет frame, что критично для корректной работы
         // ее метода setMode. dispatch_async спасает ситуацию.
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.mediaPickerView.setMode(mode)
         }
     }
     
-    func setCameraOutputParameters(parameters: CameraOutputParameters) {
+    func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         mediaPickerView.setCameraOutputParameters(parameters)
     }
     
-    func setCameraOutputOrientation(orientation: ExifOrientation) {
+    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
         mediaPickerView.setCameraOutputOrientation(orientation)
     }
     
-    func setPhotoTitle(title: String) {
+    func setPhotoTitle(_ title: String) {
         mediaPickerView.setPhotoTitle(title)
     }
     
-    func setPhotoTitleStyle(style: MediaPickerTitleStyle) {
+    func setPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
         mediaPickerView.setPhotoTitleStyle(style)
     }
     
-    func setPhotoTitleAlpha(alpha: CGFloat) {
+    func setPhotoTitleAlpha(_ alpha: CGFloat) {
         mediaPickerView.setPhotoTitleAlpha(alpha)
     }
     
-    func setContinueButtonTitle(title: String) {
+    func setContinueButtonTitle(_ title: String) {
         mediaPickerView.setContinueButtonTitle(title)
     }
     
-    func setContinueButtonEnabled(enabled: Bool) {
+    func setContinueButtonEnabled(_ enabled: Bool) {
         mediaPickerView.setContinueButtonEnabled(enabled)
     }
     
-    func adjustForDeviceOrientation(orientation: DeviceOrientation) {
-        UIView.animateWithDuration(0.25) {
+    func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
+        UIView.animate(withDuration: 0.25) {
             self.mediaPickerView.adjustForDeviceOrientation(orientation)
         }
     }
     
-    func setLatestLibraryPhoto(image: ImageSource?) {
+    func setLatestLibraryPhoto(_ image: ImageSource?) {
         mediaPickerView.setLatestPhotoLibraryItemImage(image)
     }
     
-    func setFlashButtonVisible(visible: Bool) {
+    func setFlashButtonVisible(_ visible: Bool) {
         mediaPickerView.setFlashButtonVisible(visible)
     }
     
-    func setFlashButtonOn(isOn: Bool) {
+    func setFlashButtonOn(_ isOn: Bool) {
         mediaPickerView.setFlashButtonOn(isOn)
     }
     
@@ -179,28 +183,28 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onCameraToggleButtonTap = newValue }
     }
     
-    func setCameraToggleButtonVisible(visible: Bool) {
+    func setCameraToggleButtonVisible(_ visible: Bool) {
         mediaPickerView.setCameraToggleButtonVisible(visible)
     }
 
-    func addItems(items: [MediaPickerItem], animated: Bool, completion: () -> ()) {
+    func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         mediaPickerView.addItems(items, animated: animated, completion: completion)
     }
     
-    func updateItem(item: MediaPickerItem) {
+    func updateItem(_ item: MediaPickerItem) {
         mediaPickerView.updateItem(item)
     }
     
-    func removeItem(item: MediaPickerItem) {
+    func removeItem(_ item: MediaPickerItem) {
         mediaPickerView.removeItem(item)
     }
     
-    func selectItem(item: MediaPickerItem) {
+    func selectItem(_ item: MediaPickerItem) {
         mediaPickerView.selectItem(item)
         onItemSelect?(item)
     }
     
-    func scrollToItemThumbnail(item: MediaPickerItem, animated: Bool) {
+    func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
         layoutSubviewsPromise.onFulfill { [weak self] _ in
             self?.mediaPickerView.scrollToItemThumbnail(item, animated: animated)
         }
@@ -211,39 +215,39 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onCameraThumbnailTap?()
     }
     
-    func scrollToCameraThumbnail(animated animated: Bool) {
+    func scrollToCameraThumbnail(animated: Bool) {
         layoutSubviewsPromise.onFulfill { [weak self] _ in
             self?.mediaPickerView.scrollToCameraThumbnail(animated: animated)
         }
     }
     
-    func setCameraControlsEnabled(enabled: Bool) {
+    func setCameraControlsEnabled(_ enabled: Bool) {
         mediaPickerView.setCameraControlsEnabled(enabled)
     }
     
-    func setCameraButtonVisible(visible: Bool) {
+    func setCameraButtonVisible(_ visible: Bool) {
         mediaPickerView.setCameraButtonVisible(visible)
     }
     
-    func setShutterButtonEnabled(enabled: Bool) {
+    func setShutterButtonEnabled(_ enabled: Bool) {
         mediaPickerView.setShutterButtonEnabled(enabled)
     }
     
-    func setPhotoLibraryButtonEnabled(enabled: Bool) {
+    func setPhotoLibraryButtonEnabled(_ enabled: Bool) {
         mediaPickerView.setPhotoLibraryButtonEnabled(enabled)
     }
     
     // MARK: - MediaPickerViewController
     
-    func setCameraView(view: UIView) {
+    func setCameraView(_ view: UIView) {
         mediaPickerView.setCameraView(view)
     }
     
-    func setTheme(theme: MediaPickerRootModuleUITheme) {
+    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
         mediaPickerView.setTheme(theme)
     }
     
-    func setShowsCropButton(showsCropButton: Bool) {
+    func setShowsCropButton(_ showsCropButton: Bool) {
         mediaPickerView.setShowsCropButton(showsCropButton)
     }
     
@@ -251,7 +255,26 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     private var disposables = [AnyObject]()
     
-    func addDisposable(object: AnyObject) {
+    func addDisposable(_ object: AnyObject) {
         disposables.append(object)
+    }
+    
+    // MARK: - Private
+    
+    private func forcePortraitOrientation() {
+        
+        let initialDeviceOrientation = UIDevice.current.orientation
+        let targetDeviceOrientation = UIDeviceOrientation.portrait
+        let targetInterfaceOrientation = UIInterfaceOrientation.portrait
+        
+        if UIDevice.current.orientation != targetDeviceOrientation {
+            
+            UIApplication.shared.setStatusBarOrientation(targetInterfaceOrientation, animated: true)
+            UIDevice.current.setValue(NSNumber(value: targetInterfaceOrientation.rawValue as Int), forKey: "orientation")
+            
+            DispatchQueue.main.async {
+                UIDevice.current.setValue(NSNumber(value: initialDeviceOrientation.rawValue as Int), forKey: "orientation")
+            }
+        }
     }
 }

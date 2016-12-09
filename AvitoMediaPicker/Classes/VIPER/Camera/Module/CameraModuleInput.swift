@@ -1,11 +1,11 @@
 import AVFoundation
 
-protocol CameraInteractor: class {
+protocol CameraModuleInput: class {
     
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
     func setCameraOutputNeeded(_: Bool)
     
-    func isFlashAvailable(completion: (Bool) -> ())
+    func isFlashAvailable(completion: @escaping (Bool) -> ())
     func isFlashEnabled(completion: @escaping (Bool) -> ())
     func setFlashEnabled(_: Bool, completion: ((_ success: Bool) -> ())?)
     
@@ -16,10 +16,5 @@ protocol CameraInteractor: class {
     
     func setPreviewImagesSizeForNewPhotos(_: CGSize)
     
-    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
-}
-
-struct CameraOutputParameters {
-    let captureSession: AVCaptureSession
-    var orientation: ExifOrientation
+    func mainModuleDidAppear(animated: Bool)
 }

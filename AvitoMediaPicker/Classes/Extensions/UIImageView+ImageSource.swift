@@ -2,18 +2,19 @@ import UIKit
 
 public extension UIImageView {
     
+    @discardableResult
     func setImage(
         fromSource newImageSource: ImageSource?,
         size: CGSize? = nil,
         placeholder: UIImage? = nil,
         placeholderDeferred: Bool = false,
-        adjustOptions: ((inout options: ImageRequestOptions) -> ())? = nil,
-        resultHandler: (ImageRequestResult<UIImage> -> ())? = nil)
+        adjustOptions: ((_ options: inout ImageRequestOptions) -> ())? = nil,
+        resultHandler: ((ImageRequestResult<UIImage>) -> ())? = nil)
         -> ImageRequestId?
     {
         let previousImageSource = imageSource
         let pointSize = (size ?? bounds.size)
-        let scale = UIScreen.mainScreen().scale
+        let scale = UIScreen.main.scale
         let pixelSize = CGSize(width: pointSize.width * scale, height: pointSize.height * scale)
         
         if let imageRequestId = imageRequestId {
@@ -27,16 +28,16 @@ public extension UIImageView {
         
         imageSource = newImageSource
         
-        if let newImageSource = newImageSource where pixelSize.width > 0 && pixelSize.height > 0 {
+        if let newImageSource = newImageSource, pixelSize.width > 0 && pixelSize.height > 0 {
             
-            let size: ImageSizeOption = (contentMode == .ScaleAspectFit) ? .FitSize(pixelSize) : .FillSize(pixelSize)
-            var options = ImageRequestOptions(size: size, deliveryMode: .Progressive)
-            adjustOptions?(options: &options)
+            let size: ImageSizeOption = (contentMode == .scaleAspectFit) ? .fitSize(pixelSize) : .fillSize(pixelSize)
+            var options = ImageRequestOptions(size: size, deliveryMode: .progressive)
+            adjustOptions?(&options)
             
             imageRequestId = newImageSource.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
                 let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
-                if let image = result.image where shouldSetImage {
+                if let image = result.image, shouldSetImage {
 //                    debugPrint("imageSource \(newImageSource), currentImageRequest = \(self?.imageRequestId), imageRequest = \(result.requestId)")
                     self?.image = image
                     resultHandler?(result)
@@ -66,15 +67,16 @@ public extension UIImageView {
     
     private var imageRequestId: ImageRequestId? {
         get {
-            return (objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber)?.intValue
+            let intAsNSNumber = objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber
+            return intAsNSNumber?.int32Value
         }
         set {
-            let number = newValue.flatMap { NSNumber(int: $0) }
+            let number = newValue.flatMap { NSNumber(value: $0) }
             objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
-    private func shouldSetImageForImageSource(imageSource: ImageSource, requestId: ImageRequestId) -> Bool {
+    private func shouldSetImageForImageSource(_ imageSource: ImageSource, requestId: ImageRequestId) -> Bool {
         if let currentImageSource = self.imageSource {
             // Если imageRequestId == nil, это значит, что resultHandler вызвался синхронно — еще до того,
             // как метод requestImage завершился и вернул нам ImageRequestId. В этом случае картику поставить нужно.
