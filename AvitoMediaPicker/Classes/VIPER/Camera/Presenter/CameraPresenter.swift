@@ -1,5 +1,3 @@
-import AVFoundation
-
 final class CameraPresenter: CameraModuleInput {
     
     private let interactor: CameraInteractor
@@ -44,7 +42,6 @@ final class CameraPresenter: CameraModuleInput {
     
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
         interactor.toggleCamera { [weak self] newOutputOrientation in
-            self?.view?.setOutputOrientation(newOutputOrientation)
             completion(newOutputOrientation)
         }
     }

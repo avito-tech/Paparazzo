@@ -1,11 +1,13 @@
 PODS:
   - AvitoMediaPicker (1.0.0):
     - AvitoToolkit
+    - GPUImage
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
   - AvitoToolkit (0.0.1):
     - KeychainAccess
+  - GPUImage (0.1.7)
   - JNWSpringAnimation (0.7.1)
   - KeychainAccess (3.0.1)
   - Marshroute (0.3.3)
@@ -37,8 +39,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/avito-tech/Marshroute
 
 SPEC CHECKSUMS:
-  AvitoMediaPicker: af84c7ffb50dd1bba946b9069068bf1ae5cc3759
+  AvitoMediaPicker: 3b38da9579ef0f096fbea0647a9b8f8e285d4cdc
   AvitoToolkit: dadc6c4cd7a52bcc444577244042ee17ffc3732b
+  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52

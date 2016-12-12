@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 final class MediaRibbonDataSource {
     

@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 final class MediaPickerView: UIView {
     
@@ -358,10 +357,6 @@ final class MediaPickerView: UIView {
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         thumbnailRibbonView.setCameraOutputParameters(parameters)
-    }
-    
-    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
-        thumbnailRibbonView.setCameraOutputOrientation(orientation)
     }
     
     func setPhotoTitle(_ title: String) {

@@ -1,5 +1,3 @@
-import AVFoundation
-
 final class CameraInteractorImpl: CameraInteractor {
     
     private let cameraService: CameraService
@@ -14,10 +12,10 @@ final class CameraInteractorImpl: CameraInteractor {
     // MARK: - CameraInteractor
 
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ()) {
-        cameraService.getCaptureSession { [cameraService] captureSession in
+        cameraService.getImageOutput { [cameraService] imageOutput in
             cameraService.getOutputOrientation { outputOrientation in
                 dispatch_to_main_queue {
-                    completion(captureSession.flatMap { CameraOutputParameters(captureSession: $0, orientation: outputOrientation) })
+                    completion(imageOutput.flatMap { CameraOutputParameters(imageOutput: $0) })
                 }
             }
         }

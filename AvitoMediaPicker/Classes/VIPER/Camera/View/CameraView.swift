@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 final class CameraView: UIView, CameraViewInput {
     
@@ -57,33 +56,30 @@ final class CameraView: UIView, CameraViewInput {
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         
-        let cameraOutputBinder = CameraOutputGLKBinder(
-            captureSession: parameters.captureSession,
-            outputOrientation: parameters.orientation
-        )
+        let newOutputBinder = CameraOutputGLKBinder(imageOutput: parameters.imageOutput)
         
-        if let attachedBinder = self.cameraOutputBinder {
+        if let previousOutputBinder = cameraOutputBinder {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
-            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
-                cameraOutputBinder?.onFrameDrawn = nil
+            newOutputBinder.onFrameDrawn = { [weak newOutputBinder] in
+                newOutputBinder?.onFrameDrawn = nil
                 DispatchQueue.main.async {
-                    attachedBinder.view.removeFromSuperview()
+                    previousOutputBinder.view.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
         }
         
-        let view = cameraOutputBinder.view
+        let view = newOutputBinder.view
         view.clipsToBounds = true
-        addSubview(view)
         
-        self.cameraOutputBinder = cameraOutputBinder
-        self.outputParameters = parameters
-    }
-    
-    func setOutputOrientation(_ orientation: ExifOrientation) {
-        outputParameters?.orientation = orientation
-        cameraOutputBinder?.orientation = orientation
+        if let previousOutputView = cameraOutputBinder?.view {
+            insertSubview(view, belowSubview: previousOutputView)
+        } else {
+            addSubview(view)
+        }
+        
+        cameraOutputBinder = newOutputBinder
+        outputParameters = parameters
     }
     
     func mainModuleDidAppear(animated: Bool) {
