@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
     
@@ -167,13 +166,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         cameraOutputParameters = parameters
-    }
-    
-    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
-        cameraOutputParameters?.orientation = orientation
-        if let cell = cameraCell() {
-            cell.setOutputOrientation(orientation)
-        }
     }
     
     func reloadCamera() {
