@@ -180,7 +180,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private var currentPage: Int {
         if collectionView.width > 0 {
-            return max(0, Int(floor(collectionView.contentOffset.x / collectionView.width)))
+            return max(0, Int(ceil(collectionView.contentOffset.x / collectionView.width)))
         } else {
             return 0
         }
