@@ -1,14 +1,15 @@
 import UIKit
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
-    
+    private var isBeingRotated: Bool = false
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
     
     // MARK: - UIViewController
     
     override func loadView() {
-        view = mediaPickerView
+        view = UIView()
+        view.addSubview(mediaPickerView)
     }
     
     override func viewDidLoad() {
@@ -20,7 +21,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        forcePortraitOrientation()  // kludge for AI-4054, AI-4069
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
     
@@ -37,16 +37,59 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        if !isBeingRotated {
+            mediaPickerView.frame = view.bounds
+            mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
+        }
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+    override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        if shouldAutorotate {
+            // Compensation animation for rotation.
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    self.mediaPickerView.transform = CGAffineTransform(interfaceOrientation: toInterfaceOrientation);
+                    self.mediaPickerView.frame = self.view.bounds;
+            })
+        }
+        super.willAnimateRotation(to: toInterfaceOrientation, duration: duration)
     }
     
-    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        return .portrait
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        super.didRotate(from: fromInterfaceOrientation)
+        isBeingRotated = false
+    }
+    
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        super.willRotate(to: toInterfaceOrientation, duration: duration)
+        isBeingRotated = true
+    }
+    
+    override open var shouldAutorotate: Bool {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .all
+        } else {
+            return .portrait
+        }
+    }
+    
+    override open var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return super.preferredInterfaceOrientationForPresentation
+        } else {
+            return .portrait
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -252,24 +295,5 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func addDisposable(_ object: AnyObject) {
         disposables.append(object)
-    }
-    
-    // MARK: - Private
-    
-    private func forcePortraitOrientation() {
-        
-        let initialDeviceOrientation = UIDevice.current.orientation
-        let targetDeviceOrientation = UIDeviceOrientation.portrait
-        let targetInterfaceOrientation = UIInterfaceOrientation.portrait
-        
-        if UIDevice.current.orientation != targetDeviceOrientation {
-            
-            UIApplication.shared.setStatusBarOrientation(targetInterfaceOrientation, animated: true)
-            UIDevice.current.setValue(NSNumber(value: targetInterfaceOrientation.rawValue as Int), forKey: "orientation")
-            
-            DispatchQueue.main.async {
-                UIDevice.current.setValue(NSNumber(value: initialDeviceOrientation.rawValue as Int), forKey: "orientation")
-            }
-        }
     }
 }
