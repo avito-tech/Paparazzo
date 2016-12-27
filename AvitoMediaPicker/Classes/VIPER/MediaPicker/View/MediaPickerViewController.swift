@@ -9,6 +9,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     override func loadView() {
         view = UIView()
+        view.backgroundColor = .black
         view.addSubview(mediaPickerView)
     }
     
@@ -20,12 +21,41 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        mediaPickerView.alpha = 0
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // 1. Open this view controller
+        // 2. Push another view controller
+        // 3. Rotate device
+        // 4. Pop to this view controller
+        //
+        // Without the following lines views go wild, it looks like they are chaotically placed.
+        //
+        // UIDevice.current.userInterfaceIdiom restricts the klusge to iPad. It is only an iPad issue.
+        //
+        // I've spent about 4-5 hours fixing it.
+        //
+        if mediaPickerView.alpha == 0 && UIDevice.current.userInterfaceIdiom == .pad {
+            DispatchQueue.main.async {
+                self.view.setNeedsLayout()
+                self.view.layoutIfNeeded()
+                
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.mediaPickerView.alpha = 1
+                })
+            }
+        }
         
         // AI-3326: костыль для iOS 8, на котором после дисмисса модального окна или возврата с предыдущего экрана
         // OpenGL рандомно (не каждый раз) прекращает отрисовку
