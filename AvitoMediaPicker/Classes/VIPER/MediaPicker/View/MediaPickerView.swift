@@ -335,7 +335,7 @@ final class MediaPickerView: UIView {
         deviceOrientation = orientation
         
         var orientation = orientation
-        if case .photoPreview = mode {
+        if UIDevice.current.userInterfaceIdiom == .phone, case .photoPreview = mode {
             orientation = .portrait
         }
         
