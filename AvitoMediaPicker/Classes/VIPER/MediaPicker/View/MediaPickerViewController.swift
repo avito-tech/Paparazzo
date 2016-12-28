@@ -29,7 +29,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        mediaPickerView.alpha = 0
+        // See viewDidAppear
+        // UIDevice.current.userInterfaceIdiom restricts the klusge to iPad. It is only an iPad issue.
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            mediaPickerView.alpha = 0
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,11 +46,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         //
         // Without the following lines views go wild, it looks like they are chaotically placed.
         //
-        // UIDevice.current.userInterfaceIdiom restricts the klusge to iPad. It is only an iPad issue.
-        //
         // I've spent about 4-5 hours fixing it.
         //
-        if mediaPickerView.alpha == 0 && UIDevice.current.userInterfaceIdiom == .pad {
+        // Note that there is no check for iPad here. If alpha is 0 we must animate fade in in any case
+        //
+        if mediaPickerView.alpha == 0 {
             DispatchQueue.main.async {
                 self.view.setNeedsLayout()
                 self.view.layoutIfNeeded()
