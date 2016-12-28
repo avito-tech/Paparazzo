@@ -180,7 +180,20 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     
     private var currentPage: Int {
         if collectionView.width > 0 {
-            return max(0, Int(ceil(collectionView.contentOffset.x / collectionView.width)))
+            // paging follows 4/5 rule so it uses round() function.
+            // |  0  |  1  |  2  |
+            // ------offset:------
+            // |  0  |     |     | // 0.00 -> 0
+            // ||  0  |    |     | // 0.16 -> 0
+            // | |  0  |   |     | // 0.33 -> 0
+            // |  |  ?  |  |     | // 0.50 -> doesn't really matter
+            // |   |  1  | |     | // 0.66 -> 1
+            // |    |  1  ||     | // 0.83 -> 1
+            // |     |  1  |     | // 1.00 -> 1
+            //
+            let pageRatio: CGFloat = collectionView.contentOffset.x / collectionView.width
+            let maxPage = dataSource.numberOfItems - 1
+            return max(0, min(maxPage, Int(round(pageRatio))))
         } else {
             return 0
         }
