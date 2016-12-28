@@ -58,6 +58,14 @@ final class CameraServiceImpl: CameraService {
         completion(outputOrientationForCamera(activeCamera))
     }
     
+    func startCapture() {
+        cameraOutput?.resumeCameraCapture()
+    }
+    
+    func stopCapture() {
+        cameraOutput?.pauseCapture()
+    }
+    
     private func setUpCameraOutput() {
         
         #if arch(i386) || arch(x86_64)

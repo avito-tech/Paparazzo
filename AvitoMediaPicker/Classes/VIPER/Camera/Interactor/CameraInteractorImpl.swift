@@ -77,4 +77,12 @@ final class CameraInteractorImpl: CameraInteractor {
         deviceOrientationService.onOrientationChange = handler
         handler(deviceOrientationService.currentOrientation)
     }
+    
+    func startCapture() {
+        cameraService.startCapture()
+    }
+    
+    func stopCapture() {
+        cameraService.stopCapture()
+    }
 }

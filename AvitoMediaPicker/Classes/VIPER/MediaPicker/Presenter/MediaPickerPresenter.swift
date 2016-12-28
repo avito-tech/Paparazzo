@@ -201,6 +201,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onViewDidAppear = { [weak self] animated in
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
         }
+        
+        view?.onViewWillDisappear = { [weak self] animated in
+            self?.cameraModuleInput.mainModuleWillDisappear(animated: animated)
+        }
     }
     
     private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool) {

@@ -1,6 +1,7 @@
 import UIKit
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
+    
     private var isBeingRotated: Bool = false
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
@@ -34,6 +35,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         if UIDevice.current.userInterfaceIdiom == .pad {
             mediaPickerView.alpha = 0
         }
+
+        onViewWillDisappear?(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -184,6 +187,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     var onViewDidLoad: (() -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?
+    var onViewWillDisappear: ((_ animated: Bool) -> ())?
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())?
     
     func setMode(_ mode: MediaPickerViewMode) {
