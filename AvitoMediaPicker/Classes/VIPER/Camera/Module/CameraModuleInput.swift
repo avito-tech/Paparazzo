@@ -15,4 +15,5 @@ protocol CameraModuleInput: class {
     func setPreviewImagesSizeForNewPhotos(_: CGSize)
     
     func mainModuleDidAppear(animated: Bool)
+    func mainModuleWillDisappear(animated: Bool)
 }

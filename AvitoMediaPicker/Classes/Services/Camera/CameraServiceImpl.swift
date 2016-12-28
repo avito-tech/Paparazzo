@@ -13,6 +13,7 @@ final class CameraServiceImpl: CameraService {
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
     private var activeCamera: AVCaptureDevice?
+    private var captureStarted = true
 
     // MARK: - Init
     
@@ -21,6 +22,10 @@ final class CameraServiceImpl: CameraService {
         
         backCamera = videoDevices?.filter({ $0.position == .back }).first
         frontCamera = videoDevices?.filter({ $0.position == .front }).first
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func getImageOutput(completion: @escaping (GPUImageOutput?) -> ()) {
@@ -58,6 +63,16 @@ final class CameraServiceImpl: CameraService {
         completion(outputOrientationForCamera(activeCamera))
     }
     
+    func startCapture() {
+        captureStarted = true
+        cameraOutput?.resumeCameraCapture()
+    }
+    
+    func stopCapture() {
+        captureStarted = false
+        cameraOutput?.pauseCapture()
+    }
+    
     private func setUpCameraOutput() {
         
         #if arch(i386) || arch(x86_64)
@@ -68,7 +83,10 @@ final class CameraServiceImpl: CameraService {
         cameraOutput = GPUImageStillCamera(sessionPreset: AVCaptureSessionPresetPhoto, cameraPosition: .back)
         cameraOutput?.horizontallyMirrorFrontFacingCamera = true
         cameraOutput?.outputImageOrientation = .portrait
-        cameraOutput?.startCapture()
+        
+        if captureStarted {
+            cameraOutput?.startCapture()
+        }
         
         output = cameraOutput?.captureSession.outputs.flatMap { $0 as? AVCaptureStillImageOutput }.first
         // Эта настройка необходима, иначе AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(_:) будет крэшиться
