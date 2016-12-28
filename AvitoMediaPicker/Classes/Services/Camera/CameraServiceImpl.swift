@@ -23,10 +23,6 @@ final class CameraServiceImpl: CameraService {
         frontCamera = videoDevices?.filter({ $0.position == .front }).first
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     func getImageOutput(completion: @escaping (GPUImageOutput?) -> ()) {
         
         if let cameraOutput = cameraOutput {
