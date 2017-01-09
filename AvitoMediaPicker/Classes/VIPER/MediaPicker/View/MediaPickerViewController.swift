@@ -330,8 +330,12 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     // MARK: - Private
     
     func layoutMediaPickerView(interfaceOrientation: UIInterfaceOrientation) {
-        mediaPickerView.frame = view.bounds
+        // View is rotated, but mediaPickerView isn't.
+        // It rotates in opposite direction and seems not rotated at all.
+        // This allows to not force status bar orientation on this screen and keep UI same as
+        // with forcing status bar orientation.
         mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
+        mediaPickerView.frame = view.bounds
     }
     
     // MARK: - Dispose bag
