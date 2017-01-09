@@ -66,6 +66,8 @@ final class CameraServiceImpl: CameraService {
         cameraOutput?.pauseCapture()
     }
     
+    private let cameraOutputQueue = DispatchQueue(label: "ru.avito.CameraServiceImpl.cameraOutputQueue")
+    
     private func setUpCameraOutput() {
         
         #if arch(i386) || arch(x86_64)
@@ -73,14 +75,21 @@ final class CameraServiceImpl: CameraService {
             return
         #endif
         
-        cameraOutput = GPUImageStillCamera(sessionPreset: AVCaptureSessionPresetPhoto, cameraPosition: .back)
-        cameraOutput?.horizontallyMirrorFrontFacingCamera = true
-        cameraOutput?.outputImageOrientation = .portrait
-        cameraOutput?.startCapture()
-        
-        output = cameraOutput?.captureSession.outputs.flatMap { $0 as? AVCaptureStillImageOutput }.first
-        // Эта настройка необходима, иначе AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(_:) будет крэшиться
-        output?.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+        cameraOutputQueue.sync {
+            
+            guard cameraOutput == nil else {
+                return
+            }
+            
+            cameraOutput = GPUImageStillCamera(sessionPreset: AVCaptureSessionPresetPhoto, cameraPosition: .back)
+            cameraOutput?.horizontallyMirrorFrontFacingCamera = true
+            cameraOutput?.outputImageOrientation = .portrait
+            cameraOutput?.startCapture()
+            
+            output = cameraOutput?.captureSession.outputs.flatMap { $0 as? AVCaptureStillImageOutput }.first
+            // Эта настройка необходима, иначе AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(_:) будет крэшиться
+            output?.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+        }
     }
     
     // MARK: - CameraService
