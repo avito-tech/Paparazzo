@@ -23,6 +23,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
+        
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
@@ -75,8 +77,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         super.viewDidLayoutSubviews()
         
         if !isBeingRotated {
-            mediaPickerView.frame = view.bounds
-            mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
+            layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
         }
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
@@ -88,8 +89,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
             UIView.animate(
                 withDuration: duration,
                 animations: {
-                    self.mediaPickerView.transform = CGAffineTransform(interfaceOrientation: toInterfaceOrientation);
-                    self.mediaPickerView.frame = self.view.bounds;
+                    self.layoutMediaPickerView(interfaceOrientation: toInterfaceOrientation)
             })
         }
         super.willAnimateRotation(to: toInterfaceOrientation, duration: duration)
@@ -325,6 +325,13 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setShowsCropButton(_ showsCropButton: Bool) {
         mediaPickerView.setShowsCropButton(showsCropButton)
+    }
+    
+    // MARK: - Private
+    
+    func layoutMediaPickerView(interfaceOrientation: UIInterfaceOrientation) {
+        mediaPickerView.frame = view.bounds
+        mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
     }
     
     // MARK: - Dispose bag
