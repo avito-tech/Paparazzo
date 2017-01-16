@@ -8,6 +8,9 @@ protocol CameraService: class {
     func getImageOutput(completion: @escaping (GPUImageOutput?) -> ())
     func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())
     
+    func startCapture()
+    func stopCapture()
+    
     // Returns a flag indicating whether changing flash mode was successful
     func setFlashEnabled(_: Bool) -> Bool
     

@@ -1,6 +1,7 @@
 import UIKit
 
 final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
+    
     private var isBeingRotated: Bool = false
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
@@ -22,6 +23,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
+        
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
@@ -34,6 +37,8 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         if UIDevice.current.userInterfaceIdiom == .pad {
             mediaPickerView.alpha = 0
         }
+
+        onViewWillDisappear?(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -72,8 +77,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         super.viewDidLayoutSubviews()
         
         if !isBeingRotated {
-            mediaPickerView.frame = view.bounds
-            mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
+            layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
         }
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
@@ -85,8 +89,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
             UIView.animate(
                 withDuration: duration,
                 animations: {
-                    self.mediaPickerView.transform = CGAffineTransform(interfaceOrientation: toInterfaceOrientation);
-                    self.mediaPickerView.frame = self.view.bounds;
+                    self.layoutMediaPickerView(interfaceOrientation: toInterfaceOrientation)
             })
         }
         super.willAnimateRotation(to: toInterfaceOrientation, duration: duration)
@@ -184,6 +187,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     var onViewDidLoad: (() -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?
+    var onViewWillDisappear: ((_ animated: Bool) -> ())?
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())?
     
     func setMode(_ mode: MediaPickerViewMode) {
@@ -321,6 +325,17 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setShowsCropButton(_ showsCropButton: Bool) {
         mediaPickerView.setShowsCropButton(showsCropButton)
+    }
+    
+    // MARK: - Private
+    
+    func layoutMediaPickerView(interfaceOrientation: UIInterfaceOrientation) {
+        // View is rotated, but mediaPickerView isn't.
+        // It rotates in opposite direction and seems not rotated at all.
+        // This allows to not force status bar orientation on this screen and keep UI same as
+        // with forcing status bar orientation.
+        mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
+        mediaPickerView.frame = view.bounds
     }
     
     // MARK: - Dispose bag
