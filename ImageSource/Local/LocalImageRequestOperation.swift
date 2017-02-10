@@ -92,7 +92,3 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         }
     }
 }
-
-protocol ImageRequestIdentifiable {
-    var id: ImageRequestId { get }
-}

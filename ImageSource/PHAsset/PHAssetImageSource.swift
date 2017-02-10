@@ -58,44 +58,43 @@ final class PHAssetImageSource: ImageSource {
             let imageRequestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
             
             if !downloadStarted {
-                startDownload(imageRequestId)
+                startDownload(imageRequestId.toImageRequestId())
             }
             if progress == 1 /* это не reliable, читай ниже */ && !downloadFinished {
-                finishDownload(imageRequestId)
+                finishDownload(imageRequestId.toImageRequestId())
             }
         }
 
-        return imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) { [weak self] image, info in
+        let id = imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) {
+            [weak self] image, info in
             
             let requestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
             let degraded = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
-            let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId) == true
+            let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId.toImageRequestId()) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
             if downloadStarted && !downloadFinished && isLikelyToBeTheLastCallback {
-                finishDownload(requestId)
+                finishDownload(requestId.toImageRequestId())
             }
             
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
-                if let image = image as? T? {
-                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: requestId))
-                } else {
-                    resultHandler(ImageRequestResult(
-                        image: image?.cgImage.flatMap { T(cgImage: $0) },
-                        degraded: degraded,
-                        requestId: requestId
-                    ))
-                }
+                resultHandler(ImageRequestResult(
+                    image: (image as? T?)?.flatMap { $0 } ?? image?.cgImage.flatMap { T(cgImage: $0) },
+                    degraded: degraded,
+                    requestId: requestId.toImageRequestId()
+                ))
             }
         }
+        
+        return id.toImageRequestId()
     }
     
     func cancelRequest(_ id: ImageRequestId) {
         dispatch_to_main_queue {
             self.cancelledRequestIds.insert(id)
-            self.imageManager.cancelImageRequest(id)
+            self.imageManager.cancelImageRequest(id.int32Value)
         }
     }
     

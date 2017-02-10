@@ -1,9 +1,37 @@
 import UIKit
 
-public extension UIImageView {
+public final class UIImageSourceView: UIView {
+    
+    // MARK: - Subviews
+    private let imageView = UIImageView()
+    
+    // MARK: - Data
+    private var imageSource: ImageSource?
+    private var imageRequestId: ImageRequestId?
+    
+    // MARK: - Init
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubview(imageView)
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - UIView
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        imageView.frame = bounds
+        // TODO: перезапрашивать картинку при изменении bounds?
+    }
+    
+    // MARK: - UIImageSourceView
     
     @discardableResult
-    func setImage(
+    public func setImage(
         fromSource newImageSource: ImageSource?,
         size: CGSize? = nil,
         placeholder: UIImage? = nil,
@@ -23,7 +51,7 @@ public extension UIImageView {
         }
         
         if !placeholderDeferred {
-            image = placeholder
+            imageView.image = placeholder
         }
         
         imageSource = newImageSource
@@ -39,42 +67,19 @@ public extension UIImageView {
                 
                 if let image = result.image, shouldSetImage {
 //                    debugPrint("imageSource \(newImageSource), currentImageRequest = \(self?.imageRequestId), imageRequest = \(result.requestId)")
-                    self?.image = image
+                    self?.imageView.image = image
                     resultHandler?(result)
                 }
             }
             
         } else {
-            image = placeholder
+            imageView.image = placeholder
         }
         
         return imageRequestId
     }
     
     // MARK: - Private
-    
-    private static var imageSourceKey = "imageSource"
-    private static var imageRequestIdKey = "imageRequestId"
-    
-    private var imageSource: ImageSource? {
-        get {
-            return objc_getAssociatedObject(self, &UIImageView.imageSourceKey) as? ImageSource
-        }
-        set {
-            objc_setAssociatedObject(self, &UIImageView.imageSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    private var imageRequestId: ImageRequestId? {
-        get {
-            let intAsNSNumber = objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber
-            return intAsNSNumber?.int32Value
-        }
-        set {
-            let number = newValue.flatMap { NSNumber(value: $0) }
-            objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
     
     private func shouldSetImageForImageSource(_ imageSource: ImageSource, requestId: ImageRequestId) -> Bool {
         if let currentImageSource = self.imageSource {

@@ -42,9 +42,16 @@ Pod::Spec.new do |s|
 	rs.dependency 'ImageSource/Helpers'
 	rs.source_files = 'ImageSource/Remote/*'
 	
-    s.subspec 'SDWebImage' do |sds|
+    rs.subspec 'SDWebImage' do |sds|
 	  sds.dependency 'SDWebImage'
-  	  sds.source_files = 'ImageSource/Remote/SDWebImage/*'
+  	  sds.source_files = 'ImageSource/Remote/*', 'ImageSource/Remote/SDWebImage/*'
     end
+  end
+  
+  s.subspec 'UIKit' do |uis|
+    uis.frameworks = 'UIKit'
+	uis.dependency 'ImageSource/Core'
+	uis.dependency 'ImageSource/Helpers'
+	uis.source_files = 'ImageSource/UIKit/*'
   end
 end

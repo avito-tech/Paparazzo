@@ -1,0 +1,10 @@
+use_frameworks!
+
+target 'ImageSourceTest' do
+    pod 'ImageSource', :path => '../'
+    pod 'ImageSource/PHAsset', :path => '../'
+    pod 'ImageSource/Local', :path => '../'
+    pod 'ImageSource/Remote', :path => '../'
+    pod 'ImageSource/Remote/SDWebImage', :path => '../'
+    pod 'ImageSource/UIKit', :path => '../'
+end

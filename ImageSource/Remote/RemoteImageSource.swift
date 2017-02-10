@@ -56,7 +56,7 @@ public class RemoteImageSource: ImageSource {
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
-        let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
+        let requestId = RemoteImageSource.requestIdsGenerator.nextInt().toImageRequestId()
         let cachedImage = imageDownloader.cachedImageForUrl(url)
         
         if let previewImage = previewImage ?? cachedImage, options.deliveryMode == .progressive {
@@ -108,7 +108,7 @@ public class RemoteImageSource: ImageSource {
     
     private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler: @escaping (T?) -> ()) -> RemoteImageRequestOperation<T> {
         
-        let requestId = ImageRequestId(RemoteImageSource.requestIdsGenerator.nextInt())
+        let requestId = RemoteImageSource.requestIdsGenerator.nextInt().toImageRequestId()
         let options = ImageRequestOptions(size: .fullResolution, deliveryMode: .best)
         
         return RemoteImageRequestOperation(

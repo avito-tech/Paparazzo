@@ -1,0 +1,45 @@
+PODS:
+  - ImageSource (1.0.0):
+    - ImageSource/Core (= 1.0.0)
+  - ImageSource/Core (1.0.0)
+  - ImageSource/Helpers (1.0.0)
+  - ImageSource/Local (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+  - ImageSource/PHAsset (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+  - ImageSource/Remote (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+    - ImageSource/Remote/SDWebImage (= 1.0.0)
+  - ImageSource/Remote/SDWebImage (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+    - SDWebImage
+  - ImageSource/UIKit (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+
+DEPENDENCIES:
+  - ImageSource (from `../`)
+  - ImageSource/Local (from `../`)
+  - ImageSource/PHAsset (from `../`)
+  - ImageSource/Remote (from `../`)
+  - ImageSource/Remote/SDWebImage (from `../`)
+  - ImageSource/UIKit (from `../`)
+
+EXTERNAL SOURCES:
+  ImageSource:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ImageSource: 0179d45e6cccac5c5af38a8d667cb076fd34e367
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+
+PODFILE CHECKSUM: c424751adefe3ce5a106bf25ccb46319fd2d1036
+
+COCOAPODS: 1.1.1
