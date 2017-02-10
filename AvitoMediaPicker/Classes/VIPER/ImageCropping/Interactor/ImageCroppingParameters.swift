@@ -1,4 +1,5 @@
 import CoreGraphics
+import ImageSource
 
 struct ImageCroppingParameters {
     

@@ -11,8 +11,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
   
-  s.default_subspec = 'Core'
-  
   s.subspec 'Core' do |cs|
   	cs.frameworks = 'CoreGraphics'
     cs.source_files = 'ImageSource/Core/*'

@@ -1,5 +1,6 @@
-import UIKit
 import JNWSpringAnimation
+import ImageSource
+import UIKit
 
 final class CameraControlsView: UIView {
     
@@ -10,7 +11,7 @@ final class CameraControlsView: UIView {
     
     // MARK: - Subviews
     
-    private let photoView = UIImageView()
+    private let photoView = UIImageSourceView()
     private let shutterButton = UIButton()
     private let cameraToggleButton = UIButton()
     private let flashButton = UIButton()

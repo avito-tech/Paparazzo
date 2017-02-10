@@ -1,3 +1,5 @@
+import ImageSource
+
 final class CameraPresenter: CameraModuleInput {
     
     private let interactor: CameraInteractor

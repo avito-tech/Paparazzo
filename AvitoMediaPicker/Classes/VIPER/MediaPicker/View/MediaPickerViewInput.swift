@@ -1,3 +1,4 @@
+import ImageSource
 import UIKit
 
 enum MediaPickerViewMode {

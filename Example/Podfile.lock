@@ -2,12 +2,39 @@ PODS:
   - AvitoMediaPicker (1.0.0):
     - AvitoToolkit
     - GPUImage
+    - ImageSource
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
   - AvitoToolkit (0.0.1):
     - KeychainAccess
   - GPUImage (0.1.7)
+  - ImageSource (1.0.0):
+    - ImageSource/Core (= 1.0.0)
+    - ImageSource/Helpers (= 1.0.0)
+    - ImageSource/Local (= 1.0.0)
+    - ImageSource/PHAsset (= 1.0.0)
+    - ImageSource/Remote (= 1.0.0)
+    - ImageSource/UIKit (= 1.0.0)
+  - ImageSource/Core (1.0.0)
+  - ImageSource/Helpers (1.0.0)
+  - ImageSource/Local (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+  - ImageSource/PHAsset (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+  - ImageSource/Remote (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+    - ImageSource/Remote/SDWebImage (= 1.0.0)
+  - ImageSource/Remote/SDWebImage (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
+    - SDWebImage
+  - ImageSource/UIKit (1.0.0):
+    - ImageSource/Core
+    - ImageSource/Helpers
   - JNWSpringAnimation (0.7.1)
   - KeychainAccess (3.0.1)
   - Marshroute (0.3.3)
@@ -18,14 +45,17 @@ PODS:
 DEPENDENCIES:
   - AvitoMediaPicker (from `../`)
   - AvitoToolkit (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git`, branch `develop`)
+  - ImageSource (from `../`)
   - Marshroute (from `https://github.com/avito-tech/Marshroute`, branch `swift-3-syntax`)
 
 EXTERNAL SOURCES:
   AvitoMediaPicker:
-    :path: ../
+    :path: "../"
   AvitoToolkit:
     :branch: develop
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
+  ImageSource:
+    :path: "../"
   Marshroute:
     :branch: swift-3-syntax
     :git: https://github.com/avito-tech/Marshroute
@@ -39,14 +69,15 @@ CHECKOUT OPTIONS:
     :git: https://github.com/avito-tech/Marshroute
 
 SPEC CHECKSUMS:
-  AvitoMediaPicker: 3b38da9579ef0f096fbea0647a9b8f8e285d4cdc
+  AvitoMediaPicker: 2398205be482a6a0d31ed727269874462d4d4c31
   AvitoToolkit: dadc6c4cd7a52bcc444577244042ee17ffc3732b
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
+  ImageSource: d701da79bc246b0eb04d81551f019d8f6dabe439
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   Marshroute: a7d3e67733a20630f618b4fbd418b9d559099a52
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
 
-PODFILE CHECKSUM: 6431d803c16cf10e0c08160457c9c8eac93aa9ba
+PODFILE CHECKSUM: 55b729bff91fedd8ffb9fe5915878d5d259cfa13
 
 COCOAPODS: 1.1.1

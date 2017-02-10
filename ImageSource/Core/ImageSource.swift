@@ -1,10 +1,5 @@
-import Foundation
 import CoreGraphics
 
-/// Предлагается как замена UIImage/NSImage.
-/// Позволяет оптимизировать память и абстрагировать источник картинки.
-
-// TODO: перенести в фреймворк с утилитами
 public protocol ImageSource: class {
     
     /*

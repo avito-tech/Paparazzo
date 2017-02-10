@@ -1,10 +1,10 @@
 import CoreGraphics
 
-final class CGImageWrapper: InitializableWithCGImage {
+public final class CGImageWrapper: InitializableWithCGImage {
     
-    let image: CGImage
+    public let image: CGImage
     
-    init(cgImage image: CGImage) {
+    public init(cgImage image: CGImage) {
         self.image = image
     }
 }

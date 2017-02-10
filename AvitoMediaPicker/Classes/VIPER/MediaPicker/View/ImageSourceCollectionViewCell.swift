@@ -1,3 +1,4 @@
+import ImageSource
 import UIKit
 
 open class ImageSourceCollectionViewCell: UICollectionViewCell {
@@ -17,7 +18,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        imageView.contentMode = .scaleAspectFill
+        imageView.imageContentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
         contentView.addSubview(imageView)
@@ -49,7 +50,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Private
     
-    let imageView = UIImageView()
+    let imageView = UIImageSourceView()
     
     private func updateImage() {
         

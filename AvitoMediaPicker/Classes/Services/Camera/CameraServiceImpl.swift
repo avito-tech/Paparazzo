@@ -1,5 +1,6 @@
 import AVFoundation
 import ImageIO
+import ImageSource
 import GPUImage
 
 final class CameraServiceImpl: CameraService {

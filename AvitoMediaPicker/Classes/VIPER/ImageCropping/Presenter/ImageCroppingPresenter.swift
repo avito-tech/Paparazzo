@@ -1,4 +1,5 @@
 import Foundation
+import ImageSource
 
 final class ImageCroppingPresenter: ImageCroppingModule {
 

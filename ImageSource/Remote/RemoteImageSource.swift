@@ -5,7 +5,7 @@ public class RemoteImageSource: ImageSource {
     
     // MARK: - Init
     
-    init(url: URL, previewImage: CGImage? = nil, imageDownloader: CachingImageDownloader) {
+    public init(url: URL, previewImage: CGImage? = nil, imageDownloader: CachingImageDownloader) {
         self.url = url
         self.previewImage = previewImage
         self.imageDownloader = imageDownloader

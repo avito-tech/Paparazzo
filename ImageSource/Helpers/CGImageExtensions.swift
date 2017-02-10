@@ -1,7 +1,7 @@
 import CoreGraphics
 import UIKit
 
-extension CGImage {
+public extension CGImage {
     
     func imageFixedForOrientation(_ orientation: ExifOrientation) -> CGImage? {
         
@@ -46,7 +46,7 @@ extension CGImage {
     }
 }
 
-enum ExifOrientation: Int {
+public enum ExifOrientation: Int {
     
     case up = 1
     case upMirrored = 2
@@ -57,7 +57,7 @@ enum ExifOrientation: Int {
     case rightMirrored = 7
     case right = 8
     
-    var dimensionsSwapped: Bool {
+    public var dimensionsSwapped: Bool {
         switch self {
         case .leftMirrored, .left, .rightMirrored, .right:
             return true

@@ -2,6 +2,16 @@ public struct ImageRequestId: Hashable, Equatable {
     
     internal let int32Value: Int32
     
+    // MARK: - Init
+    
+    internal init(int32Value: Int32) {
+        self.int32Value = int32Value
+    }
+    
+    public init<T: Hashable>(hashable: T) {
+        self.init(int32Value: Int32(hashable.hashValue))
+    }
+    
     // MARK: - Hashable
     public var hashValue: Int {
         return int32Value.hashValue

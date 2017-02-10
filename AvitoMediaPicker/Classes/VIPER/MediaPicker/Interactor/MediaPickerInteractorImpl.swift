@@ -1,3 +1,5 @@
+import ImageSource
+
 final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider

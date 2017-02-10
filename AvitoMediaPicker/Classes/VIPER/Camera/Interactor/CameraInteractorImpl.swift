@@ -1,3 +1,5 @@
+import ImageSource
+
 final class CameraInteractorImpl: CameraInteractor {
     
     private let cameraService: CameraService

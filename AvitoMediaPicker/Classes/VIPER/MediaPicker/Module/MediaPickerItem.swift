@@ -1,3 +1,5 @@
+import ImageSource
+
 /// Главная модель, представляющая фотку в пикере
 public struct MediaPickerItem: Equatable {
     

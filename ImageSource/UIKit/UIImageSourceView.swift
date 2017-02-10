@@ -30,6 +30,11 @@ public final class UIImageSourceView: UIView {
     
     // MARK: - UIImageSourceView
     
+    public var imageContentMode: UIViewContentMode {
+        get { return imageView.contentMode }
+        set { imageView.contentMode = newValue }
+    }
+    
     @discardableResult
     public func setImage(
         fromSource newImageSource: ImageSource?,

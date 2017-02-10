@@ -1,18 +1,18 @@
 import Photos
 
-final class PHAssetImageSource: ImageSource {
+public final class PHAssetImageSource: ImageSource {
 
     private let asset: PHAsset
     private let imageManager: PHImageManager
 
-    init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.default()) {
+    public init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.default()) {
         self.asset = asset
         self.imageManager = imageManager
     }
 
     // MARK: - AbstractImage
     
-    func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
+    public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
         
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
@@ -23,14 +23,14 @@ final class PHAssetImageSource: ImageSource {
         }
     }
     
-    func imageSize(completion: @escaping (CGSize?) -> ()) {
+    public func imageSize(completion: @escaping (CGSize?) -> ()) {
         dispatch_to_main_queue {
             completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
         }
     }
     
     @discardableResult
-    func requestImage<T : InitializableWithCGImage>(
+    public func requestImage<T : InitializableWithCGImage>(
         options: ImageRequestOptions,
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
@@ -91,14 +91,14 @@ final class PHAssetImageSource: ImageSource {
         return id.toImageRequestId()
     }
     
-    func cancelRequest(_ id: ImageRequestId) {
+    public func cancelRequest(_ id: ImageRequestId) {
         dispatch_to_main_queue {
             self.cancelledRequestIds.insert(id)
             self.imageManager.cancelImageRequest(id.int32Value)
         }
     }
     
-    func isEqualTo(_ other: ImageSource) -> Bool {
+    public func isEqualTo(_ other: ImageSource) -> Bool {
         if other === self {
             return true
         } else if let other = other as? PHAssetImageSource {

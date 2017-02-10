@@ -1,4 +1,4 @@
-extension UIImageOrientation {
+public extension UIImageOrientation {
     var exifOrientation: ExifOrientation {
         switch self {
         case .up:

@@ -1,8 +1,4 @@
-@available(*, deprecated, message: "Use ImageSizeOption instead (see ImageSource.requestImage(options:resultHandler:))")
-public enum ImageContentMode {
-    case aspectFit
-    case aspectFill
-}
+import ImageSource
 
 public extension ImageSource {
     
@@ -60,4 +56,10 @@ public extension ImageSource {
             resultHandler(result.image)
         }
     }
+}
+
+@available(*, deprecated, message: "Use ImageSizeOption instead (see ImageSource.requestImage(options:resultHandler:))")
+public enum ImageContentMode {
+    case aspectFit
+    case aspectFill
 }

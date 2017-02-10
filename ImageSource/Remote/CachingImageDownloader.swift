@@ -1,4 +1,4 @@
-protocol ImageDownloader {
+public protocol ImageDownloader {
     func downloadImageAtUrl(
         _: URL,
         progressHandler: ((_ receivedSize: Int, _ expectedSize: Int) -> ())?,
@@ -6,10 +6,10 @@ protocol ImageDownloader {
     ) -> CancellableImageDownload
 }
 
-protocol CachingImageDownloader: ImageDownloader {
+public protocol CachingImageDownloader: ImageDownloader {
     func cachedImageForUrl(_: URL) -> CGImage?
 }
 
-protocol CancellableImageDownload: class {
+public protocol CancellableImageDownload: class {
     func cancel()
 }

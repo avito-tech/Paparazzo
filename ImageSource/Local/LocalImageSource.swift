@@ -4,7 +4,7 @@ import MobileCoreServices
 
 public final class LocalImageSource: ImageSource {
     
-    let path: String
+    public let path: String
     
     // MARK: - Init
     
