@@ -1,7 +1,6 @@
-import ImageSource
 import UIKit
 
-open class ImageSourceCollectionViewCell: UICollectionViewCell {
+open class UIImageSourceCollectionViewCell: UICollectionViewCell {
     
     public var imageSource: ImageSource? {
         didSet {
@@ -11,6 +10,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    public let imageView = UIImageView()
     public var imageViewInsets = UIEdgeInsets.zero
     
     // MARK: - UICollectionViewCell
@@ -18,7 +18,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        imageView.imageContentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
         contentView.addSubview(imageView)
@@ -31,7 +31,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     open override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = contentView.bounds.shrinked(imageViewInsets)
+        imageView.frame = UIEdgeInsetsInsetRect(contentView.bounds, imageViewInsets)
         
         updateImage()
     }
@@ -49,8 +49,6 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     open func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {}
     
     // MARK: - Private
-    
-    let imageView = UIImageSourceView()
     
     private func updateImage() {
         

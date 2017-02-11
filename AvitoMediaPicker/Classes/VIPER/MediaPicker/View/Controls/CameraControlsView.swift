@@ -11,7 +11,7 @@ final class CameraControlsView: UIView {
     
     // MARK: - Subviews
     
-    private let photoView = UIImageSourceView()
+    private let photoView = UIImageView()
     private let shutterButton = UIButton()
     private let cameraToggleButton = UIButton()
     private let flashButton = UIButton()
