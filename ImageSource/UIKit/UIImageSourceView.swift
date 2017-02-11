@@ -20,6 +20,10 @@ public final class UIImageSourceView: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+        
+        imageView.frame = bounds
+        
+        updateImage()
     }
     
     // MARK: - UIImageSourceView
