@@ -21,7 +21,7 @@ public final class LocalImageSource: ImageSource {
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
-        let requestId = Int32(LocalImageSource.requestIdsGenerator.nextInt()).toImageRequestId()
+        let requestId = LocalImageSource.requestIdsGenerator.nextInt().toImageRequestId()
         
         if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {

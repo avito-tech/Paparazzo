@@ -81,7 +81,7 @@ public final class PHAssetImageSource: ImageSource {
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
                 resultHandler(ImageRequestResult(
-                    image: (image as? T?)?.flatMap { $0 } ?? image?.cgImage.flatMap { T(cgImage: $0) },
+                    image: (image as? T?).flatMap { $0 } ?? image?.cgImage.flatMap { T(cgImage: $0) },
                     degraded: degraded,
                     requestId: requestId.toImageRequestId()
                 ))
