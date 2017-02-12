@@ -2,14 +2,14 @@ import CoreGraphics
 
 public protocol ImageSource: class {
     
-    /*
-     TODO: (ayutkin) проверить, чтобы логика вызова resultHandler для всех ImageSource была такой:
-     — вызывается как минимум один раз, кроме случая отмены запроса
-     - после отмены запроса не вызывается
-     — вызывается не более одного раза, если options.deliveryMode == .best
-     - может вызываться несколько раз, если options.deliveryMode == .progressive
-     - может вызваться синхронно до выхода из функции!
-    */
+    /**
+     * Правила вызова resultHandler:
+     * — вызывается как минимум один раз, кроме случая отмены запроса
+     * - после отмены запроса не вызывается
+     * — вызывается не более одного раза, если options.deliveryMode == .best
+     * - может вызываться несколько раз, если options.deliveryMode == .progressive
+     * - может вызваться синхронно до выхода из функции!
+     */
     @discardableResult
     func requestImage<T: InitializableWithCGImage>(
         options: ImageRequestOptions,

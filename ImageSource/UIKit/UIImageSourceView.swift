@@ -18,6 +18,11 @@ public final class UIImageSourceView: UIView {
     
     // MARK: - UIView
     
+    public override var contentMode: UIViewContentMode {
+        get { return imageView.contentMode }
+        set { imageView.contentMode = newValue }
+    }
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
         

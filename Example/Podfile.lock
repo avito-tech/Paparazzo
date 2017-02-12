@@ -50,12 +50,12 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   AvitoMediaPicker:
-    :path: "../"
+    :path: ../
   AvitoToolkit:
     :branch: develop
     :git: ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git
   ImageSource:
-    :path: "../"
+    :path: ../
   Marshroute:
     :branch: swift-3-syntax
     :git: https://github.com/avito-tech/Marshroute
@@ -80,4 +80,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 55b729bff91fedd8ffb9fe5915878d5d259cfa13
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

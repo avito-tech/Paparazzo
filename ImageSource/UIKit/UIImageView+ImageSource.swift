@@ -38,7 +38,6 @@ public extension UIImageView {
                 let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
                 if let image = result.image, shouldSetImage {
-//                    debugPrint("imageSource \(newImageSource), currentImageRequest = \(self?.imageRequestId), imageRequest = \(result.requestId)")
                     self?.image = image
                     resultHandler?(result)
                 }
