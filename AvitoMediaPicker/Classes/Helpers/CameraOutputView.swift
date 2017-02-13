@@ -2,11 +2,11 @@ import AVFoundation
 import GLKit
 import ImageSource
 
-final class CameraOutputView: GLKView {
+public final class CameraOutputView: GLKView {
     
     // MARK: - Init
     
-    init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
+    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
         
         let eaglContext: EAGLContext = EAGLContext(api: .openGLES2)
         
@@ -21,20 +21,20 @@ final class CameraOutputView: GLKView {
         CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - CameraOutputView
     
-    var orientation: ExifOrientation
-    var imageBuffer: CVImageBuffer?
+    public var orientation: ExifOrientation
+    public var onFrameDrawn: (() -> ())?
     
-    var onFrameDrawn: (() -> ())?
+    var imageBuffer: CVImageBuffer?
     
     // MARK: - GLKView
     
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         guard let imageBuffer = imageBuffer else { return }
         
         let screenScale = UIScreen.main.scale
