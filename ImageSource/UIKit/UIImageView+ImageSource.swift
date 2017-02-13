@@ -38,7 +38,6 @@ public extension UIImageView {
                 let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
                 if let image = result.image, shouldSetImage {
-//                    debugPrint("imageSource \(newImageSource), currentImageRequest = \(self?.imageRequestId), imageRequest = \(result.requestId)")
                     self?.image = image
                     resultHandler?(result)
                 }
@@ -68,10 +67,10 @@ public extension UIImageView {
     private var imageRequestId: ImageRequestId? {
         get {
             let intAsNSNumber = objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber
-            return intAsNSNumber?.int32Value
+            return intAsNSNumber?.int32Value.toImageRequestId()
         }
         set {
-            let number = newValue.flatMap { NSNumber(value: $0) }
+            let number = newValue.flatMap { NSNumber(value: $0.int32Value) }
             objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }

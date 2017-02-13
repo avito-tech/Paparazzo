@@ -1,6 +1,6 @@
 import UIKit
 
-open class ImageSourceCollectionViewCell: UICollectionViewCell {
+open class UIImageSourceCollectionViewCell: UICollectionViewCell {
     
     public var imageSource: ImageSource? {
         didSet {
@@ -10,6 +10,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    public let imageView = UIImageView()
     public var imageViewInsets = UIEdgeInsets.zero
     
     // MARK: - UICollectionViewCell
@@ -30,7 +31,7 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     open override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = contentView.bounds.shrinked(imageViewInsets)
+        imageView.frame = UIEdgeInsetsInsetRect(contentView.bounds, imageViewInsets)
         
         updateImage()
     }
@@ -48,8 +49,6 @@ open class ImageSourceCollectionViewCell: UICollectionViewCell {
     open func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {}
     
     // MARK: - Private
-    
-    let imageView = UIImageView()
     
     private func updateImage() {
         

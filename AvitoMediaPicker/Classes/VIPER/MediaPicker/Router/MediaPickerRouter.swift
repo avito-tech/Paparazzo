@@ -1,3 +1,4 @@
+import ImageSource
 import Marshroute
 
 protocol MediaPickerRouter: class, RouterFocusable, RouterDismissable {

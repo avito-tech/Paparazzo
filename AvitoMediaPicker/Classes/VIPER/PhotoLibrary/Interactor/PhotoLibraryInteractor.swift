@@ -1,4 +1,5 @@
 import Foundation
+import ImageSource
 
 protocol PhotoLibraryInteractor: class {
     

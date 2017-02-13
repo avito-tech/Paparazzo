@@ -1,4 +1,5 @@
 import UIKit
+import ImageSource
 import Marshroute
 
 public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {

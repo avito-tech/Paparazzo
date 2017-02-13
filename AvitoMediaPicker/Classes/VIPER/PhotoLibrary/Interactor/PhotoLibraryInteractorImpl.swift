@@ -1,4 +1,5 @@
 import Foundation
+import ImageSource
 import Photos
 
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {

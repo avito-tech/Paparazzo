@@ -1,5 +1,6 @@
 import CoreGraphics
 import ImageIO
+import ImageSource
 import MobileCoreServices
 
 final class CroppedImageSource: ImageSource {
@@ -30,13 +31,13 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    func requestImage<T : InitializableWithCGImage>(
+    func requestImage<T: InitializableWithCGImage>(
         options: ImageRequestOptions,
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
         // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
-        let requestId = ImageRequestId(0)
+        let requestId = ImageRequestId(hashable: 0)
         
         if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {

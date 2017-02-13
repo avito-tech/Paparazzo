@@ -53,7 +53,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func photoLibraryDidChange(_ changeInfo: PHChange) {
         DispatchQueue.main.async {
             if let fetchResult = self.fetchResult, let changes = changeInfo.changeDetails(for: fetchResult) {
-                debugPrint("photoLibraryDidChange")
                 self.fetchResult = changes.fetchResultAfterChanges
                 self.callObserverHandler(changes: changes)
             }

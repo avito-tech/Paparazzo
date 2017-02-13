@@ -1,4 +1,5 @@
 import AvitoMediaPicker
+import ImageSource
 
 final class ExamplePresenter {
     

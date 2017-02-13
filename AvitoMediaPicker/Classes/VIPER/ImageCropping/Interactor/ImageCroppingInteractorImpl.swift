@@ -1,3 +1,5 @@
+import ImageSource
+
 final class ImageCroppingInteractorImpl: ImageCroppingInteractor {
     
     private let originalImage: ImageSource

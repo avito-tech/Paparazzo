@@ -1,3 +1,5 @@
+import ImageSource
+
 protocol MediaPickerInteractor: class {
     
     func addItems(_: [MediaPickerItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ())

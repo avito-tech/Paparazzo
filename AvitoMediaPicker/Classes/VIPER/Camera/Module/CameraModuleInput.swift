@@ -1,3 +1,5 @@
+import ImageSource
+
 protocol CameraModuleInput: class {
     
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())

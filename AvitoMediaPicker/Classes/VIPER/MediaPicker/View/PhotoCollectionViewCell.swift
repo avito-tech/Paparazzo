@@ -1,6 +1,7 @@
+import ImageSource
 import UIKit
 
-class PhotoCollectionViewCell: ImageSourceCollectionViewCell {
+class PhotoCollectionViewCell: UIImageSourceCollectionViewCell {
     
     var selectedBorderColor: UIColor? = .blue {
         didSet {

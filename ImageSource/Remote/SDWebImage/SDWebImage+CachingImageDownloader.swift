@@ -2,7 +2,7 @@ import SDWebImage
 
 extension SDWebImageManager: CachingImageDownloader {
     
-    func downloadImageAtUrl(
+    public func downloadImageAtUrl(
         _ url: URL,
         progressHandler: ((_ receivedSize: Int, _ expectedSize: Int) -> ())?,
         completion: @escaping (_ image: CGImage?, _ error: Error?) -> ())
@@ -15,7 +15,7 @@ extension SDWebImageManager: CachingImageDownloader {
         )
     }
     
-    func cachedImageForUrl(_ url: URL) -> CGImage? {
+    public func cachedImageForUrl(_ url: URL) -> CGImage? {
         if let key = cacheKey(for: url) {
             return (imageCache?.imageFromMemoryCache(forKey: key) ?? imageCache?.imageFromDiskCache(forKey: key))?.cgImage
         } else {

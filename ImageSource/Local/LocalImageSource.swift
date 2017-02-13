@@ -4,7 +4,7 @@ import MobileCoreServices
 
 public final class LocalImageSource: ImageSource {
     
-    let path: String
+    public let path: String
     
     // MARK: - Init
     
@@ -21,7 +21,7 @@ public final class LocalImageSource: ImageSource {
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
     {
-        let requestId = ImageRequestId(LocalImageSource.requestIdsGenerator.nextInt())
+        let requestId = LocalImageSource.requestIdsGenerator.nextInt().toImageRequestId()
         
         if let previewImage = previewImage, options.deliveryMode == .progressive {
             dispatch_to_main_queue {

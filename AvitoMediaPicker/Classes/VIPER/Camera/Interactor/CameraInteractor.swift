@@ -1,4 +1,5 @@
 import GPUImage
+import ImageSource
 
 protocol CameraInteractor: class {
     
