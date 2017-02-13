@@ -40,7 +40,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     
     private static var sharedServices = NSMapTable<AVCaptureSession, CaptureSessionPreviewService>.weakToStrongObjects()
     
-    private let queue = DispatchQueue(label: "ru.avito.MediaPicker.CameraOutputGLKBinder.queue")
+    private let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CaptureSessionPreviewService.queue")
     private var views = [WeakWrapper<CameraOutputView>]()
     private var isInBackground = false
     

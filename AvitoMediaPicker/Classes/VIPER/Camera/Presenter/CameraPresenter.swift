@@ -58,12 +58,7 @@ final class CameraPresenter: CameraModuleInput {
     }
     
     func mainModuleDidAppear(animated: Bool) {
-        interactor.startCapture()
         view?.mainModuleDidAppear(animated: animated)
-    }
-    
-    func mainModuleWillDisappear(animated: Bool) {
-        interactor.stopCapture()
     }
     
     // MARK: - Private

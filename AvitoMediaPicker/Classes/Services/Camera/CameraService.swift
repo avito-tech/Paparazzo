@@ -9,9 +9,6 @@ protocol CameraService: class {
     func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ())
     func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())
     
-    func startCapture()
-    func stopCapture()
-    
     // Returns a flag indicating whether changing flash mode was successful
     func setFlashEnabled(_: Bool) -> Bool
     
