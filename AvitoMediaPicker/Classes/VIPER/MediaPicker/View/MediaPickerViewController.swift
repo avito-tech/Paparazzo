@@ -203,6 +203,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setCameraOutputParameters(parameters)
     }
     
+    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
+        mediaPickerView.setCameraOutputOrientation(orientation)
+    }
+    
     func setPhotoTitle(_ title: String) {
         mediaPickerView.setPhotoTitle(title)
     }

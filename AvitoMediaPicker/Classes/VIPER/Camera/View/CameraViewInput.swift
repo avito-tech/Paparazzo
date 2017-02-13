@@ -1,6 +1,7 @@
 protocol CameraViewInput: class {
     
     func setOutputParameters(_: CameraOutputParameters)
+    func setOutputOrientation(_: ExifOrientation)
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }

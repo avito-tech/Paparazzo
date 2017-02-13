@@ -82,6 +82,11 @@ final class CameraView: UIView, CameraViewInput {
         outputParameters = parameters
     }
     
+    func setOutputOrientation(_ orientation: ExifOrientation) {
+        outputParameters?.orientation = orientation
+        cameraOutputBinder?.orientation = orientation
+    }
+    
     func mainModuleDidAppear(animated: Bool) {
         // AI-3326: костыль для iOS 8.
         if let outputParameters = outputParameters {

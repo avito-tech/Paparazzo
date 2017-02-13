@@ -47,6 +47,10 @@ final class CameraThumbnailCell: UICollectionViewCell {
         self.backgroundColor = UIColor.white.withAlphaComponent(0.1)
     }
     
+    func setOutputOrientation(_ orientation: ExifOrientation) {
+        cameraOutputBinder?.orientation = orientation
+    }
+    
     // MARK: - Init
     
     override init(frame: CGRect) {

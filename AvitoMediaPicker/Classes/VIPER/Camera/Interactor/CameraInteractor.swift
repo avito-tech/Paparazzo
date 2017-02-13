@@ -1,4 +1,4 @@
-import GPUImage
+import AVFoundation
 import ImageSource
 
 protocol CameraInteractor: class {
@@ -24,5 +24,6 @@ protocol CameraInteractor: class {
 }
 
 struct CameraOutputParameters {
-    let imageOutput: GPUImageOutput
+    let captureSession: AVCaptureSession
+    var orientation: ExifOrientation
 }

@@ -1,4 +1,4 @@
-import GPUImage
+import AVFoundation
 import ImageSource
 
 protocol CameraService: class {
@@ -6,7 +6,7 @@ protocol CameraService: class {
     var isFlashAvailable: Bool { get }
     var isFlashEnabled: Bool { get }
     
-    func getImageOutput(completion: @escaping (GPUImageOutput?) -> ())
+    func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ())
     func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())
     
     func startCapture()

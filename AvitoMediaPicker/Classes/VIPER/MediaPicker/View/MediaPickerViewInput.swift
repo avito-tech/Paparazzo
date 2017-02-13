@@ -17,6 +17,7 @@ protocol MediaPickerViewInput: class {
     func adjustForDeviceOrientation(_: DeviceOrientation)
     
     func setCameraOutputParameters(_: CameraOutputParameters)
+    func setCameraOutputOrientation(_: ExifOrientation)
     
     func setPhotoTitle(_: String)
     func setPhotoTitleStyle(_: MediaPickerTitleStyle)
