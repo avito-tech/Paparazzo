@@ -1,3 +1,5 @@
+import ImageSource
+
 protocol CameraViewInput: class {
     
     func setOutputParameters(_: CameraOutputParameters)

@@ -1,3 +1,4 @@
+import ImageSource
 import UIKit
 
 final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
