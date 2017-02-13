@@ -4,7 +4,7 @@ import AVFoundation
 final class CameraView: UIView, CameraViewInput {
     
     private let accessDeniedView = AccessDeniedView()
-    private var cameraOutputBinder: CameraOutputGLKBinder?
+    private var cameraOutputView: CameraOutputView?
     private var outputParameters: CameraOutputParameters?
     
     // MARK: - Init
@@ -29,7 +29,7 @@ final class CameraView: UIView, CameraViewInput {
         accessDeniedView.bounds = bounds
         accessDeniedView.center = bounds.center
         
-        cameraOutputBinder?.view.frame = bounds
+        cameraOutputView?.frame = bounds
     }
     
     // MARK: - CameraViewInput
@@ -57,33 +57,31 @@ final class CameraView: UIView, CameraViewInput {
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         
-        let cameraOutputBinder = CameraOutputGLKBinder(
+        let newCameraOutputView = CameraOutputView(
             captureSession: parameters.captureSession,
             outputOrientation: parameters.orientation
         )
         
-        if let attachedBinder = self.cameraOutputBinder {
+        if let currentCameraOutputView = self.cameraOutputView {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
-            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
-                cameraOutputBinder?.onFrameDrawn = nil
+            newCameraOutputView.onFrameDrawn = { [weak newCameraOutputView] in
+                newCameraOutputView?.onFrameDrawn = nil
                 DispatchQueue.main.async {
-                    attachedBinder.view.removeFromSuperview()
+                    currentCameraOutputView.removeFromSuperview()
                 }
             }
         }
         
-        let view = cameraOutputBinder.view
-        view.clipsToBounds = true
-        addSubview(view)
+        addSubview(newCameraOutputView)
         
-        self.cameraOutputBinder = cameraOutputBinder
+        self.cameraOutputView = newCameraOutputView
         self.outputParameters = parameters
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
         outputParameters?.orientation = orientation
-        cameraOutputBinder?.orientation = orientation
+        cameraOutputView?.orientation = orientation
     }
     
     func mainModuleDidAppear(animated: Bool) {

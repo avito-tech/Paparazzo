@@ -5,7 +5,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     private let button = UIButton()
     
-    private var cameraOutputBinder: CameraOutputGLKBinder?
+    private var cameraOutputView: CameraOutputView?
     
     var selectedBorderColor: UIColor? = .blue {
         didSet {
@@ -23,28 +23,27 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         
-        let cameraOutputBinder = CameraOutputGLKBinder(
+        let newCameraOutputView = CameraOutputView(
             captureSession: parameters.captureSession,
             outputOrientation: parameters.orientation
         )
         
-        if var attachedBinder = self.cameraOutputBinder {
+        newCameraOutputView.layer.cornerRadius = 6
+        
+        if var currentCameraOutputView = self.cameraOutputView {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
-            cameraOutputBinder.onFrameDrawn = { [weak cameraOutputBinder] in
-                cameraOutputBinder?.onFrameDrawn = nil
+            newCameraOutputView.onFrameDrawn = { [weak newCameraOutputView] in
+                newCameraOutputView?.onFrameDrawn = nil
                 DispatchQueue.main.async {
-                    attachedBinder.view.removeFromSuperview()
+                    currentCameraOutputView.removeFromSuperview()
                 }
             }
         }
         
-        let view = cameraOutputBinder.view
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 6
-        insertSubview(view, belowSubview: button)
+        insertSubview(newCameraOutputView, belowSubview: button)
         
-        self.cameraOutputBinder = cameraOutputBinder
+        self.cameraOutputView = newCameraOutputView
         
         // AI-3610: костыль для iPhone 4, чтобы не было белой рамки вокруг ячейки.
         // Если ставить clearColor, скругление углов теряется на iOS 9.
@@ -52,7 +51,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
-        cameraOutputBinder?.orientation = orientation
+        cameraOutputView?.orientation = orientation
     }
     
     // MARK: - Init
@@ -87,7 +86,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        cameraOutputBinder?.view.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
+        cameraOutputView?.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         button.frame = bounds
     }
     
