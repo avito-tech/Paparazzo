@@ -21,11 +21,9 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         didOutputSampleBuffer sampleBuffer: CMSampleBuffer?,
         from connection: AVCaptureConnection?)
     {
-        guard let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }) else { return }
-        
-        for viewWrapper in views {
-            if let view = viewWrapper.value {
-                drawImageBuffer(imageBuffer, in: view)
+        if let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }), !isInBackground {
+            views.forEach { viewWrapper in
+                viewWrapper.value?.imageBuffer = imageBuffer
             }
         }
     }
@@ -100,16 +98,6 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         } catch {
             debugPrint("Couldn't configure AVCaptureSession: \(error)")
         }
-    }
-    
-    private func drawImageBuffer(_ imageBuffer: CVImageBuffer, in view: CameraOutputView) {
-        
-        // After your app exits its applicationDidEnterBackground: method, it must not make any new OpenGL ES calls.
-        // If it makes an OpenGL ES call, it is terminated by iOS.
-        guard !isInBackground else { return }
-        
-        view.imageBuffer = imageBuffer
-        view.display()
     }
     
     @objc private func handleAppWillResignActive(_: NSNotification) {

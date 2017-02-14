@@ -30,7 +30,11 @@ public final class CameraOutputView: GLKView {
     public var orientation: ExifOrientation
     public var onFrameDraw: (() -> ())?
     
-    var imageBuffer: CVImageBuffer?
+    var imageBuffer: CVImageBuffer? {
+        didSet {
+            display()
+        }
+    }
     
     // MARK: - GLKView
     
