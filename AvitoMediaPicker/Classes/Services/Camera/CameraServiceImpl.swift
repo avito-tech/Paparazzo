@@ -1,7 +1,6 @@
 import AVFoundation
 import ImageIO
 import ImageSource
-import GPUImage
 
 final class CameraServiceImpl: CameraService {
     
@@ -9,7 +8,7 @@ final class CameraServiceImpl: CameraService {
     
     private struct Error: Swift.Error {}
     
-    private var cameraOutput: GPUImageStillCamera?
+    private var captureSession: AVCaptureSession?
     private var output: AVCaptureStillImageOutput?
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
@@ -24,10 +23,10 @@ final class CameraServiceImpl: CameraService {
         frontCamera = videoDevices?.filter({ $0.position == .front }).first
     }
     
-    func getImageOutput(completion: @escaping (GPUImageOutput?) -> ()) {
+    func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ()) {
         
-        if let cameraOutput = cameraOutput {
-            completion(cameraOutput)
+        if let captureSession = captureSession {
+            completion(captureSession)
         
         } else {
             
@@ -36,14 +35,14 @@ final class CameraServiceImpl: CameraService {
             switch AVCaptureDevice.authorizationStatus(forMediaType: mediaType) {
                 
             case .authorized:
-                setUpCameraOutput()
-                completion(cameraOutput)
+                setUpCaptureSession()
+                completion(captureSession)
                 
             case .notDetermined:
                 AVCaptureDevice.requestAccess(forMediaType: mediaType) { [weak self] granted in
                     if granted {
-                        self?.setUpCameraOutput()
-                        completion(self?.cameraOutput)
+                        self?.setUpCaptureSession()
+                        completion(self?.captureSession)
                     } else {
                         completion(nil)
                     }
@@ -59,37 +58,41 @@ final class CameraServiceImpl: CameraService {
         completion(outputOrientationForCamera(activeCamera))
     }
     
-    func startCapture() {
-        cameraOutput?.resumeCameraCapture()
-    }
-    
-    func stopCapture() {
-        cameraOutput?.pauseCapture()
-    }
-    
-    private let cameraOutputQueue = DispatchQueue(label: "ru.avito.CameraServiceImpl.cameraOutputQueue")
-    
-    private func setUpCameraOutput() {
-        
-        #if arch(i386) || arch(x86_64)
-            // Preventing crash in simulator
-            return
-        #endif
-        
-        cameraOutputQueue.sync {
+    private func setUpCaptureSession() {
+        do {
+            #if arch(i386) || arch(x86_64)
+                // Preventing crash in simulator
+                throw Error()
+            #endif
             
-            guard cameraOutput == nil else {
-                return
+            let captureSession = AVCaptureSession()
+            captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+            
+            try CameraServiceImpl.configureCamera(backCamera)
+            
+            let activeCamera = backCamera
+            
+            let input = try AVCaptureDeviceInput(device: activeCamera)
+            
+            let output = AVCaptureStillImageOutput()
+            output.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+            
+            if captureSession.canAddInput(input) && captureSession.canAddOutput(output) {
+                captureSession.addInput(input)
+                captureSession.addOutput(output)
+            } else {
+                throw Error()
             }
             
-            cameraOutput = GPUImageStillCamera(sessionPreset: AVCaptureSessionPresetPhoto, cameraPosition: .back)
-            cameraOutput?.horizontallyMirrorFrontFacingCamera = true
-            cameraOutput?.outputImageOrientation = .portrait
-            cameraOutput?.startCapture()
+            captureSession.startRunning()
             
-            output = cameraOutput?.captureSession.outputs.flatMap { $0 as? AVCaptureStillImageOutput }.first
-            // Эта настройка необходима, иначе AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(_:) будет крэшиться
-            output?.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+            self.activeCamera = activeCamera
+            self.output = output
+            self.captureSession = captureSession
+            
+        } catch {
+            self.output = nil
+            self.captureSession = nil
         }
     }
     
@@ -97,9 +100,9 @@ final class CameraServiceImpl: CameraService {
     
     func setCaptureSessionRunning(_ needsRunning: Bool) {
         if needsRunning {
-            cameraOutput?.startCapture()
+            captureSession?.startRunning()
         } else {
-            cameraOutput?.stopCapture()
+            captureSession?.stopRunning()
         }
     }
     
@@ -108,7 +111,36 @@ final class CameraServiceImpl: CameraService {
     }
     
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
-        cameraOutput?.rotateCamera()
+        guard let captureSession = captureSession else { return }
+        
+        do {
+            
+            let targetCamera = (activeCamera == backCamera) ? frontCamera : backCamera
+            let newInput = try AVCaptureDeviceInput(device: targetCamera)
+            
+            try captureSession.configure {
+                
+                let currentInputs = captureSession.inputs as? [AVCaptureInput]
+                currentInputs?.forEach { captureSession.removeInput($0) }
+                
+                // Always reset preset before testing canAddInput because preset will cause it to return NO
+                captureSession.sessionPreset = AVCaptureSessionPresetHigh
+                
+                if captureSession.canAddInput(newInput) {
+                    captureSession.addInput(newInput)
+                }
+                
+                captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+                
+                try CameraServiceImpl.configureCamera(targetCamera)
+            }
+            
+            activeCamera = targetCamera
+            
+        } catch {
+            debugPrint("Couldn't toggle camera: \(error)")
+        }
+        
         completion(outputOrientationForCamera(activeCamera))
     }
     

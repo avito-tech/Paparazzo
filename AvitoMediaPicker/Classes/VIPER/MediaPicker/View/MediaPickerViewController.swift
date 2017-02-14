@@ -38,8 +38,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         if UIDevice.current.userInterfaceIdiom == .pad {
             mediaPickerView.alpha = 0
         }
-
-        onViewWillDisappear?(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -188,7 +186,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     var onViewDidLoad: (() -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?
-    var onViewWillDisappear: ((_ animated: Bool) -> ())?
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())?
     
     func setMode(_ mode: MediaPickerViewMode) {
@@ -201,6 +198,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         mediaPickerView.setCameraOutputParameters(parameters)
+    }
+    
+    func setCameraOutputOrientation(_ orientation: ExifOrientation) {
+        mediaPickerView.setCameraOutputOrientation(orientation)
     }
     
     func setPhotoTitle(_ title: String) {

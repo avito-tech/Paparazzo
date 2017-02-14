@@ -44,6 +44,7 @@ final class CameraPresenter: CameraModuleInput {
     
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
         interactor.toggleCamera { [weak self] newOutputOrientation in
+            self?.view?.setOutputOrientation(newOutputOrientation)
             completion(newOutputOrientation)
         }
     }
@@ -57,12 +58,7 @@ final class CameraPresenter: CameraModuleInput {
     }
     
     func mainModuleDidAppear(animated: Bool) {
-        interactor.startCapture()
         view?.mainModuleDidAppear(animated: animated)
-    }
-    
-    func mainModuleWillDisappear(animated: Bool) {
-        interactor.stopCapture()
     }
     
     // MARK: - Private

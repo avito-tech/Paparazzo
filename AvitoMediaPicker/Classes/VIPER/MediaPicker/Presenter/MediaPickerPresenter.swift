@@ -155,7 +155,9 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onCameraToggleButtonTap = { [weak self] in
-            self?.cameraModuleInput.toggleCamera { _ in }
+            self?.cameraModuleInput.toggleCamera { newOutputOrientation in
+                self?.view?.setCameraOutputOrientation(newOutputOrientation)
+            }
         }
         
         view?.onSwipeToItem = { [weak self] item in
@@ -200,10 +202,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onViewDidAppear = { [weak self] animated in
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
-        }
-        
-        view?.onViewWillDisappear = { [weak self] animated in
-            self?.cameraModuleInput.mainModuleWillDisappear(animated: animated)
         }
     }
     

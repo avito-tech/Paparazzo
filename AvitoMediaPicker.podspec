@@ -18,6 +18,5 @@ Pod::Spec.new do |s|
   s.dependency 'Marshroute'
   s.dependency 'JNWSpringAnimation'
   s.dependency 'SDWebImage'
-  s.dependency 'GPUImage'
   s.dependency 'ImageSource'
 end

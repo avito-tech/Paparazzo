@@ -1,4 +1,4 @@
-import GPUImage
+import AVFoundation
 import ImageSource
 
 protocol CameraInteractor: class {
@@ -18,11 +18,9 @@ protocol CameraInteractor: class {
     func setPreviewImagesSizeForNewPhotos(_: CGSize)
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
-    
-    func startCapture()
-    func stopCapture()
 }
 
 struct CameraOutputParameters {
-    let imageOutput: GPUImageOutput
+    let captureSession: AVCaptureSession
+    var orientation: ExifOrientation
 }

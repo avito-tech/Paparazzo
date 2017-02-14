@@ -14,10 +14,10 @@ final class CameraInteractorImpl: CameraInteractor {
     // MARK: - CameraInteractor
 
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ()) {
-        cameraService.getImageOutput { [cameraService] imageOutput in
+        cameraService.getCaptureSession { [cameraService] captureSession in
             cameraService.getOutputOrientation { outputOrientation in
                 dispatch_to_main_queue {
-                    completion(imageOutput.flatMap { CameraOutputParameters(imageOutput: $0) })
+                    completion(captureSession.flatMap { CameraOutputParameters(captureSession: $0, orientation: outputOrientation) })
                 }
             }
         }
@@ -78,13 +78,5 @@ final class CameraInteractorImpl: CameraInteractor {
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
         deviceOrientationService.onOrientationChange = handler
         handler(deviceOrientationService.currentOrientation)
-    }
-    
-    func startCapture() {
-        cameraService.startCapture()
-    }
-    
-    func stopCapture() {
-        cameraService.stopCapture()
     }
 }

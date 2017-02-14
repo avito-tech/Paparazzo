@@ -1,10 +1,11 @@
+import ImageSource
 import UIKit
 
 final class CameraThumbnailCell: UICollectionViewCell {
     
     private let button = UIButton()
     
-    private var cameraOutputBinder: CameraOutputGLKBinder?
+    private var cameraOutputView: CameraOutputView?
     
     var selectedBorderColor: UIColor? = .blue {
         didSet {
@@ -22,29 +23,35 @@ final class CameraThumbnailCell: UICollectionViewCell {
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         
-        let newOutputBinder = CameraOutputGLKBinder(imageOutput: parameters.imageOutput)
+        let newCameraOutputView = CameraOutputView(
+            captureSession: parameters.captureSession,
+            outputOrientation: parameters.orientation
+        )
         
-        if let previousOutputBinder = cameraOutputBinder {
+        newCameraOutputView.layer.cornerRadius = 6
+        
+        if var currentCameraOutputView = self.cameraOutputView {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
-            newOutputBinder.onFrameDrawn = { [weak newOutputBinder] in
-                newOutputBinder?.onFrameDrawn = nil
+            newCameraOutputView.onFrameDraw = { [weak newCameraOutputView] in
+                newCameraOutputView?.onFrameDraw = nil
                 DispatchQueue.main.async {
-                    previousOutputBinder.view.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
+                    currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
         }
         
-        let view = newOutputBinder.view
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 6
-        insertSubview(view, belowSubview: cameraOutputBinder?.view ?? button)
+        insertSubview(newCameraOutputView, belowSubview: button)
         
-        cameraOutputBinder = newOutputBinder
+        self.cameraOutputView = newCameraOutputView
         
         // AI-3610: костыль для iPhone 4, чтобы не было белой рамки вокруг ячейки.
         // Если ставить clearColor, скругление углов теряется на iOS 9.
         self.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+    }
+    
+    func setOutputOrientation(_ orientation: ExifOrientation) {
+        cameraOutputView?.orientation = orientation
     }
     
     // MARK: - Init
@@ -79,7 +86,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        cameraOutputBinder?.view.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
+        cameraOutputView?.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         button.frame = bounds
     }
     
