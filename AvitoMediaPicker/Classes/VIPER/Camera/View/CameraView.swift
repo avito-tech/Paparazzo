@@ -65,8 +65,8 @@ final class CameraView: UIView, CameraViewInput {
         if let currentCameraOutputView = self.cameraOutputView {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
-            newCameraOutputView.onFrameDrawn = { [weak newCameraOutputView] in
-                newCameraOutputView?.onFrameDrawn = nil
+            newCameraOutputView.onFrameDraw = { [weak newCameraOutputView] in
+                newCameraOutputView?.onFrameDraw = nil
                 DispatchQueue.main.async {
                     currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }

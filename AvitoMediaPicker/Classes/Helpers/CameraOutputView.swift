@@ -28,7 +28,7 @@ public final class CameraOutputView: GLKView {
     // MARK: - CameraOutputView
     
     public var orientation: ExifOrientation
-    public var onFrameDrawn: (() -> ())?
+    public var onFrameDraw: (() -> ())?
     
     var imageBuffer: CVImageBuffer?
     
@@ -37,14 +37,38 @@ public final class CameraOutputView: GLKView {
     public override func draw(_ rect: CGRect) {
         guard let imageBuffer = imageBuffer else { return }
         
+        let image = CIImage(cvPixelBuffer: imageBuffer).applyingOrientation(Int32(orientation.rawValue))
+        
+        ciContext.draw(
+            image,
+            in: drawableBounds(for: rect),
+            from: sourceRect(of: image, targeting: rect)
+        )
+        
+        onFrameDraw?()
+    }
+    
+    // MARK: - Private
+    
+    private let ciContext: CIContext
+    
+    private func drawableBounds(for rect: CGRect) -> CGRect {
+        
         let screenScale = UIScreen.main.scale
         
         var drawableBounds = rect
         drawableBounds.size.width *= screenScale
         drawableBounds.size.height *= screenScale
         
-        let sourceImage = CIImage(cvPixelBuffer: imageBuffer).applyingOrientation(Int32(orientation.rawValue))
-        let sourceExtent = sourceImage.extent
+        return drawableBounds
+    }
+    
+    private func sourceRect(of image: CIImage, targeting rect: CGRect) -> CGRect {
+        guard image.extent.width > 0, image.extent.height > 0, rect.width > 0, rect.height > 0 else {
+            return .zero
+        }
+        
+        let sourceExtent = image.extent
         
         let sourceAspect = sourceExtent.size.width / sourceExtent.size.height
         let previewAspect = rect.size.width  / rect.size.height
@@ -62,12 +86,6 @@ public final class CameraOutputView: GLKView {
             drawRect.size.height = drawRect.size.width / previewAspect
         }
         
-        ciContext.draw(sourceImage, in: drawableBounds, from: drawRect)
-        
-        onFrameDrawn?()
+        return drawRect
     }
-    
-    // MARK: - Private
-    
-    private let ciContext: CIContext
 }
