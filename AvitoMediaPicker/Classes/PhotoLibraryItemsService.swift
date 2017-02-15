@@ -2,7 +2,7 @@ import Photos
 import ImageSource
 
 protocol PhotoLibraryItemsService {
-    func observeAuthorizationStatus(handler: @escaping (PHAuthorizationStatus) -> ())
+    func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges) -> ())
 }
 
@@ -40,7 +40,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 if case .authorized = status {
                     self?.setUpFetchRequest()
                 }
-                self?.onAuthorizationStatusChange?(status)
+                self?.callAuthorizationHandler(for: status)
             }
         case .restricted, .denied:
             break
@@ -53,9 +53,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    func observeAuthorizationStatus(handler: @escaping (PHAuthorizationStatus) -> ()) {
+    func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         onAuthorizationStatusChange = handler
-        handler(PHPhotoLibrary.authorizationStatus())
+        callAuthorizationHandler(for: PHPhotoLibrary.authorizationStatus())
     }
     
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges) -> ()) {
@@ -77,7 +77,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     // MARK: - Private
     
     private var onPhotosChange: ((_ changes: PhotoLibraryChanges) -> ())?
-    private var onAuthorizationStatusChange: ((PHAuthorizationStatus) -> ())?
+    private var onAuthorizationStatusChange: ((_ accessGranted: Bool) -> ())?
     
     private func setUpFetchRequest() {
         let options: PHFetchOptions?
@@ -91,6 +91,10 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         fetchResult = PHAsset.fetchAssets(with: .image, options: options)
         callObserverHandler(changes: nil)
+    }
+    
+    private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
+        onAuthorizationStatusChange?(status == .authorized)
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {

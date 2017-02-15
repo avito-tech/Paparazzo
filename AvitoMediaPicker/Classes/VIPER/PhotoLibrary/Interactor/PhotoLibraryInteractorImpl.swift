@@ -30,9 +30,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     }
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
-        photoLibraryItemsService.observeAuthorizationStatus { status in
-            handler(status == .authorized)
-        }
+        photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
     
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ()) {
