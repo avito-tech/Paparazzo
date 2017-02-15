@@ -18,7 +18,7 @@ public struct PhotoLibraryItem: Equatable {
     var identifier: String
     var selected: Bool
     
-    init(identifier: String, image: ImageSource, selected: Bool) {
+    init(identifier: String, image: ImageSource, selected: Bool = false) {
         self.identifier = identifier
         self.image = image
         self.selected = selected
