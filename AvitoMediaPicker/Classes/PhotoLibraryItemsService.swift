@@ -11,19 +11,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResult: PHFetchResult<PHAsset>?
     
-    private var _imageManager: PHImageManager?
-    
-    // Нельзя сразу создавать PHImageManager,
+    // lazy, т.к. нельзя сразу создавать PHImageManager,
     // иначе он крэшнется при деаллокации, если доступ к photo library запрещен
-    private var imageManager: PHImageManager {
-        if let imageManager = _imageManager {
-            return imageManager
-        } else {
-            let imageManager = PHImageManager()
-            _imageManager = imageManager
-            return imageManager
-        }
-    }
+    private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
     
