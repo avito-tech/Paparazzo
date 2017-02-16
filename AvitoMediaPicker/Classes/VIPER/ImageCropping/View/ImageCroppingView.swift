@@ -1,7 +1,7 @@
 import ImageSource
 import UIKit
 
-final class ImageCroppingView: UIView, UIScrollViewDelegate {
+final class ImageCroppingView: UIView {
     
     // MARK: - Subviews
     
