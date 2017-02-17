@@ -6,6 +6,6 @@ final class ObjCExceptionCatcher {
         catchClosure: @escaping (NSException) -> (),
         finallyClosure: @escaping () -> () = {})
     {
-        ObjCExceptionCatcherHelper.`try`(tryClosure, catch: catchClosure, finally: finallyClosure)
+        AvitoMediaPicker_ObjCExceptionCatcherHelper.`try`(tryClosure, catch: catchClosure, finally: finallyClosure)
     }
 }
