@@ -41,10 +41,10 @@ final class ExampleView: UIView {
         super.layoutSubviews()
         
         mediaPickerButton.sizeToFit()
-        mediaPickerButton.center = CGPoint(x: bounds.center.x, y: bounds.center.y - 30)
+        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 30)
         
         photoLibraryButton.sizeToFit()
-        photoLibraryButton.center = CGPoint(x: bounds.center.x, y: bounds.center.y + 30)
+        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 30)
     }
     
     // MARK: - Private

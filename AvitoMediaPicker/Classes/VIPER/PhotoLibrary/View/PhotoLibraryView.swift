@@ -1,5 +1,4 @@
 import UIKit
-import AvitoToolkit
 
 final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     

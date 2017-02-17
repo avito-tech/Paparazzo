@@ -2,6 +2,59 @@ import CoreGraphics
 
 extension CGRect {
     
+    var x: CGFloat {
+        get { return origin.x }
+        set { origin.x = newValue }
+    }
+    var y: CGFloat {
+        get { return origin.y }
+        set { origin.y = newValue }
+    }
+    
+    var center: CGPoint {
+        get {
+            return CGPoint(x: centerX, y: centerY)
+        }
+        set {
+            centerX = newValue.x
+            centerY = newValue.y
+        }
+    }
+    
+    var centerX: CGFloat {
+        get { return x + width/2 }
+        set { x = newValue - width/2 }
+    }
+    
+    var centerY: CGFloat {
+        get { return y + height/2 }
+        set { y = newValue - height/2 }
+    }
+    
+    var left: CGFloat {
+        get { return x }
+        set { x = newValue }
+    }
+    
+    var right: CGFloat {
+        get { return left + width }
+        set { left = newValue - width }
+    }
+    
+    var top: CGFloat {
+        get { return y }
+        set { y = newValue }
+    }
+    
+    var bottom: CGFloat {
+        get { return top + height }
+        set { top = newValue - height }
+    }
+    
+    init(left: CGFloat, right: CGFloat, top: CGFloat, height: CGFloat) {
+        self.init(x: left, y: top, width: right - left, height: height)
+    }
+    
     // Возвращает прямоугольник, повернутый относительно исходного на угол angle и описанный
     // вокруг него (все вершины исходного прямоугольника лежат на сторонах искомого).
     // Результат описан в повернутой системе координат.
@@ -50,6 +103,25 @@ extension CGRect {
 }
 
 extension CGSize {
+    
+    static let minimumTapAreaSize = CGSize(width: 44, height: 44)
+    
+    // Intersect two sizes (imagine intersection between two rectangles with x = width, y = height)
+    // Resulting size will be smaller than self and other or equal
+    func intersection(_ other: CGSize) -> CGSize {
+        return CGSize(
+            width: min(width, other.width),
+            height: min(height, other.height)
+        )
+    }
+    
+    func intersectionWidth(_ width: CGFloat) -> CGSize {
+        return CGSize(
+            width: min(self.width, width),
+            height: height
+        )
+    }
+    
     func scaled(_ scale: CGFloat) -> CGSize {
         return CGSize(width: width * scale, height: height * scale)
     }

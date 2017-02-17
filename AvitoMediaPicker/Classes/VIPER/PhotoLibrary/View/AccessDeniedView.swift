@@ -1,5 +1,4 @@
 import UIKit
-import AvitoToolkit
 
 final class AccessDeniedView: UIView {
     
