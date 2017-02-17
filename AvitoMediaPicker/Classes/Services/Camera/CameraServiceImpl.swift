@@ -25,31 +25,44 @@ final class CameraServiceImpl: CameraService {
     
     func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ()) {
         
-        if let captureSession = captureSession {
-            completion(captureSession)
+        func callCompletionOnMainQueue(with session: AVCaptureSession?) {
+            DispatchQueue.main.async {
+                completion(session)
+            }
+        }
         
-        } else {
+        captureSessionSetupQueue.async { [weak self] in
             
-            let mediaType = AVMediaTypeVideo
-            
-            switch AVCaptureDevice.authorizationStatus(forMediaType: mediaType) {
+            if let captureSession = self?.captureSession {
+                callCompletionOnMainQueue(with: captureSession)
                 
-            case .authorized:
-                setUpCaptureSession()
-                completion(captureSession)
+            } else {
                 
-            case .notDetermined:
-                AVCaptureDevice.requestAccess(forMediaType: mediaType) { [weak self] granted in
-                    if granted {
-                        self?.setUpCaptureSession()
-                        completion(self?.captureSession)
-                    } else {
-                        completion(nil)
+                let mediaType = AVMediaTypeVideo
+                
+                switch AVCaptureDevice.authorizationStatus(forMediaType: mediaType) {
+                    
+                case .authorized:
+                    self?.setUpCaptureSession()
+                    callCompletionOnMainQueue(with: self?.captureSession)
+                    
+                case .notDetermined:
+                    AVCaptureDevice.requestAccess(forMediaType: mediaType) { granted in
+                        self?.captureSessionSetupQueue.async {
+                            if let captureSession = self?.captureSession {
+                                callCompletionOnMainQueue(with: captureSession)
+                            } else if granted {
+                                self?.setUpCaptureSession()
+                                callCompletionOnMainQueue(with: self?.captureSession)
+                            } else {
+                                callCompletionOnMainQueue(with: nil)
+                            }
+                        }
                     }
+                    
+                case .restricted, .denied:
+                    callCompletionOnMainQueue(with: nil)
                 }
-
-            case .restricted, .denied:
-                completion(nil)
             }
         }
     }
@@ -59,6 +72,7 @@ final class CameraServiceImpl: CameraService {
     }
     
     private func setUpCaptureSession() {
+        
         do {
             #if arch(i386) || arch(x86_64)
                 // Preventing crash in simulator
@@ -210,6 +224,8 @@ final class CameraServiceImpl: CameraService {
     }
     
     // MARK: - Private
+    
+    private let captureSessionSetupQueue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CameraServiceImpl.captureSessionSetupQueue")
     
     private func savePhoto(sampleBuffer: CMSampleBuffer?, completion: @escaping (PhotoFromCamera?) -> ()) {
         
