@@ -1,6 +1,6 @@
 import UIKit
 
-public extension UIView {
+extension UIView {
     // MARK: - Alignment: single axis
     final func layout(left: CGFloat, right: CGFloat) {
         self.left = left
