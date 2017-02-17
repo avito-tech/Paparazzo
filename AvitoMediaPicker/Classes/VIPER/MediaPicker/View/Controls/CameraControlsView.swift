@@ -87,7 +87,7 @@ final class CameraControlsView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let contentHeight = bounds.shrinked(insets).size.height
+        let contentHeight = UIEdgeInsetsInsetRect(bounds, insets).size.height
         let shutterButtonDiameter = max(shutterButtonMinDiameter, min(shutterButtonMaxDiameter, contentHeight))
         let shutterButtonSize = CGSize(width: shutterButtonDiameter, height: shutterButtonDiameter)
         

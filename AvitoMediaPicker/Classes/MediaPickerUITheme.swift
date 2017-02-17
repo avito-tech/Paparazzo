@@ -1,5 +1,4 @@
 import UIKit
-import AvitoToolkit
 
 public struct MediaPickerUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITheme, ImageCroppingUITheme {
 

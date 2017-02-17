@@ -2,6 +2,84 @@ import UIKit
 
 extension UIView {
     
+    final var size: CGSize  {
+        @inline(__always) get { return frame.size }
+        @inline(__always) set { frame.size = newValue }
+    }
+    
+    final var origin: CGPoint {
+        @inline(__always) get { return frame.origin }
+        @inline(__always) set { frame.origin = newValue }
+    }
+    
+    final var width: CGFloat {
+        @inline(__always) get { return size.width }
+        @inline(__always) set { size.width = newValue }
+    }
+    
+    final var height: CGFloat {
+        @inline(__always) get { return size.height }
+        @inline(__always) set { size.height = newValue }
+    }
+    
+    final var x: CGFloat {
+        @inline(__always) get { return origin.x }
+        @inline(__always) set { origin.x = newValue }
+    }
+    
+    final var y: CGFloat {
+        @inline(__always) get { return origin.y }
+        @inline(__always) set { origin.y = newValue }
+    }
+    
+    final var centerX: CGFloat {
+        @inline(__always) get { return center.x }
+        @inline(__always) set { x = newValue - width/2 }
+    }
+    
+    final var centerY: CGFloat {
+        @inline(__always) get { return center.y }
+        @inline(__always) set { y = newValue - height/2 }
+    }
+    
+    final var left: CGFloat {
+        @inline(__always) get { return x }
+        @inline(__always) set { x = newValue }
+    }
+    
+    final var right: CGFloat {
+        @inline(__always) get { return left + width }
+        @inline(__always) set { left = newValue - width }
+    }
+    
+    final var top: CGFloat {
+        @inline(__always) get { return y }
+        @inline(__always) set { y = newValue }
+    }
+    
+    final var bottom: CGFloat {
+        @inline(__always) get { return top + height }
+        @inline(__always) set { top = newValue - height }
+    }
+    
+    func resizeToFitSize(_ size: CGSize) {
+        self.size = sizeThatFits(size).intersection(size)
+    }
+    
+    func resizeToFitWidth(_ width: CGFloat) {
+        resizeToFitSize(CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+    }
+    
+    func sizeForWidth(_ width: CGFloat) -> CGSize {
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        return sizeThatFits(maxSize).intersectionWidth(width)
+    }
+    
+    func sizeThatFits() -> CGSize {
+        // Returns same size as view gets after sizeToFit(): desired size without restrictions
+        return sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: .greatestFiniteMagnitude))
+    }
+    
     func setAnchorPointPreservingFrame(anchorPoint: CGPoint) {
         
         var newPoint = CGPoint(
@@ -83,6 +161,17 @@ extension UICollectionView {
 
 extension UIImage {
     
+    static func imageWithColor(_ color: UIColor, imageSize: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContext(imageSize)
+        guard let currentContext = UIGraphicsGetCurrentContext() else { return nil }
+        currentContext.setFillColor(color.cgColor)
+        currentContext.fill(CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return result
+    }
+    
     func scaled(scale: CGFloat) -> UIImage? {
         return cgImage?.scaled(scale).flatMap { UIImage(cgImage: $0) }
     }
@@ -93,5 +182,16 @@ extension UIImage {
     
     func resized(toFill size: CGSize) -> UIImage? {
         return cgImage?.resized(toFill: size).flatMap { UIImage(cgImage: $0) }
+    }
+}
+
+extension UIColor {
+    
+    static func RGB(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: alpha)
+    }
+    
+    static func RGBS(rgb: CGFloat, alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: rgb/255, green: rgb/255, blue: rgb/255, alpha: alpha)
     }
 }

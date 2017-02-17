@@ -86,7 +86,9 @@ final class CameraThumbnailCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        cameraOutputView?.frame = bounds.shrinked(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
+        let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
+        
+        cameraOutputView?.frame = UIEdgeInsetsInsetRect(bounds, insets)
         button.frame = bounds
     }
     
