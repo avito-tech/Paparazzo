@@ -12,33 +12,42 @@ class BaseUIKitRouter {
     
     // MARK: - BaseUIKitRouter
     
-    func focusOnCurrentModule() {
+    func focusOnCurrentModule(shouldDismissAnimated: (_ dismissedViewController: UIViewController) -> Bool) {
         guard let viewController = viewController else { return }
         
         if let navigationController = viewController.navigationController,
             viewController != navigationController.topViewController
         {
-            navigationController.popToViewController(viewController, animated: true)
+            let animated = navigationController.topViewController.flatMap { shouldDismissAnimated($0) } ?? true
+            navigationController.popToViewController(viewController, animated: animated)
         }
         
-        if viewController.presentedViewController != nil {
-            viewController.dismiss(animated: true, completion: nil)
+        if let presentedViewController = viewController.presentedViewController {
+            viewController.dismiss(animated: shouldDismissAnimated(presentedViewController), completion: nil)
         }
     }
     
-    func dismissCurrentModule() {
+    func focusOnCurrentModule() {
+        focusOnCurrentModule(shouldDismissAnimated: { _ in true })
+    }
+    
+    func dismissCurrentModule(animated: Bool) {
         guard let viewController = viewController else { return }
         
         if let navigationController = viewController.navigationController {
             if let index = navigationController.viewControllers.index(of: viewController), index > 0 {
                 let previousController = navigationController.viewControllers[index - 1]
-                navigationController.popToViewController(previousController, animated: true)
+                navigationController.popToViewController(previousController, animated: animated)
             } else {
-                navigationController.presentingViewController?.dismiss(animated: true, completion: nil)
+                navigationController.presentingViewController?.dismiss(animated: animated, completion: nil)
             }
         } else {
-            viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+            viewController.presentingViewController?.dismiss(animated: animated, completion: nil)
         }
+    }
+    
+    func dismissCurrentModule() {
+        dismissCurrentModule(animated: true)
     }
     
     func push(_ viewController: UIViewController, animated: Bool) {

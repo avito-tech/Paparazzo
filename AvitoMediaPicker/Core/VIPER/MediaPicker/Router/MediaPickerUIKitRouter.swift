@@ -6,6 +6,7 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
 
     private let assemblyFactory: AssemblyFactory
+    private var cropViewControllers = [WeakWrapper<UIViewController>]()
 
     init(assemblyFactory: AssemblyFactory, viewController: UIViewController) {
         self.assemblyFactory = assemblyFactory
@@ -45,6 +46,14 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
             configuration: configuration
         )
         
+        cropViewControllers.append(WeakWrapper(value: viewController))
+        
         push(viewController, animated: false)
+    }
+    
+    override func focusOnCurrentModule(shouldDismissAnimated: (UIViewController) -> Bool) {
+        super.focusOnCurrentModule(shouldDismissAnimated: { viewController in
+            !cropViewControllers.contains { $0.value == viewController }
+        })
     }
 }
