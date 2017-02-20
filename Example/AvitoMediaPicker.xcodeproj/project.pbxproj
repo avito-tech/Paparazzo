@@ -22,6 +22,18 @@
 		257A1E981D14097100498EB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257A1E931D14097100498EB2 /* Assets.xcassets */; };
 		257A1E991D14097100498EB2 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E951D14097100498EB2 /* MarshrouteFacade.swift */; };
 		257A1E9A1D14097100498EB2 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E961D14097100498EB2 /* NavigationController.swift */; };
+		259248B01E5AFFB900C9E5B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259248AF1E5AFFB900C9E5B4 /* AppDelegate.swift */; };
+		259248B71E5AFFB900C9E5B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259248B61E5AFFB900C9E5B4 /* Assets.xcassets */; };
+		259248BF1E5AFFF500C9E5B4 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A1E961D14097100498EB2 /* NavigationController.swift */; };
+		259248C01E5AFFF900C9E5B4 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF381D190AE500995D7F /* ExampleViewController.swift */; };
+		259248C11E5B00C000C9E5B4 /* ExampleViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF391D190AE500995D7F /* ExampleViewInput.swift */; };
+		259248C21E5B00C300C9E5B4 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250DEF371D190AE500995D7F /* ExampleView.swift */; };
+		259248C31E5B00DE00C9E5B4 /* AppSpecificUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE098F1D2CFF68008954DB /* AppSpecificUITheme.swift */; };
+		259248C41E5B015700C9E5B4 /* Latoto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09831D2CFD74008954DB /* Latoto-Bold.ttf */; };
+		259248C51E5B015700C9E5B4 /* Latoto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09841D2CFD74008954DB /* Latoto-Light.ttf */; };
+		259248C61E5B015700C9E5B4 /* Latoto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09851D2CFD74008954DB /* Latoto-Regular.ttf */; };
+		259248C71E5B015700C9E5B4 /* Latoto-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09861D2CFD74008954DB /* Latoto-Semibold.ttf */; };
+		259248C81E5B015700C9E5B4 /* Latoto-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09871D2CFD74008954DB /* Latoto-SemiboldItalic.ttf */; };
 		25CE09881D2CFD74008954DB /* Latoto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09831D2CFD74008954DB /* Latoto-Bold.ttf */; };
 		25CE09891D2CFD74008954DB /* Latoto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09841D2CFD74008954DB /* Latoto-Light.ttf */; };
 		25CE098A1D2CFD74008954DB /* Latoto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25CE09851D2CFD74008954DB /* Latoto-Regular.ttf */; };
@@ -30,6 +42,7 @@
 		25CE09901D2CFF68008954DB /* AppSpecificUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE098F1D2CFF68008954DB /* AppSpecificUITheme.swift */; };
 		3D7AA9057090F7AB5E167020 /* Pods_AvitoMediaPicker_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363E83EC91E9F221BCCDCA8D /* Pods_AvitoMediaPicker_Tests.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		713552E64C1DAD6873446972 /* Pods_AvitoMediaPicker_NoMarshroute_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D62EF1975190CF59606D2A /* Pods_AvitoMediaPicker_NoMarshroute_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		067673337E860C23F5F2B78C /* Pods-AvitoMediaPicker_NoMarshroute_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker_NoMarshroute_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker_NoMarshroute_Example/Pods-AvitoMediaPicker_NoMarshroute_Example.release.xcconfig"; sourceTree = "<group>"; };
+		0DA224236CD5B361A04ED55B /* Pods-AvitoMediaPicker_NoMarshroute_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvitoMediaPicker_NoMarshroute_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AvitoMediaPicker_NoMarshroute_Example/Pods-AvitoMediaPicker_NoMarshroute_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		250DEF2A1D190AE500995D7F /* ExampleAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAssembly.swift; sourceTree = "<group>"; };
 		250DEF2B1D190AE500995D7F /* ExampleAssemblyImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAssemblyImpl.swift; sourceTree = "<group>"; };
 		250DEF2D1D190AE500995D7F /* ExampleInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleInteractor.swift; sourceTree = "<group>"; };
@@ -57,6 +72,10 @@
 		257A1E931D14097100498EB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		257A1E951D14097100498EB2 /* MarshrouteFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarshrouteFacade.swift; sourceTree = "<group>"; };
 		257A1E961D14097100498EB2 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		259248AD1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AvitoMediaPicker_NoMarshroute_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		259248AF1E5AFFB900C9E5B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		259248B61E5AFFB900C9E5B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		259248BB1E5AFFB900C9E5B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		25CE09831D2CFD74008954DB /* Latoto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Bold.ttf"; sourceTree = "<group>"; };
 		25CE09841D2CFD74008954DB /* Latoto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Light.ttf"; sourceTree = "<group>"; };
 		25CE09851D2CFD74008954DB /* Latoto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Latoto-Regular.ttf"; sourceTree = "<group>"; };
@@ -77,9 +96,18 @@
 		84E171985231F777BB47AE7A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B72127001160FFE91837314D /* Pods_AvitoMediaPicker_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AvitoMediaPicker_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB5ACF39FEBEE86ADBC782F3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		C9D62EF1975190CF59606D2A /* Pods_AvitoMediaPicker_NoMarshroute_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AvitoMediaPicker_NoMarshroute_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		259248AA1E5AFFB900C9E5B4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				713552E64C1DAD6873446972 /* Pods_AvitoMediaPicker_NoMarshroute_Example.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCD1AFB9204008FA782 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -164,6 +192,16 @@
 			path = MarshrouteHelpers;
 			sourceTree = "<group>";
 		};
+		259248AE1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example */ = {
+			isa = PBXGroup;
+			children = (
+				259248AF1E5AFFB900C9E5B4 /* AppDelegate.swift */,
+				259248B61E5AFFB900C9E5B4 /* Assets.xcassets */,
+				259248BB1E5AFFB900C9E5B4 /* Info.plist */,
+			);
+			path = AvitoMediaPicker_NoMarshroute_Example;
+			sourceTree = "<group>";
+		};
 		25CE09781D2CFD4F008954DB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +219,7 @@
 			children = (
 				B72127001160FFE91837314D /* Pods_AvitoMediaPicker_Example.framework */,
 				363E83EC91E9F221BCCDCA8D /* Pods_AvitoMediaPicker_Tests.framework */,
+				C9D62EF1975190CF59606D2A /* Pods_AvitoMediaPicker_NoMarshroute_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -192,6 +231,8 @@
 				283E10AF02963EBF4F348B06 /* Pods-AvitoMediaPicker_Example.release.xcconfig */,
 				62EEB2AF2C4A3BB7D028FBD1 /* Pods-AvitoMediaPicker_Tests.debug.xcconfig */,
 				34C5F48C2F626B13ADBC0EA7 /* Pods-AvitoMediaPicker_Tests.release.xcconfig */,
+				0DA224236CD5B361A04ED55B /* Pods-AvitoMediaPicker_NoMarshroute_Example.debug.xcconfig */,
+				067673337E860C23F5F2B78C /* Pods-AvitoMediaPicker_NoMarshroute_Example.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -201,6 +242,7 @@
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for AvitoMediaPicker */,
+				259248AE1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				48FA4A8FAC449CE8F72ED5B8 /* Pods */,
@@ -213,6 +255,7 @@
 			children = (
 				607FACD01AFB9204008FA782 /* AvitoMediaPicker_Example.app */,
 				607FACE51AFB9204008FA782 /* AvitoMediaPicker_Tests.xctest */,
+				259248AD1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -271,6 +314,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		259248AC1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 259248BE1E5AFFB900C9E5B4 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_NoMarshroute_Example" */;
+			buildPhases = (
+				70721F8EDF9B0A1F75120D99 /* [CP] Check Pods Manifest.lock */,
+				259248A91E5AFFB900C9E5B4 /* Sources */,
+				259248AA1E5AFFB900C9E5B4 /* Frameworks */,
+				259248AB1E5AFFB900C9E5B4 /* Resources */,
+				F7F3AC7D7E344E63EAE164CA /* [CP] Embed Pods Frameworks */,
+				05CEDAF8FADF3B36A1945255 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AvitoMediaPicker_NoMarshroute_Example;
+			productName = AvitoMediaPicker_NoMarshroute_Example;
+			productReference = 259248AD1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example.app */;
+			productType = "com.apple.product-type.application";
+		};
 		607FACCF1AFB9204008FA782 /* AvitoMediaPicker_Example */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_Example" */;
@@ -324,10 +387,15 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
+					259248AC1E5AFFB900C9E5B4 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 5PHGGKL9UQ;
+						ProvisioningStyle = Automatic;
+					};
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 5PHGGKL9UQ;
@@ -353,11 +421,25 @@
 			targets = (
 				607FACCF1AFB9204008FA782 /* AvitoMediaPicker_Example */,
 				607FACE41AFB9204008FA782 /* AvitoMediaPicker_Tests */,
+				259248AC1E5AFFB900C9E5B4 /* AvitoMediaPicker_NoMarshroute_Example */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		259248AB1E5AFFB900C9E5B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				259248C81E5B015700C9E5B4 /* Latoto-SemiboldItalic.ttf in Resources */,
+				259248C61E5B015700C9E5B4 /* Latoto-Regular.ttf in Resources */,
+				259248C51E5B015700C9E5B4 /* Latoto-Light.ttf in Resources */,
+				259248C41E5B015700C9E5B4 /* Latoto-Bold.ttf in Resources */,
+				259248C71E5B015700C9E5B4 /* Latoto-Semibold.ttf in Resources */,
+				259248B71E5AFFB900C9E5B4 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCE1AFB9204008FA782 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -394,6 +476,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_Example/Pods-AvitoMediaPicker_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		05CEDAF8FADF3B36A1945255 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_NoMarshroute_Example/Pods-AvitoMediaPicker_NoMarshroute_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2DFEDA2331357910894BC228 /* 📦 Copy Pods Resources */ = {
@@ -501,6 +598,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		70721F8EDF9B0A1F75120D99 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		832F42595CDE2A2136B00576 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -546,6 +658,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		F7F3AC7D7E344E63EAE164CA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AvitoMediaPicker_NoMarshroute_Example/Pods-AvitoMediaPicker_NoMarshroute_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F999F29B35CF11C26B72B4E4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -564,6 +691,19 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		259248A91E5AFFB900C9E5B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				259248C11E5B00C000C9E5B4 /* ExampleViewInput.swift in Sources */,
+				259248C31E5B00DE00C9E5B4 /* AppSpecificUITheme.swift in Sources */,
+				259248C01E5AFFF900C9E5B4 /* ExampleViewController.swift in Sources */,
+				259248BF1E5AFFF500C9E5B4 /* NavigationController.swift in Sources */,
+				259248B01E5AFFB900C9E5B4 /* AppDelegate.swift in Sources */,
+				259248C21E5B00C300C9E5B4 /* ExampleView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCC1AFB9204008FA782 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,6 +744,49 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		259248BC1E5AFFB900C9E5B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0DA224236CD5B361A04ED55B /* Pods-AvitoMediaPicker_NoMarshroute_Example.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5PHGGKL9UQ;
+				INFOPLIST_FILE = AvitoMediaPicker_NoMarshroute_Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.avito.AvitoMediaPicker-NoMarshroute-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		259248BD1E5AFFB900C9E5B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 067673337E860C23F5F2B78C /* Pods-AvitoMediaPicker_NoMarshroute_Example.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				DEVELOPMENT_TEAM = 5PHGGKL9UQ;
+				INFOPLIST_FILE = AvitoMediaPicker_NoMarshroute_Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.avito.AvitoMediaPicker-NoMarshroute-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		607FACED1AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -762,6 +945,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		259248BE1E5AFFB900C9E5B4 /* Build configuration list for PBXNativeTarget "AvitoMediaPicker_NoMarshroute_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				259248BC1E5AFFB900C9E5B4 /* Debug */,
+				259248BD1E5AFFB900C9E5B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AvitoMediaPicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
