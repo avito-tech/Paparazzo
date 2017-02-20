@@ -3,7 +3,7 @@ import UIKit
 class BaseUIKitRouter {
     
     // MARK: - Dependencies
-    weak var viewController: UIViewController?
+    private weak var viewController: UIViewController?
     
     // MARK: - Init
     init(viewController: UIViewController) {
@@ -39,5 +39,13 @@ class BaseUIKitRouter {
         } else {
             viewController.presentingViewController?.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    func push(_ viewController: UIViewController, animated: Bool) {
+        self.viewController?.navigationController?.pushViewController(viewController, animated: animated)
+    }
+    
+    func present(_ viewController: UIViewController, animated: Bool, completion: (() -> ())? = nil) {
+        self.viewController?.present(viewController, animated: animated, completion: completion)
     }
 }

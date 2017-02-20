@@ -29,7 +29,7 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
         
         let navigationController = UINavigationController(rootViewController: viewController)
         
-        self.viewController?.present(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
     
     func showCroppingModule(
@@ -45,6 +45,6 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
             configuration: configuration
         )
         
-        self.viewController?.navigationController?.pushViewController(viewController, animated: false)
+        push(viewController, animated: false)
     }
 }
