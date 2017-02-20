@@ -3,7 +3,7 @@ import UIKit
 class BaseUIKitRouter {
     
     // MARK: - Dependencies
-    let viewController: UIViewController
+    weak var viewController: UIViewController?
     
     // MARK: - Init
     init(viewController: UIViewController) {
@@ -13,18 +13,22 @@ class BaseUIKitRouter {
     // MARK: - BaseUIKitRouter
     
     func focusOnCurrentModule() {
-        if let navigationController = viewController.navigationController {
-            if viewController != navigationController.topViewController {
-                navigationController.popToViewController(viewController, animated: true)
-            } else {
-                viewController.dismiss(animated: true, completion: nil)
-            }
-        } else {
+        guard let viewController = viewController else { return }
+        
+        if let navigationController = viewController.navigationController,
+            viewController != navigationController.topViewController
+        {
+            navigationController.popToViewController(viewController, animated: true)
+        }
+        
+        if viewController.presentedViewController != nil {
             viewController.dismiss(animated: true, completion: nil)
         }
     }
     
     func dismissCurrentModule() {
+        guard let viewController = viewController else { return }
+        
         if let navigationController = viewController.navigationController {
             if let index = navigationController.viewControllers.index(of: viewController), index > 0 {
                 let previousController = navigationController.viewControllers[index - 1]
