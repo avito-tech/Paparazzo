@@ -14,17 +14,25 @@ AvitoMediaPicker — это модуль для выбора и редактир
   * [Кастомизация UI](#ui-customization)
 
 ## <a name="installation" /> Установка
-Для установки модуля с помощью [CocoaPods](http://cocoapods.org) добавьте следующую строку в свой Podfile:
+Доступно два варианта установки модуля через [CocoaPods](http://cocoapods.org).
+
+С использованием [Marshroute](https://github.com/avito-tech/Marshroute):
 
 ```ruby
 pod "AvitoMediaPicker"
+```
+
+или, если вы не используете Marshroute и не хотите получить дополнительную зависимость:
+
+```ruby
+pod "AvitoMediaPicker/Core"
 ```
 
 ## <a name="usage" /> Использование
 Можно использовать либо модуль целиком (камера + галерея), либо только галерею.
 
 ### <a name="present-whole-module" /> Показ всего модуля
-Инициализируйте ассамблею модуля, используя идущую в составе модуля фабрику `AvitoMediaPicker.AssemblyFactory`:
+Инициализируйте ассамблею модуля, используя идущую в составе модуля фабрику `AvitoMediaPicker.AssemblyFactory` (или `AvitoMediaPicker.MarshrouteAssemblyFactory`, если вы используете Marshroute):
 ```swift
 let factory = AvitoMediaPicker.AssemblyFactory()
 let assembly = factory.mediaPickerAssembly()

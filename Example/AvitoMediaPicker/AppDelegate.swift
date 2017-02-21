@@ -9,17 +9,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
-//        print(UIFont.fontNamesForFamilyName("Latoto"))
         debugPrint(NSTemporaryDirectory())
         
         cleanTemporaryDirectory()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
             ExampleAssemblyImpl().viewController(routerSeed: routerSeed)
         }
-        
         window?.makeKeyAndVisible()
         
         return true

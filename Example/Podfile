@@ -14,3 +14,8 @@ target 'AvitoMediaPicker_Example' do
     inherit! :search_paths
   end
 end
+
+target 'AvitoMediaPicker_NoMarshroute_Example' do
+    pod 'AvitoMediaPicker/Core', :path => '../'
+    pod 'ImageSource', :path => '../'
+end

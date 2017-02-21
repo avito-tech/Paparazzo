@@ -4,7 +4,7 @@ import AvitoMediaPicker
 
 final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
-    private let mediaPickerAssemblyFactory = AvitoMediaPicker.AssemblyFactory(
+    private let mediaPickerAssemblyFactory = AvitoMediaPicker.MarshrouteAssemblyFactory(
         theme: MediaPickerUITheme.appSpecificTheme()
     )
     
@@ -31,22 +31,6 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 configuration: configuration
             )
         }
-        
-//        presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
-//        
-//            let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
-//            
-//            return assembly.module(
-//                items: items,
-//                selectedItem: selectedItem,
-//                maxItemsCount: maxItemsCount,
-//                cropEnabled: true,
-//                cropCanvasSize: cropCanvasSize,
-//                routerSeed: routerSeed,
-//                configuration: configuration
-//            )
-//            
-//        }, animator: ModalNavigationTransitionsAnimator(), navigationController: NavigationController())
     }
     
     func showPhotoLibrary(

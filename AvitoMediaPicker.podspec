@@ -10,12 +10,20 @@ Pod::Spec.new do |s|
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
-  s.source_files = 'AvitoMediaPicker/Classes/**/*'
-  s.resources = ['AvitoMediaPicker/Assets/Assets.xcassets']
 
   s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices', 'GLKit', 'OpenGLES', 'CoreMedia', 'CoreVideo', 'AVFoundation', 'QuartzCore'
-  s.dependency 'Marshroute'
   s.dependency 'JNWSpringAnimation'
-  s.dependency 'SDWebImage'
+  s.dependency 'SDWebImage', '~> 3.8'
   s.dependency 'ImageSource'
+  
+  s.subspec 'Core' do |cs|
+    cs.source_files = 'AvitoMediaPicker/Core/**/*'
+    cs.resources = ['AvitoMediaPicker/Assets/Assets.xcassets']
+  end
+  
+  s.subspec 'Marshroute' do |ms|
+    ms.dependency 'AvitoMediaPicker/Core'
+    ms.dependency 'Marshroute'
+    ms.source_files = 'AvitoMediaPicker/Marshroute/**/*'
+  end
 end
