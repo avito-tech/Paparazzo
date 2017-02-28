@@ -1,20 +1,4 @@
 PODS:
-  - AvitoMediaPicker (1.0.0):
-    - AvitoMediaPicker/Core (= 1.0.0)
-    - AvitoMediaPicker/Marshroute (= 1.0.0)
-    - ImageSource
-    - JNWSpringAnimation
-    - SDWebImage (~> 3.8)
-  - AvitoMediaPicker/Core (1.0.0):
-    - ImageSource
-    - JNWSpringAnimation
-    - SDWebImage (~> 3.8)
-  - AvitoMediaPicker/Marshroute (1.0.0):
-    - AvitoMediaPicker/Core
-    - ImageSource
-    - JNWSpringAnimation
-    - Marshroute
-    - SDWebImage (~> 3.8)
   - ImageSource (1.0.0):
     - ImageSource/Core (= 1.0.0)
     - ImageSource/Helpers (= 1.0.0)
@@ -43,29 +27,45 @@ PODS:
     - ImageSource/Helpers
   - JNWSpringAnimation (0.7.1)
   - Marshroute (0.3.5)
+  - Paparazzo (1.0.0):
+    - ImageSource
+    - JNWSpringAnimation
+    - Paparazzo/Core (= 1.0.0)
+    - Paparazzo/Marshroute (= 1.0.0)
+    - SDWebImage (~> 3.8)
+  - Paparazzo/Core (1.0.0):
+    - ImageSource
+    - JNWSpringAnimation
+    - SDWebImage (~> 3.8)
+  - Paparazzo/Marshroute (1.0.0):
+    - ImageSource
+    - JNWSpringAnimation
+    - Marshroute
+    - Paparazzo/Core
+    - SDWebImage (~> 3.8)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - AvitoMediaPicker (from `../`)
-  - AvitoMediaPicker/Core (from `../`)
   - ImageSource (from `../`)
   - Marshroute (= 0.3.5)
+  - Paparazzo (from `../`)
+  - Paparazzo/Core (from `../`)
 
 EXTERNAL SOURCES:
-  AvitoMediaPicker:
-    :path: ../
   ImageSource:
+    :path: ../
+  Paparazzo:
     :path: ../
 
 SPEC CHECKSUMS:
-  AvitoMediaPicker: 4a680271f2dde93c58742e548b2470298a2a43ab
   ImageSource: d701da79bc246b0eb04d81551f019d8f6dabe439
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: abed7a53cf04db1a60aaddfe797dea7a7d010464
+  Paparazzo: f57952c29961ffe6035b6a45331a1c0595d27306
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 02910fd9246e499776ae36c35cd8e8b19e86a484
+PODFILE CHECKSUM: d754c1e04b66d9a01504971b8c20e5f74e88f90a
 
 COCOAPODS: 1.2.0

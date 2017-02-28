@@ -4,18 +4,13 @@ source 'https://github.com/CocoaPods/Specs.git'
 inhibit_all_warnings!
 use_frameworks!
 
-target 'AvitoMediaPicker_Example' do
-  pod 'AvitoMediaPicker', :path => '../'
+target 'PaparazzoExample' do
+  pod 'Paparazzo', :path => '../'
   pod 'ImageSource', :path => '../'
-  
   pod 'Marshroute', '0.3.5'
-
-  target 'AvitoMediaPicker_Tests' do
-    inherit! :search_paths
-  end
 end
 
-target 'AvitoMediaPicker_NoMarshroute_Example' do
-    pod 'AvitoMediaPicker/Core', :path => '../'
-    pod 'ImageSource', :path => '../'
+target 'PaparazzoExample_NoMarshroute' do
+  pod 'Paparazzo/Core', :path => '../'
+  pod 'ImageSource', :path => '../'
 end

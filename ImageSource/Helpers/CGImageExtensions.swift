@@ -13,7 +13,6 @@ public extension CGImage {
     
     func scaled(_ scale: CGFloat) -> CGImage? {
         
-        // TODO: test. This can cause regression: https://jr.avito.ru/browse/AI-3942
         let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
         let transform = CGAffineTransform(scaleX: scale, y: scale)
         let ciImage = CIImage(cgImage: self).applying(transform)
