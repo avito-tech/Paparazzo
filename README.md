@@ -3,7 +3,7 @@ Paparazzo is a component for picking and editing photos. Its main features are:
 * picking photos from user's photo library
 * photo cropping and rotation
 
-## Содержание
+## Contents
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -54,7 +54,7 @@ Method parameters:
 * _selectedItem_ — selected photo. If set to `nil` or if _items_ doesn't contain any photo with matching _identifier_, then the first photo in array will be selected.
 * _maxItemsCount_ — maximum number of photos that user is allowed to pick.
 * _cropEnabled_ — boolean flag indicating whether user can perform photo cropping.
-* _cropCanvasSize_ — maximum size of canvas when cropping photos. (см. [Memory constraints when cropping](#memory-constraints)).
+* _cropCanvasSize_ — maximum size of canvas when cropping photos. (see [Memory constraints when cropping](#memory-constraints)).
 * _routerSeed_ — routerSeed provided by Marshroute.
 * _configuration_ — closure that allows you to provide [module's additional parameters](#MediaPickerModule).
 
