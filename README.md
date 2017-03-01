@@ -1,7 +1,10 @@
-Paparazzo is a component for picking and editing photos. Its main features are:
-* taking photos using camera
-* picking photos from user's photo library
-* photo cropping and rotation
+**Paparazzo** is a component for picking and editing photos. Its main features are:
+
+           | Key Features
+-----------|---------------
+:camera:   | Taking photos using camera
+:iphone:   | Picking photos from user's photo library
+:scissors: | Photo cropping and rotation
 
 ## Contents
 
@@ -19,13 +22,13 @@ There are two options to install Paparazzo using [CocoaPods](http://cocoapods.or
 Using [Marshroute](https://github.com/avito-tech/Marshroute):
 
 ```ruby
-pod "AvitoMediaPicker"
+pod "Paparazzo"
 ```
 
 or if you don't use Marshroute and prefer not to get it as an additional dependency:
 
 ```ruby
-pod "AvitoMediaPicker/Core"
+pod "Paparazzo/Core"
 ```
 
 ## <a name="usage" />Usage
@@ -104,3 +107,9 @@ theme.cancelRotationTitleFont = SpecFonts.bold(14)
 
 let assemblyFactory = Paparazzo.AssemblyFactory(theme: theme)
 ```
+
+# Author
+Andrey Yutkin (ayutkin@avito.ru)
+
+# License
+MIT
