@@ -25,47 +25,21 @@ PODS:
   - ImageSource/UIKit (1.0.0):
     - ImageSource/Core
     - ImageSource/Helpers
-  - JNWSpringAnimation (0.7.1)
-  - Marshroute (0.3.5)
-  - Paparazzo (1.0.0):
-    - ImageSource
-    - JNWSpringAnimation
-    - Paparazzo/Core (= 1.0.0)
-    - Paparazzo/Marshroute (= 1.0.0)
-    - SDWebImage (~> 3.8)
-  - Paparazzo/Core (1.0.0):
-    - ImageSource
-    - JNWSpringAnimation
-    - SDWebImage (~> 3.8)
-  - Paparazzo/Marshroute (1.0.0):
-    - ImageSource
-    - JNWSpringAnimation
-    - Marshroute
-    - Paparazzo/Core
-    - SDWebImage (~> 3.8)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
   - ImageSource (from `../`)
-  - Marshroute (= 0.3.5)
-  - Paparazzo (from `../`)
-  - Paparazzo/Core (from `../`)
 
 EXTERNAL SOURCES:
   ImageSource:
-    :path: ../
-  Paparazzo:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   ImageSource: d701da79bc246b0eb04d81551f019d8f6dabe439
-  JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
-  Marshroute: abed7a53cf04db1a60aaddfe797dea7a7d010464
-  Paparazzo: f57952c29961ffe6035b6a45331a1c0595d27306
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: d754c1e04b66d9a01504971b8c20e5f74e88f90a
+PODFILE CHECKSUM: c48155ac304e9b22d8200b18b1d1ad4c7ccf0eb5
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.1.1

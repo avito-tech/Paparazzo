@@ -1,15 +1,16 @@
 source 'ssh://git@stash.msk.avito.ru:7999/ma/avito-pod-specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-#inhibit_all_warnings!
+inhibit_all_warnings!
 use_frameworks!
 
-target 'AvitoMediaPicker_Example' do
-  pod 'AvitoMediaPicker', :path => '../'
-  pod 'Marshroute', :git => 'https://github.com/avito-tech/Marshroute', :branch => 'swift-3-syntax'
-  pod 'AvitoToolkit', :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-toolkit.git', :branch => 'develop'
+target 'PaparazzoExample' do
+  pod 'Paparazzo', :path => '../'
+  pod 'ImageSource', :path => '../'
+  pod 'Marshroute', '0.3.5'
+end
 
-  target 'AvitoMediaPicker_Tests' do
-    inherit! :search_paths
-  end
+target 'PaparazzoExample_NoMarshroute' do
+  pod 'Paparazzo/Core', :path => '../'
+  pod 'ImageSource', :path => '../'
 end
