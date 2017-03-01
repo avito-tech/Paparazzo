@@ -1,10 +1,12 @@
-**Paparazzo** is a component for picking and editing photos. Its main features are:
+**Paparazzo** is a component for picking and editing photos.
 
            | Key Features
 -----------|---------------
 :camera:   | Taking photos using camera
 :iphone:   | Picking photos from user's photo library
 :scissors: | Photo cropping and rotation
+
+![Demo](PaparazzoDemo.gif)
 
 ## Contents
 
@@ -98,12 +100,12 @@ You can customize colors, fonts and icon used in photo picker. Just pass an inst
 
 ```swift
 var theme = PaparazzoUITheme()
-theme.shutterButtonColor = SpecColors.tint
-theme.accessDeniedTitleFont = SpecFonts.bold(17)
-theme.accessDeniedMessageFont = SpecFonts.regular(17)
-theme.accessDeniedButtonFont = SpecFonts.regular(17)
-theme.cameraContinueButtonTitleFont = SpecFonts.regular(17)
-theme.cancelRotationTitleFont = SpecFonts.bold(14)
+theme.shutterButtonColor = .blue
+theme.accessDeniedTitleFont = .boldSystemFont(ofSize: 17)
+theme.accessDeniedMessageFont = .systemFont(ofSize: 17)
+theme.accessDeniedButtonFont = .systemFont(ofSize: 17)
+theme.cameraContinueButtonTitleFont = .systemFont(ofSize: 17)
+theme.cancelRotationTitleFont = .boldSystemFont(ofSize: 14)
 
 let assemblyFactory = Paparazzo.AssemblyFactory(theme: theme)
 ```
