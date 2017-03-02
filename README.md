@@ -96,7 +96,7 @@ let viewController = assembly.module(
 * _configuration_ — closure used to provide additional module setup.
 
 ### <a name="ui-customization" />UI Customization
-You can customize colors, fonts and icon used in photo picker. Just pass an instance of `PaparazzoUITheme` to the initializer of assembly factory.
+You can customize colors, fonts and icons used in photo picker. Just pass an instance of `PaparazzoUITheme` to the initializer of assembly factory.
 
 ```swift
 var theme = PaparazzoUITheme()
