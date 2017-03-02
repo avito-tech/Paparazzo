@@ -3,10 +3,10 @@ Pod::Spec.new do |s|
   s.module_name            = 'ImageSource'
   s.version                = '1.0.0'
   s.summary                = 'ImageSource by Avito'
-  s.homepage               = 'http://stash.msk.avito.ru/projects/MA/repos/avito-ios-media-picker'
-  s.license                = 'Avito'
+  s.homepage               = 'https://github.com/avito-tech/Paparazzo'
+  s.license                = 'MIT'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
-  s.source                 = { :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-media-picker.git', :tag => "#{s.version}" }
+  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "#{s.version}" }
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
@@ -22,23 +22,23 @@ Pod::Spec.new do |s|
   
   s.subspec 'PHAsset' do |ps|
     ps.frameworks = 'Photos'
-	ps.dependency 'ImageSource/Core'
-	ps.dependency 'ImageSource/Helpers'
-	ps.source_files = 'ImageSource/PHAsset/*'
+  	ps.dependency 'ImageSource/Core'
+  	ps.dependency 'ImageSource/Helpers'
+  	ps.source_files = 'ImageSource/PHAsset/*'
   end
   
   s.subspec 'Local' do |ls|
     ls.frameworks = 'ImageIO', 'MobileCoreServices'
-	ls.dependency 'ImageSource/Core'
-	ls.dependency 'ImageSource/Helpers'
-	ls.source_files = 'ImageSource/Local/*'
+  	ls.dependency 'ImageSource/Core'
+  	ls.dependency 'ImageSource/Helpers'
+  	ls.source_files = 'ImageSource/Local/*'
   end
   
   s.subspec 'Remote' do |rs|
     rs.frameworks = 'ImageIO', 'MobileCoreServices'
-	rs.dependency 'ImageSource/Core'
-	rs.dependency 'ImageSource/Helpers'
-	rs.source_files = 'ImageSource/Remote/*'
+  	rs.dependency 'ImageSource/Core'
+  	rs.dependency 'ImageSource/Helpers'
+  	rs.source_files = 'ImageSource/Remote/*'
 	
     rs.subspec 'SDWebImage' do |sds|
 	  sds.dependency 'SDWebImage'
@@ -48,8 +48,8 @@ Pod::Spec.new do |s|
   
   s.subspec 'UIKit' do |uis|
     uis.frameworks = 'UIKit'
-	uis.dependency 'ImageSource/Core'
-	uis.dependency 'ImageSource/Helpers'
-	uis.source_files = 'ImageSource/UIKit/*'
+	  uis.dependency 'ImageSource/Core'
+	  uis.dependency 'ImageSource/Helpers'
+	  uis.source_files = 'ImageSource/UIKit/*'
   end
 end
