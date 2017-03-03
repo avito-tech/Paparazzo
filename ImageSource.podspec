@@ -13,35 +13,29 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core' do |cs|
   	cs.frameworks = 'CoreGraphics'
-    cs.source_files = 'ImageSource/Core/*'
-  end
-  
-  s.subspec 'Helpers' do |hs|
-    hs.source_files = 'ImageSource/Helpers/*'
+    cs.source_files = 'ImageSource/Core/**/*'
   end
   
   s.subspec 'PHAsset' do |ps|
     ps.frameworks = 'Photos'
   	ps.dependency 'ImageSource/Core'
-  	ps.dependency 'ImageSource/Helpers'
   	ps.source_files = 'ImageSource/PHAsset/*'
   end
   
   s.subspec 'Local' do |ls|
     ls.frameworks = 'ImageIO', 'MobileCoreServices'
   	ls.dependency 'ImageSource/Core'
-  	ls.dependency 'ImageSource/Helpers'
   	ls.source_files = 'ImageSource/Local/*'
   end
   
   s.subspec 'Remote' do |rs|
     rs.frameworks = 'ImageIO', 'MobileCoreServices'
   	rs.dependency 'ImageSource/Core'
-  	rs.dependency 'ImageSource/Helpers'
+    rs.dependency 'ImageSource/UIKit'
   	rs.source_files = 'ImageSource/Remote/*'
 	
     rs.subspec 'SDWebImage' do |sds|
-	  sds.dependency 'SDWebImage'
+	    sds.dependency 'SDWebImage', '~> 3.8'
   	  sds.source_files = 'ImageSource/Remote/*', 'ImageSource/Remote/SDWebImage/*'
     end
   end
@@ -49,7 +43,6 @@ Pod::Spec.new do |s|
   s.subspec 'UIKit' do |uis|
     uis.frameworks = 'UIKit'
 	  uis.dependency 'ImageSource/Core'
-	  uis.dependency 'ImageSource/Helpers'
 	  uis.source_files = 'ImageSource/UIKit/*'
   end
 end

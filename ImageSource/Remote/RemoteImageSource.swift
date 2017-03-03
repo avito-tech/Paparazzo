@@ -106,7 +106,7 @@ public class RemoteImageSource: ImageSource {
     
     private let imageDownloader: CachingImageDownloader
     
-    private func fullResolutionImageRequestOperation<T : InitializableWithCGImage>(resultHandler: @escaping (T?) -> ()) -> RemoteImageRequestOperation<T> {
+    private func fullResolutionImageRequestOperation<T: InitializableWithCGImage>(resultHandler: @escaping (T?) -> ()) -> RemoteImageRequestOperation<T> {
         
         let requestId = RemoteImageSource.requestIdsGenerator.nextInt().toImageRequestId()
         let options = ImageRequestOptions(size: .fullResolution, deliveryMode: .best)
