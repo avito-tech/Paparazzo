@@ -69,7 +69,9 @@ protocol MediaPickerViewInput: class {
     var onSwipeToCameraProgressChange: ((CGFloat) -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
+    var onViewWillAppear: ((_ animated: Bool) -> ())? { get set }
     var onViewDidAppear: ((_ animated: Bool) -> ())? { get set }
+    var onViewDidDisappear: ((_ animated: Bool) -> ())? { get set }
     
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())? { get set }
 }
