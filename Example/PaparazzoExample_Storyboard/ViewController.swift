@@ -1,12 +1,13 @@
+import ImageSource
 import Paparazzo
 import UIKit
 
 final class ViewController: UIViewController {
     
-    private var photos = [MediaPickerItem]()
+    private var photos = [ImageSource]()
     
     private func updateUI() {
-        imageView.setImage(fromSource: photos.first?.image)
+        imageView.setImage(fromSource: photos.first)
     }
     
     // MARK: - Outlets and actions
@@ -29,11 +30,11 @@ final class ViewController: UIViewController {
                 
                 module?.setContinueButtonTitle("Done")
                 
-                module?.onFinish = { photos in
+                module?.onFinish = { mediaPickerItems in
                     module?.dismissModule()
                     
                     // storing picked photos in instance var and updating UI
-                    self?.photos = photos
+                    self?.photos = mediaPickerItems.map { $0.image }
                     self?.updateUI()
                 }
                 module?.onCancel = {
@@ -53,10 +54,15 @@ final class ViewController: UIViewController {
         let galleryController = assembly.module(
             selectedItems: [],
             maxSelectedItemsCount: 5,
-            configuration: { module in
+            configuration: { [weak self] module in
                 weak var module = module
                 module?.onFinish = { result in
                     module?.dismissModule()
+                    
+                    if case let .selectedItems(photoLibraryItems) = result {
+                        self?.photos = photoLibraryItems.map { $0.image }
+                        self?.updateUI()
+                    }
                 }
             }
         )
