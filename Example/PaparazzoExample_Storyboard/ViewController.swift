@@ -2,6 +2,16 @@ import Paparazzo
 import UIKit
 
 final class ViewController: UIViewController {
+    
+    private var photos = [MediaPickerItem]()
+    
+    private func updateUI() {
+        imageView.setImage(fromSource: photos.first?.image)
+    }
+    
+    // MARK: - Outlets and actions
+    
+    @IBOutlet private var imageView: UIImageView!
 
     @IBAction private func showMediaPicker() {
         
@@ -14,15 +24,19 @@ final class ViewController: UIViewController {
             maxItemsCount: 20,
             cropEnabled: true,
             cropCanvasSize: CGSize(width: 1280, height: 960),
-            configuration: { module in
+            configuration: { [weak self] module in
                 weak var module = module
                 
                 module?.setContinueButtonTitle("Done")
                 
-                module?.onCancel = {
+                module?.onFinish = { photos in
                     module?.dismissModule()
+                    
+                    // storing picked photos in instance var and updating UI
+                    self?.photos = photos
+                    self?.updateUI()
                 }
-                module?.onFinish = { _ in
+                module?.onCancel = {
                     module?.dismissModule()
                 }
             }
@@ -41,7 +55,7 @@ final class ViewController: UIViewController {
             maxSelectedItemsCount: 5,
             configuration: { module in
                 weak var module = module
-                module?.onFinish = { _ in
+                module?.onFinish = { result in
                     module?.dismissModule()
                 }
             }
