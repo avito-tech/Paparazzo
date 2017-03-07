@@ -22,7 +22,7 @@ public extension CGImage {
                 width: Int(outputWidth),
                 height: Int(outputHeight),
                 bitsPerComponent: bitsPerComponent,
-                bytesPerRow: bytesPerRow * Int(UIScreen.main.scale),   // AI-4111
+                bytesPerRow: 0,
                 space: colorSpace,
                 bitmapInfo: bitmapInfo.rawValue
             ) else { return nil }
