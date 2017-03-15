@@ -2,6 +2,18 @@ import UIKit
 
 public extension UIImageView {
     
+    /**
+     Loads image of appropriate size from image source and assigns it to image view's `image` property.
+     
+     - Parameter newImageSource: Image source to load image from.
+     - Parameter size: Size of image to load (in points). If nil, it will be considered to be image view's size.
+     - Parameter placeholder: Image to be used in case of inability to load image from image source.
+     - Parameter placeholderDeferred: If true, `placeholder` will be assigned to image view when image loading fails. Otherwise it will be also visible while loading is in process.
+     - Parameter adjustOptions: Closure that allows you to affect which `ImageRequestOptions` are actually used when requesting image from image source.
+     - Parameter resultHandler: Closure that will be called right after received UIImage is assigned to image view.
+     
+     - Returns: `ImageRequestId` that allows you to cancel image request via `imageSource.cancelRequest(imageRequestId)`
+    */
     @discardableResult
     func setImage(
         fromSource newImageSource: ImageSource?,
