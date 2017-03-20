@@ -26,12 +26,11 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     private func setUpGestureRecognizer() {
         if let collectionView = collectionView, longPressGestureRecognizer == nil {
-            longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ThumbnailsViewLayout.handleLongPress(longPress:)))
-            longPressGestureRecognizer?.minimumPressDuration = 0.2
+            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ThumbnailsViewLayout.handleLongPress(longPress:)))
+            longPressGestureRecognizer.minimumPressDuration = 0.2
+            self.longPressGestureRecognizer = longPressGestureRecognizer
             
-            if let longPressGestureRecognizer = longPressGestureRecognizer {
-                collectionView.addGestureRecognizer(longPressGestureRecognizer)
-            }
+            collectionView.addGestureRecognizer(longPressGestureRecognizer)
         }
     }
     
