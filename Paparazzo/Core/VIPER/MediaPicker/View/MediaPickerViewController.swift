@@ -154,6 +154,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onItemSelect = newValue }
     }
     
+    var onItemMove: ((Int, Int) -> ())? {
+        get { return mediaPickerView.onItemMove }
+        set { mediaPickerView.onItemMove = newValue }
+    }
+    
     var onRemoveButtonTap: (() -> ())? {
         get { return mediaPickerView.onRemoveButtonTap }
         set { mediaPickerView.onRemoveButtonTap = newValue }

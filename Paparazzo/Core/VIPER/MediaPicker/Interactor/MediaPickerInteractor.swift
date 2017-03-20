@@ -12,6 +12,8 @@ protocol MediaPickerInteractor: class {
     func selectItem(_: MediaPickerItem)
     func selectedItem(completion: @escaping (MediaPickerItem?) -> ())
     
+    func moveItem(from sourceIndex: Int, to destionationIndex: Int)
+    
     func items(completion: @escaping (_ mediaPickerItems: [MediaPickerItem], _ canAddItems: Bool) -> ())
     func photoLibraryItems(completion: @escaping ([PhotoLibraryItem]) -> ())
     

@@ -74,6 +74,10 @@ final class MediaPickerView: UIView {
             self?.onCameraThumbnailTap?()
         }
         
+        thumbnailRibbonView.onItemMove = { [weak self] (sourceIndex, destinationIndex) in
+            self?.onItemMove?(sourceIndex, destinationIndex)
+        }
+        
         addSubview(photoPreviewView)
         addSubview(flashView)
         addSubview(thumbnailRibbonView)
@@ -200,6 +204,8 @@ final class MediaPickerView: UIView {
         get { return photoControlsView.onCameraButtonTap }
         set { photoControlsView.onCameraButtonTap = newValue }
     }
+    
+    var onItemMove: ((Int, Int) -> ())?
     
     var onSwipeToItem: ((MediaPickerItem) -> ())? {
         get { return photoPreviewView.onSwipeToItem }

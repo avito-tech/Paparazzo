@@ -149,6 +149,15 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.adjustViewForSelectedItem(item, animated: true)
         }
         
+        view?.onItemMove = { [weak self] (sourceIndex, destinationIndex) in
+            self?.interactor.moveItem(from: sourceIndex, to: destinationIndex)
+            self?.interactor.selectedItem(completion: { item in
+                if let item = item {
+                    self?.adjustViewForSelectedItem(item, animated: true)
+                }
+            })
+        }
+        
         view?.onCameraThumbnailTap = { [weak self] in
             self?.view?.setMode(.camera)
             self?.view?.scrollToCameraThumbnail(animated: true)
