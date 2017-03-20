@@ -1,3 +1,8 @@
+## Overview
+
+![Version](https://cocoapod-badges.herokuapp.com/v/Paparazzo/badge.png)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 **Paparazzo** is a component for picking and editing photos.
 
            | Key Features

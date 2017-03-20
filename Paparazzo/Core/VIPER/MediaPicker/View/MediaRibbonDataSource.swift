@@ -50,6 +50,10 @@ final class MediaRibbonDataSource {
         }
     }
     
+    func moveItem(from index: Int, to destinationIndex: Int) {
+        mediaPickerItems.moveElement(from: index, to: destinationIndex)
+    }
+    
     func indexPathForItem(_ item: MediaPickerItem) -> IndexPath? {
         return mediaPickerItems.index(of: item).flatMap { IndexPath(item: $0, section: 0) }
     }
