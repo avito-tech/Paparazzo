@@ -50,11 +50,8 @@ final class MediaRibbonDataSource {
         }
     }
     
-    func moveItemFrom(_ index: Int, to destinationIndex: Int) {
-        let itemToMove = mediaPickerItems[index]
-        mediaPickerItems.remove(at: index)
-        mediaPickerItems.insert(itemToMove, at: destinationIndex)
-
+    func moveItem(from index: Int, to destinationIndex: Int) {
+        mediaPickerItems.moveElement(from: index, to: destinationIndex)
     }
     
     func indexPathForItem(_ item: MediaPickerItem) -> IndexPath? {

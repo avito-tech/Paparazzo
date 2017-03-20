@@ -109,12 +109,9 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(selectedItem)
     }
     
-    func moveItemFrom(_ sourceIndex: Int, to destionationIndex: Int) {
-        let itemToMove = items[sourceIndex]
-        items.remove(at: sourceIndex)
-        items.insert(itemToMove, at: destionationIndex)
+    func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
+        items.moveElement(from: sourceIndex, to: destinationIndex)
     }
-
     
     func items(completion: @escaping (_ mediaPickerItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
         completion(items, canAddItems())

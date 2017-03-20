@@ -66,7 +66,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     var onPhotoItemSelect: ((MediaPickerItem) -> ())?
-    var onItemMoved: ((Int, Int) -> ())?
+    var onItemMove: ((Int, Int) -> ())?
     var onCameraItemSelect: (() -> ())?
     
     func selectCameraItem() {
@@ -237,7 +237,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     func canMoveTo(_ indexPath: IndexPath) -> Bool {
-        let cameraCellVisible = Int(NSNumber(value:dataSource.cameraCellVisible))
+        let cameraCellVisible = Int(NSNumber(value: dataSource.cameraCellVisible))
         
         let lastSectionIndex = collectionView.numberOfSections - 1
         let lastItemIndex = collectionView.numberOfItems(inSection: lastSectionIndex) - cameraCellVisible
@@ -246,9 +246,9 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         return indexPath != lastIndexPath
     }
     
-    func moveItemFrom(_ sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        onItemMoved?(sourceIndexPath.item, destinationIndexPath.item)
-        dataSource.moveItemFrom(sourceIndexPath.item, to: destinationIndexPath.item)
+    func moveItem(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        onItemMove?(sourceIndexPath.item, destinationIndexPath.item)
+        dataSource.moveItem(from: sourceIndexPath.item, to: destinationIndexPath.item)
     }
     
     

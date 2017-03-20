@@ -53,7 +53,7 @@ protocol MediaPickerViewInput: class {
     
     // MARK: - Actions in photo ribbon
     var onItemSelect: ((MediaPickerItem) -> ())? { get set }
-    var onItemMoved: ((Int, Int) -> ())? { get set }
+    var onItemMove: ((Int, Int) -> ())? { get set }
     
     // MARK: - Camera actions
     var onPhotoLibraryButtonTap: (() -> ())? { get set }

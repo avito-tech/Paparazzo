@@ -21,14 +21,17 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
         
-        installGestureRecognizer()
+        setUpGestureRecognizer()
     }
     
-    private func installGestureRecognizer() {
-        if longPressGestureRecognizer == nil {
+    private func setUpGestureRecognizer() {
+        if let collectionView = collectionView, longPressGestureRecognizer == nil {
             longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ThumbnailsViewLayout.handleLongPress(longPress:)))
             longPressGestureRecognizer?.minimumPressDuration = 0.2
-            collectionView?.addGestureRecognizer(longPressGestureRecognizer!)
+            
+            if let longPressGestureRecognizer = longPressGestureRecognizer {
+                collectionView.addGestureRecognizer(longPressGestureRecognizer)
+            }
         }
     }
     
@@ -73,11 +76,11 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     }
     
     private func startDragAtLocation(location: CGPoint) {
-        guard let cv = collectionView else { return }
-        guard let indexPath = cv.indexPathForItem(at: location) else { return }
-        guard let cell = cv.cellForItem(at: indexPath) else { return }
-        guard let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate else { return }
-        guard delegate.canMoveTo(indexPath) != false else { return }
+        guard let collectionView = collectionView,
+            let indexPath = collectionView.indexPathForItem(at: location),
+            let cell = collectionView.cellForItem(at: indexPath),
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate,
+            delegate.canMoveTo(indexPath) != false else { return }
 
         
         originalIndexPath = indexPath
@@ -87,7 +90,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         cell.isHidden = true
         
         if let draggingView = draggingView {
-            cv.addSubview(draggingView)
+            collectionView.addSubview(draggingView)
             
             dragOffset = CGPoint(x: draggingView.center.x - location.x, y: draggingView.center.y - location.y)
             
@@ -100,29 +103,30 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     }
     
     private func updateDragAtLocation(location: CGPoint) {
-        guard let view = draggingView else { return }
-        guard let cv = collectionView else { return }
-        guard let draggingIndexPath = draggingIndexPath else { return }
-        guard let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate else { return }
+        guard let view = draggingView,
+            let collectionView = collectionView,
+            let draggingIndexPath = draggingIndexPath,
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            else { return }
 
         view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
         
-        if let newIndexPath = cv.indexPathForItem(at: location), delegate.canMoveTo(newIndexPath) {
-            cv.moveItem(at: draggingIndexPath, to: newIndexPath)
+        if let newIndexPath = collectionView.indexPathForItem(at: location), delegate.canMoveTo(newIndexPath) {
+            collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
             self.draggingIndexPath = newIndexPath
         }
     }
     
     private func endDragAtLocation(location: CGPoint) {
-        guard let dragView = draggingView else { return }
-        guard let indexPath = draggingIndexPath else { return }
-        guard let cv = collectionView else { return }
-        guard let datasource = cv.dataSource else { return }
-        guard let cell = cv.cellForItem(at: indexPath as IndexPath) else { return }
-        guard let originalIndexPath = originalIndexPath else { return }
-        guard let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate else { return }
+        guard let dragView = draggingView,
+            let indexPath = draggingIndexPath,
+            let collectionView = collectionView,
+            let datasource = collectionView.dataSource,
+            let cell = collectionView.cellForItem(at: indexPath as IndexPath),
+            let originalIndexPath = originalIndexPath,
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate else { return }
 
-        let targetCenter = datasource.collectionView(cv, cellForItemAt: indexPath as IndexPath).center
+        let targetCenter = datasource.collectionView(collectionView, cellForItemAt: indexPath as IndexPath).center
         
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: [], animations: {
             dragView.center = targetCenter
@@ -131,7 +135,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         }) { (completed) in
             cell.isHidden = false
             if indexPath != originalIndexPath {
-                delegate.moveItemFrom(originalIndexPath, to: indexPath)
+                delegate.moveItem(from: originalIndexPath, to: indexPath)
             }
             
             dragView.removeFromSuperview()
@@ -145,5 +149,5 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
 protocol MediaRibbonLayoutDelegate: UICollectionViewDelegateFlowLayout {
     func shouldApplyTransformToItemAtIndexPath(_ indexPath: IndexPath) -> Bool
     func canMoveTo(_ indexPath: IndexPath) -> Bool
-    func moveItemFrom(_ sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
+    func moveItem(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
 }
