@@ -25,6 +25,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         layout.minimumLineSpacing = mediaRibbonInteritemSpacing
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.clipsToBounds = false
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
@@ -65,6 +66,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     var onPhotoItemSelect: ((MediaPickerItem) -> ())?
+    var onItemMoved: ((Int, Int) -> ())?
     var onCameraItemSelect: (() -> ())?
     
     func selectCameraItem() {
@@ -233,6 +235,22 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
             onCameraItemSelect?()
         }
     }
+    
+    func canMoveTo(_ indexPath: IndexPath) -> Bool {
+        let cameraCellVisible = Int(NSNumber(value:dataSource.cameraCellVisible))
+        
+        let lastSectionIndex = collectionView.numberOfSections - 1
+        let lastItemIndex = collectionView.numberOfItems(inSection: lastSectionIndex) - cameraCellVisible
+        let lastIndexPath = IndexPath(item: lastItemIndex, section: lastSectionIndex)
+        
+        return indexPath != lastIndexPath
+    }
+    
+    func moveItemFrom(_ sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        onItemMoved?(sourceIndexPath.item, destinationIndexPath.item)
+        dataSource.moveItemFrom(sourceIndexPath.item, to: destinationIndexPath.item)
+    }
+    
     
     // MARK: - Private
     
