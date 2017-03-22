@@ -1,0 +1,24 @@
+import Paparazzo
+import ImageSource
+
+final class ItemProvider {
+    
+    func remoteItems() -> [MediaPickerItem] {
+        let urlStrings = [
+            "http://www.catgallery.ru/kototeka/wp-content/uploads/2015/04/Foto-podborka-kosoglazyih-kotikov-3.jpg",
+            "https://i.ytimg.com/vi/IRSsqnJPBrs/maxresdefault.jpg",
+            "http://fonday.ru/images/tmp/16/7/original/16710fBjLzqnJlMXhoFHAG.jpg",
+            "http://www.velvet.by/files/userfiles/19083/ekrk.jpg"
+        ]
+        
+        return urlStrings
+            .flatMap(URL.init)
+            .map { url in
+                MediaPickerItem(
+                    image: RemoteImageSource(url: url),
+                    source: .camera
+                )
+            }
+    }
+    
+}
