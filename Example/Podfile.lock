@@ -9,7 +9,7 @@ PODS:
     - ImageSource/PHAsset (= 1.0.0)
     - ImageSource/Remote (= 1.0.0)
   - ImageSource/AlamofireImage (1.0.0):
-    - AlamofireImage (= 3.2.0)
+    - AlamofireImage (~> 3)
     - ImageSource/Remote
   - ImageSource/Core (1.0.0)
   - ImageSource/Helpers (1.0.0)
@@ -94,7 +94,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
-  ImageSource: 67f1dbce6dcef0490230136938246f2888cef8df
+  ImageSource: 063642cf96235b8ae4bc7c7dd8a4fdaf498a449a
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: abed7a53cf04db1a60aaddfe797dea7a7d010464
   Paparazzo: 65cf9d4be0c4b39d3c77cf0475fee9d1874aa8e3
