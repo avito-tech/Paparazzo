@@ -7,12 +7,7 @@ use_frameworks!
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
   pod 'Marshroute', '0.3.5'
-  #  Because local, if not local enough "pod 'ImageSource"
-  pod 'ImageSource/Core', :path => '../'
-  pod 'ImageSource/PHAsset', :path => '../'
-  pod 'ImageSource/Local', :path => '../'
-  pod 'ImageSource/Remote', :path => '../'
-  pod 'ImageSource/AlamofireImage', :path => '../'
+  pod 'ImageSource', :path => '../'
 end
 
 target 'PaparazzoExample_NoMarshroute' do
