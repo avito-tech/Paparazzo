@@ -287,6 +287,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onItemSelect?(item)
     }
     
+    func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
+        mediaPickerView.moveItem(from: sourceIndex, to: destinationIndex)
+    }
+    
     func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
         layoutSubviewsPromise.onFulfill { [weak self] _ in
             self?.mediaPickerView.scrollToItemThumbnail(item, animated: animated)
