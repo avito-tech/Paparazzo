@@ -97,15 +97,17 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             
             invalidateLayout()
             
-            UIView.animate(withDuration: 0.4,
-                           delay: 0,
-                           usingSpringWithDamping: 0.4,
-                           initialSpringVelocity: 0,
-                           options: [],
-                           animations: {
-                                draggingView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-            },
-                           completion: nil)
+            UIView.animate(
+                withDuration: 0.4,
+                delay: 0,
+                usingSpringWithDamping: 0.4,
+                initialSpringVelocity: 0,
+                options: [],
+                animations: {
+                    draggingView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                },
+                completion: nil
+            )
         }
     }
     
@@ -138,26 +140,27 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
 
         let targetCenter = datasource.collectionView(collectionView, cellForItemAt: indexPath as IndexPath).center
         
-        UIView.animate(withDuration: 0.4,
-                       delay: 0,
-                       usingSpringWithDamping: 0.4,
-                       initialSpringVelocity: 0,
-                       options: [],
-                       animations: {
-                            dragView.center = targetCenter
-                            dragView.transform = .identity
+        UIView.animate(
+            withDuration: 0.4,
+            delay: 0,
+            usingSpringWithDamping: 0.4,
+            initialSpringVelocity: 0,
+            options: [],
+            animations: {
+                dragView.center = targetCenter
+                dragView.transform = .identity
             
         },
-                       completion: { _ in
-                            cell.isHidden = false
-                            if indexPath != originalIndexPath {
-                                delegate.moveItem(from: originalIndexPath, to: indexPath)
-                            }
-                            
-                            dragView.removeFromSuperview()
-                            self.draggingIndexPath = nil
-                            self.draggingView = nil
-                            self.invalidateLayout()
+            completion: { _ in
+                cell.isHidden = false
+                if indexPath != originalIndexPath {
+                    delegate.moveItem(from: originalIndexPath, to: indexPath)
+                }
+                
+                dragView.removeFromSuperview()
+                self.draggingIndexPath = nil
+                self.draggingView = nil
+                self.invalidateLayout()
         })
     }
 }
