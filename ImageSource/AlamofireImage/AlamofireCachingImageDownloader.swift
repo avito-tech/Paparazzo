@@ -14,8 +14,8 @@ extension AlamofireImage.ImageDownloader: CachingImageDownloader {
             progressHandler?(progress.completedUnitCount, progress.totalUnitCount)
         }
         let downloadCompletion: (DataResponse<Image>) -> () = { response in
-            let image = response.value
-            completion(image?.cgImage, response.error)
+            let image = response.result.value
+            completion(image?.cgImage, response.result.error)
         }
         let requestReceipt = download(
             request,
