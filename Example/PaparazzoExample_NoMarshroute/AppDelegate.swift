@@ -21,13 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let exampleController = ExampleViewController()
         
+        let itemProvider = ItemProvider()
+        
         // Show full media picker
         exampleController.onShowMediaPickerButtonTap = { [weak exampleController] in
             
             let assembly = assemblyFactory.mediaPickerAssembly()
             
             let mediaPickerController = assembly.module(
-                items: [],
+                items: itemProvider.remoteItems(),
                 selectedItem: nil,
                 maxItemsCount: 20,
                 cropEnabled: true,
