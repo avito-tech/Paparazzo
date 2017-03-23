@@ -80,9 +80,9 @@ final class MediaPickerView: UIView {
         
         addSubview(photoPreviewView)
         addSubview(flashView)
-        addSubview(thumbnailRibbonView)
         addSubview(cameraControlsView)
         addSubview(photoControlsView)
+        addSubview(thumbnailRibbonView)
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(continueButton)
@@ -323,6 +323,10 @@ final class MediaPickerView: UIView {
     
     func selectItem(_ item: MediaPickerItem) {
         thumbnailRibbonView.selectMediaItem(item)
+    }
+    
+    func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
+        photoPreviewView.moveItem(from: sourceIndex, to: destinationIndex)
     }
     
     func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
