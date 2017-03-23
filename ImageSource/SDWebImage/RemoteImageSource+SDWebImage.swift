@@ -1,4 +1,3 @@
-import ImageSource
 import SDWebImage
 
 public extension RemoteImageSource {

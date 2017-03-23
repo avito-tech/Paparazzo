@@ -41,6 +41,8 @@
 		25A489CB1E656B2D00CC431B /* Latoto-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57EB1E6565890009A288 /* Latoto-Semibold.ttf */; };
 		25A489CC1E656B2D00CC431B /* Latoto-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57EC1E6565890009A288 /* Latoto-SemiboldItalic.ttf */; };
 		68D619AA8C30AB479F72525D /* Pods_PaparazzoExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2DAC113521ADEBFF8A22F1 /* Pods_PaparazzoExample.framework */; };
+		EFA7610E1E829434000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
+		EFA7610F1E829569000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +78,7 @@
 		8EC973CB836BAD3EDC80CABA /* Pods-PaparazzoExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.debug.xcconfig"; sourceTree = "<group>"; };
 		AD2DAC113521ADEBFF8A22F1 /* Pods_PaparazzoExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A4E214165A8FB30A7CE203 /* Pods_PaparazzoExample_NoMarshroute.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_NoMarshroute.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFA7610D1E829434000EB296 /* ItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +106,7 @@
 			children = (
 				251E57C21E65651F0009A288 /* PaparazzoExample */,
 				25A489B21E656A2B00CC431B /* PaparazzoExample_NoMarshroute */,
+				EFA7610C1E829434000EB296 /* Shared */,
 				251E57C11E65651F0009A288 /* Products */,
 				46BDCFFEF47DC3838FD4018B /* Pods */,
 				5DF9D2378585A5A97F9DD7F3 /* Frameworks */,
@@ -238,6 +242,14 @@
 				B9A4E214165A8FB30A7CE203 /* Pods_PaparazzoExample_NoMarshroute.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EFA7610C1E829434000EB296 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				EFA7610D1E829434000EB296 /* ItemProvider.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -464,6 +476,7 @@
 				251E57F61E6565890009A288 /* ExamplePresenter.swift in Sources */,
 				251E57F31E6565890009A288 /* ExampleAssemblyImpl.swift in Sources */,
 				251E57F01E6565890009A288 /* AppSpecificUITheme.swift in Sources */,
+				EFA7610E1E829434000EB296 /* ItemProvider.swift in Sources */,
 				251E57F91E6565890009A288 /* ExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -475,6 +488,7 @@
 				25A489B41E656A2B00CC431B /* AppDelegate.swift in Sources */,
 				25A489C71E656B1000CC431B /* NavigationController.swift in Sources */,
 				25A489C61E656B0200CC431B /* ExampleViewInput.swift in Sources */,
+				EFA7610F1E829569000EB296 /* ItemProvider.swift in Sources */,
 				25A489C31E656AF400CC431B /* ExampleViewController.swift in Sources */,
 				25A489C41E656AF800CC431B /* ExampleView.swift in Sources */,
 				25A489C51E656AFB00CC431B /* AppSpecificUITheme.swift in Sources */,

@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
+  s.default_subspec = 'Core', 'PHAsset', 'Local', 'Remote', 'AlamofireImage'
   
   s.subspec 'Core' do |cs|
   	cs.frameworks = 'CoreGraphics'
@@ -36,14 +37,21 @@ Pod::Spec.new do |s|
   
   s.subspec 'Remote' do |rs|
     rs.frameworks = 'ImageIO', 'MobileCoreServices'
-	rs.dependency 'ImageSource/Core'
-	rs.dependency 'ImageSource/Helpers'
-	rs.source_files = 'ImageSource/Remote/*'
-	
-    rs.subspec 'SDWebImage' do |sds|
-	  sds.dependency 'SDWebImage'
-  	  sds.source_files = 'ImageSource/Remote/*', 'ImageSource/Remote/SDWebImage/*'
-    end
+    rs.dependency 'ImageSource/Core'
+    rs.dependency 'ImageSource/UIKit'
+    rs.source_files = 'ImageSource/Remote/*'
+  end
+
+  s.subspec 'SDWebImage' do |sw|
+    sw.dependency 'ImageSource/Remote'
+    sw.dependency 'SDWebImage', '~> 3.8'
+    sw.source_files = 'ImageSource/SDWebImage/*'
+  end
+
+  s.subspec 'AlamofireImage' do |ai|
+    ai.dependency 'ImageSource/Remote'
+    ai.dependency 'AlamofireImage', '~> 3'
+    ai.source_files = 'ImageSource/AlamofireImage/*'
   end
   
   s.subspec 'UIKit' do |uis|
