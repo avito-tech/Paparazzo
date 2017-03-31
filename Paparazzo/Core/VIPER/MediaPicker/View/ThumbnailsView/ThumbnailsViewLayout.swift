@@ -28,6 +28,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         if let collectionView = collectionView, longPressGestureRecognizer == nil {
             let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
             longPressGestureRecognizer.minimumPressDuration = 0.2
+            
+            // to avoid awkward didHighlight call
+            longPressGestureRecognizer.delaysTouchesBegan = true
             self.longPressGestureRecognizer = longPressGestureRecognizer
             
             collectionView.addGestureRecognizer(longPressGestureRecognizer)
@@ -86,25 +89,22 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         
         originalIndexPath = indexPath
         draggingIndexPath = indexPath
-        draggingView = cell.snapshotView(afterScreenUpdates: true)
+        draggingView = cell.snapshotView(afterScreenUpdates: false)
+        draggingView?.transform = itemsTransform
+
         draggingView?.frame = cell.frame
         cell.isHidden = true
         
         if let draggingView = draggingView {
             collectionView.addSubview(draggingView)
-            
             dragOffset = CGPoint(x: draggingView.center.x - location.x, y: draggingView.center.y - location.y)
             
             invalidateLayout()
-            
+
             UIView.animate(
-                withDuration: 0.4,
-                delay: 0,
-                usingSpringWithDamping: 0.4,
-                initialSpringVelocity: 0,
-                options: [],
+                withDuration: 0.28,
                 animations: {
-                    draggingView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                    draggingView.transform = self.itemsTransform.scaledBy(x: 1.1, y: 1.1)
                 },
                 completion: nil
             )
@@ -139,17 +139,12 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             else { return }
 
         let targetCenter = datasource.collectionView(collectionView, cellForItemAt: indexPath as IndexPath).center
-        
+
         UIView.animate(
-            withDuration: 0.4,
-            delay: 0,
-            usingSpringWithDamping: 0.4,
-            initialSpringVelocity: 0,
-            options: [],
+            withDuration: 0.28,
             animations: {
                 dragView.center = targetCenter
-                dragView.transform = .identity
-            
+                dragView.transform = self.itemsTransform
         },
             completion: { _ in
                 cell.isHidden = false
