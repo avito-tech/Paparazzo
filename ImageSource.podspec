@@ -3,10 +3,10 @@ Pod::Spec.new do |s|
   s.module_name            = 'ImageSource'
   s.version                = '1.1.0'
   s.summary                = 'ImageSource by Avito'
-  s.homepage               = 'http://stash.msk.avito.ru/projects/MA/repos/avito-ios-media-picker'
+  s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'Avito'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
-  s.source                 = { :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-media-picker.git', :tag => "#{s.version}" }
+  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo', :tag => "#{s.version}" }
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
