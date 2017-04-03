@@ -1,6 +1,6 @@
 public enum ImageDeliveryMode {
-    /// completion может вызываться несколько раз, по мере получения картинки лучшего качества
+    /// `resultHandler` may be called multiple times providing a better quality image each time
     case progressive
-    // completion вызовется только один раз, когда будет получена картинка наилучшего качества (или если картинку не удается получить)
+    /// `resultHandler` will be called only once providing the best possible quality image (or not image if loading fails)
     case best
 }

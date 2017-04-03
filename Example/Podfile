@@ -19,3 +19,7 @@ target 'PaparazzoExample_NoMarshroute' do
   pod 'ImageSource/SDWebImage', :path => '../'
 end
 
+target 'PaparazzoExample_Storyboard' do
+  pod 'Paparazzo/Core', :path => '../'
+  pod 'ImageSource', :path => '../'
+end

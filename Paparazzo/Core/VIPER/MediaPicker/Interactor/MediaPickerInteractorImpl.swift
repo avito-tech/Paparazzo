@@ -101,7 +101,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(adjacentItem, canAddItems())
     }
     
-    func selectItem(_ item: MediaPickerItem) {
+    func selectItem(_ item: MediaPickerItem?) {
         selectedItem = item
     }
     

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '1.0.0'
+  s.version                = '1.1.0'
   s.summary                = 'ImageSource by Avito'
   s.homepage               = 'http://stash.msk.avito.ru/projects/MA/repos/avito-ios-media-picker'
   s.license                = 'Avito'

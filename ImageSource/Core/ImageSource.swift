@@ -3,12 +3,13 @@ import CoreGraphics
 public protocol ImageSource: class {
     
     /**
-     * Правила вызова resultHandler:
-     * — вызывается как минимум один раз, кроме случая отмены запроса
-     * - после отмены запроса не вызывается
-     * — вызывается не более одного раза, если options.deliveryMode == .best
-     * - может вызываться несколько раз, если options.deliveryMode == .progressive
-     * - может вызваться синхронно до выхода из функции!
+     - Parameter resultHandler: Closure that is called when image is received or when image retreivement fails.
+       - called on main thread
+       - called at least once if the request is not cancelled
+       - not called after request cancellation
+       - called at most once if options.deliveryMode == .best
+       - may be called more than once if options.deliveryMode == .progressive
+       - may be called syncronously before functions returns
      */
     @discardableResult
     func requestImage<T: InitializableWithCGImage>(
