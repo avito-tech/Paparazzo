@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'Avito'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
-  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo', :tag => "#{s.version}" }
+  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "#{s.version}" }
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
@@ -17,21 +17,15 @@ Pod::Spec.new do |s|
     cs.source_files = 'ImageSource/Core/*'
   end
   
-  s.subspec 'Helpers' do |hs|
-    hs.source_files = 'ImageSource/Helpers/*'
-  end
-  
   s.subspec 'PHAsset' do |ps|
     ps.frameworks = 'Photos'
 	ps.dependency 'ImageSource/Core'
-	ps.dependency 'ImageSource/Helpers'
 	ps.source_files = 'ImageSource/PHAsset/*'
   end
   
   s.subspec 'Local' do |ls|
     ls.frameworks = 'ImageIO', 'MobileCoreServices'
 	ls.dependency 'ImageSource/Core'
-	ls.dependency 'ImageSource/Helpers'
 	ls.source_files = 'ImageSource/Local/*'
   end
   
@@ -57,7 +51,6 @@ Pod::Spec.new do |s|
   s.subspec 'UIKit' do |uis|
     uis.frameworks = 'UIKit'
 	uis.dependency 'ImageSource/Core'
-	uis.dependency 'ImageSource/Helpers'
 	uis.source_files = 'ImageSource/UIKit/*'
   end
 end
