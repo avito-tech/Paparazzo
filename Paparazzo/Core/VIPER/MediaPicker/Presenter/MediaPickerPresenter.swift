@@ -229,7 +229,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         adjustPhotoTitleForItem(item)
         
         view?.setMode(.photoPreview(item))
-        if scrollToSelected != false {
+        if scrollToSelected {
             view?.scrollToItemThumbnail(item, animated: animated)
         }
     }
