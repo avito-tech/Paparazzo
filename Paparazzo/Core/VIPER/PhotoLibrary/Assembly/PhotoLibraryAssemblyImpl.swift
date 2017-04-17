@@ -11,7 +11,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
     public func module(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ())
+        configure: (PhotoLibraryModule) -> ())
         -> UIViewController
     {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
@@ -36,7 +36,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

@@ -4,7 +4,7 @@ public protocol PhotoLibraryAssembly: class {
     func module(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ()
+        configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController
 }
 

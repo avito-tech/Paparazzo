@@ -7,7 +7,7 @@ public protocol MediaPickerAssembly: class {
         maxItemsCount: Int?,
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
-        configuration: (MediaPickerModule) -> ())
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
 

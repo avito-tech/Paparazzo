@@ -20,7 +20,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         maxItemsCount: Int?,
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
-        configuration: (MediaPickerModule) -> ())
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
         let interactor = MediaPickerInteractorImpl(
@@ -55,7 +55,7 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

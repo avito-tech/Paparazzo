@@ -22,7 +22,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: MediaPickerMarshrouteAssem
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
         routerSeed: RouterSeed,
-        configuration: (MediaPickerModule) -> ())
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
         let interactor = MediaPickerInteractorImpl(
@@ -56,7 +56,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: MediaPickerMarshrouteAssem
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

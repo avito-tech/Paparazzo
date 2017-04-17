@@ -9,7 +9,7 @@ public protocol MediaPickerMarshrouteAssembly: class {
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
         routerSeed: RouterSeed,
-        configuration: (MediaPickerModule) -> ())
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
 

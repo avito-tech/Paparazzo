@@ -8,12 +8,12 @@ protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
-        configuration: (MediaPickerModule) -> ()
+        configure: (MediaPickerModule) -> ()
     )
     
     func showPhotoLibrary(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ()
+        configure: (PhotoLibraryModule) -> ()
     )
 }

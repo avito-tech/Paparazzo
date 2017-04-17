@@ -62,7 +62,7 @@ final class ExamplePresenter {
             selectedItem: items.last,
             maxItemsCount: 20,
             cropCanvasSize: cropCanvasSize,
-            configuration: { [weak self] module in
+            configure: { [weak self] module in
                 self?.configureMediaPicker(module: module)
             }
         )
