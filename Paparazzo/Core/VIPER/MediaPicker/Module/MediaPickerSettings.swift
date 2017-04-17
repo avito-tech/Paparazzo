@@ -14,7 +14,7 @@ public struct MediaPickerSettings {
         maxItemsCount: Int?,
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
-        initialActiveCamera: CameraType = .back)
+        initialActiveCamera: CameraType = .front)
     {
         self.items = items
         self.selectedItem = selectedItem

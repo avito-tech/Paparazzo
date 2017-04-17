@@ -6,7 +6,7 @@ public final class AssemblyFactory: CameraAssemblyFactory, MediaPickerAssemblyFa
         self.theme = theme
     }
     
-    func cameraAssembly(initialActiveCamera: CameraType = .back) -> CameraAssembly {
+    func cameraAssembly(initialActiveCamera: CameraType) -> CameraAssembly {
         return CameraAssemblyImpl(theme: theme, initialActiveCamera: initialActiveCamera)
     }
     

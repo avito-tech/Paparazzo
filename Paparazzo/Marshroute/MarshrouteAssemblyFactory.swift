@@ -10,7 +10,7 @@ public final class MarshrouteAssemblyFactory:
         self.theme = theme
     }
     
-    func cameraAssembly(initialActiveCamera: CameraType = .back) -> CameraAssembly {
+    func cameraAssembly(initialActiveCamera: CameraType) -> CameraAssembly {
         return CameraAssemblyImpl(theme: theme, initialActiveCamera: initialActiveCamera)
     }
     
