@@ -5,11 +5,11 @@
 
 **Paparazzo** is a component for picking and editing photos.
 
-           | Key Features
------------|---------------
-:camera:   | Taking photos using camera
-:iphone:   | Picking photos from user's photo library
-:scissors: | Photo cropping and rotation
+|            | Key Features                             |
+|------------|------------------------------------------|
+| :camera:   | Taking photos using camera               |
+| :iphone:   | Picking photos from user's photo library |
+| :scissors: | Photo cropping and rotation              |
 
 ![Demo](PaparazzoDemo.gif)
 
