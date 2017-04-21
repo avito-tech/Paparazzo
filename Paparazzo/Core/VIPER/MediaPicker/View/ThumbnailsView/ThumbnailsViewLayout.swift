@@ -162,9 +162,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     // MARK: Handle scrolling to the edges
    
-    private var continuousScrollDirection: direction = .none
+    private var continuousScrollDirection: Direction = .none
 
-    enum direction {
+    enum Direction {
         case left
         case right
         case none
