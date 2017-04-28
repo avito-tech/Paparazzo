@@ -147,14 +147,14 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onItemSelect = { item in
             self?.interactor.selectItem(item)
-            self?.adjustViewForSelectedItem(item, animated: true)
+            self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: true)
         }
         
         view?.onItemMove = { sourceIndex, destinationIndex in
             self?.interactor.moveItem(from: sourceIndex, to: destinationIndex)
             self?.interactor.selectedItem { item in
                 if let item = item {
-                    self?.adjustViewForSelectedItem(item, animated: true)
+                    self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: false)
                 }
             }
             self?.view?.moveItem(from: sourceIndex, to: destinationIndex)
@@ -225,11 +225,13 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
-    private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool) {
+    private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool, scrollToSelected: Bool) {
         adjustPhotoTitleForItem(item)
         
         view?.setMode(.photoPreview(item))
-        view?.scrollToItemThumbnail(item, animated: animated)
+        if scrollToSelected {
+            view?.scrollToItemThumbnail(item, animated: animated)
+        }
     }
     
     private func adjustPhotoTitleForItem(_ item: MediaPickerItem) {
@@ -258,7 +260,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func selectItem(_ item: MediaPickerItem) {
         view?.selectItem(item)
-        adjustViewForSelectedItem(item, animated: false)
+        adjustViewForSelectedItem(item, animated: false, scrollToSelected: true)
     }
     
     private func selectCamera() {

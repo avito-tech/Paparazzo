@@ -124,6 +124,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         if let newIndexPath = collectionView.indexPathForItem(at: location), delegate.canMove(to: newIndexPath) {
             collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
             self.draggingIndexPath = newIndexPath
+            beginScrollIfNeeded()
         }
     }
     
@@ -157,6 +158,144 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 self.draggingView = nil
                 self.invalidateLayout()
         })
+    }
+    
+    // MARK: Handle scrolling to the edges
+   
+    private var continuousScrollDirection: Direction = .none
+
+    enum Direction {
+        case left
+        case right
+        case none
+        
+        func scrollValue(_ speedValue: CGFloat, percentage: CGFloat) -> CGFloat {
+            var value: CGFloat = 0.0
+            switch self {
+            case .left:
+                value = -speedValue
+            case .right:
+                value = speedValue
+            case .none:
+                return 0
+            }
+            
+            let proofedPercentage: CGFloat = max(min(1.0, percentage), 0)
+            return value * proofedPercentage
+        }
+    }
+    
+
+    private let triggerInset : CGFloat = 30.0
+    
+    private var scrollSpeedValue: CGFloat = 5.0
+    private var displayLink: CADisplayLink?
+
+    private var offsetFromLeft: CGFloat {
+        guard let contentOffset = collectionView?.contentOffset else { return 0 }
+        return contentOffset.x
+    }
+    
+    private var collectionViewLength: CGFloat {
+        guard let collectionViewSize = collectionView?.bounds.size else { return 0 }
+        return collectionViewSize.width
+    }
+    
+    private var contentLength: CGFloat {
+        guard let contentSize = collectionView?.contentSize else { return 0 }
+        return contentSize.width
+    }
+    
+    private var draggingViewTopEdge: CGFloat? {
+        return draggingView.flatMap { $0.frame.minX }
+    }
+    
+    private var draggingViewEndEdge: CGFloat? {
+        return draggingView.flatMap { $0.frame.maxX }
+    }
+    
+    private func setUpDisplayLink() {
+        guard self.displayLink == nil else { return }
+        
+        let displayLink = CADisplayLink(target: self, selector: #selector(onContinuousScroll))
+        displayLink.frameInterval = 1
+        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        self.displayLink = displayLink
+    }
+    
+    private func invalidateDisplayLink() {
+        continuousScrollDirection = .none
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
+    private func beginScrollIfNeeded() {
+        guard
+            let draggingViewTopEdge = draggingViewTopEdge,
+            let draggingViewEndEdge = draggingViewEndEdge
+            else { return }
+        
+        if draggingViewTopEdge <= offsetFromLeft + triggerInset {
+            continuousScrollDirection = .left
+            setUpDisplayLink()
+        } else if draggingViewEndEdge >= offsetFromLeft + collectionViewLength - triggerInset {
+            continuousScrollDirection = .right
+            setUpDisplayLink()
+        } else {
+            invalidateDisplayLink()
+        }
+    }
+    
+    @objc private func onContinuousScroll() {
+        guard let draggingView = draggingView else { return }
+        
+        let percentage = calculateTriggerPercentage()
+        var scrollRate = continuousScrollDirection.scrollValue(scrollSpeedValue, percentage: percentage)
+        
+        let offset = offsetFromLeft
+        let length = collectionViewLength
+        
+        if contentLength <= length {
+            return
+        }
+        
+        if offset + scrollRate <= 0 {
+            scrollRate = -offset
+        } else if offset + scrollRate >= contentLength - length {
+            scrollRate = contentLength - length - offset
+        }
+
+        draggingView.x += scrollRate
+
+        collectionView?.performBatchUpdates({
+            self.collectionView?.contentOffset.x += scrollRate
+        }, completion: nil)
+    }
+    
+    private func calculateTriggerPercentage() -> CGFloat {
+        guard draggingView != nil else { return 0 }
+        
+        let offset = offsetFromLeft
+        let offsetEnd = offsetFromLeft + collectionViewLength
+        
+        var percentage: CGFloat = 0
+        
+        guard triggerInset != 0 else {
+            return 0
+        }
+        
+        if self.continuousScrollDirection == .left {
+            if let fakeCellEdge = draggingViewTopEdge {
+                percentage = 1.0 - ((fakeCellEdge - offset) / triggerInset)
+            }
+        } else if continuousScrollDirection == .right {
+            if let draggingViewEdge = draggingViewEndEdge {
+                percentage = 1.0 - ((offsetEnd - draggingViewEdge) / triggerInset)
+            }
+        }
+        
+        percentage = min(1, max(0, percentage))
+        return percentage
     }
 }
 
