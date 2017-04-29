@@ -52,6 +52,8 @@ protocol MediaPickerViewInput: class {
     var onCameraToggleButtonTap: (() -> ())? { get set }
     func setCameraToggleButtonVisible(_: Bool)
     
+    func setContinueButtonVisible(_: Bool)
+    
     // MARK: - Actions in photo ribbon
     var onItemSelect: ((MediaPickerItem) -> ())? { get set }
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())? { get set }
@@ -71,9 +73,7 @@ protocol MediaPickerViewInput: class {
     var onSwipeToCameraProgressChange: ((CGFloat) -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
-    var onViewWillAppear: ((_ animated: Bool) -> ())? { get set }
     var onViewDidAppear: ((_ animated: Bool) -> ())? { get set }
-    var onViewDidDisappear: ((_ animated: Bool) -> ())? { get set }
     
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())? { get set }
 }

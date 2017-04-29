@@ -1,14 +1,16 @@
 import ImageSource
 import UIKit
 
-final class ImageCroppingView: UIView {
+final class ImageCroppingView: UIView, ThemeConfigurable {
+    
+    typealias ThemeType = ImageCroppingUITheme
     
     // MARK: - Subviews
     
     /// Вьюха, которая показывается до того, как будет доступна полная картинка для редактирования (чтобы избежать моргания)
     private let splashView = UIImageView()
     
-    private let previewView = PhotoTweakView()
+    private let previewView = CroppingPreviewView()
     private let controlsView = ImageCroppingControlsView()
     private let aspectRatioButton = UIButton()
     private let titleLabel = UILabel()
@@ -42,6 +44,21 @@ final class ImageCroppingView: UIView {
         
         splashView.contentMode = .scaleAspectFill
         
+        previewView.onPreviewImageWillLoading = { [weak self] in
+            self?.splashView.isHidden = false
+        }
+        
+        previewView.onPreviewImageDidLoad = { [weak self] image in
+            if self?.splashView.isHidden == false {
+                self?.splashView.image = image
+            }
+        }
+        
+        previewView.onImageDidLoad = { [weak self] in
+            self?.splashView.isHidden = true
+            self?.splashView.image = nil
+        }
+
         addSubview(previewView)
         addSubview(splashView)
         addSubview(controlsView)
@@ -78,11 +95,10 @@ final class ImageCroppingView: UIView {
             top: bounds.top,
             bottom: controlsView.top
         )
-        
         layoutSplashView()
     }
     
-    private func layoutSplashView() {
+    func layoutSplashView() {
         
         let height: CGFloat
         
@@ -97,6 +113,12 @@ final class ImageCroppingView: UIView {
         
         splashView.size = CGSize(width: bounds.size.width, height: height).scaled(scaleToFit)
         splashView.center = previewView.center
+    }
+    
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        controlsView.setTheme(theme)
     }
     
     // MARK: - ImageCroppingView
@@ -136,35 +158,11 @@ final class ImageCroppingView: UIView {
     }
     
     func setImage(_ image: ImageSource, previewImage: ImageSource?, completion: (() -> ())?) {
-        
-        if let previewImage = previewImage {
-            
-            let screenSize = UIScreen.main.bounds.size
-            let previewOptions = ImageRequestOptions(size: .fitSize(screenSize), deliveryMode: .progressive)
-            
-            splashView.isHidden = false
-            
-            previewImage.requestImage(options: previewOptions) { [weak self] (result: ImageRequestResult<UIImage>) in
-                if let image = result.image, self?.splashView.isHidden == false {
-                    self?.splashView.image = image
-                }
-            }
-        }
-        
-        let options = ImageRequestOptions(size: .fitSize(sourceImageMaxSize), deliveryMode: .best)
-        
-        image.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
-            if let image = result.image {
-                self?.previewView.setImage(image)
-                self?.splashView.isHidden = true
-                self?.splashView.image = nil
-            }
-            completion?()
-        }
+        previewView.setImage(image, previewImage: previewImage, completion: completion)
     }
     
     func setImageTiltAngle(_ angle: Float) {
-        previewView.setTiltAngle(angle.degreesToRadians())
+        previewView.setImageTiltAngle(angle)
     }
 
     func turnCounterclockwise() {
@@ -180,16 +178,12 @@ final class ImageCroppingView: UIView {
     }
     
     func setCanvasSize(_ size: CGSize) {
-        sourceImageMaxSize = size
+        previewView.setCanvasSize(size)
     }
     
     func setControlsEnabled(_ enabled: Bool) {
         controlsView.setControlsEnabled(enabled)
         aspectRatioButton.isEnabled = enabled
-    }
-    
-    func setTheme(_ theme: ImageCroppingUITheme) {
-        controlsView.setTheme(theme)
     }
     
     func setTitle(_ title: String) {
@@ -260,9 +254,6 @@ final class ImageCroppingView: UIView {
     // MARK: - Private
     
     private var aspectRatio: AspectRatio = .portrait_3x4
-    
-    /// Максимальный размер оригинальной картинки. Если меньше размера самой картинки, она будет даунскейлиться.
-    private var sourceImageMaxSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
     
     private func aspectRatioButtonSize() -> CGSize {
         switch aspectRatio {

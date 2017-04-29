@@ -1,6 +1,8 @@
 import UIKit
 
-final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
+final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeConfigurable {
+    
+    typealias ThemeType = PhotoLibraryUITheme
     
     // MARK: - State
     
@@ -52,6 +54,13 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         
         collectionView.frame = bounds
         accessDeniedView.frame = bounds
+    }
+    
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        self.theme = theme
+        accessDeniedView.setTheme(theme)
     }
     
     // MARK: - PhotoLibraryView
@@ -129,11 +138,6 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     func scrollToBottom() {
         collectionView.scrollToBottom()
-    }
-    
-    func setTheme(_ theme: PhotoLibraryUITheme) {
-        self.theme = theme
-        accessDeniedView.setTheme(theme)
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {

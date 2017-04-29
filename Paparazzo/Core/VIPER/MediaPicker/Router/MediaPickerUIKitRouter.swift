@@ -16,16 +16,14 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     // MARK: - PhotoPickerRouter
 
     func showPhotoLibrary(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ())
+        data: PhotoLibraryData,
+        configure: (PhotoLibraryModule) -> ())
     {
         let assembly = assemblyFactory.photoLibraryAssembly()
         
         let viewController = assembly.module(
-            selectedItems: selectedItems,
-            maxSelectedItemsCount: maxSelectedItemsCount,
-            configuration: configuration
+            data: data,
+            configure: configure
         )
         
         let navigationController = UINavigationController(rootViewController: viewController)
@@ -36,14 +34,14 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     func showCroppingModule(
         forImage image: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ())
+        configure: (ImageCroppingModule) -> ())
     {
         let assembly = assemblyFactory.imageCroppingAssembly()
         
         let viewController = assembly.module(
             image: image,
             canvasSize: canvasSize,
-            configuration: configuration
+            configure: configure
         )
         
         cropViewControllers.append(WeakWrapper(value: viewController))
