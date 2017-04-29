@@ -5,13 +5,18 @@ use_frameworks!
 
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
-  pod 'ImageSource', :path => '../'
   pod 'Marshroute', '0.3.5'
+  pod 'ImageSource', :path => '../'
 end
 
 target 'PaparazzoExample_NoMarshroute' do
   pod 'Paparazzo/Core', :path => '../'
-  pod 'ImageSource', :path => '../'
+  pod 'Paparazzo/SDWebImage', :path => '../'
+  pod 'ImageSource/Core', :path => '../'
+  pod 'ImageSource/PHAsset', :path => '../'
+  pod 'ImageSource/Local', :path => '../'
+  pod 'ImageSource/Remote', :path => '../'
+  pod 'ImageSource/SDWebImage', :path => '../'
 end
 
 target 'PaparazzoExample_Storyboard' do

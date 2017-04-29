@@ -50,5 +50,10 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
