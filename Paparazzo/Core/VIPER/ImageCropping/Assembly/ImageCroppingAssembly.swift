@@ -5,7 +5,7 @@ protocol ImageCroppingAssembly: class {
     func module(
         image: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ())
+        configure: (ImageCroppingModule) -> ())
         -> UIViewController
 }
 

@@ -2,9 +2,8 @@ import UIKit
 
 public protocol PhotoLibraryAssembly: class {
     func module(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ()
+        data: PhotoLibraryData,
+        configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController
 }
 

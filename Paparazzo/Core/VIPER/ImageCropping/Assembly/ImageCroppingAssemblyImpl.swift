@@ -1,21 +1,22 @@
 import ImageSource
 import UIKit
 
-public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
-    
-    private let theme: ImageCroppingUITheme
-    
-    init(theme: ImageCroppingUITheme) {
-        self.theme = theme
-    }
+public final class ImageCroppingAssemblyImpl: BasePaparazzoAssembly , ImageCroppingAssembly {
     
     public func module(
         image: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ()
+        configure: (ImageCroppingModule) -> ()
     ) -> UIViewController {
+        
+        let imageCroppingService = serviceFactory.imageCroppingService(
+            image: image,
+            canvasSize: canvasSize
+        )
 
-        let interactor = ImageCroppingInteractorImpl(image: image, canvasSize: canvasSize)
+        let interactor = ImageCroppingInteractorImpl(
+            imageCroppingService: imageCroppingService
+        )
 
         let presenter = ImageCroppingPresenter(
             interactor: interactor
@@ -27,7 +28,7 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
 
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
 
         return viewController
     }

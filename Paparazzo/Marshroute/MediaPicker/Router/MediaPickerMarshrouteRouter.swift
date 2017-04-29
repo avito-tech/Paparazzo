@@ -15,19 +15,18 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
     // MARK: - PhotoPickerRouter
 
     func showPhotoLibrary(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ())
+        data: PhotoLibraryData,
+        configure: (PhotoLibraryModule) -> ())
     {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
             let assembly = assemblyFactory.photoLibraryAssembly()
             
             return assembly.module(
-                selectedItems: selectedItems,
-                maxSelectedItemsCount: maxSelectedItemsCount,
+                selectedItems: data.selectedItems,
+                maxSelectedItemsCount: data.maxSelectedItemsCount,
                 routerSeed: routerSeed,
-                configuration: configuration
+                configure: configure
             )
         }
     }
@@ -35,7 +34,7 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
     func showCroppingModule(
         forImage image: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ())
+        configure: (ImageCroppingModule) -> ())
     {
         pushViewControllerDerivedFrom({ _ in
             
@@ -44,7 +43,7 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
             return assembly.module(
                 image: image,
                 canvasSize: canvasSize,
-                configuration: configuration
+                configure: configure
             )
             
         }, animator: NonAnimatedPushAnimator())

@@ -1,7 +1,9 @@
 import ImageSource
 import UIKit
 
-final class ImageCroppingViewController: UIViewController, ImageCroppingViewInput {
+final class ImageCroppingViewController: PaparazzoViewController, ImageCroppingViewInput, ThemeConfigurable {
+    
+    typealias ThemeType = ImageCroppingUITheme
     
     private let imageCroppingView = ImageCroppingView()
     
@@ -135,20 +137,11 @@ final class ImageCroppingViewController: UIViewController, ImageCroppingViewInpu
         imageCroppingView.setGridButtonSelected(selected)
     }
     
-    // MARK: - ImageCroppingViewController
+    // MARK: - ThemeConfigurable
     
-    func setTheme(_ theme: ImageCroppingUITheme) {
+    func setTheme(_ theme: ThemeType) {
         imageCroppingView.setTheme(theme)
     }
-    
-    // MARK: - Dispose bag
-    
-    private var disposables = [AnyObject]()
-    
-    func addDisposable(_ object: AnyObject) {
-        disposables.append(object)
-    }
-    
     
     // MARK: - Private
     

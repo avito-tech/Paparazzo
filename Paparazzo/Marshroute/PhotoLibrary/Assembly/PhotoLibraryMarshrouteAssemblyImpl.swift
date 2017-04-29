@@ -1,19 +1,13 @@
 import UIKit
 import Marshroute
 
-public final class PhotoLibraryMarshrouteAssemblyImpl: PhotoLibraryMarshrouteAssembly {
-    
-    private let theme: PhotoLibraryUITheme
-    
-    init(theme: PhotoLibraryUITheme) {
-        self.theme = theme
-    }
+public final class PhotoLibraryMarshrouteAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryMarshrouteAssembly {
     
     public func module(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
-        configuration: (PhotoLibraryModule) -> ()
+        configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
@@ -37,7 +31,7 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: PhotoLibraryMarshrouteAss
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

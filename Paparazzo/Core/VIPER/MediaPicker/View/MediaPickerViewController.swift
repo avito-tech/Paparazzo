@@ -1,7 +1,9 @@
 import ImageSource
 import UIKit
 
-final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
+final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewInput, ThemeConfigurable {
+    
+    typealias ThemeType = MediaPickerRootModuleUITheme
     
     private var isBeingRotated: Bool = false
     private let mediaPickerView = MediaPickerView()
@@ -28,8 +30,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
-        
-        onViewWillAppear?(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -72,11 +72,6 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.reloadCamera()
         
         onViewDidAppear?(animated)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        onViewDidDisappear?(animated)
     }
     
     override func viewDidLayoutSubviews() {
@@ -197,9 +192,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     }
     
     var onViewDidLoad: (() -> ())?
-    var onViewWillAppear: ((_ animated: Bool) -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?
-    var onViewDidDisappear: ((_ animated: Bool) -> ())?
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())?
     
     func setMode(_ mode: MediaPickerViewMode) {
@@ -236,6 +229,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setContinueButtonEnabled(_ enabled: Bool) {
         mediaPickerView.setContinueButtonEnabled(enabled)
+    }
+    
+    func setContinueButtonVisible(_ visible: Bool) {
+        mediaPickerView.setContinueButtonVisible(visible)
     }
     
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
@@ -333,14 +330,16 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setPhotoLibraryButtonEnabled(enabled)
     }
     
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        mediaPickerView.setTheme(theme)
+    }
+    
     // MARK: - MediaPickerViewController
     
     func setCameraView(_ view: UIView) {
         mediaPickerView.setCameraView(view)
-    }
-    
-    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
-        mediaPickerView.setTheme(theme)
     }
     
     func setShowsCropButton(_ showsCropButton: Bool) {
@@ -357,12 +356,5 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
         mediaPickerView.frame = view.bounds
     }
-    
-    // MARK: - Dispose bag
-    
-    private var disposables = [AnyObject]()
-    
-    func addDisposable(_ object: AnyObject) {
-        disposables.append(object)
-    }
+
 }

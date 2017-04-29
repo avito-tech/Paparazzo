@@ -1,24 +1,17 @@
 import UIKit
 
-public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
-    
-    private let theme: PhotoLibraryUITheme
-    
-    init(theme: PhotoLibraryUITheme) {
-        self.theme = theme
-    }
+public final class PhotoLibraryAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryAssembly {
     
     public func module(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ())
+        data: PhotoLibraryData,
+        configure: (PhotoLibraryModule) -> ())
         -> UIViewController
     {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
         let interactor = PhotoLibraryInteractorImpl(
-            selectedItems: selectedItems,
-            maxSelectedItemsCount: maxSelectedItemsCount,
+            selectedItems: data.selectedItems,
+            maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService
         )
         
@@ -36,7 +29,7 @@ public final class PhotoLibraryAssemblyImpl: PhotoLibraryAssembly {
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }
