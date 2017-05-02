@@ -1,13 +1,15 @@
+import ImageSource
+
 public struct MaskCropperData {
     
-    public let photo: MediaPickerItem
+    public let imageSource: ImageSource
     public let cropCanvasSize: CGSize
     
     public init(
-        photo: MediaPickerItem,
+        imageSource: ImageSource,
         cropCanvasSize: CGSize)
     {
-        self.photo = photo
+        self.imageSource = imageSource
         self.cropCanvasSize = cropCanvasSize
     }
     
