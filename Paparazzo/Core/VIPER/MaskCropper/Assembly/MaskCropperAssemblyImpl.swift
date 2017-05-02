@@ -10,7 +10,7 @@ public final class MaskCropperAssemblyImpl: BasePaparazzoAssembly, MaskCropperAs
         ) -> UIViewController {
         
         let imageCroppingService = serviceFactory.imageCroppingService(
-            image: data.photo.image,
+            image: data.imageSource,
             canvasSize: data.cropCanvasSize
         )
         
