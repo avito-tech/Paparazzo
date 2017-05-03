@@ -13,7 +13,7 @@ final class MaskCropperView: UIView, ThemeConfigurable {
     
     // MARK: - Constants
     
-    private let aspectRatio = CGFloat(AspectRatio.portrait_3x4.widthToHeightRatio())
+    private let aspectRatio = CGFloat(AspectRatio.defaultRatio.widthToHeightRatio())
     private let closeButtonSize = CGSize(width: 38, height: 38)
     private let continueButtonHeight = CGFloat(38)
     private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
