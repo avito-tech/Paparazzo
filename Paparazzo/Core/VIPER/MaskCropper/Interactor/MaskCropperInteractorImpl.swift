@@ -21,4 +21,8 @@ final class MaskCropperInteractorImpl: MaskCropperInteractor {
     func croppedImage(previewImage: CGImage, completion: @escaping (CroppedImageSource) -> ()) {
         imageCroppingService.croppedImage(previewImage: previewImage, completion: completion)
     }
+    
+    func setCroppingParameters(_ parameters: ImageCroppingParameters) {
+        imageCroppingService.setCroppingParameters(parameters)
+    }
 }

@@ -64,7 +64,10 @@ final class MaskCropperViewController:
         set { circleImageCroppingView.onDiscardTap = newValue }
     }
     
-    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())?
+    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? {
+        get { return circleImageCroppingView.onCroppingParametersChange }
+        set { circleImageCroppingView.onCroppingParametersChange = newValue }
+    }
     
     func setConfirmButtonTitle(_ title: String) {
         circleImageCroppingView.setConfirmButtonTitle(title)
