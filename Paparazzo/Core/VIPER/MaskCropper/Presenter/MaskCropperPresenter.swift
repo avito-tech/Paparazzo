@@ -28,6 +28,10 @@ final class MaskCropperPresenter: MaskCropperModule {
             self?.onClose?()
         }
         
+        view?.onCroppingParametersChange = { [weak self] parameters in
+            self?.interactor.setCroppingParameters(parameters)
+        }
+        
         view?.onConfirmTap = { [weak self] previewImage in
             if let previewImage = previewImage {
                 self?.interactor.croppedImage(previewImage: previewImage) { image in

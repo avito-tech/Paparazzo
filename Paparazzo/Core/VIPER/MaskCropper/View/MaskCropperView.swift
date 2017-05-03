@@ -122,6 +122,11 @@ final class MaskCropperView: UIView, ThemeConfigurable {
         set { controlsView.onDiscardTap = newValue }
     }
     
+    var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? {
+        get { return previewView.onCroppingParametersChange }
+        set { previewView.onCroppingParametersChange = newValue }
+    }
+    
     func setCroppingParameters(_ parameters: ImageCroppingParameters) {
         previewView.setCroppingParameters(parameters)
     }
