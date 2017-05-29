@@ -4,7 +4,8 @@ public final class MarshrouteAssemblyFactory:
     CameraAssemblyFactory,
     MediaPickerMarshrouteAssemblyFactory,
     ImageCroppingAssemblyFactory,
-    PhotoLibraryMarshrouteAssemblyFactory
+    PhotoLibraryMarshrouteAssemblyFactory,
+    MaskCropperMarshrouteAssemblyFactory
 {
     private let theme: PaparazzoUITheme
     private let serviceFactory = ServiceFactoryImpl()

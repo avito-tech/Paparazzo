@@ -2,7 +2,7 @@ import UIKit
 
 public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAssembly {
     
-    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
+    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory & MaskCropperAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     

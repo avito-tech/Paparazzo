@@ -11,5 +11,5 @@ public protocol MaskCropperMarshrouteAssembly: class {
 }
 
 public protocol MaskCropperMarshrouteAssemblyFactory: class {
-    func circleImageCroppingMarshrouteAssembly() -> MaskCropperAssembly
+    func maskCropperAssembly() -> MaskCropperMarshrouteAssembly
 }

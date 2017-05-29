@@ -22,6 +22,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
+    // MARK: - Helpers
+    
+    private let croppingOverlayProvidersFactory = CroppingOverlayProvidersFactoryImpl()
+    
     // MARK: - MediaPickerModule
 
     var onItemsAdd: (([MediaPickerItem]) -> ())?
@@ -266,7 +270,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         guard items.count > 0 else { completion?(); return }
         
-        view?.addItems(items, animated: fromCamera) { [view] in
+        view?.addItems(items, animated: fromCamera) { [weak self, view] in
             
             view?.setCameraButtonVisible(canAddMoreItems)
             
@@ -274,12 +278,12 @@ final class MediaPickerPresenter: MediaPickerModule {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
             } else if let lastItem = items.last {
-                self.interactor.previewEnabled { previewEnabled in
-                    if previewEnabled {
-                        view?.selectItem(lastItem)
-                        view?.scrollToItemThumbnail(lastItem, animated: true)
-                    } else {
-                        //view?.setMode(.camera)
+                view?.selectItem(lastItem)
+                view?.scrollToItemThumbnail(lastItem, animated: true)
+                
+                self?.interactor.previewEnabled { [weak self] previewEnabled in
+                    if !previewEnabled {
+                        self?.showMaskCropper(item: lastItem)
                     }
                 }
             }
@@ -314,6 +318,35 @@ final class MediaPickerPresenter: MediaPickerModule {
                 self?.onItemRemove?(item)
             }
         }
+    }
+    
+    private func showMaskCropper(item: MediaPickerItem) {
+        
+        interactor.cropCanvasSize { [weak self] cropCanvasSize in
+            
+            let data = MaskCropperData(
+                imageSource: item.image,
+                cropCanvasSize: cropCanvasSize
+            )
+            if let croppingOverlayProvider = self?.croppingOverlayProvidersFactory.circleCroppingOverlayProvider() {
+                self?.router.showMaskCropper(
+                    data: data,
+                    croppingOverlayProvider: croppingOverlayProvider) { module in
+                        
+                        module.onDiscard = {
+                            self?.removeSelectedItem()
+                            module.dismissModule()
+                        }
+                        module.onClose = {
+                            self?.onCancel?()
+                        }
+                        module.onConfirm = { item in
+                            //self?.onFinish?([item])
+                        }
+                }
+            }
+        }
+        
     }
     
     private func showPhotoLibrary() {

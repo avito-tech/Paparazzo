@@ -3,8 +3,8 @@ import UIKit
 
 final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     
-    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
-
+    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory & MaskCropperAssemblyFactory
+ 
     private let assemblyFactory: AssemblyFactory
     private var cropViewControllers = [WeakWrapper<UIViewController>]()
 
@@ -54,8 +54,17 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
         croppingOverlayProvider: CroppingOverlayProvider,
         configure: (MaskCropperModule) -> ())
     {
+        let assembly = assemblyFactory.maskCropperAssembly()
         
+        let viewController = assembly.module(
+            data: data,
+            croppingOverlayProvider: croppingOverlayProvider,
+            configure: configure
+        )
         
+        cropViewControllers.append(WeakWrapper(value: viewController))
+        
+        push(viewController, animated: false)
     }
     
     override func focusOnCurrentModule() {

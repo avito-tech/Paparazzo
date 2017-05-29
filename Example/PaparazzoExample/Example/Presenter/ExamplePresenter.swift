@@ -86,11 +86,11 @@ final class ExamplePresenter {
                 module?.onFinish = { items in
                     module?.dismissModule()
                 }
-                module?.onItemsAdd = { [weak self] items in
-                    guard let photo = items.first
-                        else { return }
-                    self?.showMaskCropperIn(rootModule: module, photo: photo)
-                }
+//                module?.onItemsAdd = { [weak self] items in
+//                    guard let photo = items.first
+//                        else { return }
+//                    self?.showMaskCropperIn(rootModule: module, photo: photo)
+//                }
             }
         )
     }
