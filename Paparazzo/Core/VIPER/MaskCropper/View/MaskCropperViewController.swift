@@ -8,12 +8,12 @@ final class MaskCropperViewController:
     
     typealias ThemeType = MaskCropperUITheme
     
-    private let circleImageCroppingView: MaskCropperView
+    private let maskCropperView: MaskCropperView
     
     // MARK: - Init
     
     init(croppingOverlayProvider: CroppingOverlayProvider) {
-        circleImageCroppingView = MaskCropperView(
+        maskCropperView = MaskCropperView(
             croppingOverlayProvider: croppingOverlayProvider)
         
         super.init()
@@ -26,7 +26,7 @@ final class MaskCropperViewController:
     // MARK: - UIViewController
     
     override func loadView() {
-        view = circleImageCroppingView
+        view = maskCropperView
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,53 +50,49 @@ final class MaskCropperViewController:
     // MARK: - MaskCropperViewInput
     
     var onConfirmTap: ((CGImage?) -> ())? {
-        get { return circleImageCroppingView.onConfirmTap }
-        set { circleImageCroppingView.onConfirmTap = newValue }
+        get { return maskCropperView.onConfirmTap }
+        set { maskCropperView.onConfirmTap = newValue }
     }
     
     var onCloseTap: (() -> ())? {
-        get { return circleImageCroppingView.onCloseTap }
-        set { circleImageCroppingView.onCloseTap = newValue }
+        get { return maskCropperView.onCloseTap }
+        set { maskCropperView.onCloseTap = newValue }
     }
     
     var onDiscardTap: (() -> ())? {
-        get { return circleImageCroppingView.onDiscardTap }
-        set { circleImageCroppingView.onDiscardTap = newValue }
+        get { return maskCropperView.onDiscardTap }
+        set { maskCropperView.onDiscardTap = newValue }
     }
     
     var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? {
-        get { return circleImageCroppingView.onCroppingParametersChange }
-        set { circleImageCroppingView.onCroppingParametersChange = newValue }
+        get { return maskCropperView.onCroppingParametersChange }
+        set { maskCropperView.onCroppingParametersChange = newValue }
     }
     
     func setConfirmButtonTitle(_ title: String) {
-        circleImageCroppingView.setConfirmButtonTitle(title)
+        maskCropperView.setConfirmButtonTitle(title)
     }
     
     func setImage(_ imageSource: ImageSource, previewImage: ImageSource?, completion: @escaping () -> ()) {
-        circleImageCroppingView.setImage(imageSource, previewImage: previewImage, completion: completion)
+        maskCropperView.setImage(imageSource, previewImage: previewImage, completion: completion)
     }
     
     func setCanvasSize(_ canvasSize: CGSize) {
-        circleImageCroppingView.setCanvasSize(canvasSize)
+        maskCropperView.setCanvasSize(canvasSize)
     }
     
     func setCroppingParameters(_ parameters: ImageCroppingParameters) {
-        circleImageCroppingView.setCroppingParameters(parameters)
+        maskCropperView.setCroppingParameters(parameters)
     }
     
     func setControlsEnabled(_ enabled: Bool) {
-        circleImageCroppingView.setControlsEnabled(enabled)
-    }
-    
-    func setCroppingOverlayProvider(_: CroppingOverlayProvider) {
-        
+        maskCropperView.setControlsEnabled(enabled)
     }
     
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
-        circleImageCroppingView.setTheme(theme)
+        maskCropperView.setTheme(theme)
     }
     
     // MARK: - Private
