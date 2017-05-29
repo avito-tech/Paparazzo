@@ -18,14 +18,8 @@ final class MaskCropperPresenter: MaskCropperModule {
     
     func setUpView() {
         
-        view?.setConfirmButtonTitle("Готово")
-        
         view?.onDiscardTap = { [weak self] in
             self?.onDiscard?()
-        }
-        
-        view?.onCloseTap = { [weak self] in
-            self?.onClose?()
         }
         
         view?.onCroppingParametersChange = { [weak self] parameters in
@@ -58,7 +52,6 @@ final class MaskCropperPresenter: MaskCropperModule {
     }
     
     var onDiscard: (() -> ())?
-    var onClose: (() -> ())?
     var onConfirm: ((ImageSource) -> ())?
     
     func dismissModule() {

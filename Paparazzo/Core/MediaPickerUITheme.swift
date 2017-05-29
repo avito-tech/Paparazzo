@@ -58,16 +58,8 @@ public struct PaparazzoUITheme:
     
     // MARK: - MaskCropperUITheme
     
-    public var maskCropperDiscardPhotoIcon = PaparazzoUITheme.image(named: "delete")
-    public var maskCropperCloseButtonIcon = PaparazzoUITheme.image(named: "bt-close")
-    
-    public var maskCropperButtonsBackgroundNormalColor = UIColor.white
-    public var maskCropperButtonsBackgroundHighlightedColor = UIColor(white: 1, alpha: 0.6)
-    public var maskCropperButtonsBackgroundDisabledColor = UIColor(white: 1, alpha: 0.6)
-    public var maskCropperConfirmButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
-    public var maskCropperConfirmButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
-    
-    public var maskCropperConfirmButtonTitleFont = UIFont.systemFont(ofSize: 17)
+    public var maskCropperDiscardPhotoIcon = PaparazzoUITheme.image(named: "discard")
+    public var maskCropperConfirmPhotoIcon = PaparazzoUITheme.image(named: "confirm")
 
     // MARK: - Private
 

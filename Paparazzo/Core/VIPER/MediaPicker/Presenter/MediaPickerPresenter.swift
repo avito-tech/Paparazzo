@@ -337,11 +337,15 @@ final class MediaPickerPresenter: MediaPickerModule {
                             self?.removeSelectedItem()
                             module.dismissModule()
                         }
-                        module.onClose = {
-                            self?.onCancel?()
-                        }
-                        module.onConfirm = { item in
-                            //self?.onFinish?([item])
+                        module.onConfirm = { image in
+                            
+                            let croppedItem = MediaPickerItem(
+                                identifier: item.identifier,
+                                image: image,
+                                source: item.source
+                            )
+                            
+                            self?.onFinish?([croppedItem])
                         }
                 }
             }

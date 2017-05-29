@@ -54,11 +54,6 @@ final class MaskCropperViewController:
         set { maskCropperView.onConfirmTap = newValue }
     }
     
-    var onCloseTap: (() -> ())? {
-        get { return maskCropperView.onCloseTap }
-        set { maskCropperView.onCloseTap = newValue }
-    }
-    
     var onDiscardTap: (() -> ())? {
         get { return maskCropperView.onDiscardTap }
         set { maskCropperView.onDiscardTap = newValue }
@@ -67,10 +62,6 @@ final class MaskCropperViewController:
     var onCroppingParametersChange: ((ImageCroppingParameters) -> ())? {
         get { return maskCropperView.onCroppingParametersChange }
         set { maskCropperView.onCroppingParametersChange = newValue }
-    }
-    
-    func setConfirmButtonTitle(_ title: String) {
-        maskCropperView.setConfirmButtonTitle(title)
     }
     
     func setImage(_ imageSource: ImageSource, previewImage: ImageSource?, completion: @escaping () -> ()) {

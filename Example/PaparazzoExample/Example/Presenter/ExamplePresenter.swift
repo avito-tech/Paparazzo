@@ -109,9 +109,6 @@ final class ExamplePresenter {
                 module?.onDiscard = {
                     module?.dismissModule()
                 }
-                module?.onClose = {
-                    rootModule?.dismissModule()
-                }
                 module?.onConfirm = { _ in
                     rootModule?.dismissModule()
                 }
