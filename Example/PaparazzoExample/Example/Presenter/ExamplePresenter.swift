@@ -116,9 +116,9 @@ final class ExamplePresenter {
         items.append(contentsOf: remoteItems)
         
         let data = MediaPickerData(
-            items: [],
+            items: items,
             selectedItem: items.last,
-            maxItemsCount: 1,
+            maxItemsCount: 20,
             cropEnabled: true,
             cropCanvasSize: cropCanvasSize
         )
