@@ -7,18 +7,17 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     private let maxItemsCount: Int?
     private let cropCanvasSize: CGSize
-    private let previewEnabled: Bool
     
     private var items = [MediaPickerItem]()
     private var photoLibraryItems = [PhotoLibraryItem]()
     private var selectedItem: MediaPickerItem?
+    private var mode: MediaPickerCropMode = .normal
     
     init(
         items: [MediaPickerItem],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
-        previewEnabled: Bool,
         deviceOrientationService: DeviceOrientationService,
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
@@ -26,15 +25,18 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         self.selectedItem = selectedItem
         self.maxItemsCount = maxItemsCount
         self.cropCanvasSize = cropCanvasSize
-        self.previewEnabled = previewEnabled
         self.deviceOrientationService = deviceOrientationService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
     }
     
     // MARK: - MediaPickerInteractor
     
-    func previewEnabled(completion: @escaping (Bool) -> ()) {
-        completion(previewEnabled)
+    func setCropMode(_ mode: MediaPickerCropMode) {
+        self.mode = mode
+    }
+    
+    func cropMode(completion: @escaping (MediaPickerCropMode) -> ()) {
+        completion(mode)
     }
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {

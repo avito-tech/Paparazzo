@@ -23,7 +23,6 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
             selectedItem: data.selectedItem,
             maxItemsCount: data.maxItemsCount,
             cropCanvasSize: data.cropCanvasSize,
-            previewEnabled: data.previewEnabled,
             deviceOrientationService: serviceFactory.deviceOrientationService(),
             latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )
@@ -48,7 +47,6 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         viewController.setCameraView(cameraView)
         viewController.setTheme(theme)
         viewController.setShowsCropButton(data.cropEnabled)
-        viewController.setShowPreview(data.previewEnabled)
         
         presenter.view = viewController
         

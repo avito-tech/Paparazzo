@@ -22,10 +22,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
-    // MARK: - Helpers
-    
-    private let croppingOverlayProvidersFactory = CroppingOverlayProvidersFactoryImpl()
-    
     // MARK: - MediaPickerModule
 
     var onItemsAdd: (([MediaPickerItem]) -> ())?
@@ -53,6 +49,16 @@ final class MediaPickerPresenter: MediaPickerModule {
                 self?.view?.selectItem(selectedItem)
             }
         }
+    }
+    
+    func setCropMode(_ cropMode: MediaPickerCropMode) {
+        switch cropMode {
+        case .normal:
+            view?.setShowPreview(true)
+        case .custom:
+            view?.setShowPreview(false)
+        }
+        interactor.setCropMode(cropMode)
     }
     
     func focusOnModule() {
@@ -281,9 +287,15 @@ final class MediaPickerPresenter: MediaPickerModule {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
                 
-                self?.interactor.previewEnabled { [weak self] previewEnabled in
-                    if !previewEnabled {
-                        self?.showMaskCropper(item: lastItem)
+                self?.interactor.cropMode { [weak self] mode in
+                    switch mode {
+                    case .normal:
+                        break
+                    case .custom(let provider):
+                        self?.showMaskCropper(
+                            croppingOverlayProvider: provider,
+                            item: lastItem
+                        )
                     }
                 }
             }
@@ -320,7 +332,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
-    private func showMaskCropper(item: MediaPickerItem) {
+    private func showMaskCropper(croppingOverlayProvider: CroppingOverlayProvider, item: MediaPickerItem) {
         
         interactor.cropCanvasSize { [weak self] cropCanvasSize in
             
@@ -328,26 +340,24 @@ final class MediaPickerPresenter: MediaPickerModule {
                 imageSource: item.image,
                 cropCanvasSize: cropCanvasSize
             )
-            if let croppingOverlayProvider = self?.croppingOverlayProvidersFactory.circleCroppingOverlayProvider() {
-                self?.router.showMaskCropper(
-                    data: data,
-                    croppingOverlayProvider: croppingOverlayProvider) { module in
+            self?.router.showMaskCropper(
+                data: data,
+                croppingOverlayProvider: croppingOverlayProvider) { module in
+                    
+                    module.onDiscard = {
+                        self?.removeSelectedItem()
+                        module.dismissModule()
+                    }
+                    module.onConfirm = { image in
                         
-                        module.onDiscard = {
-                            self?.removeSelectedItem()
-                            module.dismissModule()
-                        }
-                        module.onConfirm = { image in
-                            
-                            let croppedItem = MediaPickerItem(
-                                identifier: item.identifier,
-                                image: image,
-                                source: item.source
-                            )
-                            
-                            self?.onFinish?([croppedItem])
-                        }
-                }
+                        let croppedItem = MediaPickerItem(
+                            identifier: item.identifier,
+                            image: image,
+                            source: item.source
+                        )
+                        
+                        self?.onFinish?([croppedItem])
+                    }
             }
         }
         
