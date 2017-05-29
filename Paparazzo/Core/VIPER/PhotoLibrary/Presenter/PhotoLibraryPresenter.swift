@@ -101,6 +101,21 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
 
         cellData.selected = item.selected
         
+        cellData.onShouldSelect = { [weak self] in
+            self?.interactor.selectedItems { items in
+                guard items.count > 0 else {
+                    return
+                }
+                
+                self?.interactor.maxSelectedItemsCount { maxSelectedItemsCount in
+                    if maxSelectedItemsCount == 1 {
+                        self?.view?.setCanSelectMoreItems(true)
+                        self?.view?.deselectAllItems()
+                    }
+                }
+            }
+        }
+        
         cellData.onSelect = { [weak self] in
             self?.interactor.selectItem(item) { selectionState in
                 self?.adjustViewForSelectionState(selectionState)

@@ -29,6 +29,10 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         maxSelectedItemsCount = count
     }
     
+    func maxSelectedItemsCount(completion: @escaping ((Int?) -> ())) {
+        completion(maxSelectedItemsCount)
+    }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }

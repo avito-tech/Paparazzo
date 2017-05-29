@@ -9,6 +9,8 @@ protocol PhotoLibraryInteractor: class {
     func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
     func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
     func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ())
+    
+    func maxSelectedItemsCount(completion: @escaping ((Int?) -> ()))
 }
 
 public struct PhotoLibraryItem: Equatable {

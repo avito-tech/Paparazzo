@@ -136,6 +136,17 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         )
     }
     
+    func deselectAndAdjustAllCells() {
+        
+        guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems
+            else { return }
+        
+        for indexPath in indexPathsForSelectedItems {
+            collectionView.deselectItem(at: indexPath, animated: false)
+            onDeselectItem(at: indexPath)
+        }
+    }
+    
     func scrollToBottom() {
         collectionView.scrollToBottom()
     }
@@ -164,6 +175,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         let cellData = dataSource.item(at: indexPath)
+        
+        cellData.onShouldSelect?()
+        
         return canSelectMoreItems && cellData.previewAvailable
     }
     
@@ -178,13 +192,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-        dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryItemCellData) in
-            cellData.selected = false
-        }
-        dataSource.item(at: indexPath).onDeselect?()
-        
-        adjustDimmingForCellAtIndexPath(indexPath)
+        onDeselectItem(at: indexPath)
     }
     
     // MARK: - Private
@@ -279,4 +287,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
     }
+    
+    private func onDeselectItem(at indexPath: IndexPath) {
+        dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryItemCellData) in
+            cellData.selected = false
+        }
+        dataSource.item(at: indexPath).onDeselect?()
+        
+        adjustDimmingForCellAtIndexPath(indexPath)
+    }
+    
 }
