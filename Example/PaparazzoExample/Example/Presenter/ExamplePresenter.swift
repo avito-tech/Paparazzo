@@ -43,7 +43,7 @@ final class ExamplePresenter {
         
         view?.onShowPhotoLibraryButtonTap = { [weak self] in
             self?.interactor.photoLibraryItems { items in
-                self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
+                self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 1) { module in
                     weak var weakModule = module
                     module.onFinish = { result in
                         weakModule?.dismissModule()
@@ -68,9 +68,10 @@ final class ExamplePresenter {
         let data = MediaPickerData(
             items: items,
             selectedItem: nil,
-            maxItemsCount: 2,
+            maxItemsCount: 1,
             cropEnabled: true,
             cropCanvasSize: cropCanvasSize,
+            previewEnabled: false,
             initialActiveCameraType: .front
         )
         
@@ -123,9 +124,9 @@ final class ExamplePresenter {
         items.append(contentsOf: remoteItems)
         
         let data = MediaPickerData(
-            items: items,
+            items: [],
             selectedItem: items.last,
-            maxItemsCount: 20,
+            maxItemsCount: 1,
             cropEnabled: true,
             cropCanvasSize: cropCanvasSize
         )

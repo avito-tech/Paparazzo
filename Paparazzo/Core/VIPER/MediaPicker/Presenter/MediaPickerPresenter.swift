@@ -267,14 +267,21 @@ final class MediaPickerPresenter: MediaPickerModule {
         guard items.count > 0 else { completion?(); return }
         
         view?.addItems(items, animated: fromCamera) { [view] in
+            
             view?.setCameraButtonVisible(canAddMoreItems)
             
             if canAddMoreItems {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
             } else if let lastItem = items.last {
-                view?.selectItem(lastItem)
-                view?.scrollToItemThumbnail(lastItem, animated: true)
+                self.interactor.previewEnabled { previewEnabled in
+                    if previewEnabled {
+                        view?.selectItem(lastItem)
+                        view?.scrollToItemThumbnail(lastItem, animated: true)
+                    } else {
+                        //view?.setMode(.camera)
+                    }
+                }
             }
         }
         

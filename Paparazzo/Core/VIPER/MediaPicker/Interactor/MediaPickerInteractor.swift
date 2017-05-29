@@ -25,4 +25,6 @@ protocol MediaPickerInteractor: class {
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     func observeLatestPhotoLibraryItem(handler: @escaping (ImageSource?) -> ())
+    
+    func previewEnabled(completion: @escaping (Bool) -> ())
 }

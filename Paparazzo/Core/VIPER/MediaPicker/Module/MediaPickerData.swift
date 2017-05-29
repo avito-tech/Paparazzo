@@ -6,6 +6,7 @@ public struct MediaPickerData {
     public let maxItemsCount: Int?
     public let cropEnabled: Bool
     public let cropCanvasSize: CGSize
+    public let previewEnabled: Bool
     public let initialActiveCameraType: CameraType
     
     public init(
@@ -14,6 +15,7 @@ public struct MediaPickerData {
         maxItemsCount: Int?,
         cropEnabled: Bool,
         cropCanvasSize: CGSize,
+        previewEnabled: Bool = true,
         initialActiveCameraType: CameraType = .back)
     {
         self.items = items
@@ -21,6 +23,7 @@ public struct MediaPickerData {
         self.maxItemsCount = maxItemsCount
         self.cropEnabled = cropEnabled
         self.cropCanvasSize = cropCanvasSize
+        self.previewEnabled = previewEnabled
         self.initialActiveCameraType = initialActiveCameraType
     }
 }

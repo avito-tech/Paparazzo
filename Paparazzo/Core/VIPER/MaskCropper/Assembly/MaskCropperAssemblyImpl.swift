@@ -22,7 +22,7 @@ public final class MaskCropperAssemblyImpl: BasePaparazzoAssembly, MaskCropperAs
             croppingOverlayProvider: croppingOverlayProvider
         )
         
-        let router = CircleImageCropperUIKitRouter(
+        let router = MaskCropperUIKitRouter(
             viewController: viewController
         )
         

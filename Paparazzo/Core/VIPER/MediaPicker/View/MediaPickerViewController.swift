@@ -346,6 +346,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setShowsCropButton(showsCropButton)
     }
     
+    func setShowPreview(_ showPreview: Bool) {
+        mediaPickerView.setShowsPreview(showPreview)
+    }
+    
     // MARK: - Private
     
     func layoutMediaPickerView(interfaceOrientation: UIInterfaceOrientation) {

@@ -43,6 +43,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private var mode = MediaPickerViewMode.camera
     private var deviceOrientation = DeviceOrientation.portrait
     
+    private var showsPreview: Bool = true {
+        didSet {
+            thumbnailRibbonView.isHidden = !showsPreview
+        }
+    }
+    
     // MARK: - UIView
     
     override init(frame: CGRect) {
@@ -116,6 +122,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Layout
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -123,12 +131,17 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             left: bounds.left,
             right: bounds.right,
             top: bounds.top,
-            height: bounds.size.width * cameraAspectRatio
+            height: showsPreview ? bounds.size.width * cameraAspectRatio : bounds.size.height - controlsExtendedHeight
         )
         
-        let freeSpaceUnderCamera = bounds.bottom - cameraFrame.bottom
-        let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
-        let controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
+        let controlsHeight: CGFloat
+        if showsPreview {
+            let freeSpaceUnderCamera = bounds.bottom - cameraFrame.bottom
+            let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
+            controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
+        } else {
+            controlsHeight = controlsExtendedHeight
+        }
         
         photoPreviewView.frame = cameraFrame
         
@@ -451,6 +464,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     func setShowsCropButton(_ showsCropButton: Bool) {
         photoControlsView.setShowsCropButton(showsCropButton)
+    }
+    
+    func setShowsPreview(_ showsPreview: Bool) {
+        self.showsPreview = showsPreview
     }
     
     func reloadCamera() {
