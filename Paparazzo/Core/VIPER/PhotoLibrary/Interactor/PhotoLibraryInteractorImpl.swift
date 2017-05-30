@@ -25,14 +25,6 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - PhotoLibraryInteractor
     
-    func setMaxSelectedItemsCount(count: Int?) {
-        maxSelectedItemsCount = count
-    }
-    
-    func maxSelectedItemsCount(completion: @escaping ((Int?) -> ())) {
-        completion(maxSelectedItemsCount)
-    }
-    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
@@ -76,6 +68,15 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         completion(selectionState())
     }
     
+    func prepareSelection(completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
+        if selectedItems.count > 0 && maxSelectedItemsCount == 1 {
+            selectedItems.removeAll()
+            completion(selectionState(preSelectionAction: .deselectAll))
+        } else {
+            completion(selectionState())
+        }
+    }
+    
     func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ()) {
         completion(selectedItems)
     }
@@ -86,10 +87,11 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         return maxSelectedItemsCount.flatMap { selectedItems.count < $0 } ?? true
     }
     
-    private func selectionState() -> PhotoLibraryItemSelectionState {
+    private func selectionState(preSelectionAction: PhotoLibraryItemSelectionState.PreSelectionAction = .none) -> PhotoLibraryItemSelectionState {
         return PhotoLibraryItemSelectionState(
             isAnyItemSelected: selectedItems.count > 0,
-            canSelectMoreItems: canSelectMoreItems()
+            canSelectMoreItems: canSelectMoreItems(),
+            preSelectionAction: preSelectionAction
         )
     }
     

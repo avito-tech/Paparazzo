@@ -8,9 +8,8 @@ protocol PhotoLibraryInteractor: class {
     
     func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
     func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
+    func prepareSelection(completion: @escaping (PhotoLibraryItemSelectionState) -> ())
     func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ())
-    
-    func maxSelectedItemsCount(completion: @escaping ((Int?) -> ()))
 }
 
 public struct PhotoLibraryItem: Equatable {
@@ -32,8 +31,15 @@ public func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {
 }
 
 struct PhotoLibraryItemSelectionState {
+    
+    enum PreSelectionAction {
+        case none
+        case deselectAll
+    }
+    
     var isAnyItemSelected: Bool
     var canSelectMoreItems: Bool
+    var preSelectionAction: PreSelectionAction
 }
 
 struct PhotoLibraryChanges {

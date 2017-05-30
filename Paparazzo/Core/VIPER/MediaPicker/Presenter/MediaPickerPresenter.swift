@@ -348,8 +348,8 @@ final class MediaPickerPresenter: MediaPickerModule {
                         self?.removeSelectedItem()
                         module.dismissModule()
                     }
+                    
                     module.onConfirm = { image in
-                        
                         let croppedItem = MediaPickerItem(
                             identifier: item.identifier,
                             image: image,

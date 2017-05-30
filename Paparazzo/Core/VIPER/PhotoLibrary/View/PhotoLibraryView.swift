@@ -176,7 +176,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         let cellData = dataSource.item(at: indexPath)
         
-        cellData.onShouldSelect?()
+        cellData.onPrepareSelection?()
         
         return canSelectMoreItems && cellData.previewAvailable
     }

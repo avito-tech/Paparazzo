@@ -93,6 +93,13 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         view?.setDimsUnselectedItems(!state.canSelectMoreItems)
         view?.setCanSelectMoreItems(state.canSelectMoreItems)
         view?.setPickButtonEnabled(state.isAnyItemSelected)
+        
+        switch state.preSelectionAction {
+        case .none:
+            break
+        case .deselectAll:
+            view?.deselectAllItems()
+        }
     }
     
     private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
@@ -101,18 +108,9 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
 
         cellData.selected = item.selected
         
-        cellData.onShouldSelect = { [weak self] in
-            self?.interactor.selectedItems { items in
-                guard items.count > 0 else {
-                    return
-                }
-                
-                self?.interactor.maxSelectedItemsCount { maxSelectedItemsCount in
-                    if maxSelectedItemsCount == 1 {
-                        self?.view?.setCanSelectMoreItems(true)
-                        self?.view?.deselectAllItems()
-                    }
-                }
+        cellData.onPrepareSelection = { [weak self] in
+            self?.interactor.prepareSelection { [weak self] selectionState in
+                self?.adjustViewForSelectionState(selectionState)
             }
         }
         
