@@ -43,7 +43,7 @@ final class ExamplePresenter {
         
         view?.onShowPhotoLibraryButtonTap = { [weak self] in
             self?.interactor.photoLibraryItems { items in
-                self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 1) { module in
+                self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
                     weak var weakModule = module
                     module.onFinish = { result in
                         weakModule?.dismissModule()
