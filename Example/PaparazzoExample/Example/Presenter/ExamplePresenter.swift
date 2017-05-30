@@ -68,7 +68,7 @@ final class ExamplePresenter {
         let data = MediaPickerData(
             items: items,
             selectedItem: nil,
-            maxItemsCount: 2,
+            maxItemsCount: 1,
             cropEnabled: true,
             cropCanvasSize: cropCanvasSize,
             initialActiveCameraType: .front
@@ -79,16 +79,12 @@ final class ExamplePresenter {
             configure: { module in
                 weak var module = module
                 module?.setContinueButtonVisible(false)
+                module?.setCropMode(.custom(croppingOverlayProvidersFactory.circleCroppingOverlayProvider()))
                 module?.onCancel = {
                     module?.dismissModule()
                 }
                 module?.onFinish = { items in
                     module?.dismissModule()
-                }
-                module?.onItemsAdd = { [weak self] items in
-                    guard let photo = items.first
-                        else { return }
-                    self?.showMaskCropperIn(rootModule: module, photo: photo)
                 }
             }
         )
@@ -107,9 +103,6 @@ final class ExamplePresenter {
                 weak var module = module
                 module?.onDiscard = {
                     module?.dismissModule()
-                }
-                module?.onClose = {
-                    rootModule?.dismissModule()
                 }
                 module?.onConfirm = { _ in
                     rootModule?.dismissModule()

@@ -3,7 +3,7 @@ import Marshroute
 
 final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
     
-    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryMarshrouteAssemblyFactory
+    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
 
     private let assemblyFactory: AssemblyFactory
 
@@ -46,6 +46,24 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
                 configure: configure
             )
             
+        }, animator: NonAnimatedPushAnimator())
+    }
+    
+    func showMaskCropper(
+        data: MaskCropperData,
+        croppingOverlayProvider: CroppingOverlayProvider,
+        configure: (MaskCropperModule) -> ())
+    {
+        pushViewControllerDerivedFrom({ routerSeed in
+            
+            let assembly = assemblyFactory.maskCropperAssembly()
+            
+            return assembly.module(
+                data: data,
+                croppingOverlayProvider: croppingOverlayProvider,
+                routerSeed: routerSeed,
+                configure: configure
+            )
         }, animator: NonAnimatedPushAnimator())
     }
 }

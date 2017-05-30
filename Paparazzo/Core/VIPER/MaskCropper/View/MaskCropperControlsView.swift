@@ -6,7 +6,8 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
     
     // MARK: - Subviews
     
-     private let discardButton = UIButton(type: .custom)
+    private let discardButton = UIButton(type: .custom)
+    private let confirmButton = UIButton(type: .custom)
     
     // MARK: - Init
     
@@ -14,10 +15,17 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
         super.init(frame: .zero)
         
         addSubview(discardButton)
+        addSubview(confirmButton)
         
         discardButton.addTarget(
             self,
             action: #selector(onDiscardTap(_:)),
+            for: .touchUpInside
+        )
+        
+        confirmButton.addTarget(
+            self,
+            action: #selector(onConfirmTap(_:)),
             for: .touchUpInside
         )
     }
@@ -31,13 +39,16 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        discardButton.size = CGSize(
-            width: 30,
-            height: 30
+        discardButton.size = CGSize.minimumTapAreaSize
+        discardButton.center = CGPoint(
+            x: bounds.left + bounds.size.width * 0.25,
+            y: bounds.bottom - 40
         )
         
-        discardButton.centerX = centerX
-        discardButton.bottom = height - 22
+        confirmButton.size = CGSize.minimumTapAreaSize
+        confirmButton.center = CGPoint(
+            x: bounds.right - bounds.size.width * 0.25,
+            y: discardButton.centerY)
     }
     
     // MARK: - ThemeConfigurable
@@ -47,11 +58,16 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
             theme.maskCropperDiscardPhotoIcon,
             for: .normal
         )
+        confirmButton.setImage(
+            theme.maskCropperConfirmPhotoIcon,
+            for: .normal
+        )
     }
     
     // MARK: - MaskCropperControlsView
     
     var onDiscardTap: (() -> ())?
+    var onConfirmTap: (() -> ())?
     
     func setControlsEnabled(_ enabled: Bool) {
         discardButton.isEnabled = enabled
@@ -60,5 +76,9 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
     // MARK: - Actions
     @objc private func onDiscardTap(_ sender: UIButton) {
         onDiscardTap?()
+    }
+    
+    @objc private func onConfirmTap(_ sender: UIButton) {
+        onConfirmTap?()
     }
 }

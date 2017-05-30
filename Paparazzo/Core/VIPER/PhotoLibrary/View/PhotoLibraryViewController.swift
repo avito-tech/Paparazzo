@@ -87,6 +87,10 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
     }
     
+    func deselectAllItems() {
+        photoLibraryView.deselectAndAdjustAllCells()
+    }
+    
     func setPickButtonVisible(_ visible: Bool) {
         navigationItem.rightBarButtonItem = visible ? pickBarButtonItem : nil
     }

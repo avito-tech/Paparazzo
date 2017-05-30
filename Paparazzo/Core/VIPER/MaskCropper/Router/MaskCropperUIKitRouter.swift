@@ -1,4 +1,4 @@
 import ImageSource
 import UIKit
 
-final class CircleImageCropperUIKitRouter: BaseUIKitRouter, MaskCropperRouter {}
+final class MaskCropperUIKitRouter: BaseUIKitRouter, MaskCropperRouter {}

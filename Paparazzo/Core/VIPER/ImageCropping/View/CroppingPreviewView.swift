@@ -57,6 +57,7 @@ final class CroppingPreviewView: UIView {
         if let previewImage = previewImage {
             
             let screenSize = UIScreen.main.bounds.size
+            
             let previewOptions = ImageRequestOptions(size: .fitSize(screenSize), deliveryMode: .progressive)
 
             onPreviewImageWillLoading?()

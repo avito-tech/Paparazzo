@@ -25,4 +25,7 @@ protocol MediaPickerInteractor: class {
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     func observeLatestPhotoLibraryItem(handler: @escaping (ImageSource?) -> ())
+    
+    func setCropMode(_: MediaPickerCropMode)
+    func cropMode(completion: @escaping (MediaPickerCropMode) -> ())
 }
