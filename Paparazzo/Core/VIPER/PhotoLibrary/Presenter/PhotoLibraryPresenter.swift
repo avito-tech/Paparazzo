@@ -108,7 +108,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
 
         cellData.selected = item.selected
         
-        cellData.onPrepareSelection = { [weak self] in
+        cellData.onSelectionPrepare = { [weak self] in
             self?.interactor.prepareSelection { [weak self] selectionState in
                 self?.adjustViewForSelectionState(selectionState)
             }

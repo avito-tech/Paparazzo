@@ -40,7 +40,7 @@ struct PhotoLibraryItemCellData {
     var previewAvailable = false
     
     var onSelect: (() -> ())?
-    var onPrepareSelection: (() -> ())?
+    var onSelectionPrepare: (() -> ())?
     var onDeselect: (() -> ())?
     
     init(image: ImageSource) {
