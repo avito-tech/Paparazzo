@@ -10,7 +10,11 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     private let scrollView = PhotoScrollView()
     private let gridView = GridView()
-    private let croppingMask = ImageCroppingMask()
+    
+    private let topMask = UIView()
+    private let bottomMask = UIView()
+    private let leftMask = UIView()
+    private let rightMask = UIView()
     
     // MARK: - State
     
@@ -45,12 +49,22 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         scrollView.clipsToBounds = false
         scrollView.delegate = self
         
+        let maskColor = UIColor.white.withAlphaComponent(0.9)
+        
+        topMask.backgroundColor = maskColor
+        bottomMask.backgroundColor = maskColor
+        leftMask.backgroundColor = maskColor
+        rightMask.backgroundColor = maskColor
+        
         gridView.isUserInteractionEnabled = false
         gridView.isHidden = true
         
         addSubview(scrollView)
         addSubview(gridView)
-        addSubview(croppingMask)
+        addSubview(topMask)
+        addSubview(bottomMask)
+        addSubview(leftMask)
+        addSubview(rightMask)
         
         updateMasks()
     }
@@ -72,6 +86,13 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     // MARK: - PhotoTweakView
+    
+    func setMaskVisible(_ visible: Bool) {
+        topMask.isHidden = !visible
+        bottomMask.isHidden = !visible
+        leftMask.isHidden = !visible
+        rightMask.isHidden = !visible
+    }
     
     var cropAspectRatio = CGFloat(AspectRatio.defaultRatio.widthToHeightRatio()) {
         didSet {
@@ -166,10 +187,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         gridView.isHidden = !visible
     }
     
-    func setMaskVisible(_ visible: Bool) {
-        croppingMask.isHidden = !visible
-    }
-    
     func cropPreviewImage() -> CGImage? {
         
         // Hide grid for it to be hidden on preview image
@@ -256,8 +273,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         gridView.bounds = CGRect(origin: .zero, size: cropSize)
         gridView.center = center
         
-        croppingMask.bounds = frame
-        
         originalPoint = convert(scrollView.center, to: self)
         
         updateMasks()
@@ -265,8 +280,33 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     private func updateMasks(animated: Bool = false) {
         
+        let horizontalMaskSize = CGSize(
+            width: bounds.size.width,
+            height: (bounds.size.height - cropSize.height) / 2
+        )
+        
+        let verticalMaskSize = CGSize(
+            width: (bounds.size.width - cropSize.width) / 2,
+            height: bounds.size.height - horizontalMaskSize.height
+        )
+        
         let animation = {
-            self.croppingMask.performLayoutUpdate(with: self.cropSize)
+            self.topMask.frame = CGRect(
+                origin: CGPoint(x: self.bounds.left, y: self.bounds.top),
+                size: horizontalMaskSize
+            )
+            self.bottomMask.frame = CGRect(
+                origin: CGPoint(x: self.bounds.left, y: self.bounds.bottom - horizontalMaskSize.height),
+                size: horizontalMaskSize
+            )
+            self.leftMask.frame = CGRect(
+                origin: CGPoint(x: self.bounds.left, y: self.topMask.bottom),
+                size: verticalMaskSize
+            )
+            self.rightMask.frame = CGRect(
+                origin: CGPoint(x: self.bounds.right - verticalMaskSize.width, y: self.topMask.bottom),
+                size: verticalMaskSize
+            )
         }
         
         if animated {

@@ -28,6 +28,7 @@ final class MaskCropperView: UIView, ThemeConfigurable {
         clipsToBounds = true
         
         previewView.setGridVisible(false)
+        previewView.setMaskVisible(false)
         
         addSubview(previewView)
         addSubview(overlayView)

@@ -17,8 +17,6 @@ final class CroppingPreviewView: UIView {
     init() {
         super.init(frame: .zero)
         
-        previewView.setMaskVisible(false)
-        
         clipsToBounds = true
         
         addSubview(previewView)
@@ -51,6 +49,10 @@ final class CroppingPreviewView: UIView {
     var onPreviewImageWillLoading: (() -> ())?
     var onPreviewImageDidLoad: ((UIImage) -> ())?
     var onImageDidLoad: (() -> ())?
+    
+    func setMaskVisible(_ visible: Bool) {
+        previewView.setMaskVisible(visible)
+    }
     
     func setImage(_ image: ImageSource, previewImage: ImageSource?, completion: (() -> ())?) {
         
