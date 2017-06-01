@@ -140,13 +140,18 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             self?.cameraModuleInput.takePhoto { photo in
                 
-                if let photo = photo {
-                    self?.addItems([photo], fromCamera: true)
+                let enableShutterButton = {
+                    self?.view?.setShutterButtonEnabled(true)
+                    self?.view?.setPhotoLibraryButtonEnabled(true)
+                    self?.view?.setContinueButtonEnabled(true)
                 }
                 
-                self?.view?.setShutterButtonEnabled(true)
-                self?.view?.setPhotoLibraryButtonEnabled(true)
-                self?.view?.setContinueButtonEnabled(true)
+                if let photo = photo {
+                    self?.addItems([photo], fromCamera: true, completion: enableShutterButton)
+                } else {
+                    enableShutterButton()
+                }
+                
             }
         }
         
@@ -283,6 +288,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             if canAddMoreItems {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
+                completion?()
             } else if let lastItem = items.last {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
@@ -297,6 +303,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                             item: lastItem
                         )
                     }
+                    completion?()
                 }
             }
         }
@@ -306,8 +313,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         onItemsAdd?(items)
-        
-        completion?()
     }
     
     private func removeSelectedItem() {
