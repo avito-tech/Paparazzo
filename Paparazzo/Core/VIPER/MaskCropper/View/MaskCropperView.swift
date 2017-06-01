@@ -11,7 +11,7 @@ final class MaskCropperView: UIView, ThemeConfigurable {
     
     // MARK: - Constants
     
-    private let aspectRatio = CGFloat(AspectRatio.portrait_3x4.widthToHeightRatio())
+    private let aspectRatio = CGFloat(1)
     private let controlsExtendedHeight = CGFloat(80)
     
     // MARK: - Init
@@ -29,6 +29,7 @@ final class MaskCropperView: UIView, ThemeConfigurable {
         
         previewView.setGridVisible(false)
         previewView.setMaskVisible(false)
+        previewView.cropAspectRatio = aspectRatio
         
         addSubview(previewView)
         addSubview(overlayView)
