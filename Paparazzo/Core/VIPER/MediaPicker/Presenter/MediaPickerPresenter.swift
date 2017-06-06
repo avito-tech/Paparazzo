@@ -43,6 +43,18 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setContinueButtonVisible(visible)
     }
     
+    public func setAccessDeniedTitle(_ title: String) {
+        cameraModuleInput.setAccessDeniedTitle(title)
+    }
+    
+    public func setAccessDeniedMessage(_ message: String) {
+        cameraModuleInput.setAccessDeniedMessage(message)
+    }
+    
+    public func setAccessDeniedButtonTitle(_ title: String) {
+        cameraModuleInput.setAccessDeniedButtonTitle(title)
+    }
+    
     func setItems(_ items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
         addItems(items, fromCamera: false) { [weak self] in
             if let selectedItem = selectedItem {
