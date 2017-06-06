@@ -61,13 +61,21 @@ final class CameraPresenter: CameraModuleInput {
         view?.mainModuleDidAppear(animated: animated)
     }
     
+    func setAccessDeniedTitle(_ title: String) {
+        view?.setAccessDeniedTitle(title)
+    }
+    
+    func setAccessDeniedMessage(_ message: String) {
+        view?.setAccessDeniedMessage(message)
+    }
+    
+    func setAccessDeniedButtonTitle(_ title: String) {
+        view?.setAccessDeniedButtonTitle(title)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {
-        
-        view?.setAccessDeniedTitle("Чтобы фотографировать товар")
-        view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
-        view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
         
         view?.onAccessDeniedButtonTap = {
             if let url = URL(string: UIApplicationOpenSettingsURLString) {

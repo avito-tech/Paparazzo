@@ -12,6 +12,10 @@ public protocol MediaPickerModule: class {
     func setContinueButtonEnabled(_: Bool)
     func setContinueButtonVisible(_: Bool)
     
+    func setAccessDeniedTitle(_: String)
+    func setAccessDeniedMessage(_: String)
+    func setAccessDeniedButtonTitle(_: String)
+    
     func setCropMode(_: MediaPickerCropMode)
     
     var onItemsAdd: (([MediaPickerItem]) -> ())? { get set }
