@@ -77,6 +77,10 @@ final class CameraPresenter: CameraModuleInput {
     
     private func setUpView() {
         
+        view?.setAccessDeniedTitle("Чтобы фотографировать товар")
+        view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
+        view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
+        
         view?.onAccessDeniedButtonTap = {
             if let url = URL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.shared.openURL(url)
