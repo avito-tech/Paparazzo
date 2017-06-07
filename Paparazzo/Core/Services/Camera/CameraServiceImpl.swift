@@ -2,6 +2,11 @@ import AVFoundation
 import ImageIO
 import ImageSource
 
+public enum CameraType {
+    case back
+    case front
+}
+
 final class CameraServiceImpl: CameraService {
     
     // MARK: - Private types and properties
@@ -13,14 +18,18 @@ final class CameraServiceImpl: CameraService {
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
     private var activeCamera: AVCaptureDevice?
+    
+    private let initialActiveCamera: CameraType
 
     // MARK: - Init
     
-    init() {
+    init(initialActiveCamera: CameraType) {
         let videoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as? [AVCaptureDevice]
         
         backCamera = videoDevices?.filter({ $0.position == .back }).first
         frontCamera = videoDevices?.filter({ $0.position == .front }).first
+        
+        self.initialActiveCamera = initialActiveCamera
     }
     
     func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ()) {
@@ -84,7 +93,13 @@ final class CameraServiceImpl: CameraService {
             
             try CameraServiceImpl.configureCamera(backCamera)
             
-            let activeCamera = backCamera
+            let activeCamera: AVCaptureDevice?
+            switch initialActiveCamera {
+            case .back:
+                activeCamera = backCamera
+            case .front:
+                activeCamera = frontCamera
+            }
             
             let input = try AVCaptureDeviceInput(device: activeCamera)
             

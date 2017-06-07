@@ -13,7 +13,7 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: PhotoLibraryMarshrouteAss
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
-        configuration: (PhotoLibraryModule) -> ()
+        configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
@@ -37,7 +37,7 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: PhotoLibraryMarshrouteAss
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

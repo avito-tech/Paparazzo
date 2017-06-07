@@ -15,19 +15,15 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
     // MARK: - MediaPickerAssembly
     
     public func module(
-        items: [MediaPickerItem],
-        selectedItem: MediaPickerItem?,
-        maxItemsCount: Int?,
-        cropEnabled: Bool,
-        cropCanvasSize: CGSize,
-        configuration: (MediaPickerModule) -> ())
+        settings: MediaPickerSettings,
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
         let interactor = MediaPickerInteractorImpl(
-            items: items,
-            selectedItem: selectedItem,
-            maxItemsCount: maxItemsCount,
-            cropCanvasSize: cropCanvasSize,
+            items: settings.items,
+            selectedItem: settings.selectedItem,
+            maxItemsCount: settings.maxItemsCount,
+            cropCanvasSize: settings.cropCanvasSize,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
         )
@@ -39,7 +35,9 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
             viewController: viewController
         )
         
-        let cameraAssembly = assemblyFactory.cameraAssembly()
+        let cameraAssembly = assemblyFactory.cameraAssembly(
+            initialActiveCamera: settings.initalActiveCamera
+        )
         let (cameraView, cameraModuleInput) = cameraAssembly.module()
         
         let presenter = MediaPickerPresenter(
@@ -51,11 +49,11 @@ public final class MediaPickerAssemblyImpl: MediaPickerAssembly {
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
         viewController.setTheme(theme)
-        viewController.setShowsCropButton(cropEnabled)
+        viewController.setShowsCropButton(settings.cropEnabled)
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

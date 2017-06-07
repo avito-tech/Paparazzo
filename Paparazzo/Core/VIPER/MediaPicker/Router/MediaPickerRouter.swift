@@ -5,13 +5,13 @@ protocol MediaPickerRouter: class {
     func showPhotoLibrary(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ()
+        configure: (PhotoLibraryModule) -> ()
     )
     
     func showCroppingModule(
         forImage: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ()
+        configure: (ImageCroppingModule) -> ()
     )
     
     func focusOnCurrentModule()

@@ -25,7 +25,7 @@ final class ViewController: UIViewController {
             maxItemsCount: 20,
             cropEnabled: true,
             cropCanvasSize: CGSize(width: 1280, height: 960),
-            configuration: { [weak self] module in
+            configure: { [weak self] module in
                 weak var module = module
                 
                 module?.setContinueButtonTitle("Done")
@@ -54,7 +54,7 @@ final class ViewController: UIViewController {
         let galleryController = assembly.module(
             selectedItems: [],
             maxSelectedItemsCount: 5,
-            configuration: { [weak self] module in
+            configure: { [weak self] module in
                 weak var module = module
                 module?.onFinish = { result in
                     module?.dismissModule()

@@ -12,7 +12,7 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
     public func module(
         image: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ()
+        configure: (ImageCroppingModule) -> ()
     ) -> UIViewController {
 
         let interactor = ImageCroppingInteractorImpl(image: image, canvasSize: canvasSize)
@@ -27,7 +27,7 @@ public final class ImageCroppingAssemblyImpl: ImageCroppingAssembly {
 
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
 
         return viewController
     }

@@ -6,7 +6,7 @@ public protocol PhotoLibraryMarshrouteAssembly: class {
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
-        configuration: (PhotoLibraryModule) -> ())
+        configure: (PhotoLibraryModule) -> ())
         -> UIViewController
 }
 
