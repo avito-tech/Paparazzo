@@ -87,6 +87,13 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - PhotoTweakView
     
+    func setMaskVisible(_ visible: Bool) {
+        topMask.isHidden = !visible
+        bottomMask.isHidden = !visible
+        leftMask.isHidden = !visible
+        rightMask.isHidden = !visible
+    }
+    
     var cropAspectRatio = CGFloat(AspectRatio.defaultRatio.widthToHeightRatio()) {
         didSet {
             if cropAspectRatio != oldValue {

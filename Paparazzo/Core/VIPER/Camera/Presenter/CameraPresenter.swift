@@ -61,6 +61,18 @@ final class CameraPresenter: CameraModuleInput {
         view?.mainModuleDidAppear(animated: animated)
     }
     
+    func setAccessDeniedTitle(_ title: String) {
+        view?.setAccessDeniedTitle(title)
+    }
+    
+    func setAccessDeniedMessage(_ message: String) {
+        view?.setAccessDeniedMessage(message)
+    }
+    
+    func setAccessDeniedButtonTitle(_ title: String) {
+        view?.setAccessDeniedButtonTitle(title)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {

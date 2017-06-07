@@ -39,12 +39,38 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setContinueButtonEnabled(enabled)
     }
     
+    func setContinueButtonVisible(_ visible: Bool) {
+        view?.setContinueButtonVisible(visible)
+    }
+    
+    public func setAccessDeniedTitle(_ title: String) {
+        cameraModuleInput.setAccessDeniedTitle(title)
+    }
+    
+    public func setAccessDeniedMessage(_ message: String) {
+        cameraModuleInput.setAccessDeniedMessage(message)
+    }
+    
+    public func setAccessDeniedButtonTitle(_ title: String) {
+        cameraModuleInput.setAccessDeniedButtonTitle(title)
+    }
+    
     func setItems(_ items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
         addItems(items, fromCamera: false) { [weak self] in
             if let selectedItem = selectedItem {
                 self?.view?.selectItem(selectedItem)
             }
         }
+    }
+    
+    func setCropMode(_ cropMode: MediaPickerCropMode) {
+        switch cropMode {
+        case .normal:
+            view?.setShowPreview(true)
+        case .custom:
+            view?.setShowPreview(false)
+        }
+        interactor.setCropMode(cropMode)
     }
     
     func focusOnModule() {
@@ -60,41 +86,40 @@ final class MediaPickerPresenter: MediaPickerModule {
     private var continueButtonTitle: String?
     
     private func setUpView() {
-        weak var `self` = self
         
         view?.setContinueButtonTitle(continueButtonTitle ?? "Далее")
         view?.setPhotoTitle("Фото 1")
         
         view?.setCameraControlsEnabled(false)
         
-        cameraModuleInput.getOutputParameters { parameters in
+        cameraModuleInput.getOutputParameters { [weak self] parameters in
             if let parameters = parameters {
                 self?.view?.setCameraOutputParameters(parameters)
                 self?.view?.setCameraControlsEnabled(true)
             }
         }
         
-        cameraModuleInput.isFlashAvailable { flashAvailable in
+        cameraModuleInput.isFlashAvailable { [weak self] flashAvailable in
             self?.view?.setFlashButtonVisible(flashAvailable)
         }
         
-        cameraModuleInput.isFlashEnabled { isFlashEnabled in
+        cameraModuleInput.isFlashEnabled { [weak self] isFlashEnabled in
             self?.view?.setFlashButtonOn(isFlashEnabled)
         }
         
-        cameraModuleInput.canToggleCamera { canToggleCamera in
+        cameraModuleInput.canToggleCamera { [weak self] canToggleCamera in
             self?.view?.setCameraToggleButtonVisible(canToggleCamera)
         }
         
-        interactor.observeDeviceOrientation { deviceOrientation in
+        interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }
         
-        interactor.observeLatestPhotoLibraryItem { image in
+        interactor.observeLatestPhotoLibraryItem { [weak self] image in
             self?.view?.setLatestLibraryPhoto(image)
         }
         
-        interactor.items { items, canAddMoreItems in
+        interactor.items { [weak self] items, canAddMoreItems in
             guard items.count > 0 else { return }
             
             self?.view?.setCameraButtonVisible(canAddMoreItems)
@@ -111,11 +136,11 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
         }
         
-        view?.onPhotoLibraryButtonTap = {
+        view?.onPhotoLibraryButtonTap = { [weak self] in
             self?.showPhotoLibrary()
         }
         
-        view?.onShutterButtonTap = {
+        view?.onShutterButtonTap = { [weak self] in
             
             // Если фоткать со вспышкой, это занимает много времени, и если несколько раз подряд быстро тапнуть на кнопку,
             // он будет потом еще долго фоткать :) Поэтому временно блокируем кнопку.
@@ -127,17 +152,22 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             self?.cameraModuleInput.takePhoto { photo in
                 
-                if let photo = photo {
-                    self?.addItems([photo], fromCamera: true)
+                let enableShutterButton = {
+                    self?.view?.setShutterButtonEnabled(true)
+                    self?.view?.setPhotoLibraryButtonEnabled(true)
+                    self?.view?.setContinueButtonEnabled(true)
                 }
                 
-                self?.view?.setShutterButtonEnabled(true)
-                self?.view?.setPhotoLibraryButtonEnabled(true)
-                self?.view?.setContinueButtonEnabled(true)
+                if let photo = photo {
+                    self?.addItems([photo], fromCamera: true, completion: enableShutterButton)
+                } else {
+                    enableShutterButton()
+                }
+                
             }
         }
         
-        view?.onFlashToggle = { shouldEnableFlash in
+        view?.onFlashToggle = { [weak self] shouldEnableFlash in
             self?.cameraModuleInput.setFlashEnabled(shouldEnableFlash) { success in
                 if !success {
                     self?.view?.setFlashButtonOn(!shouldEnableFlash)
@@ -145,16 +175,16 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
         }
         
-        view?.onItemSelect = { item in
+        view?.onItemSelect = { [weak self] item in
             self?.interactor.selectItem(item)
-            self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: true)
+            self?.adjustViewForSelectedItem(item, animated: true)
         }
         
-        view?.onItemMove = { sourceIndex, destinationIndex in
+        view?.onItemMove = { [weak self] (sourceIndex, destinationIndex) in
             self?.interactor.moveItem(from: sourceIndex, to: destinationIndex)
             self?.interactor.selectedItem { item in
                 if let item = item {
-                    self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: false)
+                    self?.adjustViewForSelectedItem(item, animated: true)
                 }
             }
             self?.view?.moveItem(from: sourceIndex, to: destinationIndex)
@@ -166,37 +196,37 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.view?.scrollToCameraThumbnail(animated: true)
         }
         
-        view?.onCameraToggleButtonTap = {
+        view?.onCameraToggleButtonTap = { [weak self] in
             self?.cameraModuleInput.toggleCamera { newOutputOrientation in
                 self?.view?.setCameraOutputOrientation(newOutputOrientation)
             }
         }
         
-        view?.onSwipeToItem = { item in
+        view?.onSwipeToItem = { [weak self] item in
             self?.view?.selectItem(item)
         }
         
-        view?.onSwipeToCamera = {
+        view?.onSwipeToCamera = { [weak self] in
             self?.view?.selectCamera()
         }
         
-        view?.onSwipeToCameraProgressChange = { progress in
+        view?.onSwipeToCameraProgressChange = { [weak self] progress in
             self?.view?.setPhotoTitleAlpha(1 - progress)
         }
         
-        view?.onCloseButtonTap = {
+        view?.onCloseButtonTap = { [weak self] in
             self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
             self?.onCancel?()
         }
         
-        view?.onContinueButtonTap = {
+        view?.onContinueButtonTap = { [weak self] in
             self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
             self?.interactor.items { items, _ in
                 self?.onFinish?(items)
             }
         }
         
-        view?.onCropButtonTap = {
+        view?.onCropButtonTap = { [weak self] in
             self?.interactor.selectedItem { item in
                 if let item = item {
                     self?.showCroppingModule(forItem: item)
@@ -204,34 +234,24 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
         }
         
-        view?.onRemoveButtonTap = {
+        view?.onRemoveButtonTap = { [weak self] in
             self?.removeSelectedItem()
         }
         
-        view?.onPreviewSizeDetermined = { previewSize in
+        view?.onPreviewSizeDetermined = { [weak self] previewSize in
             self?.cameraModuleInput.setPreviewImagesSizeForNewPhotos(previewSize)
         }
         
-        view?.onViewDidAppear = { animated in
+        view?.onViewDidAppear = { [weak self] animated in
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
-        }
-        
-        view?.onViewWillAppear = { _ in
-            self?.cameraModuleInput.setCameraOutputNeeded(true)
-        }
-        
-        view?.onViewDidDisappear = { _ in
-            self?.cameraModuleInput.setCameraOutputNeeded(false)
         }
     }
     
-    private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool, scrollToSelected: Bool) {
+    private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool) {
         adjustPhotoTitleForItem(item)
         
         view?.setMode(.photoPreview(item))
-        if scrollToSelected {
-            view?.scrollToItemThumbnail(item, animated: animated)
-        }
+        view?.scrollToItemThumbnail(item, animated: animated)
     }
     
     private func adjustPhotoTitleForItem(_ item: MediaPickerItem) {
@@ -260,7 +280,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func selectItem(_ item: MediaPickerItem) {
         view?.selectItem(item)
-        adjustViewForSelectedItem(item, animated: false, scrollToSelected: true)
+        adjustViewForSelectedItem(item, animated: false)
     }
     
     private func selectCamera() {
@@ -273,15 +293,30 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         guard items.count > 0 else { completion?(); return }
         
-        view?.addItems(items, animated: fromCamera) { [view] in
+        view?.addItems(items, animated: fromCamera) { [weak self, view] in
+            
             view?.setCameraButtonVisible(canAddMoreItems)
             
             if canAddMoreItems {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
+                completion?()
             } else if let lastItem = items.last {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
+                
+                self?.interactor.cropMode { [weak self] mode in
+                    switch mode {
+                    case .normal:
+                        break
+                    case .custom(let provider):
+                        self?.showMaskCropper(
+                            croppingOverlayProvider: provider,
+                            item: lastItem
+                        )
+                    }
+                    completion?()
+                }
             }
         }
         
@@ -290,8 +325,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         onItemsAdd?(items)
-        
-        completion?()
     }
     
     private func removeSelectedItem() {
@@ -316,12 +349,48 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
+    private func showMaskCropper(croppingOverlayProvider: CroppingOverlayProvider, item: MediaPickerItem) {
+        
+        interactor.cropCanvasSize { [weak self] cropCanvasSize in
+            
+            let data = MaskCropperData(
+                imageSource: item.image,
+                cropCanvasSize: cropCanvasSize
+            )
+            self?.router.showMaskCropper(
+                data: data,
+                croppingOverlayProvider: croppingOverlayProvider) { module in
+                    
+                    module.onDiscard = {
+                        self?.removeSelectedItem()
+                        module.dismissModule()
+                    }
+                    
+                    module.onConfirm = { image in
+                        let croppedItem = MediaPickerItem(
+                            identifier: item.identifier,
+                            image: image,
+                            source: item.source
+                        )
+                        
+                        self?.onFinish?([croppedItem])
+                    }
+            }
+        }
+        
+    }
+    
     private func showPhotoLibrary() {
         
         interactor.numberOfItemsAvailableForAdding { [weak self] maxItemsCount in
             self?.interactor.photoLibraryItems { photoLibraryItems in
+                
+                let data = PhotoLibraryData(
+                    selectedItems: [],
+                    maxSelectedItemsCount: maxItemsCount
+                )
              
-                self?.router.showPhotoLibrary(selectedItems: [], maxSelectedItemsCount: maxItemsCount) { module in
+                self?.router.showPhotoLibrary(data: data) { module in
                     
                     module.onFinish = { result in
                         self?.router.focusOnCurrentModule()

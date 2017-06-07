@@ -1,3 +1,8 @@
+public enum MediaPickerCropMode {
+    case normal
+    case custom(CroppingOverlayProvider)
+}
+
 public protocol MediaPickerModule: class {
 
     func focusOnModule()
@@ -5,6 +10,13 @@ public protocol MediaPickerModule: class {
     
     func setContinueButtonTitle(_: String)
     func setContinueButtonEnabled(_: Bool)
+    func setContinueButtonVisible(_: Bool)
+    
+    func setAccessDeniedTitle(_: String)
+    func setAccessDeniedMessage(_: String)
+    func setAccessDeniedButtonTitle(_: String)
+    
+    func setCropMode(_: MediaPickerCropMode)
     
     var onItemsAdd: (([MediaPickerItem]) -> ())? { get set }
     var onItemUpdate: ((MediaPickerItem) -> ())? { get set }

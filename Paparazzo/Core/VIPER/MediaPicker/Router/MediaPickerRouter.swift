@@ -3,15 +3,20 @@ import ImageSource
 protocol MediaPickerRouter: class {
     
     func showPhotoLibrary(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ()
+        data: PhotoLibraryData,
+        configure: (PhotoLibraryModule) -> ()
     )
     
     func showCroppingModule(
         forImage: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ()
+        configure: (ImageCroppingModule) -> ()
+    )
+    
+    func showMaskCropper(
+        data: MaskCropperData,
+        croppingOverlayProvider: CroppingOverlayProvider,
+        configure: (MaskCropperModule) -> ()
     )
     
     func focusOnCurrentModule()

@@ -11,6 +11,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private var items = [MediaPickerItem]()
     private var photoLibraryItems = [PhotoLibraryItem]()
     private var selectedItem: MediaPickerItem?
+    private var mode: MediaPickerCropMode = .normal
     
     init(
         items: [MediaPickerItem],
@@ -29,6 +30,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     // MARK: - MediaPickerInteractor
+    
+    func setCropMode(_ mode: MediaPickerCropMode) {
+        self.mode = mode
+    }
+    
+    func cropMode(completion: @escaping (MediaPickerCropMode) -> ()) {
+        completion(mode)
+    }
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
         deviceOrientationService.onOrientationChange = handler

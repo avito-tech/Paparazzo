@@ -3,6 +3,8 @@ import ImageSource
 
 final class ExamplePresenter {
     
+    // MARK: - Dependencies
+    
     private let interactor: ExampleInteractor
     private let router: ExampleRouter
     
@@ -21,9 +23,17 @@ final class ExamplePresenter {
     
     private var items: [MediaPickerItem] = []
     
+    private let cropCanvasSize = CGSize(width: 1280, height: 960)
+    
     // MARK: - Private
     
+    private let croppingOverlayProvidersFactory = Paparazzo.CroppingOverlayProvidersFactoryImpl()
+    
     private func setUpView() {
+        
+        view?.setMediaPickerButtonTitle("Media Picker")
+        view?.setMaskCropperButtonTitle("Mask Cropper")
+        view?.setPhotoLibraryButtonTitle("Photo Library")
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
             self?.interactor.remoteItems { remoteItems in
@@ -48,21 +58,74 @@ final class ExamplePresenter {
                 }
             }
         }
+        
+        view?.onMaskCropperButtonTap = { [weak self] in
+            self?.showMaskCropperCamera()
+        }
+    }
+    
+    func showMaskCropperCamera() {
+        let data = MediaPickerData(
+            items: items,
+            selectedItem: nil,
+            maxItemsCount: 1,
+            cropEnabled: true,
+            cropCanvasSize: cropCanvasSize,
+            initialActiveCameraType: .front
+        )
+        
+        self.router.showMediaPicker(
+            data: data,
+            configure: { module in
+                weak var module = module
+                module?.setContinueButtonVisible(false)
+                module?.setCropMode(.custom(croppingOverlayProvidersFactory.circleCroppingOverlayProvider()))
+                module?.onCancel = {
+                    module?.dismissModule()
+                }
+                module?.onFinish = { items in
+                    module?.dismissModule()
+                }
+            }
+        )
+    }
+    
+    private func showMaskCropperIn(rootModule: MediaPickerModule?, photo: MediaPickerItem) {
+        
+        let data = MaskCropperData(
+            imageSource: photo.image,
+            cropCanvasSize: cropCanvasSize
+        )
+        router.showMaskCropper(
+            data: data,
+            croppingOverlayProvider: croppingOverlayProvidersFactory.heartShapeCroppingOverlayProvider(),
+            configure: { module in
+                weak var module = module
+                module?.onDiscard = {
+                    module?.dismissModule()
+                }
+                module?.onConfirm = { _ in
+                    rootModule?.dismissModule()
+                }
+        })
     }
     
     func showMediaPicker(remoteItems: [MediaPickerItem]) {
         
         var items = self.items
         items.append(contentsOf: remoteItems)
-
-        let cropCanvasSize = CGSize(width: 1280, height: 960)
         
-        self.router.showMediaPicker(
+        let data = MediaPickerData(
             items: items,
             selectedItem: items.last,
             maxItemsCount: 20,
-            cropCanvasSize: cropCanvasSize,
-            configuration: { [weak self] module in
+            cropEnabled: true,
+            cropCanvasSize: cropCanvasSize
+        )
+        
+        self.router.showMediaPicker(
+            data: data,
+            configure: { [weak self] module in
                 self?.configureMediaPicker(module: module)
             }
         )

@@ -12,6 +12,8 @@ protocol PhotoLibraryViewInput: class {
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
     
+    func deselectAllItems()
+    
     func setPickButtonVisible(_: Bool)
     func setPickButtonEnabled(_: Bool)
     
@@ -38,6 +40,7 @@ struct PhotoLibraryItemCellData {
     var previewAvailable = false
     
     var onSelect: (() -> ())?
+    var onSelectionPrepare: (() -> ())?
     var onDeselect: (() -> ())?
     
     init(image: ImageSource) {

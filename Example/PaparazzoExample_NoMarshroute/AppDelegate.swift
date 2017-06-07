@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 maxItemsCount: 20,
                 cropEnabled: true,
                 cropCanvasSize: CGSize(width: 1280, height: 960),
-                configuration: { module in
+                configure: { module in
                     weak var module = module
                     
                     module?.setContinueButtonTitle("Готово")
@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let galleryController = assembly.module(
                 selectedItems: [],
                 maxSelectedItemsCount: 5,
-                configuration: { module in
+                configure: { module in
                     weak var module = module
                     module?.onFinish = { _ in
                         module?.dismissModule()

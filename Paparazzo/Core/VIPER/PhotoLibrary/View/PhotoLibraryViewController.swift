@@ -1,6 +1,8 @@
 import UIKit
 
-final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput {
+final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryViewInput, ThemeConfigurable {
+    
+    typealias ThemeType = PhotoLibraryUITheme
     
     private let photoLibraryView = PhotoLibraryView()
     
@@ -26,6 +28,13 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        self.theme = theme
+        photoLibraryView.setTheme(theme)
     }
     
     // MARK: - PhotoLibraryViewInput
@@ -78,6 +87,10 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
     }
     
+    func deselectAllItems() {
+        photoLibraryView.deselectAndAdjustAllCells()
+    }
+    
     func setPickButtonVisible(_ visible: Bool) {
         navigationItem.rightBarButtonItem = visible ? pickBarButtonItem : nil
     }
@@ -88,11 +101,6 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     func scrollToBottom() {
         photoLibraryView.scrollToBottom()
-    }
-    
-    func setTheme(_ theme: PhotoLibraryUITheme) {
-        self.theme = theme
-        photoLibraryView.setTheme(theme)
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {
@@ -109,14 +117,6 @@ final class PhotoLibraryViewController: UIViewController, PhotoLibraryViewInput 
     
     func setAccessDeniedButtonTitle(_ title: String) {
         photoLibraryView.setAccessDeniedButtonTitle(title)
-    }
-    
-    // MARK: - Dispose bag
-    
-    private var disposables = [AnyObject]()
-    
-    func addDisposable(_ object: AnyObject) {
-        disposables.append(object)
     }
     
     // MARK: - Private
