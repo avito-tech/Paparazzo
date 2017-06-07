@@ -1,71 +1,101 @@
 PODS:
-  - ImageSource (1.0.0):
-    - ImageSource/Core (= 1.0.0)
-    - ImageSource/Helpers (= 1.0.0)
-    - ImageSource/Local (= 1.0.0)
-    - ImageSource/PHAsset (= 1.0.0)
-    - ImageSource/Remote (= 1.0.0)
-    - ImageSource/UIKit (= 1.0.0)
-  - ImageSource/Core (1.0.0)
-  - ImageSource/Helpers (1.0.0)
-  - ImageSource/Local (1.0.0):
+  - Alamofire (4.4.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
+  - ImageSource (1.1.0):
+    - ImageSource/AlamofireImage (= 1.1.0)
+    - ImageSource/Core (= 1.1.0)
+    - ImageSource/Local (= 1.1.0)
+    - ImageSource/PHAsset (= 1.1.0)
+    - ImageSource/Remote (= 1.1.0)
+  - ImageSource/AlamofireImage (1.1.0):
+    - AlamofireImage (~> 3)
+    - ImageSource/Remote
+  - ImageSource/Core (1.1.0)
+  - ImageSource/Local (1.1.0):
     - ImageSource/Core
-    - ImageSource/Helpers
-  - ImageSource/PHAsset (1.0.0):
+  - ImageSource/PHAsset (1.1.0):
     - ImageSource/Core
-    - ImageSource/Helpers
-  - ImageSource/Remote (1.0.0):
+  - ImageSource/Remote (1.1.0):
     - ImageSource/Core
-    - ImageSource/Helpers
-    - ImageSource/Remote/SDWebImage (= 1.0.0)
-  - ImageSource/Remote/SDWebImage (1.0.0):
+    - ImageSource/UIKit
+  - ImageSource/SDWebImage (1.1.0):
+    - ImageSource/Remote
+    - SDWebImage (~> 3.8)
+  - ImageSource/UIKit (1.1.0):
     - ImageSource/Core
-    - ImageSource/Helpers
-    - SDWebImage
-  - ImageSource/UIKit (1.0.0):
-    - ImageSource/Core
-    - ImageSource/Helpers
   - JNWSpringAnimation (0.7.1)
   - Marshroute (0.3.5)
-  - Paparazzo (1.0.0):
-    - ImageSource
+  - Paparazzo (1.1.0):
+    - ImageSource/Core
+    - ImageSource/Local
+    - ImageSource/PHAsset
+    - ImageSource/Remote
     - JNWSpringAnimation
-    - Paparazzo/Core (= 1.0.0)
-    - Paparazzo/Marshroute (= 1.0.0)
-    - SDWebImage (~> 3.8)
-  - Paparazzo/Core (1.0.0):
-    - ImageSource
+    - Paparazzo/AlamofireImage (= 1.1.0)
+    - Paparazzo/Core (= 1.1.0)
+    - Paparazzo/Marshroute (= 1.1.0)
+  - Paparazzo/AlamofireImage (1.1.0):
+    - ImageSource/AlamofireImage
+    - ImageSource/Core
+    - ImageSource/Local
+    - ImageSource/PHAsset
+    - ImageSource/Remote
     - JNWSpringAnimation
-    - SDWebImage (~> 3.8)
-  - Paparazzo/Marshroute (1.0.0):
-    - ImageSource
+    - Paparazzo/Core
+  - Paparazzo/Core (1.1.0):
+    - ImageSource/Core
+    - ImageSource/Local
+    - ImageSource/PHAsset
+    - ImageSource/Remote
+    - JNWSpringAnimation
+  - Paparazzo/Marshroute (1.1.0):
+    - ImageSource/Core
+    - ImageSource/Local
+    - ImageSource/PHAsset
+    - ImageSource/Remote
     - JNWSpringAnimation
     - Marshroute
     - Paparazzo/Core
-    - SDWebImage (~> 3.8)
+  - Paparazzo/SDWebImage (1.1.0):
+    - ImageSource/Core
+    - ImageSource/Local
+    - ImageSource/PHAsset
+    - ImageSource/Remote
+    - ImageSource/SDWebImage
+    - JNWSpringAnimation
+    - Paparazzo/Core
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
   - ImageSource (from `../`)
+  - ImageSource/Core (from `../`)
+  - ImageSource/Local (from `../`)
+  - ImageSource/PHAsset (from `../`)
+  - ImageSource/Remote (from `../`)
+  - ImageSource/SDWebImage (from `../`)
   - Marshroute (= 0.3.5)
   - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
+  - Paparazzo/SDWebImage (from `../`)
 
 EXTERNAL SOURCES:
   ImageSource:
-    :path: ../
+    :path: "../"
   Paparazzo:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  ImageSource: d701da79bc246b0eb04d81551f019d8f6dabe439
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
+  ImageSource: 424d25f38cd2d4aa90f6a0dc46197c804964e0cf
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: abed7a53cf04db1a60aaddfe797dea7a7d010464
-  Paparazzo: f57952c29961ffe6035b6a45331a1c0595d27306
+  Paparazzo: d4a7ada3cc99d5742f579d63e20f6da838a86398
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: d754c1e04b66d9a01504971b8c20e5f74e88f90a
+PODFILE CHECKSUM: de862853608cf1d1ac04ebaaa29cb02cccfc5328
 
 COCOAPODS: 1.2.0

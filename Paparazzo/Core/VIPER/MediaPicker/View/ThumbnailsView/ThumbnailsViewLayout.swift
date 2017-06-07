@@ -4,12 +4,37 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     var itemsTransform = CGAffineTransform.identity
     
+    private var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    private var originalIndexPath: IndexPath?
+    private var draggingIndexPath: IndexPath?
+    private var draggingView: UIView?
+    private var dragOffset = CGPoint.zero
+    
     override init() {
         super.init()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepare() {
+        super.prepare()
+        
+        setUpGestureRecognizer()
+    }
+    
+    private func setUpGestureRecognizer() {
+        if let collectionView = collectionView, longPressGestureRecognizer == nil {
+            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
+            longPressGestureRecognizer.minimumPressDuration = 0.2
+            
+            // to avoid awkward didHighlight call
+            longPressGestureRecognizer.delaysTouchesBegan = true
+            self.longPressGestureRecognizer = longPressGestureRecognizer
+            
+            collectionView.addGestureRecognizer(longPressGestureRecognizer)
+        }
     }
     
     // MARK: - UICollectionViewLayout
@@ -40,8 +65,242 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     private func adjustAttributes(_ attributes: UICollectionViewLayoutAttributes?) {
         attributes?.transform = itemsTransform
     }
+    
+    @objc private func onLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        let location = gestureRecognizer.location(in: collectionView)
+        switch gestureRecognizer.state {
+        case .began: startDragAtLocation(location: location)
+        case .changed: updateDragAtLocation(location: location)
+        case .ended: endDragAtLocation(location: location)
+        default:
+            break
+        }
+    }
+    
+    private func startDragAtLocation(location: CGPoint) {
+        guard
+            let collectionView = collectionView,
+            let indexPath = collectionView.indexPathForItem(at: location),
+            let cell = collectionView.cellForItem(at: indexPath),
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate,
+            delegate.canMove(to: indexPath) != false
+            else { return }
+
+        
+        originalIndexPath = indexPath
+        draggingIndexPath = indexPath
+        draggingView = cell.snapshotView(afterScreenUpdates: false)
+        draggingView?.transform = itemsTransform
+
+        draggingView?.frame = cell.frame
+        cell.isHidden = true
+        
+        if let draggingView = draggingView {
+            collectionView.addSubview(draggingView)
+            dragOffset = CGPoint(x: draggingView.center.x - location.x, y: draggingView.center.y - location.y)
+            
+            invalidateLayout()
+
+            UIView.animate(
+                withDuration: 0.28,
+                animations: {
+                    draggingView.transform = self.itemsTransform.scaledBy(x: 1.1, y: 1.1)
+                },
+                completion: nil
+            )
+        }
+    }
+    
+    private func updateDragAtLocation(location: CGPoint) {
+        guard
+            let view = draggingView,
+            let collectionView = collectionView,
+            let draggingIndexPath = draggingIndexPath,
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            else { return }
+
+        view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
+        
+        if let newIndexPath = collectionView.indexPathForItem(at: location), delegate.canMove(to: newIndexPath) {
+            collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
+            self.draggingIndexPath = newIndexPath
+            beginScrollIfNeeded()
+        }
+    }
+    
+    private func endDragAtLocation(location: CGPoint) {
+        guard
+            let dragView = draggingView,
+            let indexPath = draggingIndexPath,
+            let collectionView = collectionView,
+            let datasource = collectionView.dataSource,
+            let cell = collectionView.cellForItem(at: indexPath as IndexPath),
+            let originalIndexPath = originalIndexPath,
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            else { return }
+
+        let targetCenter = datasource.collectionView(collectionView, cellForItemAt: indexPath as IndexPath).center
+
+        UIView.animate(
+            withDuration: 0.28,
+            animations: {
+                dragView.center = targetCenter
+                dragView.transform = self.itemsTransform
+        },
+            completion: { _ in
+                cell.isHidden = false
+                if indexPath != originalIndexPath {
+                    delegate.moveItem(from: originalIndexPath, to: indexPath)
+                }
+                
+                dragView.removeFromSuperview()
+                self.draggingIndexPath = nil
+                self.draggingView = nil
+                self.invalidateLayout()
+        })
+    }
+    
+    // MARK: Handle scrolling to the edges
+   
+    private var continuousScrollDirection: Direction = .none
+
+    enum Direction {
+        case left
+        case right
+        case none
+        
+        func scrollValue(_ speedValue: CGFloat, percentage: CGFloat) -> CGFloat {
+            var value: CGFloat = 0.0
+            switch self {
+            case .left:
+                value = -speedValue
+            case .right:
+                value = speedValue
+            case .none:
+                return 0
+            }
+            
+            let proofedPercentage: CGFloat = max(min(1.0, percentage), 0)
+            return value * proofedPercentage
+        }
+    }
+    
+
+    private let triggerInset : CGFloat = 30.0
+    
+    private var scrollSpeedValue: CGFloat = 5.0
+    private var displayLink: CADisplayLink?
+
+    private var offsetFromLeft: CGFloat {
+        guard let contentOffset = collectionView?.contentOffset else { return 0 }
+        return contentOffset.x
+    }
+    
+    private var collectionViewLength: CGFloat {
+        guard let collectionViewSize = collectionView?.bounds.size else { return 0 }
+        return collectionViewSize.width
+    }
+    
+    private var contentLength: CGFloat {
+        guard let contentSize = collectionView?.contentSize else { return 0 }
+        return contentSize.width
+    }
+    
+    private var draggingViewTopEdge: CGFloat? {
+        return draggingView.flatMap { $0.frame.minX }
+    }
+    
+    private var draggingViewEndEdge: CGFloat? {
+        return draggingView.flatMap { $0.frame.maxX }
+    }
+    
+    private func setUpDisplayLink() {
+        guard self.displayLink == nil else { return }
+        
+        let displayLink = CADisplayLink(target: self, selector: #selector(onContinuousScroll))
+        displayLink.frameInterval = 1
+        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        self.displayLink = displayLink
+    }
+    
+    private func invalidateDisplayLink() {
+        continuousScrollDirection = .none
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
+    private func beginScrollIfNeeded() {
+        guard
+            let draggingViewTopEdge = draggingViewTopEdge,
+            let draggingViewEndEdge = draggingViewEndEdge
+            else { return }
+        
+        if draggingViewTopEdge <= offsetFromLeft + triggerInset {
+            continuousScrollDirection = .left
+            setUpDisplayLink()
+        } else if draggingViewEndEdge >= offsetFromLeft + collectionViewLength - triggerInset {
+            continuousScrollDirection = .right
+            setUpDisplayLink()
+        } else {
+            invalidateDisplayLink()
+        }
+    }
+    
+    @objc private func onContinuousScroll() {
+        guard let draggingView = draggingView else { return }
+        
+        let percentage = calculateTriggerPercentage()
+        var scrollRate = continuousScrollDirection.scrollValue(scrollSpeedValue, percentage: percentage)
+        
+        let offset = offsetFromLeft
+        let length = collectionViewLength
+        
+        if contentLength <= length {
+            return
+        }
+        
+        if offset + scrollRate <= 0 {
+            scrollRate = -offset
+        } else if offset + scrollRate >= contentLength - length {
+            scrollRate = contentLength - length - offset
+        }
+
+        draggingView.x += scrollRate
+
+        collectionView?.performBatchUpdates({
+            self.collectionView?.contentOffset.x += scrollRate
+        }, completion: nil)
+    }
+    
+    private func calculateTriggerPercentage() -> CGFloat {
+        guard draggingView != nil else { return 0 }
+        
+        let offset = offsetFromLeft
+        let offsetEnd = offsetFromLeft + collectionViewLength
+        
+        var percentage: CGFloat = 0
+        
+        guard triggerInset != 0 else {
+            return 0
+        }
+        
+        if self.continuousScrollDirection == .left {
+            if let fakeCellEdge = draggingViewTopEdge {
+                percentage = 1.0 - ((fakeCellEdge - offset) / triggerInset)
+            }
+        } else if continuousScrollDirection == .right {
+            if let draggingViewEdge = draggingViewEndEdge {
+                percentage = 1.0 - ((offsetEnd - draggingViewEdge) / triggerInset)
+            }
+        }
+        
+        percentage = min(1, max(0, percentage))
+        return percentage
+    }
 }
 
 protocol MediaRibbonLayoutDelegate: UICollectionViewDelegateFlowLayout {
     func shouldApplyTransformToItemAtIndexPath(_ indexPath: IndexPath) -> Bool
+    func canMove(to indexPath: IndexPath) -> Bool
+    func moveItem(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
 }

@@ -4,11 +4,11 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     
     // MARK: - CaptureSessionPreviewService
     
-    static func startStreamingPreview(of captureSession: AVCaptureSession, to view: CameraOutputView) {
+    static func startStreamingPreview(of captureSession: AVCaptureSession, to view: CameraOutputGLKView) {
         service(for: captureSession).startStreamingPreview(to: view)
     }
     
-    func startStreamingPreview(to view: CameraOutputView) {
+    func startStreamingPreview(to view: CameraOutputGLKView) {
         queue.async { [weak self] in
             self?.views.append(WeakWrapper(value: view))
         }
@@ -39,7 +39,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     private static var sharedServices = NSMapTable<AVCaptureSession, CaptureSessionPreviewService>.weakToStrongObjects()
     
     private let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CaptureSessionPreviewService.queue")
-    private var views = [WeakWrapper<CameraOutputView>]()
+    private var views = [WeakWrapper<CameraOutputGLKView>]()
     private var isInBackground = false
     
     private init(captureSession: AVCaptureSession) {

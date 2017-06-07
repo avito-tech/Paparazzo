@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name                   = 'Paparazzo'
   s.module_name            = 'Paparazzo'
-  s.version                = '1.0.0'
-  s.summary                = 'Paparazzo by Andrey Yutkin'
+  s.version                = '1.1.0'
+  s.summary                = "iOS component for picking and editing photos from camera and user's photo library"
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'MIT'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
@@ -14,8 +14,23 @@ Pod::Spec.new do |s|
   s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices', 'GLKit', 'OpenGLES', 'CoreMedia', 'CoreVideo', 'AVFoundation', 'QuartzCore'
   
   s.dependency 'JNWSpringAnimation'
-  s.dependency 'SDWebImage', '~> 3.8'
-  s.dependency 'ImageSource'
+  
+  s.dependency 'ImageSource/Core'
+  s.dependency 'ImageSource/PHAsset'
+  s.dependency 'ImageSource/Local'
+  s.dependency 'ImageSource/Remote'
+
+  s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage'
+
+  s.subspec 'AlamofireImage' do |ai|
+    ai.dependency 'Paparazzo/Core'
+    ai.dependency 'ImageSource/AlamofireImage'
+  end
+
+  s.subspec 'SDWebImage' do |sd|
+    sd.dependency 'Paparazzo/Core'
+    sd.dependency 'ImageSource/SDWebImage'
+  end
   
   s.subspec 'Core' do |cs|
     cs.source_files = 'Paparazzo/Core/**/*'
