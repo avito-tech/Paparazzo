@@ -1,37 +1,32 @@
 import Marshroute
 import UIKit
 
-public final class MediaPickerMarshrouteAssemblyImpl: MediaPickerMarshrouteAssembly {
+public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, MediaPickerMarshrouteAssembly {
     
     typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
-    private let theme: PaparazzoUITheme
     
-    init(assemblyFactory: AssemblyFactory, theme: PaparazzoUITheme) {
+    init(assemblyFactory: AssemblyFactory, theme: PaparazzoUITheme, serviceFactory: ServiceFactory) {
         self.assemblyFactory = assemblyFactory
-        self.theme = theme
+        super.init(theme: theme, serviceFactory: serviceFactory)
     }
     
     // MARK: - MediaPickerAssembly
     
     public func module(
-        items: [MediaPickerItem],
-        selectedItem: MediaPickerItem?,
-        maxItemsCount: Int?,
-        cropEnabled: Bool,
-        cropCanvasSize: CGSize,
+        data: MediaPickerData,
         routerSeed: RouterSeed,
-        configuration: (MediaPickerModule) -> ())
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
         let interactor = MediaPickerInteractorImpl(
-            items: items,
-            selectedItem: selectedItem,
-            maxItemsCount: maxItemsCount,
-            cropCanvasSize: cropCanvasSize,
-            deviceOrientationService: DeviceOrientationServiceImpl(),
-            latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProviderImpl()
+            items: data.items,
+            selectedItem: data.selectedItem,
+            maxItemsCount: data.maxItemsCount,
+            cropCanvasSize: data.cropCanvasSize,
+            deviceOrientationService: serviceFactory.deviceOrientationService(),
+            latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )
 
         let router = MediaPickerMarshrouteRouter(
@@ -40,7 +35,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: MediaPickerMarshrouteAssem
         )
         
         let cameraAssembly = assemblyFactory.cameraAssembly()
-        let (cameraView, cameraModuleInput) = cameraAssembly.module()
+        let (cameraView, cameraModuleInput) = cameraAssembly.module(initialActiveCameraType: data.initialActiveCameraType)
         
         let presenter = MediaPickerPresenter(
             interactor: interactor,
@@ -52,11 +47,11 @@ public final class MediaPickerMarshrouteAssemblyImpl: MediaPickerMarshrouteAssem
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
         viewController.setTheme(theme)
-        viewController.setShowsCropButton(cropEnabled)
+        viewController.setShowsCropButton(data.cropEnabled)
         
         presenter.view = viewController
         
-        configuration(presenter)
+        configure(presenter)
         
         return viewController
     }

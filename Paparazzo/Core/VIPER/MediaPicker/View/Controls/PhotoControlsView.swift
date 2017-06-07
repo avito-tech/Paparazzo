@@ -1,6 +1,8 @@
 import UIKit
 
-final class PhotoControlsView: UIView {
+final class PhotoControlsView: UIView, ThemeConfigurable {
+    
+    typealias ThemeType = MediaPickerRootModuleUITheme
     
     // MARK: - Subviews
     
@@ -48,6 +50,13 @@ final class PhotoControlsView: UIView {
         }
     }
     
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        removeButton.setImage(theme.removePhotoIcon, for: .normal)
+        cropButton.setImage(theme.cropPhotoIcon, for: .normal)
+    }
+    
     // MARK: - PhotoControlsView
     
     var onRemoveButtonTap: (() -> ())?
@@ -57,11 +66,6 @@ final class PhotoControlsView: UIView {
     func setControlsTransform(_ transform: CGAffineTransform) {
         removeButton.transform = transform
         cropButton.transform = transform
-    }
-    
-    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
-        removeButton.setImage(theme.removePhotoIcon, for: .normal)
-        cropButton.setImage(theme.cropPhotoIcon, for: .normal)
     }
     
     func setShowsCropButton(_ showsCropButton: Bool) {
