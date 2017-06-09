@@ -92,7 +92,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
         guard sourceIndex != destinationIndex else { return }
         
-        collectionView.performBatchUpdates() { [weak self] in
+        collectionView.performBatchUpdates(animated: false, { [weak self] in
             self?.dataSource.moveItem(
                 from: sourceIndex,
                 to: destinationIndex
@@ -102,7 +102,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
                 at: IndexPath(item: sourceIndex, section: 0),
                 to: IndexPath(item: destinationIndex, section: 0)
             )
-        }
+        })
     }
     
     func setCameraVisible(_ visible: Bool) {
