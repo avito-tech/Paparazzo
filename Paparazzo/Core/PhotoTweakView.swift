@@ -240,6 +240,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             return
         }
         
+        scrollView.zoomScale = 1
+        
         // scale the image
         cropSize = CGSize(
             width: bounds.size.width,
