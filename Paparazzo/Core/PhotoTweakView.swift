@@ -97,6 +97,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     var cropAspectRatio = CGFloat(AspectRatio.defaultRatio.widthToHeightRatio()) {
         didSet {
             if cropAspectRatio != oldValue {
+                resetScale()
                 calculateFrames()
             }
         }
@@ -106,6 +107,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     func setImage(_ image: UIImage) {
         scrollView.imageView.image = image
+        resetScale()
         calculateFrames()
         notifyAboutCroppingParametersChange()
     }
@@ -240,8 +242,6 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             return
         }
         
-        scrollView.zoomScale = 1
-        
         // scale the image
         cropSize = CGSize(
             width: bounds.size.width,
@@ -335,6 +335,10 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     private func reset() {
         scrollView.transform = .identity
         scrollView.minimumZoomScale = 1
+        scrollView.zoomScale = 1
+    }
+    
+    private func resetScale() {
         scrollView.zoomScale = 1
     }
     
