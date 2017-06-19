@@ -121,7 +121,10 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
 
         view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
         
-        if let newIndexPath = collectionView.indexPathForItem(at: location), delegate.canMove(to: newIndexPath) {
+        if let newIndexPath = collectionView.indexPathForItem(at: location),
+            delegate.canMove(to: newIndexPath),
+            draggingIndexPath != newIndexPath {
+            delegate.moveItem(from: draggingIndexPath, to: newIndexPath)
             collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
             self.draggingIndexPath = newIndexPath
             beginScrollIfNeeded()
@@ -149,10 +152,6 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         },
             completion: { _ in
                 cell.isHidden = false
-                if indexPath != originalIndexPath {
-                    delegate.moveItem(from: originalIndexPath, to: indexPath)
-                }
-                
                 dragView.removeFromSuperview()
                 self.draggingIndexPath = nil
                 self.draggingView = nil
