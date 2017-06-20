@@ -75,7 +75,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     override var frame: CGRect {
         didSet {
-            reset()
+            resetScrollViewState()
             calculateFrames()
             adjustRotation()
         }
@@ -332,10 +332,10 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
     }
     
-    private func reset() {
+    private func resetScrollViewState() {
         scrollView.transform = .identity
         scrollView.minimumZoomScale = 1
-        scrollView.zoomScale = 1
+        resetScale()
     }
     
     private func resetScale() {
