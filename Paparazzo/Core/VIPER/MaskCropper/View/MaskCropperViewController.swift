@@ -39,6 +39,12 @@ final class MaskCropperViewController:
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        UIViewController.attemptRotationToDeviceOrientation()
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
