@@ -5,7 +5,6 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     typealias ThemeType = MediaPickerRootModuleUITheme
     
-    private var isBeingRotated: Bool = false
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
     
@@ -26,7 +25,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
+        layoutMediaPickerView(bounds: UIScreen.main.bounds)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
@@ -77,37 +76,18 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if !isBeingRotated {
-            layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
-        }
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
     }
     
-    override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        if shouldAutorotate {
-            // Compensation animation for rotation.
-            UIView.animate(
-                withDuration: duration,
-                animations: {
-                    self.layoutMediaPickerView(interfaceOrientation: toInterfaceOrientation)
-            })
-        }
-        super.willAnimateRotation(to: toInterfaceOrientation, duration: duration)
-    }
-    
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotate(from: fromInterfaceOrientation)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        if shouldAutorotate {
-            layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
-        }
-        isBeingRotated = false
-    }
-    
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        super.willRotate(to: toInterfaceOrientation, duration: duration)
-        isBeingRotated = true
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.layoutMediaPickerView(bounds: context.containerView.bounds)
+            },
+        completion: nil)
+        
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
     override open var shouldAutorotate: Bool {
@@ -144,12 +124,12 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         get { return mediaPickerView.onShutterButtonTap }
         set { mediaPickerView.onShutterButtonTap = newValue }
     }
-
+    
     var onPhotoLibraryButtonTap: (() -> ())? {
         get { return mediaPickerView.onPhotoLibraryButtonTap }
         set { mediaPickerView.onPhotoLibraryButtonTap = newValue }
     }
-
+    
     var onFlashToggle: ((Bool) -> ())? {
         get { return mediaPickerView.onFlashToggle }
         set { mediaPickerView.onFlashToggle = newValue }
@@ -279,7 +259,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     func setCameraToggleButtonVisible(_ visible: Bool) {
         mediaPickerView.setCameraToggleButtonVisible(visible)
     }
-
+    
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         mediaPickerView.addItems(items, animated: animated, completion: completion)
     }
@@ -356,13 +336,12 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     // MARK: - Private
     
-    func layoutMediaPickerView(interfaceOrientation: UIInterfaceOrientation) {
+    func layoutMediaPickerView(bounds: CGRect) {
         // View is rotated, but mediaPickerView isn't.
         // It rotates in opposite direction and seems not rotated at all.
         // This allows to not force status bar orientation on this screen and keep UI same as
         // with forcing status bar orientation.
         mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
-        mediaPickerView.frame = view.bounds
+        mediaPickerView.frame = bounds
     }
-
 }
