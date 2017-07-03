@@ -98,6 +98,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         super.didRotate(from: fromInterfaceOrientation)
+        
+        if shouldAutorotate {
+            layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
+        }
         isBeingRotated = false
     }
     
