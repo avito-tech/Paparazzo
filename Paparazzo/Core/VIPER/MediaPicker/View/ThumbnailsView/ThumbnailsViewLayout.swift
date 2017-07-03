@@ -24,6 +24,11 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         setUpGestureRecognizer()
     }
     
+    func cancelDrag() {
+        longPressGestureRecognizer?.isEnabled = false
+        longPressGestureRecognizer?.isEnabled = true
+    }
+    
     private func setUpGestureRecognizer() {
         if let collectionView = collectionView, longPressGestureRecognizer == nil {
             let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
@@ -72,6 +77,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         case .began: startDragAtLocation(location: location)
         case .changed: updateDragAtLocation(location: location)
         case .ended: endDragAtLocation(location: location)
+        case .cancelled: endDragAtLocation(location: location)
         default:
             break
         }
@@ -121,7 +127,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
 
         view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
         
-        if let newIndexPath = collectionView.indexPathForItem(at: location),
+        if let newIndexPath = collectionView.indexPathForItem(at: CGPoint(x: location.x, y: collectionView.height/2)),
             delegate.canMove(to: newIndexPath),
             draggingIndexPath != newIndexPath {
             delegate.moveItem(from: draggingIndexPath, to: newIndexPath)
