@@ -25,10 +25,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        layoutMediaPickerView(bounds: UIScreen.main.bounds)
-        
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
+        
+        layoutMediaPickerView(bounds: view.bounds)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
