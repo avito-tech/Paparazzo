@@ -82,6 +82,8 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     func selectMediaItem(_ item: MediaPickerItem, animated: Bool = false) {
+        layout.cancelDrag()
+        
         if let indexPath = dataSource.indexPathForItem(item) {
             collectionView.selectItem(at: indexPath, animated: animated, scrollPosition: [])
         }
