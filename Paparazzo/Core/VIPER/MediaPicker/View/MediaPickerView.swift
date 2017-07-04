@@ -10,7 +10,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
     
-    private let photoLibraryPeepholeView = UIImageView()
     private let closeButton = UIButton()
     private let continueButton = UIButton()
     private let photoTitleLabel = UILabel()
@@ -72,7 +71,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoTitleLabel.layer.masksToBounds = false
         photoTitleLabel.alpha = 0
         
-        photoLibraryPeepholeView.contentMode = .scaleAspectFill
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
             self?.onItemSelect?(mediaPickerItem)
@@ -96,6 +94,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(continueButton)
         
         setMode(.camera)
+        
+        setupAccessibilityIdentifiers()
     }
     
     private func setupButtons() {
@@ -116,6 +116,16 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             action: #selector(onContinueButtonTap(_:)),
             for: .touchUpInside
         )
+    }
+    
+    private func setupAccessibilityIdentifiers() {
+        closeButton.accessibilityIdentifier = "closeButton"
+        continueButton.accessibilityIdentifier = "continueButton"
+        photoTitleLabel.accessibilityIdentifier = "photoTitleLabel"
+        
+        closeButton.isAccessibilityElement = true
+        continueButton.isAccessibilityElement = true
+        photoTitleLabel.isAccessibilityElement = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -435,6 +445,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     func setPhotoTitle(_ title: String) {
         photoTitleLabel.text = title
+        photoTitleLabel.accessibilityValue = title
         layoutPhotoTitleLabel()
     }
     
@@ -455,6 +466,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     func setContinueButtonTitle(_ title: String) {
         continueButton.setTitle(title, for: .normal)
+        continueButton.accessibilityValue = title
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
