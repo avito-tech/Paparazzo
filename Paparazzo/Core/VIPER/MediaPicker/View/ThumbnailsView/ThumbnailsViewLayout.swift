@@ -169,8 +169,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 return attribute.indexPath
             }
             
-            if smallestDistance > abs(attribute.frame.origin.x - point.x) {
-                smallestDistance = abs(attribute.frame.x - point.x)
+            let currentDistance = abs(attribute.frame.x - point.x)
+            if smallestDistance > currentDistance {
+                smallestDistance = currentDistance
                 indexPath = attribute.indexPath
             }
         }
