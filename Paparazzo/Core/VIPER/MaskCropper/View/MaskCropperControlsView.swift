@@ -28,6 +28,16 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
             action: #selector(onConfirmTap(_:)),
             for: .touchUpInside
         )
+        
+        setupAccessibilityIdentifiers()
+    }
+    
+    private func setupAccessibilityIdentifiers() {
+        discardButton.accessibilityIdentifier = "discardButton"
+        confirmButton.accessibilityIdentifier = "confirmButton"
+        
+        discardButton.isAccessibilityElement = true
+        confirmButton.isAccessibilityElement = true
     }
     
     required init?(coder aDecoder: NSCoder) {
