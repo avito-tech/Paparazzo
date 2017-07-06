@@ -119,23 +119,12 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     private func updateDragAtLocation(location: CGPoint) {
         guard
-            let view = draggingView,
-            let collectionView = collectionView,
-            let draggingIndexPath = draggingIndexPath,
-            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            let view = draggingView
             else { return }
 
         view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
         
-        // AI-6314: If we pass location inside indexPathForItem it can return nil if location is out of collectionView bounds
-        if let newIndexPath = collectionView.indexPathForItem(at: CGPoint(x: location.x, y: collectionView.height/2)),
-            delegate.canMove(to: newIndexPath),
-            draggingIndexPath != newIndexPath {
-            delegate.moveItem(from: draggingIndexPath, to: newIndexPath)
-            collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
-            self.draggingIndexPath = newIndexPath
-            beginScrollIfNeeded()
-        }
+        moveItem(to: location)
     }
     
     private func endDragAtLocation(location: CGPoint) {
@@ -164,6 +153,48 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 self.draggingView = nil
                 self.invalidateLayout()
         })
+    }
+    
+    private func indexPathForItemClosestTo(point: CGPoint) -> IndexPath? {
+        guard
+            let collectionView = collectionView,
+            let layoutAttributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: collectionView.bounds)
+        else { return nil }
+        
+        var smallestDistance = CGFloat.greatestFiniteMagnitude
+        var indexPath: IndexPath?
+        
+        for attribute in layoutAttributes {
+            if attribute.frame.contains(point) {
+                return attribute.indexPath
+            }
+            
+            let currentDistance = abs(attribute.frame.x - point.x)
+            if smallestDistance > currentDistance {
+                smallestDistance = currentDistance
+                indexPath = attribute.indexPath
+            }
+        }
+        
+        return indexPath
+    }
+    
+    private func moveItem(to location: CGPoint) {
+        guard
+            let collectionView = collectionView,
+            let draggingIndexPath = draggingIndexPath,
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            else { return }
+        
+        // AI-6314: If we pass location inside indexPathForItem it can return nil if location is out of collectionView bounds
+        if let newIndexPath = indexPathForItemClosestTo(point: CGPoint(x: location.x, y: collectionView.height/2)),
+            delegate.canMove(to: newIndexPath),
+            draggingIndexPath != newIndexPath {
+            delegate.moveItem(from: draggingIndexPath, to: newIndexPath)
+            collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
+            self.draggingIndexPath = newIndexPath
+            beginScrollIfNeeded()
+        }
     }
     
     // MARK: Handle scrolling to the edges
@@ -269,10 +300,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         }
 
         draggingView.x += scrollRate
-
-        collectionView?.performBatchUpdates({
-            self.collectionView?.contentOffset.x += scrollRate
-        }, completion: nil)
+        self.collectionView?.contentOffset.x += scrollRate
+        moveItem(to: draggingView.center)
     }
     
     private func calculateTriggerPercentage() -> CGFloat {
