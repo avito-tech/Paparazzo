@@ -127,6 +127,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
 
         view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
         
+        // AI-6314: If we pass location inside indexPathForItem it can return nil if location is out of collectionView bounds
         if let newIndexPath = collectionView.indexPathForItem(at: CGPoint(x: location.x, y: collectionView.height/2)),
             delegate.canMove(to: newIndexPath),
             draggingIndexPath != newIndexPath {

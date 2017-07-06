@@ -52,6 +52,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
+        setAccessibilityId(.photoPreviewCell)
     }
     
     // MARK: - Private
