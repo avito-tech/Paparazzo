@@ -9,16 +9,13 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     private var layoutSubviewsPromise = Promise<Void>()
     
     // MARK: - UIViewController
-    
-    override func loadView() {
-        view = UIView()
-        view.backgroundColor = .black
-        view.addSubview(mediaPickerView)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         automaticallyAdjustsScrollViewInsets = false
+        view.backgroundColor = .black
+        view.addSubview(mediaPickerView)
         onViewDidLoad?()
     }
     
