@@ -123,6 +123,11 @@ extension UIView {
             }
         )
     }
+    
+    func setAccessibilityId(_ id: AccessibilityId) {
+        accessibilityIdentifier = id.rawValue
+        isAccessibilityElement = true
+    }
 }
 
 extension UICollectionView {

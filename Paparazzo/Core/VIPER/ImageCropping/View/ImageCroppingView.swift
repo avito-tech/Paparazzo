@@ -64,6 +64,13 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
         addSubview(controlsView)
         addSubview(titleLabel)
         addSubview(aspectRatioButton)
+        
+        setUpAccessibilityIdentifiers()
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        aspectRatioButton.setAccessibilityId(.aspectRatioButton)
+        titleLabel.setAccessibilityId(.titleLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -224,6 +231,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
     }
     
     func setAspectRatioButtonTitle(_ title: String) {
+        aspectRatioButton.accessibilityValue = title
         aspectRatioButton.setTitle(title, for: .normal)
     }
     

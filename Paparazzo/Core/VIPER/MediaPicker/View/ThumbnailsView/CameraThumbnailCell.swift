@@ -69,6 +69,8 @@ final class CameraThumbnailCell: UICollectionViewCell {
         adjustBorderColor()
         
         addSubview(button)
+        
+        setAccessibilityId(.cameraThumbnailCell)
     }
     
     required init?(coder aDecoder: NSCoder) {
