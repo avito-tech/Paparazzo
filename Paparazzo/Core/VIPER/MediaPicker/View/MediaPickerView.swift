@@ -95,7 +95,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         setMode(.camera)
         
-        setupAccessibilityIdentifiers()
+        setUpAccessibilityIdentifiers()
     }
     
     private func setupButtons() {
@@ -118,7 +118,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         )
     }
     
-    private func setupAccessibilityIdentifiers() {
+    private func setUpAccessibilityIdentifiers() {
         closeButton.setAccessibilityId(.closeButton)
         continueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)

@@ -81,10 +81,10 @@ final class CameraControlsView: UIView, ThemeConfigurable {
         addSubview(flashButton)
         addSubview(cameraToggleButton)
         
-        setupAccessibilityIdentifiers()
+        setUpAccessibilityIdentifiers()
     }
     
-    private func setupAccessibilityIdentifiers() {
+    private func setUpAccessibilityIdentifiers() {
         photoView.setAccessibilityId(.photoView)
         shutterButton.setAccessibilityId(.shutterButton)
         cameraToggleButton.setAccessibilityId(.cameraToggleButton)

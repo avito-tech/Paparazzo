@@ -29,10 +29,10 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
             for: .touchUpInside
         )
         
-        setupAccessibilityIdentifiers()
+        setUpAccessibilityIdentifiers()
     }
     
-    private func setupAccessibilityIdentifiers() {
+    private func setUpAccessibilityIdentifiers() {
         discardButton.setAccessibilityId(.discardButton)
         confirmButton.setAccessibilityId(.confirmButton)
     }

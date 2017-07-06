@@ -1,4 +1,4 @@
-internal enum AccessibilityId: String {
+public enum AccessibilityId: String {
     // CameraControls
     case photoView
     case shutterButton
@@ -27,16 +27,4 @@ internal enum AccessibilityId: String {
     // PhotoControls
     case removeButton
     case cropButton
-}
-
-extension UIView {
-    func setAccessibilityId(_ id: AccessibilityId) {
-        accessibilityIdentifier = id.rawValue
-        isAccessibilityElement = true
-    }
-    
-    func setAccessibilityId(_ id: String) {
-        accessibilityIdentifier = id
-        isAccessibilityElement = true
-    }
 }

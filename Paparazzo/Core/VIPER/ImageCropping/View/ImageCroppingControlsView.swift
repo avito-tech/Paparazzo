@@ -63,10 +63,10 @@ final class ImageCroppingControlsView: UIView, ThemeConfigurable {
         addSubview(rotationCancelButton)
         addSubview(discardButton)
         addSubview(confirmButton)
-        setupAccessibilityIdentifiers()
+        setUpAccessibilityIdentifiers()
     }
     
-    private func setupAccessibilityIdentifiers() {
+    private func setUpAccessibilityIdentifiers() {
         rotationButton.setAccessibilityId(.rotationButton)
         gridButton.setAccessibilityId(.gridButton)
         rotationCancelButton.setAccessibilityId(.rotationCancelButton)
