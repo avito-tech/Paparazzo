@@ -67,17 +67,11 @@ final class ImageCroppingControlsView: UIView, ThemeConfigurable {
     }
     
     private func setupAccessibilityIdentifiers() {
-        rotationButton.accessibilityIdentifier = "rotationButton"
-        gridButton.accessibilityIdentifier = "gridButton"
-        rotationCancelButton.accessibilityIdentifier = "rotationCancelButton"
-        discardButton.accessibilityIdentifier = "discardButton"
-        confirmButton.accessibilityIdentifier = "confirmButton"
-        
-        rotationButton.isAccessibilityElement = true
-        gridButton.isAccessibilityElement = true
-        rotationCancelButton.isAccessibilityElement = true
-        discardButton.isAccessibilityElement = true
-        confirmButton.isAccessibilityElement = true
+        rotationButton.setAccessibilityId(.rotationButton)
+        gridButton.setAccessibilityId(.gridButton)
+        rotationCancelButton.setAccessibilityId(.rotationCancelButton)
+        discardButton.setAccessibilityId(.discardButton)
+        confirmButton.setAccessibilityId(.confirmButton)
     }
     
     required init?(coder aDecoder: NSCoder) {

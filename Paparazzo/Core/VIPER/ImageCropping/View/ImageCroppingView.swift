@@ -69,11 +69,8 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
     }
     
     func setupAccessibilityIdentifiers() {
-        aspectRatioButton.accessibilityIdentifier = "aspectRationButton"
-        titleLabel.accessibilityIdentifier = "titleLabel"
-        
-        aspectRatioButton.isAccessibilityElement = true
-        titleLabel.isAccessibilityElement = true
+        aspectRatioButton.setAccessibilityId(.aspectRatioButton)
+        titleLabel.setAccessibilityId(.titleLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {

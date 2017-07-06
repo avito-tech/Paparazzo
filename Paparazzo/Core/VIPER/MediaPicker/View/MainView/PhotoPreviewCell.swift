@@ -52,9 +52,7 @@ final class PhotoPreviewCell: PhotoCollectionViewCell {
     
     func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
-        
-        accessibilityIdentifier = item.identifier + "PhotoPreviewCell"
-        isAccessibilityElement = true
+        setAccessibilityId(item.identifier + AccessibilityId.photoPreviewCell.rawValue)
     }
     
     // MARK: - Private

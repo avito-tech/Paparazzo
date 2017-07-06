@@ -119,13 +119,9 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     private func setupAccessibilityIdentifiers() {
-        closeButton.accessibilityIdentifier = "closeButton"
-        continueButton.accessibilityIdentifier = "continueButton"
-        photoTitleLabel.accessibilityIdentifier = "photoTitleLabel"
-        
-        closeButton.isAccessibilityElement = true
-        continueButton.isAccessibilityElement = true
-        photoTitleLabel.isAccessibilityElement = true
+        closeButton.setAccessibilityId(.closeButton)
+        continueButton.setAccessibilityId(.continueButton)
+        photoTitleLabel.setAccessibilityId(.titleLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {

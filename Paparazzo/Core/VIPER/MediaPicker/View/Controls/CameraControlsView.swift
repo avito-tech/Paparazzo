@@ -85,15 +85,10 @@ final class CameraControlsView: UIView, ThemeConfigurable {
     }
     
     private func setupAccessibilityIdentifiers() {
-        photoView.accessibilityIdentifier = "photoView"
-        shutterButton.accessibilityIdentifier = "shutterButton"
-        cameraToggleButton.accessibilityIdentifier = "cameraToggleButton"
-        flashButton.accessibilityIdentifier = "flashButton"
-        
-        photoView.isAccessibilityElement = true
-        shutterButton.isAccessibilityElement = true
-        cameraToggleButton.isAccessibilityElement = true
-        flashButton.isAccessibilityElement = true
+        photoView.setAccessibilityId(.photoView)
+        shutterButton.setAccessibilityId(.shutterButton)
+        cameraToggleButton.setAccessibilityId(.cameraToggleButton)
+        flashButton.setAccessibilityId(.flashButton)
     }
     
     required init?(coder aDecoder: NSCoder) {

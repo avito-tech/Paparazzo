@@ -33,11 +33,8 @@ final class MaskCropperControlsView: UIView, ThemeConfigurable {
     }
     
     private func setupAccessibilityIdentifiers() {
-        discardButton.accessibilityIdentifier = "discardButton"
-        confirmButton.accessibilityIdentifier = "confirmButton"
-        
-        discardButton.isAccessibilityElement = true
-        confirmButton.isAccessibilityElement = true
+        discardButton.setAccessibilityId(.discardButton)
+        confirmButton.setAccessibilityId(.confirmButton)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -70,8 +70,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
         
         addSubview(button)
         
-        isAccessibilityElement = true
-        accessibilityIdentifier = "CameraThumbnailCell"
+        setAccessibilityId(.cameraThumbnailCell)
     }
     
     required init?(coder aDecoder: NSCoder) {

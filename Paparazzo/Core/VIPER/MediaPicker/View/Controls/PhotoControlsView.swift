@@ -35,11 +35,8 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     }
     
     private func setupAccessibilityIdentifiers() {
-        removeButton.accessibilityIdentifier = "removeButton"
-        cropButton.accessibilityIdentifier = "cropButton"
-        
-        removeButton.isAccessibilityElement = true
-        cropButton.isAccessibilityElement = true
+        removeButton.setAccessibilityId(.removeButton)
+        cropButton.setAccessibilityId(.cropButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
