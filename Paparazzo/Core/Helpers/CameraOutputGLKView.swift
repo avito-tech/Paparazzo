@@ -56,7 +56,7 @@ final class CameraOutputGLKView: GLKView {
     
     private func drawableBounds(for rect: CGRect) -> CGRect {
         
-        let screenScale = UIScreen.main.scale
+        let screenScale = UIScreen.main.nativeScale
         
         var drawableBounds = rect
         drawableBounds.size.width *= screenScale
