@@ -193,8 +193,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             delegate.moveItem(from: draggingIndexPath, to: newIndexPath)
             collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
             self.draggingIndexPath = newIndexPath
-            beginScrollIfNeeded()
         }
+        beginScrollIfNeeded()
     }
     
     // MARK: Handle scrolling to the edges
