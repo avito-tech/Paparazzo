@@ -76,6 +76,8 @@ protocol MediaPickerViewInput: class {
     
     var onViewDidLoad: (() -> ())? { get set }
     var onViewDidAppear: ((_ animated: Bool) -> ())? { get set }
+    var onViewWillAppear: ((_ animated: Bool) -> ())? { get set }
+    var onViewDidDisappear: ((_ animated: Bool) -> ())? { get set }
     
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())? { get set }
 }
