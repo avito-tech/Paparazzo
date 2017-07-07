@@ -26,6 +26,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
         
         layoutMediaPickerView(bounds: view.bounds)
+        onViewWillAppear?(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -36,6 +37,11 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         if UIDevice.current.userInterfaceIdiom == .pad {
             mediaPickerView.alpha = 0
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onViewDidDisappear?(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -173,7 +179,9 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     }
     
     var onViewDidLoad: (() -> ())?
+    var onViewWillAppear: ((_ animated: Bool) -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?
+    var onViewDidDisappear: ((_ animated: Bool) -> ())?
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())?
     
     func setMode(_ mode: MediaPickerViewMode) {
