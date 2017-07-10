@@ -7,6 +7,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
+    private var isAnimatingTransition: Bool = false
     
     // MARK: - UIViewController
 
@@ -24,8 +25,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
-        
-        layoutMediaPickerView(bounds: view.bounds)
+
         onViewWillAppear?(animated)
     }
     
@@ -79,16 +79,24 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        if !isAnimatingTransition {
+            layoutMediaPickerView(bounds: view.bounds)
+        }
+        
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
+        isAnimatingTransition = true
+        
         coordinator.animate(alongsideTransition: { [weak self] context in
             self?.layoutMediaPickerView(bounds: context.containerView.bounds)
-            },
-        completion: nil)
+        },
+        completion: { [weak self] _ in
+            self?.isAnimatingTransition = false
+        })
         
         super.viewWillTransition(to: size, with: coordinator)
     }
