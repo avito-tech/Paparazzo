@@ -8,6 +8,7 @@ final class MainCameraCell: UICollectionViewCell {
             
             if let cameraView = cameraView {
                 addSubview(cameraView)
+                setAccessibilityId(.mainCameraCell)
             }
         }
     }

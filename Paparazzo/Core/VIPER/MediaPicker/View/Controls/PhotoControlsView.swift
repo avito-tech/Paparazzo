@@ -30,6 +30,13 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         
         addSubview(removeButton)
         addSubview(cropButton)    // в первой итерации не показываем
+        
+        setUpAccessibilityIdentifiers()
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        removeButton.setAccessibilityId(.removeButton)
+        cropButton.setAccessibilityId(.cropButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
