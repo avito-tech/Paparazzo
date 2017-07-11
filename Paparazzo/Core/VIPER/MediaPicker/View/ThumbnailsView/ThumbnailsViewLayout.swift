@@ -157,9 +157,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 self.draggingIndexPath = nil
                 self.draggingView = nil
                 self.invalidateLayout()
+                self.onDragFinish?()
+
         })
-        
-        onDragFinish?()
     }
     
     private func indexPathForItemClosestTo(point: CGPoint) -> IndexPath? {
