@@ -195,7 +195,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         let gridWasHidden = gridView.isHidden
         gridView.isHidden = true
         
-        let previewImage = snapshot().flatMap { snapshot -> CGImage? in
+        let previewImage = snapshot(withScale: 1).flatMap { snapshot -> CGImage? in
             
             let cropRect = CGRect(
                 x: (bounds.left + (bounds.size.width - cropSize.width) / 2) * snapshot.scale,
