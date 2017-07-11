@@ -185,6 +185,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             bottom: cameraControlsView.top,
             height: photoRibbonHeight
         )
+        thumbnailRibbonView.onDragStart = { [weak self] in
+            self?.isUserInteractionEnabled = false
+        }
+        thumbnailRibbonView.onDragFinish = { [weak self] in
+            self?.isUserInteractionEnabled = true
+        }
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()

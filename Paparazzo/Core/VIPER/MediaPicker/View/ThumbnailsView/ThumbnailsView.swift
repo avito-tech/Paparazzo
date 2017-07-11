@@ -4,6 +4,24 @@ import UIKit
 final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate, ThemeConfigurable {
     
     typealias ThemeType = MediaPickerRootModuleUITheme
+   
+    var onDragStart: (() -> ())? {
+        get {
+            return layout.onDragStart
+        }
+        set {
+            layout.onDragStart = newValue
+        }
+    }
+    
+    var onDragFinish: (() -> ())? {
+        get {
+            return layout.onDragFinish
+        }
+        set {
+            layout.onDragFinish = newValue
+        }
+    }
     
     private let layout: ThumbnailsViewLayout
     private let collectionView: UICollectionView
