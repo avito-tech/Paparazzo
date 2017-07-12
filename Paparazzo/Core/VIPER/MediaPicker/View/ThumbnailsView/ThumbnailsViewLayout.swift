@@ -10,6 +10,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     private var draggingView: UIView?
     private var dragOffset = CGPoint.zero
     
+    var onDragStart: (() -> ())?
+    var onDragFinish: (() -> ())?
+    
     override init() {
         super.init()
     }
@@ -114,6 +117,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 },
                 completion: nil
             )
+            
+            onDragStart?()
         }
     }
     
@@ -152,6 +157,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 self.draggingIndexPath = nil
                 self.draggingView = nil
                 self.invalidateLayout()
+                self.onDragFinish?()
+
         })
     }
     
