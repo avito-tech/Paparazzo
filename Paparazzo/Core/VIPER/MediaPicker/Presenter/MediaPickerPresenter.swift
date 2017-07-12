@@ -27,6 +27,8 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onItemsAdd: (([MediaPickerItem]) -> ())?
     var onItemUpdate: ((MediaPickerItem) -> ())?
     var onItemRemove: ((MediaPickerItem) -> ())?
+    var onCropFinish: (() -> ())?
+    var onCropCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onCancel: (() -> ())?
     
@@ -371,11 +373,15 @@ final class MediaPickerPresenter: MediaPickerModule {
                 croppingOverlayProvider: croppingOverlayProvider) { module in
                     
                     module.onDiscard = {
+                        
+                        self?.onCropCancel?()
                         self?.removeSelectedItem()
                         module.dismissModule()
                     }
                     
                     module.onConfirm = { image in
+                        
+                        self?.onCropFinish?()
                         let croppedItem = MediaPickerItem(
                             identifier: item.identifier,
                             image: image,
@@ -425,11 +431,14 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.router.showCroppingModule(forImage: item.image, canvasSize: cropCanvasSize) { module in
                 
                 module.onDiscard = { [weak self] in
+                    
+                    self?.onCropCancel?()
                     self?.router.focusOnCurrentModule()
                 }
                 
                 module.onConfirm = { [weak self] croppedImageSource in
                     
+                    self?.onCropFinish?()
                     let croppedItem = MediaPickerItem(
                         identifier: item.identifier,
                         image: croppedImageSource,
