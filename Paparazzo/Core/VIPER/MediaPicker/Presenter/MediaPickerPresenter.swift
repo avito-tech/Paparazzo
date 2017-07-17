@@ -372,11 +372,11 @@ final class MediaPickerPresenter: MediaPickerModule {
                 data: data,
                 croppingOverlayProvider: croppingOverlayProvider) { module in
                     
-                    module.onDiscard = {
+                    module.onDiscard = { [weak module] in
                         
                         self?.onCropCancel?()
                         self?.removeSelectedItem()
-                        module.dismissModule()
+                        module?.dismissModule()
                     }
                     
                     module.onConfirm = { image in
