@@ -24,7 +24,8 @@ protocol MediaPickerViewInput: class {
     func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
     func setContinueButtonEnabled(_: Bool)
-
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle)
+    
     func setLatestLibraryPhoto(_: ImageSource?)
     
     func setFlashButtonVisible(_: Bool)

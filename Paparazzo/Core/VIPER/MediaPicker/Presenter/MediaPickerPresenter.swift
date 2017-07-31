@@ -29,6 +29,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onItemRemove: ((MediaPickerItem) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
+    var onContinueButtonTap: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onCancel: (() -> ())?
     
@@ -43,6 +44,10 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     func setContinueButtonVisible(_ visible: Bool) {
         view?.setContinueButtonVisible(visible)
+    }
+    
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        view?.setContinueButtonStyle(style)
     }
     
     public func setAccessDeniedTitle(_ title: String) {
@@ -81,6 +86,13 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     func dismissModule() {
         router.dismissCurrentModule()
+    }
+    
+    func finish() {
+        cameraModuleInput.setFlashEnabled(false, completion: nil)
+        interactor.items { [weak self] items, _ in
+            self?.onFinish?(items)
+        }
     }
 
     // MARK: - Private
@@ -222,9 +234,13 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onContinueButtonTap = { [weak self] in
-            self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
-            self?.interactor.items { items, _ in
-                self?.onFinish?(items)
+            if let onContinueButtonTap = self?.onContinueButtonTap {
+                onContinueButtonTap()
+            } else {
+                self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
+                self?.interactor.items { items, _ in
+                    self?.onFinish?(items)
+                }
             }
         }
         

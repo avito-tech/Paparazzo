@@ -232,6 +232,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setContinueButtonVisible(visible)
     }
     
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        mediaPickerView.setContinueButtonStyle(style)
+    }
+    
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
         UIView.animate(withDuration: 0.25) {
             self.mediaPickerView.adjustForDeviceOrientation(orientation)
