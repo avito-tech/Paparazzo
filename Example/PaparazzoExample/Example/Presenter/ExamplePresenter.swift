@@ -142,6 +142,13 @@ final class ExamplePresenter {
             module?.dismissModule()
         }
         
+        module.onContinueButtonTap = { [weak module] in
+            module?.setContinueButtonStyle(.spinner)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                module?.finish()
+            }
+        }
+        
         module.onFinish = { [weak module] items in
             debugPrint("media picker did finish with \(items.count) items:")
             items.forEach { debugPrint($0) }

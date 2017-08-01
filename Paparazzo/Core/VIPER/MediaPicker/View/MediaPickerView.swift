@@ -11,7 +11,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let photoControlsView = PhotoControlsView()
     
     private let closeButton = UIButton()
-    private let continueButton = UIButton()
+    private let continueButton = ButtonWithActivity()
     private let photoTitleLabel = UILabel()
     private let flashView = UIView()
     
@@ -375,6 +375,22 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     func setContinueButtonVisible(_ visible: Bool) {
         continueButton.isHidden = !visible
+    }
+    
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        guard continueButton.style != style else { return }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            animations: {
+                self.continueButton.style = style
+                self.continueButton.size = CGSize(
+                    width: self.continueButton.sizeThatFits().width,
+                    height: self.continueButtonHeight
+                )
+                self.layoutCloseAndContinueButtons()
+        }
+        )
     }
     
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
