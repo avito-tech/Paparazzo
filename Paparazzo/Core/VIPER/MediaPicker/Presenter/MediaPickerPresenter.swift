@@ -237,10 +237,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             if let onContinueButtonTap = self?.onContinueButtonTap {
                 onContinueButtonTap()
             } else {
-                self?.cameraModuleInput.setFlashEnabled(false, completion: nil)
-                self?.interactor.items { items, _ in
-                    self?.onFinish?(items)
-                }
+                self?.finish()
             }
         }
         

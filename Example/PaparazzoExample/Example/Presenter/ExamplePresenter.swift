@@ -144,9 +144,9 @@ final class ExamplePresenter {
         
         module.onContinueButtonTap = { [weak module] in
             module?.setContinueButtonStyle(.spinner)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3.0 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 module?.finish()
-            })
+            }
         }
         
         module.onFinish = { [weak module] items in

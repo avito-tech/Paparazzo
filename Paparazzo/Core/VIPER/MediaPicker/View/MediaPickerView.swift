@@ -378,6 +378,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        guard continueButton.style != style else { return }
+        
         UIView.animate(
             withDuration: 0.3,
             animations: {
