@@ -24,10 +24,10 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - MediaPickerModule
 
-    var onItemsAdd: (([MediaPickerItem], Int) -> ())?
-    var onItemUpdate: ((MediaPickerItem, Int?) -> ())?
-    var onItemMove: ((Int, Int) -> ())?
-    var onItemRemove: ((MediaPickerItem, Int?) -> ())?
+    var onItemsAdd: (([MediaPickerItem], _ index: Int) -> ())?
+    var onItemUpdate: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
+    var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
