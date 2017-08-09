@@ -24,7 +24,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - MediaPickerModule
 
-    var onItemsAdd: (([MediaPickerItem], _ index: Int) -> ())?
+    var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())?
     var onItemUpdate: ((MediaPickerItem, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
