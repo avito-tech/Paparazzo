@@ -26,6 +26,7 @@ final class MediaPickerPresenter: MediaPickerModule {
 
     var onItemsAdd: (([MediaPickerItem], Int) -> ())?
     var onItemUpdate: ((MediaPickerItem, Int?) -> ())?
+    var onItemMove: ((Int, Int) -> ())?
     var onItemRemove: ((MediaPickerItem, Int?) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
@@ -196,6 +197,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onItemMove = { [weak self] (sourceIndex, destinationIndex) in
             self?.interactor.moveItem(from: sourceIndex, to: destinationIndex)
+            self?.onItemMove?(sourceIndex, destinationIndex)
             self?.interactor.selectedItem { item in
                 if let item = item {
                     self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: false)

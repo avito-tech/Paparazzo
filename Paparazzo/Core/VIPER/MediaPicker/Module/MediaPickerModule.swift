@@ -28,6 +28,7 @@ public protocol MediaPickerModule: class {
     
     var onItemsAdd: (([MediaPickerItem], Int) -> ())? { get set }
     var onItemUpdate: ((MediaPickerItem, Int?) -> ())? { get set }
+    var onItemMove: ((Int, Int) -> ())? { get set }
     var onItemRemove: ((MediaPickerItem, Int?) -> ())? { get set }
     var onCropFinish: (() -> ())? { get set }
     var onCropCancel: (() -> ())? { get set }
