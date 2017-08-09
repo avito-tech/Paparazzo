@@ -24,9 +24,9 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - MediaPickerModule
 
-    var onItemsAdd: (([MediaPickerItem]) -> ())?
-    var onItemUpdate: ((MediaPickerItem) -> ())?
-    var onItemRemove: ((MediaPickerItem) -> ())?
+    var onItemsAdd: (([MediaPickerItem], Int) -> ())?
+    var onItemUpdate: ((MediaPickerItem, Int?) -> ())?
+    var onItemRemove: ((MediaPickerItem, Int?) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
@@ -297,8 +297,14 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func addItems(_ items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
-        interactor.addItems(items) { [weak self] addedItems, canAddItems in
-            self?.handleItemsAdded(addedItems, fromCamera: fromCamera, canAddMoreItems: canAddItems, completion: completion)
+        interactor.addItems(items) { [weak self] addedItems, canAddItems, startIndex in
+            self?.handleItemsAdded(
+                addedItems,
+                fromCamera: fromCamera,
+                canAddMoreItems: canAddItems,
+                startIndex: startIndex,
+                completion: completion
+            )
         }
     }
     
@@ -313,7 +319,13 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.scrollToCameraThumbnail(animated: false)
     }
     
-    private func handleItemsAdded(_ items: [MediaPickerItem], fromCamera: Bool, canAddMoreItems: Bool, completion: (() -> ())? = nil) {
+    private func handleItemsAdded(
+        _ items: [MediaPickerItem],
+        fromCamera: Bool,
+        canAddMoreItems: Bool,
+        startIndex: Int,
+        completion: (() -> ())? = nil)
+    {
         
         guard items.count > 0 else { completion?(); return }
         
@@ -348,7 +360,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.setTitleForPhotoWithIndex(items.count - 1)
         }
         
-        onItemsAdd?(items)
+        onItemsAdd?(items, startIndex)
     }
     
     private func removeSelectedItem() {
@@ -368,7 +380,9 @@ final class MediaPickerPresenter: MediaPickerModule {
                     self?.view?.setPhotoTitleAlpha(0)
                 }
                 
-                self?.onItemRemove?(item)
+                self?.interactor.indexOfItem(item) { index in
+                    self?.onItemRemove?(item, index)
+                }
             }
         }
     }
@@ -425,8 +439,8 @@ final class MediaPickerPresenter: MediaPickerModule {
                         
                         switch result {
                         case .selectedItems(let photoLibraryItems):
-                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { addedItems, canAddItems in
-                                self?.handleItemsAdded(addedItems, fromCamera: false, canAddMoreItems: canAddItems)
+                            self?.interactor.addPhotoLibraryItems(photoLibraryItems) { addedItems, canAddItems, startIndex in
+                                self?.handleItemsAdded(addedItems, fromCamera: false, canAddMoreItems: canAddItems, startIndex: startIndex)
                             }
                         case .cancelled:
                             break
@@ -461,8 +475,10 @@ final class MediaPickerPresenter: MediaPickerModule {
                     self?.interactor.updateItem(croppedItem) {
                         self?.view?.updateItem(croppedItem)
                         self?.adjustPhotoTitleForItem(croppedItem)
-                        self?.onItemUpdate?(croppedItem)
-                        self?.router.focusOnCurrentModule()
+                        self?.interactor.indexOfItem(item) { index in
+                            self?.onItemUpdate?(croppedItem, index)
+                            self?.router.focusOnCurrentModule()
+                        }
                     }
                 }
             }

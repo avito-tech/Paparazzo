@@ -26,9 +26,9 @@ public protocol MediaPickerModule: class {
     
     func setCropMode(_: MediaPickerCropMode)
     
-    var onItemsAdd: (([MediaPickerItem]) -> ())? { get set }
-    var onItemUpdate: ((MediaPickerItem) -> ())? { get set }
-    var onItemRemove: ((MediaPickerItem) -> ())? { get set }
+    var onItemsAdd: (([MediaPickerItem], Int) -> ())? { get set }
+    var onItemUpdate: ((MediaPickerItem, Int?) -> ())? { get set }
+    var onItemRemove: ((MediaPickerItem, Int?) -> ())? { get set }
     var onCropFinish: (() -> ())? { get set }
     var onCropCancel: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }

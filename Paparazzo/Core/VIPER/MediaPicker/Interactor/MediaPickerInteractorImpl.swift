@@ -48,16 +48,23 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         latestLibraryPhotoProvider.observePhoto(handler: handler)
     }
     
-    func addItems(_ items: [MediaPickerItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
-        
+    func addItems(
+        _ items: [MediaPickerItem],
+        completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
+        -> ())
+    {
         let numberOfItemsToAdd = min(items.count, maxItemsCount.flatMap { $0 - self.items.count } ?? Int.max)
         let itemsToAdd = items[0..<numberOfItemsToAdd]
-        
+        let startIndex = self.items.count
         self.items.append(contentsOf: itemsToAdd)
-        completion(Array(itemsToAdd), canAddItems())
+        completion(Array(itemsToAdd), canAddItems(), startIndex)
     }
     
-    func addPhotoLibraryItems(_ photoLibraryItems: [PhotoLibraryItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ()) {
+    func addPhotoLibraryItems(
+        _: [PhotoLibraryItem],
+        completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
+        -> ())
+    {
         
         let mediaPickerItems = photoLibraryItems.map {
             MediaPickerItem(
@@ -68,8 +75,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         
         self.photoLibraryItems.append(contentsOf: photoLibraryItems)
         
-        addItems(mediaPickerItems) { addedItems, canAddMoreItems in
-            completion(addedItems, canAddMoreItems)
+        addItems(mediaPickerItems) { addedItems, canAddMoreItems, startIndex in
+            completion(addedItems, canAddMoreItems, startIndex)
         }
     }
     
