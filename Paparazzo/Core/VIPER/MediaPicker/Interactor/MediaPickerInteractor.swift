@@ -2,8 +2,14 @@ import ImageSource
 
 protocol MediaPickerInteractor: class {
     
-    func addItems(_: [MediaPickerItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ())
-    func addPhotoLibraryItems(_: [PhotoLibraryItem], completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool) -> ())
+    func addItems(
+        _ items: [MediaPickerItem],
+        completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
+        -> ())
+    func addPhotoLibraryItems(
+        _: [PhotoLibraryItem],
+        completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
+        -> ())
     
     func updateItem(_: MediaPickerItem, completion: @escaping () -> ())
     // `completion` вызывается с соседним item'ом — это item, который нужно выделить после того, как удалили `item`
