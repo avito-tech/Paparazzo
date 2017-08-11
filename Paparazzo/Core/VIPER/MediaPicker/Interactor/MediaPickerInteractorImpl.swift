@@ -61,7 +61,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     func addPhotoLibraryItems(
-        _: [PhotoLibraryItem],
+        _ photoLibraryItems: [PhotoLibraryItem],
         completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
         -> ())
     {
