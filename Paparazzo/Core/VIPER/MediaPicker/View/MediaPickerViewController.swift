@@ -204,6 +204,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         }
     }
     
+    func setAutocorrectionStatus(_ status: MediaPickerAutocorrectionStatus) {
+        mediaPickerView.setAutocorrectionStatus(status)
+    }
+    
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         mediaPickerView.setCameraOutputParameters(parameters)
     }

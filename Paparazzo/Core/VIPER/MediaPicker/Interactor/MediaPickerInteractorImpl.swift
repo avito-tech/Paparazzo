@@ -152,10 +152,19 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         completion(cropCanvasSize)
     }
     
-    func autocorrectItem(_ item: MediaPickerItem, completion: @escaping (_ updatedItem: MediaPickerItem) -> ()) {
+    func autocorrectItem(completion: @escaping (_ updatedItem: MediaPickerItem) -> ()) {
+        guard var selectedItem = selectedItem else {
+            return
+        }
+        
+        let originalItem = selectedItem
+        var item = MediaPickerItem(
+            identifier: selectedItem.identifier,
+            image: selectedItem.image,
+            source: selectedItem.source
+        )// todo: use image from filters
+        
         DispatchQueue.global(qos: .userInitiated).async {
-            var item = item
-            
             let filtersGroup = DispatchGroup()
             self.autocorrectionFilters.forEach { filter in
                 filtersGroup.enter()
@@ -167,9 +176,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
             
             DispatchQueue.main.async {
+                item.originalItem = originalItem
                 completion(item)
             }
         }
+    }
+    
+    func undoAutocorrectItem(completion: @escaping (_ originalItem: MediaPickerItem?) -> ()) {
+        completion(selectedItem?.originalItem)
     }
     
     // MARK: - Private 

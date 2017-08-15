@@ -11,9 +11,15 @@ enum MediaPickerTitleStyle {
     case light
 }
 
+enum MediaPickerAutocorrectionStatus {
+    case original
+    case corrected
+}
+
 protocol MediaPickerViewInput: class {
     
     func setMode(_: MediaPickerViewMode)
+    func setAutocorrectionStatus(_: MediaPickerAutocorrectionStatus)
     func adjustForDeviceOrientation(_: DeviceOrientation)
     
     func setCameraOutputParameters(_: CameraOutputParameters)

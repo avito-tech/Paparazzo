@@ -192,6 +192,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onItemSelect = { [weak self] item in
             self?.interactor.selectItem(item)
+            self?.updateAutocorrectionStatusForItem(item)
             self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: true)
         }
         
@@ -200,6 +201,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.onItemMove?(sourceIndex, destinationIndex)
             self?.interactor.selectedItem { item in
                 if let item = item {
+                    self?.updateAutocorrectionStatusForItem(item)
                     self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: false)
                 }
             }
@@ -252,18 +254,17 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onAutocorrectButtonTap = { [weak self] in
-            self?.interactor.selectedItem { item in
-                guard let selectedItem = item else {
-                    return
-                }
-                
-                self?.interactor.autocorrectItem(selectedItem) { updatedItem in
-                    self?.interactor.updateItem(updatedItem) {
-                        self?.view?.updateItem(updatedItem)
-                        self?.adjustPhotoTitleForItem(updatedItem)
-                        self?.interactor.indexOfItem(updatedItem) { index in
-                            self?.onItemUpdate?(updatedItem, index)
+            self?.interactor.selectedItem { selectedItem in
+                if selectedItem?.originalItem == nil {
+                    self?.interactor.autocorrectItem { updatedItem in
+                        self?.updateItem(updatedItem)
+                    }
+                } else {
+                    self?.interactor.undoAutocorrectItem { originalItem in
+                        guard let originalItem = originalItem else {
+                            return
                         }
+                        self?.updateItem(originalItem)
                     }
                 }
             }
@@ -289,12 +290,31 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
+    private func updateItem(_ updatedItem: MediaPickerItem) {
+        interactor.updateItem(updatedItem) { [weak self] in
+            self?.view?.updateItem(updatedItem)
+            self?.adjustPhotoTitleForItem(updatedItem)
+            self?.interactor.indexOfItem(updatedItem) { index in
+                self?.updateAutocorrectionStatusForItem(updatedItem)
+                self?.onItemUpdate?(updatedItem, index)
+            }
+        }
+    }
+    
     private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool, scrollToSelected: Bool) {
         adjustPhotoTitleForItem(item)
         
         view?.setMode(.photoPreview(item))
         if scrollToSelected {
             view?.scrollToItemThumbnail(item, animated: animated)
+        }
+    }
+    
+    private func updateAutocorrectionStatusForItem(_ item: MediaPickerItem) {
+        if item.originalItem == nil {
+            view?.setAutocorrectionStatus(.original)
+        } else {
+            view?.setAutocorrectionStatus(.corrected)
         }
     }
     
@@ -330,6 +350,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func selectItem(_ item: MediaPickerItem) {
         view?.selectItem(item)
+        updateAutocorrectionStatusForItem(item)
         adjustViewForSelectedItem(item, animated: false, scrollToSelected: true)
     }
     

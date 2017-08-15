@@ -321,6 +321,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         adjustForDeviceOrientation(deviceOrientation)
     }
     
+    func setAutocorrectionStatus(_ status: MediaPickerAutocorrectionStatus) {
+        switch status {
+        case .original:
+            photoControlsView.setAutocorrectButtonSelected(false)
+        case .corrected:
+            photoControlsView.setAutocorrectButtonSelected(true)
+        }
+    }
+    
     func setCameraControlsEnabled(_ enabled: Bool) {
         cameraControlsView.setCameraControlsEnabled(enabled)
     }
