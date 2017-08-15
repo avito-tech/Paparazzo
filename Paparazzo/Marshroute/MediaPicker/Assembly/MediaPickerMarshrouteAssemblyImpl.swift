@@ -22,6 +22,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
     {
         let interactor = MediaPickerInteractorImpl(
             items: data.items,
+            autocorrectionFilters: data.autocorrectionFilters,
             selectedItem: data.selectedItem,
             maxItemsCount: data.maxItemsCount,
             cropCanvasSize: data.cropCanvasSize,
@@ -48,6 +49,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         viewController.setCameraView(cameraView)
         viewController.setTheme(theme)
         viewController.setShowsCropButton(data.cropEnabled)
+        viewController.setShowsAutocorrectButton(data.autocorrectEnabled)
         
         presenter.view = viewController
         

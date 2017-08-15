@@ -68,6 +68,7 @@ protocol MediaPickerViewInput: class {
     
     // MARK: - Selected photo actions
     var onRemoveButtonTap: (() -> ())? { get set }
+    var onAutocorrectButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onCameraThumbnailTap: (() -> ())? { get set }
     

@@ -161,6 +161,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         set { mediaPickerView.onRemoveButtonTap = newValue }
     }
     
+    var onAutocorrectButtonTap: (() -> ())? {
+        get { return mediaPickerView.onAutocorrectButtonTap }
+        set { mediaPickerView.onAutocorrectButtonTap = newValue }
+    }
     var onCropButtonTap: (() -> ())? {
         get { return mediaPickerView.onCropButtonTap }
         set { mediaPickerView.onCropButtonTap = newValue }
@@ -345,6 +349,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     func setShowsCropButton(_ showsCropButton: Bool) {
         mediaPickerView.setShowsCropButton(showsCropButton)
+    }
+    
+    func setShowsAutocorrectButton(_ showsAutocorrectButton: Bool) {
+        mediaPickerView.setShowsAutocorrectButton(showsAutocorrectButton)
     }
     
     func setShowPreview(_ showPreview: Bool) {

@@ -9,12 +9,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private let cropCanvasSize: CGSize
     
     private var items = [MediaPickerItem]()
+    private var autocorrectionFilters = [Filter]()
     private var photoLibraryItems = [PhotoLibraryItem]()
     private var selectedItem: MediaPickerItem?
     private var mode: MediaPickerCropMode = .normal
     
     init(
         items: [MediaPickerItem],
+        autocorrectionFilters: [Filter],
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
@@ -22,6 +24,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
         self.items = items
+        self.autocorrectionFilters = autocorrectionFilters
         self.selectedItem = selectedItem
         self.maxItemsCount = maxItemsCount
         self.cropCanvasSize = cropCanvasSize
@@ -147,6 +150,26 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     func cropCanvasSize(completion: @escaping (CGSize) -> ()) {
         completion(cropCanvasSize)
+    }
+    
+    func autocorrectItem(_ item: MediaPickerItem, completion: @escaping (_ updatedItem: MediaPickerItem) -> ()) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            var item = item
+            
+            let filtersGroup = DispatchGroup()
+            self.autocorrectionFilters.forEach { filter in
+                filtersGroup.enter()
+                filter.apply(item) { resultItem in
+                    item = resultItem
+                    filtersGroup.leave()
+                }
+                filtersGroup.wait()
+            }
+            
+            DispatchQueue.main.async {
+                completion(item)
+            }
+        }
     }
     
     // MARK: - Private 

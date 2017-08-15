@@ -120,6 +120,7 @@ final class ExamplePresenter {
             selectedItem: items.last,
             maxItemsCount: 20,
             cropEnabled: true,
+            autocorrectEnabled: true,
             cropCanvasSize: cropCanvasSize
         )
         

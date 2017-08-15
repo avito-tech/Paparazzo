@@ -251,6 +251,24 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
         }
         
+        view?.onAutocorrectButtonTap = { [weak self] in
+            self?.interactor.selectedItem { item in
+                guard let selectedItem = item else {
+                    return
+                }
+                
+                self?.interactor.autocorrectItem(selectedItem) { updatedItem in
+                    self?.interactor.updateItem(updatedItem) {
+                        self?.view?.updateItem(updatedItem)
+                        self?.adjustPhotoTitleForItem(updatedItem)
+                        self?.interactor.indexOfItem(updatedItem) { index in
+                            self?.onItemUpdate?(updatedItem, index)
+                        }
+                    }
+                }
+            }
+        }
+        
         view?.onRemoveButtonTap = { [weak self] in
             self?.removeSelectedItem()
         }
