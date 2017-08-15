@@ -85,6 +85,9 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     
     func setTheme(_ theme: ThemeType) {
         removeButton.setImage(theme.removePhotoIcon, for: .normal)
+        autocorrectButton.setImage(theme.autocorrectPhotoIconInactive, for: .normal)
+        autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .highlighted)
+        autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .selected)
         cropButton.setImage(theme.cropPhotoIcon, for: .normal)
     }
     

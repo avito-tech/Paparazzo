@@ -10,6 +10,8 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraButtonsBackgroundDisabledColor: UIColor { get }
     
     var removePhotoIcon: UIImage? { get }
+    var autocorrectPhotoIconInactive: UIImage? { get }
+    var autocorrectPhotoIconActive: UIImage? { get }
     var cropPhotoIcon: UIImage? { get }
     var returnToCameraIcon: UIImage? { get }
     var closeCameraIcon: UIImage? { get }

@@ -16,6 +16,8 @@ public struct PaparazzoUITheme:
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var removePhotoIcon = PaparazzoUITheme.image(named: "delete")
+    public var autocorrectPhotoIconInactive = PaparazzoUITheme.image(named: "autocorrect_inactive")
+    public var autocorrectPhotoIconActive = PaparazzoUITheme.image(named: "autocorrect_active")
     public var cropPhotoIcon = PaparazzoUITheme.image(named: "crop")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")
