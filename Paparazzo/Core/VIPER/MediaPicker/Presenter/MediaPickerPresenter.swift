@@ -370,19 +370,18 @@ final class MediaPickerPresenter: MediaPickerModule {
         interactor.selectedItem { [weak self] item in
             guard let item = item else { return }
             
-            self?.interactor.removeItem(item) { adjacentItem, canAddItems in
-                
-                self?.view?.removeItem(item)
-                self?.view?.setCameraButtonVisible(canAddItems)
-                
-                if let adjacentItem = adjacentItem {
-                    self?.view?.selectItem(adjacentItem)
-                } else {
-                    self?.view?.setMode(.camera)
-                    self?.view?.setPhotoTitleAlpha(0)
-                }
-                
-                self?.interactor.indexOfItem(item) { index in
+            self?.interactor.indexOfItem(item) { index in
+                self?.interactor.removeItem(item) { adjacentItem, canAddItems in
+                    self?.view?.removeItem(item)
+                    self?.view?.setCameraButtonVisible(canAddItems)
+                    
+                    if let adjacentItem = adjacentItem {
+                        self?.view?.selectItem(adjacentItem)
+                    } else {
+                        self?.view?.setMode(.camera)
+                        self?.view?.setPhotoTitleAlpha(0)
+                    }
+                    
                     self?.onItemRemove?(item, index)
                 }
             }
@@ -477,7 +476,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     self?.interactor.updateItem(croppedItem) {
                         self?.view?.updateItem(croppedItem)
                         self?.adjustPhotoTitleForItem(croppedItem)
-                        self?.interactor.indexOfItem(item) { index in
+                        self?.interactor.indexOfItem(croppedItem) { index in
                             self?.onItemUpdate?(croppedItem, index)
                             self?.router.focusOnCurrentModule()
                         }
