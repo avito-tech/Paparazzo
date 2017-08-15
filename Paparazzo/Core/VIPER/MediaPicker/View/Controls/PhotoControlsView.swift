@@ -2,16 +2,31 @@ import UIKit
 
 final class PhotoControlsView: UIView, ThemeConfigurable {
     
+    struct ModeOptions: OptionSet {
+        let rawValue: Int
+        
+        static let hasRemoveButton  = ModeOptions(rawValue: 1 << 0)
+        static let hasAutocorrectButton  = ModeOptions(rawValue: 1 << 1)
+        static let hasCropButton = ModeOptions(rawValue: 1 << 2)
+        
+        static let allButtons: ModeOptions = [.hasRemoveButton, .hasAutocorrectButton, .hasCropButton]
+    }
+    
     typealias ThemeType = MediaPickerRootModuleUITheme
     
     // MARK: - Subviews
     
     private let removeButton = UIButton()
+    private let autocorrectButton = UIButton()
     private let cropButton = UIButton()
+    
+    private var buttons = [UIButton]()
     
     // MARK: UIView
     
     override init(frame: CGRect) {
+        self.mode = [.hasRemoveButton, .hasCropButton]
+        
         super.init(frame: frame)
         
         backgroundColor = .white
@@ -22,6 +37,12 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
             for: .touchUpInside
         )
         
+        autocorrectButton.addTarget(
+            self,
+            action: #selector(onAutocorrectButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
         cropButton.addTarget(
             self,
             action: #selector(onCropButtonTap(_:)),
@@ -29,13 +50,17 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         )
         
         addSubview(removeButton)
-        addSubview(cropButton)    // в первой итерации не показываем
+        addSubview(autocorrectButton)
+        addSubview(cropButton)
+        
+        buttons = [removeButton, autocorrectButton, cropButton]
         
         setUpAccessibilityIdentifiers()
     }
     
     private func setUpAccessibilityIdentifiers() {
         removeButton.setAccessibilityId(.removeButton)
+        autocorrectButton.setAccessibilityId(.autocorrectButton)
         cropButton.setAccessibilityId(.cropButton)
     }
     
@@ -46,14 +71,13 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        removeButton.size = CGSize.minimumTapAreaSize
-        cropButton.size = CGSize.minimumTapAreaSize
-        
-        if cropButton.isHidden {
-            removeButton.center = bounds.center
-        } else {
-            removeButton.center = CGPoint(x: bounds.left + bounds.size.width * 0.25, y: bounds.centerY)
-            cropButton.center = CGPoint(x: bounds.right - bounds.size.width * 0.25, y: bounds.centerY)
+        let visibleButtons = buttons.filter { $0.isHidden == false }
+        visibleButtons.enumerated().forEach { index, button in
+            button.size = CGSize.minimumTapAreaSize
+            button.center = CGPoint(
+                x: (width * (2.0 * CGFloat(index) + 1.0)) / (2.0 * CGFloat(visibleButtons.count)),
+                y: bounds.centerY
+            )
         }
     }
     
@@ -61,29 +85,42 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     
     func setTheme(_ theme: ThemeType) {
         removeButton.setImage(theme.removePhotoIcon, for: .normal)
+        autocorrectButton.setImage(theme.autocorrectPhotoIconInactive, for: .normal)
+        autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .highlighted)
+        autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .selected)
         cropButton.setImage(theme.cropPhotoIcon, for: .normal)
     }
     
     // MARK: - PhotoControlsView
     
     var onRemoveButtonTap: (() -> ())?
+    var onAutocorrectButtonTap: (() -> ())?
     var onCropButtonTap: (() -> ())?
     var onCameraButtonTap: (() -> ())?
     
-    func setControlsTransform(_ transform: CGAffineTransform) {
-        removeButton.transform = transform
-        cropButton.transform = transform
+    var mode: ModeOptions {
+        didSet {
+            removeButton.isHidden = !mode.contains(.hasRemoveButton)
+            autocorrectButton.isHidden = !mode.contains(.hasAutocorrectButton)
+            cropButton.isHidden = !mode.contains(.hasCropButton)
+            setNeedsLayout()
+        }
     }
     
-    func setShowsCropButton(_ showsCropButton: Bool) {
-        cropButton.isHidden = !showsCropButton
-        setNeedsLayout()
+    func setControlsTransform(_ transform: CGAffineTransform) {
+        removeButton.transform = transform
+        autocorrectButton.transform = transform
+        cropButton.transform = transform
     }
     
     // MARK: - Private
     
     @objc private func onRemoveButtonTap(_: UIButton) {
         onRemoveButtonTap?()
+    }
+    
+    @objc private func onAutocorrectButtonTap(_: UIButton) {
+        onAutocorrectButtonTap?()
     }
     
     @objc private func onCropButtonTap(_: UIButton) {

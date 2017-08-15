@@ -500,7 +500,19 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     func setShowsCropButton(_ showsCropButton: Bool) {
-        photoControlsView.setShowsCropButton(showsCropButton)
+        if showsCropButton {
+            photoControlsView.mode.insert(.hasCropButton)
+        } else {
+            photoControlsView.mode.remove(.hasCropButton)
+        }
+    }
+    
+    func setShowsAutocorrectButton(_ showsAutocorrectButton: Bool) {
+        if showsAutocorrectButton {
+            photoControlsView.mode.insert(.hasAutocorrectButton)
+        } else {
+            photoControlsView.mode.remove(.hasAutocorrectButton)
+        }
     }
     
     func setShowsPreview(_ showsPreview: Bool) {

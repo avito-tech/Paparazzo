@@ -26,5 +26,6 @@ public enum AccessibilityId: String {
 
     // PhotoControls
     case removeButton
+    case autocorrectButton
     case cropButton
 }
