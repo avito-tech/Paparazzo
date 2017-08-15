@@ -384,10 +384,17 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             withDuration: 0.3,
             animations: {
                 self.continueButton.style = style
-                self.continueButton.size = CGSize(
-                    width: self.continueButton.sizeThatFits().width,
-                    height: self.continueButtonHeight
-                )
+                if self.deviceOrientation == .portrait {
+                    self.continueButton.size = CGSize(
+                        width: self.continueButton.sizeThatFits().width,
+                        height: self.continueButtonHeight
+                    )
+                } else {
+                    self.continueButton.size = CGSize(
+                        width: self.continueButtonHeight,
+                        height: self.continueButton.sizeThatFits().width
+                    )
+                }
                 self.layoutCloseAndContinueButtons()
         }
         )
