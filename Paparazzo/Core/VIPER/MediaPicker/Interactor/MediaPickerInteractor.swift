@@ -35,6 +35,5 @@ protocol MediaPickerInteractor: class {
     func setCropMode(_: MediaPickerCropMode)
     func cropMode(completion: @escaping (MediaPickerCropMode) -> ())
     
-    func autocorrectItem(completion: @escaping (_ updatedItem: MediaPickerItem) -> ())
-    func undoAutocorrectItem(completion: @escaping (_ originalItem: MediaPickerItem?) -> ())
+    func autocorrectItem(completion: @escaping (_ updatedItem: MediaPickerItem?) -> ())
 }

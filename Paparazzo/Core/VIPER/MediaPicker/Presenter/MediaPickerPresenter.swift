@@ -255,16 +255,13 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onAutocorrectButtonTap = { [weak self] in
             self?.interactor.selectedItem { selectedItem in
-                if selectedItem?.originalItem == nil {
-                    self?.interactor.autocorrectItem { updatedItem in
-                        self?.updateItem(updatedItem)
-                    }
+                if let originalItem = selectedItem?.originalItem{
+                    self?.updateItem(originalItem)
                 } else {
-                    self?.interactor.undoAutocorrectItem { originalItem in
-                        guard let originalItem = originalItem else {
-                            return
+                    self?.interactor.autocorrectItem { updatedItem in
+                        if let updatedItem = updatedItem {
+                            self?.updateItem(updatedItem)
                         }
-                        self?.updateItem(originalItem)
                     }
                 }
             }

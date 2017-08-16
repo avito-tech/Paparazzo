@@ -1,7 +1,7 @@
 import ImageSource
 
 /// Главная модель, представляющая фотку в пикере
-public class MediaPickerItem: Equatable {
+public final class MediaPickerItem: Equatable {
     
     public enum Source {
         case camera
