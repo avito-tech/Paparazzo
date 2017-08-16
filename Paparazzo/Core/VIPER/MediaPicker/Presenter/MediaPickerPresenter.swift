@@ -323,16 +323,14 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func addItems(_ items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {
-        interactor.addItems(items) { [weak self] addedItems, startIndex in
-            guard let strongSelf = self else { return }
-            self?.handleItemsAdded(
-                addedItems,
-                fromCamera: fromCamera,
-                canAddMoreItems: strongSelf.interactor.canAddItems(),
-                startIndex: startIndex,
-                completion: completion
-            )
-        }
+        let (addedItems, startIndex) = interactor.addItems(items)
+        handleItemsAdded(
+            addedItems,
+            fromCamera: fromCamera,
+            canAddMoreItems: interactor.canAddItems(),
+            startIndex: startIndex,
+            completion: completion
+        )
     }
     
     private func selectItem(_ item: MediaPickerItem) {
@@ -465,14 +463,13 @@ final class MediaPickerPresenter: MediaPickerModule {
                 
                 switch result {
                 case .selectedItems(let photoLibraryItems):
-                    self?.interactor.addPhotoLibraryItems(photoLibraryItems) { addedItems, startIndex in
-                        self?.handleItemsAdded(
-                            addedItems,
-                            fromCamera: false,
-                            canAddMoreItems: strongSelf.interactor.canAddItems(),
-                            startIndex: startIndex
-                        )
-                    }
+                    let (addedItems, startIndex) = strongSelf.interactor.addPhotoLibraryItems(photoLibraryItems)
+                    self?.handleItemsAdded(
+                        addedItems,
+                        fromCamera: false,
+                        canAddMoreItems: strongSelf.interactor.canAddItems(),
+                        startIndex: startIndex
+                    )
                 case .cancelled:
                     break
                 }

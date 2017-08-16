@@ -8,13 +8,11 @@ protocol MediaPickerInteractor: class {
     var selectedItem: MediaPickerItem? { get }
     
     func addItems(
-        _ items: [MediaPickerItem],
-        completion: @escaping (_ addedItems: [MediaPickerItem], _ startIndex: Int)
-        -> ())
+        _ items: [MediaPickerItem]
+        ) -> (addedItems: [MediaPickerItem], startIndex: Int)
     func addPhotoLibraryItems(
-        _ photoLibraryItems: [PhotoLibraryItem],
-        completion: @escaping (_ addedItems: [MediaPickerItem], _ startIndex: Int)
-        -> ())
+        _ photoLibraryItems: [PhotoLibraryItem]
+        ) -> (addedItems: [MediaPickerItem], startIndex: Int)
     
     func updateItem(_ item: MediaPickerItem)
     
