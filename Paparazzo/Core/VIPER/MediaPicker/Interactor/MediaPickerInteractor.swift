@@ -2,38 +2,40 @@ import ImageSource
 
 protocol MediaPickerInteractor: class {
     
+    var items: [MediaPickerItem] { get }
+    var cropCanvasSize: CGSize { get }
+    var photoLibraryItems: [PhotoLibraryItem] { get }
+    var selectedItem: MediaPickerItem? { get }
+    
     func addItems(
         _ items: [MediaPickerItem],
-        completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
+        completion: @escaping (_ addedItems: [MediaPickerItem], _ startIndex: Int)
         -> ())
     func addPhotoLibraryItems(
-        _: [PhotoLibraryItem],
-        completion: @escaping (_ addedItems: [MediaPickerItem], _ canAddItems: Bool, _ startIndex: Int)
+        _ photoLibraryItems: [PhotoLibraryItem],
+        completion: @escaping (_ addedItems: [MediaPickerItem], _ startIndex: Int)
         -> ())
     
-    func updateItem(_: MediaPickerItem, completion: @escaping () -> ())
-    // `completion` вызывается с соседним item'ом — это item, который нужно выделить после того, как удалили `item`
-    func removeItem(_: MediaPickerItem, completion: @escaping (_ adjacentItem: MediaPickerItem?, _ canAddItems: Bool) -> ())
+    func updateItem(_ item: MediaPickerItem)
+    
+    // returns the nearby item - the item to select after removing the original item
+    func removeItem(_ item: MediaPickerItem) -> MediaPickerItem?
     
     func selectItem(_: MediaPickerItem?)
-    func selectedItem(completion: @escaping (MediaPickerItem?) -> ())
     
     func moveItem(from sourceIndex: Int, to destinationIndex: Int)
     
-    func items(completion: @escaping (_ mediaPickerItems: [MediaPickerItem], _ canAddItems: Bool) -> ())
-    func photoLibraryItems(completion: @escaping ([PhotoLibraryItem]) -> ())
+    func indexOfItem(_ item: MediaPickerItem) -> Int?
     
-    func indexOfItem(_: MediaPickerItem, completion: @escaping (Int?) -> ())
-    
-    func numberOfItemsAvailableForAdding(completion: @escaping (Int?) -> ())
-    
-    func cropCanvasSize(completion: @escaping (CGSize) -> ())
+    func numberOfItemsAvailableForAdding() -> Int?
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     func observeLatestPhotoLibraryItem(handler: @escaping (ImageSource?) -> ())
     
     func setCropMode(_: MediaPickerCropMode)
-    func cropMode(completion: @escaping (MediaPickerCropMode) -> ())
+    func cropMode() -> MediaPickerCropMode
+    
+    func canAddItems() -> Bool
     
     func autocorrectItem(completion: @escaping (_ updatedItem: MediaPickerItem?) -> ())
 }
