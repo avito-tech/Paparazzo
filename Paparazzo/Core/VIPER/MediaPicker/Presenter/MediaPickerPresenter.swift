@@ -133,16 +133,16 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         let items = interactor.items
+        
         if items.count > 0 {
         
-            let canAddMoreItems = interactor.canAddItems()
-            view?.setCameraButtonVisible(canAddMoreItems)
+            view?.setCameraButtonVisible(interactor.canAddItems())
             
             view?.addItems(items, animated: false) { [weak self] in
                 let selectedItem = self?.interactor.selectedItem
                 if let selectedItem = selectedItem {
                     self?.selectItem(selectedItem)
-                } else if canAddMoreItems {
+                } else if self?.interactor.canAddItems() == true {
                     self?.selectCamera()
                 } else if let lastItem = items.last {
                     self?.selectItem(lastItem)
