@@ -140,26 +140,27 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             return
         }
         
-        var item = MediaPickerItem(
-            identifier: originalItem.identifier,
-            image: originalItem.image,
-            source: originalItem.source
-        )// todo: use image from filters
+        var image = originalItem.image
         
         DispatchQueue.global(qos: .userInitiated).async {
             let filtersGroup = DispatchGroup()
             self.autocorrectionFilters.forEach { filter in
                 filtersGroup.enter()
-                filter.apply(item) { resultItem in
-                    item = resultItem
+                filter.apply(image) { resultItem in
+                    image = resultItem
                     filtersGroup.leave()
                 }
                 filtersGroup.wait()
             }
             
-            filtersGroup.notify(queue: DispatchQueue.main) {
-                item.originalItem = originalItem
-                completion(item)
+            DispatchQueue.main.async {
+                let updatedItem = MediaPickerItem(
+                    identifier: originalItem.identifier,
+                    image: image,
+                    source: originalItem.source,
+                    originalItem: originalItem
+                )
+                completion(updatedItem)
             }
         }
     }

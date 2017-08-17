@@ -13,12 +13,18 @@ public final class MediaPickerItem: Equatable {
     
     let identifier: String
     
-    var originalItem: MediaPickerItem? = nil
+    let originalItem: MediaPickerItem?
     
-    public init(identifier: String = NSUUID().uuidString, image: ImageSource, source: Source) {
+    public init(
+        identifier: String = NSUUID().uuidString,
+        image: ImageSource,
+        source: Source,
+        originalItem: MediaPickerItem? = nil)
+    {
         self.identifier = identifier
         self.image = image
         self.source = source
+        self.originalItem = originalItem
     }
     
     public static func ==(item1: MediaPickerItem, item2: MediaPickerItem) -> Bool {
