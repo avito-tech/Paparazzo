@@ -146,7 +146,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             let filtersGroup = DispatchGroup()
             self.autocorrectionFilters.forEach { filter in
                 filtersGroup.enter()
-                filter.apply(item) { resultItem in
+                filter.apply(image) { resultItem in
                     image = resultItem
                     filtersGroup.leave()
                 }
