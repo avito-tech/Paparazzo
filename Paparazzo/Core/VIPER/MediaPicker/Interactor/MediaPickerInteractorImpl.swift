@@ -152,14 +152,14 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
                 }
                 filtersGroup.wait()
             }
-            var updatedItem = MediaPickerItem(
-                identifier: originalItem.identifier,
-                image: image,
-                source: originalItem.source
-            )
             
             DispatchQueue.main.async {
-                updatedItem.originalItem = originalItem
+                let updatedItem = MediaPickerItem(
+                    identifier: originalItem.identifier,
+                    image: image,
+                    source: originalItem.source,
+                    originalItem: originalItem
+                )
                 completion(updatedItem)
             }
         }
