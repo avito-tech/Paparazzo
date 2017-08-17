@@ -113,6 +113,10 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         cropButton.transform = transform
     }
     
+    func setAutocorrectButtonSelected(_ selected: Bool) {
+        autocorrectButton.isSelected = selected
+    }
+    
     // MARK: - Private
     
     @objc private func onRemoveButtonTap(_: UIButton) {

@@ -11,9 +11,15 @@ enum MediaPickerTitleStyle {
     case light
 }
 
+enum MediaPickerAutocorrectionStatus {
+    case original
+    case corrected
+}
+
 protocol MediaPickerViewInput: class {
     
     func setMode(_: MediaPickerViewMode)
+    func setAutocorrectionStatus(_: MediaPickerAutocorrectionStatus)
     func adjustForDeviceOrientation(_: DeviceOrientation)
     
     func setCameraOutputParameters(_: CameraOutputParameters)
@@ -68,6 +74,7 @@ protocol MediaPickerViewInput: class {
     
     // MARK: - Selected photo actions
     var onRemoveButtonTap: (() -> ())? { get set }
+    var onAutocorrectButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onCameraThumbnailTap: (() -> ())? { get set }
     

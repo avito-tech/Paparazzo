@@ -261,6 +261,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         set { photoControlsView.onRemoveButtonTap = newValue }
     }
     
+    var onAutocorrectButtonTap: (() -> ())? {
+        get { return photoControlsView.onAutocorrectButtonTap }
+        set { photoControlsView.onAutocorrectButtonTap = newValue }
+    }
+    
     var onCropButtonTap: (() -> ())? {
         get { return photoControlsView.onCropButtonTap }
         set { photoControlsView.onCropButtonTap = newValue }
@@ -314,6 +319,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         self.mode = mode
         
         adjustForDeviceOrientation(deviceOrientation)
+    }
+    
+    func setAutocorrectionStatus(_ status: MediaPickerAutocorrectionStatus) {
+        switch status {
+        case .original:
+            photoControlsView.setAutocorrectButtonSelected(false)
+        case .corrected:
+            photoControlsView.setAutocorrectButtonSelected(true)
+        }
     }
     
     func setCameraControlsEnabled(_ enabled: Bool) {

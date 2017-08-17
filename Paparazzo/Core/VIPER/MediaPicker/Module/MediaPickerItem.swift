@@ -1,7 +1,7 @@
 import ImageSource
 
 /// Главная модель, представляющая фотку в пикере
-public struct MediaPickerItem: Equatable {
+public final class MediaPickerItem: Equatable {
     
     public enum Source {
         case camera
@@ -12,6 +12,8 @@ public struct MediaPickerItem: Equatable {
     public let source: Source
     
     let identifier: String
+    
+    var originalItem: MediaPickerItem? = nil
     
     public init(identifier: String = NSUUID().uuidString, image: ImageSource, source: Source) {
         self.identifier = identifier
