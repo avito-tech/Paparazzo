@@ -52,13 +52,15 @@ final class FocusIndicator: CALayer, ThemeConfigurable {
             self.removeFromSuperlayer()
         }
         
-        self.add(FocusIndicatorAnimation(), forKey: nil)
+        self.add(FocusIndicatorScaleAnimation(), forKey: nil)
+        self.add(FocusIndicatorOpacityAnimation(), forKey: nil)
+        opacity = 0
         
         CATransaction.commit()
     }
 }
 
-final class FocusIndicatorAnimation: CABasicAnimation {
+final class FocusIndicatorScaleAnimation: CABasicAnimation {
     override init() {
         super.init()
         keyPath = "transform.scale"
@@ -75,3 +77,19 @@ final class FocusIndicatorAnimation: CABasicAnimation {
     }
 }
 
+final class FocusIndicatorOpacityAnimation: CABasicAnimation {
+    override init() {
+        super.init()
+        keyPath = "opacity"
+        fromValue = 0
+        toValue = 1.0
+        duration = 0.3
+        autoreverses = true
+        isRemovedOnCompletion = false
+        timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
