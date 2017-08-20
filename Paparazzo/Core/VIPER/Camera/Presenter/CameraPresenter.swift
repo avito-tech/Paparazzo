@@ -95,6 +95,12 @@ final class CameraPresenter: CameraModuleInput {
             }
         }
         
+        view?.onFocusTap = { [weak self] focusPoint, touchPoint in
+            if self?.interactor.focusCameraOnPoint(focusPoint) == true {
+                self?.view?.displayFocus(onPoint: touchPoint)
+            }
+        }
+        
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }

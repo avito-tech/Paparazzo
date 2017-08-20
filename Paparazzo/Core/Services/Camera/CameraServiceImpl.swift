@@ -129,6 +129,28 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
+    var isFocusSupported: Bool {
+        return self.activeCamera?.isFocusPointOfInterestSupported == true
+    }
+    
+    func focusOnPoint(_ focusPoint: CGPoint) {
+        guard let activeCamera = self.activeCamera, activeCamera.isFocusPointOfInterestSupported else {
+            return
+        }
+        
+        do {
+            try activeCamera.lockForConfiguration()
+            activeCamera.focusPointOfInterest = focusPoint
+            activeCamera.focusMode = .continuousAutoFocus
+            activeCamera.exposurePointOfInterest = focusPoint
+            activeCamera.exposureMode = .continuousAutoExposure
+            activeCamera.unlockForConfiguration()
+        }
+        catch {
+            debugPrint("Couldn't focus camera: \(error)")
+        }
+    }
+    
     func canToggleCamera(completion: @escaping (Bool) -> ()) {
         completion(frontCamera != nil && backCamera != nil)
     }

@@ -79,4 +79,13 @@ final class CameraInteractorImpl: CameraInteractor {
         deviceOrientationService.onOrientationChange = handler
         handler(deviceOrientationService.currentOrientation)
     }
+    
+    func focusCameraOnPoint(_ focusPoint: CGPoint) -> Bool {
+        if cameraService.isFocusSupported {
+            cameraService.focusOnPoint(focusPoint)
+            return true
+        } else {
+            return false
+        }
+    }
 }

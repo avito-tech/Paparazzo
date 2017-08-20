@@ -15,6 +15,9 @@ protocol CameraService: class {
     func takePhoto(completion: @escaping (PhotoFromCamera?) -> ())
     func setCaptureSessionRunning(_: Bool)
     
+    var isFocusSupported: Bool { get }
+    func focusOnPoint(_ focusPoint: CGPoint)
+    
     func canToggleCamera(completion: @escaping (Bool) -> ())
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ())
 }
