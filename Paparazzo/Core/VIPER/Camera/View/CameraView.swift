@@ -37,7 +37,13 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
         let screenSize = bounds.size
+        guard screenSize.width != 0 && screenSize.height != 0 else {
+            return
+        }
+        
         if let touchPoint = touches.first?.location(in: self) {
             let focusOriginX = touchPoint.y / screenSize.height
             let focusOriginY = 1.0 - touchPoint.x / screenSize.width
@@ -52,7 +58,6 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
     
     func displayFocus(onPoint focusPoint: CGPoint) {
-        removeExistingFocusIndicatorIfNeeded()
         focusIndicator.animate(in: layer, focusPoint: focusPoint)
     }
     
@@ -132,15 +137,5 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
     func addDisposable(_ object: AnyObject) {
         disposables.append(object)
-    }
-    
-    // MARK: - Private
-    // MARK: Focus
-    
-    private func removeExistingFocusIndicatorIfNeeded() {
-        if focusIndicator.superlayer != nil {
-            focusIndicator.removeAllAnimations()
-            focusIndicator.removeFromSuperlayer()
-        }
     }
 }

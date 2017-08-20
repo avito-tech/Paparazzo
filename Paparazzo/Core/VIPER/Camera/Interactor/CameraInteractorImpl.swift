@@ -81,11 +81,6 @@ final class CameraInteractorImpl: CameraInteractor {
     }
     
     func focusCameraOnPoint(_ focusPoint: CGPoint) -> Bool {
-        if cameraService.isFocusSupported {
-            cameraService.focusOnPoint(focusPoint)
-            return true
-        } else {
-            return false
-        }
+        return cameraService.focusOnPoint(focusPoint)
     }
 }

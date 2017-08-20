@@ -129,13 +129,9 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
-    var isFocusSupported: Bool {
-        return self.activeCamera?.isFocusPointOfInterestSupported == true
-    }
-    
-    func focusOnPoint(_ focusPoint: CGPoint) {
+    func focusOnPoint(_ focusPoint: CGPoint) -> Bool {
         guard let activeCamera = self.activeCamera, activeCamera.isFocusPointOfInterestSupported else {
-            return
+            return false
         }
         
         do {
@@ -145,9 +141,11 @@ final class CameraServiceImpl: CameraService {
             activeCamera.exposurePointOfInterest = focusPoint
             activeCamera.exposureMode = .continuousAutoExposure
             activeCamera.unlockForConfiguration()
+            return true
         }
         catch {
             debugPrint("Couldn't focus camera: \(error)")
+            return false
         }
     }
     

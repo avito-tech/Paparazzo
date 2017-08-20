@@ -43,6 +43,11 @@ final class FocusIndicator: CALayer, ThemeConfigurable {
     }
     
     func animate(in superlayer: CALayer, focusPoint: CGPoint) {
+        if self.superlayer != nil {
+            self.removeFromSuperlayer()
+            self.removeAllAnimations()
+        }
+        
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         position = focusPoint
