@@ -1,5 +1,6 @@
 import ImageSource
 import UIKit
+import AVFoundation
 
 final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
@@ -8,6 +9,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     private let accessDeniedView = AccessDeniedView()
     private var cameraOutputView: CameraOutputView?
     private var outputParameters: CameraOutputParameters?
+    private let focusIndicator = FocusIndicator()
     
     // MARK: - Init
     
@@ -34,7 +36,30 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         cameraOutputView?.frame = bounds
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        let screenSize = bounds.size
+        guard screenSize.width != 0 && screenSize.height != 0 else {
+            return
+        }
+        
+        if let touchPoint = touches.first?.location(in: self) {
+            let focusOriginX = touchPoint.y / screenSize.height
+            let focusOriginY = 1.0 - touchPoint.x / screenSize.width
+            let focusPoint = CGPoint(x: focusOriginX, y: focusOriginY)
+            
+            onFocusTap?(focusPoint, touchPoint)
+        }
+    }
+    
     // MARK: - CameraViewInput
+    
+    var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
+    
+    func displayFocus(onPoint focusPoint: CGPoint) {
+        focusIndicator.animate(in: layer, focusPoint: focusPoint)
+    }
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return accessDeniedView.onButtonTap }
@@ -103,6 +128,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
     func setTheme(_ theme: ThemeType) {
         accessDeniedView.setTheme(theme)
+        focusIndicator.setTheme(theme)
     }
     
     // MARK: - Dispose bag

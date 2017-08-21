@@ -2,6 +2,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     
     var shutterButtonColor: UIColor { get }
     var shutterButtonDisabledColor: UIColor { get }
+    var focusIndicatorColor: UIColor { get }
     var mediaRibbonSelectionColor: UIColor { get }
     var cameraContinueButtonTitleColor: UIColor { get }
     var cameraContinueButtonTitleHighlightedColor: UIColor { get }
