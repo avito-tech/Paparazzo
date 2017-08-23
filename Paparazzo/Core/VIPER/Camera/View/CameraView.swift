@@ -9,7 +9,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     private let accessDeniedView = AccessDeniedView()
     private var cameraOutputView: CameraOutputView?
     private var outputParameters: CameraOutputParameters?
-    private let focusIndicator = FocusIndicator()
+    private var focusIndicator: FocusIndicator?
+    private var theme: ThemeType?
     
     // MARK: - Init
     
@@ -58,7 +59,12 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
     
     func displayFocus(onPoint focusPoint: CGPoint) {
-        focusIndicator.animate(in: layer, focusPoint: focusPoint)
+        focusIndicator?.hide()
+        focusIndicator = FocusIndicator()
+        if let theme = theme {
+            focusIndicator?.setTheme(theme)
+        }
+        focusIndicator?.animate(in: layer, focusPoint: focusPoint)
     }
     
     var onAccessDeniedButtonTap: (() -> ())? {
@@ -127,8 +133,9 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        self.theme = theme
         accessDeniedView.setTheme(theme)
-        focusIndicator.setTheme(theme)
+        focusIndicator?.setTheme(theme)
     }
     
     // MARK: - Dispose bag
