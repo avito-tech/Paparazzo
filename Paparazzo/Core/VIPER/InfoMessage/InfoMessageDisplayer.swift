@@ -12,3 +12,14 @@ final class InfoMessageDisplayer {
     }
 }
 
+protocol InfoMessageDisplayable: class {
+    @discardableResult
+    func showInfoMessage(_ viewData: InfoMessageViewData) -> InfoMessageViewInput
+}
+
+extension InfoMessageDisplayable where Self: UIViewController {
+    func showInfoMessage(_ viewData: InfoMessageViewData) -> InfoMessageViewInput {
+        return InfoMessageDisplayer().display(viewData: viewData, in: self.view)
+    }
+}
+

@@ -26,4 +26,3 @@ final class InfoMessageViewFactoryImpl: InfoMessageViewFactory {
         return (view: messageView, animator: animator)
     }
 }
-
