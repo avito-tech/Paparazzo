@@ -117,6 +117,7 @@ final class ExamplePresenter {
         
         let data = MediaPickerData(
             items: items,
+            autocorrectionFilters: [AutoAdjustmentFilter()],
             selectedItem: items.last,
             maxItemsCount: 20,
             cropEnabled: true,

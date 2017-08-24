@@ -154,6 +154,10 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
             
             DispatchQueue.main.async {
+                guard (image == originalItem.image) == false else {
+                    completion(originalItem)
+                    return
+                }
                 let updatedItem = MediaPickerItem(
                     identifier: originalItem.identifier,
                     image: image,

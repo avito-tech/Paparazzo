@@ -252,6 +252,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             if let originalItem = self?.interactor.selectedItem?.originalItem {
                 self?.updateItem(originalItem)
             } else {
+                self?.view?.setAutocorrectionStatus(.corrected)
                 self?.interactor.autocorrectItem { updatedItem in
                     if let updatedItem = updatedItem {
                         self?.updateItem(updatedItem)
