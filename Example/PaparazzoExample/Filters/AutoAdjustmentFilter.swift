@@ -4,7 +4,7 @@ import ImageIO
 import CoreGraphics
 import MobileCoreServices
 
-final class MediaPickerAutoAdjustmentFilter: Filter {
+final class AutoAdjustmentFilter: Filter {
     func apply(_ sourceImage: ImageSource, completion: @escaping ((_ resultImage: ImageSource) -> ())) {
         
         let options = ImageRequestOptions(size: .fullResolution, deliveryMode: .best)
