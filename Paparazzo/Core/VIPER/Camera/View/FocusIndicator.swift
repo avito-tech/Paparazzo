@@ -1,6 +1,6 @@
 import UIKit
 
-final class FocusIndicator: CALayer, ThemeConfigurable {
+final class FocusIndicator: CALayer {
     
     typealias ThemeType = MediaPickerRootModuleUITheme
     
@@ -36,10 +36,8 @@ final class FocusIndicator: CALayer, ThemeConfigurable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - ThemeConfigurable
-    
-    func setTheme(_ theme: ThemeType) {
-        shapeLayer.strokeColor = theme.focusIndicatorColor.cgColor
+    func setColor(_  color: UIColor) {
+        shapeLayer.strokeColor = color.cgColor
     }
     
     func animate(in superlayer: CALayer, focusPoint: CGPoint) {
