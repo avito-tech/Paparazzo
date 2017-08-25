@@ -62,7 +62,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         focusIndicator?.hide()
         focusIndicator = FocusIndicator()
         if let theme = theme {
-            focusIndicator?.setTheme(theme)
+            focusIndicator?.setColor(theme.focusIndicatorColor)
         }
         focusIndicator?.animate(in: layer, focusPoint: focusPoint)
     }
@@ -135,7 +135,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
         accessDeniedView.setTheme(theme)
-        focusIndicator?.setTheme(theme)
+        focusIndicator?.setColor(theme.focusIndicatorColor)
     }
     
     // MARK: - Dispose bag

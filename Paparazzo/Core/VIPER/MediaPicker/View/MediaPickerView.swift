@@ -41,6 +41,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private var mode = MediaPickerViewMode.camera
     private var deviceOrientation = DeviceOrientation.portrait
+    private let infoMessageDisplayer = InfoMessageDisplayer()
     
     private var showsPreview: Bool = true {
         didSet {
@@ -536,6 +537,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     func reloadCamera() {
         photoPreviewView.reloadCamera()
         thumbnailRibbonView.reloadCamera()
+    }
+    
+    func showInfoMessage(_ message: String, timeout: TimeInterval) {
+        infoMessageDisplayer.display(viewData: InfoMessageViewData(text: message, timeout: timeout), in: photoPreviewView)
     }
     
     // MARK: - Private

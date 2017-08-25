@@ -63,6 +63,8 @@ protocol MediaPickerViewInput: class {
     
     func setShowPreview(_ showPreview: Bool)
     
+    func showInfoMessage(_ message: String, timeout: TimeInterval)
+    
     // MARK: - Actions in photo ribbon
     var onItemSelect: ((MediaPickerItem) -> ())? { get set }
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())? { get set }
