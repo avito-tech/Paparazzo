@@ -29,3 +29,7 @@ public protocol ImageSource: class {
 public func ==(lhs: ImageSource, rhs: ImageSource) -> Bool {
     return lhs.isEqualTo(rhs)
 }
+
+public func !=(lhs: ImageSource, rhs: ImageSource) -> Bool {
+    return (lhs == rhs) == false
+}

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		088535F351074F52B19B1688 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9A4E214165A8FB30A7CE203 /* Pods_PaparazzoExample_NoMarshroute.framework */; };
 		08BB7920D2F1F31E8D8C1760 /* Pods_PaparazzoExample_Storyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B16F0AF7B8CAAE81DB10090 /* Pods_PaparazzoExample_Storyboard.framework */; };
+		136F1C7C1F4EDE2B00C5CCA1 /* AutoAdjustmentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */; };
 		251E57C41E65651F0009A288 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57C31E65651F0009A288 /* AppDelegate.swift */; };
 		251E57F01E6565890009A288 /* AppSpecificUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57D51E6565890009A288 /* AppSpecificUITheme.swift */; };
 		251E57F21E6565890009A288 /* ExampleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57D91E6565890009A288 /* ExampleAssembly.swift */; };
@@ -59,6 +60,7 @@
 
 /* Begin PBXFileReference section */
 		0CD08CDB3C698AABC02FE1C4 /* Pods-PaparazzoExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.release.xcconfig"; sourceTree = "<group>"; };
+		136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAdjustmentFilter.swift; sourceTree = "<group>"; };
 		251E57C01E65651F0009A288 /* PaparazzoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaparazzoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		251E57C31E65651F0009A288 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		251E57CF1E65651F0009A288 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -131,6 +133,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		136F1C771F4ED91900C5CCA1 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
 		251E57B71E65651F0009A288 = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +171,7 @@
 				251E57C31E65651F0009A288 /* AppDelegate.swift */,
 				251E57D51E6565890009A288 /* AppSpecificUITheme.swift */,
 				251E57EF1E6565890009A288 /* NavigationController.swift */,
+				136F1C771F4ED91900C5CCA1 /* Filters */,
 				251E57D71E6565890009A288 /* Example */,
 				251E57E71E6565890009A288 /* Fonts */,
 				251E57ED1E6565890009A288 /* MarshrouteHelpers */,
@@ -597,6 +608,7 @@
 				251E57FB1E6565890009A288 /* ExampleViewInput.swift in Sources */,
 				251E57FA1E6565890009A288 /* ExampleViewController.swift in Sources */,
 				251E57F21E6565890009A288 /* ExampleAssembly.swift in Sources */,
+				136F1C7C1F4EDE2B00C5CCA1 /* AutoAdjustmentFilter.swift in Sources */,
 				251E57F41E6565890009A288 /* ExampleInteractor.swift in Sources */,
 				251E58011E6565890009A288 /* MarshrouteFacade.swift in Sources */,
 				251E58021E6565890009A288 /* NavigationController.swift in Sources */,

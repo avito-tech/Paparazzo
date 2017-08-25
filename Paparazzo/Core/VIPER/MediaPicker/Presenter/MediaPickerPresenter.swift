@@ -254,6 +254,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 self?.updateItem(originalItem)
             } else {
                 self?.view?.showInfoMessage("РАЗМЫТИЕ ВКЛ", timeout: 2.0)
+                self?.view?.setAutocorrectionStatus(.corrected)
                 self?.interactor.autocorrectItem { updatedItem in
                     if let updatedItem = updatedItem {
                         self?.updateItem(updatedItem)
