@@ -2,6 +2,7 @@ import UIKit
 
 struct InfoMessageViewData {
     let text: String
+    let timeout: TimeInterval
 }
 
 final class InfoMessageView: UIView {

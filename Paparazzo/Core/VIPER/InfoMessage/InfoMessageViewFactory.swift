@@ -17,7 +17,7 @@ final class InfoMessageViewFactoryImpl: InfoMessageViewFactory {
         animator: InfoMessageAnimator)
     {
         let animation = DefaultInfoMessageAnimatorBehavior()
-        let data = InfoMessageAnimatorData(animation: animation, onDismiss: nil)
+        let data = InfoMessageAnimatorData(animation: animation, timeout: viewData.timeout, onDismiss: nil)
         let animator = InfoMessageAnimator(data)
         
         let messageView = InfoMessageView()
