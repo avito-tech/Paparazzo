@@ -250,10 +250,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onAutocorrectButtonTap = { [weak self] in
             if let originalItem = self?.interactor.selectedItem?.originalItem {
-                self?.view?.showInfoMessage("РАЗМЫТИЕ ВЫКЛ", timeout: 2.0)
+                self?.view?.showInfoMessage("РАЗМЫТИЕ ВЫКЛ.", timeout: 1.0)
                 self?.updateItem(originalItem)
             } else {
-                self?.view?.showInfoMessage("РАЗМЫТИЕ ВКЛ", timeout: 2.0)
+                self?.view?.showInfoMessage("РАЗМЫТИЕ ВКЛ.", timeout: 1.0)
                 self?.view?.setAutocorrectionStatus(.corrected)
                 self?.interactor.autocorrectItem { updatedItem in
                     if let updatedItem = updatedItem {
