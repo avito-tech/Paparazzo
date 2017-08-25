@@ -1,13 +1,20 @@
 final class InfoMessageDisplayer {
     
+    private var currentInfoMessage: InfoMessageViewInput?
+    
     init() {}
     
     private let infoMessageFactory = InfoMessageViewFactoryImpl()
     
     @discardableResult
     func display(viewData: InfoMessageViewData, in container: UIView) -> InfoMessageViewInput {
+        currentInfoMessage?.dismiss()
+        currentInfoMessage = nil
+        
         let (messageView, animator) = infoMessageFactory.create(from: viewData)
         animator.appear(messageView: messageView, in: container)
+        currentInfoMessage = animator
+        
         return animator
     }
 }
@@ -22,4 +29,3 @@ extension InfoMessageDisplayable where Self: UIViewController {
         return InfoMessageDisplayer().display(viewData: viewData, in: self.view)
     }
 }
-

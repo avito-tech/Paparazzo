@@ -339,6 +339,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setPhotoLibraryButtonEnabled(enabled)
     }
     
+    func showInfoMessage(_ message: String) {
+        mediaPickerView.showInfoMessage(message)
+    }
+    
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {

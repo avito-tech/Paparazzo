@@ -10,16 +10,17 @@ final class DefaultInfoMessageAnimatorBehavior: InfoMessageAnimatorBehavior {
     
     func configure(messageView: UIView, in container: UIView) {
         messageView.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
-        messageView.top = container.bottom
-        messageView.left = container.left
+        messageView.alpha = 0
+        messageView.bottom = container.height - 20
+        messageView.centerX = ceil(container.width / 2)
     }
     
     func present(messageView: UIView, in container: UIView) {
-        messageView.bottom = container.height
+        messageView.alpha = 1
     }
     
     func dismiss(messageView: UIView, in container: UIView) {
-        messageView.top = container.bottom
+        messageView.alpha = 0
     }
 }
 

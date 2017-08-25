@@ -102,7 +102,7 @@ final class InfoMessageAnimator: InfoMessageViewInput {
         case .initial:
             break
         case .appearing:
-            break
+            animateAppearing()
         case .appeared:
             scheduleDismissing()
         case .dismissingByTimer:
