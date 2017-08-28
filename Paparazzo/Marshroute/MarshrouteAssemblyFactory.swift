@@ -8,14 +8,22 @@ public final class MarshrouteAssemblyFactory:
     MaskCropperMarshrouteAssemblyFactory
 {
     private let theme: PaparazzoUITheme
-    private let serviceFactory = ServiceFactoryImpl()
+    private let serviceFactory: ServiceFactory
+    private let photoStorage: PhotoStorage
     
-    public init(theme: PaparazzoUITheme = PaparazzoUITheme()) {
+    public init(theme: PaparazzoUITheme = PaparazzoUITheme(),
+                photoStorage: PhotoStorage = PhotoStorageImpl())
+    {
         self.theme = theme
+        self.photoStorage = photoStorage
+        self.serviceFactory = ServiceFactoryImpl(photoStorage: photoStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {
-        return CameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return CameraAssemblyImpl(
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
     }
     
     public func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly {

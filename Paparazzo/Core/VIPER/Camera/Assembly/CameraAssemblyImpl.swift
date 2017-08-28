@@ -5,9 +5,11 @@ final class CameraAssemblyImpl: BasePaparazzoAssembly, CameraAssembly {
     // MARK: - CameraAssembly
     
     func module(initialActiveCameraType: CameraType) -> (UIView, CameraModuleInput) {
-        
-        let cameraService = CameraServiceImpl(initialActiveCameraType: initialActiveCameraType)
         let deviceOrientationService = DeviceOrientationServiceImpl()
+        
+        let cameraService = serviceFactory.cameraService(
+            initialActiveCameraType: initialActiveCameraType
+        )
         
         let interactor = CameraInteractorImpl(
             cameraService: cameraService,

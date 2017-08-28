@@ -21,6 +21,6 @@ protocol CameraService: class {
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ())
 }
 
-struct PhotoFromCamera {
+public struct PhotoFromCamera {
     let path: String
 }
