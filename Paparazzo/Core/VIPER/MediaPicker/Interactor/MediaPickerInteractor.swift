@@ -35,5 +35,8 @@ protocol MediaPickerInteractor: class {
     
     func canAddItems() -> Bool
     
-    func autocorrectItem(completion: @escaping (_ updatedItem: MediaPickerItem?) -> ())
+    func autocorrectItem(
+        onResult: @escaping (_ updatedItem: MediaPickerItem?) -> (),
+        onError: @escaping (_ errorMessage: String?) -> ()
+    )
 }

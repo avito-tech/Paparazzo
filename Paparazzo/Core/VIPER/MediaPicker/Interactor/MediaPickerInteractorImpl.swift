@@ -134,9 +134,12 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         return maxItemsCount.flatMap { self.items.count < $0 } ?? true
     }
     
-    func autocorrectItem(completion: @escaping (_ updatedItem: MediaPickerItem?) -> ()) {
+    func autocorrectItem(
+        onResult: @escaping (_ updatedItem: MediaPickerItem?) -> (),
+        onError: @escaping (_ errorMessage: String?) -> ())
+    {
         guard let originalItem = selectedItem else {
-            completion(nil)
+            onError(nil)
             return
         }
         
@@ -144,9 +147,16 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         
         DispatchQueue.global(qos: .userInitiated).async {
             let filtersGroup = DispatchGroup()
+            var errorMessages = [String]()
+            
             self.autocorrectionFilters.forEach { filter in
                 filtersGroup.enter()
                 filter.apply(image) { resultItem in
+                    let isFilterFailed = resultItem == image
+                    if isFilterFailed, let errorMessage = filter.fallbackMessage {
+                        errorMessages.append(errorMessage)
+                    }
+                    
                     image = resultItem
                     filtersGroup.leave()
                 }
@@ -155,16 +165,17 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             
             DispatchQueue.main.async {
                 guard image != originalItem.image else {
-                    completion(nil)
+                    onError(errorMessages.first)
                     return
                 }
+                
                 let updatedItem = MediaPickerItem(
                     identifier: originalItem.identifier,
                     image: image,
                     source: originalItem.source,
                     originalItem: originalItem
                 )
-                completion(updatedItem)
+                onResult(updatedItem)
             }
         }
     }

@@ -5,6 +5,8 @@ import CoreGraphics
 import MobileCoreServices
 
 final class AutoAdjustmentFilter: Filter {
+    let fallbackMessage: String? = "Failed to apply autocorrection".uppercased()
+    
     func apply(_ sourceImage: ImageSource, completion: @escaping ((_ resultImage: ImageSource) -> ())) {
         
         let options = ImageRequestOptions(size: .fullResolution, deliveryMode: .best)
