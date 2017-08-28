@@ -5,7 +5,7 @@ import CoreGraphics
 import MobileCoreServices
 
 final class AutoAdjustmentFilter: Filter {
-    let errorMessage: String? = "Cannot do anything aaaaaaa".uppercased()
+    let fallbackMessage: String? = "Cannot do anything aaaaaaa".uppercased()
     
     func apply(_ sourceImage: ImageSource, completion: @escaping ((_ resultImage: ImageSource) -> ())) {
         

@@ -153,7 +153,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
                 filtersGroup.enter()
                 filter.apply(image) { resultItem in
                     let isFilterFailed = resultItem == image
-                    if isFilterFailed, let errorMessage = filter.errorMessage {
+                    if isFilterFailed, let errorMessage = filter.fallbackMessage {
                         errorMessages.append(errorMessage)
                     }
                     
