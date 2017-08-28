@@ -65,7 +65,7 @@ public final class PhotoStorageImpl: PhotoStorage {
     // MARK: - Private
     
     private static func createPhotoDirectoryIfNotExist() {
-        var isDirectory : ObjCBool = false
+        var isDirectory: ObjCBool = false
         let path = PhotoStorageImpl.photoDirectoryPath()
         let exist = FileManager.default.fileExists(
             atPath: path,
