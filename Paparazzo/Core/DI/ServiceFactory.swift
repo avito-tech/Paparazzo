@@ -11,7 +11,7 @@ final class ServiceFactoryImpl: ServiceFactory {
     
     private let photoStorage: PhotoStorage
     
-    init (photoStorage: PhotoStorage) {
+    init(photoStorage: PhotoStorage) {
         self.photoStorage = photoStorage
     }
     
