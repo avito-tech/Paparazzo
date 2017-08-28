@@ -255,11 +255,18 @@ final class MediaPickerPresenter: MediaPickerModule {
             } else {
                 self?.view?.showInfoMessage("РАЗМЫТИЕ ВКЛ.", timeout: 1.0)
                 self?.view?.setAutocorrectionStatus(.corrected)
-                self?.interactor.autocorrectItem { updatedItem in
-                    if let updatedItem = updatedItem {
-                        self?.updateItem(updatedItem)
+                self?.interactor.autocorrectItem(
+                    onResult: { [weak self] updatedItem in
+                        if let updatedItem = updatedItem {
+                            self?.updateItem(updatedItem)
+                        }
+                }, onError: { [weak self] errorMessage in
+                    if let errorMessage = errorMessage {
+                        self?.view?.showInfoMessage(errorMessage, timeout: 1.0)
                     }
+                    self?.view?.setAutocorrectionStatus(.original)
                 }
+                )
             }
         }
         
