@@ -7,10 +7,14 @@ public final class AssemblyFactory:
 {
     
     private let theme: PaparazzoUITheme
-    private let serviceFactory = ServiceFactoryImpl()
+    private let serviceFactory: ServiceFactory
     
-    public init(theme: PaparazzoUITheme = PaparazzoUITheme()) {
+    public init(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        photoStorage: PhotoStorage = PhotoStorageImpl())
+    {
         self.theme = theme
+        self.serviceFactory = ServiceFactoryImpl(photoStorage: photoStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {

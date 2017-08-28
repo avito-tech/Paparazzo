@@ -13,6 +13,7 @@ final class CameraServiceImpl: CameraService {
     
     private struct Error: Swift.Error {}
     
+    private var photoStorage: PhotoStorage
     private var captureSession: AVCaptureSession?
     private var output: AVCaptureStillImageOutput?
     private var backCamera: AVCaptureDevice?
@@ -26,7 +27,13 @@ final class CameraServiceImpl: CameraService {
 
     // MARK: - Init
     
-    init(initialActiveCameraType: CameraType) {
+    init(
+        initialActiveCameraType: CameraType,
+        photoStorage: PhotoStorage)
+    {
+
+        self.photoStorage = photoStorage
+
         let videoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as? [AVCaptureDevice]
         
         backCamera = videoDevices?.filter({ $0.position == .back }).first
@@ -230,7 +237,7 @@ final class CameraServiceImpl: CameraService {
         }
         
         output.captureStillImageAsynchronously(from: connection) { [weak self] sampleBuffer, error in
-            self?.savePhoto(sampleBuffer: sampleBuffer) { photo in
+            self?.photoStorage.savePhoto(sampleBuffer: sampleBuffer) { photo in
                 DispatchQueue.main.async {
                     completion(photo)
                 }
@@ -257,24 +264,6 @@ final class CameraServiceImpl: CameraService {
     
     private let captureSessionSetupQueue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CameraServiceImpl.captureSessionSetupQueue")
     
-    private func savePhoto(sampleBuffer: CMSampleBuffer?, completion: @escaping (PhotoFromCamera?) -> ()) {
-        
-        let path = randomTemporaryPhotoFilePath()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            if let data = sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) }) {
-                do {
-                    try data.write(to: URL(fileURLWithPath: path), options: [.atomicWrite])
-                    completion(PhotoFromCamera(path: path))
-                } catch {
-                    completion(nil)
-                }
-            } else {
-                completion(nil)
-            }
-        }
-    }
-    
     private func videoOutputConnection() -> AVCaptureConnection? {
         
         guard let output = output else { return nil }
@@ -299,12 +288,6 @@ final class CameraServiceImpl: CameraService {
         try camera?.lockForConfiguration()
         camera?.isSubjectAreaChangeMonitoringEnabled = true
         camera?.unlockForConfiguration()
-    }
-    
-    private func randomTemporaryPhotoFilePath() -> String {
-        let tempDirPath = NSTemporaryDirectory() as NSString
-        let tempName = "\(NSUUID().uuidString).jpg"
-        return tempDirPath.appendingPathComponent(tempName)
     }
     
     private func outputOrientationForCamera(_ camera: AVCaptureDevice?) -> ExifOrientation {

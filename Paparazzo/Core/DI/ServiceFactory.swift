@@ -9,12 +9,21 @@ protocol ServiceFactory: class {
 
 final class ServiceFactoryImpl: ServiceFactory {
     
+    private let photoStorage: PhotoStorage
+    
+    init (photoStorage: PhotoStorage) {
+        self.photoStorage = photoStorage
+    }
+    
     func deviceOrientationService() -> DeviceOrientationService {
         return DeviceOrientationServiceImpl()
     }
     
     func cameraService(initialActiveCameraType: CameraType) -> CameraService {
-        return CameraServiceImpl(initialActiveCameraType: initialActiveCameraType)
+        return CameraServiceImpl(
+            initialActiveCameraType: initialActiveCameraType,
+            photoStorage: photoStorage
+        )
     }
     
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider {
