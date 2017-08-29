@@ -1,7 +1,14 @@
 import UIKit
 import Marshroute
+import Paparazzo
 
 final class ExampleAssemblyImpl: ExampleAssembly {
+    
+    private let mediaPickerAssemblyFactory: MarshrouteAssemblyFactory
+    
+    init(mediaPickerAssemblyFactory: MarshrouteAssemblyFactory) {
+        self.mediaPickerAssemblyFactory = mediaPickerAssemblyFactory
+    }
     
     // MARK: - ExampleAssembly
     
@@ -10,6 +17,7 @@ final class ExampleAssemblyImpl: ExampleAssembly {
         let interactor = ExampleInteractorImpl()
         
         let router = ExampleRouterImpl(
+            mediaPickerAssemblyFactory: mediaPickerAssemblyFactory,
             routerSeed: routerSeed
         )
         

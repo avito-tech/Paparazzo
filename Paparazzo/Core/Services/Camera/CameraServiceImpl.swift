@@ -246,10 +246,8 @@ final class CameraServiceImpl: CameraService {
         }
         
         output.captureStillImageAsynchronously(from: connection) { [weak self] sampleBuffer, error in
-            self?.photoStorage.savePhoto(sampleBuffer: sampleBuffer) { photo in
-                DispatchQueue.main.async {
-                    completion(photo)
-                }
+            self?.photoStorage.savePhoto(sampleBuffer: sampleBuffer, callbackQueue: .main) { photo in
+                completion(photo)
             }
         }
     }

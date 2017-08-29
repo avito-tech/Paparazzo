@@ -5,16 +5,13 @@ import Paparazzo
 final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
     private let mediaPickerAssemblyFactory: MarshrouteAssemblyFactory
-    private let photoStorage: PhotoStorage
     
-    override init(routerSeed seed: RouterSeed) {
-        self.photoStorage = PhotoStorageImpl()
-        self.photoStorage.removeAll()
-        self.mediaPickerAssemblyFactory = Paparazzo.MarshrouteAssemblyFactory(
-            theme: PaparazzoUITheme.appSpecificTheme(),
-            photoStorage: photoStorage
-        )
-        super.init(routerSeed: seed)
+    init(
+        mediaPickerAssemblyFactory: MarshrouteAssemblyFactory,
+        routerSeed: RouterSeed)
+    {
+        self.mediaPickerAssemblyFactory = mediaPickerAssemblyFactory
+        super.init(routerSeed: routerSeed)
     }
     
     // MARK: - ExampleRouter
