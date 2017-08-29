@@ -14,8 +14,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         cleanTemporaryDirectory()
         
         window = UIWindow(frame: UIScreen.main.bounds)
+        
+        let photoStorage = PhotoStorageImpl()
+        photoStorage.removeAll()
+        let mediaPickerAssemblyFactory = Paparazzo.MarshrouteAssemblyFactory(
+            theme: PaparazzoUITheme.appSpecificTheme(),
+            photoStorage: photoStorage
+        )
+        let exampleAssembly = ExampleAssemblyImpl(mediaPickerAssemblyFactory: mediaPickerAssemblyFactory)
+        
         window?.rootViewController = MarshrouteFacade().navigationController(NavigationController()) { routerSeed in
-            ExampleAssemblyImpl().viewController(routerSeed: routerSeed)
+            exampleAssembly.viewController(routerSeed: routerSeed)
         }
         window?.makeKeyAndVisible()
         
