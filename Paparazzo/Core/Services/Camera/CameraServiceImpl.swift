@@ -137,17 +137,26 @@ final class CameraServiceImpl: CameraService {
     }
     
     func focusOnPoint(_ focusPoint: CGPoint) -> Bool {
-        guard let activeCamera = self.activeCamera, activeCamera.isFocusPointOfInterestSupported else {
+        guard let activeCamera = self.activeCamera,
+            activeCamera.isFocusPointOfInterestSupported || activeCamera.isExposurePointOfInterestSupported else {
             return false
         }
         
         do {
             try activeCamera.lockForConfiguration()
-            activeCamera.focusPointOfInterest = focusPoint
-            activeCamera.focusMode = .continuousAutoFocus
-            activeCamera.exposurePointOfInterest = focusPoint
-            activeCamera.exposureMode = .continuousAutoExposure
+            
+            if activeCamera.isFocusPointOfInterestSupported {
+                activeCamera.focusPointOfInterest = focusPoint
+                activeCamera.focusMode = .continuousAutoFocus
+            }
+            
+            if activeCamera.isExposurePointOfInterestSupported {
+                activeCamera.exposurePointOfInterest = focusPoint
+                activeCamera.exposureMode = .continuousAutoExposure
+            }
+            
             activeCamera.unlockForConfiguration()
+            
             return true
         }
         catch {
