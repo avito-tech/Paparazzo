@@ -3,6 +3,7 @@ import AVFoundation
 public protocol PhotoStorage {
     func savePhoto(
         sampleBuffer: CMSampleBuffer?,
+        callbackQueue: DispatchQueue,
         completion: @escaping (PhotoFromCamera?) -> ()
     )
     func removePhoto(_ photo: PhotoFromCamera)
@@ -24,23 +25,26 @@ public final class PhotoStorageImpl: PhotoStorage {
     // MARK: - PhotoStorage
     public func savePhoto(
         sampleBuffer: CMSampleBuffer?,
+        callbackQueue: DispatchQueue,
         completion: @escaping (PhotoFromCamera?) -> ())
     {
-        let path = randomTemporaryPhotoFilePath()
-        
         DispatchQueue.global(qos: .userInitiated).async {
-            if let data = sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) }) {
+            let imageData = sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) })
+            var photo: PhotoFromCamera? = nil
+            if let imageData = imageData {
+                let path = self.randomTemporaryPhotoFilePath()
                 do {
-                    try data.write(
+                    try imageData.write(
                         to: URL(fileURLWithPath: path),
                         options: [.atomicWrite]
                     )
-                    completion(PhotoFromCamera(path: path))
-                } catch {
-                    completion(nil)
+                    photo = PhotoFromCamera(path: path)
+                } catch let error {
+                    assert(false, "Couldn't save photo at path \(path) with error: \(error)")
                 }
-            } else {
-                completion(nil)
+            }
+            callbackQueue.async {
+                completion(photo)
             }
         }
     }
@@ -48,8 +52,8 @@ public final class PhotoStorageImpl: PhotoStorage {
     public func removePhoto(_ photo: PhotoFromCamera) {
         do {
             try FileManager.default.removeItem(atPath: photo.path)
-        } catch {
-            assert(false, "Couldn't remove photo at path \(photo.path)")
+        } catch let error {
+            assert(false, "Couldn't remove photo at path \(photo.path) with error: \(error)")
         }
     }
     
@@ -57,8 +61,8 @@ public final class PhotoStorageImpl: PhotoStorage {
         do {
             try FileManager.default.removeItem(atPath: PhotoStorageImpl.photoDirectoryPath())
             PhotoStorageImpl.createPhotoDirectoryIfNotExist()
-        } catch {
-            assert(false, "Couldn't remove photo folder")
+        } catch let error {
+            assert(false, "Couldn't remove photo folder with error: \(error)")
         }
     }
     
@@ -78,8 +82,8 @@ public final class PhotoStorageImpl: PhotoStorage {
                     withIntermediateDirectories: false,
                     attributes: nil
                 )
-            } catch {
-                assert(false, "Couldn't create folder for images")
+            } catch let error {
+                assert(false, "Couldn't create folder for images with error: \(error)")
             }
         }
     }
