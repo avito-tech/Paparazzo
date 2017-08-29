@@ -26,6 +26,7 @@ final class MediaPickerPresenter: MediaPickerModule {
 
     var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())?
     var onItemUpdate: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemAutocorrect: ((_ isAutocorrected: Bool, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
     var onCropFinish: (() -> ())?
@@ -251,14 +252,14 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onAutocorrectButtonTap = { [weak self] in
             if let originalItem = self?.interactor.selectedItem?.originalItem {
                 self?.view?.showInfoMessage("РАЗМЫТИЕ ВЫКЛ.", timeout: 1.0)
-                self?.updateItem(originalItem)
+                self?.updateItem(originalItem, afterAutocorrect: true)
             } else {
                 self?.view?.showInfoMessage("РАЗМЫТИЕ ВКЛ.", timeout: 1.0)
                 self?.view?.setAutocorrectionStatus(.corrected)
                 self?.interactor.autocorrectItem(
                     onResult: { [weak self] updatedItem in
                         if let updatedItem = updatedItem {
-                            self?.updateItem(updatedItem)
+                            self?.updateItem(updatedItem, afterAutocorrect: true)
                         }
                 }, onError: { [weak self] errorMessage in
                     if let errorMessage = errorMessage {
@@ -290,13 +291,18 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
     }
     
-    private func updateItem(_ updatedItem: MediaPickerItem) {
+    private func updateItem(_ updatedItem: MediaPickerItem, afterAutocorrect: Bool = false) {
         interactor.updateItem(updatedItem)
         view?.updateItem(updatedItem)
         adjustPhotoTitleForItem(updatedItem)
         let index = interactor.indexOfItem(updatedItem)
         updateAutocorrectionStatusForItem(updatedItem)
-        onItemUpdate?(updatedItem, index)
+        
+        if afterAutocorrect {
+            onItemAutocorrect?(updatedItem.originalItem != nil, index)
+        } else {
+            onItemUpdate?(updatedItem, index)
+        }
     }
     
     private func adjustViewForSelectedItem(_ item: MediaPickerItem, animated: Bool, scrollToSelected: Bool) {

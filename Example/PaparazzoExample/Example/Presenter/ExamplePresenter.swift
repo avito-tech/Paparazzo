@@ -137,6 +137,7 @@ final class ExamplePresenter {
         module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
         module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
         module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
+        module.onItemAutocorrect = { isAutocorrected, _ in debugPrint("mediaPickerDidAutocorrectItem: \(isAutocorrected)") }
         
         module.setContinueButtonTitle("Готово")
         
