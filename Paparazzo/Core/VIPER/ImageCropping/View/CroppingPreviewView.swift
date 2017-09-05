@@ -2,9 +2,13 @@ import ImageSource
 import UIKit
 
 final class CroppingPreviewView: UIView {
+    private static let greatestFiniteMagnitudeSize = CGSize(
+        width: CGFloat.greatestFiniteMagnitude,
+        height: CGFloat.greatestFiniteMagnitude
+    )
     
     /// Максимальный размер оригинальной картинки. Если меньше размера самой картинки, она будет даунскейлиться.
-    private var sourceImageMaxSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+    private var sourceImageMaxSize = CroppingPreviewView.greatestFiniteMagnitudeSize
     
     private let previewView = PhotoTweakView()
     
@@ -71,7 +75,11 @@ final class CroppingPreviewView: UIView {
             }
         }
         
-        let options = ImageRequestOptions(size: .fitSize(sourceImageMaxSize), deliveryMode: .best)
+        let imageSizeOption: ImageSizeOption = (sourceImageMaxSize == CroppingPreviewView.greatestFiniteMagnitudeSize)
+            ? .fullResolution
+            : .fitSize(sourceImageMaxSize)
+        
+        let options = ImageRequestOptions(size: imageSizeOption, deliveryMode: .best)
         
         image.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
             if let image = result.image {
