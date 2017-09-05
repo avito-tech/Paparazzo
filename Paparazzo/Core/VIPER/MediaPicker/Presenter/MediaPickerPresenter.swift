@@ -26,7 +26,7 @@ final class MediaPickerPresenter: MediaPickerModule {
 
     var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())?
     var onItemUpdate: ((MediaPickerItem, _ index: Int?) -> ())?
-    var onItemAutocorrect: ((_ isAutocorrected: Bool, _ index: Int?) -> ())?
+    var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
     var onCropFinish: (() -> ())?
@@ -299,7 +299,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         updateAutocorrectionStatusForItem(updatedItem)
         
         if afterAutocorrect {
-            onItemAutocorrect?(updatedItem.originalItem != nil, index)
+            onItemAutocorrect?(updatedItem, updatedItem.originalItem != nil, index)
         } else {
             onItemUpdate?(updatedItem, index)
         }
