@@ -41,7 +41,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         super.touchesBegan(touches, with: event)
         
         let screenSize = bounds.size
-        guard screenSize.width != 0 && screenSize.height != 0 else {
+        guard screenSize.width != 0 && screenSize.height != 0 && accessDeniedView.isHidden == true  else {
             return
         }
         
