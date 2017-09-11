@@ -22,6 +22,7 @@
     * [Additional parameters of MediaPicker module](#MediaPickerModule)
     * [Memory constraints when cropping](#memory-constraints)
   * [Presenting photo library](#present-gallery)
+  * [Presenting mask cropper](#present-maskCropper)
   * [UI Customization](#ui-customization)
 * [ImageSource](#ImageSource)
   * [Typical use cases](#use-cases)
@@ -117,6 +118,30 @@ let viewController = assembly.module(
 * _maxItemsCount_ — maximum number of photos that user is allowed to pick.
 * _routerSeed_ — routerSeed provided by Marshroute.
 * _configuration_ — closure used to provide additional module setup.
+
+## <a name="present-maskCropper" />Presenting mask cropper
+Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use Marshroute):
+```swift
+let factory = Paparazzo.AssemblyFactory()
+let assembly = factory.maskCropperAssembly()
+```
+Create view controller using assembly's `module` method:
+```swift
+let data = MaskCropperData(
+    imageSource: photo.image,
+    cropCanvasSize: cropCanvasSize
+)
+let viewController = assembly.module(
+    data: data,
+    croppingOverlayProvider: croppingOverlayProvider,
+    routerSeed: routerSeed,    // omit this parameter if you're using AssemblyFactory
+    configure: configure
+)
+```
+* _imageSource_ — photo that should be cropped.
+* _croppingOverlayProvider_ — provider from CroppingOverlayProvidersFactory.
+* _routerSeed_ — routerSeed provided by Marshroute.
+* _configure_ — closure used to provide additional module setup.
 
 ## <a name="ui-customization" />UI Customization
 You can customize colors, fonts and icons used in photo picker. Just pass an instance of `PaparazzoUITheme` to the initializer of assembly factory.
