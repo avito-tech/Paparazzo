@@ -60,7 +60,7 @@ let data = MediaPickerData(
     items: items,
     autocorrectionFilters: filters,
     selectedItem: items.last,
-    maxItemsCount: 20,
+    maxItemsCount: maxItemsCount,
     cropEnabled: true,
     autocorrectEnabled: true,
     cropCanvasSize: cropCanvasSize
