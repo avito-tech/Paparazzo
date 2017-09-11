@@ -111,13 +111,13 @@ let viewController = assembly.module(
     selectedItems: selectedItems,
     maxSelectedItemsCount: maxSelectedItemsCount,
     routerSeed: routerSeed,    // omit this parameter if you're using AssemblyFactory
-    configuration: configuration
+    configure: configure
 )
 ```
 * _selectedItems_ — preselected photos (or `nil`).
 * _maxItemsCount_ — maximum number of photos that user is allowed to pick.
 * _routerSeed_ — routerSeed provided by Marshroute.
-* _configuration_ — closure used to provide additional module setup.
+* _configure_ — closure used to provide additional module setup.
 
 ## <a name="present-maskCropper" />Presenting mask cropper
 Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use Marshroute):
