@@ -10,7 +10,7 @@
 | :camera:   | Taking photos using camera               |
 | :iphone:   | Picking photos from user's photo library |
 | :scissors: | Photo cropping and rotation              |
-| :droplet: | Applying filters to photos              |
+| :droplet: | Applying filters to photos                |
 
 ![Demo](PaparazzoDemo.gif)
 
@@ -49,7 +49,7 @@ pod "Paparazzo/Core"
 You can use either the entire module or photo library exclusively.
 
 ## <a name="present-whole-module" />Presenting entire module
-Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use Marshroute):
+Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use [Marshroute](https://github.com/avito-tech/Marshroute)):
 ```swift
 let factory = Paparazzo.AssemblyFactory()
 let assembly = factory.mediaPickerAssembly()
@@ -68,13 +68,13 @@ let data = MediaPickerData(
 
 let viewController = assembly.module(
     data: data,
-    routerSeed: routerSeed,    // omit this parameter if you're using AssemblyFactory
+    routerSeed: routerSeed,    // omit this parameter if you're using Paparazzo.AssemblyFactory
     configure: configure
 )
 ```
 Method parameters:
 * _items_ — array of photos that should be initially selected when module is presenter.
-* _filters_ — array of filters that can be applyed to photos.
+* _filters_ — array of filters that can be applied to photos.
 * _selectedItem_ — selected photo. If set to `nil` or if _items_ doesn't contain any photo with matching _identifier_, then the first photo in array will be selected.
 * _maxItemsCount_ — maximum number of photos that user is allowed to pick.
 * _cropEnabled_ — boolean flag indicating whether user can perform photo cropping.
@@ -88,11 +88,11 @@ Additional parameters is described in protocol `MediaPickerModule`:
 
 * `setContinueButtonTitle(_:)`,  `setContinueButtonEnabled(_:)` , `setContinueButtonVisible(_:)` and `setContinueButtonStyle(_:)` allow to customize "Continue" button text and availability.
 * `setAccessDeniedTitle(_:)`,  `setAccessDeniedMessage(_:)`  and `setAccessDeniedButtonTitle(_:)` allow to customize "Access Deined" view texts.
-* `setCropMode(_:)` allow to customize photo crop behaivour.
+* `setCropMode(_:)` allow to customize photo crop behavior.
 * `onItemsAdd` is called when user picks items from photo library or takes a new photo using camera.
 * `onItemUpdate` is called after user performed cropping.
-* `onItemAutocorrect` is called after user applied filter.
-* `onItemMove` is called after user moves photo.
+* `onItemAutocorrect` is called after applying filter.
+* `onItemMove` is called after moving photo.
 * `onItemRemove` is called when user deletes photo.
 * `onFinish` and `onCancel` is called when user taps Continue and Close respectively.
 
@@ -100,7 +100,7 @@ Additional parameters is described in protocol `MediaPickerModule`:
 When cropping photo on devices with low RAM capacity your application can crash due to memory warning. It happens because in order to perform actual cropping we need to put a bitmap of the original photo in memory. To descrease a chance of crashing on older devices (such as iPhone 4 or 4s) we can scale the source photo beforehand so that it takes up less space in memory. _cropCanvasSize_ is used for that. It specifies the size of the photo we should be targeting when scaling.
 
 ## <a name="present-gallery" />Presenting photo library
-Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use Marshroute):
+Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use [Marshroute](https://github.com/avito-tech/Marshroute)):
 ```swift
 let factory = Paparazzo.AssemblyFactory()
 let assembly = factory.photoLibraryAssembly()
@@ -110,7 +110,7 @@ Create view controller using assembly's `module` method:
 let viewController = assembly.module(
     selectedItems: selectedItems,
     maxSelectedItemsCount: maxSelectedItemsCount,
-    routerSeed: routerSeed,    // omit this parameter if you're using AssemblyFactory
+    routerSeed: routerSeed,    // omit this parameter if you're using Paparazzo.AssemblyFactory
     configure: configure
 )
 ```
@@ -120,7 +120,9 @@ let viewController = assembly.module(
 * _configure_ — closure used to provide additional module setup.
 
 ## <a name="present-maskCropper" />Presenting mask cropper
-Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use Marshroute):
+MaskCropper is a module which provides easy way to customize cropping experience. See CroppingOverlayProvider protocol to get more details.
+
+Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use [Marshroute](https://github.com/avito-tech/Marshroute)):
 ```swift
 let factory = Paparazzo.AssemblyFactory()
 let assembly = factory.maskCropperAssembly()
@@ -134,7 +136,7 @@ let data = MaskCropperData(
 let viewController = assembly.module(
     data: data,
     croppingOverlayProvider: croppingOverlayProvider,
-    routerSeed: routerSeed,    // omit this parameter if you're using AssemblyFactory
+    routerSeed: routerSeed,    // omit this parameter if you're using Paparazzo.AssemblyFactory
     configure: configure
 )
 ```
