@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '1.1.0'
+  s.version                = '2.0.0'
   s.summary                = 'ImageSource by Avito'
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'Avito'
