@@ -12,8 +12,8 @@
 * Add support for photo reordering
   [Artem Peskishev](https://github.com/peskish)
 
-* Add cache cleanup support
-  Vadim Smal
+* Add support for cache cleaning
+  [Vadim Smal](https://github.com/CognitiveDisson)
 
 ##### Bug Fixes
 
