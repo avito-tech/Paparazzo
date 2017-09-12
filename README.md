@@ -14,6 +14,8 @@
 
 ![Demo](PaparazzoDemo.gif)
 
+[Changelog](https://github.com/avito-tech/Paparazzo/blob/master/CHANGELOG.md) | See the changes introduced in each Paparazzo version.
+
 # Contents
 
 * [Installation](#installation)
