@@ -15,10 +15,12 @@ protocol CameraService: class {
     func takePhoto(completion: @escaping (PhotoFromCamera?) -> ())
     func setCaptureSessionRunning(_: Bool)
     
+    func focusOnPoint(_ focusPoint: CGPoint) -> Bool
+    
     func canToggleCamera(completion: @escaping (Bool) -> ())
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ())
 }
 
-struct PhotoFromCamera {
+public struct PhotoFromCamera {
     let path: String
 }

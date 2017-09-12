@@ -1,6 +1,8 @@
 import UIKit
 
-final class ImageCroppingControlsView: UIView {
+final class ImageCroppingControlsView: UIView, ThemeConfigurable {
+    
+    typealias ThemeType = ImageCroppingUITheme
     
     // MARK: - Subviews
     
@@ -61,6 +63,15 @@ final class ImageCroppingControlsView: UIView {
         addSubview(rotationCancelButton)
         addSubview(discardButton)
         addSubview(confirmButton)
+        setUpAccessibilityIdentifiers()
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        rotationButton.setAccessibilityId(.rotationButton)
+        gridButton.setAccessibilityId(.gridButton)
+        rotationCancelButton.setAccessibilityId(.rotationCancelButton)
+        discardButton.setAccessibilityId(.discardButton)
+        confirmButton.setAccessibilityId(.confirmButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -95,6 +106,21 @@ final class ImageCroppingControlsView: UIView {
         confirmButton.center = CGPoint(x: bounds.right - bounds.size.width * 0.25, y: discardButton.centerY)
     }
     
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        rotationButton.setImage(theme.rotationIcon, for: .normal)
+        gridButton.setImage(theme.gridIcon, for: .normal)
+        gridButton.setImage(theme.gridSelectedIcon, for: .selected)
+        discardButton.setImage(theme.cropperDiscardIcon, for: .normal)
+        confirmButton.setImage(theme.cropperConfirmIcon, for: .normal)
+        
+        rotationCancelButton.backgroundColor = theme.cancelRotationBackgroundColor
+        rotationCancelButton.titleLabel?.textColor = theme.cancelRotationTitleColor
+        rotationCancelButton.titleLabel?.font = theme.cancelRotationTitleFont
+        rotationCancelButton.setImage(theme.cancelRotationButtonIcon, for: .normal)
+    }
+    
     // MARK: - ImageCroppingControlsView
     
     var onDiscardButtonTap: (() -> ())?
@@ -106,19 +132,6 @@ final class ImageCroppingControlsView: UIView {
     var onRotationAngleChange: ((Float) -> ())? {
         get { return rotationSliderView.onSliderValueChange }
         set { rotationSliderView.onSliderValueChange = newValue }
-    }
-    
-    func setTheme(_ theme: ImageCroppingUITheme) {
-        rotationButton.setImage(theme.rotationIcon, for: .normal)
-        gridButton.setImage(theme.gridIcon, for: .normal)
-        gridButton.setImage(theme.gridSelectedIcon, for: .selected)
-        discardButton.setImage(theme.cropperDiscardIcon, for: .normal)
-        confirmButton.setImage(theme.cropperConfirmIcon, for: .normal)
-        
-        rotationCancelButton.backgroundColor = theme.cancelRotationBackgroundColor
-        rotationCancelButton.titleLabel?.textColor = theme.cancelRotationTitleColor
-        rotationCancelButton.titleLabel?.font = theme.cancelRotationTitleFont
-        rotationCancelButton.setImage(theme.cancelRotationButtonIcon, for: .normal)
     }
     
     func setMinimumRotation(degrees: Float) {

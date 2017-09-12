@@ -61,6 +61,18 @@ final class CameraPresenter: CameraModuleInput {
         view?.mainModuleDidAppear(animated: animated)
     }
     
+    func setAccessDeniedTitle(_ title: String) {
+        view?.setAccessDeniedTitle(title)
+    }
+    
+    func setAccessDeniedMessage(_ message: String) {
+        view?.setAccessDeniedMessage(message)
+    }
+    
+    func setAccessDeniedButtonTitle(_ title: String) {
+        view?.setAccessDeniedButtonTitle(title)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {
@@ -80,6 +92,12 @@ final class CameraPresenter: CameraModuleInput {
                 self?.view?.setOutputParameters(parameters)
             } else {
                 self?.view?.setAccessDeniedViewVisible(true)
+            }
+        }
+        
+        view?.onFocusTap = { [weak self] focusPoint, touchPoint in
+            if self?.interactor.focusCameraOnPoint(focusPoint) == true {
+                self?.view?.displayFocus(onPoint: touchPoint)
             }
         }
         

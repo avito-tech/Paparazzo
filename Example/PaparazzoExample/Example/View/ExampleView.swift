@@ -2,10 +2,8 @@ import UIKit
 
 final class ExampleView: UIView {
     
-    var onShowMediaPickerButtonTap: (() -> ())?
-    var onShowPhotoLibraryButtonTap: (() -> ())?
-    
     private let mediaPickerButton = UIButton()
+    private let maskCropperButton = UIButton()
     private let photoLibraryButton = UIButton()
     
     // MARK: - Init
@@ -13,10 +11,16 @@ final class ExampleView: UIView {
     init() {
         super.init(frame: .zero)
         
-        mediaPickerButton.setTitle("Show Media Picker", for: .normal)
         mediaPickerButton.addTarget(
             self,
             action: #selector(onShowMediaPickerButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
+        maskCropperButton.setTitle("Show Mask Cropper", for: .normal)
+        maskCropperButton.addTarget(
+            self,
+            action: #selector(onMaskCropperButtonTap(_:)),
             for: .touchUpInside
         )
         
@@ -28,6 +32,7 @@ final class ExampleView: UIView {
         )
         
         addSubview(mediaPickerButton)
+        addSubview(maskCropperButton)
         addSubview(photoLibraryButton)
     }
     
@@ -35,22 +40,47 @@ final class ExampleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - ExampleView
+    
+    func setMediaPickerButtonTitle(_ title: String) {
+        mediaPickerButton.setTitle(title, for: .normal)
+    }
+    
+    func setMaskCropperButtonTitle(_ title: String) {
+        maskCropperButton.setTitle(title, for: .normal)
+    }
+    
+    func setPhotoLibraryButtonTitle(_ title: String) {
+        photoLibraryButton.setTitle(title, for: .normal)
+    }
+    
+    var onShowMediaPickerButtonTap: (() -> ())?
+    var onMaskCropperButtonTap: (() -> ())?
+    var onShowPhotoLibraryButtonTap: (() -> ())?
+    
     // MARK: - UIView
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         mediaPickerButton.sizeToFit()
-        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 30)
+        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 50)
+        
+        maskCropperButton.sizeToFit()
+        maskCropperButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
         
         photoLibraryButton.sizeToFit()
-        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 30)
+        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 50)
     }
     
     // MARK: - Private
     
     @objc private func onShowMediaPickerButtonTap(_: UIButton) {
         onShowMediaPickerButtonTap?()
+    }
+    
+    @objc private func onMaskCropperButtonTap(_: UIButton) {
+        onMaskCropperButtonTap?()
     }
     
     @objc private func onShowPhotoLibraryButtonTap(_: UIButton) {

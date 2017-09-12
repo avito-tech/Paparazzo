@@ -3,13 +3,9 @@ import UIKit
 
 public protocol MediaPickerMarshrouteAssembly: class {
     func module(
-        items: [MediaPickerItem],
-        selectedItem: MediaPickerItem?,
-        maxItemsCount: Int?,
-        cropEnabled: Bool,
-        cropCanvasSize: CGSize,
+        data: MediaPickerData,
         routerSeed: RouterSeed,
-        configuration: (MediaPickerModule) -> ())
+        configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
 

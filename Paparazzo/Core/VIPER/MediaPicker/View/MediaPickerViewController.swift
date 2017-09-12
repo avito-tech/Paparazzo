@@ -1,34 +1,31 @@
 import ImageSource
 import UIKit
 
-final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
+final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewInput, ThemeConfigurable {
     
-    private var isBeingRotated: Bool = false
+    typealias ThemeType = MediaPickerRootModuleUITheme
+    
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
+    private var isAnimatingTransition: Bool = false
     
     // MARK: - UIViewController
-    
-    override func loadView() {
-        view = UIView()
-        view.backgroundColor = .black
-        view.addSubview(mediaPickerView)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         automaticallyAdjustsScrollViewInsets = false
+        view.backgroundColor = .black
+        view.addSubview(mediaPickerView)
         onViewDidLoad?()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
-        
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: .fade)
-        
+
         onViewWillAppear?(animated)
     }
     
@@ -40,6 +37,11 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         if UIDevice.current.userInterfaceIdiom == .pad {
             mediaPickerView.alpha = 0
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onViewDidDisappear?(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,41 +76,29 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         onViewDidAppear?(animated)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        onViewDidDisappear?(animated)
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if !isBeingRotated {
-            layoutMediaPickerView(interfaceOrientation: interfaceOrientation)
+        if !isAnimatingTransition {
+            layoutMediaPickerView(bounds: view.bounds)
         }
+        
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
         layoutSubviewsPromise.fulfill()
     }
     
-    override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        if shouldAutorotate {
-            // Compensation animation for rotation.
-            UIView.animate(
-                withDuration: duration,
-                animations: {
-                    self.layoutMediaPickerView(interfaceOrientation: toInterfaceOrientation)
-            })
-        }
-        super.willAnimateRotation(to: toInterfaceOrientation, duration: duration)
-    }
-    
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotate(from: fromInterfaceOrientation)
-        isBeingRotated = false
-    }
-    
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        super.willRotate(to: toInterfaceOrientation, duration: duration)
-        isBeingRotated = true
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        isAnimatingTransition = true
+        
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.layoutMediaPickerView(bounds: context.containerView.bounds)
+        },
+        completion: { [weak self] _ in
+            self?.isAnimatingTransition = false
+        })
+        
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
     override open var shouldAutorotate: Bool {
@@ -145,12 +135,12 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         get { return mediaPickerView.onShutterButtonTap }
         set { mediaPickerView.onShutterButtonTap = newValue }
     }
-
+    
     var onPhotoLibraryButtonTap: (() -> ())? {
         get { return mediaPickerView.onPhotoLibraryButtonTap }
         set { mediaPickerView.onPhotoLibraryButtonTap = newValue }
     }
-
+    
     var onFlashToggle: ((Bool) -> ())? {
         get { return mediaPickerView.onFlashToggle }
         set { mediaPickerView.onFlashToggle = newValue }
@@ -171,6 +161,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         set { mediaPickerView.onRemoveButtonTap = newValue }
     }
     
+    var onAutocorrectButtonTap: (() -> ())? {
+        get { return mediaPickerView.onAutocorrectButtonTap }
+        set { mediaPickerView.onAutocorrectButtonTap = newValue }
+    }
     var onCropButtonTap: (() -> ())? {
         get { return mediaPickerView.onCropButtonTap }
         set { mediaPickerView.onCropButtonTap = newValue }
@@ -210,6 +204,10 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         }
     }
     
+    func setAutocorrectionStatus(_ status: MediaPickerAutocorrectionStatus) {
+        mediaPickerView.setAutocorrectionStatus(status)
+    }
+    
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         mediaPickerView.setCameraOutputParameters(parameters)
     }
@@ -236,6 +234,14 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     
     func setContinueButtonEnabled(_ enabled: Bool) {
         mediaPickerView.setContinueButtonEnabled(enabled)
+    }
+    
+    func setContinueButtonVisible(_ visible: Bool) {
+        mediaPickerView.setContinueButtonVisible(visible)
+    }
+    
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        mediaPickerView.setContinueButtonStyle(style)
     }
     
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
@@ -278,7 +284,7 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
     func setCameraToggleButtonVisible(_ visible: Bool) {
         mediaPickerView.setCameraToggleButtonVisible(visible)
     }
-
+    
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         mediaPickerView.addItems(items, animated: animated, completion: completion)
     }
@@ -333,36 +339,42 @@ final class MediaPickerViewController: UIViewController, MediaPickerViewInput {
         mediaPickerView.setPhotoLibraryButtonEnabled(enabled)
     }
     
+    func showInfoMessage(_ message: String, timeout: TimeInterval) {
+        mediaPickerView.showInfoMessage(message, timeout: timeout)
+    }
+    
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        mediaPickerView.setTheme(theme)
+    }
+    
     // MARK: - MediaPickerViewController
     
     func setCameraView(_ view: UIView) {
         mediaPickerView.setCameraView(view)
     }
     
-    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
-        mediaPickerView.setTheme(theme)
-    }
-    
     func setShowsCropButton(_ showsCropButton: Bool) {
         mediaPickerView.setShowsCropButton(showsCropButton)
     }
     
+    func setShowsAutocorrectButton(_ showsAutocorrectButton: Bool) {
+        mediaPickerView.setShowsAutocorrectButton(showsAutocorrectButton)
+    }
+    
+    func setShowPreview(_ showPreview: Bool) {
+        mediaPickerView.setShowsPreview(showPreview)
+    }
+    
     // MARK: - Private
     
-    func layoutMediaPickerView(interfaceOrientation: UIInterfaceOrientation) {
+    func layoutMediaPickerView(bounds: CGRect) {
         // View is rotated, but mediaPickerView isn't.
         // It rotates in opposite direction and seems not rotated at all.
         // This allows to not force status bar orientation on this screen and keep UI same as
         // with forcing status bar orientation.
         mediaPickerView.transform = CGAffineTransform(interfaceOrientation: interfaceOrientation)
-        mediaPickerView.frame = view.bounds
-    }
-    
-    // MARK: - Dispose bag
-    
-    private var disposables = [AnyObject]()
-    
-    func addDisposable(_ object: AnyObject) {
-        disposables.append(object)
+        mediaPickerView.frame = bounds
     }
 }

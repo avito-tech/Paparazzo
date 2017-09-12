@@ -10,6 +10,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.insertSubview(cloudIconView, at: 0)
+        imageView.isAccessibilityElement = true
     }
     
     required init?(coder aDecoder: NSCoder) {

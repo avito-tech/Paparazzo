@@ -11,9 +11,15 @@ enum MediaPickerTitleStyle {
     case light
 }
 
+enum MediaPickerAutocorrectionStatus {
+    case original
+    case corrected
+}
+
 protocol MediaPickerViewInput: class {
     
     func setMode(_: MediaPickerViewMode)
+    func setAutocorrectionStatus(_: MediaPickerAutocorrectionStatus)
     func adjustForDeviceOrientation(_: DeviceOrientation)
     
     func setCameraOutputParameters(_: CameraOutputParameters)
@@ -24,7 +30,8 @@ protocol MediaPickerViewInput: class {
     func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
     func setContinueButtonEnabled(_: Bool)
-
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle)
+    
     func setLatestLibraryPhoto(_: ImageSource?)
     
     func setFlashButtonVisible(_: Bool)
@@ -52,6 +59,12 @@ protocol MediaPickerViewInput: class {
     var onCameraToggleButtonTap: (() -> ())? { get set }
     func setCameraToggleButtonVisible(_: Bool)
     
+    func setContinueButtonVisible(_: Bool)
+    
+    func setShowPreview(_ showPreview: Bool)
+    
+    func showInfoMessage(_ message: String, timeout: TimeInterval)
+    
     // MARK: - Actions in photo ribbon
     var onItemSelect: ((MediaPickerItem) -> ())? { get set }
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())? { get set }
@@ -63,6 +76,7 @@ protocol MediaPickerViewInput: class {
     
     // MARK: - Selected photo actions
     var onRemoveButtonTap: (() -> ())? { get set }
+    var onAutocorrectButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onCameraThumbnailTap: (() -> ())? { get set }
     
@@ -71,8 +85,8 @@ protocol MediaPickerViewInput: class {
     var onSwipeToCameraProgressChange: ((CGFloat) -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
-    var onViewWillAppear: ((_ animated: Bool) -> ())? { get set }
     var onViewDidAppear: ((_ animated: Bool) -> ())? { get set }
+    var onViewWillAppear: ((_ animated: Bool) -> ())? { get set }
     var onViewDidDisappear: ((_ animated: Bool) -> ())? { get set }
     
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())? { get set }

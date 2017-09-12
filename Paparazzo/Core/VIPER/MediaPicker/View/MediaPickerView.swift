@@ -1,16 +1,17 @@
 import ImageSource
 import UIKit
 
-final class MediaPickerView: UIView {
+final class MediaPickerView: UIView, ThemeConfigurable {
+    
+    typealias ThemeType = MediaPickerRootModuleUITheme
     
     // MARK: - Subviews
     
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
     
-    private let photoLibraryPeepholeView = UIImageView()
     private let closeButton = UIButton()
-    private let continueButton = UIButton()
+    private let continueButton = ButtonWithActivity()
     private let photoTitleLabel = UILabel()
     private let flashView = UIView()
     
@@ -40,6 +41,13 @@ final class MediaPickerView: UIView {
     
     private var mode = MediaPickerViewMode.camera
     private var deviceOrientation = DeviceOrientation.portrait
+    private let infoMessageDisplayer = InfoMessageDisplayer()
+    
+    private var showsPreview: Bool = true {
+        didSet {
+            thumbnailRibbonView.isHidden = !showsPreview
+        }
+    }
     
     // MARK: - UIView
     
@@ -64,7 +72,6 @@ final class MediaPickerView: UIView {
         photoTitleLabel.layer.masksToBounds = false
         photoTitleLabel.alpha = 0
         
-        photoLibraryPeepholeView.contentMode = .scaleAspectFill
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
             self?.onItemSelect?(mediaPickerItem)
@@ -88,6 +95,8 @@ final class MediaPickerView: UIView {
         addSubview(continueButton)
         
         setMode(.camera)
+        
+        setUpAccessibilityIdentifiers()
     }
     
     private func setupButtons() {
@@ -110,9 +119,17 @@ final class MediaPickerView: UIView {
         )
     }
     
+    private func setUpAccessibilityIdentifiers() {
+        closeButton.setAccessibilityId(.closeButton)
+        continueButton.setAccessibilityId(.continueButton)
+        photoTitleLabel.setAccessibilityId(.titleLabel)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -121,12 +138,17 @@ final class MediaPickerView: UIView {
             left: bounds.left,
             right: bounds.right,
             top: bounds.top,
-            height: bounds.size.width * cameraAspectRatio
+            height: showsPreview ? bounds.size.width * cameraAspectRatio : bounds.size.height - controlsExtendedHeight
         )
         
-        let freeSpaceUnderCamera = bounds.bottom - cameraFrame.bottom
-        let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
-        let controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
+        let controlsHeight: CGFloat
+        if showsPreview {
+            let freeSpaceUnderCamera = bounds.bottom - cameraFrame.bottom
+            let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
+            controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
+        } else {
+            controlsHeight = controlsExtendedHeight
+        }
         
         photoPreviewView.frame = cameraFrame
         
@@ -164,11 +186,56 @@ final class MediaPickerView: UIView {
             bottom: cameraControlsView.top,
             height: photoRibbonHeight
         )
+        thumbnailRibbonView.onDragStart = { [weak self] in
+            self?.isUserInteractionEnabled = false
+        }
+        thumbnailRibbonView.onDragFinish = { [weak self] in
+            self?.isUserInteractionEnabled = true
+        }
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
 
         flashView.frame = cameraFrame
+    }
+    
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        
+        cameraControlsView.setTheme(theme)
+        photoControlsView.setTheme(theme)
+        thumbnailRibbonView.setTheme(theme)
+        
+        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
+        continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
+        
+        closeButton.setImage(theme.closeCameraIcon, for: .normal)
+        
+        continueButton.setTitleColor(
+            theme.cameraContinueButtonTitleColor,
+            for: .normal
+        )
+        continueButton.setTitleColor(
+            theme.cameraContinueButtonTitleHighlightedColor,
+            for: .highlighted
+        )
+        
+        let onePointSize = CGSize(width: 1, height: 1)
+        for button in [continueButton, closeButton] {
+            button.setBackgroundImage(
+                UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
+                for: .normal
+            )
+            button.setBackgroundImage(
+                UIImage.imageWithColor(theme.cameraButtonsBackgroundHighlightedColor, imageSize: onePointSize),
+                for: .highlighted
+            )
+            button.setBackgroundImage(
+                UIImage.imageWithColor(theme.cameraButtonsBackgroundDisabledColor, imageSize: onePointSize),
+                for: .disabled
+            )
+        }
     }
     
     // MARK: - MediaPickerView
@@ -193,6 +260,11 @@ final class MediaPickerView: UIView {
     var onRemoveButtonTap: (() -> ())? {
         get { return photoControlsView.onRemoveButtonTap }
         set { photoControlsView.onRemoveButtonTap = newValue }
+    }
+    
+    var onAutocorrectButtonTap: (() -> ())? {
+        get { return photoControlsView.onAutocorrectButtonTap }
+        set { photoControlsView.onAutocorrectButtonTap = newValue }
     }
     
     var onCropButtonTap: (() -> ())? {
@@ -250,6 +322,15 @@ final class MediaPickerView: UIView {
         adjustForDeviceOrientation(deviceOrientation)
     }
     
+    func setAutocorrectionStatus(_ status: MediaPickerAutocorrectionStatus) {
+        switch status {
+        case .original:
+            photoControlsView.setAutocorrectButtonSelected(false)
+        case .corrected:
+            photoControlsView.setAutocorrectButtonSelected(true)
+        }
+    }
+    
     func setCameraControlsEnabled(_ enabled: Bool) {
         cameraControlsView.setCameraControlsEnabled(enabled)
     }
@@ -287,6 +368,7 @@ final class MediaPickerView: UIView {
     }
     
     var onCloseButtonTap: (() -> ())?
+    
     var onContinueButtonTap: (() -> ())?
     
     var onCameraToggleButtonTap: (() -> ())? {
@@ -304,6 +386,33 @@ final class MediaPickerView: UIView {
     
     func setPhotoLibraryButtonEnabled(_ enabled: Bool) {
         cameraControlsView.setPhotoLibraryButtonEnabled(enabled)
+    }
+    
+    func setContinueButtonVisible(_ visible: Bool) {
+        continueButton.isHidden = !visible
+    }
+    
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        guard continueButton.style != style else { return }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            animations: {
+                self.continueButton.style = style
+                if self.deviceOrientation == .portrait {
+                    self.continueButton.size = CGSize(
+                        width: self.continueButton.sizeThatFits().width,
+                        height: self.continueButtonHeight
+                    )
+                } else {
+                    self.continueButton.size = CGSize(
+                        width: self.continueButtonHeight,
+                        height: self.continueButton.sizeThatFits().width
+                    )
+                }
+                self.layoutCloseAndContinueButtons()
+        }
+        )
     }
     
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
@@ -376,6 +485,7 @@ final class MediaPickerView: UIView {
     
     func setPhotoTitle(_ title: String) {
         photoTitleLabel.text = title
+        photoTitleLabel.accessibilityValue = title
         layoutPhotoTitleLabel()
     }
     
@@ -396,6 +506,7 @@ final class MediaPickerView: UIView {
     
     func setContinueButtonTitle(_ title: String) {
         continueButton.setTitle(title, for: .normal)
+        continueButton.accessibilityValue = title
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
@@ -403,50 +514,33 @@ final class MediaPickerView: UIView {
         continueButton.isEnabled = enabled
     }
     
-    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
-
-        cameraControlsView.setTheme(theme)
-        photoControlsView.setTheme(theme)
-        thumbnailRibbonView.setTheme(theme)
-
-        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
-        continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
-
-        closeButton.setImage(theme.closeCameraIcon, for: .normal)
-        
-        continueButton.setTitleColor(
-            theme.cameraContinueButtonTitleColor,
-            for: .normal
-        )
-        continueButton.setTitleColor(
-            theme.cameraContinueButtonTitleHighlightedColor,
-            for: .highlighted
-        )
-        
-        let onePointSize = CGSize(width: 1, height: 1)
-        for button in [continueButton, closeButton] {
-            button.setBackgroundImage(
-                UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
-                for: .normal
-            )
-            button.setBackgroundImage(
-                UIImage.imageWithColor(theme.cameraButtonsBackgroundHighlightedColor, imageSize: onePointSize),
-                for: .highlighted
-            )
-            button.setBackgroundImage(
-                UIImage.imageWithColor(theme.cameraButtonsBackgroundDisabledColor, imageSize: onePointSize),
-                for: .disabled
-            )
+    func setShowsCropButton(_ showsCropButton: Bool) {
+        if showsCropButton {
+            photoControlsView.mode.insert(.hasCropButton)
+        } else {
+            photoControlsView.mode.remove(.hasCropButton)
         }
     }
     
-    func setShowsCropButton(_ showsCropButton: Bool) {
-        photoControlsView.setShowsCropButton(showsCropButton)
+    func setShowsAutocorrectButton(_ showsAutocorrectButton: Bool) {
+        if showsAutocorrectButton {
+            photoControlsView.mode.insert(.hasAutocorrectButton)
+        } else {
+            photoControlsView.mode.remove(.hasAutocorrectButton)
+        }
+    }
+    
+    func setShowsPreview(_ showsPreview: Bool) {
+        self.showsPreview = showsPreview
     }
     
     func reloadCamera() {
         photoPreviewView.reloadCamera()
         thumbnailRibbonView.reloadCamera()
+    }
+    
+    func showInfoMessage(_ message: String, timeout: TimeInterval) {
+        infoMessageDisplayer.display(viewData: InfoMessageViewData(text: message, timeout: timeout), in: photoPreviewView)
     }
     
     // MARK: - Private

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'Paparazzo'
   s.module_name            = 'Paparazzo'
-  s.version                = '1.1.0'
+  s.version                = '2.0.0'
   s.summary                = "iOS component for picking and editing photos from camera and user's photo library"
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'MIT'

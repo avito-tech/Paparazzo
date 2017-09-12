@@ -4,31 +4,48 @@ import Paparazzo
 
 final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
-    private let mediaPickerAssemblyFactory = Paparazzo.MarshrouteAssemblyFactory(
-        theme: PaparazzoUITheme.appSpecificTheme()
-    )
+    private let mediaPickerAssemblyFactory: MarshrouteAssemblyFactory
+    
+    init(
+        mediaPickerAssemblyFactory: MarshrouteAssemblyFactory,
+        routerSeed: RouterSeed)
+    {
+        self.mediaPickerAssemblyFactory = mediaPickerAssemblyFactory
+        super.init(routerSeed: routerSeed)
+    }
     
     // MARK: - ExampleRouter
     
     func showMediaPicker(
-        items: [MediaPickerItem],
-        selectedItem: MediaPickerItem?,
-        maxItemsCount: Int?,
-        cropCanvasSize: CGSize,
-        configuration: (MediaPickerModule) -> ()
+        data: MediaPickerData,
+        configure: (MediaPickerModule) -> ()
     ) {
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
             
             return assembly.module(
-                items: items,
-                selectedItem: selectedItem,
-                maxItemsCount: maxItemsCount,
-                cropEnabled: true,
-                cropCanvasSize: cropCanvasSize,
+                data: data,
                 routerSeed: routerSeed,
-                configuration: configuration
+                configure: configure
+            )
+        }
+    }
+    
+    func showMaskCropper(
+        data: MaskCropperData,
+        croppingOverlayProvider: CroppingOverlayProvider,
+        configure: (MaskCropperModule) -> ()
+    ) {
+        pushViewControllerDerivedFrom { routerSeed in
+            
+            let assembly = mediaPickerAssemblyFactory.maskCropperAssembly()
+            
+            return assembly.module(
+                data: data,
+                croppingOverlayProvider: croppingOverlayProvider,
+                routerSeed: routerSeed,
+                configure: configure
             )
         }
     }
@@ -36,7 +53,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showPhotoLibrary(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ()
+        configure: (PhotoLibraryModule) -> ()
     ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
@@ -46,7 +63,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItems: selectedItems,
                 maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,
-                configuration: configuration
+                configure: configure
             )
         }
     }

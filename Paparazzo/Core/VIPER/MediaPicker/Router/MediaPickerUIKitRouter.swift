@@ -3,8 +3,8 @@ import UIKit
 
 final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     
-    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory
-
+    typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory & MaskCropperAssemblyFactory
+ 
     private let assemblyFactory: AssemblyFactory
     private var cropViewControllers = [WeakWrapper<UIViewController>]()
 
@@ -16,16 +16,14 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     // MARK: - PhotoPickerRouter
 
     func showPhotoLibrary(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configuration: (PhotoLibraryModule) -> ())
+        data: PhotoLibraryData,
+        configure: (PhotoLibraryModule) -> ())
     {
         let assembly = assemblyFactory.photoLibraryAssembly()
         
         let viewController = assembly.module(
-            selectedItems: selectedItems,
-            maxSelectedItemsCount: maxSelectedItemsCount,
-            configuration: configuration
+            data: data,
+            configure: configure
         )
         
         let navigationController = UINavigationController(rootViewController: viewController)
@@ -36,14 +34,32 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     func showCroppingModule(
         forImage image: ImageSource,
         canvasSize: CGSize,
-        configuration: (ImageCroppingModule) -> ())
+        configure: (ImageCroppingModule) -> ())
     {
         let assembly = assemblyFactory.imageCroppingAssembly()
         
         let viewController = assembly.module(
             image: image,
             canvasSize: canvasSize,
-            configuration: configuration
+            configure: configure
+        )
+        
+        cropViewControllers.append(WeakWrapper(value: viewController))
+        
+        push(viewController, animated: false)
+    }
+    
+    func showMaskCropper(
+        data: MaskCropperData,
+        croppingOverlayProvider: CroppingOverlayProvider,
+        configure: (MaskCropperModule) -> ())
+    {
+        let assembly = assemblyFactory.maskCropperAssembly()
+        
+        let viewController = assembly.module(
+            data: data,
+            croppingOverlayProvider: croppingOverlayProvider,
+            configure: configure
         )
         
         cropViewControllers.append(WeakWrapper(value: viewController))

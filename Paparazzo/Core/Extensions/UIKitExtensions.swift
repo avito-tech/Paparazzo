@@ -103,9 +103,14 @@ extension UIView {
         layer.anchorPoint = anchorPoint
     }
     
-    func snapshot() -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
-        drawHierarchy(in: bounds, afterScreenUpdates: true)
+    func snapshot(withScale scale: CGFloat = 0) -> UIImage? {
+
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, scale)
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            self.layer.render(in: context)
+        }
+
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
@@ -122,6 +127,11 @@ extension UIView {
                 self.removeFromSuperview()
             }
         )
+    }
+    
+    func setAccessibilityId(_ id: AccessibilityId) {
+        accessibilityIdentifier = id.rawValue
+        isAccessibilityElement = true
     }
 }
 

@@ -18,6 +18,8 @@ protocol CameraInteractor: class {
     func setPreviewImagesSizeForNewPhotos(_: CGSize)
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
+    
+    func focusCameraOnPoint(_: CGPoint) -> Bool
 }
 
 struct CameraOutputParameters {

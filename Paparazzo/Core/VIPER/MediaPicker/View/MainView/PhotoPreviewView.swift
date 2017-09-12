@@ -97,6 +97,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
                 from: sourceIndex,
                 to: destinationIndex
             )
+            
             self?.collectionView.moveItem(
                 at: IndexPath(item: sourceIndex, section: 0),
                 to: IndexPath(item: destinationIndex, section: 0)

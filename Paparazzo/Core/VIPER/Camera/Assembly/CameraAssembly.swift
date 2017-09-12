@@ -1,7 +1,7 @@
 import UIKit
 
 protocol CameraAssembly: class {
-    func module() -> (UIView, CameraModuleInput)
+    func module(initialActiveCameraType: CameraType) -> (UIView, CameraModuleInput)
 }
 
 protocol CameraAssemblyFactory {

@@ -75,7 +75,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     override var frame: CGRect {
         didSet {
-            reset()
+            resetScrollViewState()
             calculateFrames()
             adjustRotation()
         }
@@ -87,9 +87,17 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     // MARK: - PhotoTweakView
     
+    func setMaskVisible(_ visible: Bool) {
+        topMask.isHidden = !visible
+        bottomMask.isHidden = !visible
+        leftMask.isHidden = !visible
+        rightMask.isHidden = !visible
+    }
+    
     var cropAspectRatio = CGFloat(AspectRatio.defaultRatio.widthToHeightRatio()) {
         didSet {
             if cropAspectRatio != oldValue {
+                resetScale()
                 calculateFrames()
             }
         }
@@ -99,6 +107,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     func setImage(_ image: UIImage) {
         scrollView.imageView.image = image
+        resetScale()
         calculateFrames()
         notifyAboutCroppingParametersChange()
     }
@@ -186,7 +195,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         let gridWasHidden = gridView.isHidden
         gridView.isHidden = true
         
-        let previewImage = snapshot().flatMap { snapshot -> CGImage? in
+        let previewImage = snapshot(withScale: 1).flatMap { snapshot -> CGImage? in
             
             let cropRect = CGRect(
                 x: (bounds.left + (bounds.size.width - cropSize.width) / 2) * snapshot.scale,
@@ -323,9 +332,13 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         }
     }
     
-    private func reset() {
+    private func resetScrollViewState() {
         scrollView.transform = .identity
         scrollView.minimumZoomScale = 1
+        resetScale()
+    }
+    
+    private func resetScale() {
         scrollView.zoomScale = 1
     }
     

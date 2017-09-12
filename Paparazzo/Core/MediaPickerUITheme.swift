@@ -1,7 +1,12 @@
 import UIKit
 
-public struct PaparazzoUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUITheme, ImageCroppingUITheme {
-
+public struct PaparazzoUITheme:
+    MediaPickerRootModuleUITheme,
+    PhotoLibraryUITheme,
+    ImageCroppingUITheme,
+    MaskCropperUITheme
+{
+    
     public init() {}
 
     // MARK: - MediaPickerRootModuleUITheme
@@ -9,8 +14,11 @@ public struct PaparazzoUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUIThem
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var shutterButtonDisabledColor = UIColor.lightGray
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var focusIndicatorColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var removePhotoIcon = PaparazzoUITheme.image(named: "delete")
+    public var autocorrectPhotoIconInactive = PaparazzoUITheme.image(named: "autocorrect_inactive")
+    public var autocorrectPhotoIconActive = PaparazzoUITheme.image(named: "autocorrect_active")
     public var cropPhotoIcon = PaparazzoUITheme.image(named: "crop")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")
@@ -50,6 +58,11 @@ public struct PaparazzoUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUIThem
     public var cancelRotationBackgroundColor = UIColor.RGB(red: 25, green: 25, blue: 25, alpha: 1)
     public var cancelRotationTitleColor = UIColor.white
     public var cancelRotationTitleFont = UIFont.boldSystemFont(ofSize: 14)
+    
+    // MARK: - MaskCropperUITheme
+    
+    public var maskCropperDiscardPhotoIcon = PaparazzoUITheme.image(named: "discard")
+    public var maskCropperConfirmPhotoIcon = PaparazzoUITheme.image(named: "confirm")
 
     // MARK: - Private
 
@@ -59,58 +72,4 @@ public struct PaparazzoUITheme: MediaPickerRootModuleUITheme, PhotoLibraryUIThem
         let bundle = Bundle(for: BundleId.self)
         return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
-}
-
-public protocol AccessDeniedViewTheme {
-    var accessDeniedTitleFont: UIFont { get }
-    var accessDeniedMessageFont: UIFont { get }
-    var accessDeniedButtonFont: UIFont { get }
-}
-
-public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
-
-    var shutterButtonColor: UIColor { get }
-    var shutterButtonDisabledColor: UIColor { get }
-    var mediaRibbonSelectionColor: UIColor { get }
-    var cameraContinueButtonTitleColor: UIColor { get }
-    var cameraContinueButtonTitleHighlightedColor: UIColor { get }
-    var cameraButtonsBackgroundNormalColor: UIColor { get }
-    var cameraButtonsBackgroundHighlightedColor: UIColor { get }
-    var cameraButtonsBackgroundDisabledColor: UIColor { get }
-
-    var removePhotoIcon: UIImage? { get }
-    var cropPhotoIcon: UIImage? { get }
-    var returnToCameraIcon: UIImage? { get }
-    var closeCameraIcon: UIImage? { get }
-    var flashOnIcon: UIImage? { get }
-    var flashOffIcon: UIImage? { get }
-    var cameraToggleIcon: UIImage? { get }
-    var photoPeepholePlaceholder: UIImage? { get }
-    
-
-    var cameraContinueButtonTitleFont: UIFont { get }
-}
-
-public protocol PhotoLibraryUITheme: AccessDeniedViewTheme {
-    
-    var photoLibraryDoneButtonFont: UIFont { get }
-    
-    var photoLibraryItemSelectionColor: UIColor { get }
-    var photoCellBackgroundColor: UIColor { get }
-    
-    var iCloudIcon: UIImage? { get }
-}
-
-public protocol ImageCroppingUITheme {
-    
-    var rotationIcon: UIImage? { get }
-    var gridIcon: UIImage? { get }
-    var gridSelectedIcon: UIImage? { get }
-    var cropperDiscardIcon: UIImage? { get }
-    var cropperConfirmIcon: UIImage? { get }
-    
-    var cancelRotationBackgroundColor: UIColor { get }
-    var cancelRotationTitleColor: UIColor { get }
-    var cancelRotationTitleFont: UIFont { get }
-    var cancelRotationButtonIcon: UIImage? { get }
 }

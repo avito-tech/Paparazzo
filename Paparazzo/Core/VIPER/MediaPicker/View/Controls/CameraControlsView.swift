@@ -2,7 +2,9 @@ import JNWSpringAnimation
 import ImageSource
 import UIKit
 
-final class CameraControlsView: UIView {
+final class CameraControlsView: UIView, ThemeConfigurable {
+    
+    typealias ThemeType = MediaPickerRootModuleUITheme
     
     var onShutterButtonTap: (() -> ())?
     var onPhotoLibraryButtonTap: (() -> ())?
@@ -78,6 +80,15 @@ final class CameraControlsView: UIView {
         addSubview(shutterButton)
         addSubview(flashButton)
         addSubview(cameraToggleButton)
+        
+        setUpAccessibilityIdentifiers()
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        photoView.setAccessibilityId(.photoView)
+        shutterButton.setAccessibilityId(.shutterButton)
+        cameraToggleButton.setAccessibilityId(.cameraToggleButton)
+        flashButton.setAccessibilityId(.flashButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -153,7 +164,9 @@ final class CameraControlsView: UIView {
         photoView.isUserInteractionEnabled = enabled
     }
     
-    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
         
         self.theme = theme
 

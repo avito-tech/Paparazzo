@@ -1,7 +1,27 @@
 import ImageSource
 import UIKit
 
-final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate {
+final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate, ThemeConfigurable {
+    
+    typealias ThemeType = MediaPickerRootModuleUITheme
+   
+    var onDragStart: (() -> ())? {
+        get {
+            return layout.onDragStart
+        }
+        set {
+            layout.onDragStart = newValue
+        }
+    }
+    
+    var onDragFinish: (() -> ())? {
+        get {
+            return layout.onDragFinish
+        }
+        set {
+            layout.onDragFinish = newValue
+        }
+    }
     
     private let layout: ThumbnailsViewLayout
     private let collectionView: UICollectionView
@@ -51,6 +71,12 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         collectionView.frame = bounds
     }
     
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        self.theme = theme
+    }
+    
     // MARK: - ThumbnailRibbonView
     
     var cameraOutputParameters: CameraOutputParameters? {
@@ -74,6 +100,8 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     }
     
     func selectMediaItem(_ item: MediaPickerItem, animated: Bool = false) {
+        layout.cancelDrag()
+        
         if let indexPath = dataSource.indexPathForItem(item) {
             collectionView.selectItem(at: indexPath, animated: animated, scrollPosition: [])
         }
@@ -95,10 +123,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
             at: .centeredHorizontally,
             animated: animated
         )
-    }
-    
-    func setTheme(_ theme: MediaPickerRootModuleUITheme) {
-        self.theme = theme
     }
     
     func setControlsTransform(_ transform: CGAffineTransform) {

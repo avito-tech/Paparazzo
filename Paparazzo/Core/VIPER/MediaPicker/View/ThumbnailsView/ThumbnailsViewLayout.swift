@@ -10,6 +10,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     private var draggingView: UIView?
     private var dragOffset = CGPoint.zero
     
+    var onDragStart: (() -> ())?
+    var onDragFinish: (() -> ())?
+    
     override init() {
         super.init()
     }
@@ -22,6 +25,11 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         super.prepare()
         
         setUpGestureRecognizer()
+    }
+    
+    func cancelDrag() {
+        longPressGestureRecognizer?.isEnabled = false
+        longPressGestureRecognizer?.isEnabled = true
     }
     
     private func setUpGestureRecognizer() {
@@ -72,6 +80,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         case .began: startDragAtLocation(location: location)
         case .changed: updateDragAtLocation(location: location)
         case .ended: endDragAtLocation(location: location)
+        case .cancelled: endDragAtLocation(location: location)
         default:
             break
         }
@@ -108,24 +117,19 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 },
                 completion: nil
             )
+            
+            onDragStart?()
         }
     }
     
     private func updateDragAtLocation(location: CGPoint) {
         guard
-            let view = draggingView,
-            let collectionView = collectionView,
-            let draggingIndexPath = draggingIndexPath,
-            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            let view = draggingView
             else { return }
 
         view.center = CGPoint(x: location.x + dragOffset.x, y: location.y + dragOffset.y)
         
-        if let newIndexPath = collectionView.indexPathForItem(at: location), delegate.canMove(to: newIndexPath) {
-            collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
-            self.draggingIndexPath = newIndexPath
-            beginScrollIfNeeded()
-        }
+        moveItem(to: location)
     }
     
     private func endDragAtLocation(location: CGPoint) {
@@ -149,22 +153,62 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         },
             completion: { _ in
                 cell.isHidden = false
-                if indexPath != originalIndexPath {
-                    delegate.moveItem(from: originalIndexPath, to: indexPath)
-                }
-                
                 dragView.removeFromSuperview()
                 self.draggingIndexPath = nil
                 self.draggingView = nil
                 self.invalidateLayout()
+                self.onDragFinish?()
+
         })
+    }
+    
+    private func indexPathForItemClosestTo(point: CGPoint) -> IndexPath? {
+        guard
+            let collectionView = collectionView,
+            let layoutAttributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: collectionView.bounds)
+        else { return nil }
+        
+        var smallestDistance = CGFloat.greatestFiniteMagnitude
+        var indexPath: IndexPath?
+        
+        for attribute in layoutAttributes {
+            if attribute.frame.contains(point) {
+                return attribute.indexPath
+            }
+            
+            let currentDistance = abs(attribute.frame.x - point.x)
+            if smallestDistance > currentDistance {
+                smallestDistance = currentDistance
+                indexPath = attribute.indexPath
+            }
+        }
+        
+        return indexPath
+    }
+    
+    private func moveItem(to location: CGPoint) {
+        guard
+            let collectionView = collectionView,
+            let draggingIndexPath = draggingIndexPath,
+            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            else { return }
+        
+        // AI-6314: If we pass location inside indexPathForItem it can return nil if location is out of collectionView bounds
+        if let newIndexPath = indexPathForItemClosestTo(point: CGPoint(x: location.x, y: collectionView.height/2)),
+            delegate.canMove(to: newIndexPath),
+            draggingIndexPath != newIndexPath {
+            delegate.moveItem(from: draggingIndexPath, to: newIndexPath)
+            collectionView.moveItem(at: draggingIndexPath, to: newIndexPath)
+            self.draggingIndexPath = newIndexPath
+        }
+        beginScrollIfNeeded()
     }
     
     // MARK: Handle scrolling to the edges
    
-    private var continuousScrollDirection: Direction = .none
+    private var continuousScrollDirection: direction = .none
 
-    enum Direction {
+    enum direction {
         case left
         case right
         case none
@@ -180,7 +224,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
                 return 0
             }
             
-            let proofedPercentage: CGFloat = max(min(1.0, percentage), 0)
+            let proofedPercentage: CGFloat = max(0, min(percentage, 1.0))
             return value * proofedPercentage
         }
     }
@@ -192,18 +236,15 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     private var displayLink: CADisplayLink?
 
     private var offsetFromLeft: CGFloat {
-        guard let contentOffset = collectionView?.contentOffset else { return 0 }
-        return contentOffset.x
+        return collectionView?.contentOffset.x ?? 0
     }
     
-    private var collectionViewLength: CGFloat {
-        guard let collectionViewSize = collectionView?.bounds.size else { return 0 }
-        return collectionViewSize.width
+    private var collectionViewWidth: CGFloat {
+        return collectionView?.bounds.size.width ?? 0
     }
     
     private var contentLength: CGFloat {
-        guard let contentSize = collectionView?.contentSize else { return 0 }
-        return contentSize.width
+        return collectionView?.contentSize.width ?? 0
     }
     
     private var draggingViewTopEdge: CGFloat? {
@@ -238,7 +279,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         if draggingViewTopEdge <= offsetFromLeft + triggerInset {
             continuousScrollDirection = .left
             setUpDisplayLink()
-        } else if draggingViewEndEdge >= offsetFromLeft + collectionViewLength - triggerInset {
+        } else if draggingViewEndEdge >= offsetFromLeft + collectionViewWidth - triggerInset {
             continuousScrollDirection = .right
             setUpDisplayLink()
         } else {
@@ -253,7 +294,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         var scrollRate = continuousScrollDirection.scrollValue(scrollSpeedValue, percentage: percentage)
         
         let offset = offsetFromLeft
-        let length = collectionViewLength
+        let length = collectionViewWidth
         
         if contentLength <= length {
             return
@@ -266,17 +307,15 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         }
 
         draggingView.x += scrollRate
-
-        collectionView?.performBatchUpdates({
-            self.collectionView?.contentOffset.x += scrollRate
-        }, completion: nil)
+        self.collectionView?.contentOffset.x += scrollRate
+        moveItem(to: draggingView.center)
     }
     
     private func calculateTriggerPercentage() -> CGFloat {
         guard draggingView != nil else { return 0 }
         
         let offset = offsetFromLeft
-        let offsetEnd = offsetFromLeft + collectionViewLength
+        let offsetEnd = offsetFromLeft + collectionViewWidth
         
         var percentage: CGFloat = 0
         

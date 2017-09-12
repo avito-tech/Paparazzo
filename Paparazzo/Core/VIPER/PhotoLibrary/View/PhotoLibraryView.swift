@@ -1,6 +1,8 @@
 import UIKit
 
-final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
+final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeConfigurable {
+    
+    typealias ThemeType = PhotoLibraryUITheme
     
     // MARK: - State
     
@@ -52,6 +54,13 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         
         collectionView.frame = bounds
         accessDeniedView.frame = bounds
+    }
+    
+    // MARK: - ThemeConfigurable
+    
+    func setTheme(_ theme: ThemeType) {
+        self.theme = theme
+        accessDeniedView.setTheme(theme)
     }
     
     // MARK: - PhotoLibraryView
@@ -127,13 +136,19 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
         )
     }
     
-    func scrollToBottom() {
-        collectionView.scrollToBottom()
+    func deselectAndAdjustAllCells() {
+        
+        guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems
+            else { return }
+        
+        for indexPath in indexPathsForSelectedItems {
+            collectionView.deselectItem(at: indexPath, animated: false)
+            onDeselectItem(at: indexPath)
+        }
     }
     
-    func setTheme(_ theme: PhotoLibraryUITheme) {
-        self.theme = theme
-        accessDeniedView.setTheme(theme)
+    func scrollToBottom() {
+        collectionView.scrollToBottom()
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {
@@ -160,6 +175,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         let cellData = dataSource.item(at: indexPath)
+        
+        cellData.onSelectionPrepare?()
+        
         return canSelectMoreItems && cellData.previewAvailable
     }
     
@@ -174,13 +192,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-        dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryItemCellData) in
-            cellData.selected = false
-        }
-        dataSource.item(at: indexPath).onDeselect?()
-        
-        adjustDimmingForCellAtIndexPath(indexPath)
+        onDeselectItem(at: indexPath)
     }
     
     // MARK: - Private
@@ -275,4 +287,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
     }
+    
+    private func onDeselectItem(at indexPath: IndexPath) {
+        dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryItemCellData) in
+            cellData.selected = false
+        }
+        dataSource.item(at: indexPath).onDeselect?()
+        
+        adjustDimmingForCellAtIndexPath(indexPath)
+    }
+    
 }

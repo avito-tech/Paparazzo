@@ -5,6 +5,10 @@ protocol CameraViewInput: class {
     func setOutputParameters(_: CameraOutputParameters)
     func setOutputOrientation(_: ExifOrientation)
     
+    // MARK: - Focus
+    var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)? { get set }
+    func displayFocus(onPoint: CGPoint)
+    
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }
     
