@@ -10,7 +10,7 @@
   [Vladimir Kaltyrin](https://github.com/vkaltyrin)
 
 * Add support for photo reordering
-  [Artem Peskishev](https://github.com/paulb777)
+  [Artem Peskishev](https://github.com/peskish)
 
 * Add cache cleanup support
   Vadim Smal
