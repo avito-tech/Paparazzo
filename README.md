@@ -3,8 +3,6 @@
 ![Version](https://cocoapod-badges.herokuapp.com/v/Paparazzo/badge.png)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-[Changelog](https://github.com/avito-tech/Paparazzo/blob/master/CHANGELOG.md) | See the changes introduced in each Paparazzo version.
-
 **Paparazzo** is a component for picking and editing photos.
 
 |            | Key Features                             |
@@ -15,6 +13,8 @@
 | :droplet: | Applying filters to photos                |
 
 ![Demo](PaparazzoDemo.gif)
+
+[Changelog](https://github.com/avito-tech/Paparazzo/blob/master/CHANGELOG.md) | See the changes introduced in each Paparazzo version.
 
 # Contents
 
