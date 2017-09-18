@@ -22,4 +22,6 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var photoPeepholePlaceholder: UIImage? { get }
     
     var cameraContinueButtonTitleFont: UIFont { get }
+    
+    var infoMessageFont: UIFont { get }
 }
