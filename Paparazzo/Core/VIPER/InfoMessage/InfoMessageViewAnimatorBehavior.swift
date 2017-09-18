@@ -12,11 +12,8 @@ final class DefaultInfoMessageAnimatorBehavior: InfoMessageAnimatorBehavior {
         messageView.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         messageView.alpha = 0
         
-        // Hardcoded, because the camera camera controls is located above all views on iPad
-        var bottomInset: CGFloat = 20
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            bottomInset = 154
-        }
+        // Hardcoded, because the camera controls are located above all views on iPad
+        let bottomInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 154 : 20
         messageView.bottom = container.height - bottomInset
         messageView.centerX = ceil(container.width / 2)
     }
