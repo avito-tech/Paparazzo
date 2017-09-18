@@ -8,14 +8,14 @@ struct InfoMessageViewData {
 final class InfoMessageView: UIView {
     
     private struct Layout {
-        static let height: CGFloat = 22
+        static let height: CGFloat = 26
         static let textInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         static let widthTextInsets = textInsets.left + textInsets.right
         static let heightTextInsets = textInsets.top + textInsets.bottom
     }
     
     private struct Spec {
-        static let font = UIFont.systemFont(ofSize: 14)
+        static let font = UIFont(name: "Latoto", size: 14)
         static let textColor = UIColor.black
         static let cornerRadius: CGFloat = 2
         static let backgroundColor = UIColor.white
