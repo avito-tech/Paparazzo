@@ -2,8 +2,8 @@ import Photos
 
 public final class PHAssetImageSource: ImageSource {
 
-    private let asset: PHAsset
-    private let imageManager: PHImageManager
+    public let asset: PHAsset
+    public let imageManager: PHImageManager
 
     public init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.default()) {
         self.asset = asset
