@@ -95,6 +95,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             delegate.canMove(to: indexPath) != false
             else { return }
 
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
         
         originalIndexPath = indexPath
         draggingIndexPath = indexPath

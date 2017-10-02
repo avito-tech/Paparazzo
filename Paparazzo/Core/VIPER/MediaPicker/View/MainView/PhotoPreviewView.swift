@@ -92,6 +92,10 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
         guard sourceIndex != destinationIndex else { return }
         
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
+        
         collectionView.performBatchUpdates(animated: false, { [weak self] in
             self?.dataSource.moveItem(
                 from: sourceIndex,
