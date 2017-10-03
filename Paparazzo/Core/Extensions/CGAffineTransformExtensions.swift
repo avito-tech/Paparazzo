@@ -5,11 +5,11 @@ extension CGAffineTransform {
     init(deviceOrientation: DeviceOrientation) {
         switch deviceOrientation {
         case .landscapeLeft:
-            self = CGAffineTransform(rotationAngle: CGFloat(M_PI) / 2.0)
+            self = CGAffineTransform(rotationAngle: .pi / 2.0)
         case .landscapeRight:
-            self = CGAffineTransform(rotationAngle: CGFloat(M_PI) / -2.0)
+            self = CGAffineTransform(rotationAngle: .pi / -2.0)
         case .portraitUpsideDown:
-            self = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            self = CGAffineTransform(rotationAngle: .pi)
         default:
             self = .identity
         }
@@ -18,11 +18,11 @@ extension CGAffineTransform {
     init(interfaceOrientation: UIInterfaceOrientation) {
         switch interfaceOrientation {
         case .landscapeLeft:
-            self = CGAffineTransform(rotationAngle: CGFloat(M_PI) / 2.0)
+            self = CGAffineTransform(rotationAngle: .pi / 2.0)
         case .landscapeRight:
-            self = CGAffineTransform(rotationAngle: CGFloat(M_PI) / -2.0)
+            self = CGAffineTransform(rotationAngle: .pi / -2.0)
         case .portraitUpsideDown:
-            self = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            self = CGAffineTransform(rotationAngle: .pi)
         default:
             self = .identity
         }

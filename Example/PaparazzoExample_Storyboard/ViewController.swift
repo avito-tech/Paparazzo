@@ -19,13 +19,17 @@ final class ViewController: UIViewController {
         let assemblyFactory = Paparazzo.AssemblyFactory(theme: PaparazzoUITheme.appSpecificTheme())
         let assembly = assemblyFactory.mediaPickerAssembly()
         
-        let mediaPickerController = assembly.module(
+        let data = MediaPickerData(
             items: [],
             selectedItem: nil,
-            maxItemsCount: 20,
+            maxItemsCount: 5,
             cropEnabled: true,
-            cropCanvasSize: CGSize(width: 1280, height: 960),
-            configuration: { [weak self] module in
+            cropCanvasSize: CGSize(width: 1280, height: 960)
+        )
+        
+        let mediaPickerController = assembly.module(
+            data: data,
+            configure: { [weak self] module in
                 weak var module = module
                 
                 module?.setContinueButtonTitle("Done")
@@ -52,9 +56,11 @@ final class ViewController: UIViewController {
         let assembly = assemblyFactory.photoLibraryAssembly()
         
         let galleryController = assembly.module(
-            selectedItems: [],
-            maxSelectedItemsCount: 5,
-            configuration: { [weak self] module in
+            data: PhotoLibraryData(
+                selectedItems: [],
+                maxSelectedItemsCount: 5
+            ),
+            configure: { [weak self] module in
                 weak var module = module
                 module?.onFinish = { result in
                     module?.dismissModule()

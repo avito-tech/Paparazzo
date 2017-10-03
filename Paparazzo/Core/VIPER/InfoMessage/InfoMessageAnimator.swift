@@ -95,7 +95,6 @@ final class InfoMessageAnimator: InfoMessageViewInput {
     // MARK: - States
     private func changeState(to newState: AnimatorState) {
         guard allowedTransitions().contains(newState) else { return }
-        let oldState = state
         state = newState
         
         switch newState {
