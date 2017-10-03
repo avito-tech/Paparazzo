@@ -15,7 +15,7 @@ public final class PhotoStorageImpl: PhotoStorage {
     
     private static let folderName = "Paparazzo"
     
-    private let createFolder = {
+    private let createFolder: () = {
         PhotoStorageImpl.createPhotoDirectoryIfNotExist()
     }()
     
