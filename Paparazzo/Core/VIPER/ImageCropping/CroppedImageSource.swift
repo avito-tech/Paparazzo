@@ -1,7 +1,6 @@
 import CoreGraphics
 import ImageIO
 import ImageSource
-import MobileCoreServices
 
 final class CroppedImageSource: ImageSource {
     
@@ -14,18 +13,18 @@ final class CroppedImageSource: ImageSource {
          sourceSize: CGSize,
          parameters: ImageCroppingParameters?,
          previewImage: CGImage?,
-         fileManager: FileManager = .default)
+         imageStorage: ImageStorage)
     {
         self.originalImage = originalImage
         self.sourceSize = sourceSize
         self.croppingParameters = parameters
         self.previewImage = previewImage
-        self.fileManager = fileManager
+        self.imageStorage = imageStorage
     }
     
     deinit {
         if let croppedImage = croppedImage {
-            try? fileManager.removeItem(atPath: croppedImage.path)
+            imageStorage.remove(croppedImage.path)
         }
     }
     
@@ -91,7 +90,7 @@ final class CroppedImageSource: ImageSource {
     // MARK: - Private
     
     private let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
-    private let fileManager: FileManager
+    private let imageStorage: ImageStorage
     private var croppedImage: LocalImageSource?
     
     private let processingQueue = DispatchQueue(
@@ -123,16 +122,11 @@ final class CroppedImageSource: ImageSource {
                    let croppingParameters = self?.croppingParameters,
                    let croppedCgImage = self?.newTransformedImage(sourceImage: originalCGImage, parameters: croppingParameters)
                 {
-                    let path = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString).jpg")
-                    let url = URL(fileURLWithPath: path)
-                    let destination = CGImageDestinationCreateWithURL(url as CFURL, kUTTypeJPEG, 1, nil)
-                    
-                    if let destination = destination {
-                        CGImageDestinationAddImage(destination, croppedCgImage, nil)
-                        
-                        if CGImageDestinationFinalize(destination) {
-                            self?.croppedImage = LocalImageSource(path: path, previewImage: self?.previewImage)
-                        }
+                    if let path = self?.imageStorage.save(croppedCgImage) {
+                        self?.croppedImage = LocalImageSource(
+                            path: path,
+                            previewImage: self?.previewImage
+                        )
                     }
                 }
                 

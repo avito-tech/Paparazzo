@@ -17,11 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func rootViewController() -> UIViewController {
         
-        let photoStorage = PhotoStorageImpl()
-        photoStorage.removeAll()
+        let imageStorage = ImageStorageImpl()
+        imageStorage.removeAll()
         let assemblyFactory = Paparazzo.AssemblyFactory(
             theme: PaparazzoUITheme.appSpecificTheme(),
-            photoStorage: photoStorage
+            imageStorage: imageStorage
         )
         
         let exampleController = ExampleViewController()

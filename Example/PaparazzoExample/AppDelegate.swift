@@ -15,11 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let photoStorage = PhotoStorageImpl()
-        photoStorage.removeAll()
+        let imageStorage = ImageStorageImpl()
+        imageStorage.removeAll()
         let mediaPickerAssemblyFactory = Paparazzo.MarshrouteAssemblyFactory(
             theme: PaparazzoUITheme.appSpecificTheme(),
-            photoStorage: photoStorage
+            imageStorage: imageStorage
         )
         let exampleAssembly = ExampleAssemblyImpl(mediaPickerAssemblyFactory: mediaPickerAssemblyFactory)
         

@@ -11,10 +11,10 @@ public final class AssemblyFactory:
     
     public init(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
-        photoStorage: PhotoStorage = PhotoStorageImpl())
+        imageStorage: ImageStorage = ImageStorageImpl())
     {
         self.theme = theme
-        self.serviceFactory = ServiceFactoryImpl(photoStorage: photoStorage)
+        self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {
