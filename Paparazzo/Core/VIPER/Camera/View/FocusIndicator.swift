@@ -15,7 +15,7 @@ final class FocusIndicator: CALayer {
             arcCenter: CGPoint(x: radius, y: radius),
             radius: radius,
             startAngle: 0,
-            endAngle: CGFloat(M_PI * 2),
+            endAngle: .pi * 2,
             clockwise: true
         )
 
@@ -24,9 +24,7 @@ final class FocusIndicator: CALayer {
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 2.0
-        
-        let shapeContainterLayer = CALayer()
-        
+                
         addSublayer(shapeLayer)
         
         bounds = CGRect(x: 0, y: 0, width: 2 * radius, height: 2 * radius)

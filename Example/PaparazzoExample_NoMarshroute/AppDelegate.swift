@@ -33,12 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let assembly = assemblyFactory.mediaPickerAssembly()
             
-            let mediaPickerController = assembly.module(
+            let data = MediaPickerData(
                 items: itemProvider.remoteItems(),
                 selectedItem: nil,
                 maxItemsCount: 20,
                 cropEnabled: true,
-                cropCanvasSize: CGSize(width: 1280, height: 960),
+                cropCanvasSize: CGSize(width: 1280, height: 960)
+            )
+            
+            let mediaPickerController = assembly.module(
+                data: data,
                 configure: { module in
                     weak var module = module
                     
@@ -62,8 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let assembly = assemblyFactory.photoLibraryAssembly()
             
             let galleryController = assembly.module(
-                selectedItems: [],
-                maxSelectedItemsCount: 5,
+                data: PhotoLibraryData(
+                    selectedItems: [],
+                    maxSelectedItemsCount: 5
+                ),
                 configure: { module in
                     weak var module = module
                     module?.onFinish = { _ in
