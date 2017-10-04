@@ -99,6 +99,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             if cropAspectRatio != oldValue {
                 resetScale()
                 calculateFrames()
+                notifyAboutCroppingParametersChange()
             }
         }
     }
