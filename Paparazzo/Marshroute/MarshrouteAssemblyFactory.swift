@@ -9,14 +9,14 @@ public final class MarshrouteAssemblyFactory:
 {
     private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
-    private let photoStorage: PhotoStorage
+    private let imageStorage: ImageStorage
     
     public init(theme: PaparazzoUITheme = PaparazzoUITheme(),
-                photoStorage: PhotoStorage = PhotoStorageImpl())
+                imageStorage: ImageStorage = ImageStorageImpl())
     {
         self.theme = theme
-        self.photoStorage = photoStorage
-        self.serviceFactory = ServiceFactoryImpl(photoStorage: photoStorage)
+        self.imageStorage = imageStorage
+        self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {

@@ -142,8 +142,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             let collectionView = collectionView,
             let datasource = collectionView.dataSource,
             let cell = collectionView.cellForItem(at: indexPath as IndexPath),
-            let originalIndexPath = originalIndexPath,
-            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            originalIndexPath != nil,
+            collectionView.delegate as? MediaRibbonLayoutDelegate != nil
             else { return }
 
         let targetCenter = datasource.collectionView(collectionView, cellForItemAt: indexPath as IndexPath).center
