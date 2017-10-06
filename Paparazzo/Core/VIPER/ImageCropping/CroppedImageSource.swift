@@ -111,9 +111,17 @@ final class CroppedImageSource: ImageSource {
     }
     
     private func performCrop(completion: @escaping () -> ()) {
+        let greatestFiniteMagnitudeSize = CGSize(
+            width: CGFloat.greatestFiniteMagnitude,
+            height: CGFloat.greatestFiniteMagnitude
+        )
         
-        let options = ImageRequestOptions(size: .fitSize(sourceSize), deliveryMode: .best)
+        let imageSizeOption: ImageSizeOption = (sourceSize == greatestFiniteMagnitudeSize)
+            ? .fullResolution
+            : .fitSize(sourceSize)
         
+        let options = ImageRequestOptions(size: imageSizeOption, deliveryMode: .best)
+
         originalImage.requestImage(options: options) {
             [weak self, processingQueue] (result: ImageRequestResult<CGImageWrapper>) in
             

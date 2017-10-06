@@ -1,19 +1,19 @@
-public protocol Debouncable {
+protocol Debouncable {
     func debounce(_ closure: @escaping () -> ())
     func cancel()
 }
 
-public final class Debouncer: Debouncable {
+final class Debouncer: Debouncable {
     private var lastFireTime = DispatchTime(uptimeNanoseconds: 0)
     private let queue: DispatchQueue
     private let delay: TimeInterval
     
-    public init(delay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
+    init(delay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
         self.delay = delay
         self.queue = queue
     }
     
-    public func debounce(_ closure: @escaping () -> ()) {
+    func debounce(_ closure: @escaping () -> ()) {
         lastFireTime = DispatchTime.now()
         queue.asyncAfter(deadline: .now() + delay) { [weak self] in
             if let strongSelf = self {
@@ -26,7 +26,7 @@ public final class Debouncer: Debouncable {
         }
     }
     
-    public func cancel() {
+    func cancel() {
         debounce {}
     }
 }
