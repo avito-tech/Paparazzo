@@ -1,5 +1,6 @@
 import AVFoundation
 import MobileCoreServices
+import ImageIO
 
 public protocol ImageStorage {
     func save(
