@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
-  pod 'Marshroute', '0.3.5'
+  pod 'Marshroute', ‘0.4.2’
   pod 'ImageSource', :path => '../'
 end
 

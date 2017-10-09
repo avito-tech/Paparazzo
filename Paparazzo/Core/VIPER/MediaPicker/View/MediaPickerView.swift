@@ -343,6 +343,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         thumbnailRibbonView.setCameraItemVisible(visible)
     }
     
+    func setHapticFeedbackEnabled(_ enabled: Bool) {
+        photoPreviewView.hapticFeedbackEnabled = enabled
+        thumbnailRibbonView.setHapticFeedbackEnabled(enabled)
+    }
+    
     func setLatestPhotoLibraryItemImage(_ image: ImageSource?) {
         cameraControlsView.setLatestPhotoLibraryItemImage(image)
     }

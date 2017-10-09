@@ -3,6 +3,7 @@ import UIKit
 final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     var itemsTransform = CGAffineTransform.identity
+    var hapticFeedbackEnabled = false
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer?
     private var originalIndexPath: IndexPath?
@@ -95,6 +96,9 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             delegate.canMove(to: indexPath) != false
             else { return }
 
+        if #available(iOS 10.0, *), hapticFeedbackEnabled {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
         
         originalIndexPath = indexPath
         draggingIndexPath = indexPath
@@ -139,8 +143,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             let collectionView = collectionView,
             let datasource = collectionView.dataSource,
             let cell = collectionView.cellForItem(at: indexPath as IndexPath),
-            let originalIndexPath = originalIndexPath,
-            let delegate = collectionView.delegate as? MediaRibbonLayoutDelegate
+            originalIndexPath != nil,
+            collectionView.delegate as? MediaRibbonLayoutDelegate != nil
             else { return }
 
         let targetCenter = datasource.collectionView(collectionView, cellForItemAt: indexPath as IndexPath).center

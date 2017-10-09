@@ -9,10 +9,10 @@ protocol ServiceFactory: class {
 
 final class ServiceFactoryImpl: ServiceFactory {
     
-    private let photoStorage: PhotoStorage
+    private let imageStorage: ImageStorage
     
-    init(photoStorage: PhotoStorage) {
-        self.photoStorage = photoStorage
+    init(imageStorage: ImageStorage) {
+        self.imageStorage = imageStorage
     }
     
     func deviceOrientationService() -> DeviceOrientationService {
@@ -22,7 +22,7 @@ final class ServiceFactoryImpl: ServiceFactory {
     func cameraService(initialActiveCameraType: CameraType) -> CameraService {
         return CameraServiceImpl(
             initialActiveCameraType: initialActiveCameraType,
-            photoStorage: photoStorage
+            imageStorage: imageStorage
         )
     }
     
@@ -31,7 +31,11 @@ final class ServiceFactoryImpl: ServiceFactory {
     }
     
     func imageCroppingService(image: ImageSource, canvasSize: CGSize) -> ImageCroppingService {
-        return ImageCroppingServiceImpl(image: image, canvasSize: canvasSize)
+        return ImageCroppingServiceImpl(
+            image: image,
+            canvasSize: canvasSize,
+            imageStorage: imageStorage
+        )
     }
     
 }

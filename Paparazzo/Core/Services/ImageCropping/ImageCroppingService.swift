@@ -22,10 +22,11 @@ final class ImageCroppingServiceImpl: ImageCroppingService {
     private let previewImage: ImageSource?
     private var parameters: ImageCroppingParameters?
     private let canvasSize: CGSize
+    private let imageStorage: ImageStorage
     
     // MARK: - Init
     
-    init(image: ImageSource, canvasSize: CGSize) {
+    init(image: ImageSource, canvasSize: CGSize, imageStorage: ImageStorage) {
         
         if let image = image as? CroppedImageSource {
             originalImage = image.originalImage
@@ -36,6 +37,7 @@ final class ImageCroppingServiceImpl: ImageCroppingService {
         
         previewImage = image
         
+        self.imageStorage = imageStorage
         self.canvasSize = canvasSize
     }
     
@@ -61,7 +63,8 @@ final class ImageCroppingServiceImpl: ImageCroppingService {
                 originalImage: originalImage,
                 sourceSize: canvasSize,
                 parameters: parameters,
-                previewImage: previewImage
+                previewImage: previewImage,
+                imageStorage: imageStorage
             )
         )
     }

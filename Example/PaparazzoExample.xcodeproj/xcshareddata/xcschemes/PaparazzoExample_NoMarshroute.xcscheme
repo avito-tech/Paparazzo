@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0900"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "251E57BF1E65651F0009A288"
-               BuildableName = "PaparazzoExample.app"
-               BlueprintName = "PaparazzoExample"
+               BlueprintIdentifier = "25A489B01E656A2B00CC431B"
+               BuildableName = "PaparazzoExample_NoMarshroute.app"
+               BlueprintName = "PaparazzoExample_NoMarshroute"
                ReferencedContainer = "container:PaparazzoExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,9 +33,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "251E57BF1E65651F0009A288"
-            BuildableName = "PaparazzoExample.app"
-            BlueprintName = "PaparazzoExample"
+            BlueprintIdentifier = "25A489B01E656A2B00CC431B"
+            BuildableName = "PaparazzoExample_NoMarshroute.app"
+            BlueprintName = "PaparazzoExample_NoMarshroute"
             ReferencedContainer = "container:PaparazzoExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -57,9 +57,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "251E57BF1E65651F0009A288"
-            BuildableName = "PaparazzoExample.app"
-            BlueprintName = "PaparazzoExample"
+            BlueprintIdentifier = "25A489B01E656A2B00CC431B"
+            BuildableName = "PaparazzoExample_NoMarshroute.app"
+            BlueprintName = "PaparazzoExample_NoMarshroute"
             ReferencedContainer = "container:PaparazzoExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -76,9 +76,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "251E57BF1E65651F0009A288"
-            BuildableName = "PaparazzoExample.app"
-            BlueprintName = "PaparazzoExample"
+            BlueprintIdentifier = "25A489B01E656A2B00CC431B"
+            BuildableName = "PaparazzoExample_NoMarshroute.app"
+            BlueprintName = "PaparazzoExample_NoMarshroute"
             ReferencedContainer = "container:PaparazzoExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

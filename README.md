@@ -2,6 +2,7 @@
 
 ![Version](https://cocoapod-badges.herokuapp.com/v/Paparazzo/badge.png)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[![Build Status](https://travis-ci.org/avito-tech/Paparazzo.svg?branch=master)](https://travis-ci.org/avito-tech/Paparazzo)
 
 **Paparazzo** is a component for picking and editing photos.
 

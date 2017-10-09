@@ -13,7 +13,7 @@ final class CameraServiceImpl: CameraService {
     
     private struct Error: Swift.Error {}
     
-    private var photoStorage: PhotoStorage
+    private var imageStorage: ImageStorage
     private var captureSession: AVCaptureSession?
     private var output: AVCaptureStillImageOutput?
     private var backCamera: AVCaptureDevice?
@@ -29,10 +29,10 @@ final class CameraServiceImpl: CameraService {
     
     init(
         initialActiveCameraType: CameraType,
-        photoStorage: PhotoStorage)
+        imageStorage: ImageStorage)
     {
 
-        self.photoStorage = photoStorage
+        self.imageStorage = imageStorage
 
         let videoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as? [AVCaptureDevice]
         
@@ -246,8 +246,12 @@ final class CameraServiceImpl: CameraService {
         }
         
         output.captureStillImageAsynchronously(from: connection) { [weak self] sampleBuffer, error in
-            self?.photoStorage.savePhoto(sampleBuffer: sampleBuffer, callbackQueue: .main) { photo in
-                completion(photo)
+            self?.imageStorage.save(sampleBuffer: sampleBuffer, callbackQueue: .main) { path in
+                guard let path = path else {
+                    completion(nil)
+                    return
+                }
+                completion(PhotoFromCamera(path: path))
             }
         }
     }

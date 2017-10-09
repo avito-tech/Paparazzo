@@ -164,7 +164,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
             
             DispatchQueue.main.async {
-                guard image != originalItem.image else {
+                guard image !== originalItem.image else {
                     onError(errorMessages.first)
                     return
                 }

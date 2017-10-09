@@ -463,7 +463,6 @@ final class MediaPickerPresenter: MediaPickerModule {
     private func showPhotoLibrary() {
         
         let maxItemsCount = interactor.numberOfItemsAvailableForAdding()
-        let photoLibraryItems = interactor.photoLibraryItems
         
         let data = PhotoLibraryData(
             selectedItems: [],
