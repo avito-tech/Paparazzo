@@ -5,11 +5,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     var onSwipeToItem: ((MediaPickerItem) -> ())?
     var onSwipeToCamera: (() -> ())?
     var onSwipeToCameraProgressChange: ((CGFloat) -> ())?
-    var hapticFeedbackEnabled = false {
-        didSet {
-            print(hapticFeedbackEnabled)
-        }
-    }
+    var hapticFeedbackEnabled = false
     
     private let collectionView: UICollectionView
     private let dataSource = MediaRibbonDataSource()
