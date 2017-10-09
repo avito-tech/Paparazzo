@@ -236,6 +236,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setContinueButtonEnabled(enabled)
     }
     
+    func setHapticFeedbackEnabled(_ enabled: Bool) {
+        mediaPickerView.setHapticFeedbackEnabled(enabled)
+    }
+    
     func setContinueButtonVisible(_ visible: Bool) {
         mediaPickerView.setContinueButtonVisible(visible)
     }

@@ -3,6 +3,7 @@ import UIKit
 final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     var itemsTransform = CGAffineTransform.identity
+    var hapticFeedbackEnabled = false
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer?
     private var originalIndexPath: IndexPath?
@@ -95,7 +96,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             delegate.canMove(to: indexPath) != false
             else { return }
 
-        if #available(iOS 10.0, *) {
+        if #available(iOS 10.0, *), hapticFeedbackEnabled {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         

@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 selectedItem: nil,
                 maxItemsCount: 20,
                 cropEnabled: true,
+                hapticFeedbackEnabled: true,
                 cropCanvasSize: CGSize(width: 1280, height: 960)
             )
             
