@@ -2,6 +2,7 @@ import Photos
 import ImageSource
 
 protocol PhotoLibraryItemsService {
+    func register()
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges) -> ())
 }
@@ -20,6 +21,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     override init() {
         super.init()
         
+        
+    }
+    
+    deinit {
+        photoLibrary.unregisterChangeObserver(self)
+    }
+    
+    // MARK: - PhotoLibraryItemsService
+    
+    func register() {
         photoLibrary.register(self)
         
         switch PHPhotoLibrary.authorizationStatus() {
@@ -36,12 +47,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             break
         }
     }
-    
-    deinit {
-        photoLibrary.unregisterChangeObserver(self)
-    }
-    
-    // MARK: - PhotoLibraryItemsService
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         onAuthorizationStatusChange = handler

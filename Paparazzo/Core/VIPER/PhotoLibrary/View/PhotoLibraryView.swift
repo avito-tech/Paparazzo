@@ -19,6 +19,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     private let layout = PhotoLibraryLayout()
     private var collectionView: UICollectionView
     private let accessDeniedView = AccessDeniedView()
+    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -41,6 +42,11 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         addSubview(collectionView)
         addSubview(accessDeniedView)
+        
+        progressIndicator.hidesWhenStopped = true
+        progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
+        
+        addSubview(progressIndicator)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,6 +60,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         collectionView.frame = bounds
         accessDeniedView.frame = bounds
+        
+        progressIndicator.center = bounds.center
     }
     
     // MARK: - ThemeConfigurable
@@ -165,6 +173,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func setAccessDeniedButtonTitle(_ title: String) {
         accessDeniedView.buttonTitle = title
+    }
+    
+    func setProgressVisible(_ visible: Bool) {
+        if visible {
+            progressIndicator.startAnimating()
+        } else {
+            progressIndicator.stopAnimating()
+        }
     }
     
     // MARK: - UICollectionViewDelegate

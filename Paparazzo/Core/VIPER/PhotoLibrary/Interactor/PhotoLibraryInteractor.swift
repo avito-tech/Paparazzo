@@ -3,6 +3,8 @@ import ImageSource
 
 protocol PhotoLibraryInteractor: class {
     
+    func prepareLibrary(completion: @escaping (() -> ()))
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     

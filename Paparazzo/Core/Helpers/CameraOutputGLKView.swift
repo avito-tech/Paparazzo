@@ -30,7 +30,9 @@ final class CameraOutputGLKView: GLKView {
     
     var imageBuffer: CVImageBuffer? {
         didSet {
-            display()
+            DispatchQueue.main.async {
+                self.display()
+            }
         }
     }
     

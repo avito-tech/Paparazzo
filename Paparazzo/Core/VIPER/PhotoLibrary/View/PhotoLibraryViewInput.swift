@@ -24,6 +24,8 @@ protocol PhotoLibraryViewInput: class {
     
     var onViewDidLoad: (() -> ())? { get set }
     
+    func setProgressVisible(_ visible: Bool)
+    
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }
     
