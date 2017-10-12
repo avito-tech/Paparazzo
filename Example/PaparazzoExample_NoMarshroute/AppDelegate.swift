@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 configure: { module in
                     weak var module = module
                     
-                    module?.setContinueButtonTitle("Готово")
+                    module?.setContinueButtonTitle("Done")
                     
                     module?.onCancel = {
                         module?.dismissModule()

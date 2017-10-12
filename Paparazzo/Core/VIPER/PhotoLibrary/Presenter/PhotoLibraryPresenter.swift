@@ -38,13 +38,13 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     private func setUpView() {
         
-        view?.setTitle("Все фотографии")
-        view?.setDoneButtonTitle("Выбрать")
-        view?.setCancelButtonTitle("Отменить")
+        view?.setTitle(localized("All Photos"))
+        view?.setDoneButtonTitle(localized("Done (photo library)"))
+        view?.setCancelButtonTitle(localized("Cancel"))
         
-        view?.setAccessDeniedTitle("Чтобы выбрать фото из галереи")
-        view?.setAccessDeniedMessage("Разрешите доступ приложению Avito к вашим фотографиям")
-        view?.setAccessDeniedButtonTitle("Разрешить доступ к галерее")
+        view?.setAccessDeniedTitle(localized("To pick photo from library"))
+        view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
+        view?.setAccessDeniedButtonTitle(localized("Allow access to photo library"))
         
         interactor.observeAuthorizationStatus { [weak self] accessGranted in
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
@@ -87,6 +87,10 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 UIApplication.shared.openURL(url)
             }
         }
+    }
+    
+    private func appName() -> String {
+        return Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
     }
     
     private func adjustViewForSelectionState(_ state: PhotoLibraryItemSelectionState) {
