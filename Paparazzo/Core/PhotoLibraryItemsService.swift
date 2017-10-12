@@ -21,20 +21,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         super.init()
         
         photoLibrary.register(self)
-        
-        switch PHPhotoLibrary.authorizationStatus() {
-        case .authorized:
-            setUpFetchRequest()
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { [weak self] status in
-                if case .authorized = status {
-                    self?.setUpFetchRequest()
-                }
-                self?.callAuthorizationHandler(for: status)
-            }
-        case .restricted, .denied:
-            break
-        }
     }
     
     deinit {
@@ -49,17 +35,25 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges) -> ()) {
-        onPhotosChange = handler
-        callObserverHandler(changes: nil)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.setUpIfNeeded()
+            self.onPhotosChange = handler
+            DispatchQueue.main.async {
+                self.callObserverHandler(changes: nil)
+            }
+        }
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
     func photoLibraryDidChange(_ changeInfo: PHChange) {
-        DispatchQueue.main.async {
-            if let fetchResult = self.fetchResult, let changes = changeInfo.changeDetails(for: fetchResult) {
-                self.fetchResult = changes.fetchResultAfterChanges
-                self.callObserverHandler(changes: changes)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.setUpIfNeeded()
+            DispatchQueue.main.async {
+                if let fetchResult = self.fetchResult, let changes = changeInfo.changeDetails(for: fetchResult) {
+                    self.fetchResult = changes.fetchResultAfterChanges
+                    self.callObserverHandler(changes: changes)
+                }
             }
         }
     }
@@ -68,6 +62,25 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     private var onPhotosChange: ((_ changes: PhotoLibraryChanges) -> ())?
     private var onAuthorizationStatusChange: ((_ accessGranted: Bool) -> ())?
+    private var wasSetUp = false
+    
+    private func setUpIfNeeded() {
+        switch PHPhotoLibrary.authorizationStatus() {
+        case .authorized:
+            wasSetUp = true
+            setUpFetchRequest()
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { [weak self] status in
+                self?.wasSetUp = true
+                if case .authorized = status {
+                    self?.setUpFetchRequest()
+                }
+                self?.callAuthorizationHandler(for: status)
+            }
+        case .restricted, .denied:
+            wasSetUp = true
+        }
+    }
     
     private func setUpFetchRequest() {
         let options: PHFetchOptions?
