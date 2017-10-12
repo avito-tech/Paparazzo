@@ -139,7 +139,7 @@ final class ExamplePresenter {
         module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
         module.onItemAutocorrect = { _, isAutocorrected, _ in debugPrint("mediaPickerDidAutocorrectItem: \(isAutocorrected)") }
         
-        module.setContinueButtonTitle("Готово")
+        module.setContinueButtonTitle("Done")
         
         module.onCancel = { [weak module] in
             module?.dismissModule()

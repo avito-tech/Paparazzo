@@ -28,7 +28,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     
     private func setUpView() {
         
-        view?.setTitle("Кадрирование")
+        view?.setTitle(localized("Cropping"))
         view?.setMinimumRotation(degrees: -25)
         view?.setMaximumRotation(degrees: +25)
         view?.setControlsEnabled(false)

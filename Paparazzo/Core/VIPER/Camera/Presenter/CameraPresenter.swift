@@ -77,9 +77,9 @@ final class CameraPresenter: CameraModuleInput {
     
     private func setUpView() {
         
-        view?.setAccessDeniedTitle("Чтобы фотографировать товар")
-        view?.setAccessDeniedMessage("Разрешите камере делать фото с помощью приложения Avito")
-        view?.setAccessDeniedButtonTitle("Разрешить доступ к камере")
+        view?.setAccessDeniedTitle(localized("To take photo"))
+        view?.setAccessDeniedMessage(localized("Allow %@ to use your camera", appName()))
+        view?.setAccessDeniedButtonTitle(localized("Allow access to camera"))
         
         view?.onAccessDeniedButtonTap = {
             if let url = URL(string: UIApplicationOpenSettingsURLString) {
@@ -104,5 +104,9 @@ final class CameraPresenter: CameraModuleInput {
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
         }
+    }
+    
+    private func appName() -> String {
+        return Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
     }
 }
