@@ -48,36 +48,34 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.setProgressVisible(true)
         
-        interactor.prepareLibrary() { [weak self] in
-            self?.interactor.observeAuthorizationStatus { [weak self] accessGranted in
-                self?.view?.setAccessDeniedViewVisible(!accessGranted)
-                
-                if !accessGranted {
-                    self?.view?.setProgressVisible(false)
-                }
-            }
+        interactor.observeAuthorizationStatus { [weak self] accessGranted in
+            self?.view?.setAccessDeniedViewVisible(!accessGranted)
             
-            self?.interactor.observeItems { changes, selectionState in
-                guard let strongSelf = self else { return }
-                
+            if !accessGranted {
                 self?.view?.setProgressVisible(false)
-                
-                let hasItems = (changes.itemsAfterChanges.count > 0)
-                
-                self?.view?.setPickButtonVisible(hasItems)
-                
-                let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
-                
-                self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
-                    
-                    self?.adjustViewForSelectionState(selectionState)
-                    
-                    if self?.shouldScrollToBottomWhenItemsArrive == true {
-                        self?.view?.scrollToBottom()
-                        self?.shouldScrollToBottomWhenItemsArrive = false
-                    }
-                })
             }
+        }
+        
+        interactor.observeItems { [weak self] changes, selectionState in
+            guard let strongSelf = self else { return }
+            
+            self?.view?.setProgressVisible(false)
+            
+            let hasItems = (changes.itemsAfterChanges.count > 0)
+            
+            self?.view?.setPickButtonVisible(hasItems)
+            
+            let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
+            
+            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
+                
+                self?.adjustViewForSelectionState(selectionState)
+                
+                if self?.shouldScrollToBottomWhenItemsArrive == true {
+                    self?.view?.scrollToBottom()
+                    self?.shouldScrollToBottomWhenItemsArrive = false
+                }
+            })
         }
         
         view?.setPickButtonEnabled(false)

@@ -25,15 +25,6 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - PhotoLibraryInteractor
     
-    func prepareLibrary(completion: @escaping (() -> ())) {
-        DispatchQueue.global().async {
-            self.photoLibraryItemsService.register()
-            DispatchQueue.main.async {
-                completion()
-            }
-        }
-    }
-    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
