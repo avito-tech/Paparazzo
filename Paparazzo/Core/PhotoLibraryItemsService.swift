@@ -78,7 +78,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 self?.callAuthorizationHandler(for: status)
             }
         case .restricted, .denied:
-            break
+            wasSetUp = true
         }
     }
     
