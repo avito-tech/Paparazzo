@@ -1,0 +1,21 @@
+// Media Picker
+"Photo %d" = "Photo %d";
+"Continue" = "Continue";
+"AUTOCORRECTION OFF" = "AUTOCORRECTION OFF";
+"AUTOCORRECTION ON" = "AUTOCORRECTION ON";
+
+// Camera
+"To take photo" = "To take photo";
+"Allow %@ to use your camera" = "Allow %@ to use your camera";
+"Allow access to camera" = "Allow access to camera";
+
+// Photo Library
+"All photos" = "All photos";
+"Done (photo library)" = "Done";
+"Cancel" = "Cancel";
+"To pick photo from library" = "To pick photo from library";
+"Allow %@ to access your photo library" = "Allow %@ to access your photo library";
+"Allow access to photo library" = "Allow access to photo library";
+
+// Cropping
+"Cropping" = "Cropping";

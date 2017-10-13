@@ -1,11 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, :deployment_target => '8.0'
 
 inhibit_all_warnings!
 use_frameworks!
 
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
-  pod 'Marshroute', ‘0.4.2’
+  pod 'Marshroute', '0.4.2'
   pod 'ImageSource', :path => '../'
 end
 

@@ -1,0 +1,21 @@
+// Media Picker
+"Photo %d" = "Фото %d";
+"Continue" = "Далее";
+"AUTOCORRECTION OFF" = "РАЗМЫТИЕ ВЫКЛ.";
+"AUTOCORRECTION ON" = "РАЗМЫТИЕ ВКЛ.";
+
+// Camera
+"To take photo" = "Чтобы сделать фото";
+"Allow %@ to use your camera" = "Разрешите камере делать фото с помощью приложения %@";
+"Allow access to camera" = "Разрешить доступ к камере";
+
+// Photo Library
+"All Photos" = "Все фотографии";
+"Done (photo library)" = "Выбрать";
+"Cancel" = "Отмена";
+"To pick photo from library" = "Чтобы выбрать фото из галереи";
+"Allow %@ to access your photo library" = "Разрешите приложению %@ доступ к вашим фотографиям";
+"Allow access to photo library" = "Разрешить доступ к галерее";
+
+// Cropping
+"Cropping" = "Кадрирование";

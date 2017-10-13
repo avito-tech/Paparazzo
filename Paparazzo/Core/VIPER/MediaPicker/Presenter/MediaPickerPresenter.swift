@@ -101,8 +101,8 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     private func setUpView() {
         
-        view?.setContinueButtonTitle(continueButtonTitle ?? "Далее")
-        view?.setPhotoTitle("Фото 1")
+        view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
+        view?.setPhotoTitle(localized("Photo %d", 1))
         
         view?.setCameraControlsEnabled(false)
         
@@ -251,10 +251,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onAutocorrectButtonTap = { [weak self] in
             if let originalItem = self?.interactor.selectedItem?.originalItem {
-                self?.view?.showInfoMessage("РАЗМЫТИЕ ВЫКЛ.", timeout: 1.0)
+                self?.view?.showInfoMessage(localized("AUTOCORRECTION OFF"), timeout: 1.0)
                 self?.updateItem(originalItem, afterAutocorrect: true)
             } else {
-                self?.view?.showInfoMessage("РАЗМЫТИЕ ВКЛ.", timeout: 1.0)
+                self?.view?.showInfoMessage(localized("AUTOCORRECTION ON"), timeout: 1.0)
                 self?.view?.setAutocorrectionStatus(.corrected)
                 self?.interactor.autocorrectItem(
                     onResult: { [weak self] updatedItem in
@@ -335,7 +335,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func setTitleForPhotoWithIndex(_ index: Int) {
-        view?.setPhotoTitle("Фото \(index + 1)")
+        view?.setPhotoTitle(localized("Photo %d", index + 1))
     }
     
     private func addItems(_ items: [MediaPickerItem], fromCamera: Bool, completion: (() -> ())? = nil) {

@@ -32,6 +32,7 @@
     * [Displaying in UI](#displaying-in-ui)
     * [Getting image data](#getting-image-data)
     * [Getting image size](#getting-image-size)
+* [Localization](#localization)
 
 # <a name="installation" />Installation
 There are two options to install Paparazzo using [CocoaPods](http://cocoapods.org).
@@ -206,6 +207,11 @@ imageSource.imageSize { size in
     // do something with size
 }
 ```
+
+# <a name="localization" />Localization
+You can see the list of supported languages [here](Paparazzo/Localization). If you don't see your language, we encourage you to contribute to the project by creating pull request that adds `Localizable.strings` file for that language.
+
+If you're not satisfied with a string that is provided by Paparazzo, you can override it in your project. Just add `Paparazzo.strings` to your main bundle. Override only the strings you need (you can see an example of this in PaparazzoExample project).
 
 # Authors
 Andrey Yutkin (ayutkin@avito.ru)
