@@ -48,6 +48,8 @@ public struct PaparazzoUITheme:
     public var photoCellBackgroundColor = UIColor.RGB(red: 215, green: 215, blue: 215)
     
     public var iCloudIcon = PaparazzoUITheme.image(named: "icon-cloud")
+    public var photoLibraryDiscardButtonIcon = PaparazzoUITheme.image(named: "discard")
+    public var photoLibraryConfirmButtonIcon = PaparazzoUITheme.image(named: "confirm")
     
     // MARK: - ImageCroppingUITheme
     

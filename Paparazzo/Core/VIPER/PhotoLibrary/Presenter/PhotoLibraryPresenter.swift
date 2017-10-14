@@ -39,8 +39,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     private func setUpView() {
         
         view?.setTitle(localized("All Photos"))
-        view?.setDoneButtonTitle(localized("Done (photo library)"))
-        view?.setCancelButtonTitle(localized("Cancel"))
         
         view?.setAccessDeniedTitle(localized("To pick photo from library"))
         view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
@@ -63,8 +61,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             
             let hasItems = (changes.itemsAfterChanges.count > 0)
             
-            self?.view?.setPickButtonVisible(hasItems)
-            
             let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
             
             self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
@@ -77,8 +73,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 }
             })
         }
-        
-        view?.setPickButtonEnabled(false)
         
         view?.onPickButtonTap = { [weak self] in
             self?.interactor.selectedItems { items in
@@ -104,7 +98,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     private func adjustViewForSelectionState(_ state: PhotoLibraryItemSelectionState) {
         view?.setDimsUnselectedItems(!state.canSelectMoreItems)
         view?.setCanSelectMoreItems(state.canSelectMoreItems)
-        view?.setPickButtonEnabled(state.isAnyItemSelected)
         
         switch state.preSelectionAction {
         case .none:

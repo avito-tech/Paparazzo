@@ -40,9 +40,17 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     // MARK: - PhotoLibraryViewInput
     
     var onItemSelect: ((PhotoLibraryItem) -> ())?
-    var onPickButtonTap: (() -> ())?
-    var onCancelButtonTap: (() -> ())?
     var onViewDidLoad: (() -> ())?
+    
+    var onPickButtonTap: (() -> ())? {
+        get { return photoLibraryView.onConfirmButtonTap }
+        set { photoLibraryView.onConfirmButtonTap = newValue }
+    }
+    
+    var onCancelButtonTap: (() -> ())? {
+        get { return photoLibraryView.onDiscardButtonTap }
+        set { photoLibraryView.onDiscardButtonTap = newValue }
+    }
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return photoLibraryView.onAccessDeniedButtonTap }
@@ -62,19 +70,6 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         )
     }
     
-    func setDoneButtonTitle(_ title: String) {
-        pickBarButtonItem = UIBarButtonItem(
-            title: title,
-            style: .done,
-            target: self,
-            action: #selector(onPickButtonTap(_:))
-        )
-        
-        if let font = theme?.photoLibraryDoneButtonFont {
-            pickBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: font], for: .normal)
-        }
-    }
-    
     func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
         photoLibraryView.applyChanges(changes, animated: animated, completion: completion)
     }
@@ -89,14 +84,6 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     func deselectAllItems() {
         photoLibraryView.deselectAndAdjustAllCells()
-    }
-    
-    func setPickButtonVisible(_ visible: Bool) {
-        navigationItem.rightBarButtonItem = visible ? pickBarButtonItem : nil
-    }
-    
-    func setPickButtonEnabled(_ enabled: Bool) {
-        navigationItem.rightBarButtonItem?.isEnabled = enabled
     }
     
     func scrollToBottom() {
@@ -125,7 +112,6 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     // MARK: - Private
     
-    private var pickBarButtonItem: UIBarButtonItem?
     private var theme: PhotoLibraryUITheme?
     
     @objc private func onCancelButtonTap(_ sender: UIBarButtonItem) {

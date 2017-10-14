@@ -5,7 +5,6 @@ protocol PhotoLibraryViewInput: class {
     
     func setTitle(_: String)
     func setCancelButtonTitle(_: String)
-    func setDoneButtonTitle(_: String)
     
     func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
     
@@ -13,9 +12,6 @@ protocol PhotoLibraryViewInput: class {
     func setDimsUnselectedItems(_: Bool)
     
     func deselectAllItems()
-    
-    func setPickButtonVisible(_: Bool)
-    func setPickButtonEnabled(_: Bool)
     
     func scrollToBottom()
     

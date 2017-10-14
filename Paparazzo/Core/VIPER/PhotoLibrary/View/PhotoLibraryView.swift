@@ -20,6 +20,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     private var collectionView: UICollectionView
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let toolbar = PhotoLibraryToolbar()
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -42,6 +43,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         addSubview(collectionView)
         addSubview(accessDeniedView)
+        addSubview(toolbar)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -58,8 +60,23 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        collectionView.frame = bounds
-        accessDeniedView.frame = bounds
+        let toolbarSize = toolbar.sizeThatFits(bounds.size)
+        
+        toolbar.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: toolbarSize.height
+        )
+        
+        collectionView.frame = CGRect(
+            x: bounds.left,
+            y: bounds.top,
+            width: bounds.width,
+            height: bounds.height - toolbarSize.height
+        )
+        
+        accessDeniedView.frame = collectionView.bounds
         
         progressIndicator.center = bounds.center
     }
@@ -68,10 +85,24 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
+        
         accessDeniedView.setTheme(theme)
+        
+        toolbar.setDiscardButtonIcon(theme.photoLibraryDiscardButtonIcon)
+        toolbar.setConfirmButtonIcon(theme.photoLibraryConfirmButtonIcon)
     }
     
     // MARK: - PhotoLibraryView
+    
+    var onDiscardButtonTap: (() -> ())? {
+        get { return toolbar.onDiscardButtonTap }
+        set { toolbar.onDiscardButtonTap = newValue }
+    }
+    
+    var onConfirmButtonTap: (() -> ())? {
+        get { return toolbar.onConfirmButtonTap }
+        set { toolbar.onConfirmButtonTap = newValue }
+    }
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return accessDeniedView.onButtonTap }
