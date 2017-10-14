@@ -38,7 +38,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     private func setUpView() {
         
-        view?.setTitle(localized("All Photos"))
+        view?.setTitle(localized("All photos"))
         
         view?.setAccessDeniedTitle(localized("To pick photo from library"))
         view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
@@ -54,23 +54,24 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             }
         }
         
-        interactor.observeItems { [weak self] changes, selectionState in
-            guard let strongSelf = self else { return }
+        interactor.observeAlbums { [weak self] albums in
             
-            self?.view?.setProgressVisible(false)
+            if let album = albums.first {
+                self?.setUpObservingOfItems(in: album)
+                self?.view?.setTitle(album.title ?? localized("Unnamed album"))
+            }
             
-            let hasItems = (changes.itemsAfterChanges.count > 0)
-            
-            let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
-            
-            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
-                
-                self?.adjustViewForSelectionState(selectionState)
-                
-                if self?.shouldScrollToBottomWhenItemsArrive == true {
-                    self?.view?.scrollToBottom()
-                    self?.shouldScrollToBottomWhenItemsArrive = false
-                }
+            self?.view?.setAlbums(albums.map { album in
+                PhotoLibraryAlbumCellData(
+                    title: album.title ?? localized("Unnamed album"),
+                    coverImage: album.coverImage,
+                    onSelect: {
+                        self?.setUpObservingOfItems(in: album)
+                        self?.view?.setTitle(album.title ?? localized("Unnamed album"))
+                        self?.view?.hideAlbumsList()
+                        // TODO: update view state
+                    }
+                )
             })
         }
         
@@ -88,6 +89,36 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             if let url = URL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.shared.openURL(url)
             }
+        }
+        
+        view?.onTitleTap = { [weak self] in
+            self?.view?.toggleAlbumsList()
+        }
+        
+        view?.onDimViewTap = { [weak self] in
+            self?.view?.hideAlbumsList()
+        }
+    }
+    
+    private func setUpObservingOfItems(in album: PhotoLibraryAlbum) {
+        interactor.observeItems(in: album) { [weak self] changes, selectionState in
+            guard let strongSelf = self else { return }
+            
+            self?.view?.setProgressVisible(false)
+            
+            let hasItems = (changes.itemsAfterChanges.count > 0)
+            
+            let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
+            
+            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
+                
+                self?.adjustViewForSelectionState(selectionState)
+                
+                if self?.shouldScrollToBottomWhenItemsArrive == true {
+                    self?.view?.scrollToBottom()
+                    self?.shouldScrollToBottomWhenItemsArrive = false
+                }
+            })
         }
     }
     

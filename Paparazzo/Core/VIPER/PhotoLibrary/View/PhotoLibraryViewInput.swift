@@ -3,8 +3,10 @@ import ImageSource
 
 protocol PhotoLibraryViewInput: class {
     
+    var onTitleTap: (() -> ())? { get set }
+    var onDimViewTap: (() -> ())? { get set }
+    
     func setTitle(_: String)
-    func setCancelButtonTitle(_: String)
     
     func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
     
@@ -15,12 +17,17 @@ protocol PhotoLibraryViewInput: class {
     
     func scrollToBottom()
     
+    func showAlbumsList()
+    func hideAlbumsList()
+    func toggleAlbumsList()
+    
     var onPickButtonTap: (() -> ())? { get set }
     var onCancelButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
     
     func setProgressVisible(_ visible: Bool)
+    func setAlbums(_: [PhotoLibraryAlbumCellData])
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }
@@ -29,6 +36,12 @@ protocol PhotoLibraryViewInput: class {
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
+}
+
+struct PhotoLibraryAlbumCellData {
+    let title: String
+    let coverImage: ImageSource?
+    let onSelect: () -> ()
 }
 
 struct PhotoLibraryItemCellData {

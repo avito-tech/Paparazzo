@@ -6,7 +6,6 @@ public struct PaparazzoUITheme:
     ImageCroppingUITheme,
     MaskCropperUITheme
 {
-    
     public init() {}
 
     // MARK: - MediaPickerRootModuleUITheme
@@ -42,7 +41,8 @@ public struct PaparazzoUITheme:
     
     // MARK: - PhotoLibraryUITheme
     
-    public var photoLibraryDoneButtonFont = UIFont.boldSystemFont(ofSize: 17)
+    public var photoLibraryTitleFont = UIFont.boldSystemFont(ofSize: 18)
+    public var photoLibraryAlbumsDisclosureIcon = PaparazzoUITheme.image(named: "arrow-down")
     
     public var photoLibraryItemSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var photoCellBackgroundColor = UIColor.RGB(red: 215, green: 215, blue: 215)
@@ -50,6 +50,7 @@ public struct PaparazzoUITheme:
     public var iCloudIcon = PaparazzoUITheme.image(named: "icon-cloud")
     public var photoLibraryDiscardButtonIcon = PaparazzoUITheme.image(named: "discard")
     public var photoLibraryConfirmButtonIcon = PaparazzoUITheme.image(named: "confirm")
+    public var photoLibraryAlbumCellFont = UIFont.systemFont(ofSize: 17)
     
     // MARK: - ImageCroppingUITheme
     

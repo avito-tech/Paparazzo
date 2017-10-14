@@ -20,9 +20,7 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-        hideNavigationBarShadow()
-        
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
     }
     
@@ -42,6 +40,11 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onViewDidLoad: (() -> ())?
     
+    var onTitleTap: (() -> ())? {
+        get { return photoLibraryView.onTitleTap }
+        set { photoLibraryView.onTitleTap = newValue }
+    }
+    
     var onPickButtonTap: (() -> ())? {
         get { return photoLibraryView.onConfirmButtonTap }
         set { photoLibraryView.onConfirmButtonTap = newValue }
@@ -57,17 +60,13 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         set { photoLibraryView.onAccessDeniedButtonTap = newValue }
     }
     
-    @nonobjc func setTitle(_ title: String) {
-        self.title = title
+    var onDimViewTap: (() -> ())? {
+        get { return photoLibraryView.onDimViewTap }
+        set { photoLibraryView.onDimViewTap = newValue }
     }
     
-    func setCancelButtonTitle(_ title: String) {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: title,
-            style: .plain,
-            target: self,
-            action: #selector(onCancelButtonTap(_:))
-        )
+    @nonobjc func setTitle(_ title: String) {
+        photoLibraryView.setTitle(title)
     }
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
@@ -110,6 +109,22 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setProgressVisible(visible)
     }
     
+    func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
+        photoLibraryView.setAlbums(albums)
+    }
+    
+    func showAlbumsList() {
+        photoLibraryView.showAlbumsList()
+    }
+    
+    func hideAlbumsList() {
+        photoLibraryView.hideAlbumsList()
+    }
+    
+    func toggleAlbumsList() {
+        photoLibraryView.toggleAlbumsList()
+    }
+    
     // MARK: - Private
     
     private var theme: PhotoLibraryUITheme?
@@ -120,12 +135,5 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     @objc private func onPickButtonTap(_ sender: UIBarButtonItem) {
         onPickButtonTap?()
-    }
-    
-    private func hideNavigationBarShadow() {
-        let navigationBar = navigationController?.navigationBar
-        navigationBar?.setBackgroundImage(UIImage(), for: .default)
-        navigationBar?.backgroundColor = .white
-        navigationBar?.shadowImage = UIImage()
     }
 }

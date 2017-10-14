@@ -4,7 +4,10 @@ import ImageSource
 protocol PhotoLibraryInteractor: class {
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
-    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
+    func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
+    func observeItems(
+        in: PhotoLibraryAlbum,
+        handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     
     func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
     func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
@@ -24,10 +27,10 @@ public struct PhotoLibraryItem: Equatable {
         self.image = image
         self.selected = selected
     }
-}
-
-public func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {
-    return item1.identifier == item2.identifier
+    
+    public static func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {
+        return item1.identifier == item2.identifier
+    }
 }
 
 struct PhotoLibraryItemSelectionState {
@@ -44,7 +47,7 @@ struct PhotoLibraryItemSelectionState {
 
 struct PhotoLibraryChanges {
     
-    // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
+    // Changes must be applied in that order: remove, insert, update, move
     let removedIndexes: IndexSet
     let insertedItems: [(index: Int, item: PhotoLibraryItem)]
     let updatedItems: [(index: Int, item: PhotoLibraryItem)]

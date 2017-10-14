@@ -1,18 +1,40 @@
 import Photos
 import ImageSource
 
+final class PhotoLibraryAlbum {
+    
+    let title: String?
+    let coverImage: ImageSource?
+    
+    fileprivate var fetchResult: PHFetchResult<PHAsset>
+    
+    fileprivate init(title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
+        self.title = title
+        self.coverImage = coverImage
+        self.fetchResult = fetchResult
+    }
+}
+
 protocol PhotoLibraryItemsService {
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
-    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges) -> ())
+    func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
+    func observeItems(in: PhotoLibraryAlbum, handler: @escaping (_ changes: PhotoLibraryChanges) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
 
     private let photoLibrary = PHPhotoLibrary.shared()
-    private var fetchResult: PHFetchResult<PHAsset>?
     
-    // lazy, т.к. нельзя сразу создавать PHImageManager,
-    // иначе он крэшнется при деаллокации, если доступ к photo library запрещен
+    private var albums = [PhotoLibraryAlbum]()
+    private var albumsFetchResult: PHFetchResult<PHAssetCollection>?
+    
+    private let setupQueue = DispatchQueue(
+        label: "ru.avito.Paparazzo.PhotoLibraryItemsServiceImpl.setupQueue",
+        qos: .userInitiated
+    )
+    
+    // lazy because if you create PHImageManager immediately
+    // the app will crash on dealloc of this class if access to photo library is denied
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
@@ -34,26 +56,30 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         callAuthorizationHandler(for: PHPhotoLibrary.authorizationStatus())
     }
     
-    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges) -> ()) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.setUpIfNeeded()
+    func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
+        executeAfterSetup {
+            self.onAlbumsChange = handler
+            handler(self.albums)
+        }
+    }
+    
+    func observeItems(in album: PhotoLibraryAlbum, handler: @escaping (_ changes: PhotoLibraryChanges) -> ()) {
+        executeAfterSetup {
+            self.observedAlbum = album
             self.onPhotosChange = handler
-            DispatchQueue.main.async {
-                self.callObserverHandler(changes: nil)
-            }
+            self.callObserverHandler(changes: nil)
         }
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
     func photoLibraryDidChange(_ changeInfo: PHChange) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.setUpIfNeeded()
-            DispatchQueue.main.async {
-                if let fetchResult = self.fetchResult, let changes = changeInfo.changeDetails(for: fetchResult) {
-                    self.fetchResult = changes.fetchResultAfterChanges
-                    self.callObserverHandler(changes: changes)
-                }
+        executeAfterSetup {
+            if let observedAlbum = self.observedAlbum,
+               let changes = changeInfo.changeDetails(for: observedAlbum.fetchResult)
+            {
+                self.observedAlbum?.fetchResult = changes.fetchResultAfterChanges
+                self.callObserverHandler(changes: changes)
             }
         }
     }
@@ -61,28 +87,76 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     // MARK: - Private
     
     private var onPhotosChange: ((_ changes: PhotoLibraryChanges) -> ())?
+    private var onAlbumsChange: ((_ albums: [PhotoLibraryAlbum]) -> ())?
     private var onAuthorizationStatusChange: ((_ accessGranted: Bool) -> ())?
+    
+    private var observedAlbum: PhotoLibraryAlbum?
     private var wasSetUp = false
     
-    private func setUpIfNeeded() {
+    private func executeAfterSetup(on queue: DispatchQueue = .main, execute: @escaping () -> ()) {
+        setupQueue.async {
+            self.setUpIfNeeded(completion: {
+                queue.async(execute: execute)
+            })
+        }
+    }
+    
+    private func setUpIfNeeded(completion: @escaping () -> ()) {
+        
+        guard !wasSetUp else {
+            completion()
+            return
+        }
+        
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
             wasSetUp = true
             setUpFetchRequest()
+            completion()
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] status in
                 self?.wasSetUp = true
                 if case .authorized = status {
                     self?.setUpFetchRequest()
                 }
+                completion()
                 self?.callAuthorizationHandler(for: status)
             }
         case .restricted, .denied:
             wasSetUp = true
+            completion()
         }
     }
     
     private func setUpFetchRequest() {
+        
+        let options = fetchOptions()
+        
+        var albumFetchRequests = [
+            PhotoLibraryAlbum(
+                title: localized("All photos"),
+                coverImage: nil,  // TODO: (ayutkin)
+                fetchResult: PHAsset.fetchAssets(with: .image, options: options)
+            )
+        ]
+        
+        let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options)
+        
+        albums.enumerateObjects(using: { album, _, _ in
+            albumFetchRequests.append(PhotoLibraryAlbum(
+                title: album.localizedTitle,
+                coverImage: nil,  // TODO: (ayutkin)
+                fetchResult: PHAsset.fetchAssets(in: album, options: options)
+            ))
+        })
+        
+        self.albums = albumFetchRequests
+        self.albumsFetchResult = albums
+        
+        callObserverHandler(changes: nil)
+    }
+    
+    private func fetchOptions() -> PHFetchOptions? {
         let options: PHFetchOptions?
         
         if #available(iOS 9.0, *) {
@@ -92,8 +166,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             options = nil
         }
         
-        fetchResult = PHAsset.fetchAssets(with: .image, options: options)
-        callObserverHandler(changes: nil)
+        return options
     }
     
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
@@ -125,7 +198,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     private func assetsFromFetchResult() -> [PHAsset] {
         var images = [PHAsset]()
-        fetchResult?.enumerateObjects(using: { asset, _, _ in
+        observedAlbum?.fetchResult.enumerateObjects(using: { asset, _, _ in
             images.append(asset)
         })
         return images

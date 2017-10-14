@@ -4,7 +4,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     typealias ThemeType = PhotoLibraryUITheme
     
+    private enum AlbumsListState {
+        case collapsed
+        case expanded
+    }
+    
     // MARK: - State
+    
+    private var albumsListState: AlbumsListState = .collapsed
     
     var canSelectMoreItems = false
     
@@ -18,9 +25,12 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     private let layout = PhotoLibraryLayout()
     private var collectionView: UICollectionView
+    private let titleView = PhotoLibraryTitleView()
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     private let toolbar = PhotoLibraryToolbar()
+    private let dimView = UIView()
+    private let albumsTableView = PhotoLibraryAlbumsTableView()
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -39,11 +49,20 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         setUpCollectionView()
         
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTitleViewTap(_:))))
+        
         accessDeniedView.isHidden = true
+        
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        dimView.alpha = 0
+        dimView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDimViewTap(_:))))
         
         addSubview(collectionView)
         addSubview(accessDeniedView)
         addSubview(toolbar)
+        addSubview(dimView)
+        addSubview(albumsTableView)
+        addSubview(titleView)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -60,7 +79,15 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let titleViewSize = titleView.sizeThatFits(bounds.size)
         let toolbarSize = toolbar.sizeThatFits(bounds.size)
+        
+        titleView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            height: titleViewSize.height
+        )
         
         toolbar.layout(
             left: bounds.left,
@@ -69,12 +96,21 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             height: toolbarSize.height
         )
         
-        collectionView.frame = CGRect(
-            x: bounds.left,
-            y: bounds.top,
-            width: bounds.width,
-            height: bounds.height - toolbarSize.height
+        collectionView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: titleView.bottom,
+            bottom: toolbar.top
         )
+        
+        albumsTableView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: titleView.bottom,
+            height: bounds.height - titleView.height
+        )
+        
+        dimView.frame = bounds
         
         accessDeniedView.frame = collectionView.bounds
         
@@ -86,10 +122,15 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
         
+        titleView.setLabelFont(theme.photoLibraryTitleFont)
+        titleView.setIcon(theme.photoLibraryAlbumsDisclosureIcon)
+        
         accessDeniedView.setTheme(theme)
         
         toolbar.setDiscardButtonIcon(theme.photoLibraryDiscardButtonIcon)
         toolbar.setConfirmButtonIcon(theme.photoLibraryConfirmButtonIcon)
+        
+        albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
     }
     
     // MARK: - PhotoLibraryView
@@ -108,6 +149,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         get { return accessDeniedView.onButtonTap }
         set { accessDeniedView.onButtonTap = newValue }
     }
+    
+    var onTitleTap: (() -> ())?
+    var onDimViewTap: (() -> ())?
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
         
@@ -190,6 +234,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         collectionView.scrollToBottom()
     }
     
+    func setTitle(_ title: String) {
+        titleView.setTitle(title)
+    }
+    
     func setAccessDeniedViewVisible(_ visible: Bool) {
         accessDeniedView.isHidden = !visible
     }
@@ -211,6 +259,38 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             progressIndicator.startAnimating()
         } else {
             progressIndicator.stopAnimating()
+        }
+    }
+    
+    func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
+        albumsTableView.setCellDataList(albums)
+        setNeedsLayout()
+    }
+    
+    func showAlbumsList() {
+        UIView.animate(withDuration: 0.25) {
+            self.albumsListState = .expanded
+            self.dimView.alpha = 1
+            self.albumsTableView.top = self.titleView.bottom
+            self.titleView.rotateIconUp()
+        }
+    }
+    
+    func hideAlbumsList() {
+        UIView.animate(withDuration: 0.25) {
+            self.albumsListState = .collapsed
+            self.dimView.alpha = 0
+            self.albumsTableView.bottom = self.titleView.bottom
+            self.titleView.rotateIconDown()
+        }
+    }
+    
+    func toggleAlbumsList() {
+        switch albumsListState {
+        case .collapsed:
+            showAlbumsList()
+        case .expanded:
+            hideAlbumsList()
         }
     }
     
@@ -344,4 +424,11 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
+    @objc private func onTitleViewTap(_: UITapGestureRecognizer) {
+        onTitleTap?()
+    }
+    
+    @objc private func onDimViewTap(_: UITapGestureRecognizer) {
+        onDimViewTap?()
+    }
 }

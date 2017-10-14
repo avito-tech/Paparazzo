@@ -16,8 +16,8 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     init(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int? = nil,
-        photoLibraryItemsService: PhotoLibraryItemsService
-    ) {
+        photoLibraryItemsService: PhotoLibraryItemsService)
+    {
         self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService
@@ -29,9 +29,15 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
     
-    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ()) {
-        
-        photoLibraryItemsService.observeItems { [weak self] changes in
+    func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
+        photoLibraryItemsService.observeAlbums(handler: handler)
+    }
+    
+    func observeItems(
+        in album: PhotoLibraryAlbum,
+        handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
+    {
+        photoLibraryItemsService.observeItems(in: album) { [weak self] changes in
             guard let strongSelf = self else { return }
             
             strongSelf.allItems = changes.itemsAfterChanges.map { item in
