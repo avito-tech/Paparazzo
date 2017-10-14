@@ -66,10 +66,11 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                     title: album.title ?? localized("Unnamed album"),
                     coverImage: album.coverImage,
                     onSelect: {
-                        self?.setUpObservingOfItems(in: album)
+                        self?.view?.deleteAllItems()
                         self?.view?.setTitle(album.title ?? localized("Unnamed album"))
                         self?.view?.hideAlbumsList()
-                        // TODO: update view state
+                        self?.shouldScrollToBottomWhenItemsArrive = true
+                        self?.setUpObservingOfItems(in: album)
                     }
                 )
             })

@@ -69,6 +69,10 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setTitle(title)
     }
     
+    func deleteAllItems() {
+        photoLibraryView.deleteAllItems()
+    }
+    
     func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
         photoLibraryView.applyChanges(changes, animated: animated, completion: completion)
     }

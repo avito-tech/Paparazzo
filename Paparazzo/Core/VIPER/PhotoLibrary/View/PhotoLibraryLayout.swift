@@ -7,14 +7,15 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
     
     // MARK: - Constants
     
-    private let cellSpacing = CGFloat(5)
+    private let insets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+    private let cellSpacing = CGFloat(6)
     private let numberOfPhotosInRow = 3
     
     // MARK: - PhotoLibraryLayout
     
     func cellSize() -> CGSize {
         if let collectionView = collectionView {
-            let contentWidth = collectionView.bounds.size.width
+            let contentWidth = collectionView.bounds.size.width - insets.left - insets.right
             let itemWidth = (contentWidth - CGFloat(numberOfPhotosInRow - 1) * cellSpacing) / CGFloat(numberOfPhotosInRow)
             return CGSize(width: itemWidth, height: itemWidth)
         } else {
@@ -51,8 +52,8 @@ final class PhotoLibraryLayout: UICollectionViewFlowLayout {
             let column = CGFloat(item % numberOfPhotosInRow)
             
             let origin = CGPoint(
-                x: column * (itemSize.width + cellSpacing),
-                y: row * (itemSize.height + cellSpacing)
+                x: insets.left + column * (itemSize.width + cellSpacing),
+                y: insets.top + row * (itemSize.height + cellSpacing)
             )
             
             let indexPath = IndexPath(item: item, section: section)

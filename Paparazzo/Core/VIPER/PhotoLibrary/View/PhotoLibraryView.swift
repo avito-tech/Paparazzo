@@ -153,6 +153,11 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     var onTitleTap: (() -> ())?
     var onDimViewTap: (() -> ())?
     
+    func deleteAllItems() {
+        dataSource.deleteAllItems()
+        collectionView.reloadData()
+    }
+    
     func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
         
         ObjCExceptionCatcher.tryClosure(
