@@ -133,9 +133,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         let options = fetchOptions()
         
         var albumFetchRequests = [
-            PhotoLibraryAlbum(
+            photoLibraryAlbum(
                 title: localized("All photos"),
-                coverImage: nil,  // TODO: (ayutkin)
                 fetchResult: PHAsset.fetchAssets(with: .image, options: options)
             )
         ]
@@ -143,9 +142,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options)
         
         albums.enumerateObjects(using: { album, _, _ in
-            albumFetchRequests.append(PhotoLibraryAlbum(
+            albumFetchRequests.append(self.photoLibraryAlbum(
                 title: album.localizedTitle,
-                coverImage: nil,  // TODO: (ayutkin)
                 fetchResult: PHAsset.fetchAssets(in: album, options: options)
             ))
         })
@@ -154,6 +152,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         self.albumsFetchResult = albums
         
         callObserverHandler(changes: nil)
+    }
+    
+    private func photoLibraryAlbum(title: String?, fetchResult: PHFetchResult<PHAsset>) -> PhotoLibraryAlbum {
+        return PhotoLibraryAlbum(
+            title: title,
+            coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
+            fetchResult: fetchResult
+        )
     }
     
     private func fetchOptions() -> PHFetchOptions? {

@@ -1,5 +1,8 @@
+import ImageSource
 import UIKit
 
+// TODO: (ayutkin) make base table view cell for image source in ImageSource/UIKit
+// TODO: (ayutkin) add placeholder image for empty albums
 final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     
     // MARK: - Specs
@@ -11,12 +14,20 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     private let label = UILabel()
     private let coverImageView = UIImageView()
     
+    // MARK: - Data
+    private var coverImage: ImageSource? {
+        didSet {
+            updateImage()
+        }
+    }
+    
     // MARK: - Init
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         coverImageView.backgroundColor = .black
         coverImageView.layer.cornerRadius = 6
+        coverImageView.layer.masksToBounds = true
         
         contentView.addSubview(coverImageView)
         contentView.addSubview(label)
@@ -29,7 +40,7 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     // MARK: - PhotoLibraryAlbumsTableViewCell
     func setCellData(_ cellData: PhotoLibraryAlbumCellData) {
         label.text = cellData.title
-        coverImageView.setImage(fromSource: cellData.coverImage)
+        coverImage = cellData.coverImage
     }
     
     func setLabelFont(_ font: UIFont) {
@@ -47,11 +58,18 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
             height: imageSize.height
         )
         
+        updateImage()
+        
         let labelLeft = coverImageView.right + imageToTitleSpacing
         let labelMaxWidth = (bounds.right - insets.right) - labelLeft
         
         label.resizeToFitWidth(labelMaxWidth)
         label.left = labelLeft
         label.centerY = bounds.centerY
+    }
+    
+    // MARK: - Private
+    private func updateImage() {
+        coverImageView.setImage(fromSource: coverImage)
     }
 }
