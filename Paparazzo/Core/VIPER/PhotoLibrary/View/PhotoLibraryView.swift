@@ -110,7 +110,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             left: bounds.left,
             right: bounds.right,
             bottom: titleView.bottom,
-            height: bounds.height - titleView.height
+            fitHeight: bounds.height - titleView.height
         )
         
         dimView.frame = bounds
@@ -446,8 +446,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         _ cell: PhotoLibraryItemCell,
         wihData data: PhotoLibraryItemCellData,
         inCollectionView collectionView: UICollectionView,
-        atIndexPath indexPath: IndexPath
-    ) {
+        atIndexPath indexPath: IndexPath)
+    {
         cell.backgroundColor = theme?.photoCellBackgroundColor
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
         
