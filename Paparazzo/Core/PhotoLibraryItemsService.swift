@@ -1,26 +1,6 @@
 import Photos
 import ImageSource
 
-final class PhotoLibraryAlbum: Equatable {
-    
-    let identifier: String
-    let title: String?
-    let coverImage: ImageSource?
-    
-    fileprivate var fetchResult: PHFetchResult<PHAsset>
-    
-    fileprivate init(identifier: String, title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
-        self.identifier = identifier
-        self.title = title
-        self.coverImage = coverImage
-        self.fetchResult = fetchResult
-    }
-    
-    static func ==(lhs: PhotoLibraryAlbum, rhs: PhotoLibraryAlbum) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
-}
-
 protocol PhotoLibraryItemsService {
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
@@ -28,14 +8,9 @@ protocol PhotoLibraryItemsService {
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
-
-    private let photoLibrary = PHPhotoLibrary.shared()
-    private var albumsFetchResult: PHFetchResult<PHAssetCollection>?
     
-    private let setupQueue = DispatchQueue(
-        label: "ru.avito.Paparazzo.PhotoLibraryItemsServiceImpl.setupQueue",
-        qos: .userInitiated
-    )
+    private let photoLibrary = PHPhotoLibrary.shared()
+    private var albumsFetchResult: PhotoLibraryFetchResult?
     
     // lazy because if you create PHImageManager immediately
     // the app will crash on dealloc of this class if access to photo library is denied
@@ -63,7 +38,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         executeAfterSetup {
             self.onAlbumsChange = handler
-            handler(self.albums())
+            handler(self.albumsFetchResult?.albums ?? [])
         }
     }
     
@@ -81,10 +56,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         executeAfterSetup {
             
             if let albumsFetchResult = self.albumsFetchResult,
-               let changes = changeInfo.changeDetails(for: albumsFetchResult)
+               let changes = changeInfo.changeDetails(for: albumsFetchResult.phFetchResult)
             {
-                self.albumsFetchResult = changes.fetchResultAfterChanges
-                self.onAlbumsChange?(self.albums())
+                PhotoLibraryFetchResult.create(with: { changes.fetchResultAfterChanges }) { albumsFetchResult in
+                    self.albumsFetchResult = albumsFetchResult
+                    self.onAlbumsChange?(albumsFetchResult.albums)
+                }
             }
             
             if let observedAlbum = self.observedAlbum,
@@ -105,15 +82,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private var observedAlbum: PhotoLibraryAlbum?
     private var wasSetUp = false
     
-    private func executeAfterSetup(on queue: DispatchQueue = .main, execute: @escaping () -> ()) {
-        setupQueue.async {
-            self.setUpIfNeeded(completion: {
-                queue.async(execute: execute)
-            })
-        }
-    }
-    
-    private func setUpIfNeeded(completion: @escaping () -> ()) {
+    /// `completion` is executed on main queue
+    private func executeAfterSetup(completion: @escaping () -> ()) {
         
         guard !wasSetUp else {
             completion()
@@ -121,74 +91,35 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
         
         switch PHPhotoLibrary.authorizationStatus() {
+        
         case .authorized:
             wasSetUp = true
-            setUpFetchRequest()
-            completion()
+            setUpFetchResult(completion: completion)
+        
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] status in
-                self?.wasSetUp = true
-                if case .authorized = status {
-                    self?.setUpFetchRequest()
-                }
-                completion()
                 self?.callAuthorizationHandler(for: status)
+                self?.wasSetUp = true
+                
+                if case .authorized = status {
+                    self?.setUpFetchResult(completion: completion)
+                } else {
+                    completion()
+                }
             }
+            
         case .restricted, .denied:
             wasSetUp = true
             completion()
         }
     }
     
-    private func setUpFetchRequest() {
-        let options = fetchOptions()
-        albumsFetchResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options)
-        callObserverHandler(changes: nil)
-    }
-    
-    private func albums() -> [PhotoLibraryAlbum] {
-        
-        let options = fetchOptions()
-        
-        var albums = [
-            photoLibraryAlbum(
-                identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
-                title: localized("All photos"),
-                fetchResult: PHAsset.fetchAssets(with: .image, options: options)
-            )
-        ]
-        
-        albumsFetchResult?.enumerateObjects(using: { album, _, _ in
-            albums.append(self.photoLibraryAlbum(
-                identifier: album.localIdentifier,
-                title: album.localizedTitle,
-                fetchResult: PHAsset.fetchAssets(in: album, options: options)
-            ))
-        })
-        
-        return albums
-    }
-    
-    private func photoLibraryAlbum(identifier: String, title: String?, fetchResult: PHFetchResult<PHAsset>) -> PhotoLibraryAlbum {
-        return PhotoLibraryAlbum(
-            identifier: identifier,
-            title: title,
-            coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
-            fetchResult: fetchResult
-        )
-    }
-    
-    private func fetchOptions() -> PHFetchOptions? {
-        let options: PHFetchOptions?
-        
-        if #available(iOS 9.0, *) {
-            options = PHFetchOptions()
-            options?.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
-        } else {
-            options = nil
+    private func setUpFetchResult(completion: @escaping () -> ()) {
+        PhotoLibraryFetchResult.create { albumsFetchResult in
+            self.albumsFetchResult = albumsFetchResult
+            self.callObserverHandler(changes: nil)
+            completion()
         }
-        
-        return options
     }
     
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
@@ -268,5 +199,115 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             movedIndexes: movedIndexes,
             itemsAfterChanges: photoLibraryItems(from: assets)
         )
+    }
+}
+
+private final class PhotoLibraryFetchResult {
+    
+    // MARK: - Data
+    let albums: [PhotoLibraryAlbum]
+    let phFetchResult: PHFetchResult<PHAssetCollection>
+    
+    private static let setupQueue = DispatchQueue(
+        label: "ru.avito.Paparazzo.PhotoLibraryFetchResult.setupQueue",
+        qos: .userInitiated
+    )
+    
+    // MARK: - Init
+    
+    /// Use `PhotoLibraryFetchResult.create` to create an instance
+    private init(phFetchResult: PHFetchResult<PHAssetCollection>?) {
+        assert(!Thread.isMainThread, "Do not call this method on main thread")
+        
+        let options = PhotoLibraryFetchResult.phFetchOptions()
+        
+        self.phFetchResult = phFetchResult ?? PHAssetCollection.fetchAssetCollections(
+            with: .album,
+            subtype: .any,
+            options: options
+        )
+        
+        self.albums = PhotoLibraryFetchResult.albums(from: self.phFetchResult, options: options)
+    }
+    
+    // MARK: - Private
+    
+    static func create(
+        with phFetchResult: (() -> PHFetchResult<PHAssetCollection>)? = nil,
+        completion: @escaping (PhotoLibraryFetchResult) -> ())
+    {
+        setupQueue.async {
+            let fetchResult = PhotoLibraryFetchResult(phFetchResult: phFetchResult?())
+            DispatchQueue.main.async {
+                completion(fetchResult)
+            }
+        }
+    }
+    
+    private static func albums(
+        from phFetchResult: PHFetchResult<PHAssetCollection>,
+        options: PHFetchOptions?)
+        -> [PhotoLibraryAlbum]
+    {
+        assert(!Thread.isMainThread, "Do not call this method on main thread")
+        
+        let allPhotosStartDate = Date()
+        let allPhotosFetchResult = PHAsset.fetchAssets(with: .image, options: options)
+        print("All photos fetch took \(Date().timeIntervalSince(allPhotosStartDate))")
+        
+        var albums = [
+            PhotoLibraryAlbum(
+                identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
+                title: localized("All photos"),
+                coverImage: allPhotosFetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
+                fetchResult: allPhotosFetchResult
+            )
+        ]
+        
+        phFetchResult.enumerateObjects(using: { album, _, _ in
+            
+            let startDate = Date()
+            let albumAssetsFetchResult = PHAsset.fetchAssets(in: album, options: options)
+            print("\(album.localizedTitle) fetch took \(Date().timeIntervalSince(startDate))")
+            
+            albums.append(PhotoLibraryAlbum(
+                identifier: album.localIdentifier,
+                title: album.localizedTitle,
+                coverImage: albumAssetsFetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
+                fetchResult: albumAssetsFetchResult
+            ))
+        })
+        
+        return albums
+    }
+    
+    private static func phFetchOptions() -> PHFetchOptions? {
+        if #available(iOS 9.0, *) {
+            let options = PHFetchOptions()
+            options.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
+            return options
+        } else {
+            return nil
+        }
+    }
+}
+
+final class PhotoLibraryAlbum: Equatable {
+    
+    let identifier: String
+    let title: String?
+    let coverImage: ImageSource?
+    
+    fileprivate var fetchResult: PHFetchResult<PHAsset>
+    
+    fileprivate init(identifier: String, title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
+        self.identifier = identifier
+        self.title = title
+        self.coverImage = coverImage
+        self.fetchResult = fetchResult
+    }
+    
+    static func ==(lhs: PhotoLibraryAlbum, rhs: PhotoLibraryAlbum) -> Bool {
+        return lhs.identifier == rhs.identifier
     }
 }
