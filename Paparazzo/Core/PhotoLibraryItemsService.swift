@@ -12,16 +12,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResult: PhotoLibraryFetchResult?
     
+    private let fetchResultQueue = DispatchQueue(
+        label: "ru.avito.Paparazzo.PhotoLibraryItemsServiceImpl.fetchResultQueue",
+        qos: .userInitiated
+    )
+    
     // lazy because if you create PHImageManager immediately
     // the app will crash on dealloc of this class if access to photo library is denied
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    
-    override init() {
-        super.init()
-        photoLibrary.register(self)
-    }
     
     deinit {
         photoLibrary.unregisterChangeObserver(self)
@@ -51,23 +51,45 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PHPhotoLibraryChangeObserver
     
-    func photoLibraryDidChange(_ changeInfo: PHChange) {
-        executeAfterSetup {
+    func photoLibraryDidChange(_ change: PHChange) {
+        
+        fetchResultQueue.async {
+            guard let fetchResult = self.fetchResult else { return }
             
-            if let albumsFetchResult = self.fetchResult,
-               let changes = changeInfo.changeDetails(for: albumsFetchResult.phFetchResult)
-            {
-                PhotoLibraryFetchResult.create(with: { changes.fetchResultAfterChanges }) { albumsFetchResult in
-                    self.fetchResult = albumsFetchResult
-                    self.onAlbumsChange?(albumsFetchResult.albums)
+            fetchResult.albums.forEach { album in
+                if let changeDetails = change.changeDetails(for: album.fetchResult) {
+                    album.fetchResult = changeDetails.fetchResultAfterChanges
+                    if album == self.observedAlbum {
+                        DispatchQueue.main.async {
+                            self.callObserverHandler(changes: changeDetails)
+                        }
+                    }
                 }
             }
             
-            if let observedAlbum = self.observedAlbum,
-               let changes = changeInfo.changeDetails(for: observedAlbum.fetchResult)
-            {
-                self.observedAlbum?.fetchResult = changes.fetchResultAfterChanges
-                self.callObserverHandler(changes: changes)
+            if let changeDetails = change.changeDetails(for: fetchResult.phFetchResult) {
+                
+                let fetchOptions = self.phFetchOptions()
+                
+                fetchResult.phFetchResult = changeDetails.fetchResultAfterChanges
+                
+                changeDetails.removedIndexes?.reversed().forEach { index in
+                    fetchResult.albums.remove(at: index + 1)  // +1, because album 0 is "All photos"
+                }
+                
+                changeDetails.insertedIndexes?.enumerated()
+                    .map { ($1, changeDetails.insertedObjects[$0]) }
+                    .forEach { insertionIndex, assetCollection in
+                        let album = self.photoLibraryAlbum(from: assetCollection, fetchOptions: fetchOptions)
+                        fetchResult.albums.insert(album, at: insertionIndex + 1)  // +1, because album 0 is "All photos"
+                    }
+                
+                // Updates: it's not possible to rename albums in iOS as for now
+                // Moves: seems like iOS doesn't generate them for photo albums
+                
+                DispatchQueue.main.async {
+                    self.onAlbumsChange?(fetchResult.albums)
+                }
             }
         }
     }
@@ -117,10 +139,54 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     private func setUpFetchResult(completion: @escaping () -> ()) {
-        PhotoLibraryFetchResult.create { albumsFetchResult in
-            self.fetchResult = albumsFetchResult
-            completion()
+        fetchResultQueue.async {
+            
+            let options = self.phFetchOptions()
+            
+            let assetCollectionsFetchResult = PHAssetCollection.fetchAssetCollections(
+                with: .album,
+                subtype: .any,
+                options: options
+            )
+            
+            var albums = [
+                self.photoLibraryAlbum(
+                    identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
+                    title: localized("All photos"),
+                    fetchResult: PHAsset.fetchAssets(with: .image, options: options)
+                )
+            ]
+            
+            assetCollectionsFetchResult.enumerateObjects(using: { assetCollection, _, _ in
+                albums.append(self.photoLibraryAlbum(from: assetCollection, fetchOptions: options))
+            })
+            
+            self.fetchResult = PhotoLibraryFetchResult(albums: albums, phFetchResult: assetCollectionsFetchResult)
+            self.photoLibrary.register(self)
+
+            DispatchQueue.main.async(execute: completion)
         }
+    }
+    
+    private func photoLibraryAlbum(identifier: String, title: String?, fetchResult: PHFetchResult<PHAsset>)
+        -> PhotoLibraryAlbum
+    {
+        return PhotoLibraryAlbum(
+            identifier: identifier,
+            title: title,
+            coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
+            fetchResult: fetchResult
+        )
+    }
+    
+    private func photoLibraryAlbum(from assetCollection: PHAssetCollection, fetchOptions: PHFetchOptions?)
+        -> PhotoLibraryAlbum
+    {
+        return photoLibraryAlbum(
+            identifier: assetCollection.localIdentifier,
+            title: assetCollection.localizedTitle,
+            fetchResult: PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
+        )
     }
     
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
@@ -201,79 +267,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             itemsAfterChanges: photoLibraryItems(from: assets)
         )
     }
-}
-
-private final class PhotoLibraryFetchResult {
     
-    // MARK: - Data
-    let albums: [PhotoLibraryAlbum]
-    let phFetchResult: PHFetchResult<PHAssetCollection>
-    
-    // MARK: - Init
-    
-    /// Use `PhotoLibraryFetchResult.create` to create an instance
-    private init(phFetchResult: PHFetchResult<PHAssetCollection>?) {
-        assert(!Thread.isMainThread, "Do not call this method on main thread")
-        
-        let options = PhotoLibraryFetchResult.phFetchOptions()
-        
-        self.phFetchResult = phFetchResult ?? PHAssetCollection.fetchAssetCollections(
-            with: .album,
-            subtype: .any,
-            options: options
-        )
-        
-        self.albums = PhotoLibraryFetchResult.albums(from: self.phFetchResult, options: options)
-    }
-    
-    // MARK: - Private
-    
-    static func create(
-        with phFetchResult: (() -> PHFetchResult<PHAssetCollection>)? = nil,
-        completion: @escaping (PhotoLibraryFetchResult) -> ())
-    {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let fetchResult = PhotoLibraryFetchResult(phFetchResult: phFetchResult?())
-            DispatchQueue.main.async {
-                completion(fetchResult)
-            }
-        }
-    }
-    
-    private static func albums(
-        from phFetchResult: PHFetchResult<PHAssetCollection>,
-        options: PHFetchOptions?)
-        -> [PhotoLibraryAlbum]
-    {
-        assert(!Thread.isMainThread, "Do not call this method on main thread")
-        
-        let allPhotosFetchResult = PHAsset.fetchAssets(with: .image, options: options)
-        
-        var albums = [
-            PhotoLibraryAlbum(
-                identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
-                title: localized("All photos"),
-                coverImage: allPhotosFetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
-                fetchResult: allPhotosFetchResult
-            )
-        ]
-        
-        phFetchResult.enumerateObjects(using: { album, _, _ in
-            
-            let albumAssetsFetchResult = PHAsset.fetchAssets(in: album, options: options)
-            
-            albums.append(PhotoLibraryAlbum(
-                identifier: album.localIdentifier,
-                title: album.localizedTitle,
-                coverImage: albumAssetsFetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
-                fetchResult: albumAssetsFetchResult
-            ))
-        })
-        
-        return albums
-    }
-    
-    private static func phFetchOptions() -> PHFetchOptions? {
+    private func phFetchOptions() -> PHFetchOptions? {
         if #available(iOS 9.0, *) {
             let options = PHFetchOptions()
             options.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
@@ -281,6 +276,19 @@ private final class PhotoLibraryFetchResult {
         } else {
             return nil
         }
+    }
+}
+
+private final class PhotoLibraryFetchResult {
+    
+    // MARK: - Data
+    var albums: [PhotoLibraryAlbum]
+    var phFetchResult: PHFetchResult<PHAssetCollection>
+    
+    // MARK: - Init
+    init(albums: [PhotoLibraryAlbum], phFetchResult: PHFetchResult<PHAssetCollection>) {
+        self.albums = albums
+        self.phFetchResult = phFetchResult
     }
 }
 
