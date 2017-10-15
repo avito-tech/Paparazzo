@@ -25,6 +25,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     private let layout = PhotoLibraryLayout()
     private var collectionView: UICollectionView
+    private var collectionSnapshotView: UIView?
     private let titleView = PhotoLibraryTitleView()
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -103,6 +104,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             bottom: toolbar.top
         )
         
+        collectionSnapshotView?.frame = collectionView.frame
+        
         albumsTableView.layout(
             left: bounds.left,
             right: bounds.right,
@@ -153,16 +156,53 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     var onTitleTap: (() -> ())?
     var onDimViewTap: (() -> ())?
     
-    func deleteAllItems() {
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
+        
+        // If `items` contain a lot of elements, then there's a chance that by the time
+        // `collectionView.scrollToBottom()` is called in `performBatchUpdates` completion, the user will see
+        // some of the new content, followed by a fast jump to the bottom. To prevent this unwanted glitch
+        // we need to cover collection view with a snapshot of its current content. This snapshot will be removed
+        // after `scrollToBottom()`.
+        if scrollToBottom {
+            coverCollectionViewWithItsSnapshot()
+        }
+        
+        // Delete existing items outside `performBatchUpdates`, otherwise there will be UI bug on scrollToBottom
+        // (collection view will be scrolled to an empty space below it's actual content)
         dataSource.deleteAllItems()
         collectionView.reloadData()
+        
+        ObjCExceptionCatcher.tryClosure(
+            tryClosure: { [collectionView, collectionSnapshotView, dataSource] in
+                collectionView.performBatchUpdates(
+                    animated: true,
+                    updates: {
+                        let indexPathsToInsert = (0 ..< items.count).map { IndexPath(item: $0, section: 0) }
+                        collectionView.insertItems(at: indexPathsToInsert)
+                        
+                        dataSource.setItems(items)
+                    },
+                    completion: { _ in
+                        if scrollToBottom {
+                            collectionView.scrollToBottom()
+                            collectionSnapshotView?.removeFromSuperview()
+                        }
+                        completion?()
+                    }
+                )
+            },
+            catchClosure: { _ in
+                self.recreateCollectionView()
+                completion?()
+            }
+        )
     }
     
-    func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
+    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
         
         ObjCExceptionCatcher.tryClosure(
             tryClosure: { [collectionView, dataSource] in
-                collectionView.performBatchUpdates(animated: animated, {
+                collectionView.performBatchUpdates(animated: true, updates: {
                     
                     let toIndexPath = { (index: Int) in
                         IndexPath(item: index, section: 0)
@@ -220,6 +260,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             },
             catchClosure: { _ in
                 self.recreateCollectionView()
+                completion?()
             }
         )
     }
@@ -435,5 +476,13 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     @objc private func onDimViewTap(_: UITapGestureRecognizer) {
         onDimViewTap?()
+    }
+    
+    private func coverCollectionViewWithItsSnapshot() {
+        collectionSnapshotView = collectionView.snapshotView(afterScreenUpdates: false)
+        
+        if let collectionSnapshotView = collectionSnapshotView {
+            insertSubview(collectionSnapshotView, aboveSubview: collectionView)
+        }
     }
 }

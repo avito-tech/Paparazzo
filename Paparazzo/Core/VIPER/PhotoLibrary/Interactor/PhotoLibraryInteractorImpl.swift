@@ -33,14 +33,14 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         photoLibraryItemsService.observeAlbums(handler: handler)
     }
     
-    func observeItems(
+    func observeEvents(
         in album: PhotoLibraryAlbum,
-        handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
+        handler: @escaping (_ event: PhotoLibraryEvent, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     {
-        photoLibraryItemsService.observeItems(in: album) { [weak self] changes in
+        photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
             guard let strongSelf = self else { return }
             
-            strongSelf.allItems = changes.itemsAfterChanges.map { item in
+            let mapper = { (item: PhotoLibraryItem) in
                 PhotoLibraryItem(
                     identifier: item.identifier,
                     image: item.image,
@@ -48,10 +48,17 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
                 )
             }
             
+            switch event {
+            case .fullReload(let items):
+                strongSelf.allItems = items.map(mapper)
+            case .changes(let changes):
+                strongSelf.allItems = changes.itemsAfterChanges.map(mapper)
+            }
+            
             strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
             
             dispatch_to_main_queue {
-                handler(changes, strongSelf.selectionState())
+                handler(event, strongSelf.selectionState())
             }
         }
     }

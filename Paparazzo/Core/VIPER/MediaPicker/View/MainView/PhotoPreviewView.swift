@@ -97,7 +97,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         
-        collectionView.performBatchUpdates(animated: false, { [weak self] in
+        collectionView.performBatchUpdates(animated: false, updates: { [weak self] in
             self?.dataSource.moveItem(
                 from: sourceIndex,
                 to: destinationIndex

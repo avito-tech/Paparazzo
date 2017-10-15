@@ -17,7 +17,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - Flags
     
-    private var shouldScrollToBottomWhenItemsArrive = true
+    private var shouldScrollToBottomAfterFullReload = true
     
     // MARK: - Init
     
@@ -66,10 +66,9 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                     title: album.title ?? localized("Unnamed album"),
                     coverImage: album.coverImage,
                     onSelect: {
-                        self?.view?.deleteAllItems()
                         self?.view?.setTitle(album.title ?? localized("Unnamed album"))
                         self?.view?.hideAlbumsList()
-                        self?.shouldScrollToBottomWhenItemsArrive = true
+                        self?.shouldScrollToBottomAfterFullReload = true
                         self?.setUpObservingOfItems(in: album)
                     }
                 )
@@ -102,24 +101,27 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     }
     
     private func setUpObservingOfItems(in album: PhotoLibraryAlbum) {
-        interactor.observeItems(in: album) { [weak self] changes, selectionState in
+        interactor.observeEvents(in: album) { [weak self] event, selectionState in
             guard let strongSelf = self else { return }
             
             self?.view?.setProgressVisible(false)
             
-            let hasItems = (changes.itemsAfterChanges.count > 0)
-            
-            let animated = (self?.shouldScrollToBottomWhenItemsArrive == false)
-            
-            self?.view?.applyChanges(strongSelf.viewChanges(from: changes), animated: animated, completion: {
+            switch event {
+            case .fullReload(let items):
+                self?.view?.setItems(
+                    items.map(strongSelf.cellData),
+                    scrollToBottom: strongSelf.shouldScrollToBottomAfterFullReload,
+                    completion: {
+                        self?.shouldScrollToBottomAfterFullReload = false
+                        self?.adjustViewForSelectionState(selectionState)
+                    }
+                )
                 
-                self?.adjustViewForSelectionState(selectionState)
-                
-                if self?.shouldScrollToBottomWhenItemsArrive == true {
-                    self?.view?.scrollToBottom()
-                    self?.shouldScrollToBottomWhenItemsArrive = false
-                }
-            })
+            case .changes(let changes):
+                self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
+                    self?.adjustViewForSelectionState(selectionState)
+                })
+            }
         }
     }
     

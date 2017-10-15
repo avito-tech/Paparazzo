@@ -8,8 +8,8 @@ protocol PhotoLibraryViewInput: class {
     
     func setTitle(_: String)
     
-    func deleteAllItems()
-    func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
+    func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
+    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
     
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)

@@ -69,12 +69,12 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setTitle(title)
     }
     
-    func deleteAllItems() {
-        photoLibraryView.deleteAllItems()
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
+        photoLibraryView.setItems(items, scrollToBottom: scrollToBottom, completion: completion)
     }
     
-    func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
-        photoLibraryView.applyChanges(changes, animated: animated, completion: completion)
+    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+        photoLibraryView.applyChanges(changes, completion: completion)
     }
     
     func setCanSelectMoreItems(_ canSelectMoreItems: Bool) {

@@ -18,7 +18,7 @@ final class PhotoLibraryAlbum {
 protocol PhotoLibraryItemsService {
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
-    func observeItems(in: PhotoLibraryAlbum, handler: @escaping (_ changes: PhotoLibraryChanges) -> ())
+    func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryEvent) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
@@ -63,10 +63,10 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    func observeItems(in album: PhotoLibraryAlbum, handler: @escaping (_ changes: PhotoLibraryChanges) -> ()) {
+    func observeEvents(in album: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryEvent) -> ()) {
         executeAfterSetup {
             self.observedAlbum = album
-            self.onPhotosChange = handler
+            self.onEvent = handler
             self.callObserverHandler(changes: nil)
         }
     }
@@ -86,7 +86,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
 
     // MARK: - Private
     
-    private var onPhotosChange: ((_ changes: PhotoLibraryChanges) -> ())?
+    private var onEvent: ((_ event: PhotoLibraryEvent) -> ())?
     private var onAlbumsChange: ((_ albums: [PhotoLibraryAlbum]) -> ())?
     private var onAuthorizationStatusChange: ((_ accessGranted: Bool) -> ())?
     
@@ -180,26 +180,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
-        
-        let changes: PhotoLibraryChanges
-        
         if let phChanges = phChanges {
-            changes = photoLibraryChanges(from: phChanges)
-        
+            onEvent?(.changes(photoLibraryChanges(from: phChanges)))
         } else {
-        
-            let items = photoLibraryItems(from: assetsFromFetchResult())
-            
-            changes = PhotoLibraryChanges(
-                removedIndexes: IndexSet(),
-                insertedItems: items.enumerated().map { (index: $0, item: $1) },
-                updatedItems: [],
-                movedIndexes: [],
-                itemsAfterChanges: items
-            )
+            onEvent?(.fullReload(photoLibraryItems(from: assetsFromFetchResult())))
         }
-        
-        onPhotosChange?(changes)
     }
     
     private func assetsFromFetchResult() -> [PHAsset] {

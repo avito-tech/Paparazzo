@@ -5,9 +5,9 @@ protocol PhotoLibraryInteractor: class {
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
-    func observeItems(
+    func observeEvents(
         in: PhotoLibraryAlbum,
-        handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
+        handler: @escaping (_ event: PhotoLibraryEvent, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     
     func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
     func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
@@ -43,6 +43,11 @@ struct PhotoLibraryItemSelectionState {
     var isAnyItemSelected: Bool
     var canSelectMoreItems: Bool
     var preSelectionAction: PreSelectionAction
+}
+
+enum PhotoLibraryEvent {
+    case fullReload([PhotoLibraryItem])
+    case changes(PhotoLibraryChanges)
 }
 
 struct PhotoLibraryChanges {
