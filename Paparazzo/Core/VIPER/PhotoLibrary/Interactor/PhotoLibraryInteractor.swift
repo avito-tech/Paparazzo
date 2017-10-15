@@ -8,7 +8,7 @@ protocol PhotoLibraryInteractor: class {
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
-    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryEvent, PhotoLibraryItemSelectionState) -> ())
+    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())
     
     func isSelected(_: PhotoLibraryItem) -> Bool
     func selectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
@@ -46,7 +46,7 @@ struct PhotoLibraryItemSelectionState {
     var preSelectionAction: PreSelectionAction
 }
 
-enum PhotoLibraryEvent {
+enum PhotoLibraryAlbumEvent {
     case initialLoad([PhotoLibraryItem])
     case changes(PhotoLibraryChanges)
 }

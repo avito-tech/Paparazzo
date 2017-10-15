@@ -4,13 +4,13 @@ import ImageSource
 protocol PhotoLibraryItemsService {
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
-    func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryEvent) -> ())
+    func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
     
     private let photoLibrary = PHPhotoLibrary.shared()
-    private var albumsFetchResult: PhotoLibraryFetchResult?
+    private var fetchResult: PhotoLibraryFetchResult?
     
     // lazy because if you create PHImageManager immediately
     // the app will crash on dealloc of this class if access to photo library is denied
@@ -20,7 +20,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     override init() {
         super.init()
-        
         photoLibrary.register(self)
     }
     
@@ -38,14 +37,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         executeAfterSetup {
             self.onAlbumsChange = handler
-            handler(self.albumsFetchResult?.albums ?? [])
+            handler(self.fetchResult?.albums ?? [])
         }
     }
     
-    func observeEvents(in album: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryEvent) -> ()) {
+    func observeEvents(in album: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ()) {
         executeAfterSetup {
             self.observedAlbum = album
-            self.onEvent = handler
+            self.onAlbumEvent = handler
             self.callObserverHandler(changes: nil)
         }
     }
@@ -55,11 +54,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func photoLibraryDidChange(_ changeInfo: PHChange) {
         executeAfterSetup {
             
-            if let albumsFetchResult = self.albumsFetchResult,
+            if let albumsFetchResult = self.fetchResult,
                let changes = changeInfo.changeDetails(for: albumsFetchResult.phFetchResult)
             {
                 PhotoLibraryFetchResult.create(with: { changes.fetchResultAfterChanges }) { albumsFetchResult in
-                    self.albumsFetchResult = albumsFetchResult
+                    self.fetchResult = albumsFetchResult
                     self.onAlbumsChange?(albumsFetchResult.albums)
                 }
             }
@@ -75,8 +74,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
 
     // MARK: - Private
     
-    private var onEvent: ((_ event: PhotoLibraryEvent) -> ())?
-    private var onAlbumsChange: ((_ albums: [PhotoLibraryAlbum]) -> ())?
+    private var onAlbumEvent: ((PhotoLibraryAlbumEvent) -> ())?
+    private var onAlbumsChange: (([PhotoLibraryAlbum]) -> ())?
     private var onAuthorizationStatusChange: ((_ accessGranted: Bool) -> ())?
     
     private var observedAlbum: PhotoLibraryAlbum?
@@ -116,7 +115,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     private func setUpFetchResult(completion: @escaping () -> ()) {
         PhotoLibraryFetchResult.create { albumsFetchResult in
-            self.albumsFetchResult = albumsFetchResult
+            self.fetchResult = albumsFetchResult
             self.callObserverHandler(changes: nil)
             completion()
         }
@@ -128,9 +127,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
         if let phChanges = phChanges {
-            onEvent?(.changes(photoLibraryChanges(from: phChanges)))
+            onAlbumEvent?(.changes(photoLibraryChanges(from: phChanges)))
         } else {
-            onEvent?(.initialLoad(photoLibraryItems(from: assetsFromFetchResult())))
+            onAlbumEvent?(.initialLoad(photoLibraryItems(from: assetsFromFetchResult())))
         }
     }
     
@@ -251,9 +250,7 @@ private final class PhotoLibraryFetchResult {
     {
         assert(!Thread.isMainThread, "Do not call this method on main thread")
         
-        let allPhotosStartDate = Date()
         let allPhotosFetchResult = PHAsset.fetchAssets(with: .image, options: options)
-        print("All photos fetch took \(Date().timeIntervalSince(allPhotosStartDate))")
         
         var albums = [
             PhotoLibraryAlbum(
@@ -266,9 +263,7 @@ private final class PhotoLibraryFetchResult {
         
         phFetchResult.enumerateObjects(using: { album, _, _ in
             
-            let startDate = Date()
             let albumAssetsFetchResult = PHAsset.fetchAssets(in: album, options: options)
-            print("\(album.localizedTitle) fetch took \(Date().timeIntervalSince(startDate))")
             
             albums.append(PhotoLibraryAlbum(
                 identifier: album.localIdentifier,

@@ -5,7 +5,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - State
     private var maxSelectedItemsCount: Int?
-    private var onAlbumEvent: ((PhotoLibraryEvent, PhotoLibraryItemSelectionState) -> ())?
+    private var onAlbumEvent: ((PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())?
     
     // MARK: - Dependencies
     private let photoLibraryItemsService: PhotoLibraryItemsService
@@ -40,7 +40,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         }
     }
     
-    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryEvent, PhotoLibraryItemSelectionState) -> ()) {
+    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ()) {
         onAlbumEvent = handler
     }
     
