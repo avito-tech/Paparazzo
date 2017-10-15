@@ -97,13 +97,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] status in
-                self?.callAuthorizationHandler(for: status)
-                self?.wasSetUp = true
+                
+                DispatchQueue.main.async {
+                    self?.callAuthorizationHandler(for: status)
+                    self?.wasSetUp = true
+                }
                 
                 if case .authorized = status {
                     self?.setUpFetchResult(completion: completion)
                 } else {
-                    completion()
+                    DispatchQueue.main.async(execute: completion)
                 }
             }
             
@@ -116,7 +119,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func setUpFetchResult(completion: @escaping () -> ()) {
         PhotoLibraryFetchResult.create { albumsFetchResult in
             self.fetchResult = albumsFetchResult
-            self.callObserverHandler(changes: nil)
             completion()
         }
     }
@@ -207,11 +209,6 @@ private final class PhotoLibraryFetchResult {
     let albums: [PhotoLibraryAlbum]
     let phFetchResult: PHFetchResult<PHAssetCollection>
     
-    private static let setupQueue = DispatchQueue(
-        label: "ru.avito.Paparazzo.PhotoLibraryFetchResult.setupQueue",
-        qos: .userInitiated
-    )
-    
     // MARK: - Init
     
     /// Use `PhotoLibraryFetchResult.create` to create an instance
@@ -235,7 +232,7 @@ private final class PhotoLibraryFetchResult {
         with phFetchResult: (() -> PHFetchResult<PHAssetCollection>)? = nil,
         completion: @escaping (PhotoLibraryFetchResult) -> ())
     {
-        setupQueue.async {
+        DispatchQueue.global(qos: .userInitiated).async {
             let fetchResult = PhotoLibraryFetchResult(phFetchResult: phFetchResult?())
             DispatchQueue.main.async {
                 completion(fetchResult)
