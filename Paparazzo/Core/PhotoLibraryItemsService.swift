@@ -30,14 +30,7 @@ protocol PhotoLibraryItemsService {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
 
     private let photoLibrary = PHPhotoLibrary.shared()
-    
-    private var albums = [PhotoLibraryAlbum]()
-    
-    private var albumsFetchResult: PHFetchResult<PHAssetCollection>? {
-        didSet {
-            refreshAlbums()
-        }
-    }
+    private var albumsFetchResult: PHFetchResult<PHAssetCollection>?
     
     private let setupQueue = DispatchQueue(
         label: "ru.avito.Paparazzo.PhotoLibraryItemsServiceImpl.setupQueue",
@@ -70,7 +63,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         executeAfterSetup {
             self.onAlbumsChange = handler
-            handler(self.albums)
+            handler(self.albums())
         }
     }
     
@@ -91,7 +84,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                let changes = changeInfo.changeDetails(for: albumsFetchResult)
             {
                 self.albumsFetchResult = changes.fetchResultAfterChanges
-                self.onAlbumsChange?(self.albums)
+                self.onAlbumsChange?(self.albums())
             }
             
             if let observedAlbum = self.observedAlbum,
@@ -153,7 +146,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         callObserverHandler(changes: nil)
     }
     
-    private func refreshAlbums() {
+    private func albums() -> [PhotoLibraryAlbum] {
         
         let options = fetchOptions()
         
@@ -173,7 +166,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             ))
         })
         
-        self.albums = albums
+        return albums
     }
     
     private func photoLibraryAlbum(identifier: String, title: String?, fetchResult: PHFetchResult<PHAsset>) -> PhotoLibraryAlbum {
