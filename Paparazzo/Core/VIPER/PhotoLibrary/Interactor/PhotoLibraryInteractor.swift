@@ -3,6 +3,8 @@ import ImageSource
 
 protocol PhotoLibraryInteractor: class {
     
+    var selectedItems: [PhotoLibraryItem] { get }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(
@@ -10,10 +12,9 @@ protocol PhotoLibraryInteractor: class {
         handler: @escaping (_ event: PhotoLibraryEvent, _ selectionState: PhotoLibraryItemSelectionState) -> ())
     
     func isSelected(_: PhotoLibraryItem) -> Bool
-    func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
-    func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
-    func prepareSelection(completion: @escaping (PhotoLibraryItemSelectionState) -> ())
-    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ())
+    func selectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
+    func deselectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
+    func prepareSelection() -> PhotoLibraryItemSelectionState
 }
 
 public struct PhotoLibraryItem: Equatable {

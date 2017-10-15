@@ -4,7 +4,7 @@ import ImageSource
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - Data
-    private var selectedItems = [PhotoLibraryItem]()
+    private(set) var selectedItems = [PhotoLibraryItem]()
     private var maxSelectedItemsCount: Int?
     
     // MARK: - Dependencies
@@ -52,35 +52,27 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         return selectedItems.contains(item)
     }
     
-    func selectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
-        
+    func selectItem(_ item: PhotoLibraryItem) -> PhotoLibraryItemSelectionState {
         if canSelectMoreItems() {
             selectedItems.append(item)
         }
-        
-        completion(selectionState())
+        return selectionState()
     }
     
-    func deselectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
-        
+    func deselectItem(_ item: PhotoLibraryItem) -> PhotoLibraryItemSelectionState {
         if let index = selectedItems.index(of: item) {
             selectedItems.remove(at: index)
         }
-        
-        completion(selectionState())
+        return selectionState()
     }
     
-    func prepareSelection(completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
+    func prepareSelection() -> PhotoLibraryItemSelectionState {
         if selectedItems.count > 0 && maxSelectedItemsCount == 1 {
             selectedItems.removeAll()
-            completion(selectionState(preSelectionAction: .deselectAll))
+            return selectionState(preSelectionAction: .deselectAll)
         } else {
-            completion(selectionState())
+            return selectionState()
         }
-    }
-    
-    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ()) {
-        completion(selectedItems)
     }
     
     // MARK: - Private

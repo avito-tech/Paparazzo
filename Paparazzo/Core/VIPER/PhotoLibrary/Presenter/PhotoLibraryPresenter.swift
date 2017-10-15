@@ -79,8 +79,8 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         }
         
         view?.onPickButtonTap = { [weak self] in
-            self?.interactor.selectedItems { items in
-                self?.onFinish?(.selectedItems(items))
+            if let strongSelf = self {
+                self?.onFinish?(.selectedItems(strongSelf.interactor.selectedItems))
             }
         }
         
@@ -150,19 +150,19 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         cellData.selected = interactor.isSelected(item)
         
         cellData.onSelectionPrepare = { [weak self] in
-            self?.interactor.prepareSelection { [weak self] selectionState in
+            if let selectionState = self?.interactor.prepareSelection() {
                 self?.adjustViewForSelectionState(selectionState)
             }
         }
         
         cellData.onSelect = { [weak self] in
-            self?.interactor.selectItem(item) { selectionState in
+            if let selectionState = self?.interactor.selectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
         }
         
         cellData.onDeselect = { [weak self] in
-            self?.interactor.deselectItem(item) { selectionState in
+            if let selectionState = self?.interactor.deselectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
         }
