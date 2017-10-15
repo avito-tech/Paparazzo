@@ -15,10 +15,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         }
     }
     
-    // MARK: - Flags
-    
-    private var shouldScrollToBottomAfterInitialLoad = true
-    
     // MARK: - Init
     
     init(interactor: PhotoLibraryInteractor, router: PhotoLibraryRouter) {
@@ -55,6 +51,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         }
         
         interactor.observeAlbums { [weak self] albums in
+            guard let strongSelf = self else { return }
             
             self?.view?.setAlbums(albums.map { album in
                 PhotoLibraryAlbumCellData(
@@ -62,19 +59,39 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                     title: album.title ?? localized("Unnamed album"),
                     coverImage: album.coverImage,
                     onSelect: {
+                        self?.interactor.setCurrentAlbum(album)
                         self?.view?.setTitle(album.title ?? localized("Unnamed album"))
                         self?.view?.selectAlbum(withId: album.identifier)
                         self?.view?.hideAlbumsList()
-                        self?.shouldScrollToBottomAfterInitialLoad = true
-                        self?.setUpObservingOfItems(in: album)
                     }
                 )
             })
             
-            if let album = albums.first {
+            if strongSelf.interactor.currentAlbum == nil, let album = albums.first {
+                self?.interactor.setCurrentAlbum(album)
                 self?.view?.setTitle(album.title ?? localized("Unnamed album"))
                 self?.view?.selectAlbum(withId: album.identifier)
-                self?.setUpObservingOfItems(in: album)
+            }
+        }
+        
+        interactor.observeCurrentAlbumEvents { [weak self] event, selectionState in
+            guard let strongSelf = self else { return }
+            
+            switch event {
+            case .initialLoad(let items):
+                self?.view?.setItems(
+                    items.map(strongSelf.cellData),
+                    scrollToBottom: true,
+                    completion: {
+                        self?.adjustViewForSelectionState(selectionState)
+                        self?.view?.setProgressVisible(false)
+                    }
+                )
+                
+            case .changes(let changes):
+                self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
+                    self?.adjustViewForSelectionState(selectionState)
+                })
             }
         }
         
@@ -100,30 +117,6 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.onDimViewTap = { [weak self] in
             self?.view?.hideAlbumsList()
-        }
-    }
-    
-    private func setUpObservingOfItems(in album: PhotoLibraryAlbum) {
-        interactor.observeEvents(in: album) { [weak self] event, selectionState in
-            guard let strongSelf = self else { return }
-            
-            switch event {
-            case .initialLoad(let items):
-                self?.view?.setItems(
-                    items.map(strongSelf.cellData),
-                    scrollToBottom: strongSelf.shouldScrollToBottomAfterInitialLoad,
-                    completion: {
-                        self?.shouldScrollToBottomAfterInitialLoad = false
-                        self?.adjustViewForSelectionState(selectionState)
-                        self?.view?.setProgressVisible(false)
-                    }
-                )
-                
-            case .changes(let changes):
-                self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
-                    self?.adjustViewForSelectionState(selectionState)
-                })
-            }
         }
     }
     

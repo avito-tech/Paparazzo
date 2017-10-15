@@ -1,7 +1,7 @@
 import Photos
 import ImageSource
 
-final class PhotoLibraryAlbum {
+final class PhotoLibraryAlbum: Equatable {
     
     let identifier: String
     let title: String?
@@ -14,6 +14,10 @@ final class PhotoLibraryAlbum {
         self.title = title
         self.coverImage = coverImage
         self.fetchResult = fetchResult
+    }
+    
+    static func ==(lhs: PhotoLibraryAlbum, rhs: PhotoLibraryAlbum) -> Bool {
+        return lhs.identifier == rhs.identifier
     }
 }
 
@@ -28,7 +32,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private let photoLibrary = PHPhotoLibrary.shared()
     
     private var albums = [PhotoLibraryAlbum]()
-    private var albumsFetchResult: PHFetchResult<PHAssetCollection>?
+    
+    private var albumsFetchResult: PHFetchResult<PHAssetCollection>? {
+        didSet {
+            refreshAlbums()
+        }
+    }
     
     private let setupQueue = DispatchQueue(
         label: "ru.avito.Paparazzo.PhotoLibraryItemsServiceImpl.setupQueue",
@@ -77,6 +86,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     func photoLibraryDidChange(_ changeInfo: PHChange) {
         executeAfterSetup {
+            
+            if let albumsFetchResult = self.albumsFetchResult,
+               let changes = changeInfo.changeDetails(for: albumsFetchResult)
+            {
+                self.albumsFetchResult = changes.fetchResultAfterChanges
+                self.onAlbumsChange?(self.albums)
+            }
+            
             if let observedAlbum = self.observedAlbum,
                let changes = changeInfo.changeDetails(for: observedAlbum.fetchResult)
             {
@@ -131,10 +148,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     private func setUpFetchRequest() {
+        let options = fetchOptions()
+        albumsFetchResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options)
+        callObserverHandler(changes: nil)
+    }
+    
+    private func refreshAlbums() {
         
         let options = fetchOptions()
         
-        var albumFetchRequests = [
+        var albums = [
             photoLibraryAlbum(
                 identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
                 title: localized("All photos"),
@@ -142,20 +165,15 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             )
         ]
         
-        let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options)
-        
-        albums.enumerateObjects(using: { album, _, _ in
-            albumFetchRequests.append(self.photoLibraryAlbum(
+        albumsFetchResult?.enumerateObjects(using: { album, _, _ in
+            albums.append(self.photoLibraryAlbum(
                 identifier: album.localIdentifier,
                 title: album.localizedTitle,
                 fetchResult: PHAsset.fetchAssets(in: album, options: options)
             ))
         })
         
-        self.albums = albumFetchRequests
-        self.albumsFetchResult = albums
-        
-        callObserverHandler(changes: nil)
+        self.albums = albums
     }
     
     private func photoLibraryAlbum(identifier: String, title: String?, fetchResult: PHFetchResult<PHAsset>) -> PhotoLibraryAlbum {

@@ -3,9 +3,9 @@ import ImageSource
 
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
-    // MARK: - Data
-    private(set) var selectedItems = [PhotoLibraryItem]()
+    // MARK: - State
     private var maxSelectedItemsCount: Int?
+    private var onAlbumEvent: ((PhotoLibraryEvent, PhotoLibraryItemSelectionState) -> ())?
     
     // MARK: - Dependencies
     private let photoLibraryItemsService: PhotoLibraryItemsService
@@ -23,29 +23,25 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     }
     
     // MARK: - PhotoLibraryInteractor
+    private(set) var currentAlbum: PhotoLibraryAlbum?
+    private(set) var selectedItems = [PhotoLibraryItem]()
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
-        photoLibraryItemsService.observeAlbums(handler: handler)
+        photoLibraryItemsService.observeAlbums { [weak self] albums in
+            if let currentAlbum = self?.currentAlbum, !albums.contains(currentAlbum) {
+                // Reset current album if it has been removed
+                self?.currentAlbum = nil
+            }
+            handler(albums)
+        }
     }
     
-    func observeEvents(
-        in album: PhotoLibraryAlbum,
-        handler: @escaping (_ event: PhotoLibraryEvent, _ selectionState: PhotoLibraryItemSelectionState) -> ())
-    {
-        photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
-            guard let strongSelf = self else { return }
-            
-            // TODO: (ayutkin) if event == .changes, remove `removedItems` from `selectedItems`
-//            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
-            
-            dispatch_to_main_queue {
-                handler(event, strongSelf.selectionState())
-            }
-        }
+    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryEvent, PhotoLibraryItemSelectionState) -> ()) {
+        onAlbumEvent = handler
     }
     
     func isSelected(_ item: PhotoLibraryItem) -> Bool {
@@ -72,6 +68,24 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
             return selectionState(preSelectionAction: .deselectAll)
         } else {
             return selectionState()
+        }
+    }
+    
+    func setCurrentAlbum(_ album: PhotoLibraryAlbum) {
+        
+        currentAlbum = album
+        
+        photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
+            guard let strongSelf = self else { return }
+            
+            // TODO: (ayutkin) if event == .changes, remove `removedItems` from `selectedItems`
+//            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
+            
+            if let onAlbumEvent = strongSelf.onAlbumEvent {
+                dispatch_to_main_queue {
+                    onAlbumEvent(event, strongSelf.selectionState())
+                }
+            }
         }
     }
     

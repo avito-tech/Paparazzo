@@ -106,12 +106,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         collectionSnapshotView?.frame = collectionView.frame
         
-        albumsTableView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: titleView.bottom,
-            fitHeight: bounds.height - titleView.height
-        )
+        layoutAlbumsTableView()
         
         dimView.frame = bounds
         
@@ -321,7 +316,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         UIView.animate(withDuration: 0.25) {
             self.albumsListState = .expanded
             self.dimView.alpha = 1
-            self.albumsTableView.top = self.titleView.bottom
+            self.layoutAlbumsTableView()
             self.titleView.rotateIconUp()
         }
     }
@@ -330,7 +325,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         UIView.animate(withDuration: 0.25) {
             self.albumsListState = .collapsed
             self.dimView.alpha = 0
-            self.albumsTableView.bottom = self.titleView.bottom
+            self.layoutAlbumsTableView()
             self.titleView.rotateIconDown()
         }
     }
@@ -488,5 +483,29 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         if let collectionSnapshotView = collectionSnapshotView {
             insertSubview(collectionSnapshotView, aboveSubview: collectionView)
         }
+    }
+    
+    private func layoutAlbumsTableView() {
+        
+        let size = albumsTableView.sizeThatFits(CGSize(
+            width: bounds.width,
+            height: bounds.height - titleView.height
+        ))
+        
+        let top: CGFloat
+        
+        switch albumsListState {
+        case .collapsed:
+            top = titleView.bottom - size.height
+        case .expanded:
+            top = titleView.bottom
+        }
+        
+        albumsTableView.frame = CGRect(
+            left: bounds.left,
+            right: bounds.right,
+            top: top,
+            height: size.height
+        )
     }
 }
