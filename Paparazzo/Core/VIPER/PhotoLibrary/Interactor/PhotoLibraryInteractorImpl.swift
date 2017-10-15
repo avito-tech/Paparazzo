@@ -39,14 +39,6 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
         photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
             guard let strongSelf = self else { return }
             
-            let mapper = { (item: PhotoLibraryItem) in
-                PhotoLibraryItem(
-                    identifier: item.identifier,
-                    image: item.image,
-                    selected: strongSelf.selectedItems.contains(item)
-                )
-            }
-            
             // TODO: (ayutkin) if event == .changes, remove `removedItems` from `selectedItems`
 //            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
             
@@ -54,6 +46,10 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
                 handler(event, strongSelf.selectionState())
             }
         }
+    }
+    
+    func isSelected(_ item: PhotoLibraryItem) -> Bool {
+        return selectedItems.contains(item)
     }
     
     func selectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {

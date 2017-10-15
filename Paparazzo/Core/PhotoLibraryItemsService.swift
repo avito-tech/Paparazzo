@@ -214,7 +214,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func photoLibraryChanges(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> PhotoLibraryChanges
     {
-        var assets = [PHAsset?]()
+        var assets = [PHAsset]()
         
         var insertedObjects = [(index: Int, item: PhotoLibraryItem)]()
         var insertedObjectIndex = changes.insertedObjects.count - 1
@@ -250,15 +250,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             movedIndexes.append((from: from, to: to))
         }
         
-        let nonNilAssets = assets.flatMap {$0}
-        assert(nonNilAssets.count == assets.count, "Objects other than PHAsset are not supported")
-        
         return PhotoLibraryChanges(
             removedIndexes: changes.removedIndexes ?? IndexSet(),
             insertedItems: insertedObjects,
             updatedItems: updatedObjects,
             movedIndexes: movedIndexes,
-            itemsAfterChanges: photoLibraryItems(from: nonNilAssets)
+            itemsAfterChanges: photoLibraryItems(from: assets)
         )
     }
 }

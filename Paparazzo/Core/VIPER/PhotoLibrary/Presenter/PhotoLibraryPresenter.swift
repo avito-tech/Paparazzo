@@ -147,7 +147,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         var cellData = PhotoLibraryItemCellData(image: item.image)
 
-        cellData.selected = item.selected
+        cellData.selected = interactor.isSelected(item)
         
         cellData.onSelectionPrepare = { [weak self] in
             self?.interactor.prepareSelection { [weak self] selectionState in
