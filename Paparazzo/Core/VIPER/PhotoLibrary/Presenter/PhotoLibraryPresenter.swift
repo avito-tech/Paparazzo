@@ -17,7 +17,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     // MARK: - Flags
     
-    private var shouldScrollToBottomAfterFullReload = true
+    private var shouldScrollToBottomAfterInitialLoad = true
     
     // MARK: - Init
     
@@ -56,23 +56,26 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         interactor.observeAlbums { [weak self] albums in
             
-            if let album = albums.first {
-                self?.setUpObservingOfItems(in: album)
-                self?.view?.setTitle(album.title ?? localized("Unnamed album"))
-            }
-            
             self?.view?.setAlbums(albums.map { album in
                 PhotoLibraryAlbumCellData(
+                    identifier: album.identifier,
                     title: album.title ?? localized("Unnamed album"),
                     coverImage: album.coverImage,
                     onSelect: {
                         self?.view?.setTitle(album.title ?? localized("Unnamed album"))
+                        self?.view?.selectAlbum(withId: album.identifier)
                         self?.view?.hideAlbumsList()
-                        self?.shouldScrollToBottomAfterFullReload = true
+                        self?.shouldScrollToBottomAfterInitialLoad = true
                         self?.setUpObservingOfItems(in: album)
                     }
                 )
             })
+            
+            if let album = albums.first {
+                self?.view?.setTitle(album.title ?? localized("Unnamed album"))
+                self?.view?.selectAlbum(withId: album.identifier)
+                self?.setUpObservingOfItems(in: album)
+            }
         }
         
         view?.onPickButtonTap = { [weak self] in
@@ -104,16 +107,15 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         interactor.observeEvents(in: album) { [weak self] event, selectionState in
             guard let strongSelf = self else { return }
             
-            self?.view?.setProgressVisible(false)
-            
             switch event {
-            case .fullReload(let items):
+            case .initialLoad(let items):
                 self?.view?.setItems(
                     items.map(strongSelf.cellData),
-                    scrollToBottom: strongSelf.shouldScrollToBottomAfterFullReload,
+                    scrollToBottom: strongSelf.shouldScrollToBottomAfterInitialLoad,
                     completion: {
-                        self?.shouldScrollToBottomAfterFullReload = false
+                        self?.shouldScrollToBottomAfterInitialLoad = false
                         self?.adjustViewForSelectionState(selectionState)
+                        self?.view?.setProgressVisible(false)
                     }
                 )
                 

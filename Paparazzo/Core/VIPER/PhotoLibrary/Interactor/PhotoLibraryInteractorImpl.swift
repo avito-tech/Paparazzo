@@ -4,7 +4,6 @@ import ImageSource
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     // MARK: - Data
-    private var allItems = [PhotoLibraryItem]()
     private var selectedItems = [PhotoLibraryItem]()
     private var maxSelectedItemsCount: Int?
     
@@ -48,14 +47,8 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
                 )
             }
             
-            switch event {
-            case .fullReload(let items):
-                strongSelf.allItems = items.map(mapper)
-            case .changes(let changes):
-                strongSelf.allItems = changes.itemsAfterChanges.map(mapper)
-            }
-            
-            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
+            // TODO: (ayutkin) if event == .changes, remove `removedItems` from `selectedItems`
+//            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
             
             dispatch_to_main_queue {
                 handler(event, strongSelf.selectionState())

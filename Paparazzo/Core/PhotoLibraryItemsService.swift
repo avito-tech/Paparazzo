@@ -3,12 +3,14 @@ import ImageSource
 
 final class PhotoLibraryAlbum {
     
+    let identifier: String
     let title: String?
     let coverImage: ImageSource?
     
     fileprivate var fetchResult: PHFetchResult<PHAsset>
     
-    fileprivate init(title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
+    fileprivate init(identifier: String, title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
+        self.identifier = identifier
         self.title = title
         self.coverImage = coverImage
         self.fetchResult = fetchResult
@@ -134,6 +136,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         var albumFetchRequests = [
             photoLibraryAlbum(
+                identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
                 title: localized("All photos"),
                 fetchResult: PHAsset.fetchAssets(with: .image, options: options)
             )
@@ -143,6 +146,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         albums.enumerateObjects(using: { album, _, _ in
             albumFetchRequests.append(self.photoLibraryAlbum(
+                identifier: album.localIdentifier,
                 title: album.localizedTitle,
                 fetchResult: PHAsset.fetchAssets(in: album, options: options)
             ))
@@ -154,8 +158,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         callObserverHandler(changes: nil)
     }
     
-    private func photoLibraryAlbum(title: String?, fetchResult: PHFetchResult<PHAsset>) -> PhotoLibraryAlbum {
+    private func photoLibraryAlbum(identifier: String, title: String?, fetchResult: PHFetchResult<PHAsset>) -> PhotoLibraryAlbum {
         return PhotoLibraryAlbum(
+            identifier: identifier,
             title: title,
             coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
             fetchResult: fetchResult
@@ -183,7 +188,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         if let phChanges = phChanges {
             onEvent?(.changes(photoLibraryChanges(from: phChanges)))
         } else {
-            onEvent?(.fullReload(photoLibraryItems(from: assetsFromFetchResult())))
+            onEvent?(.initialLoad(photoLibraryItems(from: assetsFromFetchResult())))
         }
     }
     

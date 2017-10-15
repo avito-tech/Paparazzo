@@ -117,6 +117,10 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setAlbums(albums)
     }
     
+    func selectAlbum(withId id: String) {
+        photoLibraryView.selectAlbum(withId: id)
+    }
+    
     func showAlbumsList() {
         photoLibraryView.showAlbumsList()
     }

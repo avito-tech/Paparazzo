@@ -9,6 +9,8 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     private let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     private let imageSize = CGSize(width: 44, height: 44)
     private let imageToTitleSpacing: CGFloat = 16
+    private let defaultLabelColor = UIColor.RGB(red: 51, green: 51, blue: 51)
+    private let selectedLabelColor = UIColor.RGB(red: 0, green: 170, blue: 255)
     
     // MARK: - Subviews
     private let label = UILabel()
@@ -21,9 +23,17 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
         }
     }
     
+    override var isSelected: Bool {
+        didSet {
+            label.textColor = isSelected ? selectedLabelColor : defaultLabelColor
+        }
+    }
+    
     // MARK: - Init
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        
+        selectionStyle = .none
         
         coverImageView.backgroundColor = .black
         coverImageView.layer.cornerRadius = 6

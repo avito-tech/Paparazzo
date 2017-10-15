@@ -46,7 +46,7 @@ struct PhotoLibraryItemSelectionState {
 }
 
 enum PhotoLibraryEvent {
-    case fullReload([PhotoLibraryItem])
+    case initialLoad([PhotoLibraryItem])
     case changes(PhotoLibraryChanges)
 }
 

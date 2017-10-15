@@ -8,6 +8,7 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     
     // MARK: - Data
     private var cellDataList = [PhotoLibraryAlbumCellData]()
+    private var selectedAlbumId: String?
     
     private let cellId = "AlbumCell"
     private var cellLabelFont: UIFont?
@@ -40,6 +41,17 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         tableView.reloadData()
     }
     
+    func selectAlbum(withId id: String) {
+        
+        let indexPathsToReload = [selectedAlbumId, id]
+            .flatMap { id in cellDataList.index(where: { $0.identifier == id }) }
+            .map { IndexPath(row: $0, section: 0) }
+        
+        selectedAlbumId = id
+        
+        tableView.reloadRows(at: indexPathsToReload, with: .fade)
+    }
+    
     func setCellLabelFont(_ font: UIFont) {
         cellLabelFont = font
     }
@@ -55,7 +67,10 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
             return UITableViewCell()
         }
         
-        cell.setCellData(cellDataList[indexPath.row])
+        let cellData = cellDataList[indexPath.row]
+        
+        cell.setCellData(cellData)
+        cell.isSelected = (cellData.identifier == selectedAlbumId)
         
         if let cellLabelFont = cellLabelFont {
             cell.setLabelFont(cellLabelFont)

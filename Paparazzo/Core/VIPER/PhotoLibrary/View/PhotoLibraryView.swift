@@ -313,6 +313,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         setNeedsLayout()
     }
     
+    func selectAlbum(withId id: String) {
+        albumsTableView.selectAlbum(withId: id)
+    }
+    
     func showAlbumsList() {
         UIView.animate(withDuration: 0.25) {
             self.albumsListState = .expanded

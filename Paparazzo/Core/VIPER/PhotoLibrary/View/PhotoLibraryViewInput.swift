@@ -18,6 +18,8 @@ protocol PhotoLibraryViewInput: class {
     
     func scrollToBottom()
     
+    func setAlbums(_: [PhotoLibraryAlbumCellData])
+    func selectAlbum(withId: String)
     func showAlbumsList()
     func hideAlbumsList()
     func toggleAlbumsList()
@@ -28,7 +30,6 @@ protocol PhotoLibraryViewInput: class {
     var onViewDidLoad: (() -> ())? { get set }
     
     func setProgressVisible(_ visible: Bool)
-    func setAlbums(_: [PhotoLibraryAlbumCellData])
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }
@@ -40,6 +41,7 @@ protocol PhotoLibraryViewInput: class {
 }
 
 struct PhotoLibraryAlbumCellData {
+    let identifier: String
     let title: String
     let coverImage: ImageSource?
     let onSelect: () -> ()
