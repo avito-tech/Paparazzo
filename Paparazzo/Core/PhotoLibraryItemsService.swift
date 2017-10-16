@@ -56,15 +56,28 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         fetchResultQueue.async {
             guard let fetchResult = self.fetchResult else { return }
             
-            fetchResult.albums.forEach { album in
-                if let changeDetails = change.changeDetails(for: album.fetchResult) {
-                    album.fetchResult = changeDetails.fetchResultAfterChanges
-                    if album == self.observedAlbum {
-                        DispatchQueue.main.async {
-                            self.callObserverHandler(changes: changeDetails)
-                        }
+            var albumCoverChanged = false
+            
+            fetchResult.albums = fetchResult.albums.map { album in
+                guard let changeDetails = change.changeDetails(for: album.fetchResult) else { return album }
+                
+                var album = album
+                album.fetchResult = changeDetails.fetchResultAfterChanges
+                
+                let lastAssetImageSource = album.fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) }
+                
+                if album.coverImage != lastAssetImageSource {
+                    album = album.changingCoverImage(to: lastAssetImageSource)
+                    albumCoverChanged = true
+                }
+                
+                if album == self.observedAlbum {
+                    DispatchQueue.main.async {
+                        self.callObserverHandler(changes: changeDetails)
                     }
                 }
+                
+                return album
             }
             
             if let changeDetails = change.changeDetails(for: fetchResult.phFetchResult) {
@@ -87,6 +100,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 // Updates: it's not possible to rename albums in iOS as for now
                 // Moves: seems like iOS doesn't generate them for photo albums
                 
+                DispatchQueue.main.async {
+                    self.onAlbumsChange?(fetchResult.albums)
+                }
+                
+            } else if albumCoverChanged {
                 DispatchQueue.main.async {
                     self.onAlbumsChange?(fetchResult.albums)
                 }
@@ -305,6 +323,15 @@ final class PhotoLibraryAlbum: Equatable {
         self.title = title
         self.coverImage = coverImage
         self.fetchResult = fetchResult
+    }
+    
+    func changingCoverImage(to image: ImageSource?) -> PhotoLibraryAlbum {
+        return PhotoLibraryAlbum(
+            identifier: identifier,
+            title: title,
+            coverImage: image,
+            fetchResult: fetchResult
+        )
     }
     
     static func ==(lhs: PhotoLibraryAlbum, rhs: PhotoLibraryAlbum) -> Bool {
