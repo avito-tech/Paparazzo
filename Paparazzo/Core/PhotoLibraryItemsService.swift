@@ -58,6 +58,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             
             var albumCoverChanged = false
             
+            // We need to enumerate all the fetched albums:
+            // 1) to keep their content in sync with photo library without refething
+            // 2) to check if album cover has changed
             fetchResult.albums = fetchResult.albums.map { album in
                 guard let changeDetails = change.changeDetails(for: album.fetchResult) else { return album }
                 
@@ -67,11 +70,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 let lastAssetImageSource = album.fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) }
                 
                 if album.coverImage != lastAssetImageSource {
+                    // Album cover need to be changed
                     album = album.changingCoverImage(to: lastAssetImageSource)
                     albumCoverChanged = true
                 }
                 
                 if album == self.observedAlbum {
+                    // Report changes in the observed album
                     DispatchQueue.main.async {
                         self.callObserverHandler(changes: changeDetails)
                     }
