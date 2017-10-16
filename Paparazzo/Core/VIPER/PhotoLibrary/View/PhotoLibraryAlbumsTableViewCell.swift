@@ -38,6 +38,8 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
         coverImageView.backgroundColor = .lightGray
         coverImageView.layer.cornerRadius = 6
         coverImageView.layer.masksToBounds = true
+        coverImageView.layer.shouldRasterize = true
+        coverImageView.layer.rasterizationScale = UIScreen.main.nativeScale
         
         contentView.addSubview(coverImageView)
         contentView.addSubview(label)
@@ -63,7 +65,7 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
         
         coverImageView.frame = CGRect(
             x: insets.left,
-            y: (bounds.height - imageSize.height) / 2,
+            y: floor((bounds.height - imageSize.height) / 2),
             width: imageSize.width,
             height: imageSize.height
         )

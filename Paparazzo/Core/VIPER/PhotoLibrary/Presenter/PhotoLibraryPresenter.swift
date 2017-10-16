@@ -15,6 +15,9 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         }
     }
     
+    // MARK: - State
+    var shouldScrollToBottomOnFullReload = true
+    
     // MARK: - Init
     
     init(interactor: PhotoLibraryInteractor, router: PhotoLibraryRouter) {
@@ -53,24 +56,10 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         interactor.observeAlbums { [weak self] albums in
             guard let strongSelf = self else { return }
             
-            self?.view?.setAlbums(albums.map { album in
-                PhotoLibraryAlbumCellData(
-                    identifier: album.identifier,
-                    title: album.title ?? localized("Unnamed album"),
-                    coverImage: album.coverImage,
-                    onSelect: {
-                        self?.interactor.setCurrentAlbum(album)
-                        self?.view?.setTitle(album.title ?? localized("Unnamed album"))
-                        self?.view?.selectAlbum(withId: album.identifier)
-                        self?.view?.hideAlbumsList()
-                    }
-                )
-            })
+            self?.view?.setAlbums(albums.map(strongSelf.albumCellData))
             
             if strongSelf.interactor.currentAlbum == nil, let album = albums.first {
-                self?.interactor.setCurrentAlbum(album)
-                self?.view?.setTitle(album.title ?? localized("Unnamed album"))
-                self?.view?.selectAlbum(withId: album.identifier)
+                self?.selectAlbum(album)
             }
         }
         
@@ -78,17 +67,18 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             guard let strongSelf = self else { return }
             
             switch event {
-            case .initialLoad(let items):
+            case .fullReload(let items):
                 self?.view?.setItems(
                     items.map(strongSelf.cellData),
-                    scrollToBottom: true,
+                    scrollToBottom: strongSelf.shouldScrollToBottomOnFullReload,
                     completion: {
+                        self?.shouldScrollToBottomOnFullReload = false
                         self?.adjustViewForSelectionState(selectionState)
                         self?.view?.setProgressVisible(false)
                     }
                 )
                 
-            case .changes(let changes):
+            case .incrementalChanges(let changes):
                 self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
                     self?.adjustViewForSelectionState(selectionState)
                 })
@@ -134,6 +124,25 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         case .deselectAll:
             view?.deselectAllItems()
         }
+    }
+    
+    private func albumCellData(for album: PhotoLibraryAlbum) -> PhotoLibraryAlbumCellData {
+        return PhotoLibraryAlbumCellData(
+            identifier: album.identifier,
+            title: album.title ?? localized("Unnamed album"),
+            coverImage: album.coverImage,
+            onSelect: { [weak self] in
+                self?.selectAlbum(album)
+                self?.view?.hideAlbumsList()
+            }
+        )
+    }
+    
+    private func selectAlbum(_ album: PhotoLibraryAlbum) {
+        shouldScrollToBottomOnFullReload = true
+        interactor.setCurrentAlbum(album)
+        view?.setTitle(album.title ?? localized("Unnamed album"))
+        view?.selectAlbum(withId: album.identifier)
     }
     
     private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {

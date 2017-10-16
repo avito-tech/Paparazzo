@@ -47,13 +47,14 @@ struct PhotoLibraryItemSelectionState {
 }
 
 enum PhotoLibraryAlbumEvent {
-    case initialLoad([PhotoLibraryItem])
-    case changes(PhotoLibraryChanges)
+    case fullReload([PhotoLibraryItem])
+    case incrementalChanges(PhotoLibraryChanges)
 }
 
 struct PhotoLibraryChanges {
     
-    // Changes must be applied in that order: remove, insert, update, move
+    // Changes must be applied in that order: remove, insert, update, move.
+    // Indexes are provided based on this order of operations.
     let removedIndexes: IndexSet
     let insertedItems: [(index: Int, item: PhotoLibraryItem)]
     let updatedItems: [(index: Int, item: PhotoLibraryItem)]
