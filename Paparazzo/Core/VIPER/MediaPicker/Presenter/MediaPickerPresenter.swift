@@ -368,7 +368,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         startIndex: Int,
         completion: (() -> ())? = nil)
     {
-        
         guard items.count > 0 else { completion?(); return }
         
         view?.addItems(items, animated: fromCamera) { [weak self, view] in
@@ -380,11 +379,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             view?.setCameraButtonVisible(canAddMoreItems)
             
-            if canAddMoreItems {
-                view?.setMode(.camera)
-                view?.scrollToCameraThumbnail(animated: true)
-                completion?()
-            } else if let lastItem = items.last {
+            if let lastItem = items.last {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
                 
@@ -398,6 +393,10 @@ final class MediaPickerPresenter: MediaPickerModule {
                         item: lastItem
                     )
                 }
+                completion?()
+            } else if canAddMoreItems {
+                view?.setMode(.camera)
+                view?.scrollToCameraThumbnail(animated: true)
                 completion?()
             }
         }
