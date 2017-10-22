@@ -26,6 +26,8 @@ public protocol MediaPickerModule: class {
     
     func setCropMode(_: MediaPickerCropMode)
     
+    func removeItem(_: MediaPickerItem)
+    
     // startIndex - index of element in previous array of MediaPickerItem, new elements were added after that index
     var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())? { get set }
     var onItemUpdate: ((MediaPickerItem, _ index: Int?) -> ())? { get set }

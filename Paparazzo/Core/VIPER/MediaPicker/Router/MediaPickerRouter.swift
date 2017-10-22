@@ -13,12 +13,6 @@ protocol MediaPickerRouter: class {
         configure: (ImageCroppingModule) -> ()
     )
     
-    func showMaskCropper(
-        data: MaskCropperData,
-        croppingOverlayProvider: CroppingOverlayProvider,
-        configure: (MaskCropperModule) -> ()
-    )
-    
     func focusOnCurrentModule()
     func dismissCurrentModule()
 }

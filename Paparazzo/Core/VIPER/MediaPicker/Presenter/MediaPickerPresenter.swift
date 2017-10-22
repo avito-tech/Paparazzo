@@ -82,6 +82,26 @@ final class MediaPickerPresenter: MediaPickerModule {
         interactor.setCropMode(cropMode)
     }
     
+    func removeItem(_ item: MediaPickerItem) {
+        
+        let itemWasSelected = (item == interactor.selectedItem)
+        let index = interactor.indexOfItem(item)
+        let adjacentItem = interactor.removeItem(item)
+        let itemToSelectAfterRemoval = itemWasSelected ? adjacentItem : interactor.selectedItem
+        
+        view?.removeItem(item)
+        view?.setCameraButtonVisible(interactor.canAddItems())
+        
+        if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
+            view?.selectItem(itemToSelectAfterRemoval)
+        } else {
+            view?.setMode(.camera)
+            view?.setPhotoTitleAlpha(0)
+        }
+        
+        onItemRemove?(item, index)
+    }
+    
     func focusOnModule() {
         router.focusOnCurrentModule()
     }
@@ -383,23 +403,12 @@ final class MediaPickerPresenter: MediaPickerModule {
             if canAddMoreItems {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
-                completion?()
             } else if let lastItem = items.last {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
-                
-                let mode = strongSelf.interactor.cropMode()
-                switch mode {
-                case .normal:
-                    break
-                case .custom(let provider):
-                    self?.showMaskCropper(
-                        croppingOverlayProvider: provider,
-                        item: lastItem
-                    )
-                }
-                completion?()
             }
+            
+            completion?()
         }
         
         setTitleForPhotoWithIndex(interactor.items.count - 1)
@@ -408,56 +417,9 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func removeSelectedItem() {
-        
-        guard let item = interactor.selectedItem else { return }
-        
-        let index = interactor.indexOfItem(item)
-        let adjacentItem = interactor.removeItem(item)
-        view?.removeItem(item)
-        view?.setCameraButtonVisible(interactor.canAddItems())
-        
-        if let adjacentItem = adjacentItem {
-            view?.selectItem(adjacentItem)
-        } else {
-            view?.setMode(.camera)
-            view?.setPhotoTitleAlpha(0)
+        if let item = interactor.selectedItem {
+            removeItem(item)
         }
-        
-        onItemRemove?(item, index)
-    }
-    
-    private func showMaskCropper(croppingOverlayProvider: CroppingOverlayProvider, item: MediaPickerItem) {
-        
-        let cropCanvasSize = interactor.cropCanvasSize
-        
-        let data = MaskCropperData(
-            imageSource: item.image,
-            cropCanvasSize: cropCanvasSize
-        )
-        router.showMaskCropper(
-            data: data,
-            croppingOverlayProvider: croppingOverlayProvider) { [weak self] module in
-                
-                module.onDiscard = { [weak module] in
-                    
-                    self?.onCropCancel?()
-                    self?.removeSelectedItem()
-                    module?.dismissModule()
-                }
-                
-                module.onConfirm = { image in
-                    
-                    self?.onCropFinish?()
-                    let croppedItem = MediaPickerItem(
-                        identifier: item.identifier,
-                        image: image,
-                        source: item.source
-                    )
-                    
-                    self?.onFinish?([croppedItem])
-                }
-        }
-        
     }
     
     private func showPhotoLibrary() {
