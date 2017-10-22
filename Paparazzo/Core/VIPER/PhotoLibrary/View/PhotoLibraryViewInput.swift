@@ -3,21 +3,26 @@ import ImageSource
 
 protocol PhotoLibraryViewInput: class {
     
-    func setTitle(_: String)
-    func setCancelButtonTitle(_: String)
-    func setDoneButtonTitle(_: String)
+    var onTitleTap: (() -> ())? { get set }
+    var onDimViewTap: (() -> ())? { get set }
     
-    func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
+    func setTitle(_: String)
+    
+    func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
+    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
     
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
     
     func deselectAllItems()
     
-    func setPickButtonVisible(_: Bool)
-    func setPickButtonEnabled(_: Bool)
-    
     func scrollToBottom()
+    
+    func setAlbums(_: [PhotoLibraryAlbumCellData])
+    func selectAlbum(withId: String)
+    func showAlbumsList()
+    func hideAlbumsList()
+    func toggleAlbumsList()
     
     var onPickButtonTap: (() -> ())? { get set }
     var onCancelButtonTap: (() -> ())? { get set }
@@ -33,6 +38,13 @@ protocol PhotoLibraryViewInput: class {
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
+}
+
+struct PhotoLibraryAlbumCellData {
+    let identifier: String
+    let title: String
+    let coverImage: ImageSource?
+    let onSelect: () -> ()
 }
 
 struct PhotoLibraryItemCellData {

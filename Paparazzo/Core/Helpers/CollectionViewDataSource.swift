@@ -5,7 +5,6 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     typealias ItemType = CellType.ItemType
     
     let cellReuseIdentifier: String
-    var onDataChanged: (() -> ())?
     var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, IndexPath) -> ())?
     
     private var items = [ItemType]()
@@ -34,6 +33,10 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         
         // indexPath'ы тут должны идти последовательно
         self.items.append(contentsOf: appendedItems.map { $0.item })
+    }
+    
+    func deleteAllItems() {
+        items = []
     }
     
     func deleteItems(at indexPaths: [IndexPath]) {

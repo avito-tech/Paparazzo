@@ -11,8 +11,7 @@
 
 // Photo Library
 "All Photos" = "Все фотографии";
-"Done (photo library)" = "Выбрать";
-"Cancel" = "Отмена";
+"Unnamed album" = "Безымянный";
 "To pick photo from library" = "Чтобы выбрать фото из галереи";
 "Allow %@ to access your photo library" = "Разрешите приложению %@ доступ к вашим фотографиям";
 "Allow access to photo library" = "Разрешить доступ к галерее";

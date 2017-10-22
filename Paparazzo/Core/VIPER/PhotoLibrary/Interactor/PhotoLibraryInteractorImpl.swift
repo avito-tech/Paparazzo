@@ -3,10 +3,9 @@ import ImageSource
 
 final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
-    // MARK: - Data
-    private var allItems = [PhotoLibraryItem]()
-    private var selectedItems = [PhotoLibraryItem]()
+    // MARK: - State
     private var maxSelectedItemsCount: Int?
+    private var onAlbumEvent: ((PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())?
     
     // MARK: - Dependencies
     private let photoLibraryItemsService: PhotoLibraryItemsService
@@ -16,69 +15,78 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     init(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int? = nil,
-        photoLibraryItemsService: PhotoLibraryItemsService
-    ) {
+        photoLibraryItemsService: PhotoLibraryItemsService)
+    {
         self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService
     }
     
     // MARK: - PhotoLibraryInteractor
+    private(set) var currentAlbum: PhotoLibraryAlbum?
+    private(set) var selectedItems = [PhotoLibraryItem]()
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
     
-    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ()) {
-        
-        photoLibraryItemsService.observeItems { [weak self] changes in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.allItems = changes.itemsAfterChanges.map { item in
-                PhotoLibraryItem(
-                    identifier: item.identifier,
-                    image: item.image,
-                    selected: strongSelf.selectedItems.contains(item)
-                )
+    func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
+        photoLibraryItemsService.observeAlbums { [weak self] albums in
+            if let currentAlbum = self?.currentAlbum, !albums.contains(currentAlbum) {
+                // Reset current album if it has been removed
+                self?.currentAlbum = nil
             }
-            
-            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
-            
-            dispatch_to_main_queue {
-                handler(changes, strongSelf.selectionState())
-            }
+            handler(albums)
         }
     }
     
-    func selectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
-        
+    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ()) {
+        onAlbumEvent = handler
+    }
+    
+    func isSelected(_ item: PhotoLibraryItem) -> Bool {
+        return selectedItems.contains(item)
+    }
+    
+    func selectItem(_ item: PhotoLibraryItem) -> PhotoLibraryItemSelectionState {
         if canSelectMoreItems() {
             selectedItems.append(item)
         }
-        
-        completion(selectionState())
+        return selectionState()
     }
     
-    func deselectItem(_ item: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
-        
+    func deselectItem(_ item: PhotoLibraryItem) -> PhotoLibraryItemSelectionState {
         if let index = selectedItems.index(of: item) {
             selectedItems.remove(at: index)
         }
-        
-        completion(selectionState())
+        return selectionState()
     }
     
-    func prepareSelection(completion: @escaping (PhotoLibraryItemSelectionState) -> ()) {
+    func prepareSelection() -> PhotoLibraryItemSelectionState {
         if selectedItems.count > 0 && maxSelectedItemsCount == 1 {
             selectedItems.removeAll()
-            completion(selectionState(preSelectionAction: .deselectAll))
+            return selectionState(preSelectionAction: .deselectAll)
         } else {
-            completion(selectionState())
+            return selectionState()
         }
     }
     
-    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ()) {
-        completion(selectedItems)
+    func setCurrentAlbum(_ album: PhotoLibraryAlbum) {
+        
+        currentAlbum = album
+        
+        photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
+            guard let strongSelf = self else { return }
+            
+            // TODO: (ayutkin) if event == .changes, remove `removedItems` from `selectedItems`
+//            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
+            
+            if let onAlbumEvent = strongSelf.onAlbumEvent {
+                dispatch_to_main_queue {
+                    onAlbumEvent(event, strongSelf.selectionState())
+                }
+            }
+        }
     }
     
     // MARK: - Private

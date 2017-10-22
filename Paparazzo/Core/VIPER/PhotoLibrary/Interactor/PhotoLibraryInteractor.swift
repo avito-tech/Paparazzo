@@ -3,13 +3,19 @@ import ImageSource
 
 protocol PhotoLibraryInteractor: class {
     
-    func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
-    func observeItems(handler: @escaping (_ changes: PhotoLibraryChanges, _ selectionState: PhotoLibraryItemSelectionState) -> ())
+    var currentAlbum: PhotoLibraryAlbum? { get }
+    var selectedItems: [PhotoLibraryItem] { get }
     
-    func selectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
-    func deselectItem(_: PhotoLibraryItem, completion: @escaping (PhotoLibraryItemSelectionState) -> ())
-    func prepareSelection(completion: @escaping (PhotoLibraryItemSelectionState) -> ())
-    func selectedItems(completion: @escaping ([PhotoLibraryItem]) -> ())
+    func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
+    func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
+    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())
+    
+    func isSelected(_: PhotoLibraryItem) -> Bool
+    func selectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
+    func deselectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
+    func prepareSelection() -> PhotoLibraryItemSelectionState
+    
+    func setCurrentAlbum(_: PhotoLibraryAlbum)
 }
 
 public struct PhotoLibraryItem: Equatable {
@@ -17,17 +23,15 @@ public struct PhotoLibraryItem: Equatable {
     public var image: ImageSource
     
     var identifier: String
-    var selected: Bool
     
-    init(identifier: String, image: ImageSource, selected: Bool = false) {
+    init(identifier: String, image: ImageSource) {
         self.identifier = identifier
         self.image = image
-        self.selected = selected
     }
-}
-
-public func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {
-    return item1.identifier == item2.identifier
+    
+    public static func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {
+        return item1.identifier == item2.identifier
+    }
 }
 
 struct PhotoLibraryItemSelectionState {
@@ -42,9 +46,15 @@ struct PhotoLibraryItemSelectionState {
     var preSelectionAction: PreSelectionAction
 }
 
+enum PhotoLibraryAlbumEvent {
+    case fullReload([PhotoLibraryItem])
+    case incrementalChanges(PhotoLibraryChanges)
+}
+
 struct PhotoLibraryChanges {
     
-    // Изменения применять в таком порядке: удаление, вставка, обновление, перемещение
+    // Changes must be applied in that order: remove, insert, update, move.
+    // Indexes are provided based on this order of operations.
     let removedIndexes: IndexSet
     let insertedItems: [(index: Int, item: PhotoLibraryItem)]
     let updatedItems: [(index: Int, item: PhotoLibraryItem)]

@@ -4,7 +4,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     typealias ThemeType = PhotoLibraryUITheme
     
+    private enum AlbumsListState {
+        case collapsed
+        case expanded
+    }
+    
     // MARK: - State
+    
+    private var albumsListState: AlbumsListState = .collapsed
     
     var canSelectMoreItems = false
     
@@ -18,8 +25,13 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     private let layout = PhotoLibraryLayout()
     private var collectionView: UICollectionView
+    private var collectionSnapshotView: UIView?
+    private let titleView = PhotoLibraryTitleView()
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let toolbar = PhotoLibraryToolbar()
+    private let dimView = UIView()
+    private let albumsTableView = PhotoLibraryAlbumsTableView()
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -38,10 +50,20 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         setUpCollectionView()
         
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTitleViewTap(_:))))
+        
         accessDeniedView.isHidden = true
+        
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        dimView.alpha = 0
+        dimView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDimViewTap(_:))))
         
         addSubview(collectionView)
         addSubview(accessDeniedView)
+        addSubview(toolbar)
+        addSubview(dimView)
+        addSubview(albumsTableView)
+        addSubview(titleView)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -58,8 +80,37 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        collectionView.frame = bounds
-        accessDeniedView.frame = bounds
+        let titleViewSize = titleView.sizeThatFits(bounds.size)
+        let toolbarSize = toolbar.sizeThatFits(bounds.size)
+        
+        titleView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            height: titleViewSize.height
+        )
+        
+        toolbar.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: toolbarSize.height
+        )
+        
+        collectionView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: titleView.bottom,
+            bottom: toolbar.top
+        )
+        
+        collectionSnapshotView?.frame = collectionView.frame
+        
+        layoutAlbumsTableView()
+        
+        dimView.frame = bounds
+        
+        accessDeniedView.frame = collectionView.bounds
         
         progressIndicator.center = bounds.center
     }
@@ -68,21 +119,85 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
+        
+        titleView.setLabelFont(theme.photoLibraryTitleFont)
+        titleView.setIcon(theme.photoLibraryAlbumsDisclosureIcon)
+        
         accessDeniedView.setTheme(theme)
+        
+        toolbar.setDiscardButtonIcon(theme.photoLibraryDiscardButtonIcon)
+        toolbar.setConfirmButtonIcon(theme.photoLibraryConfirmButtonIcon)
+        
+        albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
     }
     
     // MARK: - PhotoLibraryView
+    
+    var onDiscardButtonTap: (() -> ())? {
+        get { return toolbar.onDiscardButtonTap }
+        set { toolbar.onDiscardButtonTap = newValue }
+    }
+    
+    var onConfirmButtonTap: (() -> ())? {
+        get { return toolbar.onConfirmButtonTap }
+        set { toolbar.onConfirmButtonTap = newValue }
+    }
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return accessDeniedView.onButtonTap }
         set { accessDeniedView.onButtonTap = newValue }
     }
     
-    func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
+    var onTitleTap: (() -> ())?
+    var onDimViewTap: (() -> ())?
+    
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
+        
+        // If `items` contain a lot of elements, then there's a chance that by the time
+        // `collectionView.scrollToBottom()` is called in `performBatchUpdates` completion, the user will see
+        // some of the new content, followed by a fast jump to the bottom. To prevent this unwanted glitch
+        // we need to cover collection view with a snapshot of its current content. This snapshot will be removed
+        // after `scrollToBottom()`.
+        if scrollToBottom {
+            coverCollectionViewWithItsSnapshot()
+        }
+        
+        // Delete existing items outside `performBatchUpdates`, otherwise there will be UI bug on scrollToBottom
+        // (collection view will be scrolled to an empty space below it's actual content)
+        dataSource.deleteAllItems()
+        collectionView.reloadData()
+        
+        ObjCExceptionCatcher.tryClosure(
+            tryClosure: { [collectionView, collectionSnapshotView, dataSource] in
+                collectionView.performBatchUpdates(
+                    animated: true,
+                    updates: {
+                        let indexPathsToInsert = (0 ..< items.count).map { IndexPath(item: $0, section: 0) }
+                        collectionView.insertItems(at: indexPathsToInsert)
+                        
+                        dataSource.setItems(items)
+                    },
+                    completion: { _ in
+                        if scrollToBottom {
+                            collectionView.scrollToBottom()
+                            collectionSnapshotView?.removeFromSuperview()
+                        }
+                        completion?()
+                    }
+                )
+            },
+            catchClosure: { _ in
+                self.recreateCollectionView()
+                completion?()
+            }
+        )
+    }
+    
+    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
         
         ObjCExceptionCatcher.tryClosure(
             tryClosure: { [collectionView, dataSource] in
-                collectionView.performBatchUpdates(animated: animated, {
+                collectionView.performBatchUpdates(animated: true, updates: {
                     
                     let toIndexPath = { (index: Int) in
                         IndexPath(item: index, section: 0)
@@ -140,6 +255,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             },
             catchClosure: { _ in
                 self.recreateCollectionView()
+                completion?()
             }
         )
     }
@@ -157,6 +273,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func scrollToBottom() {
         collectionView.scrollToBottom()
+    }
+    
+    func setTitle(_ title: String) {
+        titleView.setTitle(title)
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {
@@ -180,6 +300,42 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             progressIndicator.startAnimating()
         } else {
             progressIndicator.stopAnimating()
+        }
+    }
+    
+    func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
+        albumsTableView.setCellDataList(albums)
+        setNeedsLayout()
+    }
+    
+    func selectAlbum(withId id: String) {
+        albumsTableView.selectAlbum(withId: id)
+    }
+    
+    func showAlbumsList() {
+        UIView.animate(withDuration: 0.25) {
+            self.albumsListState = .expanded
+            self.dimView.alpha = 1
+            self.layoutAlbumsTableView()
+            self.titleView.rotateIconUp()
+        }
+    }
+    
+    func hideAlbumsList() {
+        UIView.animate(withDuration: 0.25) {
+            self.albumsListState = .collapsed
+            self.dimView.alpha = 0
+            self.layoutAlbumsTableView()
+            self.titleView.rotateIconDown()
+        }
+    }
+    
+    func toggleAlbumsList() {
+        switch albumsListState {
+        case .collapsed:
+            showAlbumsList()
+        case .expanded:
+            hideAlbumsList()
         }
     }
     
@@ -285,8 +441,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         _ cell: PhotoLibraryItemCell,
         wihData data: PhotoLibraryItemCellData,
         inCollectionView collectionView: UICollectionView,
-        atIndexPath indexPath: IndexPath
-    ) {
+        atIndexPath indexPath: IndexPath)
+    {
         cell.backgroundColor = theme?.photoCellBackgroundColor
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
         
@@ -313,4 +469,43 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
+    @objc private func onTitleViewTap(_: UITapGestureRecognizer) {
+        onTitleTap?()
+    }
+    
+    @objc private func onDimViewTap(_: UITapGestureRecognizer) {
+        onDimViewTap?()
+    }
+    
+    private func coverCollectionViewWithItsSnapshot() {
+        collectionSnapshotView = collectionView.snapshotView(afterScreenUpdates: false)
+        
+        if let collectionSnapshotView = collectionSnapshotView {
+            insertSubview(collectionSnapshotView, aboveSubview: collectionView)
+        }
+    }
+    
+    private func layoutAlbumsTableView() {
+        
+        let size = albumsTableView.sizeThatFits(CGSize(
+            width: bounds.width,
+            height: bounds.height - titleView.height
+        ))
+        
+        let top: CGFloat
+        
+        switch albumsListState {
+        case .collapsed:
+            top = titleView.bottom - size.height
+        case .expanded:
+            top = titleView.bottom
+        }
+        
+        albumsTableView.frame = CGRect(
+            left: bounds.left,
+            right: bounds.right,
+            top: top,
+            height: size.height
+        )
+    }
 }

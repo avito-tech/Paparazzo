@@ -9,8 +9,20 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.insertSubview(cloudIconView, at: 0)
+        
+        layer.cornerRadius = 6
+        layer.masksToBounds = true
+        
+        imageView.layer.cornerRadius = 6
+        imageView.layer.masksToBounds = true
         imageView.isAccessibilityElement = true
+        imageView.layer.shouldRasterize = true
+        imageView.layer.rasterizationScale = UIScreen.main.nativeScale
+        
+        selectedBorderThickness = 5
+        imageViewInsets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
+        
+        contentView.insertSubview(cloudIconView, at: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
