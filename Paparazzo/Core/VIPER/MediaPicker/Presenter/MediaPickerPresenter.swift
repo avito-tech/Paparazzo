@@ -383,6 +383,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
                 
+                // TODO: (ayutkin) зарефачить эту дичь
                 let mode = strongSelf.interactor.cropMode()
                 switch mode {
                 case .normal:
