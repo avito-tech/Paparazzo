@@ -67,7 +67,8 @@ public final class PaparazzoFacade {
     public static func libraryViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryData = PhotoLibraryData(),
-        onFinish: @escaping ([PhotoLibraryItem]) -> ())
+        onFinish: @escaping ([PhotoLibraryItem]) -> (),
+        onCancel: (() -> ())? = nil)
         -> NavigationController
     {
         let assembly = assemblyFactory(theme: theme).photoLibraryAssembly()
@@ -82,7 +83,7 @@ public final class PaparazzoFacade {
                     case .selectedItems(let images):
                         onFinish(images)
                     case .cancelled:
-                        break
+                        onCancel?()
                     }
                 }
             }
