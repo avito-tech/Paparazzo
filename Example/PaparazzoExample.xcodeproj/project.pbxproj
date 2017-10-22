@@ -29,6 +29,7 @@
 		251E58021E6565890009A288 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57EF1E6565890009A288 /* NavigationController.swift */; };
 		253169671E65698C006F1E95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253169661E65698C006F1E95 /* Assets.xcassets */; };
 		2588E3511F8F8BB9009A2FD2 /* Paparazzo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2588E3531F8F8BB9009A2FD2 /* Paparazzo.strings */; };
+		2590D1021F9CCCB2009AAB6D /* kitten.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2590D1011F9CCCB2009AAB6D /* kitten.jpg */; };
 		25A489B41E656A2B00CC431B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A489B31E656A2B00CC431B /* AppDelegate.swift */; };
 		25A489BB1E656A2B00CC431B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25A489BA1E656A2B00CC431B /* Assets.xcassets */; };
 		25A489C31E656AF400CC431B /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57E51E6565890009A288 /* ExampleViewController.swift */; };
@@ -41,9 +42,9 @@
 		25A489CA1E656B2D00CC431B /* Latoto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57EA1E6565890009A288 /* Latoto-Regular.ttf */; };
 		25A489CB1E656B2D00CC431B /* Latoto-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57EB1E6565890009A288 /* Latoto-Semibold.ttf */; };
 		25A489CC1E656B2D00CC431B /* Latoto-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57EC1E6565890009A288 /* Latoto-SemiboldItalic.ttf */; };
-		2A0B5C0CB29FF72D8233F563 /* Pods_PaparazzoExample_Storyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0197BFD7D8A9DC3C06FA3EB3 /* Pods_PaparazzoExample_Storyboard.framework */; };
-		38D34B668F9788158C7228EA /* Pods_PaparazzoExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AE831F8581BCFBA632B260 /* Pods_PaparazzoExample.framework */; };
-		DCFB43E852B5EC4DFEBFF3E3 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D66B2073FA44E1F6E83AD17C /* Pods_PaparazzoExample_NoMarshroute.framework */; };
+		7C441DA31DD12123F02E7015 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6F7C3E992677B08CF09B3C1 /* Pods_PaparazzoExample_NoMarshroute.framework */; };
+		C55C055F0ED3DFF3E57660D6 /* Pods_PaparazzoExample_Storyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEA17E3C560C5C1DF419EC50 /* Pods_PaparazzoExample_Storyboard.framework */; };
+		D6492B4B9099BE6782593B6F /* Pods_PaparazzoExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979D48DD57CFEDEAB10286C7 /* Pods_PaparazzoExample.framework */; };
 		EFA7610E1E829434000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 		EFA7610F1E829569000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 		F2F50FC61E6C9F60006F9171 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F50FC51E6C9F60006F9171 /* AppDelegate.swift */; };
@@ -60,10 +61,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		00611BACAB70EAC81DA8F2E4 /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_Storyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard.debug.xcconfig"; sourceTree = "<group>"; };
-		0197BFD7D8A9DC3C06FA3EB3 /* Pods_PaparazzoExample_Storyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_Storyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		05D03BD30B82E68237EB2850 /* Pods-PaparazzoExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.release.xcconfig"; sourceTree = "<group>"; };
-		11AE831F8581BCFBA632B260 /* Pods_PaparazzoExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		03B63CAC778E07BEA57367F5 /* Pods-PaparazzoExample_Storyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_Storyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard.release.xcconfig"; sourceTree = "<group>"; };
+		04BBB91420221C200F74024B /* Pods-PaparazzoExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.debug.xcconfig"; sourceTree = "<group>"; };
 		136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAdjustmentFilter.swift; sourceTree = "<group>"; };
 		251E57C01E65651F0009A288 /* PaparazzoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaparazzoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		251E57C31E65651F0009A288 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,14 +87,21 @@
 		251E57EF1E6565890009A288 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		253169661E65698C006F1E95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2588E3541F8F8BBB009A2FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Paparazzo.strings; sourceTree = "<group>"; };
+		2590D1011F9CCCB2009AAB6D /* kitten.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kitten.jpg; sourceTree = "<group>"; };
 		25A489B11E656A2B00CC431B /* PaparazzoExample_NoMarshroute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaparazzoExample_NoMarshroute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A489B31E656A2B00CC431B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25A489BA1E656A2B00CC431B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25A489BF1E656A2B00CC431B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4AD3F99C5E49C90864DD83C1 /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; sourceTree = "<group>"; };
-		CEDCE39019F33B8A59FBE03E /* Pods-PaparazzoExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.debug.xcconfig"; sourceTree = "<group>"; };
-		D66B2073FA44E1F6E83AD17C /* Pods_PaparazzoExample_NoMarshroute.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_NoMarshroute.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E5704A94AEFC0C8E88492566 /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.release.xcconfig"; sourceTree = "<group>"; };
+		2DE591EE88D4CBFA24CDB035 /* Pods-PaparazzoExample_ObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_ObjC.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_ObjC/Pods-PaparazzoExample_ObjC.release.xcconfig"; sourceTree = "<group>"; };
+		4B5502C796DE2190F3F3EE54 /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_Storyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard.debug.xcconfig"; sourceTree = "<group>"; };
+		6430F11C07157864B3A2AAAD /* Pods-PaparazzoExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.release.xcconfig"; sourceTree = "<group>"; };
+		810775318D575F452284B80D /* Pods_PaparazzoExample_ObjC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_ObjC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CF46AC72E72928FBA0AAF2D /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.release.xcconfig"; sourceTree = "<group>"; };
+		979D48DD57CFEDEAB10286C7 /* Pods_PaparazzoExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B586569F39ECACB896D29012 /* Pods-PaparazzoExample_ObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_ObjC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_ObjC/Pods-PaparazzoExample_ObjC.debug.xcconfig"; sourceTree = "<group>"; };
+		C6F7C3E992677B08CF09B3C1 /* Pods_PaparazzoExample_NoMarshroute.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_NoMarshroute.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3330B4DE7C6C5E8FC78F95E /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; sourceTree = "<group>"; };
+		EEA17E3C560C5C1DF419EC50 /* Pods_PaparazzoExample_Storyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_Storyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFA7610D1E829434000EB296 /* ItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemProvider.swift; sourceTree = "<group>"; };
 		F2F50FC31E6C9F60006F9171 /* PaparazzoExample_Storyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaparazzoExample_Storyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F50FC51E6C9F60006F9171 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -104,7 +110,6 @@
 		F2F50FCC1E6C9F60006F9171 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F2F50FCF1E6C9F60006F9171 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F2F50FD11E6C9F60006F9171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FDC53B8FA70ECA84F0798D2B /* Pods-PaparazzoExample_Storyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_Storyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38D34B668F9788158C7228EA /* Pods_PaparazzoExample.framework in Frameworks */,
+				D6492B4B9099BE6782593B6F /* Pods_PaparazzoExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCFB43E852B5EC4DFEBFF3E3 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */,
+				7C441DA31DD12123F02E7015 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,7 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A0B5C0CB29FF72D8233F563 /* Pods_PaparazzoExample_Storyboard.framework in Frameworks */,
+				C55C055F0ED3DFF3E57660D6 /* Pods_PaparazzoExample_Storyboard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +148,21 @@
 			path = Filters;
 			sourceTree = "<group>";
 		};
+		1FDE43315AD874A197782C4A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				04BBB91420221C200F74024B /* Pods-PaparazzoExample.debug.xcconfig */,
+				6430F11C07157864B3A2AAAD /* Pods-PaparazzoExample.release.xcconfig */,
+				D3330B4DE7C6C5E8FC78F95E /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */,
+				8CF46AC72E72928FBA0AAF2D /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */,
+				4B5502C796DE2190F3F3EE54 /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */,
+				03B63CAC778E07BEA57367F5 /* Pods-PaparazzoExample_Storyboard.release.xcconfig */,
+				B586569F39ECACB896D29012 /* Pods-PaparazzoExample_ObjC.debug.xcconfig */,
+				2DE591EE88D4CBFA24CDB035 /* Pods-PaparazzoExample_ObjC.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		251E57B71E65651F0009A288 = {
 			isa = PBXGroup;
 			children = (
@@ -151,8 +171,8 @@
 				EFA7610C1E829434000EB296 /* Shared */,
 				F2F50FC41E6C9F60006F9171 /* PaparazzoExample_Storyboard */,
 				251E57C11E65651F0009A288 /* Products */,
-				591F8AE21E57E75A86A661BE /* Pods */,
-				7C2CAB00E266C00FBEC613F6 /* Frameworks */,
+				1FDE43315AD874A197782C4A /* Pods */,
+				72EEDAF40F764D7070BBE2E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -266,29 +286,18 @@
 				25A489B31E656A2B00CC431B /* AppDelegate.swift */,
 				25A489BA1E656A2B00CC431B /* Assets.xcassets */,
 				25A489BF1E656A2B00CC431B /* Info.plist */,
+				2590D1011F9CCCB2009AAB6D /* kitten.jpg */,
 			);
 			path = PaparazzoExample_NoMarshroute;
 			sourceTree = "<group>";
 		};
-		591F8AE21E57E75A86A661BE /* Pods */ = {
+		72EEDAF40F764D7070BBE2E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CEDCE39019F33B8A59FBE03E /* Pods-PaparazzoExample.debug.xcconfig */,
-				05D03BD30B82E68237EB2850 /* Pods-PaparazzoExample.release.xcconfig */,
-				4AD3F99C5E49C90864DD83C1 /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */,
-				E5704A94AEFC0C8E88492566 /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */,
-				00611BACAB70EAC81DA8F2E4 /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */,
-				FDC53B8FA70ECA84F0798D2B /* Pods-PaparazzoExample_Storyboard.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		7C2CAB00E266C00FBEC613F6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				11AE831F8581BCFBA632B260 /* Pods_PaparazzoExample.framework */,
-				D66B2073FA44E1F6E83AD17C /* Pods_PaparazzoExample_NoMarshroute.framework */,
-				0197BFD7D8A9DC3C06FA3EB3 /* Pods_PaparazzoExample_Storyboard.framework */,
+				979D48DD57CFEDEAB10286C7 /* Pods_PaparazzoExample.framework */,
+				C6F7C3E992677B08CF09B3C1 /* Pods_PaparazzoExample_NoMarshroute.framework */,
+				EEA17E3C560C5C1DF419EC50 /* Pods_PaparazzoExample_Storyboard.framework */,
+				810775318D575F452284B80D /* Pods_PaparazzoExample_ObjC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -321,12 +330,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 251E57D21E65651F0009A288 /* Build configuration list for PBXNativeTarget "PaparazzoExample" */;
 			buildPhases = (
-				D4F0EE4EA9B9E5CD1182CEEC /* [CP] Check Pods Manifest.lock */,
+				9BD30C39BAFD6DA6041FFFC7 /* [CP] Check Pods Manifest.lock */,
 				251E57BC1E65651F0009A288 /* Sources */,
 				251E57BD1E65651F0009A288 /* Frameworks */,
 				251E57BE1E65651F0009A288 /* Resources */,
-				6903DBB98690F3E8D0970463 /* [CP] Embed Pods Frameworks */,
-				49A401B95AE98BC4F31EABDB /* [CP] Copy Pods Resources */,
+				7343EDB2085D0C8D3908DBB3 /* [CP] Embed Pods Frameworks */,
+				6B5AB2AA6674B85F1BDFFE3B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -341,12 +350,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 25A489C01E656A2B00CC431B /* Build configuration list for PBXNativeTarget "PaparazzoExample_NoMarshroute" */;
 			buildPhases = (
-				948D758C149C864C21A9D19F /* [CP] Check Pods Manifest.lock */,
+				99F464BAB9A5A5C56A560B4D /* [CP] Check Pods Manifest.lock */,
 				25A489AD1E656A2B00CC431B /* Sources */,
 				25A489AE1E656A2B00CC431B /* Frameworks */,
 				25A489AF1E656A2B00CC431B /* Resources */,
-				E58DE20AB5A2D0CA60339859 /* [CP] Embed Pods Frameworks */,
-				84CFDB66D737D97F29D4640E /* [CP] Copy Pods Resources */,
+				7B1207F182946FE8A5878D2B /* [CP] Embed Pods Frameworks */,
+				C3C153652C017A73FC52B516 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -361,12 +370,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F2F50FD41E6C9F60006F9171 /* Build configuration list for PBXNativeTarget "PaparazzoExample_Storyboard" */;
 			buildPhases = (
-				9B84FF9EE544218BB79EFC40 /* [CP] Check Pods Manifest.lock */,
+				DEF45F7F33355D21608582F2 /* [CP] Check Pods Manifest.lock */,
 				F2F50FBF1E6C9F60006F9171 /* Sources */,
 				F2F50FC01E6C9F60006F9171 /* Frameworks */,
 				F2F50FC11E6C9F60006F9171 /* Resources */,
-				93CE12780CA38D46C5DAA79C /* [CP] Embed Pods Frameworks */,
-				DBE55B1C0D4A76820CB5785B /* [CP] Copy Pods Resources */,
+				D36D5AECF9B69EA3B80C37C2 /* [CP] Embed Pods Frameworks */,
+				50331FBF9028C4E12EA7BFA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -389,7 +398,8 @@
 				TargetAttributes = {
 					251E57BF1E65651F0009A288 = {
 						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = J35C63C5DR;
+						ProvisioningStyle = Automatic;
 					};
 					25A489B01E656A2B00CC431B = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -442,6 +452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25A489C81E656B2D00CC431B /* Latoto-Bold.ttf in Resources */,
+				2590D1021F9CCCB2009AAB6D /* kitten.jpg in Resources */,
 				25A489CB1E656B2D00CC431B /* Latoto-Semibold.ttf in Resources */,
 				25A489CC1E656B2D00CC431B /* Latoto-SemiboldItalic.ttf in Resources */,
 				25A489C91E656B2D00CC431B /* Latoto-Light.ttf in Resources */,
@@ -468,112 +479,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		49A401B95AE98BC4F31EABDB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6903DBB98690F3E8D0970463 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		84CFDB66D737D97F29D4640E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		93CE12780CA38D46C5DAA79C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		948D758C149C864C21A9D19F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		9B84FF9EE544218BB79EFC40 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		D4F0EE4EA9B9E5CD1182CEEC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		DBE55B1C0D4A76820CB5785B /* [CP] Copy Pods Resources */ = {
+		50331FBF9028C4E12EA7BFA5 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -588,7 +494,37 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E58DE20AB5A2D0CA60339859 /* [CP] Embed Pods Frameworks */ = {
+		6B5AB2AA6674B85F1BDFFE3B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7343EDB2085D0C8D3908DBB3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7B1207F182946FE8A5878D2B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -601,6 +537,81 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		99F464BAB9A5A5C56A560B4D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9BD30C39BAFD6DA6041FFFC7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C3C153652C017A73FC52B516 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D36D5AECF9B69EA3B80C37C2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DEF45F7F33355D21608582F2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -780,13 +791,13 @@
 		};
 		251E57D31E65651F0009A288 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CEDCE39019F33B8A59FBE03E /* Pods-PaparazzoExample.debug.xcconfig */;
+			baseConfigurationReference = 04BBB91420221C200F74024B /* Pods-PaparazzoExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = J35C63C5DR;
 				INFOPLIST_FILE = PaparazzoExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -799,13 +810,13 @@
 		};
 		251E57D41E65651F0009A288 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05D03BD30B82E68237EB2850 /* Pods-PaparazzoExample.release.xcconfig */;
+			baseConfigurationReference = 6430F11C07157864B3A2AAAD /* Pods-PaparazzoExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = J35C63C5DR;
 				INFOPLIST_FILE = PaparazzoExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -818,7 +829,7 @@
 		};
 		25A489C11E656A2B00CC431B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AD3F99C5E49C90864DD83C1 /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */;
+			baseConfigurationReference = D3330B4DE7C6C5E8FC78F95E /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -834,7 +845,7 @@
 		};
 		25A489C21E656A2B00CC431B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5704A94AEFC0C8E88492566 /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */;
+			baseConfigurationReference = 8CF46AC72E72928FBA0AAF2D /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -850,7 +861,7 @@
 		};
 		F2F50FD21E6C9F60006F9171 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00611BACAB70EAC81DA8F2E4 /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */;
+			baseConfigurationReference = 4B5502C796DE2190F3F3EE54 /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
@@ -865,7 +876,7 @@
 		};
 		F2F50FD31E6C9F60006F9171 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDC53B8FA70ECA84F0798D2B /* Pods-PaparazzoExample_Storyboard.release.xcconfig */;
+			baseConfigurationReference = 03B63CAC778E07BEA57367F5 /* Pods-PaparazzoExample_Storyboard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
