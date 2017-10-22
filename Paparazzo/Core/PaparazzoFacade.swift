@@ -3,6 +3,12 @@ import UIKit
 
 public final class PaparazzoFacade {
     
+    private static let imageStorage: ImageStorage = {
+        let imageStorage = ImageStorageImpl()
+        imageStorage.removeAll()
+        return imageStorage
+    }()
+    
     public static func paparazzoViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: MediaPickerData = MediaPickerData(),
@@ -86,10 +92,6 @@ public final class PaparazzoFacade {
     }
     
     private static func assemblyFactory(theme: PaparazzoUITheme) -> AssemblyFactory {
-        
-        let imageStorage = ImageStorageImpl()
-        imageStorage.removeAll()
-        
         return AssemblyFactory(theme: theme, imageStorage: imageStorage)
     }
 }
