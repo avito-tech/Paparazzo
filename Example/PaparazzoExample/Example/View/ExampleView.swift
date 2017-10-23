@@ -11,6 +11,7 @@ final class ExampleView: UIView {
     init() {
         super.init(frame: .zero)
         
+        mediaPickerButton.setTitle("Show Media Picker", for: .normal)
         mediaPickerButton.addTarget(
             self,
             action: #selector(onShowMediaPickerButtonTap(_:)),
@@ -55,7 +56,7 @@ final class ExampleView: UIView {
     }
     
     var onShowMediaPickerButtonTap: (() -> ())?
-    var onMaskCropperButtonTap: (() -> ())?
+    var onShowMaskCropperButtonTap: (() -> ())?
     var onShowPhotoLibraryButtonTap: (() -> ())?
     
     // MARK: - UIView
@@ -80,7 +81,7 @@ final class ExampleView: UIView {
     }
     
     @objc private func onMaskCropperButtonTap(_: UIButton) {
-        onMaskCropperButtonTap?()
+        onShowMaskCropperButtonTap?()
     }
     
     @objc private func onShowPhotoLibraryButtonTap(_: UIButton) {

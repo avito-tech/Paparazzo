@@ -19,13 +19,6 @@ Pod::Spec.new do |s|
   s.dependency 'ImageSource/PHAsset'
   s.dependency 'ImageSource/Local'
   s.dependency 'ImageSource/Remote'
-  
-  s.ios.resource_bundle = {
-    'Paparazzo' => [
-      'Paparazzo/Localization/*.lproj',
-      'Paparazzo/Assets/Assets.xcassets'
-    ]
-  }
 
   s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage'
 
@@ -41,6 +34,13 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core' do |cs|
     cs.source_files = 'Paparazzo/Core/**/*'
+  
+    cs.ios.resource_bundle = {
+      'Paparazzo' => [
+        'Paparazzo/Localization/*.lproj',
+        'Paparazzo/Assets/Assets.xcassets'
+      ]
+    }
   end
   
   s.subspec 'Marshroute' do |ms|

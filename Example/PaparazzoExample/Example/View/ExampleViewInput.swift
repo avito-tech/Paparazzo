@@ -7,6 +7,6 @@ protocol ExampleViewInput: class {
     func setPhotoLibraryButtonTitle(_ title: String)
     
     var onShowMediaPickerButtonTap: (() -> ())? { get set }
-    var onMaskCropperButtonTap: (() -> ())? { get set }
+    var onShowMaskCropperButtonTap: (() -> ())? { get set }
     var onShowPhotoLibraryButtonTap: (() -> ())? { get set }
 }

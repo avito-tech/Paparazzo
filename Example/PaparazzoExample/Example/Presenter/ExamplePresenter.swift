@@ -59,7 +59,7 @@ final class ExamplePresenter {
             }
         }
         
-        view?.onMaskCropperButtonTap = { [weak self] in
+        view?.onShowMaskCropperButtonTap = { [weak self] in
             self?.showMaskCropperCamera()
         }
     }
