@@ -1,4 +1,5 @@
 import Paparazzo
+import ImageSource
 import UIKit
 
 @UIApplicationMain
@@ -17,71 +18,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func rootViewController() -> UIViewController {
         
-        let imageStorage = ImageStorageImpl()
-        imageStorage.removeAll()
-        let assemblyFactory = Paparazzo.AssemblyFactory(
-            theme: PaparazzoUITheme.appSpecificTheme(),
-            imageStorage: imageStorage
-        )
-        
         let exampleController = ExampleViewController()
         
-        let itemProvider = ItemProvider()
+        var mediaPickerItems = [MediaPickerItem]()
+        var photoLibraryItems = [PhotoLibraryItem]()
         
         // Show full media picker
         exampleController.onShowMediaPickerButtonTap = { [weak exampleController] in
             
-            let assembly = assemblyFactory.mediaPickerAssembly()
-            
-            let data = MediaPickerData(
-                items: itemProvider.remoteItems(),
-                selectedItem: nil,
-                maxItemsCount: 20,
-                cropEnabled: true,
-                hapticFeedbackEnabled: true,
-                cropCanvasSize: CGSize(width: 1280, height: 960)
-            )
-            
-            let mediaPickerController = assembly.module(
-                data: data,
-                configure: { module in
-                    weak var module = module
-                    
-                    module?.setContinueButtonTitle("Done")
-                    
-                    module?.onCancel = {
-                        module?.dismissModule()
-                    }
-                    module?.onFinish = { _ in
-                        module?.dismissModule()
-                    }
+            let viewController = PaparazzoFacade.paparazzoViewController(
+                theme: PaparazzoUITheme.appSpecificTheme(),
+                parameters: MediaPickerData(
+                    items: mediaPickerItems,
+                    maxItemsCount: 3
+                ),
+                onFinish: { images in
+                    mediaPickerItems = images
                 }
             )
             
-            exampleController?.navigationController?.pushViewController(mediaPickerController, animated: true)
+            exampleController?.present(viewController, animated: true)
+        }
+        
+        // Show mask cropper
+        exampleController.onShowMaskCropperButtonTap = { [weak exampleController] in
+            
+            guard let pathToImage = Bundle.main.path(forResource: "kitten", ofType: "jpg") else {
+                assertionFailure("Oooops. Kitten is lost :(")
+                return
+            }
+            
+            let viewController = PaparazzoFacade.maskCropperViewController(
+                theme: PaparazzoUITheme.appSpecificTheme(),
+                parameters: MaskCropperData(
+                    imageSource: LocalImageSource(path: pathToImage)
+                ),
+                croppingOverlayProvider: CroppingOverlayProvidersFactoryImpl().circleCroppingOverlayProvider(),
+                onFinish: { imageSource in
+                    print("Cropped image: \(imageSource)")
+                }
+            )
+            
+            exampleController?.present(viewController, animated: true, completion: nil)
         }
         
         // Show only photo library
         exampleController.onShowPhotoLibraryButtonTap = { [weak exampleController] in
             
-            let assembly = assemblyFactory.photoLibraryAssembly()
-            
-            let galleryController = assembly.module(
-                data: PhotoLibraryData(
-                    selectedItems: [],
-                    maxSelectedItemsCount: 5
+            let viewController = PaparazzoFacade.libraryViewController(
+                theme: PaparazzoUITheme.appSpecificTheme(),
+                parameters: PhotoLibraryData(
+                    selectedItems: photoLibraryItems,
+                    maxSelectedItemsCount: 3
                 ),
-                configure: { module in
-                    weak var module = module
-                    module?.onFinish = { _ in
-                        module?.dismissModule()
-                    }
+                onFinish: { images in
+                    photoLibraryItems = images
                 }
             )
             
-            let navigationController = UINavigationController(rootViewController: galleryController)
-            
-            exampleController?.present(navigationController, animated: true, completion: nil)
+            exampleController?.present(viewController, animated: true, completion: nil)
         }
         
         return NavigationController(rootViewController: exampleController)

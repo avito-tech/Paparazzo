@@ -12,14 +12,14 @@ public struct MediaPickerData {
     public let initialActiveCameraType: CameraType
     
     public init(
-        items: [MediaPickerItem],
+        items: [MediaPickerItem] = [],
         autocorrectionFilters: [Filter] = [],
-        selectedItem: MediaPickerItem?,
-        maxItemsCount: Int?,
-        cropEnabled: Bool,
+        selectedItem: MediaPickerItem? = nil,
+        maxItemsCount: Int? = nil,
+        cropEnabled: Bool = true,
         autocorrectEnabled: Bool = false,
         hapticFeedbackEnabled: Bool = false,
-        cropCanvasSize: CGSize,
+        cropCanvasSize: CGSize = CGSize(width: 1280, height: 960),
         initialActiveCameraType: CameraType = .back)
     {
         self.items = items

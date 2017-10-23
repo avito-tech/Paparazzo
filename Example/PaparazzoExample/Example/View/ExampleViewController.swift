@@ -47,8 +47,8 @@ final class ExampleViewController: UIViewController, ExampleViewInput {
         set { exampleView?.onShowPhotoLibraryButtonTap = newValue }
     }
     
-    var onMaskCropperButtonTap: (() -> ())? {
-        get { return exampleView?.onMaskCropperButtonTap }
-        set { exampleView?.onMaskCropperButtonTap = newValue }
+    var onShowMaskCropperButtonTap: (() -> ())? {
+        get { return exampleView?.onShowMaskCropperButtonTap }
+        set { exampleView?.onShowMaskCropperButtonTap = newValue }
     }
 }
