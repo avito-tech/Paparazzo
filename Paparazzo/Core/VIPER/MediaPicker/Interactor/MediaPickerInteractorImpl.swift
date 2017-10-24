@@ -134,6 +134,10 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         return maxItemsCount.flatMap { self.items.count < $0 } ?? true
     }
     
+    func canEditItemsOrder() -> Bool {
+        return maxItemsCount != 1
+    }
+    
     func autocorrectItem(
         onResult: @escaping (_ updatedItem: MediaPickerItem?) -> (),
         onError: @escaping (_ errorMessage: String?) -> ())
