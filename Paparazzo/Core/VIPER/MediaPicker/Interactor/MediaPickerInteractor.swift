@@ -6,7 +6,7 @@ protocol MediaPickerInteractor: class {
     var cropCanvasSize: CGSize { get }
     var photoLibraryItems: [PhotoLibraryItem] { get }
     var selectedItem: MediaPickerItem? { get }
-    let maxItemsCount: Int?
+    var maxItemsCount: Int? { get }
     
     func addItems(
         _ items: [MediaPickerItem]
