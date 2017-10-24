@@ -5,7 +5,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     private let deviceOrientationService: DeviceOrientationService
     
-    private let maxItemsCount: Int?
+    let maxItemsCount: Int?
     let cropCanvasSize: CGSize
     
     private(set) var items = [MediaPickerItem]()
@@ -132,10 +132,6 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     func canAddItems() -> Bool {
         return maxItemsCount.flatMap { self.items.count < $0 } ?? true
-    }
-    
-    func canEditItemsOrder() -> Bool {
-        return maxItemsCount.flatMap { $0 > 1 } ?? true
     }
     
     func autocorrectItem(

@@ -6,6 +6,7 @@ protocol MediaPickerInteractor: class {
     var cropCanvasSize: CGSize { get }
     var photoLibraryItems: [PhotoLibraryItem] { get }
     var selectedItem: MediaPickerItem? { get }
+    let maxItemsCount: Int?
     
     func addItems(
         _ items: [MediaPickerItem]
@@ -34,7 +35,6 @@ protocol MediaPickerInteractor: class {
     func cropMode() -> MediaPickerCropMode
     
     func canAddItems() -> Bool
-    func canEditItemsOrder() -> Bool
     
     func autocorrectItem(
         onResult: @escaping (_ updatedItem: MediaPickerItem?) -> (),

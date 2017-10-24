@@ -76,8 +76,8 @@ final class MediaPickerPresenter: MediaPickerModule {
         interactor.setCropMode(cropMode)
     }
     
-    func setPreviewAlwaysVisible(_ alwaysVisible: Bool) {
-        view?.setShowPreview(alwaysVisible || interactor.canEditItemsOrder())
+    func setThumbnailsAlwaysVisible(_ alwaysVisible: Bool) {
+        view?.setShowPreview(interactor.maxItemsCount != 1 || alwaysVisible)
     }
     
     func removeItem(_ item: MediaPickerItem) {
@@ -121,7 +121,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
         view?.setPhotoTitle(localized("Photo %d", 1))
-        view?.setShowPreview(interactor.canEditItemsOrder())
+        setThumbnailsAlwaysVisible(false)
         
         view?.setCameraControlsEnabled(false)
         
