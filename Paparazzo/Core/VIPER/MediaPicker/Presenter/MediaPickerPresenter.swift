@@ -73,13 +73,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     func setCropMode(_ cropMode: MediaPickerCropMode) {
-        switch cropMode {
-        case .normal:
-            view?.setShowPreview(true)
-        case .custom:
-            view?.setShowPreview(false)
-        }
         interactor.setCropMode(cropMode)
+    }
+    
+    func setThumbnailsAlwaysVisible(_ alwaysVisible: Bool) {
+        thumbnailsAlwaysVisible = alwaysVisible
     }
     
     func removeItem(_ item: MediaPickerItem) {
@@ -118,11 +116,16 @@ final class MediaPickerPresenter: MediaPickerModule {
     // MARK: - Private
     
     private var continueButtonTitle: String?
-    
+    private var thumbnailsAlwaysVisible: Bool = false {
+        didSet {
+            updateThumbnailsVisibility()
+        }
+    }
     private func setUpView() {
         
         view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
         view?.setPhotoTitle(localized("Photo %d", 1))
+        updateThumbnailsVisibility()
         
         view?.setCameraControlsEnabled(false)
         
@@ -373,6 +376,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.selectItem(item)
         updateAutocorrectionStatusForItem(item)
         adjustViewForSelectedItem(item, animated: false, scrollToSelected: true)
+    }
+    
+    private func updateThumbnailsVisibility() {
+        view?.setShowPreview(interactor.maxItemsCount != 1 || thumbnailsAlwaysVisible)
     }
     
     private func selectCamera() {
