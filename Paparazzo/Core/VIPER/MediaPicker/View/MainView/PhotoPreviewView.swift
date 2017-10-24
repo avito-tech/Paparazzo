@@ -94,7 +94,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         guard sourceIndex != destinationIndex else { return }
         
         if #available(iOS 10.0, *), hapticFeedbackEnabled {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            UISelectionFeedbackGenerator().selectionChanged()
         }
         
         collectionView.performBatchUpdates(animated: false, { [weak self] in
