@@ -416,11 +416,10 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
             
             completion?()
+            strongSelf.onItemsAdd?(items, startIndex)
         }
         
         setTitleForPhotoWithIndex(interactor.items.count - 1)
-        
-        onItemsAdd?(items, startIndex)
     }
     
     private func removeSelectedItem() {
