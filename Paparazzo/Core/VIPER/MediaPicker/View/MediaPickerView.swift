@@ -549,17 +549,24 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         let leftButton = closeAndContinueButtonsSwapped ? continueButton : closeButton
         let rightButton = closeAndContinueButtonsSwapped ? closeButton : continueButton
+
+        let topMargin: CGFloat
+        if #available(iOS 11.0, *) {
+            topMargin = safeAreaInsets.top
+        } else {
+            topMargin = 0
+        }
         
         leftButton.frame = CGRect(
             x: 8,
-            y: 8,
+            y: max(8, topMargin),
             width: leftButton.width,
             height: leftButton.height
         )
         
         rightButton.frame = CGRect(
             x: bounds.right - 8 - rightButton.width,
-            y: 8,
+            y: max(8, topMargin),
             width: rightButton.width,
             height: rightButton.height
         )

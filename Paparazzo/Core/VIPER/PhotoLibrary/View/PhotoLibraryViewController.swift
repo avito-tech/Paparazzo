@@ -21,8 +21,6 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        hideNavigationBarShadow()
-        
         UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
     }
     
@@ -130,12 +128,5 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     @objc private func onPickButtonTap(_ sender: UIBarButtonItem) {
         onPickButtonTap?()
-    }
-    
-    private func hideNavigationBarShadow() {
-        let navigationBar = navigationController?.navigationBar
-        navigationBar?.setBackgroundImage(UIImage(), for: .default)
-        navigationBar?.backgroundColor = .white
-        navigationBar?.shadowImage = UIImage()
     }
 }

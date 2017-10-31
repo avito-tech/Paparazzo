@@ -43,6 +43,9 @@
 		25A489CC1E656B2D00CC431B /* Latoto-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57EC1E6565890009A288 /* Latoto-SemiboldItalic.ttf */; };
 		2A0B5C0CB29FF72D8233F563 /* Pods_PaparazzoExample_Storyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0197BFD7D8A9DC3C06FA3EB3 /* Pods_PaparazzoExample_Storyboard.framework */; };
 		38D34B668F9788158C7228EA /* Pods_PaparazzoExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AE831F8581BCFBA632B260 /* Pods_PaparazzoExample.framework */; };
+		BB0265081FA86FB4002A5561 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB0265061FA86FB4002A5561 /* LaunchScreen.storyboard */; };
+		BB0265091FA86FB4002A5561 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB0265061FA86FB4002A5561 /* LaunchScreen.storyboard */; };
+		BB02650A1FA86FB4002A5561 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB0265061FA86FB4002A5561 /* LaunchScreen.storyboard */; };
 		DCFB43E852B5EC4DFEBFF3E3 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D66B2073FA44E1F6E83AD17C /* Pods_PaparazzoExample_NoMarshroute.framework */; };
 		EFA7610E1E829434000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 		EFA7610F1E829569000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
@@ -93,6 +96,7 @@
 		25A489BA1E656A2B00CC431B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25A489BF1E656A2B00CC431B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4AD3F99C5E49C90864DD83C1 /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; sourceTree = "<group>"; };
+		BB0265071FA86FB4002A5561 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CEDCE39019F33B8A59FBE03E /* Pods-PaparazzoExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample.debug.xcconfig"; sourceTree = "<group>"; };
 		D66B2073FA44E1F6E83AD17C /* Pods_PaparazzoExample_NoMarshroute.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample_NoMarshroute.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5704A94AEFC0C8E88492566 /* Pods-PaparazzoExample_NoMarshroute.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.release.xcconfig"; sourceTree = "<group>"; };
@@ -297,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				EFA7610D1E829434000EB296 /* ItemProvider.swift */,
+				BB0265061FA86FB4002A5561 /* LaunchScreen.storyboard */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				251E57FD1E6565890009A288 /* Latoto-Light.ttf in Resources */,
+				BB0265081FA86FB4002A5561 /* LaunchScreen.storyboard in Resources */,
 				251E57FF1E6565890009A288 /* Latoto-Semibold.ttf in Resources */,
 				251E57FC1E6565890009A288 /* Latoto-Bold.ttf in Resources */,
 				251E58001E6565890009A288 /* Latoto-SemiboldItalic.ttf in Resources */,
@@ -445,6 +451,7 @@
 				25A489CB1E656B2D00CC431B /* Latoto-Semibold.ttf in Resources */,
 				25A489CC1E656B2D00CC431B /* Latoto-SemiboldItalic.ttf in Resources */,
 				25A489C91E656B2D00CC431B /* Latoto-Light.ttf in Resources */,
+				BB0265091FA86FB4002A5561 /* LaunchScreen.storyboard in Resources */,
 				25A489CA1E656B2D00CC431B /* Latoto-Regular.ttf in Resources */,
 				25A489BB1E656A2B00CC431B /* Assets.xcassets in Resources */,
 			);
@@ -454,6 +461,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB02650A1FA86FB4002A5561 /* LaunchScreen.storyboard in Resources */,
 				F2F50FD61E6CA160006F9171 /* Latoto-Bold.ttf in Resources */,
 				F2F50FD91E6CA160006F9171 /* Latoto-Semibold.ttf in Resources */,
 				F2F50FDA1E6CA160006F9171 /* Latoto-SemiboldItalic.ttf in Resources */,
@@ -662,6 +670,14 @@
 				2588E3541F8F8BBB009A2FD2 /* ru */,
 			);
 			name = Paparazzo.strings;
+			sourceTree = "<group>";
+		};
+		BB0265061FA86FB4002A5561 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB0265071FA86FB4002A5561 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 		F2F50FC91E6C9F60006F9171 /* Main.storyboard */ = {
