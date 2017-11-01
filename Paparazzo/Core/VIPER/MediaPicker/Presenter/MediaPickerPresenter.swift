@@ -93,7 +93,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
             view?.selectItem(itemToSelectAfterRemoval)
         } else {
-            view?.setMode(.camera)
+            view?.selectCamera()
             view?.setPhotoTitleAlpha(0)
         }
         
