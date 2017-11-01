@@ -399,12 +399,12 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             view?.setCameraButtonVisible(canAddMoreItems)
             
-            if let lastItem = items.last {
-                view?.selectItem(lastItem)
-                view?.scrollToItemThumbnail(lastItem, animated: true)
-            } else if canAddMoreItems {
+            if fromCamera && canAddMoreItems {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
+            } else if let lastItem = items.last {
+                view?.selectItem(lastItem)
+                view?.scrollToItemThumbnail(lastItem, animated: true)
             }
             
             completion?()

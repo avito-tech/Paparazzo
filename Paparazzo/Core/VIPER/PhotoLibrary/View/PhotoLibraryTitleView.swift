@@ -44,7 +44,8 @@ final class PhotoLibraryTitleView: UIView {
     }
     
     func rotateIconDown() {
-        iconView.transform = .identity
+        // Set angle 0.001 instead of 0 for icon to rotate counterclockwise. Otherwise it will always rotate clockwise.
+        iconView.transform = CGAffineTransform(rotationAngle: 0.001)
     }
     
     // MARK: - UIView

@@ -64,8 +64,8 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         coverImageView.frame = CGRect(
-            x: insets.left,
-            y: floor((bounds.height - imageSize.height) / 2),
+            x: contentView.bounds.left + insets.left,
+            y: contentView.bounds.top + floor((bounds.height - imageSize.height) / 2),
             width: imageSize.width,
             height: imageSize.height
         )

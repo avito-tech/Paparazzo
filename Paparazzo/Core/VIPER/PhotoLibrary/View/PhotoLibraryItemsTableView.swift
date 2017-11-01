@@ -25,6 +25,8 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.rowHeight = 60
+        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        tableView.alwaysBounceVertical = false
         tableView.register(PhotoLibraryAlbumsTableViewCell.self, forCellReuseIdentifier: cellId)
         
         addSubview(tableView)
@@ -90,7 +92,11 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         let tableViewSize = tableView.sizeThatFits(size)
-        return CGSize(width: tableViewSize.width, height: tableViewSize.height + separatorHeight)
+        let tableVerticalInsets = tableView.contentInset.top + tableView.contentInset.bottom
+        return CGSize(
+            width: tableViewSize.width,
+            height: min(size.height, tableViewSize.height + separatorHeight + tableVerticalInsets)
+        )
     }
     
     override func layoutSubviews() {
