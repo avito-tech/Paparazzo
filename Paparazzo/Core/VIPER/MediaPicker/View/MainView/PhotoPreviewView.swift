@@ -176,7 +176,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         let offset = scrollView.contentOffset.x
         let pageWidth = scrollView.width
-        let numberOfPages = ceil(scrollView.contentSize.width / pageWidth)
+        let numberOfPages = CGFloat(dataSource.numberOfItems)
         
         let penultimatePageOffsetX = pageWidth * (numberOfPages - 2)
         

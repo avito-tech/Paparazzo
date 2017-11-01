@@ -93,7 +93,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
             view?.selectItem(itemToSelectAfterRemoval)
         } else {
-            view?.setMode(.camera)
+            view?.selectCamera()
             view?.setPhotoTitleAlpha(0)
         }
         
@@ -416,11 +416,10 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
             
             completion?()
+            strongSelf.onItemsAdd?(items, startIndex)
         }
         
         setTitleForPhotoWithIndex(interactor.items.count - 1)
-        
-        onItemsAdd?(items, startIndex)
     }
     
     private func removeSelectedItem() {
