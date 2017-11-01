@@ -7,20 +7,27 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - UICollectionViewCell
     
+    override var backgroundColor: UIColor? {
+        get { return backgroundView?.backgroundColor }
+        set { backgroundView?.backgroundColor = newValue }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.cornerRadius = 6
-        layer.masksToBounds = true
+        let backgroundView = UIView()
+        let onePixel = 1.0 / UIScreen.main.nativeScale
         
-        imageView.layer.cornerRadius = 6
-        imageView.layer.masksToBounds = true
-        imageView.isAccessibilityElement = true
-        imageView.layer.shouldRasterize = true
-        imageView.layer.rasterizationScale = UIScreen.main.nativeScale
+        self.backgroundView = backgroundView
         
         selectedBorderThickness = 5
-        imageViewInsets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
+        
+        imageView.isAccessibilityElement = true
+        imageViewInsets = UIEdgeInsets(top: onePixel, left: onePixel, bottom: onePixel, right: onePixel)
+        
+        setUpRoundedCorners(for: self)
+        setUpRoundedCorners(for: backgroundView)
+        setUpRoundedCorners(for: imageView)
         
         contentView.insertSubview(cloudIconView, at: 0)
     }
@@ -31,6 +38,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        backgroundView?.frame = imageView.frame
         
         cloudIconView.sizeToFit()
         cloudIconView.right = contentView.bounds.right
@@ -66,4 +75,11 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     // MARK: - Private
     
     private var imageRequestId: ImageRequestId?
+    
+    private func setUpRoundedCorners(for view: UIView) {
+        view.layer.cornerRadius = 6
+        view.layer.masksToBounds = true
+        view.layer.shouldRasterize = true
+        view.layer.rasterizationScale = UIScreen.main.nativeScale
+    }
 }
