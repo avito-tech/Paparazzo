@@ -71,11 +71,15 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             setUpFetchRequest()
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] status in
-                self?.wasSetUp = true
-                if case .authorized = status {
-                    self?.setUpFetchRequest()
+                
+                DispatchQueue.main.async { [weak self] in
+                    
+                    self?.wasSetUp = true
+                    if case .authorized = status {
+                        self?.setUpFetchRequest()
+                    }
+                    self?.callAuthorizationHandler(for: status)
                 }
-                self?.callAuthorizationHandler(for: status)
             }
         case .restricted, .denied:
             wasSetUp = true
