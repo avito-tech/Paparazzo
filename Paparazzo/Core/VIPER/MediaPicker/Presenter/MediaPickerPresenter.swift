@@ -73,13 +73,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     func setCropMode(_ cropMode: MediaPickerCropMode) {
-        switch cropMode {
-        case .normal:
-            view?.setShowPreview(true)
-        case .custom:
-            view?.setShowPreview(false)
-        }
         interactor.setCropMode(cropMode)
+    }
+    
+    func setThumbnailsAlwaysVisible(_ alwaysVisible: Bool) {
+        thumbnailsAlwaysVisible = alwaysVisible
     }
     
     func removeItem(_ item: MediaPickerItem) {
@@ -95,7 +93,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
             view?.selectItem(itemToSelectAfterRemoval)
         } else {
-            view?.setMode(.camera)
+            view?.selectCamera()
             view?.setPhotoTitleAlpha(0)
         }
         
@@ -118,11 +116,16 @@ final class MediaPickerPresenter: MediaPickerModule {
     // MARK: - Private
     
     private var continueButtonTitle: String?
-    
+    private var thumbnailsAlwaysVisible: Bool = false {
+        didSet {
+            updateThumbnailsVisibility()
+        }
+    }
     private func setUpView() {
         
         view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
         view?.setPhotoTitle(localized("Photo %d", 1))
+        updateThumbnailsVisibility()
         
         view?.setCameraControlsEnabled(false)
         
@@ -375,6 +378,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         adjustViewForSelectedItem(item, animated: false, scrollToSelected: true)
     }
     
+    private func updateThumbnailsVisibility() {
+        view?.setShowPreview(interactor.maxItemsCount != 1 || thumbnailsAlwaysVisible)
+    }
+    
     private func selectCamera() {
         interactor.selectItem(nil)
         view?.setMode(.camera)
@@ -408,11 +415,10 @@ final class MediaPickerPresenter: MediaPickerModule {
             }
             
             completion?()
+            strongSelf.onItemsAdd?(items, startIndex)
         }
         
         setTitleForPhotoWithIndex(interactor.items.count - 1)
-        
-        onItemsAdd?(items, startIndex)
     }
     
     private func removeSelectedItem() {

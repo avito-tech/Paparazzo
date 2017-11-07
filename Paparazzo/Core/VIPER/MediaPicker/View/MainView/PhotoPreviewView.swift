@@ -94,7 +94,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         guard sourceIndex != destinationIndex else { return }
         
         if #available(iOS 10.0, *), hapticFeedbackEnabled {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            UISelectionFeedbackGenerator().selectionChanged()
         }
         
         collectionView.performBatchUpdates(animated: false, updates: { [weak self] in
@@ -176,7 +176,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         let offset = scrollView.contentOffset.x
         let pageWidth = scrollView.width
-        let numberOfPages = ceil(scrollView.contentSize.width / pageWidth)
+        let numberOfPages = CGFloat(dataSource.numberOfItems)
         
         let penultimatePageOffsetX = pageWidth * (numberOfPages - 2)
         
