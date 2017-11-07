@@ -5,7 +5,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     private let deviceOrientationService: DeviceOrientationService
     
-    private let maxItemsCount: Int?
+    let maxItemsCount: Int?
     let cropCanvasSize: CGSize
     
     private(set) var items = [MediaPickerItem]()
