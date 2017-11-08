@@ -39,7 +39,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        backgroundView?.frame = imageView.frame
+        let onePixel = CGFloat(1) / UIScreen.main.nativeScale
+        let backgroundInsets = UIEdgeInsets(top: onePixel, left: onePixel, bottom: onePixel, right: onePixel)
+        
+        backgroundView?.frame = UIEdgeInsetsInsetRect(imageView.frame, backgroundInsets)
         
         cloudIconView.sizeToFit()
         cloudIconView.right = contentView.bounds.right
