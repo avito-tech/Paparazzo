@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '2.0.0'
+  s.version                = '2.0.1'
   s.summary                = 'ImageSource by Avito'
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'Avito'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
-  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "#{s.version}" }
+  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "ImageSource-#{s.version}" }
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true

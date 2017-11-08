@@ -26,8 +26,16 @@ public protocol ImageSource: class {
     func isEqualTo(_ other: ImageSource) -> Bool
 }
 
-public func ==(lhs: ImageSource, rhs: ImageSource) -> Bool {
-    return lhs.isEqualTo(rhs)
+public func ==(lhs: ImageSource?, rhs: ImageSource?) -> Bool {
+    if let lhs = lhs, let rhs = rhs {
+        return lhs.isEqualTo(rhs)
+    } else if let _ = lhs {
+        return false
+    } else if let _ = rhs {
+        return false
+    } else {
+        return true
+    }
 }
 
 public func !=(lhs: ImageSource, rhs: ImageSource) -> Bool {
