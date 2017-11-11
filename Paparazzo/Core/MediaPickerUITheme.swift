@@ -38,6 +38,8 @@ public struct PaparazzoUITheme:
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)
     public var accessDeniedButtonFont = UIFont.systemFont(ofSize: 17)
 
+    public var infoMessageFont = UIFont.systemFont(ofSize: 14)
+    
     // MARK: - PhotoLibraryUITheme
     
     public var photoLibraryDoneButtonFont = UIFont.boldSystemFont(ofSize: 17)

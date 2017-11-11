@@ -5,8 +5,8 @@ public struct PhotoLibraryData {
     public let maxSelectedItemsCount: Int?
     
     public init(
-        selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?)
+        selectedItems: [PhotoLibraryItem] = [],
+        maxSelectedItemsCount: Int? = nil)
     {
         self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount

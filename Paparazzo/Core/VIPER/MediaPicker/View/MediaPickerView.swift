@@ -40,6 +40,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let continueButtonHeight = CGFloat(38)
     private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
+    private var theme: ThemeType?
+    
     // MARK: - Helpers
     
     private var mode = MediaPickerViewMode.camera
@@ -205,6 +207,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        self.theme = theme
         
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
@@ -341,6 +344,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     func setCameraButtonVisible(_ visible: Bool) {
         photoPreviewView.setCameraVisible(visible)
         thumbnailRibbonView.setCameraItemVisible(visible)
+    }
+    
+    func setHapticFeedbackEnabled(_ enabled: Bool) {
+        photoPreviewView.hapticFeedbackEnabled = enabled
+        thumbnailRibbonView.setHapticFeedbackEnabled(enabled)
     }
     
     func setLatestPhotoLibraryItemImage(_ image: ImageSource?) {
@@ -543,7 +551,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     func showInfoMessage(_ message: String, timeout: TimeInterval) {
-        infoMessageDisplayer.display(viewData: InfoMessageViewData(text: message, timeout: timeout), in: photoPreviewView)
+        let viewData = InfoMessageViewData(text: message, timeout: timeout, font: theme?.infoMessageFont)
+        infoMessageDisplayer.display(viewData: viewData, in: photoPreviewView)
     }
     
     // MARK: - Private

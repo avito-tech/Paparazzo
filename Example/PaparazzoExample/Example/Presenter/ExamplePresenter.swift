@@ -59,7 +59,7 @@ final class ExamplePresenter {
             }
         }
         
-        view?.onMaskCropperButtonTap = { [weak self] in
+        view?.onShowMaskCropperButtonTap = { [weak self] in
             self?.showMaskCropperCamera()
         }
     }
@@ -70,6 +70,7 @@ final class ExamplePresenter {
             selectedItem: nil,
             maxItemsCount: 1,
             cropEnabled: true,
+            hapticFeedbackEnabled: true,
             cropCanvasSize: cropCanvasSize,
             initialActiveCameraType: .front
         )
@@ -122,6 +123,7 @@ final class ExamplePresenter {
             maxItemsCount: 20,
             cropEnabled: true,
             autocorrectEnabled: true,
+            hapticFeedbackEnabled: true,
             cropCanvasSize: cropCanvasSize
         )
         

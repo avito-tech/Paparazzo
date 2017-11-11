@@ -25,6 +25,9 @@ public protocol MediaPickerModule: class {
     func setAccessDeniedButtonTitle(_: String)
     
     func setCropMode(_: MediaPickerCropMode)
+    func setThumbnailsAlwaysVisible(_: Bool)
+    
+    func removeItem(_: MediaPickerItem)
     
     // startIndex - index of element in previous array of MediaPickerItem, new elements were added after that index
     var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())? { get set }

@@ -119,6 +119,10 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setAccessDeniedButtonTitle(title)
     }
     
+    func setProgressVisible(_ visible: Bool) {
+        photoLibraryView.setProgressVisible(visible)
+    }
+    
     // MARK: - Private
     
     private var pickBarButtonItem: UIBarButtonItem?

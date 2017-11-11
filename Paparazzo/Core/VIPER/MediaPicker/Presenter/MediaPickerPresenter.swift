@@ -73,13 +73,31 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     func setCropMode(_ cropMode: MediaPickerCropMode) {
-        switch cropMode {
-        case .normal:
-            view?.setShowPreview(true)
-        case .custom:
-            view?.setShowPreview(false)
-        }
         interactor.setCropMode(cropMode)
+    }
+    
+    func setThumbnailsAlwaysVisible(_ alwaysVisible: Bool) {
+        thumbnailsAlwaysVisible = alwaysVisible
+    }
+    
+    func removeItem(_ item: MediaPickerItem) {
+        
+        let itemWasSelected = (item == interactor.selectedItem)
+        let index = interactor.indexOfItem(item)
+        let adjacentItem = interactor.removeItem(item)
+        let itemToSelectAfterRemoval = itemWasSelected ? adjacentItem : interactor.selectedItem
+        
+        view?.removeItem(item)
+        view?.setCameraButtonVisible(interactor.canAddItems())
+        
+        if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
+            view?.selectItem(itemToSelectAfterRemoval)
+        } else {
+            view?.selectCamera()
+            view?.setPhotoTitleAlpha(0)
+        }
+        
+        onItemRemove?(item, index)
     }
     
     func focusOnModule() {
@@ -98,11 +116,16 @@ final class MediaPickerPresenter: MediaPickerModule {
     // MARK: - Private
     
     private var continueButtonTitle: String?
-    
+    private var thumbnailsAlwaysVisible: Bool = false {
+        didSet {
+            updateThumbnailsVisibility()
+        }
+    }
     private func setUpView() {
         
         view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
         view?.setPhotoTitle(localized("Photo %d", 1))
+        updateThumbnailsVisibility()
         
         view?.setCameraControlsEnabled(false)
         
@@ -355,6 +378,10 @@ final class MediaPickerPresenter: MediaPickerModule {
         adjustViewForSelectedItem(item, animated: false, scrollToSelected: true)
     }
     
+    private func updateThumbnailsVisibility() {
+        view?.setShowPreview(interactor.maxItemsCount != 1 || thumbnailsAlwaysVisible)
+    }
+    
     private func selectCamera() {
         interactor.selectItem(nil)
         view?.setMode(.camera)
@@ -383,81 +410,22 @@ final class MediaPickerPresenter: MediaPickerModule {
             if canAddMoreItems {
                 view?.setMode(.camera)
                 view?.scrollToCameraThumbnail(animated: true)
-                completion?()
             } else if let lastItem = items.last {
                 view?.selectItem(lastItem)
                 view?.scrollToItemThumbnail(lastItem, animated: true)
-                
-                let mode = strongSelf.interactor.cropMode()
-                switch mode {
-                case .normal:
-                    break
-                case .custom(let provider):
-                    self?.showMaskCropper(
-                        croppingOverlayProvider: provider,
-                        item: lastItem
-                    )
-                }
-                completion?()
             }
+            
+            completion?()
+            strongSelf.onItemsAdd?(items, startIndex)
         }
         
         setTitleForPhotoWithIndex(interactor.items.count - 1)
-        
-        onItemsAdd?(items, startIndex)
     }
     
     private func removeSelectedItem() {
-        
-        guard let item = interactor.selectedItem else { return }
-        
-        let index = interactor.indexOfItem(item)
-        let adjacentItem = interactor.removeItem(item)
-        view?.removeItem(item)
-        view?.setCameraButtonVisible(interactor.canAddItems())
-        
-        if let adjacentItem = adjacentItem {
-            view?.selectItem(adjacentItem)
-        } else {
-            view?.setMode(.camera)
-            view?.setPhotoTitleAlpha(0)
+        if let item = interactor.selectedItem {
+            removeItem(item)
         }
-        
-        onItemRemove?(item, index)
-    }
-    
-    private func showMaskCropper(croppingOverlayProvider: CroppingOverlayProvider, item: MediaPickerItem) {
-        
-        let cropCanvasSize = interactor.cropCanvasSize
-        
-        let data = MaskCropperData(
-            imageSource: item.image,
-            cropCanvasSize: cropCanvasSize
-        )
-        router.showMaskCropper(
-            data: data,
-            croppingOverlayProvider: croppingOverlayProvider) { [weak self] module in
-                
-                module.onDiscard = { [weak module] in
-                    
-                    self?.onCropCancel?()
-                    self?.removeSelectedItem()
-                    module?.dismissModule()
-                }
-                
-                module.onConfirm = { image in
-                    
-                    self?.onCropFinish?()
-                    let croppedItem = MediaPickerItem(
-                        identifier: item.identifier,
-                        image: image,
-                        source: item.source
-                    )
-                    
-                    self?.onFinish?([croppedItem])
-                }
-        }
-        
     }
     
     private func showPhotoLibrary() {
