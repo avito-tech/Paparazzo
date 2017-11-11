@@ -38,6 +38,6 @@ public func ==(lhs: ImageSource?, rhs: ImageSource?) -> Bool {
     }
 }
 
-public func !=(lhs: ImageSource, rhs: ImageSource) -> Bool {
-    return (lhs == rhs) == false
+public func !=(lhs: ImageSource?, rhs: ImageSource?) -> Bool {
+    return !(lhs == rhs)
 }

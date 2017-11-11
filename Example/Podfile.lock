@@ -2,27 +2,27 @@ PODS:
   - Alamofire (4.5.1)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
-  - ImageSource (2.0.0):
-    - ImageSource/AlamofireImage (= 2.0.0)
-    - ImageSource/Core (= 2.0.0)
-    - ImageSource/Local (= 2.0.0)
-    - ImageSource/PHAsset (= 2.0.0)
-    - ImageSource/Remote (= 2.0.0)
-  - ImageSource/AlamofireImage (2.0.0):
+  - ImageSource (2.0.1):
+    - ImageSource/AlamofireImage (= 2.0.1)
+    - ImageSource/Core (= 2.0.1)
+    - ImageSource/Local (= 2.0.1)
+    - ImageSource/PHAsset (= 2.0.1)
+    - ImageSource/Remote (= 2.0.1)
+  - ImageSource/AlamofireImage (2.0.1):
     - AlamofireImage (~> 3)
     - ImageSource/Remote
-  - ImageSource/Core (2.0.0)
-  - ImageSource/Local (2.0.0):
+  - ImageSource/Core (2.0.1)
+  - ImageSource/Local (2.0.1):
     - ImageSource/Core
-  - ImageSource/PHAsset (2.0.0):
+  - ImageSource/PHAsset (2.0.1):
     - ImageSource/Core
-  - ImageSource/Remote (2.0.0):
+  - ImageSource/Remote (2.0.1):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/SDWebImage (2.0.0):
+  - ImageSource/SDWebImage (2.0.1):
     - ImageSource/Remote
     - SDWebImage (~> 3.8)
-  - ImageSource/UIKit (2.0.0):
+  - ImageSource/UIKit (2.0.1):
     - ImageSource/Core
   - JNWSpringAnimation (0.7.1)
   - Marshroute (0.4.2)
@@ -83,19 +83,19 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   ImageSource:
-    :path: "../"
+    :path: ../
   Paparazzo:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  ImageSource: dd391918cda9515e0588285c90b4bd25ea41d74e
+  ImageSource: f81587009f2af2a297293baf218ca558764534d5
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: 15cf8067a997bf298e9db9317dd7c32b8799a787
   Paparazzo: cfc3a70062bd1caf9cff431c2d23d534d176c99b
-  SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
 PODFILE CHECKSUM: 6812b1ef2165afe52e7392fff112db6504cf30a5
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
