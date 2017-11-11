@@ -6,12 +6,7 @@ extension UIScrollView {
         
         layoutIfNeeded()
 
-        let minimumYOffset: CGFloat
-        if #available(iOS 11.0, *) {
-            minimumYOffset = -safeAreaInsets.top
-        } else {
-            minimumYOffset = -contentInset.top
-        }
+        let minimumYOffset = -max(paparazzoSafeAreaInsets.top, contentInset.top)
 
         contentOffset = CGPoint(
             x: 0,

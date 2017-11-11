@@ -53,7 +53,6 @@
 		F2F50FC81E6C9F60006F9171 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F50FC71E6C9F60006F9171 /* ViewController.swift */; };
 		F2F50FCB1E6C9F60006F9171 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2F50FC91E6C9F60006F9171 /* Main.storyboard */; };
 		F2F50FCD1E6C9F60006F9171 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2F50FCC1E6C9F60006F9171 /* Assets.xcassets */; };
-		F2F50FD01E6C9F60006F9171 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2F50FCE1E6C9F60006F9171 /* LaunchScreen.storyboard */; };
 		F2F50FD51E6CA09D006F9171 /* AppSpecificUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57D51E6565890009A288 /* AppSpecificUITheme.swift */; };
 		F2F50FD61E6CA160006F9171 /* Latoto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57E81E6565890009A288 /* Latoto-Bold.ttf */; };
 		F2F50FD71E6CA160006F9171 /* Latoto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 251E57E91E6565890009A288 /* Latoto-Light.ttf */; };
@@ -106,7 +105,6 @@
 		F2F50FC71E6C9F60006F9171 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F2F50FCA1E6C9F60006F9171 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F2F50FCC1E6C9F60006F9171 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F2F50FCF1E6C9F60006F9171 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F2F50FD11E6C9F60006F9171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FDC53B8FA70ECA84F0798D2B /* Pods-PaparazzoExample_Storyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_Storyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -313,7 +311,6 @@
 				F2F50FC71E6C9F60006F9171 /* ViewController.swift */,
 				F2F50FC91E6C9F60006F9171 /* Main.storyboard */,
 				F2F50FCC1E6C9F60006F9171 /* Assets.xcassets */,
-				F2F50FCE1E6C9F60006F9171 /* LaunchScreen.storyboard */,
 				F2F50FD11E6C9F60006F9171 /* Info.plist */,
 			);
 			path = PaparazzoExample_Storyboard;
@@ -467,7 +464,6 @@
 				F2F50FDA1E6CA160006F9171 /* Latoto-SemiboldItalic.ttf in Resources */,
 				F2F50FD71E6CA160006F9171 /* Latoto-Light.ttf in Resources */,
 				F2F50FD81E6CA160006F9171 /* Latoto-Regular.ttf in Resources */,
-				F2F50FD01E6C9F60006F9171 /* LaunchScreen.storyboard in Resources */,
 				F2F50FCD1E6C9F60006F9171 /* Assets.xcassets in Resources */,
 				F2F50FCB1E6C9F60006F9171 /* Main.storyboard in Resources */,
 			);
@@ -686,14 +682,6 @@
 				F2F50FCA1E6C9F60006F9171 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		F2F50FCE1E6C9F60006F9171 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F2F50FCF1E6C9F60006F9171 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

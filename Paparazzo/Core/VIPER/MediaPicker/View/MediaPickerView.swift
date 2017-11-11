@@ -30,7 +30,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }()
     
     private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
-    private let controlsExtendedHeight = CGFloat(80)
+    
+    private var controlsExtendedHeight: CGFloat {
+        return 80 + paparazzoSafeAreaInsets.bottom
+    }
     
     private let closeButtonSize = CGSize(width: 38, height: 38)
     
@@ -549,13 +552,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         let leftButton = closeAndContinueButtonsSwapped ? continueButton : closeButton
         let rightButton = closeAndContinueButtonsSwapped ? closeButton : continueButton
-
-        let topMargin: CGFloat
-        if #available(iOS 11.0, *) {
-            topMargin = safeAreaInsets.top
-        } else {
-            topMargin = 0
-        }
+        
+        let topMargin = paparazzoSafeAreaInsets.top
         
         leftButton.frame = CGRect(
             x: 8,
