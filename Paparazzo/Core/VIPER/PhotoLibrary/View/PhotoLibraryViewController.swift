@@ -138,7 +138,6 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     private func hideNavigationBarShadow() {
         let navigationBar = navigationController?.navigationBar
-        navigationBar?.setBackgroundImage(UIImage(), for: .default)
         navigationBar?.backgroundColor = .white
         navigationBar?.shadowImage = UIImage()
     }

@@ -101,14 +101,15 @@ final class CameraControlsView: UIView, ThemeConfigurable {
         let contentHeight = UIEdgeInsetsInsetRect(bounds, insets).size.height
         let shutterButtonDiameter = max(shutterButtonMinDiameter, min(shutterButtonMaxDiameter, contentHeight))
         let shutterButtonSize = CGSize(width: shutterButtonDiameter, height: shutterButtonDiameter)
+        let centerY = bounds.centerY - paparazzoSafeAreaInsets.bottom / 2
         
         shutterButton.frame = CGRect(origin: .zero, size: shutterButtonSize)
-        shutterButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
+        shutterButton.center = CGPoint(x: bounds.midX, y: centerY)
         shutterButton.layer.cornerRadius = shutterButtonDiameter / 2
         
         flashButton.size = CGSize.minimumTapAreaSize
         flashButton.centerX = bounds.right - 30
-        flashButton.centerY = bounds.centerY
+        flashButton.centerY = centerY
         
         cameraToggleButton.size = CGSize.minimumTapAreaSize
         cameraToggleButton.centerX = flashButton.centerX - 54
@@ -116,7 +117,7 @@ final class CameraControlsView: UIView, ThemeConfigurable {
         
         photoView.size = CGSize(width: photoViewDiameter, height: photoViewDiameter)
         photoView.left = bounds.left + insets.left
-        photoView.centerY = bounds.centerY
+        photoView.centerY = centerY
     }
     
     // MARK: - CameraControlsView
