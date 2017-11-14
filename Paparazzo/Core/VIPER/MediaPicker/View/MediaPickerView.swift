@@ -542,11 +542,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         self.showsPreview = showsPreview
     }
     
-    func reloadCamera() {
-        photoPreviewView.reloadCamera()
-        thumbnailRibbonView.reloadCamera()
-    }
-    
     func showInfoMessage(_ message: String, timeout: TimeInterval) {
         let viewData = InfoMessageViewData(text: message, timeout: timeout, font: theme?.infoMessageFont)
         infoMessageDisplayer.display(viewData: viewData, in: photoPreviewView)
