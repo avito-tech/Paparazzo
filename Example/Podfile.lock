@@ -83,9 +83,9 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   ImageSource:
-    :path: ../
+    :path: "../"
   Paparazzo:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -94,8 +94,8 @@ SPEC CHECKSUMS:
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: 15cf8067a997bf298e9db9317dd7c32b8799a787
   Paparazzo: 13ec10be734372071637a19d6a15d19f85b1001f
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
 
 PODFILE CHECKSUM: 6812b1ef2165afe52e7392fff112db6504cf30a5
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.2.1
