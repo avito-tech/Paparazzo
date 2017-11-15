@@ -39,6 +39,8 @@ final class CameraThumbnailCell: UICollectionViewCell {
                     currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
+        } else {
+            cameraOutputView?.removeFromSuperview()
         }
         
         insertSubview(newCameraOutputView, belowSubview: button)
