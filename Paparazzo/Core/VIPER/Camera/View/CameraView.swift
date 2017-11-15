@@ -104,6 +104,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
                     currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
+        } else {
+            cameraOutputView?.removeFromSuperview()
         }
         
         addSubview(newCameraOutputView)
