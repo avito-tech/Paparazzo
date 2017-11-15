@@ -95,6 +95,17 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
             outputOrientation: parameters.orientation
         )
         
+        if UIDevice.systemVersionLessThan(version: "9.0"), let currentCameraOutputView = self.cameraOutputView {
+            // AI-3326: костыль для iOS 8.
+            // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
+            newCameraOutputView.onFrameDraw = { [weak newCameraOutputView] in
+                newCameraOutputView?.onFrameDraw = nil
+                DispatchQueue.main.async {
+                    currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
+                }
+            }
+        }
+        
         addSubview(newCameraOutputView)
         
         self.cameraOutputView = newCameraOutputView
@@ -104,6 +115,13 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     func setOutputOrientation(_ orientation: ExifOrientation) {
         outputParameters?.orientation = orientation
         cameraOutputView?.orientation = orientation
+    }
+    
+    func mainModuleDidAppear(animated: Bool) {
+        // AI-3326: костыль для iOS 8.
+        if UIDevice.systemVersionLessThan(version: "9.0"), let outputParameters = outputParameters {
+            setOutputParameters(outputParameters)
+        }
     }
     
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {

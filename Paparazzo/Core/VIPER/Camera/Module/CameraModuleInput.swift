@@ -16,6 +16,8 @@ protocol CameraModuleInput: class {
     
     func setPreviewImagesSizeForNewPhotos(_: CGSize)
     
+    func mainModuleDidAppear(animated: Bool)
+    
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)

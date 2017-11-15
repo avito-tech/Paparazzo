@@ -18,5 +18,6 @@ protocol CameraViewInput: class {
     func setAccessDeniedButtonTitle(_: String)
     
     // MARK: - Callbacks from main module
+    func mainModuleDidAppear(animated: Bool)
     func adjustForDeviceOrientation(_: DeviceOrientation)
 }

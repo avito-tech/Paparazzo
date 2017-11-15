@@ -57,6 +57,10 @@ final class CameraPresenter: CameraModuleInput {
         interactor.setPreviewImagesSizeForNewPhotos(size)
     }
     
+    func mainModuleDidAppear(animated: Bool) {
+        view?.mainModuleDidAppear(animated: animated)
+    }
+    
     func setAccessDeniedTitle(_ title: String) {
         view?.setAccessDeniedTitle(title)
     }
