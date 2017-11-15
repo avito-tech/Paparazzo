@@ -4,6 +4,9 @@ import ImageSource
 
 final class CameraOutputGLKView: GLKView {
     
+    // MARK: - State
+    private var hasWindow = false
+    
     // MARK: - Init
     
     init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation, eaglContext: EAGLContext) {
@@ -19,6 +22,11 @@ final class CameraOutputGLKView: GLKView {
         CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
     }
     
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        hasWindow = window != nil
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -30,8 +38,8 @@ final class CameraOutputGLKView: GLKView {
     
     var imageBuffer: CVImageBuffer? {
         didSet {
-            DispatchQueue.main.async {
-                self.display()
+            if hasWindow {
+                display()
             }
         }
     }

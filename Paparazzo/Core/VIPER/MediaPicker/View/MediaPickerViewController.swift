@@ -71,7 +71,9 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         
         // AI-3326: костыль для iOS 8, на котором после дисмисса модального окна или возврата с предыдущего экрана
         // OpenGL рандомно (не каждый раз) прекращает отрисовку
-        mediaPickerView.reloadCamera()
+        if UIDevice.systemVersionLessThan(version: "9.0") {
+            mediaPickerView.reloadCamera()
+        }
         
         onViewDidAppear?(animated)
     }
