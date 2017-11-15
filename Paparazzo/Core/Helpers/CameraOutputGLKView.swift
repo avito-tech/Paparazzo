@@ -24,7 +24,7 @@ final class CameraOutputGLKView: GLKView {
     
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        hasWindow = true
+        hasWindow = window != nil
     }
     
     required init?(coder aDecoder: NSCoder) {
