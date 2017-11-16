@@ -6,6 +6,7 @@ final class CameraOutputGLKView: GLKView {
     
     // MARK: - State
     private var hasWindow = false
+    private var bufferQueue = DispatchQueue.main
     
     // MARK: - Init
     
@@ -19,12 +20,17 @@ final class CameraOutputGLKView: GLKView {
         clipsToBounds = true
         enableSetNeedsDisplay = false
         
-        CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
+        bufferQueue = CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
     }
     
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        hasWindow = window != nil
+        
+        let hasWindow = (window != nil)
+        
+        bufferQueue.async { [weak self] in
+            self?.hasWindow = hasWindow
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
