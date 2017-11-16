@@ -24,8 +24,11 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .fade)
-
+        
+        if !UIDevice.current.isIPhoneX {
+            UIApplication.shared.setStatusBarHidden(true, with: .fade)
+        }
+        
         onViewWillAppear?(animated)
     }
     
@@ -128,7 +131,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     }
     
     override var prefersStatusBarHidden: Bool {
-        return true
+        return !UIDevice.current.isIPhoneX
     }
     
     // MARK: - MediaPickerViewInput
@@ -222,8 +225,8 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setPhotoTitle(title)
     }
     
-    func setPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
-        mediaPickerView.setPhotoTitleStyle(style)
+    func setPreferredPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
+        mediaPickerView.setPreferredPhotoTitleStyle(style)
     }
     
     func setPhotoTitleAlpha(_ alpha: CGFloat) {

@@ -405,7 +405,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         layoutPhotoTitleLabel()
     }
     
-    func setPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
+    func setPreferredPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
         switch style {
         // TODO: (ayutkin) don't allow presenter to set title style directly
         case .light where !UIDevice.current.isIPhoneX:
