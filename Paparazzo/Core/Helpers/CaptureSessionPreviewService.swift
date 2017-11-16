@@ -4,14 +4,17 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     
     // MARK: - CaptureSessionPreviewService
     
-    static func startStreamingPreview(of captureSession: AVCaptureSession, to view: CameraOutputGLKView) {
-        service(for: captureSession).startStreamingPreview(to: view)
+    static func startStreamingPreview(of captureSession: AVCaptureSession, to view: CameraOutputGLKView)
+        -> DispatchQueue
+    {
+        return service(for: captureSession).startStreamingPreview(to: view)
     }
     
-    func startStreamingPreview(to view: CameraOutputGLKView) {
+    func startStreamingPreview(to view: CameraOutputGLKView) -> DispatchQueue {
         queue.async { [weak self] in
             self?.views.append(WeakWrapper(value: view))
         }
+        return queue
     }
     
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
