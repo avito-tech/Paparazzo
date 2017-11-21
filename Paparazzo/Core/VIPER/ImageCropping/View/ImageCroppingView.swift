@@ -253,7 +253,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
     private func layOutForIPhoneX() {
         
         let controlsHeight = CGFloat(209)
-        let previewViewAspectRatio = CGFloat(4) / 3
+        let previewViewAspectRatio = CGFloat(AspectRatio.portrait_3x4.heightToWidthRatio())
         
         aspectRatioButton.right = bounds.right - 12
         
@@ -317,7 +317,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
             height = bounds.size.width * 3 / 4
         }
         
-        let scaleToFit = min(1, previewView.height / height)
+        let scaleToFit = height > 0 ? min(1, previewView.height / height) : 0
         
         splashView.size = CGSize(width: bounds.size.width, height: height).scaled(scaleToFit)
         splashView.center = previewView.center

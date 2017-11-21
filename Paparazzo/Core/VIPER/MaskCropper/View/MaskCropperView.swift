@@ -52,7 +52,7 @@ final class MaskCropperView: UIView, ThemeConfigurable {
     
     public override func layoutSubviews() {
         
-        let previewAspectViewRatio = CGFloat(4) / 3
+        let previewAspectViewRatio = CGFloat(AspectRatio.portrait_3x4.heightToWidthRatio())
         let previewViewHeight = bounds.width * previewAspectViewRatio
         
         controlsView.layout(
