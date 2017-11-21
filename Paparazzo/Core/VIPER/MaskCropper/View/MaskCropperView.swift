@@ -52,14 +52,24 @@ final class MaskCropperView: UIView, ThemeConfigurable {
     
     public override func layoutSubviews() {
         
-        previewView.width = width
-        previewView.height = height - controlsExtendedHeight
+        let previewAspectViewRatio = CGFloat(4) / 3
+        let previewViewHeight = bounds.width * previewAspectViewRatio
+        
+        controlsView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom - paparazzoSafeAreaInsets.bottom,
+            height: controlsExtendedHeight
+        )
+        
+        previewView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top + (controlsView.top - bounds.top - previewViewHeight) / 2,
+            height: previewViewHeight
+        )
         
         overlayView.frame = previewView.frame
-        
-        controlsView.top = previewView.bottom
-        controlsView.width = width
-        controlsView.height = controlsExtendedHeight
     }
     
     // MARK: - MaskCropperView
