@@ -539,7 +539,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoPreviewView.layout(
             left: bounds.left,
             right: bounds.right,
-            bottom: showsPreview ? thumbnailRibbonView.top : cameraControlsView.top,
+            bottom: thumbnailRibbonView.top,
             height: bounds.size.width * cameraAspectRatio
         )
         
