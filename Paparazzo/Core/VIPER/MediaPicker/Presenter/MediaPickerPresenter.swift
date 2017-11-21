@@ -352,7 +352,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             
             item.image.imageSize { [weak self] size in
                 let isPortrait = size.flatMap { $0.height > $0.width } ?? true
-                self?.view?.setPhotoTitleStyle(isPortrait ? .light : .dark)
+                self?.view?.setPreferredPhotoTitleStyle(isPortrait ? .light : .dark)
             }
         }
     }

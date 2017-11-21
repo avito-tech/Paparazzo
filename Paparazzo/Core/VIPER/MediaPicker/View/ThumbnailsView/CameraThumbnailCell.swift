@@ -30,7 +30,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
         
         newCameraOutputView.layer.cornerRadius = 6
         
-        if let currentCameraOutputView = self.cameraOutputView {
+        if UIDevice.systemVersionLessThan(version: "9.0"), let currentCameraOutputView = self.cameraOutputView {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
             newCameraOutputView.onFrameDraw = { [weak newCameraOutputView] in
@@ -39,6 +39,8 @@ final class CameraThumbnailCell: UICollectionViewCell {
                     currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
+        } else {
+            cameraOutputView?.removeFromSuperview()
         }
         
         insertSubview(newCameraOutputView, belowSubview: button)
