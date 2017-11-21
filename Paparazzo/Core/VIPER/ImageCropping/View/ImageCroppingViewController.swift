@@ -20,11 +20,14 @@ final class ImageCroppingViewController: PaparazzoViewController, ImageCroppingV
         // Forcing orientation doesn't produce severe issues at the moment.
         forcePortraitOrientation()
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .fade)
+        
+        if !UIDevice.current.isIPhoneX {
+            UIApplication.shared.setStatusBarHidden(true, with: .fade)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
-        return true
+        return !UIDevice.current.isIPhoneX
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {

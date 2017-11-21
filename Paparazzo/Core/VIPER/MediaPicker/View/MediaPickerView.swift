@@ -615,18 +615,16 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         let leftButton = closeAndContinueButtonsSwapped ? continueButton : closeButton
         let rightButton = closeAndContinueButtonsSwapped ? closeButton : continueButton
         
-        let topMargin = paparazzoSafeAreaInsets.top
-        
         leftButton.frame = CGRect(
             x: 8,
-            y: max(8, topMargin),
+            y: max(8, paparazzoSafeAreaInsets.top),
             width: leftButton.width,
             height: leftButton.height
         )
         
         rightButton.frame = CGRect(
             x: bounds.right - 8 - rightButton.width,
-            y: max(8, topMargin),
+            y: max(8, paparazzoSafeAreaInsets.top),
             width: rightButton.width,
             height: rightButton.height
         )
@@ -634,8 +632,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private func layoutPhotoTitleLabel() {
         photoTitleLabel.sizeToFit()
-        photoTitleLabel.centerX = bounds.centerX
-        photoTitleLabel.centerY = closeButton.centerY
+        photoTitleLabel.left = ceil(bounds.centerX - photoTitleLabel.width / 2)
+        photoTitleLabel.top = max(8, paparazzoSafeAreaInsets.top) + 9
     }
     
     @objc private func onCloseButtonTap(_: UIButton) {
