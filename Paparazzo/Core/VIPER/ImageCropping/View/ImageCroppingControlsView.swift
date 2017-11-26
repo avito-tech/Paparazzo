@@ -100,7 +100,10 @@ final class ImageCroppingControlsView: UIView, ThemeConfigurable {
         rotationCancelButton.top = rotationSliderView.bottom + 11
         
         discardButton.size = CGSize.minimumTapAreaSize
-        discardButton.center = CGPoint(x: bounds.left + bounds.size.width * 0.25, y: bounds.bottom - 42)
+        discardButton.center = CGPoint(
+            x: bounds.left + bounds.size.width * 0.25,
+            y: bounds.bottom - paparazzoSafeAreaInsets.bottom - 42
+        )
         
         confirmButton.size = CGSize.minimumTapAreaSize
         confirmButton.center = CGPoint(x: bounds.right - bounds.size.width * 0.25, y: discardButton.centerY)
