@@ -304,8 +304,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     }
     
     func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
-        albumsTableView.setCellDataList(albums)
-        setNeedsLayout()
+        albumsTableView.setCellDataList(albums) { [weak self] in
+            self?.setNeedsLayout()
+        }
     }
     
     func selectAlbum(withId id: String) {
