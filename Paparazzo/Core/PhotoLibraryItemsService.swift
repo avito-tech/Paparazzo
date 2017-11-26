@@ -320,14 +320,21 @@ final class PhotoLibraryAlbum: Equatable {
     let identifier: String
     let title: String?
     let coverImage: ImageSource?
+    let numberOfItems: Int
     
     fileprivate var fetchResult: PHFetchResult<PHAsset>
     
-    fileprivate init(identifier: String, title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
+    fileprivate init(
+        identifier: String,
+        title: String?,
+        coverImage: ImageSource?,
+        fetchResult: PHFetchResult<PHAsset>)
+    {
         self.identifier = identifier
         self.title = title
         self.coverImage = coverImage
         self.fetchResult = fetchResult
+        self.numberOfItems = fetchResult.count
     }
     
     func changingCoverImage(to image: ImageSource?) -> PhotoLibraryAlbum {

@@ -56,7 +56,8 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         interactor.observeAlbums { [weak self] albums in
             guard let strongSelf = self else { return }
             
-            self?.view?.setAlbums(albums.map(strongSelf.albumCellData))
+            // We're showing only non-empty albums
+            self?.view?.setAlbums(albums.filter { $0.numberOfItems > 0 }.map(strongSelf.albumCellData))
             
             if strongSelf.interactor.currentAlbum == nil, let album = albums.first {
                 self?.selectAlbum(album)
