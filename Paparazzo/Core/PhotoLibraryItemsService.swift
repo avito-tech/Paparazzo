@@ -10,7 +10,7 @@ protocol PhotoLibraryItemsService {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
     
     private let photoLibrary = PHPhotoLibrary.shared()
-    private var fetchResult: PhotoLibraryFetchResult?
+    private var fetchResults = [PhotoLibraryFetchResult]()
     
     private let fetchResultQueue = DispatchQueue(
         label: "ru.avito.Paparazzo.PhotoLibraryItemsServiceImpl.fetchResultQueue",
@@ -37,7 +37,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         executeAfterSetup {
             self.onAlbumsChange = handler
-            handler(self.fetchResult?.albums ?? [])
+            handler(self.fetchResults.flatMap { $0.albums } ?? [])
         }
     }
     
@@ -54,64 +54,67 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func photoLibraryDidChange(_ change: PHChange) {
         
         fetchResultQueue.async {
-            guard let fetchResult = self.fetchResult else { return }
+            guard self.fetchResults.count > 0 else { return }
             
-            var albumCoverChanged = false
+            var needToReportAlbumsChange = false
             
-            // We need to enumerate all the fetched albums:
-            // 1) to keep their content in sync with photo library without refething
-            // 2) to check if album cover has changed
-            fetchResult.albums = fetchResult.albums.map { album in
-                guard let changeDetails = change.changeDetails(for: album.fetchResult) else { return album }
+            self.fetchResults.forEach { fetchResult in
                 
-                var album = album
-                album.fetchResult = changeDetails.fetchResultAfterChanges
-                
-                let lastAssetImageSource = album.fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) }
-                
-                if album.coverImage != lastAssetImageSource {
-                    // Album cover need to be changed
-                    album = album.changingCoverImage(to: lastAssetImageSource)
-                    albumCoverChanged = true
-                }
-                
-                if album == self.observedAlbum {
-                    // Report changes in the observed album
-                    DispatchQueue.main.async {
-                        self.callObserverHandler(changes: changeDetails)
+                // We need to enumerate all the fetched albums:
+                // 1) to keep their content in sync with photo library without refething
+                // 2) to check if album cover has changed
+                fetchResult.albums = fetchResult.albums.map { album in
+                    guard let changeDetails = change.changeDetails(for: album.fetchResult) else { return album }
+                    
+                    var album = album
+                    album.fetchResult = changeDetails.fetchResultAfterChanges
+                    
+                    let lastAssetImageSource = album.fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) }
+                    
+                    if album.coverImage != lastAssetImageSource {
+                        // Album cover need to be changed
+                        album = album.changingCoverImage(to: lastAssetImageSource)
+                        needToReportAlbumsChange = true
                     }
+                    
+                    if album == self.observedAlbum {
+                        // Report changes in the observed album
+                        DispatchQueue.main.async {
+                            self.callObserverHandler(changes: changeDetails)
+                        }
+                    }
+                    
+                    return album
                 }
                 
-                return album
+                if let changeDetails = change.changeDetails(for: fetchResult.phFetchResult) {
+                    
+                    let fetchOptions = self.phFetchOptions()
+                    
+                    fetchResult.phFetchResult = changeDetails.fetchResultAfterChanges
+                    
+                    changeDetails.removedIndexes?.reversed().forEach { index in
+                        fetchResult.albums.remove(at: index + 1)  // +1, because album 0 is "All photos"
+                    }
+                    
+                    changeDetails.insertedIndexes?.enumerated()
+                        .map { ($1, changeDetails.insertedObjects[$0]) }
+                        .forEach { insertionIndex, assetCollection in
+                            let album = self.photoLibraryAlbum(from: assetCollection, fetchOptions: fetchOptions)
+                            fetchResult.albums.insert(album, at: insertionIndex + 1)  // +1, because album 0 is "All photos"
+                    }
+                    
+                    // Updates: it's not possible to rename albums in iOS as for now
+                    // Moves: seems like iOS doesn't generate them for photo albums
+                    
+                    needToReportAlbumsChange = true
+                }
             }
             
-            if let changeDetails = change.changeDetails(for: fetchResult.phFetchResult) {
-                
-                let fetchOptions = self.phFetchOptions()
-                
-                fetchResult.phFetchResult = changeDetails.fetchResultAfterChanges
-                
-                changeDetails.removedIndexes?.reversed().forEach { index in
-                    fetchResult.albums.remove(at: index + 1)  // +1, because album 0 is "All photos"
-                }
-                
-                changeDetails.insertedIndexes?.enumerated()
-                    .map { ($1, changeDetails.insertedObjects[$0]) }
-                    .forEach { insertionIndex, assetCollection in
-                        let album = self.photoLibraryAlbum(from: assetCollection, fetchOptions: fetchOptions)
-                        fetchResult.albums.insert(album, at: insertionIndex + 1)  // +1, because album 0 is "All photos"
-                    }
-                
-                // Updates: it's not possible to rename albums in iOS as for now
-                // Moves: seems like iOS doesn't generate them for photo albums
-                
+            if needToReportAlbumsChange {
+                let albums = self.fetchResults.flatMap { $0.albums }
                 DispatchQueue.main.async {
-                    self.onAlbumsChange?(fetchResult.albums)
-                }
-                
-            } else if albumCoverChanged {
-                DispatchQueue.main.async {
-                    self.onAlbumsChange?(fetchResult.albums)
+                    self.onAlbumsChange?(albums)
                 }
             }
         }
@@ -165,26 +168,33 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         fetchResultQueue.async {
             
             let options = self.phFetchOptions()
+            var fetchResults = [PhotoLibraryFetchResult]()
             
-            let assetCollectionsFetchResult = PHAssetCollection.fetchAssetCollections(
-                with: .album,
-                subtype: .any,
-                options: options
-            )
-            
-            var albums = [
-                self.photoLibraryAlbum(
-                    identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
-                    title: localized("All photos"),
-                    fetchResult: PHAsset.fetchAssets(with: .image, options: options)
-                )
+            let collectionsFetchResults = [
+                PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options),
+                PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: options)
             ]
             
-            assetCollectionsFetchResult.enumerateObjects(using: { assetCollection, _, _ in
-                albums.append(self.photoLibraryAlbum(from: assetCollection, fetchOptions: options))
-            })
+            collectionsFetchResults.enumerated().forEach { index, collectionsFetchResult in
+                
+                var albums = [PhotoLibraryAlbum]()
+                
+                if index == 0 {
+                    albums.append(self.photoLibraryAlbum(
+                        identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
+                        title: localized("All photos"),
+                        fetchResult: PHAsset.fetchAssets(with: .image, options: options)
+                    ))
+                }
+                
+                collectionsFetchResult.enumerateObjects(using: { collection, _, _ in
+                    albums.append(self.photoLibraryAlbum(from: collection, fetchOptions: options))
+                })
+                
+                fetchResults.append(PhotoLibraryFetchResult(albums: albums, phFetchResult: collectionsFetchResult))
+            }
             
-            self.fetchResult = PhotoLibraryFetchResult(albums: albums, phFetchResult: assetCollectionsFetchResult)
+            self.fetchResults = fetchResults
             self.photoLibrary.register(self)
 
             DispatchQueue.main.async(execute: completion)
@@ -320,14 +330,21 @@ final class PhotoLibraryAlbum: Equatable {
     let identifier: String
     let title: String?
     let coverImage: ImageSource?
+    let numberOfItems: Int
     
     fileprivate var fetchResult: PHFetchResult<PHAsset>
     
-    fileprivate init(identifier: String, title: String?, coverImage: ImageSource?, fetchResult: PHFetchResult<PHAsset>) {
+    fileprivate init(
+        identifier: String,
+        title: String?,
+        coverImage: ImageSource?,
+        fetchResult: PHFetchResult<PHAsset>)
+    {
         self.identifier = identifier
         self.title = title
         self.coverImage = coverImage
         self.fetchResult = fetchResult
+        self.numberOfItems = fetchResult.count
     }
     
     func changingCoverImage(to image: ImageSource?) -> PhotoLibraryAlbum {

@@ -38,9 +38,12 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     }
     
     // MARK: - PhotoLibraryAlbumsTableView
-    func setCellDataList(_ cellDataList: [PhotoLibraryAlbumCellData]) {
+    func setCellDataList(_ cellDataList: [PhotoLibraryAlbumCellData], completion: @escaping () -> ()) {
         self.cellDataList = cellDataList
         tableView.reloadData()
+        
+        // AI-7770: table view's size can be calculated incorrectly right after reloadData
+        DispatchQueue.main.async(execute: completion)
     }
     
     func selectAlbum(withId id: String) {
