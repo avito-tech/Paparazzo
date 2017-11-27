@@ -69,6 +69,10 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setTitle(title)
     }
     
+    func setTitleVisible(_ visible: Bool) {
+        photoLibraryView.setTitleVisible(visible)
+    }
+    
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
         photoLibraryView.setItems(items, scrollToBottom: scrollToBottom, completion: completion)
     }

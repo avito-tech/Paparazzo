@@ -37,7 +37,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         executeAfterSetup {
             self.onAlbumsChange = handler
-            handler(self.fetchResults.flatMap { $0.albums } ?? [])
+            handler(self.allAlbums())
         }
     }
     
@@ -89,8 +89,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 
                 if let changeDetails = change.changeDetails(for: fetchResult.phFetchResult) {
                     
-                    let fetchOptions = self.phFetchOptions()
-                    
                     fetchResult.phFetchResult = changeDetails.fetchResultAfterChanges
                     
                     changeDetails.removedIndexes?.reversed().forEach { index in
@@ -100,7 +98,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     changeDetails.insertedIndexes?.enumerated()
                         .map { ($1, changeDetails.insertedObjects[$0]) }
                         .forEach { insertionIndex, assetCollection in
-                            let album = self.photoLibraryAlbum(from: assetCollection, fetchOptions: fetchOptions)
+                            let album = self.photoLibraryAlbum(from: assetCollection)
                             fetchResult.albums.insert(album, at: insertionIndex + 1)  // +1, because album 0 is "All photos"
                     }
                     
@@ -112,7 +110,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             }
             
             if needToReportAlbumsChange {
-                let albums = self.fetchResults.flatMap { $0.albums }
+                let albums = self.allAlbums()
                 DispatchQueue.main.async {
                     self.onAlbumsChange?(albums)
                 }
@@ -167,28 +165,19 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func setUpFetchResult(completion: @escaping () -> ()) {
         fetchResultQueue.async {
             
-            let options = self.phFetchOptions()
             var fetchResults = [PhotoLibraryFetchResult]()
             
             let collectionsFetchResults = [
-                PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: options),
-                PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: options)
+                PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil),
+                PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
             ]
             
             collectionsFetchResults.enumerated().forEach { index, collectionsFetchResult in
                 
                 var albums = [PhotoLibraryAlbum]()
                 
-                if index == 0 {
-                    albums.append(self.photoLibraryAlbum(
-                        identifier: "ru.avito.Paparazzo.PhotoLibraryAlbum.identifier.allPhotos",
-                        title: localized("All photos"),
-                        fetchResult: PHAsset.fetchAssets(with: .image, options: options)
-                    ))
-                }
-                
                 collectionsFetchResult.enumerateObjects(using: { collection, _, _ in
-                    albums.append(self.photoLibraryAlbum(from: collection, fetchOptions: options))
+                    albums.append(self.photoLibraryAlbum(from: collection))
                 })
                 
                 fetchResults.append(PhotoLibraryFetchResult(albums: albums, phFetchResult: collectionsFetchResult))
@@ -212,9 +201,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         )
     }
     
-    private func photoLibraryAlbum(from assetCollection: PHAssetCollection, fetchOptions: PHFetchOptions?)
+    private func photoLibraryAlbum(from assetCollection: PHAssetCollection)
         -> PhotoLibraryAlbum
     {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
+        
+        if #available(iOS 9.0, *) {
+            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
+        }
+        
         return photoLibraryAlbum(
             identifier: assetCollection.localIdentifier,
             title: assetCollection.localizedTitle,
@@ -301,14 +297,21 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         )
     }
     
-    private func phFetchOptions() -> PHFetchOptions? {
-        if #available(iOS 9.0, *) {
-            let options = PHFetchOptions()
-            options.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
-            return options
-        } else {
-            return nil
+    private func allAlbums() -> [PhotoLibraryAlbum] {
+        
+        var albums = fetchResults.flatMap { $0.albums }
+        
+        // Search for the album with the largest number of photos, hoping that it's the "All Photos" album.
+        let largestAlbum = albums.enumerated().max { album1, album2 in
+            album1.element.numberOfItems < album2.element.numberOfItems
         }
+        
+        // "All Photos" album should be the first one.
+        if let indexOfLargestAlbum = largestAlbum?.offset {
+            albums.insert(albums.remove(at: indexOfLargestAlbum), at: 0)
+        }
+        
+        return albums
     }
 }
 

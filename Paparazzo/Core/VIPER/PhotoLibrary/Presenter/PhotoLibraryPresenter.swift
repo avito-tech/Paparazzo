@@ -37,7 +37,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     
     private func setUpView() {
         
-        view?.setTitle(localized("All photos"))
+        view?.setTitleVisible(false)
         
         view?.setAccessDeniedTitle(localized("To pick photo from library"))
         view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
@@ -143,6 +143,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         shouldScrollToBottomOnFullReload = true
         interactor.setCurrentAlbum(album)
         view?.setTitle(album.title ?? localized("Unnamed album"))
+        view?.setTitleVisible(true)
         view?.selectAlbum(withId: album.identifier)
     }
     

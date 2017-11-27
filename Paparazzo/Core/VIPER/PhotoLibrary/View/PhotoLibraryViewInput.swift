@@ -7,6 +7,7 @@ protocol PhotoLibraryViewInput: class {
     var onDimViewTap: (() -> ())? { get set }
     
     func setTitle(_: String)
+    func setTitleVisible(_: Bool)
     
     func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)

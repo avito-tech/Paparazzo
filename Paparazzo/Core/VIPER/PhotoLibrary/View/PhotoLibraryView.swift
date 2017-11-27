@@ -279,6 +279,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         titleView.setTitle(title)
     }
     
+    func setTitleVisible(_ visible: Bool) {
+        titleView.setTitleVisible(visible)
+    }
+    
     func setAccessDeniedViewVisible(_ visible: Bool) {
         accessDeniedView.isHidden = !visible
     }
