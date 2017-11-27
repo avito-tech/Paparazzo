@@ -29,6 +29,10 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         tableView.alwaysBounceVertical = false
         tableView.register(PhotoLibraryAlbumsTableViewCell.self, forCellReuseIdentifier: cellId)
         
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
+        
         addSubview(tableView)
         addSubview(topSeparator)
     }
