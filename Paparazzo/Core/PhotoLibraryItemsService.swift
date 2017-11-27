@@ -307,7 +307,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
         
         // "All Photos" album should be the first one.
-        if let indexOfLargestAlbum = largestAlbum?.offset {
+        if let indexOfLargestAlbum = largestAlbum?.offset, indexOfLargestAlbum > 0 {
             albums.insert(albums.remove(at: indexOfLargestAlbum), at: 0)
         }
         
