@@ -14,6 +14,7 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     private var cellLabelFont: UIFont?
     
     private let separatorHeight: CGFloat = 1
+    private let minInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -25,7 +26,6 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.rowHeight = 60
-        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         tableView.alwaysBounceVertical = false
         tableView.register(PhotoLibraryAlbumsTableViewCell.self, forCellReuseIdentifier: cellId)
         
@@ -99,7 +99,7 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         let tableViewSize = tableView.sizeThatFits(size)
-        let tableVerticalInsets = tableView.contentInset.top + tableView.contentInset.bottom
+        let tableVerticalInsets = minInsets.top + minInsets.bottom
         return CGSize(
             width: tableViewSize.width,
             height: min(size.height, tableViewSize.height + separatorHeight + tableVerticalInsets)
@@ -121,6 +121,13 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
             right: bounds.right,
             top: topSeparator.bottom,
             bottom: bounds.bottom
+        )
+        
+        tableView.contentInset = UIEdgeInsets(
+            top: minInsets.top,
+            left: minInsets.left,
+            bottom: max(minInsets.bottom, paparazzoSafeAreaInsets.bottom),
+            right: minInsets.right
         )
     }
 }
