@@ -79,6 +79,17 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         }
     }
     
+    /// Mutates item at `indexPath` if it's equal to `theItem`
+    func mutateItem<ItemType: Equatable>(_ theItem: ItemType, at indexPath: IndexPath, mutate: (inout ItemType) -> ())
+        where ItemType == CellType.ItemType
+    {
+        mutateItem(at: indexPath) { (item: inout ItemType) in
+            if item == theItem {
+                mutate(&item)
+            }
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

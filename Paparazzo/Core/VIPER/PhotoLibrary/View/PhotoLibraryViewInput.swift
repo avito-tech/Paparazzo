@@ -48,7 +48,7 @@ struct PhotoLibraryAlbumCellData {
     let onSelect: () -> ()
 }
 
-struct PhotoLibraryItemCellData {
+struct PhotoLibraryItemCellData: Equatable {
     
     var image: ImageSource
     var selected = false
