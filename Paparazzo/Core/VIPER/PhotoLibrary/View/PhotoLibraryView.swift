@@ -455,7 +455,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         
         cell.onImageSetFromSource = { [weak self] in
             self?.dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryItemCellData) in
-                cellData.previewAvailable = true
+                if cellData == data {
+                    cellData.previewAvailable = true
+                }
             }
         }
         

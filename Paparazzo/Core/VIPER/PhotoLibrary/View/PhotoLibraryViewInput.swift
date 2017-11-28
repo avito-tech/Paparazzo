@@ -61,6 +61,10 @@ struct PhotoLibraryItemCellData {
     init(image: ImageSource) {
         self.image = image
     }
+    
+    static func ==(cellData1: PhotoLibraryItemCellData, cellData2: PhotoLibraryItemCellData) -> Bool {
+        return cellData1.image == cellData2.image
+    }
 }
 
 struct PhotoLibraryViewChanges {
