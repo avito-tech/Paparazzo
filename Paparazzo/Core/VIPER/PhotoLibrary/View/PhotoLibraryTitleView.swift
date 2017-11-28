@@ -29,6 +29,11 @@ final class PhotoLibraryTitleView: UIView {
         setNeedsLayout()
     }
     
+    func setTitleVisible(_ visible: Bool) {
+        label.isHidden = !visible
+        iconView.isHidden = !visible
+    }
+    
     func setLabelFont(_ font: UIFont) {
         label.font = font
         setNeedsLayout()
@@ -50,23 +55,24 @@ final class PhotoLibraryTitleView: UIView {
     
     // MARK: - UIView
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: size.width, height: 49)
+        return CGSize(width: size.width, height: 49 + paparazzoSafeAreaInsets.top)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         let iconSize = iconView.image?.size ?? .zero
+        let topInset = paparazzoSafeAreaInsets.top / 2
         
         label.resizeToFitWidth(bounds.width - labelToIconSpacing - iconSize.width)
         label.left = (bounds.width - (label.width + labelToIconSpacing + iconSize.width)) / 2
-        label.centerY = bounds.centerY
+        label.centerY = bounds.centerY + topInset
         
         // Don't use `frame` here, otherwise the rotation animation will be broken
         iconView.bounds = CGRect(origin: .zero, size: iconSize)
         iconView.center = CGPoint(
             x: label.right + labelToIconSpacing + iconSize.width / 2,
-            y: bounds.centerY + 2
+            y: bounds.centerY + topInset + 2
         )
     }
 }

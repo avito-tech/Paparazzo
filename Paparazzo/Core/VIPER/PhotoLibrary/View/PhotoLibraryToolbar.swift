@@ -35,22 +35,24 @@ final class PhotoLibraryToolbar: UIView {
     
     // MARK: - UIView
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: size.width, height: 50)
+        return CGSize(width: size.width, height: 50 + paparazzoSafeAreaInsets.bottom)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let bottomInset = paparazzoSafeAreaInsets.bottom / 2
+        
         discardButton.size = CGSize.minimumTapAreaSize
         discardButton.center = CGPoint(
             x: bounds.left + bounds.width / 4,
-            y: bounds.top + bounds.height / 2
+            y: bounds.top + bounds.height / 2 - bottomInset
         )
         
         confirmButton.size = CGSize.minimumTapAreaSize
         confirmButton.center = CGPoint(
             x: bounds.right - bounds.width / 4,
-            y: bounds.top + bounds.height / 2
+            y: bounds.top + bounds.height / 2 - bottomInset
         )
     }
     
