@@ -4,7 +4,7 @@ import XCTest
 final class PhotoLibraryViewTests: XCTestCase {
     
     /// Fixes crash AI-7784
-    func test_photoLibraryView_doesNotCrash_ifUserQuicklySwitchesToAlbumWithLessPhotos() {
+    func test_photoLibraryView_doesNotCrash_ifUserQuicklySwitchesToAlbumWithFewerPhotos() {
         
         // Data
         let cellDataList1 = [
@@ -25,13 +25,13 @@ final class PhotoLibraryViewTests: XCTestCase {
         // 2. Simulate initial opening of album containing 3 photos
         view.setItems(cellDataList1, scrollToBottom: true, completion: nil)
         
-        // 3. Simulate fast switching to an album with less than 3 photos
+        // 3. Simulate fast switching to an album with fewer than 3 photos
         // (switching must be performed before images are loaded)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             view.setItems(cellDataList2, scrollToBottom: true, completion: nil)
         }
         
-        // 5. Wait enough time. It would crash in 0.25 seconds after step 2 before.
+        // Wait enough time. It would crash in 0.25 seconds after step 2 before.
         // If it doesn't crash in 0.5 seconds, than everything is OK.
         let crashExpectation = expectation(description: "It must neved be fulfilled")
         crashExpectation.isInverted = true
