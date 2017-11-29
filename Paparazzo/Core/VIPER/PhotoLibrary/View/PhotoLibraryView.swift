@@ -454,8 +454,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         cell.setCloudIcon(theme?.iCloudIcon)
         
         cell.onImageSetFromSource = { [weak self] in
-            self?.dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryItemCellData) in
-                cellData.previewAvailable = true
+            self?.dataSource.mutateItem(data, at: indexPath) { (data: inout PhotoLibraryItemCellData) in
+                data.previewAvailable = true
             }
         }
         
