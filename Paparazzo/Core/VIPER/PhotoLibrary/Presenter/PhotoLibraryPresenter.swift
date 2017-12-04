@@ -67,7 +67,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 self?.selectAlbum(album)
             } else {
                 self?.view?.setTitleVisible(false)
-                self?.view?.setPlaceholderState(.visible(title: "Нет фото"))
+                self?.view?.setPlaceholderState(.visible(title: localized("No photos")))
                 self?.view?.setProgressVisible(false)
             }
         }
@@ -98,7 +98,7 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             }
             
             self?.view?.setPlaceholderState(
-                needToShowPlaceholder ? .visible(title: "В этом альбоме нет фото") : .hidden
+                needToShowPlaceholder ? .visible(title: localized("Album is empty")) : .hidden
             )
         }
         
