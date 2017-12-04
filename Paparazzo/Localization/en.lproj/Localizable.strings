@@ -15,6 +15,8 @@
 "To pick photo from library" = "To pick photo from library";
 "Allow %@ to access your photo library" = "Allow %@ to access your photo library";
 "Allow access to photo library" = "Allow access to photo library";
+"No photos" = "No photos";
+"Album is empty" = "Album is empty";
 
 // Cropping
 "Cropping" = "Cropping";

@@ -73,6 +73,16 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setTitleVisible(visible)
     }
     
+    func setPlaceholderState(_ state: PhotoLibraryPlaceholderState) {
+        switch state {
+        case .hidden:
+            photoLibraryView.setPlaceholderVisible(false)
+        case .visible(let title):
+            photoLibraryView.setPlaceholderTitle(title)
+            photoLibraryView.setPlaceholderVisible(true)
+        }
+    }
+    
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
         photoLibraryView.setItems(items, scrollToBottom: scrollToBottom, completion: completion)
     }

@@ -15,6 +15,8 @@
 "To pick photo from library" = "Чтобы выбрать фото из галереи";
 "Allow %@ to access your photo library" = "Разрешите приложению %@ доступ к вашим фотографиям";
 "Allow access to photo library" = "Разрешить доступ к галерее";
+"No photos" = "Нет фото";
+"Album is empty" = "В этом альбоме нет фото";
 
 // Cropping
 "Cropping" = "Кадрирование";

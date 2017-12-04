@@ -92,17 +92,23 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     fetchResult.phFetchResult = changeDetails.fetchResultAfterChanges
                     
                     changeDetails.removedIndexes?.reversed().forEach { index in
-                        fetchResult.albums.remove(at: index + 1)  // +1, because album 0 is "All photos"
+                        fetchResult.albums.remove(at: index)
                     }
                     
                     changeDetails.insertedIndexes?.enumerated()
                         .map { ($1, changeDetails.insertedObjects[$0]) }
                         .forEach { insertionIndex, assetCollection in
                             let album = self.photoLibraryAlbum(from: assetCollection)
-                            fetchResult.albums.insert(album, at: insertionIndex + 1)  // +1, because album 0 is "All photos"
-                    }
+                            fetchResult.albums.insert(album, at: insertionIndex)
+                        }
                     
-                    // Updates: it's not possible to rename albums in iOS as for now
+                    changeDetails.changedIndexes?.enumerated()
+                        .map { ($1, changeDetails.changedObjects[$0]) }
+                        .forEach { changingIndex, assetCollection in
+                            let album = self.photoLibraryAlbum(from: assetCollection)
+                            fetchResult.albums[changingIndex] = album
+                        }
+                    
                     // Moves: seems like iOS doesn't generate them for photo albums
                     
                     needToReportAlbumsChange = true

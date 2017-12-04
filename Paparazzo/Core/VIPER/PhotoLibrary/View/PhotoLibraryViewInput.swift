@@ -9,6 +9,8 @@ protocol PhotoLibraryViewInput: class {
     func setTitle(_: String)
     func setTitleVisible(_: Bool)
     
+    func setPlaceholderState(_: PhotoLibraryPlaceholderState)
+    
     func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
     
@@ -73,4 +75,9 @@ struct PhotoLibraryViewChanges {
     let insertedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let updatedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let movedIndexes: [(from: Int, to: Int)]
+}
+
+enum PhotoLibraryPlaceholderState {
+    case hidden
+    case visible(title: String)
 }

@@ -51,6 +51,8 @@ public struct PaparazzoUITheme:
     public var photoLibraryDiscardButtonIcon = PaparazzoUITheme.image(named: "discard")
     public var photoLibraryConfirmButtonIcon = PaparazzoUITheme.image(named: "confirm")
     public var photoLibraryAlbumCellFont = UIFont.systemFont(ofSize: 17)
+    public var photoLibraryPlaceholderFont = UIFont.systemFont(ofSize: 17)
+    public var photoLibraryPlaceholderColor = UIColor.gray
     
     // MARK: - ImageCroppingUITheme
     
