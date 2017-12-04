@@ -32,6 +32,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     private let toolbar = PhotoLibraryToolbar()
     private let dimView = UIView()
     private let albumsTableView = PhotoLibraryAlbumsTableView()
+    private let placeholderView = UILabel()
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -58,7 +59,10 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         dimView.alpha = 0
         dimView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDimViewTap(_:))))
         
+        placeholderView.isHidden = true
+        
         addSubview(collectionView)
+        addSubview(placeholderView)
         addSubview(accessDeniedView)
         addSubview(toolbar)
         addSubview(dimView)
@@ -104,6 +108,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             bottom: toolbar.top
         )
         
+        placeholderView.resizeToFitSize(collectionView.size)
+        placeholderView.center = collectionView.center
+        
         collectionSnapshotView?.frame = collectionView.frame
         
         layoutAlbumsTableView()
@@ -129,6 +136,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         toolbar.setConfirmButtonIcon(theme.photoLibraryConfirmButtonIcon)
         
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
+        
+        placeholderView.font = theme.photoLibraryPlaceholderFont
+        placeholderView.textColor = theme.photoLibraryPlaceholderColor
     }
     
     // MARK: - PhotoLibraryView
@@ -281,6 +291,14 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func setTitleVisible(_ visible: Bool) {
         titleView.setTitleVisible(visible)
+    }
+    
+    func setPlaceholderTitle(_ title: String) {
+        placeholderView.text = title
+    }
+    
+    func setPlaceholderVisible(_ visible: Bool) {
+        placeholderView.isHidden = !visible
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {

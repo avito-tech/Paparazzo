@@ -39,6 +39,8 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
         
         view?.setTitleVisible(false)
         
+        view?.setPlaceholderState(.hidden)
+        
         view?.setAccessDeniedTitle(localized("To pick photo from library"))
         view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
         view?.setAccessDeniedButtonTitle(localized("Allow access to photo library"))
@@ -59,16 +61,25 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             // We're showing only non-empty albums
             self?.view?.setAlbums(albums.filter { $0.numberOfItems > 0 }.map(strongSelf.albumCellData))
             
-            if strongSelf.interactor.currentAlbum == nil, let album = albums.first {
+            if !albums.isEmpty, let currentAlbum = strongSelf.interactor.currentAlbum {
+                self?.adjustView(for: currentAlbum)  // title might have been changed
+            } else if let album = albums.first {
                 self?.selectAlbum(album)
+            } else {
+                self?.view?.setTitleVisible(false)
+                self?.view?.setPlaceholderState(.visible(title: "Нет фото"))
+                self?.view?.setProgressVisible(false)
             }
         }
         
         interactor.observeCurrentAlbumEvents { [weak self] event, selectionState in
             guard let strongSelf = self else { return }
             
+            var needToShowPlaceholder: Bool
+            
             switch event {
             case .fullReload(let items):
+                needToShowPlaceholder = items.isEmpty
                 self?.view?.setItems(
                     items.map(strongSelf.cellData),
                     scrollToBottom: strongSelf.shouldScrollToBottomOnFullReload,
@@ -80,10 +91,15 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
                 )
                 
             case .incrementalChanges(let changes):
+                needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
                 self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
                     self?.adjustViewForSelectionState(selectionState)
                 })
             }
+            
+            self?.view?.setPlaceholderState(
+                needToShowPlaceholder ? .visible(title: "В этом альбоме нет фото") : .hidden
+            )
         }
         
         view?.onPickButtonTap = { [weak self] in
@@ -142,6 +158,10 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
     private func selectAlbum(_ album: PhotoLibraryAlbum) {
         shouldScrollToBottomOnFullReload = true
         interactor.setCurrentAlbum(album)
+        adjustView(for: album)
+    }
+    
+    private func adjustView(for album: PhotoLibraryAlbum) {
         view?.setTitle(album.title ?? localized("Unnamed album"))
         view?.setTitleVisible(true)
         view?.selectAlbum(withId: album.identifier)

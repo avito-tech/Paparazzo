@@ -32,9 +32,9 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         photoLibraryItemsService.observeAlbums { [weak self] albums in
-            if let currentAlbum = self?.currentAlbum, !albums.contains(currentAlbum) {
-                // Reset current album if it has been removed
-                self?.currentAlbum = nil
+            if let currentAlbum = self?.currentAlbum {
+                // Reset current album if it has been removed, otherwise refresh it (title might have been changed).
+                self?.currentAlbum = albums.first { $0 == currentAlbum }
             }
             handler(albums)
         }
@@ -72,6 +72,7 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     }
     
     func setCurrentAlbum(_ album: PhotoLibraryAlbum) {
+        guard album != currentAlbum else { return }
         
         currentAlbum = album
         

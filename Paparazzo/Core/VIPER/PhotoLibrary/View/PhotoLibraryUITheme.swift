@@ -10,4 +10,6 @@ public protocol PhotoLibraryUITheme: AccessDeniedViewTheme {
     var photoLibraryDiscardButtonIcon: UIImage? { get }
     var photoLibraryConfirmButtonIcon: UIImage? { get }
     var photoLibraryAlbumCellFont: UIFont { get }
+    var photoLibraryPlaceholderFont: UIFont { get }
+    var photoLibraryPlaceholderColor: UIColor { get }
 }
