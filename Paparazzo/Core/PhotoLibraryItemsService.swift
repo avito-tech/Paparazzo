@@ -98,14 +98,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     changeDetails.insertedIndexes?.enumerated()
                         .map { ($1, changeDetails.insertedObjects[$0]) }
                         .forEach { insertionIndex, assetCollection in
-                            let album = self.photoLibraryAlbum(from: assetCollection)
+                            let album = PhotoLibraryAlbum(assetCollection: assetCollection)
                             fetchResult.albums.insert(album, at: insertionIndex)
                         }
                     
                     changeDetails.changedIndexes?.enumerated()
                         .map { ($1, changeDetails.changedObjects[$0]) }
                         .forEach { changingIndex, assetCollection in
-                            let album = self.photoLibraryAlbum(from: assetCollection)
+                            let album = PhotoLibraryAlbum(assetCollection: assetCollection)
                             fetchResult.albums[changingIndex] = album
                         }
                     
@@ -183,7 +183,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 var albums = [PhotoLibraryAlbum]()
                 
                 collectionsFetchResult.enumerateObjects(using: { collection, _, _ in
-                    albums.append(self.photoLibraryAlbum(from: collection))
+                    albums.append(PhotoLibraryAlbum(assetCollection: collection))
                 })
                 
                 fetchResults.append(PhotoLibraryFetchResult(albums: albums, phFetchResult: collectionsFetchResult))
@@ -194,34 +194,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
 
             DispatchQueue.main.async(execute: completion)
         }
-    }
-    
-    private func photoLibraryAlbum(identifier: String, title: String?, fetchResult: PHFetchResult<PHAsset>)
-        -> PhotoLibraryAlbum
-    {
-        return PhotoLibraryAlbum(
-            identifier: identifier,
-            title: title,
-            coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
-            fetchResult: fetchResult
-        )
-    }
-    
-    private func photoLibraryAlbum(from assetCollection: PHAssetCollection)
-        -> PhotoLibraryAlbum
-    {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
-        
-        if #available(iOS 9.0, *) {
-            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
-        }
-        
-        return photoLibraryAlbum(
-            identifier: assetCollection.localIdentifier,
-            title: assetCollection.localizedTitle,
-            fetchResult: PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
-        )
     }
     
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
@@ -307,14 +279,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         var albums = fetchResults.flatMap { $0.albums }
         
-        // Search for the album with the largest number of photos, hoping that it's the "All Photos" album.
-        let largestAlbum = albums.enumerated().max { album1, album2 in
-            album1.element.numberOfItems < album2.element.numberOfItems
-        }
-        
         // "All Photos" album should be the first one.
-        if let indexOfLargestAlbum = largestAlbum?.offset, indexOfLargestAlbum > 0 {
-            albums.insert(albums.remove(at: indexOfLargestAlbum), at: 0)
+        if let allPhotosAlbumIndex = albums.index(where: { $0.isAllPhotos }), allPhotosAlbumIndex > 0 {
+            albums.insert(albums.remove(at: allPhotosAlbumIndex), at: 0)
         }
         
         return albums
@@ -340,20 +307,44 @@ final class PhotoLibraryAlbum: Equatable {
     let title: String?
     let coverImage: ImageSource?
     let numberOfItems: Int
+    let isAllPhotos: Bool
     
     fileprivate var fetchResult: PHFetchResult<PHAsset>
-    
-    fileprivate init(
+
+    private init(
         identifier: String,
         title: String?,
         coverImage: ImageSource?,
+        isAllPhotos: Bool,
         fetchResult: PHFetchResult<PHAsset>)
     {
         self.identifier = identifier
         self.title = title
         self.coverImage = coverImage
         self.fetchResult = fetchResult
+        self.isAllPhotos = isAllPhotos
         self.numberOfItems = fetchResult.count
+    }
+    
+    fileprivate convenience init(assetCollection: PHAssetCollection) {
+        
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
+        
+        if #available(iOS 9.0, *) {
+            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
+        }
+        
+        let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
+        
+        self.init(
+            identifier: assetCollection.localIdentifier,
+            title: assetCollection.localizedTitle,
+            coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
+            isAllPhotos: assetCollection.assetCollectionType == .smartAlbum &&
+                         assetCollection.assetCollectionSubtype == .smartAlbumUserLibrary,
+            fetchResult: fetchResult
+        )
     }
     
     func changingCoverImage(to image: ImageSource?) -> PhotoLibraryAlbum {
@@ -361,6 +352,7 @@ final class PhotoLibraryAlbum: Equatable {
             identifier: identifier,
             title: title,
             coverImage: image,
+            isAllPhotos: isAllPhotos,
             fetchResult: fetchResult
         )
     }

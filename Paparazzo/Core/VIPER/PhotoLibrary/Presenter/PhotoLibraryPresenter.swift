@@ -59,9 +59,11 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             guard let strongSelf = self else { return }
             
             // We're showing only non-empty albums
-            self?.view?.setAlbums(albums.filter { $0.numberOfItems > 0 }.map(strongSelf.albumCellData))
+            let albums = albums.filter { $0.numberOfItems > 0 }
             
-            if !albums.isEmpty, let currentAlbum = strongSelf.interactor.currentAlbum {
+            self?.view?.setAlbums(albums.map(strongSelf.albumCellData))
+            
+            if let currentAlbum = strongSelf.interactor.currentAlbum, albums.contains(currentAlbum) {
                 self?.adjustView(for: currentAlbum)  // title might have been changed
             } else if let album = albums.first {
                 self?.selectAlbum(album)
