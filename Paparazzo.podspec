@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name                   = 'Paparazzo'
   s.module_name            = 'Paparazzo'
-  s.version                = '2.0.0'
+  s.version                = '3.0.0'
   s.summary                = "iOS component for picking and editing photos from camera and user's photo library"
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'MIT'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
-  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "#{s.version}" }
+  s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "Paparazzo-#{s.version}" }
   s.platform               = :ios, '8.0'
   s.ios.deployment_target = "8.0"
   s.requires_arc = true

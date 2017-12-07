@@ -5,7 +5,6 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     typealias ItemType = CellType.ItemType
     
     let cellReuseIdentifier: String
-    var onDataChanged: (() -> ())?
     var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, IndexPath) -> ())?
     
     private var items = [ItemType]()
@@ -16,6 +15,10 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     
     func item(at indexPath: IndexPath) -> ItemType {
         return items[indexPath.row]
+    }
+    
+    func safeItem(at indexPath: IndexPath) -> ItemType? {
+        return indexPath.row < items.count ? items[indexPath.row] : nil
     }
     
     func replaceItem(at indexPath: IndexPath, with item: ItemType) {
@@ -34,6 +37,10 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         
         // indexPath'ы тут должны идти последовательно
         self.items.append(contentsOf: appendedItems.map { $0.item })
+    }
+    
+    func deleteAllItems() {
+        items = []
     }
     
     func deleteItems(at indexPaths: [IndexPath]) {
@@ -65,12 +72,22 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         self.items = items
     }
     
-    func mutateItem(at indexPath: IndexPath, mutator: (inout ItemType) -> ()) {
-        
-        var item = self.item(at: indexPath)
-        mutator(&item)
-        
-        replaceItem(at: indexPath, with: item)
+    func mutateItem(at indexPath: IndexPath, mutate: (inout ItemType) -> ()) {
+        if var item = safeItem(at: indexPath) {
+            mutate(&item)
+            replaceItem(at: indexPath, with: item)
+        }
+    }
+    
+    /// Mutates item at `indexPath` if it's equal to `theItem`
+    func mutateItem<ItemType: Equatable>(_ theItem: ItemType, at indexPath: IndexPath, mutate: (inout ItemType) -> ())
+        where ItemType == CellType.ItemType
+    {
+        mutateItem(at: indexPath) { (item: inout ItemType) in
+            if item == theItem {
+                mutate(&item)
+            }
+        }
     }
     
     // MARK: - UICollectionViewDataSource

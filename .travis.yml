@@ -4,6 +4,8 @@ xcode_sdk: iphonesimulator11.1
 
 before_install:
   - gem install cocoapods # Since Travis is not always on latest version
+  - pod cache clean Paparazzo
+  - pod cache clean ImageSource
   - pod update --project-directory=Example
   - pod install --project-directory=Example
 script:

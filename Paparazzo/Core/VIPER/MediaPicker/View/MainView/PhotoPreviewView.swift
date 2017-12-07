@@ -97,7 +97,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             UISelectionFeedbackGenerator().selectionChanged()
         }
         
-        collectionView.performBatchUpdates(animated: false, { [weak self] in
+        collectionView.performBatchUpdates(animated: false, updates: { [weak self] in
             self?.dataSource.moveItem(
                 from: sourceIndex,
                 to: destinationIndex

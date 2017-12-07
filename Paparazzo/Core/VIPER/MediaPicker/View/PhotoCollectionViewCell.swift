@@ -3,6 +3,8 @@ import UIKit
 
 class PhotoCollectionViewCell: UIImageSourceCollectionViewCell {
     
+    var selectedBorderThickness: CGFloat = 4
+    
     var selectedBorderColor: UIColor? = .blue {
         didSet {
             adjustBorderColor()
@@ -23,7 +25,7 @@ class PhotoCollectionViewCell: UIImageSourceCollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            layer.borderWidth = isSelected ? 4 : 0
+            layer.borderWidth = isSelected ? selectedBorderThickness : 0
         }
     }
     

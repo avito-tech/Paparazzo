@@ -147,13 +147,13 @@ extension UICollectionView {
         }
     }
     
-    func performBatchUpdates(animated: Bool, _ updates: @escaping () -> Void, completion: ((Bool) -> ())? = nil) {
+    func performBatchUpdates(animated: Bool, updates: @escaping () -> Void, completion: ((Bool) -> ())? = nil) {
         let updateCollectionView = animated ? performBatchUpdates : performNonAnimatedBatchUpdates
         updateCollectionView(updates, completion)
     }
     
     func insertItems(animated: Bool, _ updates: @escaping () -> [IndexPath]?) {
-        performBatchUpdates(animated: animated, { [weak self] in
+        performBatchUpdates(animated: animated, updates: { [weak self] in
             if let indexPaths = updates() {
                 self?.insertItems(at: indexPaths)
             }
@@ -161,7 +161,7 @@ extension UICollectionView {
     }
     
     func deleteItems(animated: Bool, _ updates: @escaping () -> [IndexPath]?) {
-        performBatchUpdates(animated: animated, { [weak self] in
+        performBatchUpdates(animated: animated, updates: { [weak self] in
             if let indexPaths = updates() {
                 self?.deleteItems(at: indexPaths)
             }
