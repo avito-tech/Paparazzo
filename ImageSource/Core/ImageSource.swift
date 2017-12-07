@@ -39,5 +39,5 @@ public func ==(lhs: ImageSource?, rhs: ImageSource?) -> Bool {
 }
 
 public func !=(lhs: ImageSource?, rhs: ImageSource?) -> Bool {
-    return (lhs == rhs) == false
+    return !(lhs == rhs)
 }
