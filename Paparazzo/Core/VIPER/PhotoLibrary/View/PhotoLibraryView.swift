@@ -291,6 +291,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     func setTitleVisible(_ visible: Bool) {
         titleView.setTitleVisible(visible)
+        titleView.isUserInteractionEnabled = visible
     }
     
     func setPlaceholderTitle(_ title: String) {
