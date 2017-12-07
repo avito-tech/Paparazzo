@@ -35,6 +35,9 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
         
         selectionStyle = .none
         
+        selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = .white
+        
         coverImageView.backgroundColor = .lightGray
         coverImageView.contentMode = .scaleAspectFill
         coverImageView.layer.cornerRadius = 6

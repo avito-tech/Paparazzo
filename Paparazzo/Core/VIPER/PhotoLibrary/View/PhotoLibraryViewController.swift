@@ -21,7 +21,10 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
+        
+        if !UIDevice.current.isIPhoneX {
+            UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {

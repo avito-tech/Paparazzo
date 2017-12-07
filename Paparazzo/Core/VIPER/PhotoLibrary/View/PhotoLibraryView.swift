@@ -503,6 +503,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     
     private func coverCollectionViewWithItsSnapshot() {
         collectionSnapshotView = collectionView.snapshotView(afterScreenUpdates: false)
+        collectionSnapshotView?.backgroundColor = collectionView.backgroundColor
         
         if let collectionSnapshotView = collectionSnapshotView {
             insertSubview(collectionSnapshotView, aboveSubview: collectionView)
