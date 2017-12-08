@@ -71,8 +71,8 @@ final class PhotoLibraryTitleView: UIView {
         // Don't use `frame` here, otherwise the rotation animation will be broken
         iconView.bounds = CGRect(origin: .zero, size: iconSize)
         iconView.center = CGPoint(
-            x: label.right + labelToIconSpacing + iconSize.width / 2,
-            y: bounds.centerY + topInset + 2
+            x: ceil(label.right + labelToIconSpacing) + iconSize.width / 2,
+            y: ceil(bounds.centerY + topInset + 2 - iconSize.height / 2) + iconSize.height / 2
         )
     }
 }
