@@ -15,6 +15,12 @@ final class PhotoLibraryToolbar: UIView {
         
         addSubview(discardButton)
         addSubview(confirmButton)
+        setUpAccessibilityIdentifiers()
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        discardButton.setAccessibilityId(.discardLibraryButton)
+        confirmButton.setAccessibilityId(.confirmLibraryButton)
     }
     
     required init?(coder aDecoder: NSCoder) {

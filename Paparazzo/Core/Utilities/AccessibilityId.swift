@@ -28,4 +28,8 @@ public enum AccessibilityId: String {
     case removeButton
     case autocorrectButton
     case cropButton
+    
+    // LibraryControls
+    case confirmLibraryButton
+    case discardLibraryButton
 }
