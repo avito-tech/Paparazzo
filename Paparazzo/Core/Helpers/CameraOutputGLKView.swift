@@ -55,7 +55,7 @@ final class CameraOutputGLKView: GLKView {
     override func draw(_ rect: CGRect) {
         guard let imageBuffer = imageBuffer else { return }
         
-        let image = CIImage(cvPixelBuffer: imageBuffer).applyingOrientation(Int32(orientation.rawValue))
+        let image = CIImage(cvPixelBuffer: imageBuffer).oriented(forExifOrientation: Int32(orientation.rawValue))
         
         ciContext.draw(
             image,

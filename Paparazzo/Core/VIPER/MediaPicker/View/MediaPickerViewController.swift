@@ -89,7 +89,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         }
         
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
-        layoutSubviewsPromise.fulfill()
+        layoutSubviewsPromise.fulfill(())
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

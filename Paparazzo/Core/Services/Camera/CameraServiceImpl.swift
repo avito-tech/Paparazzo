@@ -34,10 +34,10 @@ final class CameraServiceImpl: CameraService {
 
         self.imageStorage = imageStorage
 
-        let videoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as? [AVCaptureDevice]
+        let videoDevices = AVCaptureDevice.devices(for: .video)
         
-        backCamera = videoDevices?.filter({ $0.position == .back }).first
-        frontCamera = videoDevices?.filter({ $0.position == .front }).first
+        backCamera = videoDevices.filter({ $0.position == .back }).first
+        frontCamera = videoDevices.filter({ $0.position == .front }).first
         
         self.activeCameraType = initialActiveCameraType
     }
@@ -57,16 +57,16 @@ final class CameraServiceImpl: CameraService {
                 
             } else {
                 
-                let mediaType = AVMediaTypeVideo
+                let mediaType = AVMediaType.video
                 
-                switch AVCaptureDevice.authorizationStatus(forMediaType: mediaType) {
+                switch AVCaptureDevice.authorizationStatus(for: mediaType) {
                     
                 case .authorized:
                     self?.setUpCaptureSession()
                     callCompletionOnMainQueue(with: self?.captureSession)
                     
                 case .notDetermined:
-                    AVCaptureDevice.requestAccess(forMediaType: mediaType) { granted in
+                    AVCaptureDevice.requestAccess(for: mediaType) { granted in
                         self?.captureSessionSetupQueue.async {
                             if let captureSession = self?.captureSession {
                                 callCompletionOnMainQueue(with: captureSession)
@@ -98,8 +98,12 @@ final class CameraServiceImpl: CameraService {
                 throw Error()
             #endif
             
+            guard let activeCamera = activeCamera else {
+                throw Error()
+            }
+            
             let captureSession = AVCaptureSession()
-            captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+            captureSession.sessionPreset = .photo
             
             try CameraServiceImpl.configureCamera(backCamera)
             
@@ -120,7 +124,8 @@ final class CameraServiceImpl: CameraService {
             self.output = output
             self.captureSession = captureSession
             
-        } catch {
+        } catch let error {
+            print(error)
             self.output = nil
             self.captureSession = nil
         }
@@ -175,7 +180,11 @@ final class CameraServiceImpl: CameraService {
         do {
             
             let targetCameraType: CameraType = (activeCamera == backCamera) ? .front : .back
-            let targetCamera = camera(for: targetCameraType)
+            
+            guard let targetCamera = camera(for: targetCameraType) else {
+                throw Error()
+            }
+            
             let newInput = try AVCaptureDeviceInput(device: targetCamera)
             
             try captureSession.configure {
@@ -184,13 +193,13 @@ final class CameraServiceImpl: CameraService {
                 currentInputs?.forEach { captureSession.removeInput($0) }
                 
                 // Always reset preset before testing canAddInput because preset will cause it to return NO
-                captureSession.sessionPreset = AVCaptureSessionPresetHigh
+                captureSession.sessionPreset = .high
                 
                 if captureSession.canAddInput(newInput) {
                     captureSession.addInput(newInput)
                 }
                 
-                captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+                captureSession.sessionPreset = .photo
                 
                 try CameraServiceImpl.configureCamera(targetCamera)
             }
@@ -217,7 +226,7 @@ final class CameraServiceImpl: CameraService {
         guard let camera = backCamera else { return false }
         
         do {
-            let flashMode: AVCaptureFlashMode = enabled ? .on : .off
+            let flashMode: AVCaptureDevice.FlashMode = enabled ? .on : .off
             
             try camera.lockForConfiguration()
             
@@ -281,14 +290,11 @@ final class CameraServiceImpl: CameraService {
         
         for connection in output.connections {
             
-            if let connection = connection as? AVCaptureConnection,
-               let inputPorts = connection.inputPorts as? [AVCaptureInputPort] {
-                
-                let connectionContainsVideoPort = inputPorts.filter({ $0.mediaType == AVMediaTypeVideo }).count > 0
-                
-                if connectionContainsVideoPort {
-                    return connection
-                }
+            let inputPorts = connection.inputPorts
+            let connectionContainsVideoPort = inputPorts.filter { $0.mediaType == .video }.count > 0
+            
+            if connectionContainsVideoPort {
+                return connection
             }
         }
         

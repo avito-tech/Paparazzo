@@ -210,11 +210,11 @@ final class CroppedImageSource: ImageSource {
         
         let transform = CGAffineTransform.identity
             .translatedBy(x: size.width / 2, y: size.height / 2)
-            .concatenating(ciImage.imageTransform(forOrientation: Int32(orientation.rawValue)))
+            .concatenating(ciImage.orientationTransform(forExifOrientation: Int32(orientation.rawValue)))
             .translatedBy(x: -size.width / 2, y: -size.height / 2)
         
         return ciContext.createCGImage(
-            ciImage.applying(transform),
+            ciImage.transformed(by: transform),
             from: CGRect(origin: .zero, size: size)
         )
     }
