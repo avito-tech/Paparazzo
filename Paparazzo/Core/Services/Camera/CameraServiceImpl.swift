@@ -124,8 +124,7 @@ final class CameraServiceImpl: CameraService {
             self.output = output
             self.captureSession = captureSession
             
-        } catch let error {
-            print(error)
+        } catch {
             self.output = nil
             self.captureSession = nil
         }
