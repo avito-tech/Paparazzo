@@ -66,6 +66,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         setNeedsLayout()
     }
     
+    func setAccessibilityId(index: Int) {
+        accessibilityIdentifier = AccessibilityId.mediaItemThumbnailCell.rawValue + "-\(index)"
+    }
+    
     // MARK: - Customizable
     
     var onImageSetFromSource: (() -> ())?
