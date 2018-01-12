@@ -478,6 +478,8 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
             }
         }
         
+        cell.setAccessibilityId(index: indexPath.row)
+
         // Без этого костыля невозможно снять выделение с preselected ячейки
         if data.selected {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
