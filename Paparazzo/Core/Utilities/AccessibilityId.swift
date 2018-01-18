@@ -23,6 +23,7 @@ public enum AccessibilityId: String {
     // MediaPicker
     case continueButton
     case closeButton
+    case mediaPicker
 
     // PhotoControls
     case removeButton
@@ -32,4 +33,7 @@ public enum AccessibilityId: String {
     // LibraryControls
     case confirmLibraryButton
     case discardLibraryButton
+    
+    //PhotoLibrary
+    case photoLibrary
 }

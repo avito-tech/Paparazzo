@@ -73,10 +73,16 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
         
         addSubview(progressIndicator)
+        
+        setUpAccessibilityIdentifiers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
     }
     
     // MARK: - UIView

@@ -510,6 +510,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         closeButton.setAccessibilityId(.closeButton)
         continueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)
+        accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
     }
     
     private func layOutForIPhoneX() {
