@@ -20,11 +20,11 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
     
     @objc func captureOutput(
-        _ captureOutput: AVCaptureOutput?,
-        didOutputSampleBuffer sampleBuffer: CMSampleBuffer?,
-        from connection: AVCaptureConnection?)
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection)
     {
-        if let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }), !isInBackground {
+        if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer), !isInBackground {
             views.forEach { viewWrapper in
                 viewWrapper.value?.imageBuffer = imageBuffer
             }
@@ -87,7 +87,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         
         // CoreImage wants BGRA pixel format
         captureOutput.videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey as AnyHashable: NSNumber(value: kCVPixelFormatType_32BGRA)
+            kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA)
         ]
         
         captureOutput.setSampleBufferDelegate(self, queue: queue)

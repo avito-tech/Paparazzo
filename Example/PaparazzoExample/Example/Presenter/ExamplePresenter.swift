@@ -136,10 +136,14 @@ final class ExamplePresenter {
     }
     
     func configureMediaPicker(module: MediaPickerModule) {
-        module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
-        module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
-        module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
-        module.onItemAutocorrect = { _, isAutocorrected, _ in debugPrint("mediaPickerDidAutocorrectItem: \(isAutocorrected)") }
+        
+        module.onItemsAdd = { _, _ in debugPrint("mediaPickerDidAddItems") }
+        module.onItemUpdate = { _, _ in debugPrint("mediaPickerDidUpdateItem") }
+        module.onItemRemove = { _, _ in debugPrint("mediaPickerDidRemoveItem") }
+        
+        module.onItemAutocorrect = { _, isAutocorrected, _ in
+            debugPrint("mediaPickerDidAutocorrectItem: \(isAutocorrected)")
+        }
         
         module.setContinueButtonTitle("Done")
         
