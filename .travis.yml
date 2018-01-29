@@ -13,4 +13,3 @@ script:
   - xcodebuild build -workspace Example/PaparazzoExample.xcworkspace -scheme PaparazzoExample ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | xcpretty
   - xcodebuild build -workspace Example/PaparazzoExample.xcworkspace -scheme PaparazzoExample_NoMarshroute ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | xcpretty
   - xcodebuild build -workspace Example/PaparazzoExample.xcworkspace -scheme PaparazzoExample_Storyboard ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | xcpretty
-  - pod lib lint --allow-warnings
