@@ -6,35 +6,38 @@ public final class AssemblyFactory:
     MaskCropperAssemblyFactory
 {
     
-    private let theme: PaparazzoUITheme
+    private let defaultTheme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
     
     public init(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         imageStorage: ImageStorage = ImageStorageImpl())
     {
-        self.theme = theme
+        self.defaultTheme = theme
         self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {
-        return CameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return CameraAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
     
-    public func mediaPickerAssembly() -> MediaPickerAssembly {
-        return MediaPickerAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
+    public func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerAssembly {
+        return MediaPickerAssemblyImpl(
+            assemblyFactory: self,
+            theme: theme ?? defaultTheme,
+            serviceFactory: serviceFactory
+        )
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {
-        return ImageCroppingAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return ImageCroppingAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
 
     public func photoLibraryAssembly() -> PhotoLibraryAssembly {
-        return PhotoLibraryAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return PhotoLibraryAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
     
     public func maskCropperAssembly() -> MaskCropperAssembly {
-        return MaskCropperAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return MaskCropperAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
-
 }
