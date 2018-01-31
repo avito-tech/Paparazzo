@@ -7,3 +7,9 @@ protocol CameraAssembly: class {
 protocol CameraAssemblyFactory {
     func cameraAssembly() -> CameraAssembly
 }
+
+extension CameraAssembly {
+    func module(initialActiveCameraType: CameraType) -> (UIView, CameraModuleInput) {
+        return module(initialActiveCameraType: initialActiveCameraType, overridenTheme: nil)
+    }
+}
