@@ -2,6 +2,7 @@ import ImageSource
 
 protocol CameraViewInput: class {
     
+    func setTitle(_: String?)
     func setOutputParameters(_: CameraOutputParameters)
     func setOutputOrientation(_: ExifOrientation)
     

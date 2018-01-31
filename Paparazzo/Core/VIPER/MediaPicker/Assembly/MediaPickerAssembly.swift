@@ -8,5 +8,11 @@ public protocol MediaPickerAssembly: class {
 }
 
 public protocol MediaPickerAssemblyFactory: class {
-    func mediaPickerAssembly() -> MediaPickerAssembly
+    func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerAssembly
+}
+
+public extension MediaPickerAssemblyFactory {
+    func mediaPickerAssembly() -> MediaPickerAssembly {
+        return mediaPickerAssembly(theme: nil)
+    }
 }
