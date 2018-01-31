@@ -4,7 +4,7 @@ final class CameraAssemblyImpl: BasePaparazzoAssembly, CameraAssembly {
     
     // MARK: - CameraAssembly
     
-    func module(initialActiveCameraType: CameraType) -> (UIView, CameraModuleInput) {
+    func module(initialActiveCameraType: CameraType, overridenTheme: PaparazzoUITheme?) -> (UIView, CameraModuleInput) {
         let deviceOrientationService = DeviceOrientationServiceImpl()
         
         let cameraService = serviceFactory.cameraService(
@@ -22,7 +22,7 @@ final class CameraAssemblyImpl: BasePaparazzoAssembly, CameraAssembly {
         
         let view = CameraView()
         view.addDisposable(presenter)
-        view.setTheme(theme)
+        view.setTheme(overridenTheme ?? theme)
         
         presenter.view = view
         

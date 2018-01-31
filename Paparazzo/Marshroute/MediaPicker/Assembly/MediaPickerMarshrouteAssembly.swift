@@ -4,17 +4,23 @@ import UIKit
 public protocol MediaPickerMarshrouteAssembly: class {
     func module(
         data: MediaPickerData,
+        overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
 
 public protocol MediaPickerMarshrouteAssemblyFactory: class {
-    func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerMarshrouteAssembly
+    func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly
 }
 
-public extension MediaPickerMarshrouteAssemblyFactory {
-    func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly {
-        return mediaPickerAssembly(theme: nil)
+public extension MediaPickerMarshrouteAssembly {
+    func module(
+        data: MediaPickerData,
+        routerSeed: RouterSeed,
+        configure: (MediaPickerModule) -> ())
+        -> UIViewController
+    {
+        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, configure: configure)
     }
 }
