@@ -24,6 +24,8 @@ public protocol MediaPickerModule: class {
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
     
+    func setCameraTitle(_ title: String)
+    
     func setCropMode(_: MediaPickerCropMode)
     
     // startIndex - index of element in previous array of MediaPickerItem, new elements were added after that index

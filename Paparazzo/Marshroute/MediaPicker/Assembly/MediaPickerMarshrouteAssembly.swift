@@ -10,5 +10,11 @@ public protocol MediaPickerMarshrouteAssembly: class {
 }
 
 public protocol MediaPickerMarshrouteAssemblyFactory: class {
-    func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly
+    func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerMarshrouteAssembly
+}
+
+public extension MediaPickerMarshrouteAssemblyFactory {
+    func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly {
+        return mediaPickerAssembly(theme: nil)
+    }
 }

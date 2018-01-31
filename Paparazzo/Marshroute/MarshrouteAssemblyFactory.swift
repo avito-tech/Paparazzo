@@ -7,39 +7,42 @@ public final class MarshrouteAssemblyFactory:
     PhotoLibraryMarshrouteAssemblyFactory,
     MaskCropperMarshrouteAssemblyFactory
 {
-    private let theme: PaparazzoUITheme
+    private let defaultTheme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
     private let imageStorage: ImageStorage
     
     public init(theme: PaparazzoUITheme = PaparazzoUITheme(),
                 imageStorage: ImageStorage = ImageStorageImpl())
     {
-        self.theme = theme
+        self.defaultTheme = theme
         self.imageStorage = imageStorage
         self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {
         return CameraAssemblyImpl(
-            theme: theme,
+            theme: defaultTheme,
             serviceFactory: serviceFactory
         )
     }
     
-    public func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly {
-        return MediaPickerMarshrouteAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
+    public func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerMarshrouteAssembly {
+        return MediaPickerMarshrouteAssemblyImpl(
+            assemblyFactory: self,
+            theme: theme ?? defaultTheme,
+            serviceFactory: serviceFactory
+        )
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {
-        return ImageCroppingAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return ImageCroppingAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
 
     public func photoLibraryAssembly() -> PhotoLibraryMarshrouteAssembly {
-        return PhotoLibraryMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return PhotoLibraryMarshrouteAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
     
     public func maskCropperAssembly() -> MaskCropperMarshrouteAssembly {
-        return MaskCropperMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return MaskCropperMarshrouteAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
     }
-
 }
