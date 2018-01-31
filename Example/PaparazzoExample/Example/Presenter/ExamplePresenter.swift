@@ -136,6 +136,8 @@ final class ExamplePresenter {
     }
     
     func configureMediaPicker(module: MediaPickerModule) {
+
+        module.setCameraTitle("Please take a photo")
         
         module.onItemsAdd = { _, _ in debugPrint("mediaPickerDidAddItems") }
         module.onItemUpdate = { _, _ in debugPrint("mediaPickerDidUpdateItem") }

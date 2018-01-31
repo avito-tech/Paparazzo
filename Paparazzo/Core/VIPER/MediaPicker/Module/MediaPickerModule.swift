@@ -24,6 +24,8 @@ public protocol MediaPickerModule: class {
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
     
+    func setCameraTitle(_ title: String)
+    
     func setCropMode(_: MediaPickerCropMode)
     func setThumbnailsAlwaysVisible(_: Bool)
     

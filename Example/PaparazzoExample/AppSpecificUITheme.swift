@@ -9,6 +9,7 @@ extension PaparazzoUITheme {
         theme.photoLibraryTitleFont = UIFont(name: "LatotoSemibold", size: 18)!
         theme.photoLibraryAlbumCellFont = UIFont(name: "Latoto", size: 17)!
         theme.photoLibraryPlaceholderFont = UIFont(name: "Latoto", size: 17)!
+        theme.cameraTitleFont = UIFont(name: "LatotoSemibold", size: 17)!
         return theme
     }
 }
