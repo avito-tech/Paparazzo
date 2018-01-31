@@ -73,11 +73,11 @@ final class CameraPresenter: CameraModuleInput {
         view?.setAccessDeniedButtonTitle(title)
     }
     
-    func setCameraTitle(_ title: String) {
+    func setTitle(_ title: String) {
         view?.setTitle(title)
     }
     
-    func setCameraSubtitle(_ subtitle: String) {
+    func setSubtitle(_ subtitle: String) {
         view?.setSubtitle(subtitle)
     }
     

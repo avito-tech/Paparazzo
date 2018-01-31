@@ -22,6 +22,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         accessDeniedView.isHidden = true
         titleLabel.backgroundColor = .clear
         titleLabel.isUserInteractionEnabled = false
+        subtitleLabel.backgroundColor = .clear
+        subtitleLabel.isUserInteractionEnabled = false
         
         addSubview(accessDeniedView)
         addSubview(titleLabel)
@@ -44,7 +46,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         
         titleLabel.sizeToFit()
         titleLabel.centerX = bounds.centerX
-        titleLabel.top = 17
+        let hasSubtitle = (subtitleLabel.text?.count ?? 0) > 0
+        titleLabel.top = hasSubtitle ? 9 : 17
         
         subtitleLabel.sizeToFit()
         subtitleLabel.centerX = bounds.centerX
