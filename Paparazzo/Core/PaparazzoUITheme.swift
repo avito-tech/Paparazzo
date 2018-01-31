@@ -34,6 +34,8 @@ public struct PaparazzoUITheme:
     public var cameraButtonsBackgroundDisabledColor = UIColor(white: 1, alpha: 0.6)
     public var cameraTitleColor = UIColor(white: 1, alpha: 1)
     public var cameraTitleFont = UIFont.boldSystemFont(ofSize: 17)
+    public var cameraSubtitleColor = UIColor(white: 1, alpha: 1)
+    public var cameraSubtitleFont = UIFont.systemFont(ofSize: 14)
     
     public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)

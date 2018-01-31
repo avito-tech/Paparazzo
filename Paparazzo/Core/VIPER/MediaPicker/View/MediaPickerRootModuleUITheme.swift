@@ -11,6 +11,8 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraButtonsBackgroundDisabledColor: UIColor { get }
     var cameraTitleColor: UIColor { get }
     var cameraTitleFont: UIFont { get }
+    var cameraSubtitleColor: UIColor { get }
+    var cameraSubtitleFont: UIFont { get }
     
     var removePhotoIcon: UIImage? { get }
     var autocorrectPhotoIconInactive: UIImage? { get }

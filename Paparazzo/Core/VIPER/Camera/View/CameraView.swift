@@ -9,6 +9,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     private let accessDeniedView = AccessDeniedView()
     private var cameraOutputView: CameraOutputView?
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private var outputParameters: CameraOutputParameters?
     private var focusIndicator: FocusIndicator?
     private var theme: ThemeType?
@@ -24,6 +25,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         
         addSubview(accessDeniedView)
         addSubview(titleLabel)
+        addSubview(subtitleLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,6 +45,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         titleLabel.sizeToFit()
         titleLabel.centerX = bounds.centerX
         titleLabel.top = 17
+        
+        subtitleLabel.sizeToFit()
+        subtitleLabel.centerX = bounds.centerX
+        subtitleLabel.top = titleLabel.bottom
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -65,6 +71,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     // MARK: - CameraViewInput
     func setTitle(_ title: String?) {
         titleLabel.text = title
+    }
+    
+    func setSubtitle(_ subtitle: String?) {
+        subtitleLabel.text = subtitle
     }
     
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
@@ -121,6 +131,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         
         addSubview(newCameraOutputView)
         bringSubview(toFront: titleLabel)
+        bringSubview(toFront: subtitleLabel)
         
         self.cameraOutputView = newCameraOutputView
         self.outputParameters = parameters
@@ -152,6 +163,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         focusIndicator?.setColor(theme.focusIndicatorColor)
         titleLabel.textColor = theme.cameraTitleColor
         titleLabel.font = theme.cameraTitleFont
+        subtitleLabel.textColor = theme.cameraSubtitleColor
+        subtitleLabel.font = theme.cameraSubtitleFont
     }
     
     // MARK: - Dispose bag

@@ -77,6 +77,10 @@ final class CameraPresenter: CameraModuleInput {
         view?.setTitle(title)
     }
     
+    func setCameraSubtitle(_ subtitle: String) {
+        view?.setSubtitle(subtitle)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {
