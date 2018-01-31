@@ -3,16 +3,17 @@ import UIKit
 public protocol MediaPickerAssembly: class {
     func module(
         data: MediaPickerData,
+        overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
 
 public protocol MediaPickerAssemblyFactory: class {
-    func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerAssembly
+    func mediaPickerAssembly() -> MediaPickerAssembly
 }
 
-public extension MediaPickerAssemblyFactory {
-    func mediaPickerAssembly() -> MediaPickerAssembly {
-        return mediaPickerAssembly(theme: nil)
+public extension MediaPickerAssembly {
+    func module(data: MediaPickerData, configure: (MediaPickerModule) -> ()) -> UIViewController {
+        return module(data: data, overridenTheme: nil, configure: configure)
     }
 }

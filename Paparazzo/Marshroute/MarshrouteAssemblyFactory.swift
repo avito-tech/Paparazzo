@@ -7,42 +7,42 @@ public final class MarshrouteAssemblyFactory:
     PhotoLibraryMarshrouteAssemblyFactory,
     MaskCropperMarshrouteAssemblyFactory
 {
-    private let defaultTheme: PaparazzoUITheme
+    private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
     private let imageStorage: ImageStorage
     
     public init(theme: PaparazzoUITheme = PaparazzoUITheme(),
                 imageStorage: ImageStorage = ImageStorageImpl())
     {
-        self.defaultTheme = theme
+        self.theme = theme
         self.imageStorage = imageStorage
         self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
     }
     
     func cameraAssembly() -> CameraAssembly {
         return CameraAssemblyImpl(
-            theme: defaultTheme,
+            theme: theme,
             serviceFactory: serviceFactory
         )
     }
     
-    public func mediaPickerAssembly(theme: PaparazzoUITheme?) -> MediaPickerMarshrouteAssembly {
+    public func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly {
         return MediaPickerMarshrouteAssemblyImpl(
             assemblyFactory: self,
-            theme: theme ?? defaultTheme,
+            theme: theme,
             serviceFactory: serviceFactory
         )
     }
 
     func imageCroppingAssembly() -> ImageCroppingAssembly {
-        return ImageCroppingAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
+        return ImageCroppingAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
 
     public func photoLibraryAssembly() -> PhotoLibraryMarshrouteAssembly {
-        return PhotoLibraryMarshrouteAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
+        return PhotoLibraryMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
     
     public func maskCropperAssembly() -> MaskCropperMarshrouteAssembly {
-        return MaskCropperMarshrouteAssemblyImpl(theme: defaultTheme, serviceFactory: serviceFactory)
+        return MaskCropperMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
 }
