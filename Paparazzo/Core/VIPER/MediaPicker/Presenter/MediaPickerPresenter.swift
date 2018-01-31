@@ -53,11 +53,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     public func setCameraTitle(_ title: String) {
-        cameraModuleInput.setCameraTitle(title)
+        cameraModuleInput.setTitle(title)
     }
     
     public func setCameraSubtitle(_ subtitle: String) {
-        cameraModuleInput.setCameraSubtitle(subtitle)
+        cameraModuleInput.setSubtitle(subtitle)
     }
     
     public func setAccessDeniedTitle(_ title: String) {
