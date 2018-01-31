@@ -23,4 +23,5 @@ protocol CameraModuleInput: class {
     func setAccessDeniedButtonTitle(_: String)
     
     func setCameraTitle(_: String)
+    func setCameraSubtitle(_: String)
 }
