@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		136F1C7C1F4EDE2B00C5CCA1 /* AutoAdjustmentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */; };
-		1373874B203C431E00679EAD /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1373874A203C431E00679EAD /* SqueezeNet.mlmodel */; };
 		1373874D203C4CE200679EAD /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373874C203C4CE200679EAD /* Sampler.swift */; };
+		1373874F203C4E3600679EAD /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1373874E203C4E3500679EAD /* SqueezeNet.mlmodel */; };
 		13DCA02C2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DCA02B2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift */; };
 		250CAE4C1FB72347006FA5DC /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 		250CAE531FB72360006FA5DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 250CAE511FB72360006FA5DC /* LaunchScreen.storyboard */; };
@@ -71,8 +71,8 @@
 
 /* Begin PBXFileReference section */
 		136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAdjustmentFilter.swift; sourceTree = "<group>"; };
-		1373874A203C431E00679EAD /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = SqueezeNet.mlmodel; path = ../../../../../Downloads/SqueezeNet.mlmodel; sourceTree = "<group>"; };
 		1373874C203C4CE200679EAD /* Sampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
+		1373874E203C4E3500679EAD /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
 		13DCA02B2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectsRecognitionStreamHandler.swift; sourceTree = "<group>"; };
 		250CAE521FB72360006FA5DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		251E57C01E65651F0009A288 /* PaparazzoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaparazzoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,7 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				13DCA02B2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift */,
-				1373874A203C431E00679EAD /* SqueezeNet.mlmodel */,
+				1373874E203C4E3500679EAD /* SqueezeNet.mlmodel */,
 				1373874C203C4CE200679EAD /* Sampler.swift */,
 			);
 			path = StreamHandlers;
@@ -806,7 +806,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				251E57FB1E6565890009A288 /* ExampleViewInput.swift in Sources */,
-				1373874B203C431E00679EAD /* SqueezeNet.mlmodel in Sources */,
+				1373874F203C4E3600679EAD /* SqueezeNet.mlmodel in Sources */,
 				251E57FA1E6565890009A288 /* ExampleViewController.swift in Sources */,
 				251E57F21E6565890009A288 /* ExampleAssembly.swift in Sources */,
 				136F1C7C1F4EDE2B00C5CCA1 /* AutoAdjustmentFilter.swift in Sources */,
