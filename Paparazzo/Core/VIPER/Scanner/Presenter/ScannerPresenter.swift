@@ -54,6 +54,10 @@ final class ScannerPresenter: ScannerModule {
     func finish() {
         onFinish?()
     }
+    
+    func showInfoMessage(_ message: String, timeout: TimeInterval) {
+        view?.showInfoMessage(message, timeout: timeout)
+    }
 
     // MARK: - Private
     
