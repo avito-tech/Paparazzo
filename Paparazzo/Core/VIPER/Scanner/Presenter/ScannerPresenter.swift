@@ -52,7 +52,6 @@ final class ScannerPresenter: ScannerModule {
     }
     
     func finish() {
-        cameraModuleInput.setFlashEnabled(false, completion: nil)
         onFinish?()
     }
 

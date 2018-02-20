@@ -21,7 +21,7 @@ public final class AssemblyFactory:
         return CameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
     
-    public func mediaPickerAssembly() -> MediaPickerAssembly {
+    public func ScannerPresenter.swift -> MediaPickerAssembly {
         return MediaPickerAssemblyImpl(
             assemblyFactory: self,
             theme: theme,
