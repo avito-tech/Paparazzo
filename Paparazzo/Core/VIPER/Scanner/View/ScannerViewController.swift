@@ -134,10 +134,6 @@ final class ScannerViewController: PaparazzoViewController, ScannerViewInput, Th
     var onViewDidAppear: ((_ animated: Bool) -> ())?
     var onViewDidDisappear: ((_ animated: Bool) -> ())?
     
-    func setHapticFeedbackEnabled(_ enabled: Bool) {
-        mediaPickerView.setHapticFeedbackEnabled(enabled)
-    }
-    
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
         UIView.animate(withDuration: 0.25) {
             self.mediaPickerView.adjustForDeviceOrientation(orientation)

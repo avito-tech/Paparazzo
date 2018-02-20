@@ -98,7 +98,6 @@ final class ExamplePresenter {
     
     func showScanner() {
         let data = ScannerData(
-            hapticFeedbackEnabled: true,
             initialActiveCameraType: .back
         )
         

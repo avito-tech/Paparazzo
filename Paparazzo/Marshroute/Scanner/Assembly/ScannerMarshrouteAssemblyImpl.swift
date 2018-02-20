@@ -44,7 +44,6 @@ public final class ScannerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Scanner
             viewController.addDisposable(presenter)
             viewController.setCameraView(cameraView)
             viewController.setTheme(theme)
-            viewController.setHapticFeedbackEnabled(data.hapticFeedbackEnabled)
             
             presenter.view = viewController
             

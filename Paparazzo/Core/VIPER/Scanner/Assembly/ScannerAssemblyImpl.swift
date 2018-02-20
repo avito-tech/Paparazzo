@@ -44,7 +44,6 @@ public final class ScannerAssemblyImpl: BasePaparazzoAssembly, ScannerAssembly {
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
         viewController.setTheme(overridenTheme ?? theme)
-        viewController.setHapticFeedbackEnabled(data.hapticFeedbackEnabled)
         
         presenter.view = viewController
         

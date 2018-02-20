@@ -75,10 +75,6 @@ final class ScannerView: UIView, ThemeConfigurable {
     
     // MARK: - ScannerView
     
-    func setHapticFeedbackEnabled(_ enabled: Bool) {
-        
-    }
-    
     var onCloseButtonTap: (() -> ())?
     
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
