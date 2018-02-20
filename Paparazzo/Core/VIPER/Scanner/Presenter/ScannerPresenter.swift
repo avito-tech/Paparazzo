@@ -28,14 +28,6 @@ final class ScannerPresenter: ScannerModule {
     var onFinish: ((MediaPickerItem?) -> ())?
     var onCancel: (() -> ())?
     
-    public func setCameraTitle(_ title: String) {
-        cameraModuleInput.setTitle(title)
-    }
-    
-    public func setCameraSubtitle(_ subtitle: String) {
-        cameraModuleInput.setSubtitle(subtitle)
-    }
-    
     public func setAccessDeniedTitle(_ title: String) {
         cameraModuleInput.setAccessDeniedTitle(title)
     }
@@ -78,6 +70,10 @@ final class ScannerPresenter: ScannerModule {
         
         view?.onViewDidDisappear = { [weak self] animated in
             self?.cameraModuleInput.setCameraOutputNeeded(false)
+        }
+        
+        view?.onCloseButtonTap = { [weak self] in
+            self?.onCancel?()
         }
     }
     

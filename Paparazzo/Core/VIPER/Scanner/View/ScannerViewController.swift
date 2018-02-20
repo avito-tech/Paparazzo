@@ -129,7 +129,6 @@ final class ScannerViewController: PaparazzoViewController, ScannerViewInput, Th
     
     // MARK: - ScannerViewInput
     
-   
     var onViewDidLoad: (() -> ())?
     var onViewWillAppear: ((_ animated: Bool) -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?

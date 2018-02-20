@@ -32,6 +32,8 @@ final class ScannerView: UIView, ThemeConfigurable {
         
         addSubview(closeButton)
         
+        setUpButtons()
+        
         setUpAccessibilityIdentifiers()
     }
     
@@ -44,6 +46,8 @@ final class ScannerView: UIView, ThemeConfigurable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        layoutCloseButton()
+        
         cameraView?.frame = bounds
     }
     
@@ -53,6 +57,20 @@ final class ScannerView: UIView, ThemeConfigurable {
         self.theme = theme
         
         closeButton.setImage(theme.closeCameraIcon, for: .normal)
+        
+        let onePointSize = CGSize(width: 1, height: 1)
+        closeButton.setBackgroundImage(
+            UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
+            for: .normal
+        )
+        closeButton.setBackgroundImage(
+            UIImage.imageWithColor(theme.cameraButtonsBackgroundHighlightedColor, imageSize: onePointSize),
+            for: .highlighted
+        )
+        closeButton.setBackgroundImage(
+            UIImage.imageWithColor(theme.cameraButtonsBackgroundDisabledColor, imageSize: onePointSize),
+            for: .disabled
+        )
     }
     
     // MARK: - ScannerView
@@ -79,6 +97,7 @@ final class ScannerView: UIView, ThemeConfigurable {
     
     func setCameraView(_ view: UIView) {
         cameraView = view
+        insertSubview(view, belowSubview: closeButton)
     }
     
     func showInfoMessage(_ message: String, timeout: TimeInterval) {
@@ -99,7 +118,6 @@ final class ScannerView: UIView, ThemeConfigurable {
             action: #selector(onCloseButtonTap(_:)),
             for: .touchUpInside
         )
-        
     }
     
     private func setUpAccessibilityIdentifiers() {
@@ -107,7 +125,7 @@ final class ScannerView: UIView, ThemeConfigurable {
         accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
     }
     
-    private func layoutCloseAndContinueButtons() {
+    private func layoutCloseButton() {
         
         closeButton.frame = CGRect(
             x: 8,

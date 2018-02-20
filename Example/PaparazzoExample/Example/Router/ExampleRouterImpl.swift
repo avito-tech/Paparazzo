@@ -74,11 +74,10 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
-            let assembly = mediaPickerAssemblyFactory.photoLibraryAssembly()
+            let assembly = mediaPickerAssemblyFactory.scannerAssembly()
             
             return assembly.module(
-                selectedItems: selectedItems,
-                maxSelectedItemsCount: maxSelectedItemsCount,
+                data: data, 
                 routerSeed: routerSeed,
                 configure: configure
             )
