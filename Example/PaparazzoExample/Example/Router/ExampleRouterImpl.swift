@@ -71,7 +71,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showScanner(
         data: ScannerData,
         configure: (ScannerModule) -> ()
-        ) {
+    ) {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.scannerAssembly()

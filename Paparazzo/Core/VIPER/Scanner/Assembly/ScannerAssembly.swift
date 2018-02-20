@@ -9,7 +9,7 @@ public protocol ScannerAssembly: class {
 }
 
 public protocol ScannerAssemblyFactory: class {
-    func mediaPickerAssembly() -> ScannerAssembly
+    func scannerAssembly() -> ScannerAssembly
 }
 
 public extension ScannerAssembly {
