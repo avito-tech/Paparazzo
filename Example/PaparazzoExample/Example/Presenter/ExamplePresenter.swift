@@ -109,7 +109,7 @@ final class ExamplePresenter {
                 module?.onCancel = {
                     module?.dismissModule()
                 }
-                module?.onFinish = { items in
+                module?.onFinish = {
                     module?.dismissModule()
                 }
         }

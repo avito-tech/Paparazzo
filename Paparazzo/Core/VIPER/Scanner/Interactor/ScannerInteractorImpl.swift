@@ -4,8 +4,6 @@ final class ScannerInteractorImpl: ScannerInteractor {
     
     private let deviceOrientationService: DeviceOrientationService
     
-    var item: MediaPickerItem?
-    
     init(deviceOrientationService: DeviceOrientationService) {
         self.deviceOrientationService = deviceOrientationService
     }

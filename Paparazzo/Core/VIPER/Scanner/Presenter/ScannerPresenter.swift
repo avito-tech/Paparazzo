@@ -24,8 +24,7 @@ final class ScannerPresenter: ScannerModule {
     
     // MARK: - ScannerModule
 
-    var onItemAdd: ((MediaPickerItem) -> ())?
-    var onFinish: ((MediaPickerItem?) -> ())?
+    var onFinish: (() -> ())?
     var onCancel: (() -> ())?
     
     public func setAccessDeniedTitle(_ title: String) {
@@ -48,9 +47,13 @@ final class ScannerPresenter: ScannerModule {
         router.dismissCurrentModule()
     }
     
+    func takePhoto(completion: @escaping (MediaPickerItem?) -> ()) {
+        cameraModuleInput.takePhoto(completion: completion)
+    }
+    
     func finish() {
         cameraModuleInput.setFlashEnabled(false, completion: nil)
-        onFinish?(interactor.item)
+        onFinish?()
     }
 
     // MARK: - Private
