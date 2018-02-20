@@ -45,4 +45,8 @@ public final class MarshrouteAssemblyFactory:
     public func maskCropperAssembly() -> MaskCropperMarshrouteAssembly {
         return MaskCropperMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
+    
+    public func scannerAssembly() -> MaskCropperMarshrouteAssembly {
+        return ScannerAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+    }
 }

@@ -91,6 +91,28 @@ final class ExamplePresenter {
         )
     }
     
+    func showScanner() {
+        let data = ScannerData(
+            hapticFeedbackEnabled: true,
+            initialActiveCameraType: .back
+        )
+        
+        self.router.showMediaPicker(
+            data: data,
+            configure: { module in
+                weak var module = module
+                module?.setContinueButtonVisible(false)
+                module?.setCropMode(.custom(croppingOverlayProvidersFactory.circleCroppingOverlayProvider()))
+                module?.onCancel = {
+                    module?.dismissModule()
+                }
+                module?.onFinish = { items in
+                    module?.dismissModule()
+                }
+        }
+        )
+    }
+    
     private func showMaskCropperIn(rootModule: MediaPickerModule?, photo: MediaPickerItem) {
         
         let data = MaskCropperData(
