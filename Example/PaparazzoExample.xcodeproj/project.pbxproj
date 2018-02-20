@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		136F1C7C1F4EDE2B00C5CCA1 /* AutoAdjustmentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */; };
+		1373874B203C431E00679EAD /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1373874A203C431E00679EAD /* SqueezeNet.mlmodel */; };
+		1373874D203C4CE200679EAD /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373874C203C4CE200679EAD /* Sampler.swift */; };
+		13DCA02C2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DCA02B2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift */; };
 		250CAE4C1FB72347006FA5DC /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 		250CAE531FB72360006FA5DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 250CAE511FB72360006FA5DC /* LaunchScreen.storyboard */; };
 		250CAE541FB72364006FA5DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 250CAE511FB72360006FA5DC /* LaunchScreen.storyboard */; };
@@ -68,6 +71,9 @@
 
 /* Begin PBXFileReference section */
 		136F1C7A1F4EDDF500C5CCA1 /* AutoAdjustmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAdjustmentFilter.swift; sourceTree = "<group>"; };
+		1373874A203C431E00679EAD /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = SqueezeNet.mlmodel; path = ../../../../../Downloads/SqueezeNet.mlmodel; sourceTree = "<group>"; };
+		1373874C203C4CE200679EAD /* Sampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
+		13DCA02B2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectsRecognitionStreamHandler.swift; sourceTree = "<group>"; };
 		250CAE521FB72360006FA5DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		251E57C01E65651F0009A288 /* PaparazzoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaparazzoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		251E57C31E65651F0009A288 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +187,16 @@
 			path = Filters;
 			sourceTree = "<group>";
 		};
+		13DCA02A2024B33E007F79EB /* StreamHandlers */ = {
+			isa = PBXGroup;
+			children = (
+				13DCA02B2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift */,
+				1373874A203C431E00679EAD /* SqueezeNet.mlmodel */,
+				1373874C203C4CE200679EAD /* Sampler.swift */,
+			);
+			path = StreamHandlers;
+			sourceTree = "<group>";
+		};
 		251E57B71E65651F0009A288 = {
 			isa = PBXGroup;
 			children = (
@@ -190,8 +206,8 @@
 				F2F50FC41E6C9F60006F9171 /* PaparazzoExample_Storyboard */,
 				25D303691FCDC5DD003BEEF3 /* PaparazzoTests */,
 				251E57C11E65651F0009A288 /* Products */,
-				065EA8ADECDAEC74625EFF26 /* Pods */,
 				EC445A1109FBC420CB5CBEB8 /* Frameworks */,
+				065EA8ADECDAEC74625EFF26 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -217,6 +233,7 @@
 				251E57D71E6565890009A288 /* Example */,
 				251E57E71E6565890009A288 /* Fonts */,
 				251E57ED1E6565890009A288 /* MarshrouteHelpers */,
+				13DCA02A2024B33E007F79EB /* StreamHandlers */,
 				251E57CF1E65651F0009A288 /* Info.plist */,
 				2588E3531F8F8BB9009A2FD2 /* Paparazzo.strings */,
 			);
@@ -789,10 +806,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				251E57FB1E6565890009A288 /* ExampleViewInput.swift in Sources */,
+				1373874B203C431E00679EAD /* SqueezeNet.mlmodel in Sources */,
 				251E57FA1E6565890009A288 /* ExampleViewController.swift in Sources */,
 				251E57F21E6565890009A288 /* ExampleAssembly.swift in Sources */,
 				136F1C7C1F4EDE2B00C5CCA1 /* AutoAdjustmentFilter.swift in Sources */,
 				251E57F41E6565890009A288 /* ExampleInteractor.swift in Sources */,
+				1373874D203C4CE200679EAD /* Sampler.swift in Sources */,
 				251E58011E6565890009A288 /* MarshrouteFacade.swift in Sources */,
 				251E58021E6565890009A288 /* NavigationController.swift in Sources */,
 				251E57C41E65651F0009A288 /* AppDelegate.swift in Sources */,
@@ -803,6 +822,7 @@
 				251E57F31E6565890009A288 /* ExampleAssemblyImpl.swift in Sources */,
 				251E57F01E6565890009A288 /* AppSpecificUITheme.swift in Sources */,
 				EFA7610E1E829434000EB296 /* ItemProvider.swift in Sources */,
+				13DCA02C2024B3D3007F79EB /* ObjectsRecognitionStreamHandler.swift in Sources */,
 				251E57F91E6565890009A288 /* ExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

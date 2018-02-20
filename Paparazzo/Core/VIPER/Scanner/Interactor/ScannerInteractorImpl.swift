@@ -8,13 +8,13 @@ final class ScannerInteractorImpl: ScannerInteractor {
     
     // MARK: - Properties
     
-    private var cameraCaptureOutputHandlers = [CameraCaptureOutputHandler]()
+    private var cameraCaptureOutputHandlers = [ScannerOutputHandler]()
     
     // MARK: - Init
     
     init(
         deviceOrientationService: DeviceOrientationService,
-        cameraCaptureOutputHandlers: [CameraCaptureOutputHandler])
+        cameraCaptureOutputHandlers: [ScannerOutputHandler])
     {
         self.deviceOrientationService = deviceOrientationService
         self.cameraCaptureOutputHandlers = cameraCaptureOutputHandlers
@@ -29,6 +29,7 @@ final class ScannerInteractorImpl: ScannerInteractor {
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         cameraCaptureOutputHandlers.forEach {
+            $0.orientation = CGImagePropertyOrientation(rawValue: UInt32(parameters.orientation.rawValue))
             CaptureSessionPreviewService.startStreamingPreview(of: parameters.captureSession, to: $0)
         }
     }

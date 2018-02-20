@@ -97,22 +97,34 @@ final class ExamplePresenter {
     }
     
     func showScanner() {
-        let data = ScannerData(
-            initialActiveCameraType: .back
-        )
         
-        self.router.showScanner(
-            data: data,
-            configure: { module in
-                weak var module = module
-                module?.onCancel = {
-                    module?.dismissModule()
-                }
-                module?.onFinish = {
-                    module?.dismissModule()
-                }
+        if #available(iOS 11.0, *) {
+            let recognitionHandler = ObjectsRecognitionStreamHandler()
+            
+            let data = ScannerData(
+                initialActiveCameraType: .back,
+                cameraCaptureOutputHandlers: [recognitionHandler]
+            )
+            
+            self.router.showScanner(
+                data: data,
+                configure: { module in
+                    weak var module = module
+                    module?.onCancel = {
+                        module?.dismissModule()
+                    }
+                    module?.onFinish = {
+                        module?.dismissModule()
+                    }
+                    
+                    recognitionHandler.onRecognize = { label in
+                        module?.showInfoMessage(label, timeout: 3)
+                    }
+            }
+            )
+        } else {
+            
         }
-        )
     }
     
     private func showMaskCropperIn(rootModule: MediaPickerModule?, photo: MediaPickerItem) {
