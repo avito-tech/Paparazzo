@@ -1,9 +1,9 @@
 import Foundation
 
-public final class Sampler {
+final class Sampler {
     // MARK: - Public properties
     
-    public let delay: TimeInterval
+    let delay: TimeInterval
     
     // MARK: - Private properties
     
@@ -13,14 +13,14 @@ public final class Sampler {
     
     // MARK: - Init
     
-    public init(delay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
+    init(delay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
         self.delay = delay
         self.queue = queue
     }
     
     // MARK: - Public
     
-    public func sample(_ closure: @escaping () -> ()) {
+    func sample(_ closure: @escaping () -> ()) {
         if isDelaying {
             self.closure = closure
         } else {
