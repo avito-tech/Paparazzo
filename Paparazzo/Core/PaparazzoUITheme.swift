@@ -4,7 +4,8 @@ public struct PaparazzoUITheme:
     MediaPickerRootModuleUITheme,
     PhotoLibraryUITheme,
     ImageCroppingUITheme,
-    MaskCropperUITheme
+    MaskCropperUITheme,
+    ScannerRootModuleUITheme
 {
     public init() {}
 

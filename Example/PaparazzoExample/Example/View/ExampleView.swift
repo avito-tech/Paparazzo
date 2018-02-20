@@ -5,6 +5,7 @@ final class ExampleView: UIView {
     private let mediaPickerButton = UIButton()
     private let maskCropperButton = UIButton()
     private let photoLibraryButton = UIButton()
+    private let scannerButton = UIButton()
     
     // MARK: - Init
     
@@ -32,9 +33,17 @@ final class ExampleView: UIView {
             for: .touchUpInside
         )
         
+        scannerButton.setTitle("Show Scanner", for: .normal)
+        scannerButton.addTarget(
+            self,
+            action: #selector(onShowScannerButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
         addSubview(mediaPickerButton)
         addSubview(maskCropperButton)
         addSubview(photoLibraryButton)
+        addSubview(scannerButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,9 +64,14 @@ final class ExampleView: UIView {
         photoLibraryButton.setTitle(title, for: .normal)
     }
     
+    func setScannerButtonTitle(_ title: String) {
+        scannerButton.setTitle(title, for: .normal)
+    }
+    
     var onShowMediaPickerButtonTap: (() -> ())?
     var onShowMaskCropperButtonTap: (() -> ())?
     var onShowPhotoLibraryButtonTap: (() -> ())?
+    var onShowScannerButtonTap: (() -> ())?
     
     // MARK: - UIView
     
@@ -65,13 +79,16 @@ final class ExampleView: UIView {
         super.layoutSubviews()
         
         mediaPickerButton.sizeToFit()
-        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 50)
+        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 75)
         
         maskCropperButton.sizeToFit()
-        maskCropperButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
+        maskCropperButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 25)
         
         photoLibraryButton.sizeToFit()
-        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 50)
+        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 25)
+        
+        scannerButton.sizeToFit()
+        scannerButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 75)
     }
     
     // MARK: - Private
@@ -86,5 +103,9 @@ final class ExampleView: UIView {
     
     @objc private func onShowPhotoLibraryButtonTap(_: UIButton) {
         onShowPhotoLibraryButtonTap?()
+    }
+    
+    @objc private func onShowScannerButtonTap(_: UIButton) {
+        onShowScannerButtonTap?()
     }
 }

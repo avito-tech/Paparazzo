@@ -34,6 +34,7 @@ final class ExamplePresenter {
         view?.setMediaPickerButtonTitle("Media Picker")
         view?.setMaskCropperButtonTitle("Mask Cropper")
         view?.setPhotoLibraryButtonTitle("Photo Library")
+        view?.setScannerButtonTitle("Scanner")
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
             self?.interactor.remoteItems { remoteItems in
@@ -62,6 +63,10 @@ final class ExamplePresenter {
         view?.onShowMaskCropperButtonTap = { [weak self] in
             self?.showMaskCropperCamera()
         }
+        
+        view?.onShowScannerButtonTap = { [weak self] in
+            self?.showScanner()
+        }
     }
     
     func showMaskCropperCamera() {
@@ -88,6 +93,25 @@ final class ExamplePresenter {
                     module?.dismissModule()
                 }
             }
+        )
+    }
+    
+    func showScanner() {
+        let data = ScannerData(
+            initialActiveCameraType: .back
+        )
+        
+        self.router.showScanner(
+            data: data,
+            configure: { module in
+                weak var module = module
+                module?.onCancel = {
+                    module?.dismissModule()
+                }
+                module?.onFinish = {
+                    module?.dismissModule()
+                }
+        }
         )
     }
     
