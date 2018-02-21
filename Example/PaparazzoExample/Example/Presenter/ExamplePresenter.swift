@@ -96,10 +96,14 @@ final class ExamplePresenter {
         )
     }
     
+    private var recognitionHandler: ScannerOutputHandler?
     func showScanner() {
         
         if #available(iOS 11.0, *) {
-            let recognitionHandler = ObjectsRecognitionStreamHandler()
+            let recognitionHandler = (self.recognitionHandler as? ObjectsRecognitionStreamHandler) ?? ObjectsRecognitionStreamHandler()
+            if self.recognitionHandler == nil {
+                self.recognitionHandler = recognitionHandler
+            }
             
             let data = ScannerData(
                 initialActiveCameraType: .back,

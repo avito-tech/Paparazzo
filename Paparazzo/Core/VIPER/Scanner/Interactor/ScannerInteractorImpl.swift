@@ -8,7 +8,7 @@ final class ScannerInteractorImpl: ScannerInteractor {
     
     // MARK: - Properties
     
-    private var cameraCaptureOutputHandlers = [ScannerOutputHandler]()
+    private var cameraCaptureOutputHandlers = [WeakWrapper<ScannerOutputHandler>]()
     
     // MARK: - Init
     
@@ -17,7 +17,7 @@ final class ScannerInteractorImpl: ScannerInteractor {
         cameraCaptureOutputHandlers: [ScannerOutputHandler])
     {
         self.deviceOrientationService = deviceOrientationService
-        self.cameraCaptureOutputHandlers = cameraCaptureOutputHandlers
+        self.cameraCaptureOutputHandlers = cameraCaptureOutputHandlers.map { WeakWrapper(value: $0) }
     }
     
     // MARK: - ScannerInteractor
@@ -29,8 +29,10 @@ final class ScannerInteractorImpl: ScannerInteractor {
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
         cameraCaptureOutputHandlers.forEach {
-            $0.orientation = CGImagePropertyOrientation(rawValue: UInt32(parameters.orientation.rawValue))
-            CaptureSessionPreviewService.startStreamingPreview(of: parameters.captureSession, to: $0)
+            if let handler = $0.value {
+                handler.orientation = UInt32(parameters.orientation.rawValue)
+                CaptureSessionPreviewService.startStreamingPreview(of: parameters.captureSession, to: handler)
+            }
         }
     }
 }

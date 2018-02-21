@@ -10,7 +10,7 @@ final class ObjectsRecognitionStreamHandler: ScannerOutputHandler {
     
     var onRecognize: ((_ label: String) -> ())?
     
-    var orientation: CGImagePropertyOrientation?
+    var orientation: UInt32 = 0
     
     var imageBuffer: CVImageBuffer? {
         didSet {
@@ -22,8 +22,12 @@ final class ObjectsRecognitionStreamHandler: ScannerOutputHandler {
                 let request = VNCoreMLRequest(model: model, completionHandler: handleVisionRequestUpdate)
                 
                 do {
-                    if let imageBuffer = self?.imageBuffer {
-                        try self?.visionSequenceHandler.perform([request], on: imageBuffer, orientation: self?.orientation ?? .left)
+                    if let imageBuffer = self?.imageBuffer, let strongSelf = self {
+                        try strongSelf.visionSequenceHandler.perform(
+                            [request],
+                            on: imageBuffer,
+                            orientation: CGImagePropertyOrientation(rawValue: strongSelf.orientation) ?? .left
+                        )
                     }
                 } catch {
                     print("Throws: \(error)")

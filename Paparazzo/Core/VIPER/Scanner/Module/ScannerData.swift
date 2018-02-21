@@ -13,6 +13,6 @@ public struct ScannerData {
     }
 }
 
-public protocol ScannerOutputHandler: CameraCaptureOutputHandler {
-    var orientation: CGImagePropertyOrientation? { get set }
+@objc public protocol ScannerOutputHandler: CameraCaptureOutputHandler {
+    var orientation: UInt32 { get set }
 }
