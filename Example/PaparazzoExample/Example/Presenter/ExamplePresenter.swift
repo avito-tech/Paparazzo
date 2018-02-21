@@ -125,9 +125,7 @@ final class ExamplePresenter {
                         module?.showInfoMessage(label, timeout: 3)
                     }
             }
-            )
-        } else {
-            
+            )   
         }
     }
     
