@@ -1,18 +1,25 @@
 import AVFoundation
+import ImageSource
+
+/// Delete `@objc` when the problem in Swift will be resolved
+/// https://bugs.swift.org/browse/SR-55
+@objc public protocol CameraCaptureOutputHandler: class {
+    var imageBuffer: CVImageBuffer? { get set }
+}
 
 final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     // MARK: - CaptureSessionPreviewService
     
-    static func startStreamingPreview(of captureSession: AVCaptureSession, to view: CameraOutputGLKView)
+    static func startStreamingPreview(of captureSession: AVCaptureSession, to handler: CameraCaptureOutputHandler)
         -> DispatchQueue
     {
-        return service(for: captureSession).startStreamingPreview(to: view)
+        return service(for: captureSession).startStreamingPreview(to: handler)
     }
     
-    func startStreamingPreview(to view: CameraOutputGLKView) -> DispatchQueue {
+    func startStreamingPreview(to handler: CameraCaptureOutputHandler) -> DispatchQueue {
         queue.async { [weak self] in
-            self?.views.append(WeakWrapper(value: view))
+            self?.handlers.append(WeakWrapper(value: handler))
         }
         return queue
     }
@@ -25,8 +32,8 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         from connection: AVCaptureConnection)
     {
         if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer), !isInBackground {
-            views.forEach { viewWrapper in
-                viewWrapper.value?.imageBuffer = imageBuffer
+            handlers.forEach { handlerWrapper in
+                handlerWrapper.value?.imageBuffer = imageBuffer
             }
         }
     }
@@ -42,7 +49,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     private static var sharedServices = NSMapTable<AVCaptureSession, CaptureSessionPreviewService>.weakToStrongObjects()
     
     private let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CaptureSessionPreviewService.queue")
-    private var views = [WeakWrapper<CameraOutputGLKView>]()
+    private var handlers = [WeakWrapper<CameraCaptureOutputHandler>]()
     private var isInBackground = false
     
     private init(captureSession: AVCaptureSession) {

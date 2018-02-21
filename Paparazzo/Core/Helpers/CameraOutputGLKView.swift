@@ -2,7 +2,7 @@ import AVFoundation
 import GLKit
 import ImageSource
 
-final class CameraOutputGLKView: GLKView {
+final class CameraOutputGLKView: GLKView, CameraCaptureOutputHandler {
     
     // MARK: - State
     private var hasWindow = false

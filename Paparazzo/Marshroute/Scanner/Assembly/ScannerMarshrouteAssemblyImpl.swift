@@ -20,7 +20,8 @@ public final class ScannerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Scanner
         -> UIViewController {
         
             let interactor = ScannerInteractorImpl(
-                deviceOrientationService: serviceFactory.deviceOrientationService()
+                deviceOrientationService: serviceFactory.deviceOrientationService(),
+                cameraCaptureOutputHandlers: data.cameraCaptureOutputHandlers
             )
             
             let viewController = ScannerViewController()

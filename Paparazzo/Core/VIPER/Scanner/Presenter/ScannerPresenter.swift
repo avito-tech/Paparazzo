@@ -54,6 +54,10 @@ final class ScannerPresenter: ScannerModule {
     func finish() {
         onFinish?()
     }
+    
+    func showInfoMessage(_ message: String, timeout: TimeInterval) {
+        view?.showInfoMessage(message, timeout: timeout)
+    }
 
     // MARK: - Private
     
@@ -76,6 +80,12 @@ final class ScannerPresenter: ScannerModule {
         
         view?.onCloseButtonTap = { [weak self] in
             self?.onCancel?()
+        }
+        
+        cameraModuleInput.getOutputParameters { [weak self] parameters in
+            if let parameters = parameters {
+                self?.interactor.setCameraOutputParameters(parameters)
+            }
         }
     }
     
