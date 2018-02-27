@@ -534,6 +534,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         closeButton.setAccessibilityId(.closeButton)
         continueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)
+        cameraHint.setAccessibilityId(.cameraHint)
+        
         accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
     }
     
