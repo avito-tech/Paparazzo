@@ -106,6 +106,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         super.viewWillTransition(to: size, with: coordinator)
     }
     
+    func hideCameraHint() {
+        mediaPickerView.hideCameraHint()
+    }
+    
     override open var shouldAutorotate: Bool {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return true
@@ -330,6 +334,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         layoutSubviewsPromise.onFulfill { [weak self] _ in
             self?.mediaPickerView.scrollToCameraThumbnail(animated: animated)
         }
+    }
+    
+    func setCameraHint(text: String) {
+        mediaPickerView.setCameraHint(text)
     }
     
     func setCameraControlsEnabled(_ enabled: Bool) {

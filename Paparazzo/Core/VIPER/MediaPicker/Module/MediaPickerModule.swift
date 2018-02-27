@@ -8,6 +8,19 @@ public enum MediaPickerContinueButtonStyle {
     case spinner
 }
 
+public struct CameraHintData {
+    public let title: String
+    public let delay: TimeInterval?
+    
+    public init(
+        title: String,
+        delay: TimeInterval? = nil)
+    {
+        self.title = title
+        self.delay = delay
+    }
+}
+
 public protocol MediaPickerModule: class {
 
     func focusOnModule()
@@ -26,6 +39,7 @@ public protocol MediaPickerModule: class {
     
     func setCameraTitle(_: String)
     func setCameraSubtitle(_: String)
+    func setCameraHint(data: CameraHintData)
     
     func setCropMode(_: MediaPickerCropMode)
     func setThumbnailsAlwaysVisible(_: Bool)

@@ -13,6 +13,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let closeButton = UIButton()
     private let continueButton = ButtonWithActivity()
     private let photoTitleLabel = UILabel()
+    private let cameraHintLabel = UILabel()
     private let flashView = UIView()
     
     private let thumbnailRibbonView: ThumbnailsView
@@ -86,9 +87,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(continueButton)
+        addSubview(cameraHintLabel)
         
         setMode(.camera)
-        
+        setUpCameraHintLabel()
         setUpAccessibilityIdentifiers()
     }
     
@@ -461,6 +463,28 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         infoMessageDisplayer.display(viewData: viewData, in: photoPreviewView)
     }
     
+    func setCameraHint(_ text: String) {
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 6
+        style.alignment = NSTextAlignment.center
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(
+            NSAttributedStringKey.paragraphStyle,
+            value:style,
+            range:NSMakeRange(0, attributedString.length)
+        )
+        
+        cameraHintLabel.attributedText = attributedString;
+        cameraHintLabel.isHidden = false
+    }
+    
+    func hideCameraHint() {
+        UIView.animate(withDuration: 0.3) {
+            self.cameraHintLabel.alpha = 0
+        }
+    }
+    
     // MARK: - Private
     
     private func setUpThumbnailRibbonView() {
@@ -510,6 +534,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         closeButton.setAccessibilityId(.closeButton)
         continueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)
+        cameraHintLabel.setAccessibilityId(.cameraHint)
+        
         accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
     }
     
@@ -548,6 +574,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
+    }
+    
+    private func setUpCameraHintLabel() {
+        cameraHintLabel.backgroundColor = .clear
+        cameraHintLabel.numberOfLines = 0
+        cameraHintLabel.textAlignment = .center
+        cameraHintLabel.textColor = .white
+        cameraHintLabel.font = UIFont.systemFont(ofSize: 17)
+        cameraHintLabel.isHidden = true
     }
     
     private func layOutForDevicesExpectForIPhoneX() {
@@ -607,6 +642,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
+        
+        cameraHintLabel.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: photoPreviewView.bottom,
+            height: CGFloat(80)
+        )
         
         flashView.frame = cameraFrame
     }

@@ -28,10 +28,18 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         addSubview(accessDeniedView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
+        
+        setUpAccessibilityIdentifiers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        titleLabel.setAccessibilityId(.cameraTitle)
+        subtitleLabel.setAccessibilityId(.cameraSubtitle)
+        accessibilityIdentifier = AccessibilityId.cameraView.rawValue
     }
     
     // MARK: - UIView

@@ -64,6 +64,8 @@ protocol MediaPickerViewInput: class {
     func setShowPreview(_ showPreview: Bool)
     
     func showInfoMessage(_ message: String, timeout: TimeInterval)
+    func hideCameraHint()
+    func setCameraHint(text: String)
     
     // MARK: - Actions in photo ribbon
     var onItemSelect: ((MediaPickerItem) -> ())? { get set }
