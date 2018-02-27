@@ -176,10 +176,7 @@ final class ExamplePresenter {
     func configureMediaPicker(module: MediaPickerModule) {
 
         module.setCameraTitle("Please take a photo")
-        let textHint = """
-            Сфотографируйте предмет,
-            Чтобы найти похожий на Avito
-            """
+        let textHint = "Сфотографируйте предмет,\nчтобы найти похожий на Avito"
         module.setCameraHint(data: CameraHintData(title: textHint, delay: 3))
         
         module.onItemsAdd = { _, _ in debugPrint("mediaPickerDidAddItems") }

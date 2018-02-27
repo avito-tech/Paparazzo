@@ -464,7 +464,18 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     func setCameraHint(_ text: String) {
-        cameraHint.text = text
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 6
+        style.alignment = NSTextAlignment.center
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(
+            NSAttributedStringKey.paragraphStyle,
+            value:style,
+            range:NSMakeRange(0, attributedString.length)
+        )
+        
+        cameraHint.attributedText = attributedString;
         cameraHint.isHidden = false
     }
     
@@ -636,7 +647,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             left: bounds.left,
             right: bounds.right,
             bottom: photoPreviewView.bottom,
-            height: controlsHeight
+            height: CGFloat(80)
         )
         
         flashView.frame = cameraFrame
