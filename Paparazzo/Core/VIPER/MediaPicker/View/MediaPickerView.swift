@@ -601,8 +601,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             controlsHeight = controlsExtendedHeight
         }
         
-        
-        
         photoPreviewView.frame = cameraFrame
         
         cameraControlsView.layout(

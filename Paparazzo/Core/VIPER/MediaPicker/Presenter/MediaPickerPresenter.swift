@@ -8,11 +8,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - Init
     
-    init(
-        interactor: MediaPickerInteractor,
-        router: MediaPickerRouter,
-        cameraModuleInput: CameraModuleInput)
-    {
+    init(interactor: MediaPickerInteractor, router: MediaPickerRouter, cameraModuleInput: CameraModuleInput) {
         self.interactor = interactor
         self.router = router
         self.cameraModuleInput = cameraModuleInput
