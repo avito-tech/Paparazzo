@@ -87,7 +87,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(continueButton)
-        addSubview(hint)
+        addSubview(cameraHint)
         
         setMode(.camera)
         setUpCameraHintLabel()

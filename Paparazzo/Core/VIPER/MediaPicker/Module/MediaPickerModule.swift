@@ -9,8 +9,16 @@ public enum MediaPickerContinueButtonStyle {
 }
 
 public struct CameraHintData {
-    let title: String
-    let delay: Int?
+    public let title: String
+    public let delay: TimeInterval?
+    
+    public init(
+        title: String,
+        delay: TimeInterval? = nil)
+    {
+        self.title = title
+        self.delay = delay
+    }
 }
 
 public protocol MediaPickerModule: class {
