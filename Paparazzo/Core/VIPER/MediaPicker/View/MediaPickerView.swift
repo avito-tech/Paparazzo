@@ -13,7 +13,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let closeButton = UIButton()
     private let continueButton = ButtonWithActivity()
     private let photoTitleLabel = UILabel()
-    private let cameraHint = UILabel()
+    private let cameraHintLabel = UILabel()
     private let flashView = UIView()
     
     private let thumbnailRibbonView: ThumbnailsView
@@ -87,7 +87,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(continueButton)
-        addSubview(cameraHint)
+        addSubview(cameraHintLabel)
         
         setMode(.camera)
         setUpCameraHintLabel()
@@ -475,13 +475,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             range:NSMakeRange(0, attributedString.length)
         )
         
-        cameraHint.attributedText = attributedString;
-        cameraHint.isHidden = false
+        cameraHintLabel.attributedText = attributedString;
+        cameraHintLabel.isHidden = false
     }
     
     func hideCameraHint() {
         UIView.animate(withDuration: 0.3) {
-            self.cameraHint.alpha = 0
+            self.cameraHintLabel.alpha = 0
         }
     }
     
@@ -534,7 +534,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         closeButton.setAccessibilityId(.closeButton)
         continueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)
-        cameraHint.setAccessibilityId(.cameraHint)
+        cameraHintLabel.setAccessibilityId(.cameraHint)
         
         accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
     }
@@ -577,12 +577,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     private func setUpCameraHintLabel() {
-        cameraHint.backgroundColor = .clear
-        cameraHint.numberOfLines = 0
-        cameraHint.textAlignment = .center
-        cameraHint.textColor = .white
-        cameraHint.font = UIFont.systemFont(ofSize: 17)
-        cameraHint.isHidden = true
+        cameraHintLabel.backgroundColor = .clear
+        cameraHintLabel.numberOfLines = 0
+        cameraHintLabel.textAlignment = .center
+        cameraHintLabel.textColor = .white
+        cameraHintLabel.font = UIFont.systemFont(ofSize: 17)
+        cameraHintLabel.isHidden = true
     }
     
     private func layOutForDevicesExpectForIPhoneX() {
@@ -643,7 +643,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
         
-        cameraHint.layout(
+        cameraHintLabel.layout(
             left: bounds.left,
             right: bounds.right,
             bottom: photoPreviewView.bottom,

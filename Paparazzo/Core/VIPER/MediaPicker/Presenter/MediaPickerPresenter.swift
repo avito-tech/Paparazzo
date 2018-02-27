@@ -62,7 +62,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     public func setCameraHint(data: CameraHintData) {
         view?.setCameraHint(text: data.title)
-        delayCameraHint = data.delay
+        cameraHintDelay = data.delay
     }
     
     public func setAccessDeniedTitle(_ title: String) {
@@ -129,7 +129,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     // MARK: - Private
     
     private var continueButtonTitle: String?
-    private var delayCameraHint: TimeInterval?
+    private var cameraHintDelay: TimeInterval?
     private var thumbnailsAlwaysVisible: Bool = false {
         didSet {
             updateThumbnailsVisibility()
@@ -321,7 +321,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         view?.onViewDidAppear = { [weak self] animated in
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
-            if let delay = self?.delayCameraHint {
+            if let delay = self?.cameraHintDelay {
                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                     self?.view?.hideCameraHint()
                 }
