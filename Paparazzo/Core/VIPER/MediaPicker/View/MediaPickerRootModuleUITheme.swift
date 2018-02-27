@@ -13,6 +13,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraTitleFont: UIFont { get }
     var cameraSubtitleColor: UIColor { get }
     var cameraSubtitleFont: UIFont { get }
+    var cameraHintFont: UIFont { get }
     
     var removePhotoIcon: UIImage? { get }
     var autocorrectPhotoIconInactive: UIImage? { get }

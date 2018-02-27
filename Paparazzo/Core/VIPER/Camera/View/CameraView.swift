@@ -10,6 +10,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     private var cameraOutputView: CameraOutputView?
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
+    private let hintLabel = UILabel()
     private var outputParameters: CameraOutputParameters?
     private var focusIndicator: FocusIndicator?
     private var theme: ThemeType?
@@ -28,7 +29,9 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         addSubview(accessDeniedView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
+        addSubview(hintLabel)
         
+        setUpCameraHintLabel()
         setUpAccessibilityIdentifiers()
     }
     
@@ -39,6 +42,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     private func setUpAccessibilityIdentifiers() {
         titleLabel.setAccessibilityId(.cameraTitle)
         subtitleLabel.setAccessibilityId(.cameraSubtitle)
+        hintLabel.setAccessibilityId(.cameraHint)
         accessibilityIdentifier = AccessibilityId.cameraView.rawValue
     }
     
@@ -60,6 +64,13 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         subtitleLabel.sizeToFit()
         subtitleLabel.centerX = bounds.centerX
         subtitleLabel.top = titleLabel.bottom
+        
+        hintLabel.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bottom,
+            height: CGFloat(80)
+        )
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -141,9 +152,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         }
         
         addSubview(newCameraOutputView)
+        
         bringSubview(toFront: titleLabel)
         bringSubview(toFront: subtitleLabel)
-        
+        bringSubview(toFront: hintLabel)
         self.cameraOutputView = newCameraOutputView
         self.outputParameters = parameters
     }
@@ -166,6 +178,29 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         }
     }
     
+    func setCameraHint(text: String) {
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 6
+        style.alignment = NSTextAlignment.center
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(
+            NSAttributedStringKey.paragraphStyle,
+            value:style,
+            range:NSRange(location: 0, length: attributedString.length)
+        )
+        
+        hintLabel.attributedText = attributedString
+        hintLabel.isHidden = false
+    }
+    
+    func setCameraHintVisible(_ visible: Bool) {
+        let alpha = visible ? CGFloat(1) : CGFloat(0)
+        UIView.animate(withDuration: 0.3) {
+            self.hintLabel.alpha = alpha
+        }
+    }
+    
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
@@ -176,6 +211,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         titleLabel.font = theme.cameraTitleFont
         subtitleLabel.textColor = theme.cameraSubtitleColor
         subtitleLabel.font = theme.cameraSubtitleFont
+        hintLabel.font = theme.cameraHintFont
+        hintLabel.textColor = theme.cameraTitleColor
     }
     
     // MARK: - Dispose bag
@@ -184,5 +221,12 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
     func addDisposable(_ object: AnyObject) {
         disposables.append(object)
+    }
+    
+    private func setUpCameraHintLabel() {
+        hintLabel.backgroundColor = .clear
+        hintLabel.numberOfLines = 0
+        hintLabel.textAlignment = .center
+        hintLabel.isHidden = true
     }
 }

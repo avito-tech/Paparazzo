@@ -81,6 +81,13 @@ final class CameraPresenter: CameraModuleInput {
         view?.setSubtitle(subtitle)
     }
     
+    func setCameraHintVisible(_ visible: Bool) {
+        view?.setCameraHintVisible(visible)
+    }
+    func setCameraHint(text: String) {
+        view?.setCameraHint(text: text)
+    }
+    
     // MARK: - Private
     
     private func setUpView() {

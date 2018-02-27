@@ -24,4 +24,6 @@ protocol CameraModuleInput: class {
     
     func setTitle(_: String)
     func setSubtitle(_: String)
+    func setCameraHintVisible(_: Bool)
+    func setCameraHint(text: String)
 }

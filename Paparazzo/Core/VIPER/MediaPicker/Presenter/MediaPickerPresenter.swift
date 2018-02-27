@@ -61,7 +61,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     public func setCameraHint(data: CameraHintData) {
-        view?.setCameraHint(text: data.title)
+        cameraModuleInput.setCameraHint(text: data.title)
         cameraHintDelay = data.delay
     }
     
@@ -323,7 +323,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
             if let delay = self?.cameraHintDelay {
                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                    self?.view?.hideCameraHint()
+                    self?.cameraModuleInput.setCameraHintVisible(false)
                 }
             }
         }
