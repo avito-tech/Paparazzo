@@ -8,7 +8,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - Init
     
-    init(interactor: MediaPickerInteractor, router: MediaPickerRouter, cameraModuleInput: CameraModuleInput) {
+    init(
+        interactor: MediaPickerInteractor,
+        router: MediaPickerRouter,
+        cameraModuleInput: CameraModuleInput)
+    {
         self.interactor = interactor
         self.router = router
         self.cameraModuleInput = cameraModuleInput
@@ -58,6 +62,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     public func setCameraSubtitle(_ subtitle: String) {
         cameraModuleInput.setSubtitle(subtitle)
+    }
+    
+    public func setCameraHint(data: CameraHintData) {
+        view?.setCameraHint(text: hintData.title)
+        delayCameraHint = hintData.delay
     }
     
     public func setAccessDeniedTitle(_ title: String) {
@@ -124,6 +133,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     // MARK: - Private
     
     private var continueButtonTitle: String?
+    private let delayCameraHint: Int?
     private var thumbnailsAlwaysVisible: Bool = false {
         didSet {
             updateThumbnailsVisibility()
@@ -315,6 +325,11 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         view?.onViewDidAppear = { [weak self] animated in
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
+            if let delay = self?.delayCameraHint {
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                    self?.view?.hideCameraHint()
+                }
+            }
         }
         
         view?.onViewDidDisappear = { [weak self] animated in

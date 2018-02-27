@@ -13,6 +13,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let closeButton = UIButton()
     private let continueButton = ButtonWithActivity()
     private let photoTitleLabel = UILabel()
+    private let cameraHint = UILabel()
     private let flashView = UIView()
     
     private let thumbnailRibbonView: ThumbnailsView
@@ -86,9 +87,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(continueButton)
+        addSubview(hint)
         
         setMode(.camera)
-        
+        setUpCameraHintLabel()
         setUpAccessibilityIdentifiers()
     }
     
@@ -461,6 +463,17 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         infoMessageDisplayer.display(viewData: viewData, in: photoPreviewView)
     }
     
+    func setCameraHint(_ text: String) {
+        cameraHint.text = text
+        cameraHint.isHidden = false
+    }
+    
+    func hideCameraHint() {
+        UIView.animate(withDuration: 0.3) {
+            self.cameraHint.alpha = 0
+        }
+    }
+    
     // MARK: - Private
     
     private func setUpThumbnailRibbonView() {
@@ -550,6 +563,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         layoutPhotoTitleLabel()
     }
     
+    private func setUpCameraHintLabel() {
+        cameraHint.backgroundColor = .clear
+        cameraHint.numberOfLines = 0
+        cameraHint.textAlignment = .center
+        cameraHint.textColor = .white
+        cameraHint.font = UIFont.systemFont(ofSize: 17)
+        cameraHint.isHidden = true
+    }
+    
     private func layOutForDevicesExpectForIPhoneX() {
         
         let cameraFrame = CGRect(
@@ -567,6 +589,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         } else {
             controlsHeight = controlsExtendedHeight
         }
+        
+        
         
         photoPreviewView.frame = cameraFrame
         
@@ -607,6 +631,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         layoutCloseAndContinueButtons()
         layoutPhotoTitleLabel()
+        
+        cameraHint.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: photoPreviewView.bottom,
+            height: controlsHeight
+        )
         
         flashView.frame = cameraFrame
     }
