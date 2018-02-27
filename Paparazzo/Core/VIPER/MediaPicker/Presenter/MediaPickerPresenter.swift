@@ -323,7 +323,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.cameraModuleInput.mainModuleDidAppear(animated: animated)
             if let delay = self?.cameraHintDelay {
                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                    self?.cameraModuleInput.hideCameraHint()
+                    self?.cameraModuleInput.setCameraHintVisible(false)
                 }
             }
         }

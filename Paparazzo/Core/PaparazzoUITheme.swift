@@ -37,6 +37,7 @@ public struct PaparazzoUITheme:
     public var cameraTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var cameraSubtitleColor = UIColor(white: 1, alpha: 1)
     public var cameraSubtitleFont = UIFont.systemFont(ofSize: 14)
+    public var cameraHintFont = UIFont.systemFont(ofSize: 17)
     
     public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)

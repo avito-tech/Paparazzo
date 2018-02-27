@@ -187,16 +187,17 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         attributedString.addAttribute(
             NSAttributedStringKey.paragraphStyle,
             value:style,
-            range:NSMakeRange(0, attributedString.length)
+            range:NSRange(location: 0, length: attributedString.length)
         )
         
-        hintLabel.attributedText = attributedString;
+        hintLabel.attributedText = attributedString
         hintLabel.isHidden = false
     }
     
-    func hideCameraHint() {
+    func setCameraHintVisible(_ visible: Bool) {
+        let alpha = visible ? CGFloat(1) : CGFloat(0)
         UIView.animate(withDuration: 0.3) {
-            self.hintLabel.alpha = 0
+            self.hintLabel.alpha = alpha
         }
     }
     
@@ -210,6 +211,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         titleLabel.font = theme.cameraTitleFont
         subtitleLabel.textColor = theme.cameraSubtitleColor
         subtitleLabel.font = theme.cameraSubtitleFont
+        hintLabel.font = theme.cameraHintFont
+        hintLabel.textColor = theme.cameraTitleColor
     }
     
     // MARK: - Dispose bag
@@ -224,8 +227,6 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         hintLabel.backgroundColor = .clear
         hintLabel.numberOfLines = 0
         hintLabel.textAlignment = .center
-        hintLabel.textColor = .white
-        hintLabel.font = UIFont.systemFont(ofSize: 17)
         hintLabel.isHidden = true
     }
 }

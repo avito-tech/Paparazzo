@@ -7,7 +7,7 @@ protocol CameraViewInput: class {
     func setOutputParameters(_: CameraOutputParameters)
     func setOutputOrientation(_: ExifOrientation)
     
-    func hideCameraHint()
+    func setCameraHintVisible(_:Bool)
     func setCameraHint(text: String)
     
     // MARK: - Focus
