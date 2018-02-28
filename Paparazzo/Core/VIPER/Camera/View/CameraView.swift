@@ -180,14 +180,15 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
     func setCameraHint(text: String) {
         let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
+        style.lineHeightMultiple = 1.05
+        style.minimumLineHeight = 24
         style.alignment = NSTextAlignment.center
         
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(
             NSAttributedStringKey.paragraphStyle,
-            value:style,
-            range:NSRange(location: 0, length: attributedString.length)
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
         )
         
         hintLabel.attributedText = attributedString
