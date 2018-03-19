@@ -23,9 +23,23 @@ public enum AccessibilityId: String {
     // MediaPicker
     case continueButton
     case closeButton
+    case mediaPicker
+    case cameraHint
 
     // PhotoControls
     case removeButton
     case autocorrectButton
     case cropButton
+    
+    // LibraryControls
+    case confirmLibraryButton
+    case discardLibraryButton
+    
+    // PhotoLibrary
+    case photoLibrary
+    
+    //CameraView
+    case cameraView
+    case cameraTitle
+    case cameraSubtitle
 }

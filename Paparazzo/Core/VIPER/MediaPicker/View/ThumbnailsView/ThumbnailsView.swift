@@ -133,10 +133,14 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         cameraIconTransform = transform
     }
     
+    func setHapticFeedbackEnabled(_ enabled: Bool) {
+        layout.hapticFeedbackEnabled = enabled
+    }
+    
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
         collectionView.performBatchUpdates(
             animated: animated,
-            { [weak self] in
+            updates: { [weak self] in
                 if let indexPaths = self?.dataSource.addItems(items) {
                     self?.collectionView.insertItems(at: indexPaths)
                     

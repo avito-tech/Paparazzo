@@ -20,14 +20,15 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-        hideNavigationBarShadow()
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
+        if !UIDevice.current.isIPhoneX {
+            UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
-        return true
+        return !UIDevice.current.isIPhoneX
     }
     
     // MARK: - ThemeConfigurable
@@ -40,43 +41,57 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     // MARK: - PhotoLibraryViewInput
     
     var onItemSelect: ((PhotoLibraryItem) -> ())?
-    var onPickButtonTap: (() -> ())?
-    var onCancelButtonTap: (() -> ())?
     var onViewDidLoad: (() -> ())?
+    
+    var onTitleTap: (() -> ())? {
+        get { return photoLibraryView.onTitleTap }
+        set { photoLibraryView.onTitleTap = newValue }
+    }
+    
+    var onPickButtonTap: (() -> ())? {
+        get { return photoLibraryView.onConfirmButtonTap }
+        set { photoLibraryView.onConfirmButtonTap = newValue }
+    }
+    
+    var onCancelButtonTap: (() -> ())? {
+        get { return photoLibraryView.onDiscardButtonTap }
+        set { photoLibraryView.onDiscardButtonTap = newValue }
+    }
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return photoLibraryView.onAccessDeniedButtonTap }
         set { photoLibraryView.onAccessDeniedButtonTap = newValue }
     }
     
+    var onDimViewTap: (() -> ())? {
+        get { return photoLibraryView.onDimViewTap }
+        set { photoLibraryView.onDimViewTap = newValue }
+    }
+    
     @nonobjc func setTitle(_ title: String) {
-        self.title = title
+        photoLibraryView.setTitle(title)
     }
     
-    func setCancelButtonTitle(_ title: String) {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: title,
-            style: .plain,
-            target: self,
-            action: #selector(onCancelButtonTap(_:))
-        )
+    func setTitleVisible(_ visible: Bool) {
+        photoLibraryView.setTitleVisible(visible)
     }
     
-    func setDoneButtonTitle(_ title: String) {
-        pickBarButtonItem = UIBarButtonItem(
-            title: title,
-            style: .done,
-            target: self,
-            action: #selector(onPickButtonTap(_:))
-        )
-        
-        if let font = theme?.photoLibraryDoneButtonFont {
-            pickBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: font], for: .normal)
+    func setPlaceholderState(_ state: PhotoLibraryPlaceholderState) {
+        switch state {
+        case .hidden:
+            photoLibraryView.setPlaceholderVisible(false)
+        case .visible(let title):
+            photoLibraryView.setPlaceholderTitle(title)
+            photoLibraryView.setPlaceholderVisible(true)
         }
     }
     
-    func applyChanges(_ changes: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?) {
-        photoLibraryView.applyChanges(changes, animated: animated, completion: completion)
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
+        photoLibraryView.setItems(items, scrollToBottom: scrollToBottom, completion: completion)
+    }
+    
+    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+        photoLibraryView.applyChanges(changes, completion: completion)
     }
     
     func setCanSelectMoreItems(_ canSelectMoreItems: Bool) {
@@ -89,14 +104,6 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     func deselectAllItems() {
         photoLibraryView.deselectAndAdjustAllCells()
-    }
-    
-    func setPickButtonVisible(_ visible: Bool) {
-        navigationItem.rightBarButtonItem = visible ? pickBarButtonItem : nil
-    }
-    
-    func setPickButtonEnabled(_ enabled: Bool) {
-        navigationItem.rightBarButtonItem?.isEnabled = enabled
     }
     
     func scrollToBottom() {
@@ -119,9 +126,32 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         photoLibraryView.setAccessDeniedButtonTitle(title)
     }
     
+    func setProgressVisible(_ visible: Bool) {
+        photoLibraryView.setProgressVisible(visible)
+    }
+    
+    func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
+        photoLibraryView.setAlbums(albums)
+    }
+    
+    func selectAlbum(withId id: String) {
+        photoLibraryView.selectAlbum(withId: id)
+    }
+    
+    func showAlbumsList() {
+        photoLibraryView.showAlbumsList()
+    }
+    
+    func hideAlbumsList() {
+        photoLibraryView.hideAlbumsList()
+    }
+    
+    func toggleAlbumsList() {
+        photoLibraryView.toggleAlbumsList()
+    }
+    
     // MARK: - Private
     
-    private var pickBarButtonItem: UIBarButtonItem?
     private var theme: PhotoLibraryUITheme?
     
     @objc private func onCancelButtonTap(_ sender: UIBarButtonItem) {
@@ -130,12 +160,5 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
     
     @objc private func onPickButtonTap(_ sender: UIBarButtonItem) {
         onPickButtonTap?()
-    }
-    
-    private func hideNavigationBarShadow() {
-        let navigationBar = navigationController?.navigationBar
-        navigationBar?.setBackgroundImage(UIImage(), for: .default)
-        navigationBar?.backgroundColor = .white
-        navigationBar?.shadowImage = UIImage()
     }
 }

@@ -34,6 +34,7 @@ final class ExamplePresenter {
         view?.setMediaPickerButtonTitle("Media Picker")
         view?.setMaskCropperButtonTitle("Mask Cropper")
         view?.setPhotoLibraryButtonTitle("Photo Library")
+        view?.setScannerButtonTitle("Scanner")
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
             self?.interactor.remoteItems { remoteItems in
@@ -59,8 +60,12 @@ final class ExamplePresenter {
             }
         }
         
-        view?.onMaskCropperButtonTap = { [weak self] in
+        view?.onShowMaskCropperButtonTap = { [weak self] in
             self?.showMaskCropperCamera()
+        }
+        
+        view?.onShowScannerButtonTap = { [weak self] in
+            self?.showScanner()
         }
     }
     
@@ -70,6 +75,7 @@ final class ExamplePresenter {
             selectedItem: nil,
             maxItemsCount: 1,
             cropEnabled: true,
+            hapticFeedbackEnabled: true,
             cropCanvasSize: cropCanvasSize,
             initialActiveCameraType: .front
         )
@@ -88,6 +94,39 @@ final class ExamplePresenter {
                 }
             }
         )
+    }
+    
+    private var recognitionHandler: ScannerOutputHandler?
+    func showScanner() {
+        
+        if #available(iOS 11.0, *) {
+            let recognitionHandler = (self.recognitionHandler as? ObjectsRecognitionStreamHandler) ?? ObjectsRecognitionStreamHandler()
+            if self.recognitionHandler == nil {
+                self.recognitionHandler = recognitionHandler
+            }
+            
+            let data = ScannerData(
+                initialActiveCameraType: .back,
+                cameraCaptureOutputHandlers: [recognitionHandler]
+            )
+            
+            self.router.showScanner(
+                data: data,
+                configure: { module in
+                    weak var module = module
+                    module?.onCancel = {
+                        module?.dismissModule()
+                    }
+                    module?.onFinish = {
+                        module?.dismissModule()
+                    }
+                    
+                    recognitionHandler.onRecognize = { label in
+                        module?.showInfoMessage(label, timeout: 3)
+                    }
+            }
+            )   
+        }
     }
     
     private func showMaskCropperIn(rootModule: MediaPickerModule?, photo: MediaPickerItem) {
@@ -122,6 +161,7 @@ final class ExamplePresenter {
             maxItemsCount: 20,
             cropEnabled: true,
             autocorrectEnabled: true,
+            hapticFeedbackEnabled: true,
             cropCanvasSize: cropCanvasSize
         )
         
@@ -134,12 +174,18 @@ final class ExamplePresenter {
     }
     
     func configureMediaPicker(module: MediaPickerModule) {
+
         module.setCameraTitle("Please take a photo")
+        let textHint = "Сфотографируйте предмет,\nчтобы найти похожий на Avito"
+        module.setCameraHint(data: CameraHintData(title: textHint, delay: 3))
         
-        module.onItemsAdd = { _ in debugPrint("mediaPickerDidAddItems") }
-        module.onItemUpdate = { _ in debugPrint("mediaPickerDidUpdateItem") }
-        module.onItemRemove = { _ in debugPrint("mediaPickerDidRemoveItem") }
-        module.onItemAutocorrect = { _, isAutocorrected, _ in debugPrint("mediaPickerDidAutocorrectItem: \(isAutocorrected)") }
+        module.onItemsAdd = { _, _ in debugPrint("mediaPickerDidAddItems") }
+        module.onItemUpdate = { _, _ in debugPrint("mediaPickerDidUpdateItem") }
+        module.onItemRemove = { _, _ in debugPrint("mediaPickerDidRemoveItem") }
+        
+        module.onItemAutocorrect = { _, isAutocorrected, _ in
+            debugPrint("mediaPickerDidAutocorrectItem: \(isAutocorrected)")
+        }
         
         module.setContinueButtonTitle("Done")
         

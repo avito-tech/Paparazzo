@@ -24,6 +24,7 @@ final class ViewController: UIViewController {
             selectedItem: nil,
             maxItemsCount: 5,
             cropEnabled: true,
+            hapticFeedbackEnabled: true,
             cropCanvasSize: CGSize(width: 1280, height: 960)
         )
         

@@ -24,3 +24,8 @@ target 'PaparazzoExample_Storyboard' do
   pod 'Paparazzo/Core', :path => '../'
   pod 'ImageSource', :path => '../'
 end
+
+target 'PaparazzoTests' do
+    pod 'Paparazzo', :path => '../'
+    pod 'ImageSource', :path => '../'
+end

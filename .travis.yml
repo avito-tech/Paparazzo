@@ -1,9 +1,11 @@
 language: objective-c
-osx_image: xcode8.3
-xcode_sdk: iphonesimulator10.2
+osx_image: xcode9.1
+xcode_sdk: iphonesimulator11.1
 
 before_install:
   - gem install cocoapods # Since Travis is not always on latest version
+  - pod cache clean Paparazzo
+  - pod cache clean ImageSource
   - pod update --project-directory=Example
   - pod install --project-directory=Example
 script:
@@ -11,4 +13,3 @@ script:
   - xcodebuild build -workspace Example/PaparazzoExample.xcworkspace -scheme PaparazzoExample ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | xcpretty
   - xcodebuild build -workspace Example/PaparazzoExample.xcworkspace -scheme PaparazzoExample_NoMarshroute ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | xcpretty
   - xcodebuild build -workspace Example/PaparazzoExample.xcworkspace -scheme PaparazzoExample_Storyboard ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | xcpretty
-  - pod lib lint --allow-warnings

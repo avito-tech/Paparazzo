@@ -5,6 +5,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     var onSwipeToItem: ((MediaPickerItem) -> ())?
     var onSwipeToCamera: (() -> ())?
     var onSwipeToCameraProgressChange: ((CGFloat) -> ())?
+    var hapticFeedbackEnabled = false
     
     private let collectionView: UICollectionView
     private let dataSource = MediaRibbonDataSource()
@@ -92,7 +93,11 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
         guard sourceIndex != destinationIndex else { return }
         
-        collectionView.performBatchUpdates(animated: false, { [weak self] in
+        if #available(iOS 10.0, *), hapticFeedbackEnabled {
+            UISelectionFeedbackGenerator().selectionChanged()
+        }
+        
+        collectionView.performBatchUpdates(animated: false, updates: { [weak self] in
             self?.dataSource.moveItem(
                 from: sourceIndex,
                 to: destinationIndex
@@ -171,7 +176,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         
         let offset = scrollView.contentOffset.x
         let pageWidth = scrollView.width
-        let numberOfPages = ceil(scrollView.contentSize.width / pageWidth)
+        let numberOfPages = CGFloat(dataSource.numberOfItems)
         
         let penultimatePageOffsetX = pageWidth * (numberOfPages - 2)
         

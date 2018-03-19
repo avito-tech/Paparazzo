@@ -1,29 +1,39 @@
 import AVFoundation
+import ImageSource
+
+/// Delete `@objc` when the problem in Swift will be resolved
+/// https://bugs.swift.org/browse/SR-55
+@objc public protocol CameraCaptureOutputHandler: class {
+    var imageBuffer: CVImageBuffer? { get set }
+}
 
 final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     // MARK: - CaptureSessionPreviewService
     
-    static func startStreamingPreview(of captureSession: AVCaptureSession, to view: CameraOutputGLKView) {
-        service(for: captureSession).startStreamingPreview(to: view)
+    static func startStreamingPreview(of captureSession: AVCaptureSession, to handler: CameraCaptureOutputHandler)
+        -> DispatchQueue
+    {
+        return service(for: captureSession).startStreamingPreview(to: handler)
     }
     
-    func startStreamingPreview(to view: CameraOutputGLKView) {
+    func startStreamingPreview(to handler: CameraCaptureOutputHandler) -> DispatchQueue {
         queue.async { [weak self] in
-            self?.views.append(WeakWrapper(value: view))
+            self?.handlers.append(WeakWrapper(value: handler))
         }
+        return queue
     }
     
     // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
     
     @objc func captureOutput(
-        _ captureOutput: AVCaptureOutput?,
-        didOutputSampleBuffer sampleBuffer: CMSampleBuffer?,
-        from connection: AVCaptureConnection?)
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection)
     {
-        if let imageBuffer = sampleBuffer.flatMap({ CMSampleBufferGetImageBuffer($0) }), !isInBackground {
-            views.forEach { viewWrapper in
-                viewWrapper.value?.imageBuffer = imageBuffer
+        if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer), !isInBackground {
+            handlers.forEach { handlerWrapper in
+                handlerWrapper.value?.imageBuffer = imageBuffer
             }
         }
     }
@@ -39,7 +49,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     private static var sharedServices = NSMapTable<AVCaptureSession, CaptureSessionPreviewService>.weakToStrongObjects()
     
     private let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CaptureSessionPreviewService.queue")
-    private var views = [WeakWrapper<CameraOutputGLKView>]()
+    private var handlers = [WeakWrapper<CameraCaptureOutputHandler>]()
     private var isInBackground = false
     
     private init(captureSession: AVCaptureSession) {
@@ -84,7 +94,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         
         // CoreImage wants BGRA pixel format
         captureOutput.videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey as AnyHashable: NSNumber(value: kCVPixelFormatType_32BGRA)
+            kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA)
         ]
         
         captureOutput.setSampleBufferDelegate(self, queue: queue)

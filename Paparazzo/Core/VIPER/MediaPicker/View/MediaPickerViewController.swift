@@ -24,8 +24,11 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .fade)
-
+        
+        if !UIDevice.current.isIPhoneX {
+            UIApplication.shared.setStatusBarHidden(true, with: .fade)
+        }
+        
         onViewWillAppear?(animated)
     }
     
@@ -71,7 +74,9 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         
         // AI-3326: костыль для iOS 8, на котором после дисмисса модального окна или возврата с предыдущего экрана
         // OpenGL рандомно (не каждый раз) прекращает отрисовку
-        mediaPickerView.reloadCamera()
+        if UIDevice.systemVersionLessThan(version: "9.0") {
+            mediaPickerView.reloadCamera()
+        }
         
         onViewDidAppear?(animated)
     }
@@ -84,7 +89,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         }
         
         onPreviewSizeDetermined?(mediaPickerView.previewSize)
-        layoutSubviewsPromise.fulfill()
+        layoutSubviewsPromise.fulfill(())
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -126,7 +131,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     }
     
     override var prefersStatusBarHidden: Bool {
-        return true
+        return !UIDevice.current.isIPhoneX
     }
     
     // MARK: - MediaPickerViewInput
@@ -220,8 +225,8 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setPhotoTitle(title)
     }
     
-    func setPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
-        mediaPickerView.setPhotoTitleStyle(style)
+    func setPreferredPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
+        mediaPickerView.setPreferredPhotoTitleStyle(style)
     }
     
     func setPhotoTitleAlpha(_ alpha: CGFloat) {
@@ -234,6 +239,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     func setContinueButtonEnabled(_ enabled: Bool) {
         mediaPickerView.setContinueButtonEnabled(enabled)
+    }
+    
+    func setHapticFeedbackEnabled(_ enabled: Bool) {
+        mediaPickerView.setHapticFeedbackEnabled(enabled)
     }
     
     func setContinueButtonVisible(_ visible: Bool) {

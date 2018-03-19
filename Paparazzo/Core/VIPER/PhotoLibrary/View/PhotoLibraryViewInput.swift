@@ -3,26 +3,36 @@ import ImageSource
 
 protocol PhotoLibraryViewInput: class {
     
-    func setTitle(_: String)
-    func setCancelButtonTitle(_: String)
-    func setDoneButtonTitle(_: String)
+    var onTitleTap: (() -> ())? { get set }
+    var onDimViewTap: (() -> ())? { get set }
     
-    func applyChanges(_: PhotoLibraryViewChanges, animated: Bool, completion: (() -> ())?)
+    func setTitle(_: String)
+    func setTitleVisible(_: Bool)
+    
+    func setPlaceholderState(_: PhotoLibraryPlaceholderState)
+    
+    func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
+    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
     
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
     
     func deselectAllItems()
     
-    func setPickButtonVisible(_: Bool)
-    func setPickButtonEnabled(_: Bool)
-    
     func scrollToBottom()
+    
+    func setAlbums(_: [PhotoLibraryAlbumCellData])
+    func selectAlbum(withId: String)
+    func showAlbumsList()
+    func hideAlbumsList()
+    func toggleAlbumsList()
     
     var onPickButtonTap: (() -> ())? { get set }
     var onCancelButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
+    
+    func setProgressVisible(_ visible: Bool)
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }
@@ -33,7 +43,14 @@ protocol PhotoLibraryViewInput: class {
     func setAccessDeniedButtonTitle(_: String)
 }
 
-struct PhotoLibraryItemCellData {
+struct PhotoLibraryAlbumCellData {
+    let identifier: String
+    let title: String
+    let coverImage: ImageSource?
+    let onSelect: () -> ()
+}
+
+struct PhotoLibraryItemCellData: Equatable {
     
     var image: ImageSource
     var selected = false
@@ -46,6 +63,10 @@ struct PhotoLibraryItemCellData {
     init(image: ImageSource) {
         self.image = image
     }
+    
+    static func ==(cellData1: PhotoLibraryItemCellData, cellData2: PhotoLibraryItemCellData) -> Bool {
+        return cellData1.image == cellData2.image
+    }
 }
 
 struct PhotoLibraryViewChanges {
@@ -54,4 +75,9 @@ struct PhotoLibraryViewChanges {
     let insertedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let updatedItems: [(index: Int, cellData: PhotoLibraryItemCellData)]
     let movedIndexes: [(from: Int, to: Int)]
+}
+
+enum PhotoLibraryPlaceholderState {
+    case hidden
+    case visible(title: String)
 }

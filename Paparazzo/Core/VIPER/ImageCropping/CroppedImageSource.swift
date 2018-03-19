@@ -110,9 +110,17 @@ final class CroppedImageSource: ImageSource {
     }
     
     private func performCrop(completion: @escaping () -> ()) {
+        let greatestFiniteMagnitudeSize = CGSize(
+            width: CGFloat.greatestFiniteMagnitude,
+            height: CGFloat.greatestFiniteMagnitude
+        )
         
-        let options = ImageRequestOptions(size: .fitSize(sourceSize), deliveryMode: .best)
+        let imageSizeOption: ImageSizeOption = (sourceSize == greatestFiniteMagnitudeSize)
+            ? .fullResolution
+            : .fitSize(sourceSize)
         
+        let options = ImageRequestOptions(size: imageSizeOption, deliveryMode: .best)
+
         originalImage.requestImage(options: options) {
             [weak self, processingQueue] (result: ImageRequestResult<CGImageWrapper>) in
             
@@ -202,11 +210,11 @@ final class CroppedImageSource: ImageSource {
         
         let transform = CGAffineTransform.identity
             .translatedBy(x: size.width / 2, y: size.height / 2)
-            .concatenating(ciImage.imageTransform(forOrientation: Int32(orientation.rawValue)))
+            .concatenating(ciImage.orientationTransform(forExifOrientation: Int32(orientation.rawValue)))
             .translatedBy(x: -size.width / 2, y: -size.height / 2)
         
         return ciContext.createCGImage(
-            ciImage.applying(transform),
+            ciImage.transformed(by: transform),
             from: CGRect(origin: .zero, size: size)
         )
     }

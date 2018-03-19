@@ -7,7 +7,7 @@ public struct MaskCropperData {
     
     public init(
         imageSource: ImageSource,
-        cropCanvasSize: CGSize)
+        cropCanvasSize: CGSize = CGSize(width: 1280, height: 960))
     {
         self.imageSource = imageSource
         self.cropCanvasSize = cropCanvasSize

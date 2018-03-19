@@ -82,44 +82,11 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        aspectRatioButton.top = 14
-        aspectRatioButton.right = bounds.right - 12
-        
-        titleLabel.resizeToFitWidth(bounds.size.width - 2 * (bounds.right - aspectRatioButton.left))
-        titleLabel.centerX = bounds.centerX
-        titleLabel.top = 13
-        
-        controlsView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: bounds.bottom,
-            height: max(controlsMinHeight, bounds.size.height - bounds.size.width / 0.75)   // оставляем вверху место под фотку 3:4
-        )
-        
-        previewView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            top: bounds.top,
-            bottom: controlsView.top
-        )
-        layoutSplashView()
-    }
-    
-    func layoutSplashView() {
-        
-        let height: CGFloat
-        
-        switch aspectRatio {
-        case .portrait_3x4:
-            height = bounds.size.width * 4 / 3
-        case .landscape_4x3:
-            height = bounds.size.width * 3 / 4
+        if UIDevice.current.isIPhoneX {
+            layOutForIPhoneX()
+        } else {
+            layOutForDevicesExpectForIPhoneX()
         }
-        
-        let scaleToFit = min(1, previewView.height / height)
-        
-        splashView.size = CGSize(width: bounds.size.width, height: height).scaled(scaleToFit)
-        splashView.center = previewView.center
     }
     
     // MARK: - ThemeConfigurable
@@ -206,7 +173,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
         
         switch aspectRatio {
         
-        case .portrait_3x4:
+        case .portrait_3x4 where !UIDevice.current.isIPhoneX:
             
             titleLabel.textColor = .white
             
@@ -216,7 +183,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
             setShadowVisible(true, forView: titleLabel)
             setShadowVisible(true, forView: aspectRatioButton)
         
-        case .landscape_4x3:
+        case .landscape_4x3, .portrait_3x4:
             
             titleLabel.textColor = .black
             
@@ -281,5 +248,78 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
     
     @objc private func onAspectRatioButtonTap(_ sender: UIButton) {
         onAspectRatioButtonTap?()
+    }
+    
+    private func layOutForIPhoneX() {
+        
+        let controlsHeight = CGFloat(209)
+        let previewViewAspectRatio = CGFloat(AspectRatio.portrait_3x4.heightToWidthRatio())
+        
+        aspectRatioButton.right = bounds.right - 12
+        
+        titleLabel.resizeToFitWidth(bounds.size.width - 2 * (bounds.right - aspectRatioButton.left))
+        titleLabel.centerX = bounds.centerX
+        titleLabel.top = max(8, paparazzoSafeAreaInsets.top) + 9
+        
+        aspectRatioButton.centerY = titleLabel.centerY
+        
+        controlsView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: controlsHeight
+        )
+        
+        previewView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: controlsView.top,
+            height: bounds.width * previewViewAspectRatio
+        )
+        
+        layoutSplashView()
+    }
+    
+    private func layOutForDevicesExpectForIPhoneX() {
+        
+        aspectRatioButton.top = 14
+        aspectRatioButton.right = bounds.right - 12
+        
+        titleLabel.resizeToFitWidth(bounds.size.width - 2 * (bounds.right - aspectRatioButton.left))
+        titleLabel.centerX = bounds.centerX
+        titleLabel.top = 13
+        
+        controlsView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: max(controlsMinHeight, bounds.size.height - bounds.size.width / 0.75)   // оставляем вверху место под фотку 3:4
+        )
+        
+        previewView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            bottom: controlsView.top
+        )
+        
+        layoutSplashView()
+    }
+    
+    private func layoutSplashView() {
+        
+        let height: CGFloat
+        
+        switch aspectRatio {
+        case .portrait_3x4:
+            height = bounds.size.width * 4 / 3
+        case .landscape_4x3:
+            height = bounds.size.width * 3 / 4
+        }
+        
+        let scaleToFit = height > 0 ? min(1, previewView.height / height) : 0
+        
+        splashView.size = CGSize(width: bounds.size.width, height: height).scaled(scaleToFit)
+        splashView.center = previewView.center
     }
 }

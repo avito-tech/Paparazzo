@@ -13,4 +13,8 @@ enum AspectRatio {
             return Float(4.0 / 3.0)
         }
     }
+    
+    func heightToWidthRatio() -> Float {
+        return 1 / widthToHeightRatio()
+    }
 }

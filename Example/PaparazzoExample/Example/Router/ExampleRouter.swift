@@ -19,4 +19,9 @@ protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
         maxSelectedItemsCount: Int?,
         configure: (PhotoLibraryModule) -> ()
     )
+    
+    func showScanner(
+        data: ScannerData,
+        configure: (ScannerModule) -> ()
+    )
 }

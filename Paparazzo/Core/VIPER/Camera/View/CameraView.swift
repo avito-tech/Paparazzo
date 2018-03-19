@@ -9,6 +9,8 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     private let accessDeniedView = AccessDeniedView()
     private var cameraOutputView: CameraOutputView?
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let hintLabel = UILabel()
     private var outputParameters: CameraOutputParameters?
     private var focusIndicator: FocusIndicator?
     private var theme: ThemeType?
@@ -21,13 +23,27 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         accessDeniedView.isHidden = true
         titleLabel.backgroundColor = .clear
         titleLabel.isUserInteractionEnabled = false
+        subtitleLabel.backgroundColor = .clear
+        subtitleLabel.isUserInteractionEnabled = false
         
         addSubview(accessDeniedView)
         addSubview(titleLabel)
+        addSubview(subtitleLabel)
+        addSubview(hintLabel)
+        
+        setUpCameraHintLabel()
+        setUpAccessibilityIdentifiers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setUpAccessibilityIdentifiers() {
+        titleLabel.setAccessibilityId(.cameraTitle)
+        subtitleLabel.setAccessibilityId(.cameraSubtitle)
+        hintLabel.setAccessibilityId(.cameraHint)
+        accessibilityIdentifier = AccessibilityId.cameraView.rawValue
     }
     
     // MARK: - UIView
@@ -42,7 +58,19 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         
         titleLabel.sizeToFit()
         titleLabel.centerX = bounds.centerX
-        titleLabel.top = 17
+        let hasSubtitle = (subtitleLabel.text?.count ?? 0) > 0
+        titleLabel.top = hasSubtitle ? 9 : 17
+        
+        subtitleLabel.sizeToFit()
+        subtitleLabel.centerX = bounds.centerX
+        subtitleLabel.top = titleLabel.bottom
+        
+        hintLabel.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bottom,
+            height: CGFloat(80)
+        )
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -65,6 +93,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     // MARK: - CameraViewInput
     func setTitle(_ title: String?) {
         titleLabel.text = title
+    }
+    
+    func setSubtitle(_ subtitle: String?) {
+        subtitleLabel.text = subtitle
     }
     
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
@@ -106,7 +138,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
             outputOrientation: parameters.orientation
         )
         
-        if let currentCameraOutputView = self.cameraOutputView {
+        if UIDevice.systemVersionLessThan(version: "9.0"), let currentCameraOutputView = self.cameraOutputView {
             // AI-3326: костыль для iOS 8.
             // Удаляем предыдущую вьюху, как только будет нарисован первый фрейм новой вьюхи, иначе будет мелькание.
             newCameraOutputView.onFrameDraw = { [weak newCameraOutputView] in
@@ -115,11 +147,15 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
                     currentCameraOutputView.removeFromSuperviewAfterFadingOut(withDuration: 0.25)
                 }
             }
+        } else {
+            cameraOutputView?.removeFromSuperview()
         }
         
         addSubview(newCameraOutputView)
-        bringSubview(toFront: titleLabel)
         
+        bringSubview(toFront: titleLabel)
+        bringSubview(toFront: subtitleLabel)
+        bringSubview(toFront: hintLabel)
         self.cameraOutputView = newCameraOutputView
         self.outputParameters = parameters
     }
@@ -131,7 +167,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
     func mainModuleDidAppear(animated: Bool) {
         // AI-3326: костыль для iOS 8.
-        if let outputParameters = outputParameters {
+        if UIDevice.systemVersionLessThan(version: "9.0"), let outputParameters = outputParameters {
             setOutputParameters(outputParameters)
         }
     }
@@ -139,6 +175,30 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     func adjustForDeviceOrientation(_ orientation: DeviceOrientation) {
         UIView.animate(withDuration: 0.25) {
             self.accessDeniedView.transform = CGAffineTransform(deviceOrientation: orientation)
+        }
+    }
+    
+    func setCameraHint(text: String) {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = 1.05
+        style.minimumLineHeight = 24
+        style.alignment = NSTextAlignment.center
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(
+            NSAttributedStringKey.paragraphStyle,
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        hintLabel.attributedText = attributedString
+        hintLabel.isHidden = false
+    }
+    
+    func setCameraHintVisible(_ visible: Bool) {
+        let alpha = visible ? CGFloat(1) : CGFloat(0)
+        UIView.animate(withDuration: 0.3) {
+            self.hintLabel.alpha = alpha
         }
     }
     
@@ -150,6 +210,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         focusIndicator?.setColor(theme.focusIndicatorColor)
         titleLabel.textColor = theme.cameraTitleColor
         titleLabel.font = theme.cameraTitleFont
+        subtitleLabel.textColor = theme.cameraSubtitleColor
+        subtitleLabel.font = theme.cameraSubtitleFont
+        hintLabel.font = theme.cameraHintFont
+        hintLabel.textColor = theme.cameraTitleColor
     }
     
     // MARK: - Dispose bag
@@ -158,5 +222,12 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     
     func addDisposable(_ object: AnyObject) {
         disposables.append(object)
+    }
+    
+    private func setUpCameraHintLabel() {
+        hintLabel.backgroundColor = .clear
+        hintLabel.numberOfLines = 0
+        hintLabel.textAlignment = .center
+        hintLabel.isHidden = true
     }
 }

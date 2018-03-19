@@ -15,6 +15,7 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
     
     public func module(
         data: MediaPickerData,
+        overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
@@ -36,7 +37,10 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         )
         
         let cameraAssembly = assemblyFactory.cameraAssembly()
-        let (cameraView, cameraModuleInput) = cameraAssembly.module(initialActiveCameraType: data.initialActiveCameraType)
+        let (cameraView, cameraModuleInput) = cameraAssembly.module(
+            initialActiveCameraType: data.initialActiveCameraType,
+            overridenTheme: overridenTheme
+        )
         
         let presenter = MediaPickerPresenter(
             interactor: interactor,
@@ -46,9 +50,10 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
-        viewController.setTheme(theme)
+        viewController.setTheme(overridenTheme ?? theme)
         viewController.setShowsCropButton(data.cropEnabled)
         viewController.setShowsAutocorrectButton(data.autocorrectEnabled)
+        viewController.setHapticFeedbackEnabled(data.hapticFeedbackEnabled)
         
         presenter.view = viewController
         

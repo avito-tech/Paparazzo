@@ -8,6 +8,19 @@ public enum MediaPickerContinueButtonStyle {
     case spinner
 }
 
+public struct CameraHintData {
+    public let title: String
+    public let delay: TimeInterval?
+    
+    public init(
+        title: String,
+        delay: TimeInterval? = nil)
+    {
+        self.title = title
+        self.delay = delay
+    }
+}
+
 public protocol MediaPickerModule: class {
 
     func focusOnModule()
@@ -24,9 +37,14 @@ public protocol MediaPickerModule: class {
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
     
-    func setCameraTitle(_ title: String)
+    func setCameraTitle(_: String)
+    func setCameraSubtitle(_: String)
+    func setCameraHint(data: CameraHintData)
     
     func setCropMode(_: MediaPickerCropMode)
+    func setThumbnailsAlwaysVisible(_: Bool)
+    
+    func removeItem(_: MediaPickerItem)
     
     // startIndex - index of element in previous array of MediaPickerItem, new elements were added after that index
     var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())? { get set }

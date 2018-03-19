@@ -2,7 +2,11 @@ import AVFoundation
 import GLKit
 import ImageSource
 
-final class CameraOutputGLKView: GLKView {
+final class CameraOutputGLKView: GLKView, CameraCaptureOutputHandler {
+    
+    // MARK: - State
+    private var hasWindow = false
+    private var bufferQueue = DispatchQueue.main
     
     // MARK: - Init
     
@@ -16,7 +20,17 @@ final class CameraOutputGLKView: GLKView {
         clipsToBounds = true
         enableSetNeedsDisplay = false
         
-        CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
+        bufferQueue = CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
+    }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        
+        let hasWindow = (window != nil)
+        
+        bufferQueue.async { [weak self] in
+            self?.hasWindow = hasWindow
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,7 +44,9 @@ final class CameraOutputGLKView: GLKView {
     
     var imageBuffer: CVImageBuffer? {
         didSet {
-            display()
+            if hasWindow {
+                display()
+            }
         }
     }
     
@@ -39,7 +55,7 @@ final class CameraOutputGLKView: GLKView {
     override func draw(_ rect: CGRect) {
         guard let imageBuffer = imageBuffer else { return }
         
-        let image = CIImage(cvPixelBuffer: imageBuffer).applyingOrientation(Int32(orientation.rawValue))
+        let image = CIImage(cvPixelBuffer: imageBuffer).oriented(forExifOrientation: Int32(orientation.rawValue))
         
         ciContext.draw(
             image,
