@@ -15,8 +15,6 @@
 
 ![Demo](PaparazzoDemo.gif)
 
-[Changelog](https://github.com/avito-tech/Paparazzo/blob/master/CHANGELOG.md) | See the changes introduced in each Paparazzo version.
-
 # Contents
 
 * [Installation](#installation)
@@ -26,6 +24,7 @@
     * [Memory constraints when cropping](#memory-constraints)
   * [Presenting photo library](#present-gallery)
   * [Presenting mask cropper](#present-maskCropper)
+  * [Presenting scanner](#present-scanner)
   * [UI Customization](#ui-customization)
 * [ImageSource](#ImageSource)
   * [Typical use cases](#use-cases)
@@ -146,6 +145,34 @@ let viewController = assembly.module(
 ```
 * _imageSource_ — photo that should be cropped.
 * _croppingOverlayProvider_ — provider from CroppingOverlayProvidersFactory.
+* _routerSeed_ — routerSeed provided by Marshroute.
+* _configure_ — closure used to provide additional module setup.
+
+## <a name="present-scanner" />Presenting scanner
+Scanner is a module which provides easy way to handle realtime stream from camera. See ScannerOutputHandler protocol to get more details.
+
+
+![Demo](ScannerDemo.gif)
+
+Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use [Marshroute](https://github.com/avito-tech/Marshroute)):
+```swift
+let factory = Paparazzo.AssemblyFactory()
+let assembly = factory.scannerAssembly()
+```
+Create view controller using assembly's `module` method:
+```swift
+let data = ScannerData(
+initialActiveCameraType: .back,
+cameraCaptureOutputHandlers: []
+)
+let viewController = assembly.module(
+data: data,
+routerSeed: routerSeed,    // omit this parameter if you're using Paparazzo.AssemblyFactory
+configure: configure
+)
+```
+* _initialActiveCameraType_ — preferred camera when starting the module (front or back).
+* _cameraCaptureOutputHandlers_ — array of handlers that confirm the  ScannerOutputHandler protocol.
 * _routerSeed_ — routerSeed provided by Marshroute.
 * _configure_ — closure used to provide additional module setup.
 
