@@ -23,16 +23,51 @@ final class ScannerInteractorImpl: ScannerInteractor {
     // MARK: - ScannerInteractor
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
-        deviceOrientationService.onOrientationChange = handler
+        deviceOrientationService.onOrientationChange = { [weak self] orientation in
+            self?.updateStreamHandlersOrientation()
+            handler(orientation)
+        }
+        
         handler(deviceOrientationService.currentOrientation)
     }
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
+        updateStreamHandlersOrientation()
         cameraCaptureOutputHandlers.forEach {
             if let handler = $0.value {
-                handler.orientation = UInt32(parameters.orientation.rawValue)
                 CaptureSessionPreviewService.startStreamingPreview(of: parameters.captureSession, to: handler)
             }
         }
     }
+    
+    // MARK: - Private
+    
+    private func updateStreamHandlersOrientation() {
+        cameraCaptureOutputHandlers.forEach {
+            if let outputHandler = $0.value {
+                outputHandler.orientation = deviceOrientationService
+                    .currentOrientation
+                    .toCGImagePropertyOrientation()
+                    .rawValue
+            }
+        }
+    }
+}
+
+extension DeviceOrientation {
+    func toCGImagePropertyOrientation() -> CGImagePropertyOrientation {
+        switch self {
+        case .portrait:
+            return .right
+        case .landscapeLeft:
+            return .up
+        case .landscapeRight:
+            return .down
+        case .portraitUpsideDown:
+            return .left
+        case .unknown:
+            return .left
+        }
+    }
+    
 }
