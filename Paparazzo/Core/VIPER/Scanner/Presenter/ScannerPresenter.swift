@@ -65,11 +65,6 @@ final class ScannerPresenter: ScannerModule {
         
         interactor.observeDeviceOrientation { [weak self] deviceOrientation in
             self?.view?.adjustForDeviceOrientation(deviceOrientation)
-            self?.cameraModuleInput.getOutputParameters { [weak self] parameters in
-                if let parameters = parameters {
-                    self?.interactor.setCameraOutputParameters(parameters)
-                }
-            }
         }
         
         view?.onViewWillAppear = { [weak self] animated in
