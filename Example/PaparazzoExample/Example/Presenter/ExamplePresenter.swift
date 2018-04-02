@@ -34,6 +34,7 @@ final class ExamplePresenter {
         view?.setMediaPickerButtonTitle("Media Picker")
         view?.setMaskCropperButtonTitle("Mask Cropper")
         view?.setPhotoLibraryButtonTitle("Photo Library")
+        view?.setPhotoLibraryV2ButtonTitle("Photo Library version 2")
         view?.setScannerButtonTitle("Scanner")
         
         view?.onShowMediaPickerButtonTap = { [weak self] in
@@ -45,6 +46,24 @@ final class ExamplePresenter {
         view?.onShowPhotoLibraryButtonTap = { [weak self] in
             self?.interactor.photoLibraryItems { items in
                 self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
+                    weak var weakModule = module
+                    module.onFinish = { result in
+                        weakModule?.dismissModule()
+                        
+                        switch result {
+                        case .selectedItems(let items):
+                            self?.interactor.setPhotoLibraryItems(items)
+                        case .cancelled:
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        
+        view?.onShowPhotoLibraryV2ButtonTap = { [weak self] in
+            self?.interactor.photoLibraryItems { items in
+                self?.router.showPhotoLibraryV2(selectedItems: items, maxSelectedItemsCount: 5) { module in
                     weak var weakModule = module
                     module.onFinish = { result in
                         weakModule?.dismissModule()
