@@ -1,6 +1,6 @@
 import Foundation
 
-final class PhotoLibraryV2Presenter: PhotoLibraryModule {
+final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     // MARK: - Dependencies
     

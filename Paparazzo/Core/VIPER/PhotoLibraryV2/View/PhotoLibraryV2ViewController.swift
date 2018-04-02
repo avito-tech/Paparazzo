@@ -1,6 +1,6 @@
 import UIKit
 
-final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryViewInput, ThemeConfigurable {
+final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV2ViewInput, ThemeConfigurable {
     
     typealias ThemeType = PhotoLibraryV2UITheme
     
@@ -9,7 +9,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     // MARK: - UIViewController
     
     override func loadView() {
-        view = photoLibraryView
+        view = photoLibraryView 
     }
     
     override func viewDidLoad() {

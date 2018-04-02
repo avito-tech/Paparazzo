@@ -1,6 +1,6 @@
 import UIKit
 
-public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryAssembly {
+public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2Assembly {
     
     public func module(
         data: PhotoLibraryV2Data,
