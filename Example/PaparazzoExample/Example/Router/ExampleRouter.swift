@@ -20,6 +20,12 @@ protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
         configure: (PhotoLibraryModule) -> ()
     )
     
+    func showPhotoLibraryV2(
+        selectedItems: [PhotoLibraryItem],
+        maxSelectedItemsCount: Int?,
+        configure: (PhotoLibraryV2Module) -> ()
+    )
+    
     func showScanner(
         data: ScannerData,
         configure: (ScannerModule) -> ()

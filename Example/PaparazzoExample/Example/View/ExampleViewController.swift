@@ -37,6 +37,10 @@ final class ExampleViewController: UIViewController, ExampleViewInput {
         exampleView?.setPhotoLibraryButtonTitle(title)
     }
     
+    func setPhotoLibraryV2ButtonTitle(_ title: String) {
+        exampleView?.setPhotoLibraryV2ButtonTitle(title)
+    }
+    
     func setScannerButtonTitle(_ title: String) {
         exampleView?.setScannerButtonTitle(title)
     }
@@ -49,6 +53,11 @@ final class ExampleViewController: UIViewController, ExampleViewInput {
     var onShowPhotoLibraryButtonTap: (() -> ())? {
         get { return exampleView?.onShowPhotoLibraryButtonTap }
         set { exampleView?.onShowPhotoLibraryButtonTap = newValue }
+    }
+    
+    var onShowPhotoLibraryV2ButtonTap: (() -> ())? {
+        get { return exampleView?.onShowPhotoLibraryV2ButtonTap }
+        set { exampleView?.onShowPhotoLibraryV2ButtonTap = newValue }
     }
     
     var onShowMaskCropperButtonTap: (() -> ())? {

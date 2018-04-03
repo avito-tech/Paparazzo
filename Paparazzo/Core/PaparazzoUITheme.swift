@@ -3,6 +3,7 @@ import UIKit
 public struct PaparazzoUITheme:
     MediaPickerRootModuleUITheme,
     PhotoLibraryUITheme,
+    PhotoLibraryV2UITheme,
     ImageCroppingUITheme,
     MaskCropperUITheme,
     ScannerRootModuleUITheme
