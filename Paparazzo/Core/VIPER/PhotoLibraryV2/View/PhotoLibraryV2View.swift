@@ -29,10 +29,14 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let titleView = PhotoLibraryTitleView()
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-    private let toolbar = PhotoLibraryToolbar()
     private let dimView = UIView()
     private let albumsTableView = PhotoLibraryAlbumsTableView()
     private let placeholderView = UILabel()
+    private let closeButton = UIButton()
+    private let continueButton = UIButton()
+    private let closeButtonSize = CGSize(width: 38, height: 38)
+    private let continueButtonHeight = CGFloat(38)
+    private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -61,13 +65,16 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         placeholderView.isHidden = true
         
+        setUpButtons()
+        
         addSubview(collectionView)
         addSubview(placeholderView)
         addSubview(accessDeniedView)
-        addSubview(toolbar)
         addSubview(dimView)
         addSubview(albumsTableView)
         addSubview(titleView)
+        addSubview(closeButton)
+        addSubview(continueButton)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -75,6 +82,27 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         addSubview(progressIndicator)
         
         setUpAccessibilityIdentifiers()
+    }
+    
+    private func setUpButtons() {
+        closeButton.size = closeButtonSize
+        closeButton.addTarget(
+            self,
+            action: #selector(onCloseButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
+        continueButton.size = CGSize(
+            width: continueButtonHeight,
+            height: continueButton.sizeThatFits().width
+        )
+        
+        continueButton.contentEdgeInsets = continueButtonContentInsets
+        continueButton.addTarget(
+            self,
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
+        )
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -91,7 +119,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         super.layoutSubviews()
         
         let titleViewSize = titleView.sizeThatFits(bounds.size)
-        let toolbarSize = toolbar.sizeThatFits(bounds.size)
         
         titleView.layout(
             left: bounds.left,
@@ -100,18 +127,25 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             height: titleViewSize.height
         )
         
-        toolbar.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: bounds.bottom,
-            height: toolbarSize.height
-        )
-        
         collectionView.layout(
             left: bounds.left,
             right: bounds.right,
             top: titleView.bottom,
-            bottom: toolbar.top
+            bottom: bounds.bottom
+        )
+        
+        closeButton.frame = CGRect(
+            x: 8,
+            y: max(8, paparazzoSafeAreaInsets.top),
+            width: closeButton.width,
+            height: closeButton.height
+        )
+        
+        continueButton.frame = CGRect(
+            x: bounds.right - 8 - continueButton.width,
+            y: max(8, paparazzoSafeAreaInsets.top),
+            width: continueButton.width,
+            height: continueButton.height
         )
         
         placeholderView.resizeToFitSize(collectionView.size)
@@ -138,8 +172,19 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         accessDeniedView.setTheme(theme)
         
-        toolbar.setDiscardButtonIcon(theme.photoLibraryDiscardButtonIcon)
-        toolbar.setConfirmButtonIcon(theme.photoLibraryConfirmButtonIcon)
+        closeButton.setImage(theme.closeIcon, for: .normal)
+        
+        continueButton.setTitleColor(theme.continueButtonTitleColor, for: .normal)
+        continueButton.titleLabel?.font = theme.continueButtonTitleFont
+        
+        continueButton.setTitleColor(
+            theme.continueButtonTitleColor,
+            for: .normal
+        )
+        continueButton.setTitleColor(
+            theme.continueButtonTitleHighlightedColor,
+            for: .highlighted
+        )
         
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
         
@@ -148,16 +193,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     // MARK: - PhotoLibraryView
+    var onCloseButtonTap: (() -> ())?
     
-    var onDiscardButtonTap: (() -> ())? {
-        get { return toolbar.onDiscardButtonTap }
-        set { toolbar.onDiscardButtonTap = newValue }
-    }
-    
-    var onConfirmButtonTap: (() -> ())? {
-        get { return toolbar.onConfirmButtonTap }
-        set { toolbar.onConfirmButtonTap = newValue }
-    }
+    var onContinueButtonTap: (() -> ())?
     
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return accessDeniedView.onButtonTap }
@@ -166,6 +204,12 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     var onTitleTap: (() -> ())?
     var onDimViewTap: (() -> ())?
+    
+    func setContinueButtonTitle(_ title: String) {
+        continueButton.setTitle(title, for: .normal)
+        continueButton.accessibilityValue = title
+        continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
+    }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
         
@@ -540,5 +584,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             top: top,
             height: size.height
         )
+    }
+    
+    @objc private func onCloseButtonTap(_: UIButton) {
+        onCloseButtonTap?()
+    }
+    
+    @objc private func onContinueButtonTap(_: UIButton) {
+        onContinueButtonTap?()
     }
 }

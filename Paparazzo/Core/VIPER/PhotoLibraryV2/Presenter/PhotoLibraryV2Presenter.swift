@@ -33,9 +33,17 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router.dismissCurrentModule()
     }
     
+    func setContinueButtonTitle(_ title: String) {
+        continueButtonTitle = title
+        view?.setContinueButtonTitle(title)
+    }
+    
     // MARK: - Private
+    private var continueButtonTitle: String?
     
     private func setUpView() {
+        
+        view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
         
         view?.setTitleVisible(false)
         
@@ -104,13 +112,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             )
         }
         
-        view?.onPickButtonTap = { [weak self] in
+        view?.onContinueButtonTap = { [weak self] in
             if let strongSelf = self {
                 self?.onFinish?(.selectedItems(strongSelf.interactor.selectedItems))
             }
         }
         
-        view?.onCancelButtonTap = { [weak self] in
+        view?.onCloseButtonTap = { [weak self] in
             self?.onFinish?(.cancelled)
         }
         
