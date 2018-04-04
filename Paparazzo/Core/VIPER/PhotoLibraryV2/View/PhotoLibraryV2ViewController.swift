@@ -79,6 +79,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     func setContinueButtonTitle(_ title: String) {
         photoLibraryView.setContinueButtonTitle(title)
     }
+    
     func setPlaceholderState(_ state: PhotoLibraryPlaceholderState) {
         switch state {
         case .hidden:
