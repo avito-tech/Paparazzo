@@ -34,6 +34,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let placeholderView = UILabel()
     private let closeButton = UIButton()
     private let continueButton = UIButton()
+    private let cameraButton = PhotoLibraryCameraView()
     
     // MARK: - Specs
     
@@ -77,6 +78,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         addSubview(albumsTableView)
         addSubview(titleView)
         addSubview(closeButton)
+        addSubview(cameraButton)
         addSubview(continueButton)
         
         progressIndicator.hidesWhenStopped = true
@@ -126,6 +128,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             height: continueButton.height
         )
         
+        cameraButton.frame = CGRect(
+            x: bounds.left + 6,
+            y: closeButton.bottom + 6,
+            width: bounds.width - 12,
+            height: 116
+        )
+        
         placeholderView.resizeToFitSize(collectionView.size)
         placeholderView.center = collectionView.center
         
@@ -151,6 +160,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         accessDeniedView.setTheme(theme)
         
         closeButton.setImage(theme.closeIcon, for: .normal)
+        
+        cameraButton.setCameraIcon(theme.cameraIcon)
         
         continueButton.setTitleColor(theme.continueButtonTitleColor, for: .normal)
         continueButton.titleLabel?.font = theme.continueButtonTitleFont
@@ -446,6 +457,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             action: #selector(onContinueButtonTap(_:)),
             for: .touchUpInside
         )
+        
+        cameraButton.onTap = { [weak self] in
+            print("tap")
+        }
     }
     
     private func setUpCollectionView() {
@@ -457,6 +472,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         collectionView.register(
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
+        )
+        
+        collectionView.contentInset = UIEdgeInsets(
+            top: 122,
+            left: 0,
+            bottom: 0,
+            right: 0
         )
     }
     

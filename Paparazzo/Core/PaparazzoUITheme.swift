@@ -83,6 +83,7 @@ public struct PaparazzoUITheme:
     
     public var maskCropperDiscardPhotoIcon = PaparazzoUITheme.image(named: "discard")
     public var maskCropperConfirmPhotoIcon = PaparazzoUITheme.image(named: "confirm")
+    public var cameraIcon = PaparazzoUITheme.image(named: "camera")
 
     // MARK: - Private
 
