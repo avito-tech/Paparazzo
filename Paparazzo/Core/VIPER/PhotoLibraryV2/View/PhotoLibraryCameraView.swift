@@ -21,7 +21,7 @@ class PhotoLibraryCameraView: UIView {
         
         addSubview(button)
         
-        setAccessibilityId(.cameraThumbnailCell)
+        setAccessibilityId(.cameraInLibraryButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
