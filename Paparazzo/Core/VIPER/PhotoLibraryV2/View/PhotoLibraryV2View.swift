@@ -34,6 +34,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let placeholderView = UILabel()
     private let closeButton = UIButton()
     private let continueButton = UIButton()
+    
+    // MARK: - Specs
+    
     private let closeButtonSize = CGSize(width: 38, height: 38)
     private let continueButtonHeight = CGFloat(38)
     private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -84,33 +87,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         setUpAccessibilityIdentifiers()
     }
     
-    private func setUpButtons() {
-        closeButton.size = closeButtonSize
-        closeButton.addTarget(
-            self,
-            action: #selector(onCloseButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        continueButton.size = CGSize(
-            width: continueButtonHeight,
-            height: continueButton.sizeThatFits().width
-        )
-        
-        continueButton.contentEdgeInsets = continueButtonContentInsets
-        continueButton.addTarget(
-            self,
-            action: #selector(onContinueButtonTap(_:)),
-            for: .touchUpInside
-        )
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setUpAccessibilityIdentifiers() {
-        accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
     }
     
     // MARK: - UIView
@@ -444,6 +422,31 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     // MARK: - Private
     
     private var theme: PhotoLibraryV2UITheme?
+    
+    private func setUpAccessibilityIdentifiers() {
+        accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
+    }
+    
+    private func setUpButtons() {
+        closeButton.size = closeButtonSize
+        closeButton.addTarget(
+            self,
+            action: #selector(onCloseButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
+        continueButton.size = CGSize(
+            width: continueButtonHeight,
+            height: continueButton.sizeThatFits().width
+        )
+        
+        continueButton.contentEdgeInsets = continueButtonContentInsets
+        continueButton.addTarget(
+            self,
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
+        )
+    }
     
     private func setUpCollectionView() {
         collectionView.backgroundColor = .white
