@@ -48,14 +48,14 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         set { photoLibraryView.onTitleTap = newValue }
     }
     
-    var onPickButtonTap: (() -> ())? {
-        get { return photoLibraryView.onConfirmButtonTap }
-        set { photoLibraryView.onConfirmButtonTap = newValue }
+    var onContinueButtonTap: (() -> ())? {
+        get { return photoLibraryView.onContinueButtonTap }
+        set { photoLibraryView.onContinueButtonTap = newValue }
     }
     
-    var onCancelButtonTap: (() -> ())? {
-        get { return photoLibraryView.onDiscardButtonTap }
-        set { photoLibraryView.onDiscardButtonTap = newValue }
+    var onCloseButtonTap: (() -> ())? {
+        get { return photoLibraryView.onCloseButtonTap }
+        set { photoLibraryView.onCloseButtonTap = newValue }
     }
     
     var onAccessDeniedButtonTap: (() -> ())? {
@@ -74,6 +74,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func setTitleVisible(_ visible: Bool) {
         photoLibraryView.setTitleVisible(visible)
+    }
+    
+    func setContinueButtonTitle(_ title: String) {
+        photoLibraryView.setContinueButtonTitle(title)
     }
     
     func setPlaceholderState(_ state: PhotoLibraryPlaceholderState) {
@@ -154,11 +158,11 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     private var theme: PhotoLibraryV2UITheme?
     
-    @objc private func onCancelButtonTap(_ sender: UIBarButtonItem) {
-        onCancelButtonTap?()
+    @objc private func onCloseButtonTap(_ sender: UIBarButtonItem) {
+        onCloseButtonTap?()
     }
     
-    @objc private func onPickButtonTap(_ sender: UIBarButtonItem) {
-        onPickButtonTap?()
+    @objc private func onContinueButtonTap(_ sender: UIBarButtonItem) {
+        onContinueButtonTap?()
     }
 }

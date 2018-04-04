@@ -61,6 +61,12 @@ public struct PaparazzoUITheme:
     public var photoLibraryPlaceholderFont = UIFont.systemFont(ofSize: 17)
     public var photoLibraryPlaceholderColor = UIColor.gray
     
+    // MARK: - PhotoLibraryV2UITheme
+    public var continueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var continueButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
+    public var closeIcon = PaparazzoUITheme.image(named: "bt-close")
+    public var continueButtonTitleFont = UIFont.systemFont(ofSize: 17)
+    
     // MARK: - ImageCroppingUITheme
     
     public var rotationIcon = PaparazzoUITheme.image(named: "rotate")

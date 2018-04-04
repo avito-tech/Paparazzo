@@ -7,9 +7,12 @@ public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     var photoCellBackgroundColor: UIColor { get }
     
     var iCloudIcon: UIImage? { get }
-    var photoLibraryDiscardButtonIcon: UIImage? { get }
-    var photoLibraryConfirmButtonIcon: UIImage? { get }
+    var continueButtonTitleColor: UIColor { get }
+    var continueButtonTitleHighlightedColor: UIColor { get }
+    var continueButtonTitleFont: UIFont { get }
     var photoLibraryAlbumCellFont: UIFont { get }
     var photoLibraryPlaceholderFont: UIFont { get }
     var photoLibraryPlaceholderColor: UIColor { get }
+    
+    var closeIcon: UIImage? { get }
 }

@@ -9,6 +9,8 @@ protocol PhotoLibraryV2ViewInput: class {
     func setTitle(_: String)
     func setTitleVisible(_: Bool)
     
+    func setContinueButtonTitle(_: String)
+    
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
     
     func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
@@ -27,8 +29,8 @@ protocol PhotoLibraryV2ViewInput: class {
     func hideAlbumsList()
     func toggleAlbumsList()
     
-    var onPickButtonTap: (() -> ())? { get set }
-    var onCancelButtonTap: (() -> ())? { get set }
+    var onContinueButtonTap: (() -> ())? { get set }
+    var onCloseButtonTap: (() -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
     
