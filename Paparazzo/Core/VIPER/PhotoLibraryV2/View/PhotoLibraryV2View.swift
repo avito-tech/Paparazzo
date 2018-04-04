@@ -41,6 +41,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let closeButtonSize = CGSize(width: 38, height: 38)
     private let continueButtonHeight = CGFloat(38)
     private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    private let cameraButtonHeight = CGFloat(116)
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
     
@@ -74,11 +75,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         addSubview(collectionView)
         addSubview(placeholderView)
         addSubview(accessDeniedView)
+        addSubview(cameraButton)
         addSubview(dimView)
         addSubview(albumsTableView)
         addSubview(titleView)
         addSubview(closeButton)
-        addSubview(cameraButton)
         addSubview(continueButton)
         
         progressIndicator.hidesWhenStopped = true
@@ -130,9 +131,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         cameraButton.frame = CGRect(
             x: bounds.left + 6,
-            y: closeButton.bottom + 6,
+            y: titleView.bottom + 6,
             width: bounds.width - 12,
-            height: 116
+            height: cameraButtonHeight
         )
         
         placeholderView.resizeToFitSize(collectionView.size)
@@ -473,13 +474,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
         )
-        
-        collectionView.contentInset = UIEdgeInsets(
-            top: 122,
-            left: 0,
-            bottom: 0,
-            right: 0
-        )
+        collectionView.contentInset.top = cameraButtonHeight + 6
     }
     
     private func recreateCollectionView() {
