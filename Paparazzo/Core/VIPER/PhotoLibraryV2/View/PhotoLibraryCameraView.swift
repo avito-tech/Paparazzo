@@ -48,10 +48,6 @@ class PhotoLibraryCameraView: UIView {
         insertSubview(newCameraOutputView, belowSubview: button)
         
         self.cameraOutputView = newCameraOutputView
-        
-        // AI-3610: костыль для iPhone 4, чтобы не было белой рамки вокруг ячейки.
-        // Если ставить clearColor, скругление углов теряется на iOS 9.
-        self.backgroundColor = UIColor.white.withAlphaComponent(0.1)
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
