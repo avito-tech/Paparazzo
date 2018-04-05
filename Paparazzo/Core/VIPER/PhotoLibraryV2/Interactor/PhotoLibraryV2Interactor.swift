@@ -6,6 +6,8 @@ protocol PhotoLibraryV2Interactor: class {
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [PhotoLibraryItem] { get }
     
+    func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())

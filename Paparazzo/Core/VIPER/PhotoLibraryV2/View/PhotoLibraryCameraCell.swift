@@ -1,7 +1,7 @@
 import UIKit
 import ImageSource
 
-class PhotoLibraryCameraCell: UICollectionViewCell {
+class PhotoLibraryCameraCell: UICollectionViewCell, Customizable {
     
     // MARK: - Subviews
     private var cameraOutputView: CameraOutputView?
@@ -29,13 +29,13 @@ class PhotoLibraryCameraCell: UICollectionViewCell {
     }
     
     // MARK: - PhotoLibraryCameraView
-    var onTap: (() -> ())?
+    private var onTap: (() -> ())?
     
     func setCameraIcon(_ icon: UIImage?) {
         button.setImage(icon, for: .normal)
     }
     
-    func setOutputParameters(_ parameters: CameraOutputParameters) {
+    private func setOutputParameters(_ parameters: CameraOutputParameters) {
         
         let newCameraOutputView = CameraOutputView(
             captureSession: parameters.captureSession,
@@ -50,8 +50,16 @@ class PhotoLibraryCameraCell: UICollectionViewCell {
         self.cameraOutputView = newCameraOutputView
     }
     
-    func setOutputOrientation(_ orientation: ExifOrientation) {
+    private func setOutputOrientation(_ orientation: ExifOrientation) {
         cameraOutputView?.orientation = orientation
+    }
+    
+    // MARK: - Customizable
+    
+    func customizeWithItem(_ item: PhotoLibraryCameraCellData) {
+        onTap = item.onTap
+        setOutputOrientation(item.parameters.orientation)
+        setOutputParameters(item.parameters)
     }
     
     // MARK: - Layout

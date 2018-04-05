@@ -204,6 +204,23 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         return cellData
     }
     
+    private func cameraCellData(completion: @escaping (_ cellData: PhotoLibraryCameraCellData?) -> ()) {
+        interactor.getOutputParameters { parameters in
+            guard let parameters = parameters else {
+                completion(nil)
+                return
+            }
+            let cellData = PhotoLibraryCameraCellData(
+                parameters: parameters,
+                onTap: {
+                    print("ololo")
+                }
+            )
+            
+            completion(cellData)
+        }
+    }
+    
     private func viewChanges(from changes: PhotoLibraryChanges) -> PhotoLibraryViewChanges {
         return PhotoLibraryViewChanges(
             removedIndexes: changes.removedIndexes,

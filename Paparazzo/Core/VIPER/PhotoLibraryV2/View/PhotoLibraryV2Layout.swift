@@ -1,6 +1,11 @@
 import UIKit
 
 final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
+
+    private enum ItemDisplayType {
+        case regular
+        case expanded
+    }
     
     private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize: CGSize = .zero
@@ -13,7 +18,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     
     // MARK: - PhotoLibraryLayout
     
-    func cameraHeaderSize() -> CGSize {
+    func expandedSize() -> CGSize {
         if let collectionView = collectionView {
             let contentWidth = collectionView.bounds.size.width - insets.left - insets.right
             return CGSize(width: contentWidth, height: 116)
@@ -22,7 +27,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
         }
     }
     
-    func cellSize() -> CGSize {
+    func regularSize() -> CGSize {
         if let collectionView = collectionView {
             let contentWidth = collectionView.bounds.size.width - insets.left - insets.right
             let itemWidth = (contentWidth - CGFloat(numberOfPhotosInRow - 1) * cellSpacing) / CGFloat(numberOfPhotosInRow)
@@ -48,44 +53,32 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
         
         self.attributes.removeAll()
         
-        let itemSize = cellSize()
+        let regularSize = self.regularSize()
+        let expandedSize = self.expandedSize()
         
         let section = 0
         let numberOfItems = collectionView.numberOfItems(inSection: section)
         
-        var maxY = CGFloat()
-        ///
+        var cursorX = insets.left
+        var cursorY = insets.top
         
-        let origin = CGPoint(
-            x: insets.left,
-            y: insets.top
-        )
-        
-        let indexPath = IndexPath(item: 0, section: section)
-        
-        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-        attributes.frame = CGRect(
-            origin: origin,
-            size: cameraHeaderSize()
-        )
-        
-        maxY = max(maxY, attributes.frame.maxY)
-        
-        if numberOfItems > 0 {
-            self.attributes[indexPath] = attributes
-        }
-        ///
         for item in 0 ..< numberOfItems  {
-            
-            let row = floor(CGFloat(item) / CGFloat(numberOfPhotosInRow))
-            let column = CGFloat(item % numberOfPhotosInRow)
-            
-            let origin = CGPoint(
-                x: insets.left + (column + CGFloat(numberOfPhotosInRow - 1)) * (itemSize.width + cellSpacing),
-                y: insets.top + (row + CGFloat(numberOfPhotosInRow - 1)) * (itemSize.height + cellSpacing)
-            )
-            
             let indexPath = IndexPath(item: item, section: section)
+            let itemSize: CGSize
+            switch styleForItemAtIndexPath(indexPath) {
+            case .regular:
+                itemSize = regularSize
+            case .expanded:
+                itemSize = expandedSize
+            }
+            let necessaryItemWidth = itemSize.width
+            let needsNewLine = (cursorX + necessaryItemWidth > collectionView.bounds.size.width)
+            let x = needsNewLine ? insets.left : cursorX
+            let y = needsNewLine ? cursorY + itemSize.height + cellSpacing : cursorY
+            let origin = CGPoint(
+                x: x,
+                y: y
+            )
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = CGRect(
@@ -93,14 +86,15 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
                 size: itemSize
             )
             
-            maxY = max(maxY, attributes.frame.maxY)
+            cursorY = max(cursorY, attributes.frame.minY)
+            cursorX = attributes.frame.maxX + cellSpacing
             
             self.attributes[indexPath] = attributes
         }
         
         contentSize = CGSize(
             width: collectionView.bounds.maxX,
-            height: maxY
+            height: cursorY
         )
     }
     
@@ -110,5 +104,16 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return attributes[indexPath]
+    }
+    
+    private func styleForItemAtIndexPath(_ indexPath: IndexPath) -> ItemDisplayType {
+        let item = collectionView?.cellForItem(at: indexPath)
+        if ((item as? PhotoLibraryItemCell) != nil) {
+            return .regular
+        } else if ((item as? PhotoLibraryCameraCell) != nil) {
+            return .expanded
+        }
+        
+        return .regular
     }
 }

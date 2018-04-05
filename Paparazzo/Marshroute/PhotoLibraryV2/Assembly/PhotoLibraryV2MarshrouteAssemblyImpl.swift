@@ -15,7 +15,8 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         let interactor = PhotoLibraryV2InteractorImpl(
             selectedItems: selectedItems,
             maxSelectedItemsCount: maxSelectedItemsCount,
-            photoLibraryItemsService: photoLibraryItemsService
+            photoLibraryItemsService: photoLibraryItemsService,
+            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back)
         )
         
         let router = PhotoLibraryV2MarshrouteRouter(routerSeed: routerSeed)

@@ -12,7 +12,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         let interactor = PhotoLibraryV2InteractorImpl(
             selectedItems: data.selectedItems,
             maxSelectedItemsCount: data.maxSelectedItemsCount,
-            photoLibraryItemsService: photoLibraryItemsService
+            photoLibraryItemsService: photoLibraryItemsService,
+            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back)
         )
         
         let viewController = PhotoLibraryV2ViewController()
