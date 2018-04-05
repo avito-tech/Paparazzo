@@ -23,7 +23,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     // MARK: - Subviews
     
-    private let layout = PhotoLibraryLayout()
+    private let layout = PhotoLibraryV2Layout()
     private var collectionView: UICollectionView
     private var collectionSnapshotView: UIView?
     private let titleView = PhotoLibraryTitleView()
@@ -431,6 +431,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         onDeselectItem(at: indexPath)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        cameraButton.alpha = -(scrollView.contentOffset.y + cameraButtonHeight - 2) / 10
+    }
+    
     // MARK: - Private
     
     private var theme: PhotoLibraryV2UITheme?
@@ -474,7 +478,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
         )
-        collectionView.contentInset.top = cameraButtonHeight + 6
+        collectionView.contentInset.top = cameraButtonHeight + 8
     }
     
     private func recreateCollectionView() {

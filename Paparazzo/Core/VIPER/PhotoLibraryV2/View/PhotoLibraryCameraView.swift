@@ -1,7 +1,7 @@
 import UIKit
 import ImageSource
 
-class PhotoLibraryCameraView: UIView {
+class PhotoLibraryCameraCell: UICollectionViewCell {
     
     // MARK: - Subviews
     private var cameraOutputView: CameraOutputView?

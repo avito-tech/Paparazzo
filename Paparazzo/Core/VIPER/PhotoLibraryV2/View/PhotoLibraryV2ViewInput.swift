@@ -44,3 +44,7 @@ protocol PhotoLibraryV2ViewInput: class {
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
 }
+
+struct PhotoLibraryCameraCellData: Equatable {
+    var onTap: (() -> ())?
+}
