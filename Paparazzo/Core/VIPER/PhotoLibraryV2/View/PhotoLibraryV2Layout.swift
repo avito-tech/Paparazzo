@@ -1,13 +1,9 @@
 import UIKit
 
 final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
-
-    private enum ItemDisplayType {
-        case regular
-        case expanded
-    }
     
     private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
+    private var headerAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize: CGSize = .zero
     
     // MARK: - Constants
@@ -15,27 +11,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     private let insets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     private let cellSpacing = CGFloat(6)
     private let numberOfPhotosInRow = 3
-    
-    // MARK: - PhotoLibraryLayout
-    
-    func expandedSize() -> CGSize {
-        if let collectionView = collectionView {
-            let contentWidth = collectionView.bounds.size.width - insets.left - insets.right
-            return CGSize(width: contentWidth, height: 116)
-        } else {
-            return .zero
-        }
-    }
-    
-    func regularSize() -> CGSize {
-        if let collectionView = collectionView {
-            let contentWidth = collectionView.bounds.size.width - insets.left - insets.right
-            let itemWidth = (contentWidth - CGFloat(numberOfPhotosInRow - 1) * cellSpacing) / CGFloat(numberOfPhotosInRow)
-            return CGSize(width: itemWidth, height: itemWidth)
-        } else {
-            return .zero
-        }
-    }
+    private let headerViewHeight = CGFloat(166)
     
     // MARK: - UICollectionViewLayout
     
@@ -47,38 +23,32 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
         
         guard let collectionView = collectionView else {
             contentSize = .zero
-            self.attributes = [:]
+            attributes = [:]
             return
         }
         
-        self.attributes.removeAll()
+        attributes.removeAll()
         
-        let regularSize = self.regularSize()
-        let expandedSize = self.expandedSize()
+        let itemSize = cellSize()
         
         let section = 0
         let numberOfItems = collectionView.numberOfItems(inSection: section)
         
-        var cursorX = insets.left
-        var cursorY = insets.top
+        let headerMaxY = setUpHeaderAttributes(section: section)
         
-        for item in 0 ..< numberOfItems  {
-            let indexPath = IndexPath(item: item, section: section)
-            let itemSize: CGSize
-            switch styleForItemAtIndexPath(indexPath) {
-            case .regular:
-                itemSize = regularSize
-            case .expanded:
-                itemSize = expandedSize
-            }
-            let necessaryItemWidth = itemSize.width
-            let needsNewLine = (cursorX + necessaryItemWidth > collectionView.bounds.size.width)
-            let x = needsNewLine ? insets.left : cursorX
-            let y = needsNewLine ? cursorY + itemSize.height + cellSpacing : cursorY
+        var maxY: CGFloat = headerMaxY
+        
+        for item in 0 ..< numberOfItems {
+            
+            let row = floor(CGFloat(item) / CGFloat(numberOfPhotosInRow))
+            let column = CGFloat(item % numberOfPhotosInRow)
+            
             let origin = CGPoint(
-                x: x,
-                y: y
+                x: insets.left + column * (itemSize.width + cellSpacing),
+                y: headerMaxY + insets.top + row * (itemSize.height + cellSpacing)
             )
+            
+            let indexPath = IndexPath(item: item, section: section)
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = CGRect(
@@ -86,34 +56,54 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
                 size: itemSize
             )
             
-            cursorY = max(cursorY, attributes.frame.minY)
-            cursorX = attributes.frame.maxX + cellSpacing
+            maxY = max(maxY, attributes.frame.maxY)
             
             self.attributes[indexPath] = attributes
         }
         
         contentSize = CGSize(
             width: collectionView.bounds.maxX,
-            height: cursorY
+            height: maxY
         )
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return attributes.filter { $1.frame.intersects(rect) }.map { $1 }
+        return headerAttributes.filter { $1.frame.intersects(rect) }.map { $1 } ?? attributes.filter { $1.frame.intersects(rect) }.map { $1 }
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return attributes[indexPath]
     }
     
-    private func styleForItemAtIndexPath(_ indexPath: IndexPath) -> ItemDisplayType {
-        let item = collectionView?.cellForItem(at: indexPath)
-        if ((item as? PhotoLibraryItemCell) != nil) {
-            return .regular
-        } else if ((item as? PhotoLibraryCameraCell) != nil) {
-            return .expanded
+    // MARK: - Private
+    private func cellSize() -> CGSize {
+        if let collectionView = collectionView {
+            let contentWidth = collectionView.bounds.size.width - insets.left - insets.right
+            let itemWidth = (contentWidth - CGFloat(numberOfPhotosInRow - 1) * cellSpacing) / CGFloat(numberOfPhotosInRow)
+            return CGSize(width: itemWidth, height: itemWidth)
+        } else {
+            return .zero
         }
+    }
+    
+    private func setUpHeaderAttributes(section: Int) -> CGFloat {
+        let headerIndexPath = IndexPath(item: 0, section: section)
+        let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, with: headerIndexPath)
+        let origin = CGPoint(
+            x: insets.left,
+            y: insets.top
+        )
+        let size = CGSize(
+            width: (collectionView?.width ?? 0) - insets.left - insets.right,
+            height: headerViewHeight
+        )
         
-        return .regular
+        headerAttributes.frame = CGRect(
+            origin: origin,
+            size: size
+        )
+        self.headerAttributes[headerIndexPath] = headerAttributes
+        
+        return headerAttributes.frame.maxY
     }
 }

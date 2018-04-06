@@ -41,7 +41,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let continueButtonHeight = CGFloat(38)
     private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
-    private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
+    private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(
+        cellReuseIdentifier: "PhotoLibraryItemCell",
+        headerReuseIdentifier: "PhotoLibraryCameraView"
+    )
     
     // MARK: - Init
     
@@ -203,6 +206,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         // Delete existing items outside `performBatchUpdates`, otherwise there will be UI bug on scrollToBottom
         // (collection view will be scrolled to an empty space below it's actual content)
         dataSource.deleteAllItems()
+        
         collectionView.reloadData()
         
         ObjCExceptionCatcher.tryClosure(
@@ -458,6 +462,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
         )
+        if let headerReuseIdentifier = dataSource.headerReuseIdentifier {
+            collectionView.register(
+                PhotoLibraryCameraView.self,
+                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                withReuseIdentifier: headerReuseIdentifier
+            )
+        }
     }
     
     private func recreateCollectionView() {
