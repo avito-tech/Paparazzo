@@ -21,6 +21,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    private var cameraViewData: PhotoLibraryCameraViewData?
+    
     // MARK: - Subviews
     
     private let layout = PhotoLibraryV2Layout()
@@ -55,6 +57,20 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
 
         dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
             self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
+        }
+        
+        dataSource.configureHeader = { [weak self] view in
+            guard let view = view as? PhotoLibraryCameraView else {
+                return
+            }
+            
+            view.setCameraIcon(self?.theme?.cameraIcon)
+            
+            view.onTap = self?.cameraViewData?.onTap
+            
+            if let parameters = self?.cameraViewData?.parameters {
+                view.setOutputParameters(parameters)
+            }
         }
         
         backgroundColor = .white
@@ -190,6 +206,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         continueButton.setTitle(title, for: .normal)
         continueButton.accessibilityValue = title
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
+    }
+    
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+        cameraViewData = viewData
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {

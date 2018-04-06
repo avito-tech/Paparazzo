@@ -1,12 +1,14 @@
 import UIKit.UICollectionView
 
-final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollectionViewDataSource {
-    
+final class CollectionViewDataSource<CellType: Customizable>: NSObject,
+    UICollectionViewDataSource
+{
     typealias ItemType = CellType.ItemType
     
     let cellReuseIdentifier: String
     let headerReuseIdentifier: String?
     var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, IndexPath) -> ())?
+    var configureHeader: ((UIView) -> ())?
     
     private var items = [ItemType]()
     
@@ -128,6 +130,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
             withReuseIdentifier: headerReuseIdentifier,
             for: indexPath
         )
+        configureHeader?(view)
         return view
     }
 }

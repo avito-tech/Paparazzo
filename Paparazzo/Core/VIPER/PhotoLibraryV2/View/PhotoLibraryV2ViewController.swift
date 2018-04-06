@@ -90,6 +90,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         }
     }
     
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+        photoLibraryView.setCameraViewData(viewData)
+    }
+    
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
         photoLibraryView.setItems(items, scrollToBottom: scrollToBottom, completion: completion)
     }
