@@ -1,8 +1,6 @@
 import UIKit.UICollectionView
 
-final class CollectionViewDataSource<CellType: Customizable>: NSObject,
-    UICollectionViewDataSource
-{
+final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollectionViewDataSource {
     typealias ItemType = CellType.ItemType
     
     let cellReuseIdentifier: String
