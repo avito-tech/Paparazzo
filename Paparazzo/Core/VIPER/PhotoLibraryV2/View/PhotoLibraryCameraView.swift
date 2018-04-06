@@ -6,6 +6,7 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     // MARK: - Subviews
     
     private var cameraOutputView: CameraOutputView?
+    private var dimView = UIView()
     private let button = UIButton()
     
     // MARK: - Init
@@ -16,6 +17,10 @@ class PhotoLibraryCameraView: UICollectionReusableView {
         backgroundColor = .black
         layer.cornerRadius = 6
         layer.masksToBounds = true
+        
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.48)
+        
+        addSubview(dimView)
         
         button.tintColor = .white
         button.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
@@ -64,6 +69,7 @@ class PhotoLibraryCameraView: UICollectionReusableView {
         let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         
         cameraOutputView?.frame = UIEdgeInsetsInsetRect(bounds, insets)
+        dimView.frame = bounds
         button.frame = bounds
     }
     
