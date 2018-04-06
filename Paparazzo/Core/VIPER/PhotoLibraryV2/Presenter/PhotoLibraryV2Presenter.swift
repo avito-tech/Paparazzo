@@ -210,20 +210,20 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         return cellData
     }
     
-    private func cameraViewData(completion: @escaping (_ cellData: PhotoLibraryCameraViewData?) -> ()) {
+    private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
         interactor.getOutputParameters { parameters in
             guard let parameters = parameters else {
                 completion(nil)
                 return
             }
-            let cellData = PhotoLibraryCameraViewData(
+            let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: {
-                    print("ololo")
+                    // TODO: add routing
                 }
             )
             
-            completion(cellData)
+            completion(viewData)
         }
     }
     
