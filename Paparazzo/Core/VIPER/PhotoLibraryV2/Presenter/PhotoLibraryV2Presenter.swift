@@ -218,8 +218,20 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
-                onTap: {
-                    // TODO: add routing
+                onTap: { [weak self] in
+                    let data = MediaPickerData(
+                        items: [],
+                        maxItemsCount: 20,
+                        cropEnabled: true,
+                        autocorrectEnabled: true,
+                        hapticFeedbackEnabled: true,
+                        cropCanvasSize: cropCanvasSize
+                    )
+                    self?.router.showMediaPicker(
+                        data: data,
+                        overridenTheme: PaparazzoUITheme(),
+                        configure: { module in
+                    })
                 }
             )
             
