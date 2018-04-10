@@ -13,6 +13,8 @@ protocol PhotoLibraryV2ViewInput: class {
     
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
     
+    func setCameraViewData(_: PhotoLibraryCameraViewData)
+    
     func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
     
@@ -43,4 +45,9 @@ protocol PhotoLibraryV2ViewInput: class {
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
+}
+
+struct PhotoLibraryCameraViewData {
+    let parameters: CameraOutputParameters
+    let onTap: (() -> ())?
 }

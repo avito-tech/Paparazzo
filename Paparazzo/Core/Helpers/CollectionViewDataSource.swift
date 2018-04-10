@@ -1,16 +1,21 @@
 import UIKit.UICollectionView
 
 final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollectionViewDataSource {
-    
     typealias ItemType = CellType.ItemType
     
     let cellReuseIdentifier: String
+    let headerReuseIdentifier: String?
     var additionalCellConfiguration: ((CellType, ItemType, UICollectionView, IndexPath) -> ())?
+    var configureHeader: ((UIView) -> ())?
     
     private var items = [ItemType]()
     
-    init(cellReuseIdentifier: String) {
+    init(
+        cellReuseIdentifier: String,
+        headerReuseIdentifier: String? = nil)
+    {
         self.cellReuseIdentifier = cellReuseIdentifier
+        self.headerReuseIdentifier = headerReuseIdentifier
     }
     
     func item(at indexPath: IndexPath) -> ItemType {
@@ -107,6 +112,24 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         }
         
         return cell
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath) -> UICollectionReusableView
+    {
+        guard let headerReuseIdentifier = headerReuseIdentifier else {
+            preconditionFailure("Invalid supplementary view type for this collection view")
+        }
+        
+        let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: headerReuseIdentifier,
+            for: indexPath
+        )
+        configureHeader?(view)
+        return view
     }
 }
 

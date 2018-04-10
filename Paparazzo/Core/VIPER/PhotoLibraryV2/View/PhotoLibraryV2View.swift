@@ -21,9 +21,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    private var cameraViewData: PhotoLibraryCameraViewData?
+    
     // MARK: - Subviews
     
-    private let layout = PhotoLibraryLayout()
+    private let layout = PhotoLibraryV2Layout()
     private var collectionView: UICollectionView
     private var collectionSnapshotView: UIView?
     private let titleView = PhotoLibraryTitleView()
@@ -41,7 +43,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let continueButtonHeight = CGFloat(38)
     private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
-    private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(cellReuseIdentifier: "PhotoLibraryItemCell")
+    private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(
+        cellReuseIdentifier: "PhotoLibraryItemCell",
+        headerReuseIdentifier: "PhotoLibraryCameraView"
+    )
     
     // MARK: - Init
     
@@ -50,9 +55,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         super.init(frame: .zero)
 
-        dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
-            self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
-        }
+        configureDataSource()
         
         backgroundColor = .white
         
@@ -189,6 +192,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+        cameraViewData = viewData
+    }
+    
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
         
         // If `items` contain a lot of elements, then there's a chance that by the time
@@ -203,6 +210,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         // Delete existing items outside `performBatchUpdates`, otherwise there will be UI bug on scrollToBottom
         // (collection view will be scrolled to an empty space below it's actual content)
         dataSource.deleteAllItems()
+        
         collectionView.reloadData()
         
         ObjCExceptionCatcher.tryClosure(
@@ -423,6 +431,26 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     private var theme: PhotoLibraryV2UITheme?
     
+    private func configureDataSource() {
+        dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
+            self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
+        }
+        
+        dataSource.configureHeader = { [weak self] view in
+            guard let view = view as? PhotoLibraryCameraView else {
+                return
+            }
+            
+            view.setCameraIcon(self?.theme?.cameraIcon)
+            
+            view.onTap = self?.cameraViewData?.onTap
+            
+            if let parameters = self?.cameraViewData?.parameters {
+                view.setOutputParameters(parameters)
+            }
+        }
+    }
+    
     private func setUpAccessibilityIdentifiers() {
         accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
     }
@@ -458,6 +486,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
         )
+        if let headerReuseIdentifier = dataSource.headerReuseIdentifier {
+            collectionView.register(
+                PhotoLibraryCameraView.self,
+                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                withReuseIdentifier: headerReuseIdentifier
+            )
+        }
     }
     
     private func recreateCollectionView() {

@@ -34,11 +34,12 @@ public enum AccessibilityId: String {
     // LibraryControls
     case confirmLibraryButton
     case discardLibraryButton
+    case cameraInLibraryButton
     
     // PhotoLibrary
     case photoLibrary
     
-    //CameraView
+    // CameraView
     case cameraView
     case cameraTitle
     case cameraSubtitle

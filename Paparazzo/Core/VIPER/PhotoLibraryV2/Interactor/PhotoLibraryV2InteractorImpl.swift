@@ -9,22 +9,35 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     
     // MARK: - Dependencies
     private let photoLibraryItemsService: PhotoLibraryItemsService
+    private let cameraService: CameraService
     
     // MARK: - Init
     
     init(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int? = nil,
-        photoLibraryItemsService: PhotoLibraryItemsService)
+        photoLibraryItemsService: PhotoLibraryItemsService,
+        cameraService: CameraService)
     {
         self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService
+        self.cameraService = cameraService
     }
     
     // MARK: - PhotoLibraryInteractor
     private(set) var currentAlbum: PhotoLibraryAlbum?
     private(set) var selectedItems = [PhotoLibraryItem]()
+    
+    func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ()) {
+        cameraService.getCaptureSession { [cameraService] captureSession in
+            cameraService.getOutputOrientation { outputOrientation in
+                dispatch_to_main_queue {
+                    completion(captureSession.flatMap { CameraOutputParameters(captureSession: $0, orientation: outputOrientation) })
+                }
+            }
+        }
+    }
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)

@@ -135,6 +135,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         view?.onDimViewTap = { [weak self] in
             self?.view?.hideAlbumsList()
         }
+        
+        cameraViewData { [weak self] viewData in
+            if let viewData = viewData {
+                self?.view?.setCameraViewData(viewData)
+            }
+        }
     }
     
     private func appName() -> String {
@@ -202,6 +208,23 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         return cellData
+    }
+    
+    private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
+        interactor.getOutputParameters { parameters in
+            guard let parameters = parameters else {
+                completion(nil)
+                return
+            }
+            let viewData = PhotoLibraryCameraViewData(
+                parameters: parameters,
+                onTap: {
+                    // TODO: add routing
+                }
+            )
+            
+            completion(viewData)
+        }
     }
     
     private func viewChanges(from changes: PhotoLibraryChanges) -> PhotoLibraryViewChanges {
