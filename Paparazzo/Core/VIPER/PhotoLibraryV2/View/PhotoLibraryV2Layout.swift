@@ -24,10 +24,12 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
         guard let collectionView = collectionView else {
             contentSize = .zero
             attributes = [:]
+            headerAttributes = [:]
             return
         }
         
         attributes.removeAll()
+        headerAttributes.removeAll()
         
         let itemSize = cellSize()
         
@@ -68,7 +70,10 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return headerAttributes.filter { $1.frame.intersects(rect) }.map { $1 } ?? attributes.filter { $1.frame.intersects(rect) }.map { $1 }
+        return
+            headerAttributes.filter { $1.frame.intersects(rect) }.map { $1 }
+                ??
+                attributes.filter { $1.frame.intersects(rect) }.map { $1 }
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {

@@ -55,23 +55,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         super.init(frame: .zero)
 
-        dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
-            self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
-        }
-        
-        dataSource.configureHeader = { [weak self] view in
-            guard let view = view as? PhotoLibraryCameraView else {
-                return
-            }
-            
-            view.setCameraIcon(self?.theme?.cameraIcon)
-            
-            view.onTap = self?.cameraViewData?.onTap
-            
-            if let parameters = self?.cameraViewData?.parameters {
-                view.setOutputParameters(parameters)
-            }
-        }
+        configureDataSource()
         
         backgroundColor = .white
         
@@ -446,6 +430,26 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     // MARK: - Private
     
     private var theme: PhotoLibraryV2UITheme?
+    
+    private func configureDataSource() {
+        dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
+            self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
+        }
+        
+        dataSource.configureHeader = { [weak self] view in
+            guard let view = view as? PhotoLibraryCameraView else {
+                return
+            }
+            
+            view.setCameraIcon(self?.theme?.cameraIcon)
+            
+            view.onTap = self?.cameraViewData?.onTap
+            
+            if let parameters = self?.cameraViewData?.parameters {
+                view.setOutputParameters(parameters)
+            }
+        }
+    }
     
     private func setUpAccessibilityIdentifiers() {
         accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
