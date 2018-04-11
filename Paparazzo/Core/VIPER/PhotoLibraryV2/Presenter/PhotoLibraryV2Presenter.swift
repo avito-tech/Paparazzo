@@ -120,7 +120,24 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.onContinueButtonTap = { [weak self] in
             if let strongSelf = self {
-                self?.onFinish?(.selectedItems(strongSelf.interactor.selectedItems))
+                guard let strongSelf = self else { return }
+                let selectedItems = strongSelf.interactor.selectedItems
+                let data = strongSelf.interactor.mediaPickerData.dataBySettingPhotoLibraryItems(
+                    selectedItems
+                )
+                self?.router.showMediaPicker(
+                    data: data,
+                    overridenTheme: strongSelf.overridenTheme,
+                    configure: { module in
+                        weak var weakModule = module
+                        module.onCancel = {
+                            weakModule?.dismissModule()
+                        }
+                        
+                        module.onFinish = { result in
+                            weakModule?.dismissModule()
+                        }
+                })
             }
         }
         
@@ -237,13 +254,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                             
                             module.onFinish = { result in
                                 weakModule?.dismissModule()
-//
-//                                switch result {
-//                                case .selectedItems(let items):
-//                                    self?.interactor.setPhotoLibraryItems(items)
-//                                case .cancelled:
-//                                    break
-//                                }
                             }
                     })
                 }
@@ -259,6 +269,28 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             insertedItems: changes.insertedItems.map { (index: $0, cellData: cellData($1)) },
             updatedItems: changes.updatedItems.map { (index: $0, cellData: cellData($1)) },
             movedIndexes: changes.movedIndexes
+        )
+    }
+}
+
+extension MediaPickerData {
+    func dataBySettingPhotoLibraryItems(_ items: [PhotoLibraryItem]) -> MediaPickerData {
+        let mediaPickerItems = items.map {
+            MediaPickerItem(
+                image: $0.image,
+                source: .photoLibrary
+            )
+        }
+        return MediaPickerData(
+            items: mediaPickerItems,
+            autocorrectionFilters: autocorrectionFilters,
+            selectedItem: selectedItem,
+            maxItemsCount: maxItemsCount,
+            cropEnabled: cropEnabled,
+            autocorrectEnabled: autocorrectEnabled,
+            hapticFeedbackEnabled: hapticFeedbackEnabled,
+            cropCanvasSize: cropCanvasSize,
+            initialActiveCameraType: initialActiveCameraType
         )
     }
 }
