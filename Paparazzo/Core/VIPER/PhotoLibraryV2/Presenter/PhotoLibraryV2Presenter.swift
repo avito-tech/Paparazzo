@@ -6,6 +6,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private let interactor: PhotoLibraryV2Interactor
     private let router: PhotoLibraryV2Router
+    private let overridenTheme: PaparazzoUITheme
     
     weak var view: PhotoLibraryV2ViewInput? {
         didSet {
@@ -20,9 +21,14 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     // MARK: - Init
     
-    init(interactor: PhotoLibraryV2Interactor, router: PhotoLibraryV2Router) {
+    init(
+        interactor: PhotoLibraryV2Interactor,
+        router: PhotoLibraryV2Router,
+        overridenTheme: PaparazzoUITheme)
+    {
         self.interactor = interactor
         self.router = router
+        self.overridenTheme = overridenTheme
     }
     
     // MARK: - PhotoLibraryModule
@@ -219,18 +225,26 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: { [weak self] in
-                    let data = MediaPickerData(
-                        items: [],
-                        maxItemsCount: 20,
-                        cropEnabled: true,
-                        autocorrectEnabled: true,
-                        hapticFeedbackEnabled: true,
-                        cropCanvasSize: cropCanvasSize
-                    )
+                    guard let strongSelf = self else { return }
                     self?.router.showMediaPicker(
-                        data: data,
-                        overridenTheme: PaparazzoUITheme(),
+                        data: strongSelf.interactor.mediaPickerData,
+                        overridenTheme: strongSelf.overridenTheme,
                         configure: { module in
+                            weak var weakModule = module
+                            module.onCancel = {
+                                weakModule?.dismissModule()
+                            }
+                            
+                            module.onFinish = { result in
+                                weakModule?.dismissModule()
+//
+//                                switch result {
+//                                case .selectedItems(let items):
+//                                    self?.interactor.setPhotoLibraryItems(items)
+//                                case .cancelled:
+//                                    break
+//                                }
+                            }
                     })
                 }
             )

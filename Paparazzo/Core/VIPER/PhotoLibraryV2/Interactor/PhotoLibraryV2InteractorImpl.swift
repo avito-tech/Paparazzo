@@ -11,14 +11,19 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     private let photoLibraryItemsService: PhotoLibraryItemsService
     private let cameraService: CameraService
     
+    // MARK: - Properties
+    let mediaPickerData: MediaPickerData
+    
     // MARK: - Init
     
     init(
+        mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int? = nil,
         photoLibraryItemsService: PhotoLibraryItemsService,
         cameraService: CameraService)
     {
+        self.mediaPickerData = mediaPickerData
         self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService

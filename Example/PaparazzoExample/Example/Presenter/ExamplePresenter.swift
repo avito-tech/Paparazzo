@@ -63,7 +63,18 @@ final class ExamplePresenter {
         
         view?.onShowPhotoLibraryV2ButtonTap = { [weak self] in
             self?.interactor.photoLibraryItems { items in
-                self?.router.showPhotoLibraryV2(selectedItems: items, maxSelectedItemsCount: 5) { module in
+                let data = MediaPickerData(
+                    maxItemsCount: 20,
+                    cropEnabled: true,
+                    autocorrectEnabled: true,
+                    hapticFeedbackEnabled: true,
+                    cropCanvasSize: self?.cropCanvasSize ?? .zero
+                )
+                self?.router.showPhotoLibraryV2(
+                    mediaPickerData: data,
+                    selectedItems: items,
+                    maxSelectedItemsCount: 5)
+                { module in
                     weak var weakModule = module
                     module.onFinish = { result in
                         weakModule?.dismissModule()

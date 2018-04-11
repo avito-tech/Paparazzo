@@ -3,6 +3,7 @@ import ImageSource
 
 protocol PhotoLibraryV2Interactor: class {
     
+    var mediaPickerData: MediaPickerData { get }
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [PhotoLibraryItem] { get }
     

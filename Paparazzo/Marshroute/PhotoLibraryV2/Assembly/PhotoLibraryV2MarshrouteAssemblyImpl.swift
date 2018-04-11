@@ -13,6 +13,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     }
     
     public func module(
+        mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
@@ -22,6 +23,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
         let interactor = PhotoLibraryV2InteractorImpl(
+            mediaPickerData: mediaPickerData,
             selectedItems: selectedItems,
             maxSelectedItemsCount: maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
@@ -35,7 +37,8 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         
         let presenter = PhotoLibraryV2Presenter(
             interactor: interactor,
-            router: router
+            router: router,
+            overridenTheme: theme
         )
         
         let viewController = PhotoLibraryV2ViewController()

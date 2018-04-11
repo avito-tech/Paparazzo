@@ -19,6 +19,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
         let interactor = PhotoLibraryV2InteractorImpl(
+            mediaPickerData: data.mediaPickerData,
             selectedItems: data.selectedItems,
             maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
@@ -34,7 +35,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         
         let presenter = PhotoLibraryV2Presenter(
             interactor: interactor,
-            router: router
+            router: router,
+            overridenTheme: theme
         )
         
         viewController.addDisposable(presenter)
