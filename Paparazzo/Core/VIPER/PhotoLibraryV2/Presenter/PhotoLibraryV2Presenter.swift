@@ -97,7 +97,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             case .fullReload(let items):
                 needToShowPlaceholder = items.isEmpty
                 self?.view?.setItems(
-                    items.map(strongSelf.cellData),
+                    items.reversed().map(strongSelf.cellData),
                     scrollToTop: strongSelf.shouldScrollToTopOnFullReload,
                     completion: {
                         self?.shouldScrollToTopOnFullReload = false
