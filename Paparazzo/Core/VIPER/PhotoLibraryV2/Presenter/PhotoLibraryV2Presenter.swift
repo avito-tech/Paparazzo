@@ -226,12 +226,16 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             if let selectionState = self?.interactor.selectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
+            
+            self?.view?.setHeaderVisible(false)
         }
         
         cellData.onDeselect = { [weak self] in
             if let selectionState = self?.interactor.deselectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
+            let hasNoItems = self?.interactor.selectedItems.isEmpty == true
+            self?.view?.setHeaderVisible(hasNoItems)
         }
         
         return cellData

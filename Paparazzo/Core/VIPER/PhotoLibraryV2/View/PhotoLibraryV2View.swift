@@ -358,6 +358,17 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    func setHeaderVisible(_ visible: Bool) {
+        guard layout.hasHeader != visible else {
+            return 
+        }
+        DispatchQueue.main.async {
+            self.collectionView.performBatchUpdates { [weak self] in
+                self?.layout.hasHeader = visible
+            }
+        }
+    }
+    
     func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
         albumsTableView.setCellDataList(albums) { [weak self] in
             self?.setNeedsLayout()
@@ -416,19 +427,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         dataSource.item(at: indexPath).onSelect?()
         
-        collectionView.performBatchUpdates { [weak self] in
-            self?.layout.hasHeader = false
-        }
-        
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         onDeselectItem(at: indexPath)
-        
-        collectionView.performBatchUpdates { [weak self] in
-            self?.layout.hasHeader = collectionView.indexPathsForSelectedItems?.isEmpty == true
-        }
     }
     
     // MARK: - Private
