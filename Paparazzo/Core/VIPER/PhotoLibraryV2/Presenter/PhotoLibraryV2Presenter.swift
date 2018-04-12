@@ -122,6 +122,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             if let strongSelf = self {
                 guard let strongSelf = self else { return }
                 let selectedItems = strongSelf.interactor.selectedItems
+                guard selectedItems.isEmpty == false else {
+                    self?.onFinish?(.selectedItems([]))
+                    return
+                }
+                
                 let data = strongSelf.interactor.mediaPickerData.dataBySettingPhotoLibraryItems(
                     selectedItems
                 )
@@ -136,6 +141,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                         
                         module.onFinish = { result in
                             weakModule?.dismissModule()
+                            self?.onFinish?(.selectedItems(result))
                         }
                 })
             }
@@ -252,6 +258,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                             
                             module.onFinish = { result in
                                 weakModule?.dismissModule()
+                                self?.onFinish?(.selectedItems(result))
                             }
                     })
                 }
