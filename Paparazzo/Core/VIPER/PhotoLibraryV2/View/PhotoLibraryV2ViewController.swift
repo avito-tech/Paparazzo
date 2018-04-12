@@ -114,10 +114,6 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.deselectAndAdjustAllCells()
     }
     
-    func scrollToBottom() {
-        photoLibraryView.scrollToBottom()
-    }
-    
     func setAccessDeniedViewVisible(_ visible: Bool) {
         photoLibraryView.setAccessDeniedViewVisible(visible)
     }

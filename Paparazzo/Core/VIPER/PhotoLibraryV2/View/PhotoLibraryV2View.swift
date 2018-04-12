@@ -317,10 +317,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
-    func scrollToBottom() {
-        collectionView.scrollToBottom()
-    }
-    
     func setTitle(_ title: String) {
         titleView.setTitle(title)
     }

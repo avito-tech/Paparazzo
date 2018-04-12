@@ -23,8 +23,6 @@ protocol PhotoLibraryV2ViewInput: class {
     
     func deselectAllItems()
     
-    func scrollToBottom()
-    
     func setAlbums(_: [PhotoLibraryAlbumCellData])
     func selectAlbum(withId: String)
     func showAlbumsList()
