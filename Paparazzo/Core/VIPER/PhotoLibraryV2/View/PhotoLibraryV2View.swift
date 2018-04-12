@@ -416,8 +416,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         dataSource.item(at: indexPath).onSelect?()
         
-        layout.hasHeader = false
-        layout.invalidateLayout()
+        collectionView.performBatchUpdates { [weak self] in
+            self?.layout.hasHeader = false
+        }
         
         adjustDimmingForCellAtIndexPath(indexPath)
     }
@@ -425,8 +426,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         onDeselectItem(at: indexPath)
         
-        layout.hasHeader = collectionView.indexPathsForSelectedItems?.count == 0
-        layout.invalidateLayout()
+        collectionView.performBatchUpdates { [weak self] in
+            self?.layout.hasHeader = collectionView.indexPathsForSelectedItems?.isEmpty == true
+        }
     }
     
     // MARK: - Private
