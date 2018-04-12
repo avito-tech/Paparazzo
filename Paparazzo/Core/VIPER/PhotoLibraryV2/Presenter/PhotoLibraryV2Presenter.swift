@@ -41,7 +41,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
-        view?.setContinueButtonTitle(title)
+        updateContinueButtonTitle()
     }
     
     // MARK: - Private
@@ -49,7 +49,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func setUpView() {
         
-        view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
+        updateContinueButtonTitle()
         
         view?.setTitleVisible(false)
         
@@ -170,6 +170,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
     }
     
+    private func updateContinueButtonTitle() {
+        let title = interactor.selectedItems.isEmpty ? localized("Continue") : localized("Select")
+        view?.setContinueButtonTitle(continueButtonTitle ?? title)
+    }
+    
     private func appName() -> String {
         return Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
     }
@@ -220,6 +225,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             if let selectionState = self?.interactor.prepareSelection() {
                 self?.adjustViewForSelectionState(selectionState)
             }
+            
+            
         }
         
         cellData.onSelect = { [weak self] in
@@ -228,6 +235,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
             
             self?.view?.setHeaderVisible(false)
+            self?.updateContinueButtonTitle()
         }
         
         cellData.onDeselect = { [weak self] in
@@ -236,6 +244,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
             let hasNoItems = self?.interactor.selectedItems.isEmpty == true
             self?.view?.setHeaderVisible(hasNoItems)
+            self?.updateContinueButtonTitle()
         }
         
         return cellData
