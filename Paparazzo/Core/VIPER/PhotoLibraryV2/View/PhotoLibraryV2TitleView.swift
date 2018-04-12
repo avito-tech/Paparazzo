@@ -17,6 +17,8 @@ final class PhotoLibraryV2TitleView: UIView {
         
         addSubview(label)
         addSubview(iconView)
+        
+        iconView.tintColor = .black
     }
     
     required init?(coder aDecoder: NSCoder) {
