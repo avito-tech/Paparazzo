@@ -127,7 +127,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     return
                 }
                 
-                let data = strongSelf.interactor.mediaPickerData.dataBySettingPhotoLibraryItems(
+                let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(
                     selectedItems
                 )
                 self?.router.showMediaPicker(
@@ -248,7 +248,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 onTap: { [weak self] in
                     guard let strongSelf = self else { return }
                     self?.router.showMediaPicker(
-                        data: strongSelf.interactor.mediaPickerData,
+                        data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
                         overridenTheme: strongSelf.overridenTheme,
                         configure: { module in
                             weak var weakModule = module
@@ -279,7 +279,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
 }
 
 extension MediaPickerData {
-    func dataBySettingPhotoLibraryItems(_ items: [PhotoLibraryItem]) -> MediaPickerData {
+    func bySettingPhotoLibraryItems(_ items: [PhotoLibraryItem]) -> MediaPickerData {
         let mediaPickerItems = items.map {
             MediaPickerItem(
                 image: $0.image,
@@ -295,7 +295,25 @@ extension MediaPickerData {
             autocorrectEnabled: autocorrectEnabled,
             hapticFeedbackEnabled: hapticFeedbackEnabled,
             cropCanvasSize: cropCanvasSize,
-            initialActiveCameraType: initialActiveCameraType
+            initialActiveCameraType: initialActiveCameraType,
+            cameraEnabled: false,
+            photoLibraryEnabled: false
+        )
+    }
+    
+    func byDisablingLibrary() -> MediaPickerData {
+        return MediaPickerData(
+            items: items,
+            autocorrectionFilters: autocorrectionFilters,
+            selectedItem: selectedItem,
+            maxItemsCount: maxItemsCount,
+            cropEnabled: cropEnabled,
+            autocorrectEnabled: autocorrectEnabled,
+            hapticFeedbackEnabled: hapticFeedbackEnabled,
+            cropCanvasSize: cropCanvasSize,
+            initialActiveCameraType: initialActiveCameraType,
+            cameraEnabled: cameraEnabled,
+            photoLibraryEnabled: false
         )
     }
 }

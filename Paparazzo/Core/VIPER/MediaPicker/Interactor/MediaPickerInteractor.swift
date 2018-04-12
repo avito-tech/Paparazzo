@@ -4,6 +4,8 @@ protocol MediaPickerInteractor: class {
     
     var items: [MediaPickerItem] { get }
     var cropCanvasSize: CGSize { get }
+    var cameraEnabled: Bool { get }
+    var photoLibraryEnabled: Bool { get }
     var photoLibraryItems: [PhotoLibraryItem] { get }
     var selectedItem: MediaPickerItem? { get }
     var maxItemsCount: Int? { get }

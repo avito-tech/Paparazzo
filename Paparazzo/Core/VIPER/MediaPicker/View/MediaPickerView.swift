@@ -303,6 +303,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         cameraControlsView.setPhotoLibraryButtonEnabled(enabled)
     }
     
+    func setPhotoLibraryButtonVisible(_ visible: Bool) {
+        cameraControlsView.setPhotoLibraryButtonVisible(visible)
+    }
+    
     func setContinueButtonVisible(_ visible: Bool) {
         continueButton.isHidden = !visible
     }

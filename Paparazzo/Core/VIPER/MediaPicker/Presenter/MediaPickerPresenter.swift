@@ -101,13 +101,20 @@ final class MediaPickerPresenter: MediaPickerModule {
         let itemToSelectAfterRemoval = itemWasSelected ? adjacentItem : interactor.selectedItem
         
         view?.removeItem(item)
-        view?.setCameraButtonVisible(interactor.canAddItems())
+        
+        let canShowCamera = interactor.canAddItems() && interactor.cameraEnabled
+        
+        view?.setCameraButtonVisible(canShowCamera)
         
         if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
             view?.selectItem(itemToSelectAfterRemoval)
         } else {
-            view?.selectCamera()
-            view?.setPhotoTitleAlpha(0)
+            if canShowCamera {
+                view?.selectCamera()
+                view?.setPhotoTitleAlpha(0)
+            } else {
+                onCancel?()
+            }
         }
         
         onItemRemove?(item, index)
@@ -135,6 +142,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             updateThumbnailsVisibility()
         }
     }
+    
     private func setUpView() {
         
         view?.setContinueButtonTitle(continueButtonTitle ?? localized("Continue"))
@@ -142,6 +150,9 @@ final class MediaPickerPresenter: MediaPickerModule {
         updateThumbnailsVisibility()
         
         view?.setCameraControlsEnabled(false)
+        
+        view?.setPhotoLibraryButtonVisible(interactor.photoLibraryEnabled)
+        view?.setCameraButtonVisible(interactor.cameraEnabled)
         
         cameraModuleInput.getOutputParameters { [weak self] parameters in
             if let parameters = parameters {
@@ -174,7 +185,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         if items.count > 0 {
         
-            view?.setCameraButtonVisible(interactor.canAddItems())
+            view?.setCameraButtonVisible(interactor.canAddItems() && interactor.cameraEnabled)
             
             view?.addItems(items, animated: false) { [weak self] in
                 let selectedItem = self?.interactor.selectedItem
@@ -423,7 +434,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 return
             }
             
-            view?.setCameraButtonVisible(canAddMoreItems)
+            view?.setCameraButtonVisible(canAddMoreItems && strongSelf.interactor.cameraEnabled)
             
             if fromCamera && canAddMoreItems {
                 view?.setMode(.camera)

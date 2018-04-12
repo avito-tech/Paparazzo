@@ -165,6 +165,10 @@ final class CameraControlsView: UIView, ThemeConfigurable {
         photoView.isUserInteractionEnabled = enabled
     }
     
+    func setPhotoLibraryButtonVisible(_ visible: Bool) {
+        photoView.isHidden = !visible
+    }
+    
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
