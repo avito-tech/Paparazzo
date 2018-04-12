@@ -17,7 +17,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     // MARK: - State
-    var shouldScrollToBottomOnFullReload = true
+    var shouldScrollToTopOnFullReload = true
     
     // MARK: - Init
     
@@ -98,9 +98,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 needToShowPlaceholder = items.isEmpty
                 self?.view?.setItems(
                     items.map(strongSelf.cellData),
-                    scrollToBottom: strongSelf.shouldScrollToBottomOnFullReload,
+                    scrollToTop: strongSelf.shouldScrollToTopOnFullReload,
                     completion: {
-                        self?.shouldScrollToBottomOnFullReload = false
+                        self?.shouldScrollToTopOnFullReload = false
                         self?.adjustViewForSelectionState(selectionState)
                         self?.view?.setProgressVisible(false)
                     }
@@ -199,7 +199,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func selectAlbum(_ album: PhotoLibraryAlbum) {
-        shouldScrollToBottomOnFullReload = true
+        shouldScrollToTopOnFullReload = true
         interactor.setCurrentAlbum(album)
         adjustView(for: album)
     }
