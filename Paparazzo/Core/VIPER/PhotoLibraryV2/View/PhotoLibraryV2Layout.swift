@@ -5,6 +5,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var headerAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize: CGSize = .zero
+    var hasHeader = true
     
     // MARK: - Constants
     
@@ -92,8 +93,16 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     }
     
     private func setUpHeaderAttributes(section: Int) -> CGFloat {
+        guard hasHeader == true else {
+            self.headerAttributes.removeAll()
+            return insets.top
+        }
+        
         let headerIndexPath = IndexPath(item: 0, section: section)
-        let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, with: headerIndexPath)
+        let headerAttributes = UICollectionViewLayoutAttributes(
+            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+            with: headerIndexPath
+        )
         let origin = CGPoint(
             x: insets.left,
             y: insets.top

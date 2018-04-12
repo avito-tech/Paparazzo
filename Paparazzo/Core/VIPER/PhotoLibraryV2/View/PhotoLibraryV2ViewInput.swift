@@ -13,7 +13,7 @@ protocol PhotoLibraryV2ViewInput: class {
     
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
     
-    func setCameraViewData(_: PhotoLibraryCameraViewData)
+    func setCameraViewData(_: PhotoLibraryCameraViewData?)
     
     func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)

@@ -90,7 +90,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         }
     }
     
-    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
         photoLibraryView.setCameraViewData(viewData)
     }
     

@@ -192,8 +192,12 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
-    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
+        layout.hasHeader = viewData != nil
         cameraViewData = viewData
+//        layout.invalidateLayout()
+        collectionView.setCollectionViewLayout(layout, animated: true)
+        layout.invalidateLayout()
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {

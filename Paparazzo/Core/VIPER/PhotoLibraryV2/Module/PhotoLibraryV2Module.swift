@@ -10,6 +10,6 @@ public protocol PhotoLibraryV2Module: class {
 }
 
 public enum PhotoLibraryV2ModuleResult {
-    case selectedItems([PhotoLibraryItem])
+    case selectedItems([MediaPickerItem])
     case cancelled
 }

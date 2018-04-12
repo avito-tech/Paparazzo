@@ -80,9 +80,8 @@ final class ExamplePresenter {
                         weakModule?.dismissModule()
                         
                         switch result {
-                        case .selectedItems(let items):
-                            self?.interactor.setPhotoLibraryItems(items)
-                        case .cancelled:
+                        case .selectedItems,
+                             .cancelled:
                             break
                         }
                     }
