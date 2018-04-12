@@ -28,7 +28,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let layout = PhotoLibraryV2Layout()
     private var collectionView: UICollectionView
     private var collectionSnapshotView: UIView?
-    private let titleView = PhotoLibraryTitleView()
+    private let titleView = PhotoLibraryV2TitleView()
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     private let dimView = UIView()
