@@ -243,10 +243,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
         interactor.getOutputParameters { parameters in
-            guard let parameters = parameters else {
-                completion(nil)
-                return
-            }
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: { [weak self] in

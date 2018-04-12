@@ -194,6 +194,19 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
         cameraViewData = viewData
+        dataSource.configureHeader = { [weak self] view in
+            guard let view = view as? PhotoLibraryCameraView else {
+                return
+            }
+            
+            view.setCameraIcon(self?.theme?.cameraIcon)
+            
+            view.onTap = self?.cameraViewData?.onTap
+            
+            if let parameters = self?.cameraViewData?.parameters {
+                view.setOutputParameters(parameters)
+            }
+        }
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {

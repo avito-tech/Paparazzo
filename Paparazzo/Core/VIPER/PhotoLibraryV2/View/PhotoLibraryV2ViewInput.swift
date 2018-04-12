@@ -47,6 +47,6 @@ protocol PhotoLibraryV2ViewInput: class {
 }
 
 struct PhotoLibraryCameraViewData {
-    let parameters: CameraOutputParameters
+    let parameters: CameraOutputParameters?
     let onTap: (() -> ())?
 }
