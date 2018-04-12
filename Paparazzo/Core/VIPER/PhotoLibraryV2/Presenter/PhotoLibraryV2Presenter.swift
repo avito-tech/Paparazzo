@@ -220,19 +220,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             if let selectionState = self?.interactor.selectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
-            
-            self?.cameraViewData { [weak self] viewData in
-                self?.view?.setCameraViewData(viewData)
-            }
         }
         
         cellData.onDeselect = { [weak self] in
             if let selectionState = self?.interactor.deselectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
-            }
-            
-            self?.cameraViewData { [weak self] viewData in
-                self?.view?.setCameraViewData(viewData)
             }
         }
         
@@ -240,11 +232,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
-        guard interactor.selectedItems.count == 0 else {
-            completion(nil)
-            return
-        }
-        
         interactor.getOutputParameters { parameters in
             guard let parameters = parameters else {
                 completion(nil)
@@ -295,7 +282,7 @@ extension MediaPickerData {
         return MediaPickerData(
             items: mediaPickerItems,
             autocorrectionFilters: autocorrectionFilters,
-            selectedItem: selectedItem,
+            selectedItem: mediaPickerItems.first ?? selectedItem,
             maxItemsCount: maxItemsCount,
             cropEnabled: cropEnabled,
             autocorrectEnabled: autocorrectEnabled,

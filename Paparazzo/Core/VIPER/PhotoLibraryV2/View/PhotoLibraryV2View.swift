@@ -193,11 +193,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
-        layout.hasHeader = viewData != nil
         cameraViewData = viewData
-//        layout.invalidateLayout()
-        collectionView.setCollectionViewLayout(layout, animated: true)
-        layout.invalidateLayout()
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
@@ -424,11 +420,17 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         dataSource.item(at: indexPath).onSelect?()
         
+        layout.hasHeader = false
+        layout.invalidateLayout()
+        
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         onDeselectItem(at: indexPath)
+        
+        layout.hasHeader = collectionView.indexPathsForSelectedItems?.count == 0
+        layout.invalidateLayout()
     }
     
     // MARK: - Private
