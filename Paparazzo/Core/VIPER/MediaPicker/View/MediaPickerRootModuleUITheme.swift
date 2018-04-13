@@ -21,6 +21,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cropPhotoIcon: UIImage? { get }
     var returnToCameraIcon: UIImage? { get }
     var closeCameraIcon: UIImage? { get }
+    var backIcon: UIImage? { get }
     var flashOnIcon: UIImage? { get }
     var flashOffIcon: UIImage? { get }
     var cameraToggleIcon: UIImage? { get }

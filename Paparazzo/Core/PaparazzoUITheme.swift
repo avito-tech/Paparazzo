@@ -23,6 +23,7 @@ public struct PaparazzoUITheme:
     public var cropPhotoIcon = PaparazzoUITheme.image(named: "crop")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")
+    public var backIcon = PaparazzoUITheme.image(named: "bt-back")
     public var flashOnIcon = PaparazzoUITheme.image(named: "light_on")
     public var flashOffIcon = PaparazzoUITheme.image(named: "light_off")
     public var cameraToggleIcon = PaparazzoUITheme.image(named: "back_front")

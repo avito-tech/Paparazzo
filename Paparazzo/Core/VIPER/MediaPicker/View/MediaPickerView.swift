@@ -120,8 +120,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
         continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
         
-        closeButton.setImage(theme.closeCameraIcon, for: .normal)
-        
         continueButton.setTitleColor(
             theme.cameraContinueButtonTitleColor,
             for: .normal
@@ -422,6 +420,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     func setPhotoTitleAlpha(_ alpha: CGFloat) {
         photoTitleLabel.alpha = alpha
+    }
+    
+    func setCloseButtonImage(_ image: UIImage?) {
+        closeButton.setImage(image, for: .normal)
     }
     
     func setContinueButtonTitle(_ title: String) {

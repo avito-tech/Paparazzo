@@ -359,6 +359,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        mediaPickerView.setCloseButtonImage(isBeingPresented ? theme.closeCameraIcon : theme.backIcon)
         mediaPickerView.setTheme(theme)
     }
     
