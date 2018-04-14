@@ -211,17 +211,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
         
-        // If `items` contain a lot of elements, then there's a chance that by the time
-        // `collectionView.scrollToTop()` is called in `performBatchUpdates` completion, the user will see
-        // some of the new content, followed by a fast jump to the bottom. To prevent this unwanted glitch
-        // we need to cover collection view with a snapshot of its current content. This snapshot will be removed
-        // after `scrollToTop()`.
         if scrollToTop {
             coverCollectionViewWithItsSnapshot()
         }
         
-        // Delete existing items outside `performBatchUpdates`, otherwise there will be UI bug on scrollToTop
-        // (collection view will be scrolled to an empty space below it's actual content)
         dataSource.deleteAllItems()
         
         collectionView.reloadData()
@@ -375,10 +368,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         guard layout.hasHeader != visible else {
             return 
         }
-        DispatchQueue.main.async {
-            self.collectionView.performBatchUpdates { [weak self] in
-                self?.layout.hasHeader = visible
-            }
+        collectionView.performBatchUpdates { [weak self] in
+            self?.layout.hasHeader = visible
         }
     }
     
