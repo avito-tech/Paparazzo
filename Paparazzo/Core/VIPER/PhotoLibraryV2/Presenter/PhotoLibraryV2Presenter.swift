@@ -8,6 +8,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     
+    weak var mediaPickerModule: MediaPickerModule?
+    
     weak var view: PhotoLibraryV2ViewInput? {
         didSet {
             view?.onViewDidLoad = { [weak self] in
@@ -31,17 +33,82 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.overridenTheme = overridenTheme
     }
     
-    // MARK: - PhotoLibraryModule
+    // MARK: - PhotoLibraryV2Module
     
+    var onItemsAdd: (([MediaPickerItem], _ startIndex: Int) -> ())?
+    var onItemUpdate: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())?
+    var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
+    var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onCropFinish: (() -> ())?
+    var onCropCancel: (() -> ())?
+    var onContinueButtonTap: (() -> ())?
+    var onCancel: (() -> ())?
     var onFinish: ((PhotoLibraryV2ModuleResult) -> ())?
+    
+    func setContinueButtonTitle(_ title: String) {
+        continueButtonTitle = title
+        updateContinueButtonTitle()
+    }
+    
+    func setContinueButtonEnabled(_ enabled: Bool) {
+        mediaPickerModule?.setContinueButtonEnabled(enabled)
+    }
+    
+    func setContinueButtonVisible(_ visible: Bool) {
+        mediaPickerModule?.setContinueButtonVisible(visible)
+    }
+    
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        mediaPickerModule?.setContinueButtonStyle(style)
+    }
+    
+    public func setCameraTitle(_ title: String) {
+        mediaPickerModule?.setCameraTitle(title)
+    }
+    
+    public func setCameraSubtitle(_ subtitle: String) {
+        mediaPickerModule?.setCameraSubtitle(subtitle)
+    }
+    
+    public func setCameraHint(data: CameraHintData) {
+        mediaPickerModule?.setCameraHint(data: data)
+    }
+    
+    public func setAccessDeniedTitle(_ title: String) {
+        mediaPickerModule?.setAccessDeniedTitle(title)
+    }
+    
+    public func setAccessDeniedMessage(_ message: String) {
+        mediaPickerModule?.setAccessDeniedMessage(message)
+    }
+    
+    public func setAccessDeniedButtonTitle(_ title: String) {
+        mediaPickerModule?.setAccessDeniedButtonTitle(title)
+    }
+    
+    func setCropMode(_ cropMode: MediaPickerCropMode) {
+        mediaPickerModule?.setCropMode(cropMode)
+    }
+    
+    func setThumbnailsAlwaysVisible(_ alwaysVisible: Bool) {
+        mediaPickerModule?.setThumbnailsAlwaysVisible(alwaysVisible)
+    }
+    
+    func removeItem(_ item: MediaPickerItem) {
+        mediaPickerModule?.removeItem(item)
+    }
+    
+    func focusOnModule() {
+        router.focusOnCurrentModule()
+    }
     
     func dismissModule() {
         router.dismissCurrentModule()
     }
     
-    func setContinueButtonTitle(_ title: String) {
-        continueButtonTitle = title
-        updateContinueButtonTitle()
+    func finish() {
+        mediaPickerModule?.finish()
     }
     
     // MARK: - Private
@@ -129,11 +196,21 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(
                     selectedItems
                 )
+                
                 self?.router.showMediaPicker(
                     data: data,
                     overridenTheme: strongSelf.overridenTheme,
-                    configure: { module in
+                    configure: { [weak self] module in
                         weak var weakModule = module
+                        self?.mediaPickerModule = module
+                        module.onItemsAdd = self?.onItemsAdd
+                        module.onItemUpdate = self?.onItemUpdate
+                        module.onItemAutocorrect = self?.onItemAutocorrect
+                        module.onItemMove = self?.onItemMove
+                        module.onItemRemove = self?.onItemRemove
+                        module.onCropFinish = self?.onCropFinish
+                        module.onCropCancel = self?.onCropCancel
+                        module.onContinueButtonTap = self?.onContinueButtonTap
                         module.onCancel = {
                             weakModule?.dismissModule()
                         }
@@ -228,6 +305,18 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onSelect = { [weak self] in
+            if let itemIndex = self?.interactor.selectedItems.count {
+                self?.onItemsAdd?(
+                    [
+                        MediaPickerItem(
+                            image: item.image,
+                            source: .photoLibrary
+                        )
+                    ],
+                    itemIndex
+                )
+            }
+            
             if let selectionState = self?.interactor.selectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
@@ -237,6 +326,17 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onDeselect = { [weak self] in
+            if let index = self?.interactor.selectedItems.index(of: item) {
+                self?.onItemRemove?(
+                    MediaPickerItem(
+                        image: item.image,
+                        source: .photoLibrary
+                    )
+                    ,
+                    index
+                )
+            }
+            
             if let selectionState = self?.interactor.deselectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
@@ -257,8 +357,17 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     self?.router.showMediaPicker(
                         data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
                         overridenTheme: strongSelf.overridenTheme,
-                        configure: { module in
+                        configure: { [weak self] module in
                             weak var weakModule = module
+                            self?.mediaPickerModule = module
+                            module.onItemsAdd = self?.onItemsAdd
+                            module.onItemUpdate = self?.onItemUpdate
+                            module.onItemAutocorrect = self?.onItemAutocorrect
+                            module.onItemMove = self?.onItemMove
+                            module.onItemRemove = self?.onItemRemove
+                            module.onCropFinish = self?.onCropFinish
+                            module.onCropCancel = self?.onCropCancel
+                            module.onContinueButtonTap = self?.onContinueButtonTap
                             module.onCancel = {
                                 weakModule?.dismissModule()
                             }
