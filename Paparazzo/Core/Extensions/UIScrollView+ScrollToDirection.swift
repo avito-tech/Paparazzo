@@ -18,6 +18,9 @@ extension UIScrollView {
         
         layoutIfNeeded()
         
-        contentOffset = .zero
+        contentOffset = CGPoint(
+            x: 0,
+            y: -max(paparazzoSafeAreaInsets.top, contentInset.top)
+        )
     }
 }
