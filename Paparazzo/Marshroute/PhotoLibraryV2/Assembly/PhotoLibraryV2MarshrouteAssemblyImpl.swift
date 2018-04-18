@@ -20,7 +20,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
         
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: mediaPickerData,
