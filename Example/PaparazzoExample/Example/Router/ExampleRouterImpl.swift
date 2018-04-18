@@ -69,6 +69,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     }
     
     func showPhotoLibraryV2(
+        mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         configure: (PhotoLibraryV2Module) -> ()
@@ -78,6 +79,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
             let assembly = mediaPickerAssemblyFactory.photoLibraryV2Assembly()
             
             return assembly.module(
+                mediaPickerData: mediaPickerData,
                 selectedItems: selectedItems,
                 maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,

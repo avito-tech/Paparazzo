@@ -28,7 +28,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let layout = PhotoLibraryV2Layout()
     private var collectionView: UICollectionView
     private var collectionSnapshotView: UIView?
-    private let titleView = PhotoLibraryTitleView()
+    private let titleView = PhotoLibraryV2TitleView()
     private let accessDeniedView = AccessDeniedView()
     private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     private let dimView = UIView()
@@ -192,23 +192,29 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
     }
     
-    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
         cameraViewData = viewData
+        dataSource.configureHeader = { [weak self] view in
+            guard let view = view as? PhotoLibraryCameraView else {
+                return
+            }
+            
+            view.setCameraIcon(self?.theme?.cameraIcon)
+            
+            view.onTap = self?.cameraViewData?.onTap
+            
+            if let parameters = self?.cameraViewData?.parameters {
+                view.setOutputParameters(parameters)
+            }
+        }
     }
     
-    func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
         
-        // If `items` contain a lot of elements, then there's a chance that by the time
-        // `collectionView.scrollToBottom()` is called in `performBatchUpdates` completion, the user will see
-        // some of the new content, followed by a fast jump to the bottom. To prevent this unwanted glitch
-        // we need to cover collection view with a snapshot of its current content. This snapshot will be removed
-        // after `scrollToBottom()`.
-        if scrollToBottom {
+        if scrollToTop {
             coverCollectionViewWithItsSnapshot()
         }
         
-        // Delete existing items outside `performBatchUpdates`, otherwise there will be UI bug on scrollToBottom
-        // (collection view will be scrolled to an empty space below it's actual content)
         dataSource.deleteAllItems()
         
         collectionView.reloadData()
@@ -224,8 +230,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                         dataSource.setItems(items)
                     },
                     completion: { _ in
-                        if scrollToBottom {
-                            collectionView.scrollToBottom()
+                        if scrollToTop {
+                            collectionView.scrollToTop()
                             collectionSnapshotView?.removeFromSuperview()
                         }
                         completion?()
@@ -317,10 +323,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
-    func scrollToBottom() {
-        collectionView.scrollToBottom()
-    }
-    
     func setTitle(_ title: String) {
         titleView.setTitle(title)
     }
@@ -359,6 +361,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             progressIndicator.startAnimating()
         } else {
             progressIndicator.stopAnimating()
+        }
+    }
+    
+    func setHeaderVisible(_ visible: Bool) {
+        guard layout.hasHeader != visible else {
+            return 
+        }
+        collectionView.performBatchUpdates { [weak self] in
+            self?.layout.hasHeader = visible
         }
     }
     

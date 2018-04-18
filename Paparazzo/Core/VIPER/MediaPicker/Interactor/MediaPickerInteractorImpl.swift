@@ -13,6 +13,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     private(set) var photoLibraryItems = [PhotoLibraryItem]()
     private(set) var selectedItem: MediaPickerItem?
     private var mode: MediaPickerCropMode = .normal
+    let cameraEnabled: Bool
+    let photoLibraryEnabled: Bool
     
     init(
         items: [MediaPickerItem],
@@ -20,6 +22,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         selectedItem: MediaPickerItem?,
         maxItemsCount: Int?,
         cropCanvasSize: CGSize,
+        cameraEnabled: Bool,
+        photoLibraryEnabled: Bool,
         deviceOrientationService: DeviceOrientationService,
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
     ) {
@@ -28,6 +32,8 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         self.selectedItem = selectedItem
         self.maxItemsCount = maxItemsCount
         self.cropCanvasSize = cropCanvasSize
+        self.cameraEnabled = cameraEnabled
+        self.photoLibraryEnabled = photoLibraryEnabled
         self.deviceOrientationService = deviceOrientationService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
     }

@@ -10,6 +10,8 @@ public struct MediaPickerData {
     public let hapticFeedbackEnabled: Bool
     public let cropCanvasSize: CGSize
     public let initialActiveCameraType: CameraType
+    public let cameraEnabled: Bool
+    public let photoLibraryEnabled: Bool
     
     public init(
         items: [MediaPickerItem] = [],
@@ -20,7 +22,9 @@ public struct MediaPickerData {
         autocorrectEnabled: Bool = false,
         hapticFeedbackEnabled: Bool = false,
         cropCanvasSize: CGSize = CGSize(width: 1280, height: 960),
-        initialActiveCameraType: CameraType = .back)
+        initialActiveCameraType: CameraType = .back,
+        cameraEnabled: Bool = true,
+        photoLibraryEnabled: Bool = true)
     {
         self.items = items
         self.autocorrectionFilters = autocorrectionFilters
@@ -31,5 +35,7 @@ public struct MediaPickerData {
         self.hapticFeedbackEnabled = hapticFeedbackEnabled
         self.cropCanvasSize = cropCanvasSize
         self.initialActiveCameraType = initialActiveCameraType
+        self.cameraEnabled = cameraEnabled
+        self.photoLibraryEnabled = photoLibraryEnabled
     }
 }

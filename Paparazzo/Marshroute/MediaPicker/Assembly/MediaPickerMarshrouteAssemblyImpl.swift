@@ -27,6 +27,8 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
             selectedItem: data.selectedItem,
             maxItemsCount: data.maxItemsCount,
             cropCanvasSize: data.cropCanvasSize,
+            cameraEnabled: data.cameraEnabled,
+            photoLibraryEnabled: data.photoLibraryEnabled,
             deviceOrientationService: serviceFactory.deviceOrientationService(),
             latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )

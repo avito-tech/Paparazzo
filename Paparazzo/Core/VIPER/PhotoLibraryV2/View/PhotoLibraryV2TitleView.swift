@@ -1,6 +1,6 @@
 import UIKit
 
-final class PhotoLibraryTitleView: UIView {
+final class PhotoLibraryV2TitleView: UIView {
     
     // MARK: - Subviews
     private let label = UILabel()
@@ -64,7 +64,7 @@ final class PhotoLibraryTitleView: UIView {
         super.layoutSubviews()
         
         let iconSize = iconView.image?.size ?? .zero
-        let topInset = paparazzoSafeAreaInsets.top / 2
+        let topInset = paparazzoSafeAreaInsets.top / 3
         
         label.resizeToFitWidth(bounds.width - labelToIconSpacing - iconSize.width)
         label.left = (bounds.width - (label.width + labelToIconSpacing + iconSize.width)) / 2

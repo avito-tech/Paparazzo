@@ -5,6 +5,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var headerAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize: CGSize = .zero
+    var hasHeader = true
     
     // MARK: - Constants
     
@@ -72,7 +73,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return
             headerAttributes.filter { $1.frame.intersects(rect) }.map { $1 }
-                ??
+                +
                 attributes.filter { $1.frame.intersects(rect) }.map { $1 }
     }
     
@@ -93,14 +94,17 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     
     private func setUpHeaderAttributes(section: Int) -> CGFloat {
         let headerIndexPath = IndexPath(item: 0, section: section)
-        let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, with: headerIndexPath)
+        let headerAttributes = UICollectionViewLayoutAttributes(
+            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+            with: headerIndexPath
+        )
         let origin = CGPoint(
             x: insets.left,
             y: insets.top
         )
         let size = CGSize(
             width: (collectionView?.width ?? 0) - insets.left - insets.right,
-            height: headerViewHeight
+            height: hasHeader ? headerViewHeight : 0
         )
         
         headerAttributes.frame = CGRect(

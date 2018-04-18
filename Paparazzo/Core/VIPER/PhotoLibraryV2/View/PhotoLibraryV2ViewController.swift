@@ -90,12 +90,12 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         }
     }
     
-    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData) {
+    func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
         photoLibraryView.setCameraViewData(viewData)
     }
     
-    func setItems(_ items: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?) {
-        photoLibraryView.setItems(items, scrollToBottom: scrollToBottom, completion: completion)
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
+        photoLibraryView.setItems(items, scrollToTop: scrollToTop, completion: completion)
     }
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
@@ -112,10 +112,6 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func deselectAllItems() {
         photoLibraryView.deselectAndAdjustAllCells()
-    }
-    
-    func scrollToBottom() {
-        photoLibraryView.scrollToBottom()
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {
@@ -136,6 +132,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func setProgressVisible(_ visible: Bool) {
         photoLibraryView.setProgressVisible(visible)
+    }
+    
+    func setHeaderVisible(_ visible: Bool) {
+        photoLibraryView.setHeaderVisible(visible)
     }
     
     func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {

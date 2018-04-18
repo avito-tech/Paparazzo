@@ -13,17 +13,15 @@ protocol PhotoLibraryV2ViewInput: class {
     
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
     
-    func setCameraViewData(_: PhotoLibraryCameraViewData)
+    func setCameraViewData(_: PhotoLibraryCameraViewData?)
     
-    func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
+    func setItems(_: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
     
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
     
     func deselectAllItems()
-    
-    func scrollToBottom()
     
     func setAlbums(_: [PhotoLibraryAlbumCellData])
     func selectAlbum(withId: String)
@@ -37,6 +35,7 @@ protocol PhotoLibraryV2ViewInput: class {
     var onViewDidLoad: (() -> ())? { get set }
     
     func setProgressVisible(_ visible: Bool)
+    func setHeaderVisible(_ visible: Bool)
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }
@@ -48,6 +47,6 @@ protocol PhotoLibraryV2ViewInput: class {
 }
 
 struct PhotoLibraryCameraViewData {
-    let parameters: CameraOutputParameters
+    let parameters: CameraOutputParameters?
     let onTap: (() -> ())?
 }

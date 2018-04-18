@@ -348,6 +348,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setPhotoLibraryButtonEnabled(enabled)
     }
     
+    func setPhotoLibraryButtonVisible(_ visible: Bool) {
+        mediaPickerView.setPhotoLibraryButtonVisible(visible)
+    }
+    
     func showInfoMessage(_ message: String, timeout: TimeInterval) {
         mediaPickerView.showInfoMessage(message, timeout: timeout)
     }
@@ -355,6 +359,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        mediaPickerView.setCloseButtonImage(isBeingPresented ? theme.closeCameraIcon : theme.backIcon)
         mediaPickerView.setTheme(theme)
     }
     

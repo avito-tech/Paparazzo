@@ -13,4 +13,14 @@ extension UIScrollView {
             y: max(minimumYOffset, bounds.y + contentSize.height + contentInset.top - bounds.size.height)
         )
     }
+    
+    func scrollToTop() {
+        
+        layoutIfNeeded()
+        
+        contentOffset = CGPoint(
+            x: 0,
+            y: -max(paparazzoSafeAreaInsets.top, contentInset.top)
+        )
+    }
 }

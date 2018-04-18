@@ -52,6 +52,7 @@ protocol MediaPickerViewInput: class {
     func setCameraButtonVisible(_: Bool)
     func setShutterButtonEnabled(_: Bool)
     func setPhotoLibraryButtonEnabled(_: Bool)
+    func setPhotoLibraryButtonVisible(_: Bool)
     
     var onCloseButtonTap: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }

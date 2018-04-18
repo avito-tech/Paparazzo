@@ -3,6 +3,7 @@ import Marshroute
 
 public protocol PhotoLibraryV2MarshrouteAssembly: class {
     func module(
+        mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
