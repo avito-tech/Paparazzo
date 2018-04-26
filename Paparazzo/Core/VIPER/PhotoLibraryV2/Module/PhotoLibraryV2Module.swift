@@ -1,1 +1,1 @@
-public protocol PhotoLibraryV2Module: PaparazzoModule {}
+public protocol PhotoLibraryV2Module: PaparazzoPickerModule {}

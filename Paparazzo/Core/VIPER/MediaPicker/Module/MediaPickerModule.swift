@@ -1,1 +1,1 @@
-public protocol MediaPickerModule: PaparazzoModule {}
+public protocol MediaPickerModule: PaparazzoPickerModule {}

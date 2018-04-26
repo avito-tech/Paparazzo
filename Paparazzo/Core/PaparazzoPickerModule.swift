@@ -21,7 +21,7 @@ public struct CameraHintData {
     }
 }
 
-public protocol PaparazzoModule: class {
+public protocol PaparazzoPickerModule: class {
     
     func focusOnModule()
     func dismissModule()
