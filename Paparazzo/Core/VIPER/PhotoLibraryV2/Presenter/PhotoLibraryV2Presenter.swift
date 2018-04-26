@@ -44,7 +44,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
     var onCancel: (() -> ())?
-    var onFinish: ((PhotoLibraryV2ModuleResult) -> ())?
+    var onFinish: (([MediaPickerItem]) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
@@ -189,7 +189,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             if let strongSelf = self {
                 let selectedItems = strongSelf.interactor.selectedItems
                 guard selectedItems.isEmpty == false else {
-                    self?.onFinish?(.selectedItems([]))
+                    self?.onFinish?([])
                     return
                 }
                 
@@ -215,15 +215,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                             weakModule?.dismissModule()
                         }
                         
-                        module.onFinish = { result in
-                            self?.onFinish?(.selectedItems(result))
-                        }
+                        module.onFinish = self?.onFinish
                 })
             }
         }
         
         view?.onCloseButtonTap = { [weak self] in
-            self?.onFinish?(.cancelled)
+            self?.onCancel?()
         }
         
         view?.onAccessDeniedButtonTap = {
@@ -372,9 +370,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                                 weakModule?.dismissModule()
                             }
                             
-                            module.onFinish = { result in
-                                self?.onFinish?(.selectedItems(result))
-                            }
+                            module.onFinish = self?.onFinish
                     })
                 }
             )
