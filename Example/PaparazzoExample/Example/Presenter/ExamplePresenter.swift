@@ -78,12 +78,9 @@ final class ExamplePresenter {
                     weak var weakModule = module
                     module.onFinish = { result in
                         weakModule?.dismissModule()
-                        
-                        switch result {
-                        case .selectedItems,
-                             .cancelled:
-                            break
-                        }
+                    }
+                    module.onCancel = {
+                        weakModule?.dismissModule()
                     }
                 }
             }
