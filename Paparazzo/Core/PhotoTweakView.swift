@@ -269,9 +269,21 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         
         scrollView.bounds = minZoomBounds
         scrollView.center = center
-        scrollView.contentSize = scrollView.bounds.size
         
-        scrollView.imageView.frame = scrollView.bounds
+        let minSize = min(scrollView.bounds.size.width, scrollView.bounds.size.height)
+        
+        // Increasing content size to allow selection of edges
+        scrollView.contentSize = CGSize(
+            width: scrollView.bounds.size.width + (scrollView.bounds.size.width - minSize),
+            height: scrollView.bounds.size.height + (scrollView.bounds.size.height - minSize)
+        )
+        
+        scrollView.imageView.frame = CGRect(
+            x: scrollView.bounds.origin.x + (scrollView.bounds.size.width - minSize) / 2,
+            y: scrollView.bounds.origin.y + (scrollView.bounds.size.height - minSize) / 2,
+            width: scrollView.bounds.size.width,
+            height: scrollView.bounds.size.height
+        )
         
         gridView.bounds = CGRect(origin: .zero, size: cropSize)
         gridView.center = center
