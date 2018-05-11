@@ -193,6 +193,18 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     return
                 }
                 
+                let mediaPickerItems = selectedItems.map {
+                    MediaPickerItem(
+                        image: $0.image,
+                        source: .photoLibrary
+                    )
+                }
+                let startIndex = 0
+                self?.onItemsAdd?(
+                    mediaPickerItems,
+                    startIndex
+                )
+                
                 let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(
                     selectedItems
                 )
@@ -303,18 +315,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onSelect = { [weak self] in
-            if let itemIndex = self?.interactor.selectedItems.count {
-                self?.onItemsAdd?(
-                    [
-                        MediaPickerItem(
-                            image: item.image,
-                            source: .photoLibrary
-                        )
-                    ],
-                    itemIndex
-                )
-            }
-            
             if let selectionState = self?.interactor.selectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
@@ -324,17 +324,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onDeselect = { [weak self] in
-            if let index = self?.interactor.selectedItems.index(of: item) {
-                self?.onItemRemove?(
-                    MediaPickerItem(
-                        image: item.image,
-                        source: .photoLibrary
-                    )
-                    ,
-                    index
-                )
-            }
-            
             if let selectionState = self?.interactor.deselectItem(item) {
                 self?.adjustViewForSelectionState(selectionState)
             }
