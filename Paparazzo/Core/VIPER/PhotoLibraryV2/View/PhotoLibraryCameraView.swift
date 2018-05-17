@@ -59,7 +59,7 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
         cameraOutputView?.orientation = orientation
-    }
+    } 
     
     // MARK: - Layout
     

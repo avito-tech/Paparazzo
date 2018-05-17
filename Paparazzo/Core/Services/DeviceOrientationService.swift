@@ -62,3 +62,20 @@ final class DeviceOrientationServiceImpl: DeviceOrientationService {
         }
     }
 }
+
+extension DeviceOrientation {
+    func toCGImagePropertyOrientation() -> CGImagePropertyOrientation {
+        switch self {
+        case .portrait:
+            return .right
+        case .landscapeLeft:
+            return .up
+        case .landscapeRight:
+            return .down
+        case .portraitUpsideDown:
+            return .left
+        case .unknown:
+            return .left
+        }
+    }
+}
