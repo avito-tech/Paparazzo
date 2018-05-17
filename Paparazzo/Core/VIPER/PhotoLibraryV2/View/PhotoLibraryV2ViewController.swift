@@ -158,6 +158,31 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.toggleAlbumsList()
     }
     
+    // MARK: - Orientation
+    override open var shouldAutorotate: Bool {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .all
+        } else {
+            return .portrait
+        }
+    }
+    
+    override open var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return super.preferredInterfaceOrientationForPresentation
+        } else {
+            return .portrait
+        }
+    }
+    
     // MARK: - Private
     
     private var theme: PhotoLibraryV2UITheme?
