@@ -207,6 +207,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 view.setOutputParameters(parameters)
             }
         }
+        collectionView.reloadData()
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
