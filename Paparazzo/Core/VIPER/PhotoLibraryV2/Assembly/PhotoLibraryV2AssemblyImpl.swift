@@ -24,7 +24,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
             cameraService: serviceFactory.cameraService(initialActiveCameraType: .back),
-            deviceOrientationService: DeviceOrientationServiceImpl()
+            deviceOrientationService: DeviceOrientationServiceImpl(),
+            canRotate: UIDevice.current.userInterfaceIdiom == .pad
         )
         
         let viewController = PhotoLibraryV2ViewController()

@@ -11,6 +11,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     private let photoLibraryItemsService: PhotoLibraryItemsService
     private let cameraService: CameraService
     private let deviceOrientationService: DeviceOrientationService
+    private let canRotate: Bool
     
     // MARK: - Properties
     let mediaPickerData: MediaPickerData
@@ -23,7 +24,8 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         maxSelectedItemsCount: Int? = nil,
         photoLibraryItemsService: PhotoLibraryItemsService,
         cameraService: CameraService,
-        deviceOrientationService: DeviceOrientationService)
+        deviceOrientationService: DeviceOrientationService,
+        canRotate: Bool)
     {
         self.mediaPickerData = mediaPickerData
         self.selectedItems = selectedItems
@@ -31,6 +33,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         self.photoLibraryItemsService = photoLibraryItemsService
         self.cameraService = cameraService
         self.deviceOrientationService = deviceOrientationService
+        self.canRotate = canRotate
     }
     
     // MARK: - PhotoLibraryInteractor
@@ -49,9 +52,12 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         cameraService.getCaptureSession { [cameraService] captureSession in
             cameraService.getOutputOrientation { [weak self] outputOrientation in
                 guard let strongSelf = self else { return }
-                let orientation = outputOrientation.byApplyingDeviceOrientation(
-                    strongSelf.deviceOrientationService.currentOrientation
-                )
+                var orientation = outputOrientation
+                if strongSelf.canRotate {
+                    orientation = outputOrientation.byApplyingDeviceOrientation(
+                        strongSelf.deviceOrientationService.currentOrientation
+                    )
+                }
                 dispatch_to_main_queue {
                     completion(captureSession.flatMap {
                         CameraOutputParameters(
