@@ -129,6 +129,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             height: continueButton.height
         )
         
+        titleView.contentInsets = UIEdgeInsets(
+            top: 0,
+            left: closeButton.right + 10,
+            bottom: 0,
+            right: bounds.width - continueButton.left + 10
+        )
+        
         placeholderView.resizeToFitSize(collectionView.size)
         placeholderView.center = collectionView.center
         
@@ -207,6 +214,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 view.setOutputParameters(parameters)
             }
         }
+        collectionView.reloadData()
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {

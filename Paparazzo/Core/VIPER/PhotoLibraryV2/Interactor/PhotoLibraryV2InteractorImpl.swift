@@ -10,6 +10,8 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     // MARK: - Dependencies
     private let photoLibraryItemsService: PhotoLibraryItemsService
     private let cameraService: CameraService
+    private let deviceOrientationService: DeviceOrientationService
+    private let canRotate: Bool
     
     // MARK: - Properties
     let mediaPickerData: MediaPickerData
@@ -21,24 +23,48 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int? = nil,
         photoLibraryItemsService: PhotoLibraryItemsService,
-        cameraService: CameraService)
+        cameraService: CameraService,
+        deviceOrientationService: DeviceOrientationService,
+        canRotate: Bool)
     {
         self.mediaPickerData = mediaPickerData
         self.selectedItems = selectedItems
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService
         self.cameraService = cameraService
+        self.deviceOrientationService = deviceOrientationService
+        self.canRotate = canRotate
     }
     
     // MARK: - PhotoLibraryInteractor
     private(set) var currentAlbum: PhotoLibraryAlbum?
     private(set) var selectedItems = [PhotoLibraryItem]()
     
+    func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
+        deviceOrientationService.onOrientationChange = handler
+        handler(deviceOrientationService.currentOrientation)
+    }
+    
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ()) {
         cameraService.getCaptureSession { [cameraService] captureSession in
-            cameraService.getOutputOrientation { outputOrientation in
+            cameraService.getOutputOrientation { [weak self] outputOrientation in
+                guard let strongSelf = self else {
+                    completion(nil)
+                    return
+                }
+                var orientation = outputOrientation
+                if strongSelf.canRotate {
+                    orientation = outputOrientation.byApplyingDeviceOrientation(
+                        strongSelf.deviceOrientationService.currentOrientation
+                    )
+                }
                 dispatch_to_main_queue {
-                    completion(captureSession.flatMap { CameraOutputParameters(captureSession: $0, orientation: outputOrientation) })
+                    completion(captureSession.flatMap {
+                        CameraOutputParameters(
+                            captureSession: $0,
+                            orientation: orientation
+                        )
+                    })
                 }
             }
         }
@@ -125,5 +151,22 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     private func removeSelectedItems(notPresentedIn items: [PhotoLibraryItem]) {
         let assetIds = Set(items.map { $0.identifier })
         selectedItems = selectedItems.filter { assetIds.contains($0.identifier) }
+    }
+}
+
+extension ExifOrientation {
+    func byApplyingDeviceOrientation(_ orientation: DeviceOrientation) -> ExifOrientation {
+        switch orientation {
+        case .portrait:
+            return .left
+        case .landscapeLeft:
+            return .up
+        case .landscapeRight:
+            return .down
+        case .portraitUpsideDown:
+            return .right
+        case .unknown:
+            return .left
+        }
     }
 }

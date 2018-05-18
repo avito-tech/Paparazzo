@@ -27,7 +27,9 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             selectedItems: selectedItems,
             maxSelectedItemsCount: maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
-            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back)
+            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back),
+            deviceOrientationService: DeviceOrientationServiceImpl(),
+            canRotate: UIDevice.current.userInterfaceIdiom == .pad
         )
         
         let router = PhotoLibraryV2MarshrouteRouter(
