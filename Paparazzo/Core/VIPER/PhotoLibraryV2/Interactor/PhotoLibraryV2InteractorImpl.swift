@@ -41,17 +41,17 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     private(set) var selectedItems = [PhotoLibraryItem]()
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ()) {
-        deviceOrientationService.onOrientationChange = { [weak self] orientation in
-            handler(orientation)
-        }
-        
+        deviceOrientationService.onOrientationChange = handler
         handler(deviceOrientationService.currentOrientation)
     }
     
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ()) {
         cameraService.getCaptureSession { [cameraService] captureSession in
             cameraService.getOutputOrientation { [weak self] outputOrientation in
-                guard let strongSelf = self else { return }
+                guard let strongSelf = self else {
+                    completion(nil)
+                    return
+                }
                 var orientation = outputOrientation
                 if strongSelf.canRotate {
                     orientation = outputOrientation.byApplyingDeviceOrientation(

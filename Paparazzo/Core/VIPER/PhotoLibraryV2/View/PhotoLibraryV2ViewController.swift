@@ -160,11 +160,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     // MARK: - Orientation
     override open var shouldAutorotate: Bool {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return true
-        } else {
-            return false
-        }
+        return UIDevice.current.userInterfaceIdiom == .pad
     }
     
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
