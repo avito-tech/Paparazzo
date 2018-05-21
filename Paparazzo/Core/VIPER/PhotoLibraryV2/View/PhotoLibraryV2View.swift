@@ -99,22 +99,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let titleViewSize = titleView.sizeThatFits(bounds.size)
-        
-        titleView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            top: bounds.top,
-            height: titleViewSize.height
-        )
-        
-        collectionView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            top: titleView.bottom,
-            bottom: bounds.bottom
-        )
-        
         closeButton.frame = CGRect(
             x: 8,
             y: max(8, paparazzoSafeAreaInsets.top),
@@ -134,6 +118,22 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             left: closeButton.right + 10,
             bottom: 0,
             right: bounds.width - continueButton.left + 10
+        )
+        
+        let titleViewSize = titleView.sizeThatFits(bounds.size)
+        
+        titleView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            height: titleViewSize.height
+        )
+        
+        collectionView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: titleView.bottom,
+            bottom: bounds.bottom
         )
         
         placeholderView.resizeToFitSize(collectionView.size)
@@ -197,6 +197,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         continueButton.setTitle(title, for: .normal)
         continueButton.accessibilityValue = title
         continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
+        titleView.setNeedsLayout()
     }
     
     func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
