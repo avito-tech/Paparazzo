@@ -16,6 +16,8 @@ class PhotoLibraryCameraView: UICollectionReusableView {
         
         backgroundColor = .black
         layer.cornerRadius = 6
+        layer.rasterizationScale = UIScreen.main.nativeScale
+        layer.shouldRasterize = true
         layer.masksToBounds = true
         
         dimView.backgroundColor = UIColor.black.withAlphaComponent(0.48)
@@ -68,7 +70,7 @@ class PhotoLibraryCameraView: UICollectionReusableView {
         
         let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         
-        cameraOutputView?.frame = UIEdgeInsetsInsetRect(bounds, insets)
+        cameraOutputView?.frame = bounds
         dimView.frame = bounds
         button.frame = bounds
     }
