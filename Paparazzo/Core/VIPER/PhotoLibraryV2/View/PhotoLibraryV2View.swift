@@ -473,6 +473,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     private func setUpAccessibilityIdentifiers() {
         accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
+        
+        closeButton.accessibilityIdentifier = AccessibilityId.discardLibraryButton.rawValue
+        continueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
     }
     
     private func setUpButtons() {

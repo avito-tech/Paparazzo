@@ -1,7 +1,7 @@
 import Marshroute
 import Paparazzo
 
-protocol ExampleRouter: class, RouterFocusable, RouterDismissable {
+protocol ExampleRouter: RouterFocusable, RouterDismissable {
 
     func showMediaPicker(
         data: MediaPickerData,

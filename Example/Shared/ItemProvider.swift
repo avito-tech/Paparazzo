@@ -13,7 +13,7 @@ final class ItemProvider {
         ]
         
         return urlStrings
-            .flatMap(URL.init)
+            .compactMap(URL.init)
             .map { url in
                 MediaPickerItem(
                     image: RemoteImageSource(url: url),
