@@ -81,6 +81,10 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
         return attributes[indexPath]
     }
     
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return headerAttributes[indexPath]
+    }
+    
     // MARK: - Private
     private func cellSize() -> CGSize {
         if let collectionView = collectionView {
