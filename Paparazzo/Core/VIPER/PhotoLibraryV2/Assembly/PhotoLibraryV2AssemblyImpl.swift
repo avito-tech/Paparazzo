@@ -13,6 +13,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     
     public func module(
         data: PhotoLibraryV2Data,
+        metalEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
     {
@@ -38,7 +39,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         let presenter = PhotoLibraryV2Presenter(
             interactor: interactor,
             router: router,
-            overridenTheme: theme
+            overridenTheme: theme,
+            metalEnabled: metalEnabled
         )
         
         viewController.addDisposable(presenter)

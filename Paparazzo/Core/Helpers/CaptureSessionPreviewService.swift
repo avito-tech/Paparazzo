@@ -104,6 +104,12 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
                 if captureSession.canAddOutput(captureOutput) {
                     captureSession.addOutput(captureOutput)
                 }
+
+                for connection in captureOutput.connections {
+                    if connection.isVideoOrientationSupported {
+                        connection.videoOrientation = .portrait
+                    }
+                }
             }
         } catch {
             debugPrint("Couldn't configure AVCaptureSession: \(error)")

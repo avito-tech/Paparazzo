@@ -5,6 +5,7 @@ protocol PhotoLibraryV2Router: class {
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
+        metalEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     )
 }

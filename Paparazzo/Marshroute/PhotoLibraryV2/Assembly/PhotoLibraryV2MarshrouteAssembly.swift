@@ -7,8 +7,28 @@ public protocol PhotoLibraryV2MarshrouteAssembly: class {
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
+        metalEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
+}
+
+public extension PhotoLibraryV2MarshrouteAssembly {
+    func module(
+        mediaPickerData: MediaPickerData,
+        selectedItems: [PhotoLibraryItem],
+        maxSelectedItemsCount: Int?,
+        routerSeed: RouterSeed,
+        configure: (PhotoLibraryV2Module) -> ())
+        -> UIViewController {
+            return module(
+                mediaPickerData: mediaPickerData,
+                selectedItems: selectedItems,
+                maxSelectedItemsCount: maxSelectedItemsCount,
+                routerSeed: routerSeed,
+                metalEnabled: false,
+                configure: configure
+            )
+    }
 }
 
 public protocol PhotoLibraryV2MarshrouteAssemblyFactory: class {

@@ -17,7 +17,11 @@ final class CameraInteractorImpl: CameraInteractor {
         cameraService.getCaptureSession { [cameraService] captureSession in
             cameraService.getOutputOrientation { outputOrientation in
                 dispatch_to_main_queue {
-                    completion(captureSession.flatMap { CameraOutputParameters(captureSession: $0, orientation: outputOrientation) })
+                    completion(captureSession.flatMap { CameraOutputParameters(
+                        captureSession: $0,
+                        orientation: outputOrientation,
+                        metalEnabled: cameraService.isMetalEnabled)
+                    })
                 }
             }
         }
