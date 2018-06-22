@@ -17,14 +17,14 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
-        metalEnabled: Bool,
+        isMetalEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
         
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
-        cameraService.isMetalEnabled = metalEnabled
+        cameraService.isMetalEnabled = isMetalEnabled
         
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: mediaPickerData,
@@ -45,7 +45,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            metalEnabled: metalEnabled
+            isMetalEnabled: isMetalEnabled
         )
         
         let viewController = PhotoLibraryV2ViewController()

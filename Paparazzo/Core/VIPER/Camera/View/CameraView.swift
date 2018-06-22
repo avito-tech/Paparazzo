@@ -136,7 +136,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         let newCameraOutputView = CameraOutputView(
             captureSession: parameters.captureSession,
             outputOrientation: parameters.orientation,
-            metalEnabled: parameters.metalEnabled
+            isMetalEnabled: parameters.isMetalEnabled
         )
         
         if UIDevice.systemVersionLessThan(version: "9.0"), let currentCameraOutputView = self.cameraOutputView {

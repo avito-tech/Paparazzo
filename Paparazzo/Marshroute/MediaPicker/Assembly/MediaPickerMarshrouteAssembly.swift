@@ -6,7 +6,7 @@ public protocol MediaPickerMarshrouteAssembly: class {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
-        metalEnabled: Bool,
+        isMetalEnabled: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
@@ -19,11 +19,11 @@ public extension MediaPickerMarshrouteAssembly {
     func module(
         data: MediaPickerData,
         routerSeed: RouterSeed,
-        metalEnabled: Bool,
+        isMetalEnabled: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
-        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, metalEnabled: metalEnabled, configure: configure)
+        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, isMetalEnabled: isMetalEnabled, configure: configure)
     }
     
     func module(
@@ -32,6 +32,6 @@ public extension MediaPickerMarshrouteAssembly {
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
-        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, metalEnabled: false, configure: configure)
+        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, isMetalEnabled: false, configure: configure)
     }
 }

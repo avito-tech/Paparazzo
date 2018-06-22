@@ -63,7 +63,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
                         CameraOutputParameters(
                             captureSession: $0,
                             orientation: orientation,
-                            metalEnabled: cameraService.isMetalEnabled
+                            isMetalEnabled: cameraService.isMetalEnabled
                         )
                     })
                 }

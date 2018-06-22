@@ -20,7 +20,7 @@ final class CameraInteractorImpl: CameraInteractor {
                     completion(captureSession.flatMap { CameraOutputParameters(
                         captureSession: $0,
                         orientation: outputOrientation,
-                        metalEnabled: cameraService.isMetalEnabled)
+                        isMetalEnabled: cameraService.isMetalEnabled)
                     })
                 }
             }

@@ -15,7 +15,7 @@ public final class ScannerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Scanner
     public func module(
         data: ScannerData,
         routerSeed: RouterSeed,
-        metalEnabled: Bool,
+        isMetalEnabled: Bool,
         configure: (ScannerModule) -> ()
         )
         -> UIViewController {
@@ -35,7 +35,7 @@ public final class ScannerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Scanner
             let (cameraView, cameraModuleInput) = cameraAssembly.module(
                 initialActiveCameraType: data.initialActiveCameraType,
                 overridenTheme: theme,
-                metalEnabled: metalEnabled
+                isMetalEnabled: isMetalEnabled
             )
             
             let presenter = ScannerPresenter(

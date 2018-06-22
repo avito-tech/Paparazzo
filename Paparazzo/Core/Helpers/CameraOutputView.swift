@@ -8,7 +8,7 @@ public final class CameraOutputView: UIView {
     
     // MARK: - Init
     
-    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation, metalEnabled: Bool) {
+    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation, isMetalEnabled: Bool) {
         
         self.orientation = outputOrientation
         
