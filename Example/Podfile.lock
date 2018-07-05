@@ -81,6 +81,14 @@ DEPENDENCIES:
   - Paparazzo/Core (from `../`)
   - Paparazzo/SDWebImage (from `../`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireImage
+    - JNWSpringAnimation
+    - Marshroute
+    - SDWebImage
+
 EXTERNAL SOURCES:
   ImageSource:
     :path: "../"
@@ -90,12 +98,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  ImageSource: f81587009f2af2a297293baf218ca558764534d5
+  ImageSource: b8c35b2d74451c6983dc855d8abec8233404914e
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: 15cf8067a997bf298e9db9317dd7c32b8799a787
-  Paparazzo: 5668867848dda0569ceab010975c4dc1291ed8f8
+  Paparazzo: 8ea1fe1b1646e6c41ebcd2a445e61c8c925689ff
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 8ecced9379806ea48a221f6388b710b31601b7a2
+PODFILE CHECKSUM: 4e42c0fe26e765634a0d14ce83755fcd3ee28460
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.5.3
