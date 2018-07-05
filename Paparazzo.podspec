@@ -37,6 +37,7 @@ Pod::Spec.new do |s|
   
     cs.ios.resource_bundle = {
       'Paparazzo' => [
+        'Paparazzo/Shader/CameraShader.metallib'
         'Paparazzo/Localization/*.lproj',
         'Paparazzo/Assets/Assets.xcassets'
       ]
