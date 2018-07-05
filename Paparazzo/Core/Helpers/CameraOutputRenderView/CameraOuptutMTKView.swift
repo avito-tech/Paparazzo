@@ -138,7 +138,7 @@ class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputH
     private func initializeRenderPipelineState() {
         guard
             let device = device,
-            let filepath = Bundle(for: type(of: self)).path(forResource: "CameraShader", ofType: "metallib"),
+            let filepath = Resources.bundle.path(forResource: "CameraShader", ofType: "metallib"),
             let library = try? device.makeLibrary(filepath: filepath)
         else { return }
         
