@@ -4,6 +4,7 @@ public protocol ScannerAssembly: class {
     func module(
         data: ScannerData,
         overridenTheme: PaparazzoUITheme?,
+        isMetalEnabled: Bool,
         configure: (ScannerModule) -> ())
         -> UIViewController
 }
@@ -13,7 +14,7 @@ public protocol ScannerAssemblyFactory: class {
 }
 
 public extension ScannerAssembly {
-    func module(data: ScannerData, configure: (ScannerModule) -> ()) -> UIViewController {
-        return module(data: data, overridenTheme: nil, configure: configure)
+    func module(data: ScannerData, isMetalEnabled: Bool, configure: (ScannerModule) -> ()) -> UIViewController {
+        return module(data: data, overridenTheme: nil, isMetalEnabled: isMetalEnabled, configure: configure)
     }
 }

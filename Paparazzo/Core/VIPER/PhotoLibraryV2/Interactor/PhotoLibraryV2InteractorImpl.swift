@@ -62,7 +62,8 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
                     completion(captureSession.flatMap {
                         CameraOutputParameters(
                             captureSession: $0,
-                            orientation: orientation
+                            orientation: orientation,
+                            isMetalEnabled: cameraService.isMetalEnabled
                         )
                     })
                 }

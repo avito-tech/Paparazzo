@@ -7,6 +7,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let interactor: PhotoLibraryV2Interactor
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
+    private let isMetalEnabled: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -26,11 +27,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     init(
         interactor: PhotoLibraryV2Interactor,
         router: PhotoLibraryV2Router,
-        overridenTheme: PaparazzoUITheme)
+        overridenTheme: PaparazzoUITheme,
+        isMetalEnabled: Bool)
     {
         self.interactor = interactor
         self.router = router
         self.overridenTheme = overridenTheme
+        self.isMetalEnabled = isMetalEnabled
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -212,6 +215,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.router.showMediaPicker(
                     data: data,
                     overridenTheme: strongSelf.overridenTheme,
+                    isMetalEnabled: strongSelf.isMetalEnabled,
                     configure: { [weak self] module in
                         weak var weakModule = module
                         self?.mediaPickerModule = module
@@ -350,6 +354,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     self?.router.showMediaPicker(
                         data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
                         overridenTheme: strongSelf.overridenTheme,
+                        isMetalEnabled: strongSelf.isMetalEnabled,
                         configure: { [weak self] module in
                             weak var weakModule = module
                             self?.mediaPickerModule = module

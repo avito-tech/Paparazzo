@@ -2,7 +2,7 @@ import AVFoundation
 import GLKit
 import ImageSource
 
-final class CameraOutputGLKView: GLKView, CameraCaptureOutputHandler {
+final class CameraOutputGLKView: GLKView, CameraOutputRenderView, CameraCaptureOutputHandler {
     
     // MARK: - State
     private var hasWindow = false
@@ -55,7 +55,7 @@ final class CameraOutputGLKView: GLKView, CameraCaptureOutputHandler {
     override func draw(_ rect: CGRect) {
         guard let imageBuffer = imageBuffer else { return }
         
-        let image = CIImage(cvPixelBuffer: imageBuffer).oriented(forExifOrientation: Int32(orientation.rawValue))
+        let image = CIImage(cvPixelBuffer: imageBuffer)
         
         ciContext.draw(
             image,

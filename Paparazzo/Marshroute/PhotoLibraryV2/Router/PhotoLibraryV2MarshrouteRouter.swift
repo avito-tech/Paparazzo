@@ -17,6 +17,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
+        isMetalEnabled: Bool,
         configure: (MediaPickerModule) -> ()
         ) {
         pushViewControllerDerivedFrom { routerSeed in
@@ -27,6 +28,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
+                isMetalEnabled: isMetalEnabled,
                 configure: configure
             )
         }

@@ -3,6 +3,7 @@ import UIKit
 public protocol PhotoLibraryV2Assembly: class {
     func module(
         data: PhotoLibraryV2Data,
+        isMetalEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController
 }

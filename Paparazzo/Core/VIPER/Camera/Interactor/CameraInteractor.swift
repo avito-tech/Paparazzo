@@ -25,4 +25,5 @@ protocol CameraInteractor: class {
 struct CameraOutputParameters {
     let captureSession: AVCaptureSession
     var orientation: ExifOrientation
+    var isMetalEnabled: Bool
 }

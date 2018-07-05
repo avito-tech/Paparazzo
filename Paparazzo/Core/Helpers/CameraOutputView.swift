@@ -4,28 +4,37 @@ import ImageSource
 public final class CameraOutputView: UIView {
     
     // MARK: - Subview
-    private let glkView: CameraOutputGLKView?
+    private var cameraView: CameraOutputRenderView?
     
     // MARK: - Init
     
-    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
-        
-        let eaglContext: EAGLContext? = EAGLContext(api: .openGLES2)
-        
-        glkView = eaglContext.flatMap { eaglContext in
-            CameraOutputGLKView(
-                captureSession: captureSession,
-                outputOrientation: outputOrientation,
-                eaglContext: eaglContext
-            )
-        }
+    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation, isMetalEnabled: Bool) {
         
         self.orientation = outputOrientation
         
         super.init(frame: .zero)
         
-        if let glkView = glkView {
-            addSubview(glkView)
+        if let metalDevice = MTLCreateSystemDefaultDevice(), isMetalEnabled, #available(iOS 9.0, *) {
+            #if !(arch(i386) || arch(x86_64))
+            let metalView = CameraOutputMTKView(captureSession: captureSession, outputOrientation: outputOrientation, mtlDevice: metalDevice)
+            cameraView = metalView
+            addSubview(metalView)
+            #endif
+        } else {
+            let eaglContext: EAGLContext? = EAGLContext(api: .openGLES2)
+
+            let glkView = eaglContext.flatMap { eaglContext in
+                CameraOutputGLKView(
+                    captureSession: captureSession,
+                    outputOrientation: outputOrientation,
+                    eaglContext: eaglContext
+                )
+            }
+            
+            if let glkView = glkView {
+                cameraView = glkView
+                addSubview(glkView)
+            }
         }
     }
     
@@ -38,20 +47,20 @@ public final class CameraOutputView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        glkView?.frame = bounds
+        cameraView?.frame = bounds
     }
     
     // MARK: - CameraOutputView
     
     public var orientation: ExifOrientation {
         didSet {
-            glkView?.orientation = orientation
+            cameraView?.orientation = orientation
         }
     }
     
     public var onFrameDraw: (() -> ())? {
         didSet {
-            glkView?.onFrameDraw = onFrameDraw
+            cameraView?.onFrameDraw = onFrameDraw
         }
     }
 }

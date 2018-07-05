@@ -52,6 +52,7 @@
 		25D3036B1FCDC5DD003BEEF3 /* PhotoLibraryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3036A1FCDC5DD003BEEF3 /* PhotoLibraryViewTests.swift */; };
 		25D303711FCDC9BF003BEEF3 /* ImageSourceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D303701FCDC9BF003BEEF3 /* ImageSourceStub.swift */; };
 		52BF18E8706EAF376B7D4FF7 /* Pods_PaparazzoExample_NoMarshroute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ABCF2170E5A525BF1AE4D9 /* Pods_PaparazzoExample_NoMarshroute.framework */; };
+		8B809A4A20CA752900505A43 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8B809A4920CA752900505A43 /* Shader.metal */; };
 		CE8D1C15CD84376A2DD4D5EB /* Pods_PaparazzoExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2428770CFA3629D9F546C0E /* Pods_PaparazzoExample.framework */; };
 		EFA7610E1E829434000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
 		EFA7610F1E829569000EB296 /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7610D1E829434000EB296 /* ItemProvider.swift */; };
@@ -112,6 +113,7 @@
 		48B835582ACD8332C9BA15E4 /* Pods-PaparazzoExample_NoMarshroute.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute.debug.xcconfig"; sourceTree = "<group>"; };
 		60170B162745A4EC17CF12A7 /* Pods_PaparazzoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74AC4D8E7402C9D75BBCCE64 /* Pods-PaparazzoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoTests/Pods-PaparazzoTests.release.xcconfig"; sourceTree = "<group>"; };
+		8B809A4920CA752900505A43 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		8F41473A2CF3773A361B3B48 /* Pods-PaparazzoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoTests/Pods-PaparazzoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AAEDA1D8EF806709D04B01FB /* Pods-PaparazzoExample_Storyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaparazzoExample_Storyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		B2428770CFA3629D9F546C0E /* Pods_PaparazzoExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaparazzoExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +236,7 @@
 				251E57E71E6565890009A288 /* Fonts */,
 				251E57ED1E6565890009A288 /* MarshrouteHelpers */,
 				13DCA02A2024B33E007F79EB /* StreamHandlers */,
+				8BE42F1A20DCE74800A9C94F /* Shaders */,
 				251E57CF1E65651F0009A288 /* Info.plist */,
 				2588E3531F8F8BB9009A2FD2 /* Paparazzo.strings */,
 			);
@@ -336,6 +339,14 @@
 				25D3036C1FCDC5DD003BEEF3 /* Info.plist */,
 			);
 			path = PaparazzoTests;
+			sourceTree = "<group>";
+		};
+		8BE42F1A20DCE74800A9C94F /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				8B809A4920CA752900505A43 /* Shader.metal */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 		EC445A1109FBC420CB5CBEB8 /* Frameworks */ = {
@@ -805,6 +816,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B809A4A20CA752900505A43 /* Shader.metal in Sources */,
 				251E57FB1E6565890009A288 /* ExampleViewInput.swift in Sources */,
 				1373874F203C4E3600679EAD /* SqueezeNet.mlmodel in Sources */,
 				251E57FA1E6565890009A288 /* ExampleViewController.swift in Sources */,
