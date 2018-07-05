@@ -4,9 +4,13 @@ PODS:
 DEPENDENCIES:
   - JNWSpringAnimation
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - JNWSpringAnimation
+
 SPEC CHECKSUMS:
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
 
 PODFILE CHECKSUM: cf94f3220234e795c804199cba8979ddb48448f2
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.5.3
