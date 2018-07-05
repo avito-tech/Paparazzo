@@ -14,7 +14,7 @@ public final class CameraOutputView: UIView {
         
         super.init(frame: .zero)
         
-        if let metalDevice = MTLCreateSystemDefaultDevice() && isMetalEnabled {
+        if let metalDevice = MTLCreateSystemDefaultDevice(), isMetalEnabled, #available(iOS 9.0, *) {
             let metalView = CameraOutputMTKView(captureSession: captureSession, outputOrientation: outputOrientation, mtlDevice: metalDevice)
             cameraView = metalView
             addSubview(metalView)

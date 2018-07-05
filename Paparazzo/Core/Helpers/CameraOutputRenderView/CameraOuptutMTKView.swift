@@ -2,6 +2,7 @@ import MetalKit
 import AVFoundation
 import ImageSource
 
+@available(iOS 9.0, *)
 class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputHandler {
     // MARK: - State
     private var hasWindow = false
