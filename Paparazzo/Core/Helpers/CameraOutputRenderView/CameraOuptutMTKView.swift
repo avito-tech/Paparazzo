@@ -1,7 +1,11 @@
-import MetalKit
 import AVFoundation
 import ImageSource
 
+#if !(arch(i386) || arch(x86_64))
+import MetalKit
+#endif
+
+#if !(arch(i386) || arch(x86_64))
 @available(iOS 9.0, *)
 class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputHandler {
     // MARK: - State
@@ -152,3 +156,4 @@ class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputH
         }
     }
 }
+#endif
