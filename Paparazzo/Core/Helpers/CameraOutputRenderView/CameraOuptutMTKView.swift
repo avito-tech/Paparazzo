@@ -78,9 +78,7 @@ class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputH
             let unwrappedImageTexture = imageTexture,
             let texture = CVMetalTextureGetTexture(unwrappedImageTexture),
             result == kCVReturnSuccess
-            else {
-                return
-        }
+        else { return }
         
         self.imageTexture = texture
         drawableSize = CGSize(width: width, height: height)
@@ -141,7 +139,6 @@ class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputH
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.sampleCount = 1
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-        pipelineDescriptor.depthAttachmentPixelFormat = .invalid
         pipelineDescriptor.vertexFunction = library.makeFunction(name: "mapTexture")
         pipelineDescriptor.fragmentFunction = library.makeFunction(name: "displayTexture")
         
