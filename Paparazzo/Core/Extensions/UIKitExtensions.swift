@@ -105,15 +105,22 @@ extension UIView {
     
     func snapshot(withScale scale: CGFloat = 0) -> UIImage? {
 
-        UIGraphicsBeginImageContextWithOptions(bounds.size, false, scale)
-        
-        if let context = UIGraphicsGetCurrentContext() {
-            self.layer.render(in: context)
+        if #available(iOS 10.0, *) {
+            let renderer = UIGraphicsImageRenderer(bounds: bounds)
+            return renderer.image { rendererContext in
+                self.layer.render(in: rendererContext.cgContext)
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(bounds.size, false, scale)
+            
+            if let context = UIGraphicsGetCurrentContext() {
+                self.layer.render(in: context)
+            }
+            
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return image
         }
-
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
     }
     
     func removeFromSuperviewAfterFadingOut(withDuration duration: TimeInterval) {
@@ -172,14 +179,28 @@ extension UICollectionView {
 extension UIImage {
     
     static func imageWithColor(_ color: UIColor, imageSize: CGSize) -> UIImage? {
-        UIGraphicsBeginImageContext(imageSize)
-        guard let currentContext = UIGraphicsGetCurrentContext() else { return nil }
-        currentContext.setFillColor(color.cgColor)
-        currentContext.fill(CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
-        let result = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
         
-        return result
+        let imageBounds = CGRect(origin: .zero, size: imageSize)
+        
+        let drawInContext = { (context: CGContext) in
+            context.setFillColor(color.cgColor)
+            context.fill(imageBounds)
+        }
+        
+        if #available(iOS 10.0, *) {
+            let renderer = UIGraphicsImageRenderer(bounds: imageBounds)
+            return renderer.image { rendererContext in
+                drawInContext(rendererContext.cgContext)
+            }
+        } else {
+            UIGraphicsBeginImageContext(imageSize)
+            guard let currentContext = UIGraphicsGetCurrentContext() else { return nil }
+            drawInContext(currentContext)
+            let result = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            return result
+        }
     }
     
     func scaled(scale: CGFloat) -> UIImage? {

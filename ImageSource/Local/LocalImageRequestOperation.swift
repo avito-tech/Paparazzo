@@ -44,13 +44,16 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         
         guard !isCancelled else { return }
         let url = NSURL(fileURLWithPath: path)
-        let source = CGImageSourceCreateWithURL(url, nil)
+        let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        let source = CGImageSourceCreateWithURL(url, sourceOptions)
         
-        let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
-        let orientation = (options as Dictionary?)?[kCGImagePropertyOrientation] as? Int
+        let imageProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
+        let orientation = (imageProperties as Dictionary?)?[kCGImagePropertyOrientation] as? Int
+        
+        let imageCreationOptions = [kCGImageSourceShouldCacheImmediately: true] as CFDictionary
         
         guard !isCancelled else { return }
-        var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, options) }
+        var cgImage = source.flatMap { CGImageSourceCreateImageAtIndex($0, 0, imageCreationOptions) }
         
         if let exifOrientation = orientation.flatMap({ ExifOrientation(rawValue: $0) }) {
             guard !isCancelled else { return }
@@ -68,15 +71,25 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
     }
     
     private func getImage(resizedTo size: CGSize) {
-        
         guard !isCancelled else { return }
+        
         let url = NSURL(fileURLWithPath: path)
-        let source = CGImageSourceCreateWithURL(url, nil)
+        
+        // WWDC 2018 Session 219, 11:00
+        // We're just creating an object to represent the information stored in the file at this URL.
+        // Don't go ahead and decode this image immediately.
+        let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        
+        let source = CGImageSourceCreateWithURL(url, sourceOptions)
         
         let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
             kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceCreateThumbnailFromImageAlways: true
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            
+            // WWDC 2018 Session 219, 11:30
+            // Decoded image buffer will be created at the moment CGImageSourceCreateThumbnailAtIndex is called
+            kCGImageSourceShouldCacheImmediately: true
         ]
         
         guard !isCancelled else { return }

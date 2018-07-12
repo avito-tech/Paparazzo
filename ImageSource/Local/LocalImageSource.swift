@@ -56,7 +56,8 @@ public final class LocalImageSource: ImageSource {
             SharedQueues.imageProcessingQueue.addOperation { [weak self, path] in
                 
                 let url = NSURL(fileURLWithPath: path)
-                let source = CGImageSourceCreateWithURL(url, nil)
+                let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+                let source = CGImageSourceCreateWithURL(url, sourceOptions)
                 let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
                 let width = options?[kCGImagePropertyPixelWidth] as? Int
                 let height = options?[kCGImagePropertyPixelHeight] as? Int
