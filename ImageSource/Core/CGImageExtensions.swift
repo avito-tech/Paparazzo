@@ -77,4 +77,13 @@ public enum ExifOrientation: Int {
             return false
         }
     }
+    
+    public var isMirrored: Bool {
+        switch self {
+        case .leftMirrored, .upMirrored, .rightMirrored, .downMirrored:
+            return true
+        default:
+            return false
+        }
+    }
 }

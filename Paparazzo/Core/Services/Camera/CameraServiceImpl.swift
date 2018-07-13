@@ -202,6 +202,8 @@ final class CameraServiceImpl: CameraService {
                 
                 captureSession.sessionPreset = .photo
                 
+                setupOrientationFor(captureSession: captureSession, cameraType: targetCameraType)
+                
                 try CameraServiceImpl.configureCamera(targetCamera)
             }
             
@@ -220,6 +222,19 @@ final class CameraServiceImpl: CameraService {
     
     var isFlashEnabled: Bool {
         return backCamera?.flashMode == .on
+    }
+    
+    private func setupOrientationFor(captureSession: AVCaptureSession?, cameraType: CameraType) {
+        guard let captureSession = captureSession else { return }
+        
+        for captureOutput in captureSession.outputs {
+            for connection in captureOutput.connections {
+                if connection.isVideoOrientationSupported {
+                    connection.videoOrientation = .portrait
+                    connection.isVideoMirrored = cameraType == .front
+                }
+            }
+        }
     }
     
     func setFlashEnabled(_ enabled: Bool) -> Bool {

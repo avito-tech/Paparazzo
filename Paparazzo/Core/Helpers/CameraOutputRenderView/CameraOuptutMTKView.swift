@@ -39,7 +39,10 @@ class CameraOutputMTKView: MTKView, CameraOutputRenderView, CameraCaptureOutputH
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentMode = .scaleAspectFill
         
-        bufferQueue = CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
+        bufferQueue = CaptureSessionPreviewService.startStreamingPreview(
+            of: captureSession,
+            to: self,
+            isMirrored: outputOrientation.isMirrored)
         
         initializeRenderPipelineState()
     }

@@ -11,10 +11,13 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     
     // MARK: - CaptureSessionPreviewService
     
-    static func startStreamingPreview(of captureSession: AVCaptureSession, to handler: CameraCaptureOutputHandler)
+    static func startStreamingPreview(
+        of captureSession: AVCaptureSession,
+        to handler: CameraCaptureOutputHandler,
+        isMirrored: Bool = false)
         -> DispatchQueue
     {
-        return service(for: captureSession).startStreamingPreview(to: handler)
+        return service(for: captureSession, isMirrored: isMirrored).startStreamingPreview(to: handler)
     }
     
     func startStreamingPreview(to handler: CameraCaptureOutputHandler) -> DispatchQueue {
@@ -52,18 +55,18 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     private var handlers = [WeakWrapper<CameraCaptureOutputHandler>]()
     private var isInBackground = false
     
-    private init(captureSession: AVCaptureSession) {
+    private init(captureSession: AVCaptureSession, isMirrored: Bool) {
         super.init()
         
         subscribeForAppStateChangeNotifications()
-        setUpVideoDataOutput(for: captureSession)
+        setUpVideoDataOutput(for: captureSession, isMirrored: isMirrored)
     }
     
-    private static func service(for captureSession: AVCaptureSession) -> CaptureSessionPreviewService {
+    private static func service(for captureSession: AVCaptureSession, isMirrored: Bool) -> CaptureSessionPreviewService {
         if let service = sharedServices.object(forKey: captureSession) {
             return service
         } else {
-            let service = CaptureSessionPreviewService(captureSession: captureSession)
+            let service = CaptureSessionPreviewService(captureSession: captureSession, isMirrored: isMirrored)
             sharedServices.setObject(service, forKey: captureSession)
             return service
         }
@@ -88,7 +91,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         )
     }
     
-    private func setUpVideoDataOutput(for captureSession: AVCaptureSession) {
+    private func setUpVideoDataOutput(for captureSession: AVCaptureSession, isMirrored: Bool) {
         
         let captureOutput = AVCaptureVideoDataOutput()
         
@@ -108,6 +111,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
                 for connection in captureOutput.connections {
                     if connection.isVideoOrientationSupported {
                         connection.videoOrientation = .portrait
+                        connection.isVideoMirrored = isMirrored
                     }
                 }
             }
