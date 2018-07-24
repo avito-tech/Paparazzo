@@ -9,44 +9,34 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     var configureHeader: ((UIView) -> ())?
     
     private var items = [ItemType]()
-    private let photosOrder: PhotosOrder = .reversed
     
     init(
         cellReuseIdentifier: String,
-        headerReuseIdentifier: String? = nil,
-        photosOrder: PhotosOrder = .normal)
+        headerReuseIdentifier: String? = nil)
     {
         self.cellReuseIdentifier = cellReuseIdentifier
         self.headerReuseIdentifier = headerReuseIdentifier
     }
     
     func item(at indexPath: IndexPath) -> ItemType {
-        return items[indexPath.row]
+        return items[indexPath.item]
     }
     
     func safeItem(at indexPath: IndexPath) -> ItemType? {
-        return indexPath.row < items.count ? items[indexPath.row] : nil
+        return indexPath.item < items.count ? items[indexPath.item] : nil
     }
     
     func replaceItem(at indexPath: IndexPath, with item: ItemType) {
-        items[indexPath.row] = item
+        items[indexPath.item] = item
     }
     
     func insertItems(_ items: [(item: ItemType, indexPath: IndexPath)]) {
         let sortedItems = items.sorted { $0.indexPath.row < $1.indexPath.row }
         
-        let appendedItems = sortedItems.filter { $0.indexPath.row >= self.items.count }
-        let insertedItems = sortedItems.filter { $0.indexPath.row < self.items.count }
-        
-        if photosOrder == .normal {
-            insertedItems.reversed().forEach { item in
-                self.items.insert(item.item, at: item.indexPath.row)
-            }
-            
-            // indexPath'ы тут должны идти последовательно
-            self.items.append(contentsOf: appendedItems.map { $0.item })
-        } else {
-            items.forEach { item in
+        sortedItems.forEach { item in
+            if item.indexPath.row > self.items.count {
+                self.items.append(item.item)
+            } else {
                 self.items.insert(item.item, at: item.indexPath.row)
             }
         }
@@ -57,7 +47,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     }
     
     func deleteItems(at indexPaths: [IndexPath]) {
-        indexPaths.map { $0.row }.sorted().reversed().forEach { row in
+        indexPaths.map { $0.item }.sorted().reversed().forEach { row in
             items.remove(at: row)
         }
     }
@@ -65,8 +55,8 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     func moveItem(at fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         guard fromIndexPath != toIndexPath else { return }
         
-        let fromIndex = fromIndexPath.row
-        let toIndex = toIndexPath.row
+        let fromIndex = fromIndexPath.item
+        let toIndex = toIndexPath.item
         
         let item = items.remove(at: fromIndex)
         

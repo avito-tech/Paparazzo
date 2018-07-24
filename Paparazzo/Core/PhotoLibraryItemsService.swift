@@ -245,7 +245,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         )
     }
     
-    private func photoLibraryChanges(from changes: PHFetchResultChangeDetails<PHAsset>)
+    // TODO: extract to a separate class (e.g. PhotoLibraryChangesBuilder) and write tests
+    func photoLibraryChanges(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> PhotoLibraryChanges
     {
         var assetsAfterChanges = [PHAsset]()
@@ -286,30 +287,35 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func insertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
-        var insertedObjects = [(index: Int, item: PhotoLibraryItem)]()
-        var insertedObjectIndex = changes.insertedObjects.count - 1
-        let enumeratedIndexes: AnySequence<Int>?
-        let realIndexOf: (Int) -> Int
+        let objectsCountAfterRemovalsAndInsertions =
+            changes.fetchResultBeforeChanges.count - changes.removedObjects.count + changes.insertedObjects.count
         
-        let objectsCountAfterRemovals = changes.fetchResultBeforeChanges.count - changes.removedObjects.count
-        
-        switch photosOrder {
-        case .normal:
-            enumeratedIndexes = (changes.insertedIndexes?.reversed()).flatMap { AnySequence($0) }
-            realIndexOf = { $0 }
-        case .reversed:
-            enumeratedIndexes = changes.insertedIndexes.flatMap { AnySequence($0) }
-            realIndexOf = { $0 - objectsCountAfterRemovals }
-        }
-        
-        enumeratedIndexes?.forEach { index in
-            guard insertedObjectIndex >= 0 else { return }
-            let asset = changes.insertedObjects[insertedObjectIndex]
-            insertedObjects.append((index: realIndexOf(index), item: photoLibraryItem(from: asset)))
-            insertedObjectIndex -= 1
-        }
-        
-        return insertedObjects
+        /*
+         To clarify the code below:
+         
+         `insertionIndex` — index used to map `changes.insertedIndexes` to `changes.insertedObjects`.
+         
+         `targetAssetIndex` — target index at which asset has been inserted to photo library
+             as reported to us by PhotoKit. We will change it if `photosOrder` is `.reversed`.
+         
+         `finalAssetIndex` — actual target index at which collection view cell for the asset will be inserted.
+         */
+        return changes.insertedIndexes?.enumerated().map {
+            insertionIndex, targetAssetIndex -> (index: Int, item: PhotoLibraryItem) in
+            
+            let asset = changes.insertedObjects[insertionIndex]
+            
+            let finalAssetIndex: Int = {
+                switch photosOrder {
+                case .normal:
+                    return targetAssetIndex
+                case .reversed:
+                    return objectsCountAfterRemovalsAndInsertions - targetAssetIndex - 1
+                }
+            }()
+            
+            return (index: finalAssetIndex, item: photoLibraryItem(from: asset))
+        } ?? []
     }
     
     private func updatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)

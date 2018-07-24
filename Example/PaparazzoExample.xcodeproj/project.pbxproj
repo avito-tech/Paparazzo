@@ -35,6 +35,10 @@
 		251E58011E6565890009A288 /* MarshrouteFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57EE1E6565890009A288 /* MarshrouteFacade.swift */; };
 		251E58021E6565890009A288 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E57EF1E6565890009A288 /* NavigationController.swift */; };
 		253169671E65698C006F1E95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253169661E65698C006F1E95 /* Assets.xcassets */; };
+		25647DF821075DDF006B8A89 /* PHAssetFetchResultChangeDetailsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25647DF721075DDF006B8A89 /* PHAssetFetchResultChangeDetailsMock.swift */; };
+		25647DFA21075F1D006B8A89 /* PhotoLibraryChangesBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25647DF921075F1D006B8A89 /* PhotoLibraryChangesBuilderTests.swift */; };
+		25647DFE2107620E006B8A89 /* PHAssetMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25647DFD2107620E006B8A89 /* PHAssetMock.swift */; };
+		25647E002107623A006B8A89 /* PHAssetFetchResultMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25647DFF2107623A006B8A89 /* PHAssetFetchResultMock.swift */; };
 		2573AD71210741F600DE0CE9 /* CollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2573AD70210741F600DE0CE9 /* CollectionViewDataSourceTests.swift */; };
 		2588E3511F8F8BB9009A2FD2 /* Paparazzo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2588E3531F8F8BB9009A2FD2 /* Paparazzo.strings */; };
 		2590D1021F9CCCB2009AAB6D /* kitten.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2590D1011F9CCCB2009AAB6D /* kitten.jpg */; };
@@ -98,6 +102,10 @@
 		251E57EE1E6565890009A288 /* MarshrouteFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarshrouteFacade.swift; sourceTree = "<group>"; };
 		251E57EF1E6565890009A288 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		253169661E65698C006F1E95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		25647DF721075DDF006B8A89 /* PHAssetFetchResultChangeDetailsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetFetchResultChangeDetailsMock.swift; sourceTree = "<group>"; };
+		25647DF921075F1D006B8A89 /* PhotoLibraryChangesBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryChangesBuilderTests.swift; sourceTree = "<group>"; };
+		25647DFD2107620E006B8A89 /* PHAssetMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetMock.swift; sourceTree = "<group>"; };
+		25647DFF2107623A006B8A89 /* PHAssetFetchResultMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetFetchResultMock.swift; sourceTree = "<group>"; };
 		2573AD70210741F600DE0CE9 /* CollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
 		2588E3541F8F8BBB009A2FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Paparazzo.strings; sourceTree = "<group>"; };
 		2590D1011F9CCCB2009AAB6D /* kitten.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kitten.jpg; sourceTree = "<group>"; };
@@ -319,6 +327,24 @@
 			path = MarshrouteHelpers;
 			sourceTree = "<group>";
 		};
+		25647DFB210761F6006B8A89 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				25647DFC210761FB006B8A89 /* PhotoKit */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		25647DFC210761FB006B8A89 /* PhotoKit */ = {
+			isa = PBXGroup;
+			children = (
+				25647DFD2107620E006B8A89 /* PHAssetMock.swift */,
+				25647DF721075DDF006B8A89 /* PHAssetFetchResultChangeDetailsMock.swift */,
+				25647DFF2107623A006B8A89 /* PHAssetFetchResultMock.swift */,
+			);
+			path = PhotoKit;
+			sourceTree = "<group>";
+		};
 		25A489B21E656A2B00CC431B /* PaparazzoExample_NoMarshroute */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,10 +359,12 @@
 		25D303691FCDC5DD003BEEF3 /* PaparazzoTests */ = {
 			isa = PBXGroup;
 			children = (
+				25647DFB210761F6006B8A89 /* Mocks */,
 				25D3036A1FCDC5DD003BEEF3 /* PhotoLibraryViewTests.swift */,
 				25D303701FCDC9BF003BEEF3 /* ImageSourceStub.swift */,
-				25D3036C1FCDC5DD003BEEF3 /* Info.plist */,
 				2573AD70210741F600DE0CE9 /* CollectionViewDataSourceTests.swift */,
+				25647DF921075F1D006B8A89 /* PhotoLibraryChangesBuilderTests.swift */,
+				25D3036C1FCDC5DD003BEEF3 /* Info.plist */,
 			);
 			path = PaparazzoTests;
 			sourceTree = "<group>";
@@ -784,9 +812,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25647DFE2107620E006B8A89 /* PHAssetMock.swift in Sources */,
 				25D303711FCDC9BF003BEEF3 /* ImageSourceStub.swift in Sources */,
 				25D3036B1FCDC5DD003BEEF3 /* PhotoLibraryViewTests.swift in Sources */,
+				25647E002107623A006B8A89 /* PHAssetFetchResultMock.swift in Sources */,
+				25647DF821075DDF006B8A89 /* PHAssetFetchResultChangeDetailsMock.swift in Sources */,
 				2573AD71210741F600DE0CE9 /* CollectionViewDataSourceTests.swift in Sources */,
+				25647DFA21075F1D006B8A89 /* PhotoLibraryChangesBuilderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
