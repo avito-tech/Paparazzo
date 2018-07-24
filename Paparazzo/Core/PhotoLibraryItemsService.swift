@@ -299,7 +299,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             realIndexOf = { $0 }
         case .reversed:
             enumeratedIndexes = changes.insertedIndexes.flatMap { AnySequence($0) }
-            realIndexOf = { objectsCountAfterRemovals - $0 }
+            realIndexOf = { $0 - objectsCountAfterRemovals }
         }
         
         enumeratedIndexes?.forEach { index in

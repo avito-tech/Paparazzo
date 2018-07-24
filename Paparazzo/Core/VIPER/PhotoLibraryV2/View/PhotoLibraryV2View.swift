@@ -45,7 +45,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(
         cellReuseIdentifier: "PhotoLibraryItemCell",
-        headerReuseIdentifier: "PhotoLibraryCameraView"
+        headerReuseIdentifier: "PhotoLibraryCameraView",
+        photosOrder: .reversed
     )
     
     // MARK: - Init

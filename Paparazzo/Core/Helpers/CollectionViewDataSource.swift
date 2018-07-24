@@ -9,10 +9,12 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     var configureHeader: ((UIView) -> ())?
     
     private var items = [ItemType]()
+    private let photosOrder: PhotosOrder = .reversed
     
     init(
         cellReuseIdentifier: String,
-        headerReuseIdentifier: String? = nil)
+        headerReuseIdentifier: String? = nil,
+        photosOrder: PhotosOrder = .normal)
     {
         self.cellReuseIdentifier = cellReuseIdentifier
         self.headerReuseIdentifier = headerReuseIdentifier
@@ -36,12 +38,18 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         let appendedItems = sortedItems.filter { $0.indexPath.row >= self.items.count }
         let insertedItems = sortedItems.filter { $0.indexPath.row < self.items.count }
         
-        insertedItems.reversed().forEach { item in
-            self.items.insert(item.item, at: item.indexPath.row)
+        if photosOrder == .normal {
+            insertedItems.reversed().forEach { item in
+                self.items.insert(item.item, at: item.indexPath.row)
+            }
+            
+            // indexPath'ы тут должны идти последовательно
+            self.items.append(contentsOf: appendedItems.map { $0.item })
+        } else {
+            items.forEach { item in
+                self.items.insert(item.item, at: item.indexPath.row)
+            }
         }
-        
-        // indexPath'ы тут должны идти последовательно
-        self.items.append(contentsOf: appendedItems.map { $0.item })
     }
     
     func deleteAllItems() {
