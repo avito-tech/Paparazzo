@@ -296,9 +296,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
          `insertionIndex` — index used to map `changes.insertedIndexes` to `changes.insertedObjects`.
          
          `targetAssetIndex` — target index at which asset has been inserted to photo library
-             as reported to us by PhotoKit. We will change it if `photosOrder` is `.reversed`.
+             as reported to us by PhotoKit.
          
          `finalAssetIndex` — actual target index at which collection view cell for the asset will be inserted.
+             This is the same as `targetAssetIndex` if `photosOrder` is `.normal`.
+             However if `photosOrder` is `.reversed` we need to do some calculation.
          */
         return changes.insertedIndexes?.enumerated().map {
             insertionIndex, targetAssetIndex -> (index: Int, item: PhotoLibraryItem) in
