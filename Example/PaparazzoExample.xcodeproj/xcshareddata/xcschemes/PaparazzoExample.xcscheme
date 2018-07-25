@@ -20,20 +20,6 @@
                ReferencedContainer = "container:PaparazzoExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "25D303671FCDC5DD003BEEF3"
-               BuildableName = "PaparazzoTests.xctest"
-               BlueprintName = "PaparazzoTests"
-               ReferencedContainer = "container:PaparazzoExample.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
