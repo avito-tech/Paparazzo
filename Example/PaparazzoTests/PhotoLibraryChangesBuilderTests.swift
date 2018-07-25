@@ -175,4 +175,33 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
             "Expected insertedAsset1 on index 1"
         )
     }
+    
+    func test_updateAtTheEnd_withReversedOrder() {
+        
+        let asset0 = PHAssetMock()
+        let asset1 = PHAssetMock()
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(PHAssetFetchResultMock(assets: [asset0, asset1]))
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: [asset0, asset1]))
+        changes.setChangedIndexes([1, 0])
+        changes.setChangedObjects([asset1, asset0])
+        
+        let result = type(of: self).reversedBuilder.photoLibraryChanges(from: changes)
+        let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+        
+        XCTAssertEqual(2, updatedItems.count)
+        
+        XCTAssertEqual(0, updatedItems[0].index)
+        XCTAssertEqual(
+            asset0.localIdentifier,
+            (updatedItems[0].item.image as! PHAssetImageSource).asset.localIdentifier
+        )
+        
+        XCTAssertEqual(1, updatedItems[1].index)
+        XCTAssertEqual(
+            asset1.localIdentifier,
+            (updatedItems[1].item.image as! PHAssetImageSource).asset.localIdentifier
+        )
+    }
 }
