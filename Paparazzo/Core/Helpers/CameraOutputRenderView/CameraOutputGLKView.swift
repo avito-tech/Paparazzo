@@ -20,7 +20,10 @@ final class CameraOutputGLKView: GLKView, CameraOutputRenderView, CameraCaptureO
         clipsToBounds = true
         enableSetNeedsDisplay = false
         
-        bufferQueue = CaptureSessionPreviewService.startStreamingPreview(of: captureSession, to: self)
+        bufferQueue = CaptureSessionPreviewService.startStreamingPreview(
+            of: captureSession,
+            to: self,
+            isMirrored: outputOrientation.isMirrored)
     }
     
     override func didMoveToWindow() {

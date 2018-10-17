@@ -215,7 +215,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 view.setOutputParameters(parameters)
             }
         }
-        collectionView.reloadData()
+        UIView.performWithoutAnimation {
+            collectionView.reloadSections(IndexSet(0..<1))
+        }
     }
     
     func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {

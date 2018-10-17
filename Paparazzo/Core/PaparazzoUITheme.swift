@@ -87,9 +87,6 @@ public struct PaparazzoUITheme:
     public var cameraIcon = PaparazzoUITheme.image(named: "camera")
 
     // MARK: - Private
-
-    private class BundleId {}
-
     private static func image(named name: String) -> UIImage? {
         return UIImage(named: name, in: Resources.bundle, compatibleWith: nil)
     }
