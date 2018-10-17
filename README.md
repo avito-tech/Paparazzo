@@ -26,6 +26,7 @@
   * [Presenting mask cropper](#present-maskCropper)
   * [Presenting scanner](#present-scanner)
   * [UI Customization](#ui-customization)
+* [ImageSource](#ImageSource)
 * [Localization](#localization)
 
 # <a name="installation" />Installation
@@ -187,7 +188,7 @@ let assemblyFactory = Paparazzo.AssemblyFactory(theme: theme)
 ```
 
 # <a name="ImageSource" />ImageSource
-Photos picked by user via Paparazzo is provided to you either as `MediaPickerItem` (when using MediaPicker module) or as `PhotoLibraryItem` (when using PhotoLibrary module). Both of these enitities are just wrappers around `ImageSource`, which is a protocol that allows you to get different image representations regardless of where it comes from. To find out how to use it, go to https://github.com/avito-tech/ImageSource
+Photos picked by user via Paparazzo is provided to you either as `MediaPickerItem` (when using MediaPicker module) or as `PhotoLibraryItem` (when using PhotoLibrary module). Both of these enitities are just wrappers around `ImageSource`, which is a protocol that allows you to get different image representations regardless of where it comes from. To find out how to use it go to https://github.com/avito-tech/ImageSource
 
 # <a name="localization" />Localization
 You can see the list of supported languages [here](Paparazzo/Localization). If you don't see your language, we encourage you to contribute to the project by creating pull request that adds `Localizable.strings` file for that language.
@@ -195,10 +196,10 @@ You can see the list of supported languages [here](Paparazzo/Localization). If y
 If you're not satisfied with a string that is provided by Paparazzo, you can override it in your project. Just add `Paparazzo.strings` to your main bundle. Override only the strings you need (you can see an example of this in PaparazzoExample project).
 
 # Authors
-Andrey Yutkin (ayutkin@avito.ru)
-Artem Peskishev (aopeskishev@avito.ru)
-Timofey Khomutnikov (tnkhomutnikov@avito.ru)
-Vladimir Kaltyrin (vkaltyrin@avito.ru)
+* Andrey Yutkin (ayutkin@avito.ru)
+* Timofey Khomutnikov (tnkhomutnikov@avito.ru)
+* Artem Peskishev (aopeskishev@avito.ru)
+* Vladimir Kaltyrin (vkaltyrin@avito.ru)
 
 # License
 MIT
