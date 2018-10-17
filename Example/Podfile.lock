@@ -1,68 +1,68 @@
 PODS:
-  - Alamofire (4.5.1)
-  - AlamofireImage (3.3.0):
-    - Alamofire (~> 4.5)
-  - ImageSource (2.0.1):
-    - ImageSource/AlamofireImage (= 2.0.1)
-    - ImageSource/Core (= 2.0.1)
-    - ImageSource/Local (= 2.0.1)
-    - ImageSource/PHAsset (= 2.0.1)
-    - ImageSource/Remote (= 2.0.1)
-  - ImageSource/AlamofireImage (2.0.1):
+  - Alamofire (4.7.3)
+  - AlamofireImage (3.4.1):
+    - Alamofire (~> 4.7)
+  - ImageSource (2.0.2):
+    - ImageSource/AlamofireImage (= 2.0.2)
+    - ImageSource/Core (= 2.0.2)
+    - ImageSource/Local (= 2.0.2)
+    - ImageSource/PHAsset (= 2.0.2)
+    - ImageSource/Remote (= 2.0.2)
+  - ImageSource/AlamofireImage (2.0.2):
     - AlamofireImage (~> 3)
     - ImageSource/Remote
-  - ImageSource/Core (2.0.1)
-  - ImageSource/Local (2.0.1):
+  - ImageSource/Core (2.0.2)
+  - ImageSource/Local (2.0.2):
     - ImageSource/Core
-  - ImageSource/PHAsset (2.0.1):
+  - ImageSource/PHAsset (2.0.2):
     - ImageSource/Core
-  - ImageSource/Remote (2.0.1):
+  - ImageSource/Remote (2.0.2):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/SDWebImage (2.0.1):
+  - ImageSource/SDWebImage (2.0.2):
     - ImageSource/Remote
     - SDWebImage (~> 3.8)
-  - ImageSource/UIKit (2.0.1):
+  - ImageSource/UIKit (2.0.2):
     - ImageSource/Core
   - JNWSpringAnimation (0.7.1)
   - Marshroute (0.4.2)
   - Paparazzo (3.0.0):
-    - ImageSource/Core
-    - ImageSource/Local
-    - ImageSource/PHAsset
-    - ImageSource/Remote
+    - ImageSource/Core (~> 2.0)
+    - ImageSource/Local (~> 2.0)
+    - ImageSource/PHAsset (~> 2.0)
+    - ImageSource/Remote (~> 2.0)
     - JNWSpringAnimation
     - Paparazzo/AlamofireImage (= 3.0.0)
     - Paparazzo/Core (= 3.0.0)
     - Paparazzo/Marshroute (= 3.0.0)
   - Paparazzo/AlamofireImage (3.0.0):
-    - ImageSource/AlamofireImage
-    - ImageSource/Core
-    - ImageSource/Local
-    - ImageSource/PHAsset
-    - ImageSource/Remote
+    - ImageSource/AlamofireImage (~> 2.0)
+    - ImageSource/Core (~> 2.0)
+    - ImageSource/Local (~> 2.0)
+    - ImageSource/PHAsset (~> 2.0)
+    - ImageSource/Remote (~> 2.0)
     - JNWSpringAnimation
     - Paparazzo/Core
   - Paparazzo/Core (3.0.0):
-    - ImageSource/Core
-    - ImageSource/Local
-    - ImageSource/PHAsset
-    - ImageSource/Remote
+    - ImageSource/Core (~> 2.0)
+    - ImageSource/Local (~> 2.0)
+    - ImageSource/PHAsset (~> 2.0)
+    - ImageSource/Remote (~> 2.0)
     - JNWSpringAnimation
   - Paparazzo/Marshroute (3.0.0):
-    - ImageSource/Core
-    - ImageSource/Local
-    - ImageSource/PHAsset
-    - ImageSource/Remote
+    - ImageSource/Core (~> 2.0)
+    - ImageSource/Local (~> 2.0)
+    - ImageSource/PHAsset (~> 2.0)
+    - ImageSource/Remote (~> 2.0)
     - JNWSpringAnimation
     - Marshroute
     - Paparazzo/Core
   - Paparazzo/SDWebImage (3.0.0):
-    - ImageSource/Core
-    - ImageSource/Local
-    - ImageSource/PHAsset
-    - ImageSource/Remote
-    - ImageSource/SDWebImage
+    - ImageSource/Core (~> 2.0)
+    - ImageSource/Local (~> 2.0)
+    - ImageSource/PHAsset (~> 2.0)
+    - ImageSource/Remote (~> 2.0)
+    - ImageSource/SDWebImage (~> 2.0)
     - JNWSpringAnimation
     - Paparazzo/Core
   - SDWebImage (3.8.2):
@@ -70,12 +70,12 @@ PODS:
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - ImageSource (from `../`)
-  - ImageSource/Core (from `../`)
-  - ImageSource/Local (from `../`)
-  - ImageSource/PHAsset (from `../`)
-  - ImageSource/Remote (from `../`)
-  - ImageSource/SDWebImage (from `../`)
+  - ImageSource (~> 2.0)
+  - ImageSource/Core (~> 2.0)
+  - ImageSource/Local (~> 2.0)
+  - ImageSource/PHAsset (~> 2.0)
+  - ImageSource/Remote (~> 2.0)
+  - ImageSource/SDWebImage (~> 2.0)
   - Marshroute (= 0.4.2)
   - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
@@ -85,25 +85,24 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
+    - ImageSource
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
 
 EXTERNAL SOURCES:
-  ImageSource:
-    :path: "../"
   Paparazzo:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
-  AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  ImageSource: b8c35b2d74451c6983dc855d8abec8233404914e
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AlamofireImage: 78d67ccbb763d87ba44b21583d2153500a195630
+  ImageSource: d4c37b9461fff48885e46080fc47292d27d4ab8a
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: 15cf8067a997bf298e9db9317dd7c32b8799a787
-  Paparazzo: 8ea1fe1b1646e6c41ebcd2a445e61c8c925689ff
+  Paparazzo: a56d53d6149e68a068f27b05666cdae72c507864
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 4e42c0fe26e765634a0d14ce83755fcd3ee28460
+PODFILE CHECKSUM: 427d13204b895dbeb1ce536a6ae6a164a664b316
 
 COCOAPODS: 1.5.3

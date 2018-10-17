@@ -27,10 +27,6 @@
   * [Presenting scanner](#present-scanner)
   * [UI Customization](#ui-customization)
 * [ImageSource](#ImageSource)
-  * [Typical use cases](#use-cases)
-    * [Displaying in UI](#displaying-in-ui)
-    * [Getting image data](#getting-image-data)
-    * [Getting image size](#getting-image-size)
 * [Localization](#localization)
 
 # <a name="installation" />Installation
@@ -192,48 +188,7 @@ let assemblyFactory = Paparazzo.AssemblyFactory(theme: theme)
 ```
 
 # <a name="ImageSource" />ImageSource
-Photos picked by user via Paparazzo is provided to you either as `MediaPickerItem` (when using MediaPicker module) or as `PhotoLibraryItem` (when using PhotoLibrary module). Both of these enitities are just wrappers around `ImageSource`, which is a protocol that allows you to get different image representations regardless of where it comes from.
-
-`ImageSource` is designed to be plaform-independent. You can use it both on iOS and macOS.
-
-See the sections below to understand how to use `ImageSource` in different use cases.
-
-## <a name="use-cases" />Typical use cases
-### <a name="displaying-in-ui" />Displaying in UI
-To present `ImageSource` in `UIImageView`, you should use extension method that comes with `ImageSource/UIKit` pod:
-
-```swift
-func setImage(
-    fromSource: ImageSource?,
-    size: CGSize? = nil,
-    placeholder: UIImage? = nil,
-    placeholderDeferred: Bool = false,
-    adjustOptions: ((_ options: inout ImageRequestOptions) -> ())? = nil,
-    resultHandler: ((ImageRequestResult<UIImage>) -> ())? = nil)
-    -> ImageRequestId?
-```
-
-In most cases you just want to use its simplest version, passing only the first parameter:
-
-`imageView.setImage(fromSource: imageSource)`
-
-### <a name="getting-image-data" />Getting image data
-To get image data use `ImageSource.fullResolutionImageData(completion:)`:
-
-```swift
-imageSource.fullResolutionImageData { data in
-    try? data?.write(to: fileUrl)
-}
-```
-
-### <a name="getting-image-size" />Getting image size
-To get image size use `ImageSource.imageSize(completion:)`:
-
-```swift
-imageSource.imageSize { size in
-    // do something with size
-}
-```
+Photos picked by user via Paparazzo is provided to you either as `MediaPickerItem` (when using MediaPicker module) or as `PhotoLibraryItem` (when using PhotoLibrary module). Both of these enitities are just wrappers around `ImageSource`, which is a protocol that allows you to get different image representations regardless of where it comes from. To find out how to use it go to https://github.com/avito-tech/ImageSource
 
 # <a name="localization" />Localization
 You can see the list of supported languages [here](Paparazzo/Localization). If you don't see your language, we encourage you to contribute to the project by creating pull request that adds `Localizable.strings` file for that language.
@@ -241,10 +196,10 @@ You can see the list of supported languages [here](Paparazzo/Localization). If y
 If you're not satisfied with a string that is provided by Paparazzo, you can override it in your project. Just add `Paparazzo.strings` to your main bundle. Override only the strings you need (you can see an example of this in PaparazzoExample project).
 
 # Authors
-Andrey Yutkin (ayutkin@avito.ru)
-Artem Peskishev (aopeskishev@avito.ru)
-Timofey Khomutnikov (tnkhomutnikov@avito.ru)
-Vladimir Kaltyrin (vkaltyrin@avito.ru)
+* Andrey Yutkin (ayutkin@avito.ru)
+* Timofey Khomutnikov (tnkhomutnikov@avito.ru)
+* Artem Peskishev (aopeskishev@avito.ru)
+* Vladimir Kaltyrin (vkaltyrin@avito.ru)
 
 # License
 MIT
