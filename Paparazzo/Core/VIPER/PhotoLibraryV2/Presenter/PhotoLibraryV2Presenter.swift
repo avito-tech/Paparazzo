@@ -223,7 +223,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                         module.onItemUpdate = self?.onItemUpdate
                         module.onItemAutocorrect = self?.onItemAutocorrect
                         module.onItemMove = self?.onItemMove
-                        module.onItemRemove = self?.onItemRemove
+                        module.onItemRemove = { mediaPickerItem, index in
+                            self?.view?.deselectItem(with: mediaPickerItem.image)
+                            self?.onItemRemove?(mediaPickerItem, index)
+                        }
                         module.onCropFinish = self?.onCropFinish
                         module.onCropCancel = self?.onCropCancel
                         module.onContinueButtonTap = self?.onContinueButtonTap
@@ -320,8 +323,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             if let selectionState = self?.interactor.prepareSelection() {
                 self?.adjustViewForSelectionState(selectionState)
             }
-            
-            
         }
         
         cellData.onSelect = { [weak self] in
