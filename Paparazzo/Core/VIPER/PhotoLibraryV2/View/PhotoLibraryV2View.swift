@@ -1,3 +1,4 @@
+import ImageSource
 import UIKit
 
 final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, ThemeConfigurable {
@@ -323,15 +324,14 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         )
     }
     
-    func deselectAndAdjustAllCells() {
-        
-        guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems
-            else { return }
-        
-        for indexPath in indexPathsForSelectedItems {
-            collectionView.deselectItem(at: indexPath, animated: false)
-            onDeselectItem(at: indexPath)
+    func deselectCell(with imageSource: ImageSource) {
+        if let indexPath = dataSource.indexPath(where: { $0.image == imageSource }) {
+            deselectCell(at: indexPath)
         }
+    }
+    
+    func deselectAndAdjustAllCells() {
+        collectionView.indexPathsForSelectedItems?.forEach { deselectCell(at: $0) }
     }
     
     func setTitle(_ title: String) {
@@ -647,6 +647,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             top: top,
             height: size.height
         )
+    }
+    
+    private func deselectCell(at indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+        onDeselectItem(at: indexPath)
     }
     
     @objc private func onCloseButtonTap(_: UIButton) {

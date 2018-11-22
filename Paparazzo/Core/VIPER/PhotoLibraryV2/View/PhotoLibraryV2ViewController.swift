@@ -1,3 +1,4 @@
+import ImageSource
 import UIKit
 
 final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV2ViewInput, ThemeConfigurable {
@@ -108,6 +109,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func setDimsUnselectedItems(_ dimUnselectedItems: Bool) {
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
+    }
+    
+    func deselectItem(with imageSource: ImageSource) {
+        photoLibraryView.deselectCell(with: imageSource)
     }
     
     func deselectAllItems() {

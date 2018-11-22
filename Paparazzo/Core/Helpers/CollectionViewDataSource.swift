@@ -93,6 +93,10 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         }
     }
     
+    func indexPath(where findItem: (ItemType) -> Bool) -> IndexPath? {
+        return items.index(where: findItem).flatMap { IndexPath(item: $0, section: 0) }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
