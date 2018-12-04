@@ -122,7 +122,7 @@ private final class GPSMetadataExtractor {
             return [:]
         }
         let latitudeRef = coordinate.latitude < 0.0 ? "S" : "N"
-        let longitudeRef = coordinate.longitude < 0.0 ? "W" : "E";
+        let longitudeRef = coordinate.longitude < 0.0 ? "W" : "E"
         
         let dict: [String : Any] = [
             "GPSLatitude": coordinate.latitude,
