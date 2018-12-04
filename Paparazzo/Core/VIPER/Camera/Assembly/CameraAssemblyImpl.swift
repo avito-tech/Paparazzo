@@ -10,12 +10,14 @@ final class CameraAssemblyImpl: BasePaparazzoAssembly, CameraAssembly {
         let cameraService = serviceFactory.cameraService(
             initialActiveCameraType: initialActiveCameraType
         )
-        
         cameraService.isMetalEnabled = isMetalEnabled
+        
+        let locationProvider = serviceFactory.locationProvider()
         
         let interactor = CameraInteractorImpl(
             cameraService: cameraService,
-            deviceOrientationService: deviceOrientationService
+            deviceOrientationService: deviceOrientationService,
+            locationProvider: locationProvider
         )
         
         let presenter = CameraPresenter(
