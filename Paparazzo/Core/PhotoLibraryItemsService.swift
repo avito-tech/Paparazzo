@@ -213,16 +213,27 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         if let phChanges = phChanges, phChanges.hasIncrementalChanges {
             onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
         } else {
-            onAlbumEvent?(.fullReload(photoLibraryItems(from: assetsFromFetchResult())))
+            assetsFromFetchResult { [weak self] assets in
+                guard let strongSelf = self else { return }
+                self?.onAlbumEvent?(.fullReload(strongSelf.photoLibraryItems(from: assets)))
+            }
         }
     }
     
-    private func assetsFromFetchResult() -> [PHAsset] {
-        var images = [PHAsset]()
-        observedAlbum?.fetchResult.enumerateObjects(options: enumerationOptions()) { asset, _, _ in
-            images.append(asset)
+    private func assetsFromFetchResult(completion: @escaping ([PHAsset]) -> ()) {
+        guard let observedAlbum = observedAlbum else { return completion([]) }
+        
+        let enumerationOptions = self.enumerationOptions()
+        
+        fetchResultQueue.async {
+            var images = [PHAsset]()
+            observedAlbum.fetchResult.enumerateObjects(options: enumerationOptions) { asset, _, _ in
+                images.append(asset)
+            }
+            DispatchQueue.main.async {
+                completion(images)
+            }
         }
-        return images
     }
     
     private func enumerationOptions() -> NSEnumerationOptions {
