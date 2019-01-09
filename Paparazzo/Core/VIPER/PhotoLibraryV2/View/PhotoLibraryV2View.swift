@@ -202,7 +202,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
+        
         cameraViewData = viewData
+        
         dataSource.configureHeader = { [weak self] view in
             guard let view = view as? PhotoLibraryCameraView else {
                 return
@@ -216,8 +218,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 view.setOutputParameters(parameters)
             }
         }
+        
         UIView.performWithoutAnimation {
-            collectionView.reloadSections(IndexSet(0..<1))
+            // Checking window to prevent freeze in -[UICollectionViewUpdate initWithCollectionView:updateItems:
+            // oldModel:newModel:oldVisibleBounds:newVisibleBounds:]
+            if window != nil {
+                collectionView.reloadSections(IndexSet(0..<1))
+            } else {
+                print("Skipping reload data")
+            }
         }
     }
     
