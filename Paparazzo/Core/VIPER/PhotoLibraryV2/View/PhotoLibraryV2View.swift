@@ -220,6 +220,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         
         UIView.performWithoutAnimation {
+            // `collectionView.reloadSections(IndexSet(0..<1))` freezes app completely, don't use it
             collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
         }
     }
