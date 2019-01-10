@@ -22,15 +22,12 @@ public struct PhotoLibraryItem: Equatable {
     
     public var image: ImageSource
     
-    var identifier: String
-    
-    init(identifier: String, image: ImageSource) {
-        self.identifier = identifier
+    init(image: ImageSource) {
         self.image = image
     }
     
     public static func ==(item1: PhotoLibraryItem, item2: PhotoLibraryItem) -> Bool {
-        return item1.identifier == item2.identifier
+        return item1.image == item2.image
     }
 }
 

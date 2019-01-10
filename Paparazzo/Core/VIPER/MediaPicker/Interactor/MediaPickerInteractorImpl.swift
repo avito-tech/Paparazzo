@@ -113,7 +113,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
         }
         
-        if let matchingPhotoLibraryItemIndex = photoLibraryItems.index(where: { $0.identifier == item.identifier }) {
+        if let matchingPhotoLibraryItemIndex = photoLibraryItems.index(where: { $0.image == item.image }) {
             photoLibraryItems.remove(at: matchingPhotoLibraryItemIndex)
         }
         
