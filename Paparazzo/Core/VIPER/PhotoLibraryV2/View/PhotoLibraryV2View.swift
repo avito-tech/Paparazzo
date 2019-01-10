@@ -220,7 +220,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         
         UIView.performWithoutAnimation {
-            collectionView.reloadData()
+            collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
         }
     }
     
