@@ -124,8 +124,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
             guard let strongSelf = self else { return }
             
-            // TODO: (ayutkin) if event == .changes, remove `removedItems` from `selectedItems`
-//            strongSelf.removeSelectedItems(notPresentedIn: strongSelf.allItems)
+            // TODO: (ayutkin) find a way to remove items in `selectedItems` that refer to removed assets
             
             if let onAlbumEvent = strongSelf.onAlbumEvent {
                 dispatch_to_main_queue {
@@ -147,11 +146,6 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
             canSelectMoreItems: canSelectMoreItems(),
             preSelectionAction: preSelectionAction
         )
-    }
-    
-    private func removeSelectedItems(notPresentedIn items: [PhotoLibraryItem]) {
-        let assetIds = Set(items.map { $0.identifier })
-        selectedItems = selectedItems.filter { assetIds.contains($0.identifier) }
     }
 }
 
