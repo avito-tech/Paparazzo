@@ -220,13 +220,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         
         UIView.performWithoutAnimation {
-            // Checking window to prevent freeze in -[UICollectionViewUpdate initWithCollectionView:updateItems:
-            // oldModel:newModel:oldVisibleBounds:newVisibleBounds:]
-            if window != nil {
-                collectionView.reloadSections(IndexSet(0..<1))
-            } else {
-                print("Skipping reload data")
-            }
+            collectionView.reloadData()
         }
     }
     
