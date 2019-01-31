@@ -158,13 +158,13 @@ let assembly = factory.scannerAssembly()
 Create view controller using assembly's `module` method:
 ```swift
 let data = ScannerData(
-initialActiveCameraType: .back,
-cameraCaptureOutputHandlers: []
+    initialActiveCameraType: .back,
+    cameraCaptureOutputHandlers: []
 )
 let viewController = assembly.module(
-data: data,
-routerSeed: routerSeed,    // omit this parameter if you're using Paparazzo.AssemblyFactory
-configure: configure
+    data: data,
+    routerSeed: routerSeed,    // omit this parameter if you're using Paparazzo.AssemblyFactory
+    configure: configure
 )
 ```
 * _initialActiveCameraType_ — preferred camera when starting the module (front or back).
