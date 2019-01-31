@@ -205,20 +205,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         cameraViewData = viewData
         
-        dataSource.configureHeader = { [weak self] view in
-            guard let view = view as? PhotoLibraryCameraView else {
-                return
-            }
-            
-            view.setCameraIcon(self?.theme?.cameraIcon)
-            
-            view.onTap = self?.cameraViewData?.onTap
-            
-            if let parameters = self?.cameraViewData?.parameters {
-                view.setOutputParameters(parameters)
-            }
-        }
-        
         UIView.performWithoutAnimation {
             // `collectionView.reloadSections(IndexSet(0..<1))` freezes app completely, don't use it
             collectionView.reloadData()

@@ -257,10 +257,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.view?.hideAlbumsList()
         }
         
-        cameraViewData { [weak self] viewData in
-            self?.view?.setCameraViewData(viewData)
-        }
-        
         interactor.observeDeviceOrientation { [weak self] orientation in
             self?.cameraViewData { [weak self] viewData in
                 self?.view?.setCameraViewData(viewData)
