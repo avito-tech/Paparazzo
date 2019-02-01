@@ -244,7 +244,7 @@ final class ExamplePresenter {
             )
             
             items.first?.image.requestImage(options: options) { (result: ImageRequestResult<UIImage>) in
-                let data = result.image.flatMap { UIImagePNGRepresentation($0) }
+                let data = result.image.flatMap { $0.pngData() }
                 let url = URL(fileURLWithPath: NSTemporaryDirectory() + "/crop_test2.jpg")
                 try! data?.write(to: url, options: [.atomic])
             }

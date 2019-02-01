@@ -31,7 +31,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private var collectionSnapshotView: UIView?
     private let titleView = PhotoLibraryV2TitleView()
     private let accessDeniedView = AccessDeniedView()
-    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let progressIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let dimView = UIView()
     private let albumsTableView = PhotoLibraryAlbumsTableView()
     private let placeholderView = UILabel()
@@ -504,7 +504,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         if let headerReuseIdentifier = dataSource.headerReuseIdentifier {
             collectionView.register(
                 PhotoLibraryCameraView.self,
-                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                 withReuseIdentifier: headerReuseIdentifier
             )
         }

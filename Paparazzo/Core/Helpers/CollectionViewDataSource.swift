@@ -121,7 +121,7 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath) -> UICollectionReusableView
     {
-        guard let headerReuseIdentifier = headerReuseIdentifier, kind == UICollectionElementKindSectionHeader else {
+        guard let headerReuseIdentifier = headerReuseIdentifier, kind == UICollectionView.elementKindSectionHeader else {
             preconditionFailure("Invalid supplementary view type for this collection view")
         }
         

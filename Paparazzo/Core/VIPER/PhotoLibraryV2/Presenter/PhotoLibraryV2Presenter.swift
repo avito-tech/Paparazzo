@@ -244,7 +244,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         view?.onAccessDeniedButtonTap = {
-            if let url = URL(string: UIApplicationOpenSettingsURLString) {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.openURL(url)
             }
         }

@@ -154,9 +154,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         
         addSubview(newCameraOutputView)
         
-        bringSubview(toFront: titleLabel)
-        bringSubview(toFront: subtitleLabel)
-        bringSubview(toFront: hintLabel)
+        bringSubviewToFront(titleLabel)
+        bringSubviewToFront(subtitleLabel)
+        bringSubviewToFront(hintLabel)
+        
         self.cameraOutputView = newCameraOutputView
         self.outputParameters = parameters
     }
@@ -187,7 +188,7 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
         
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(
-            NSAttributedStringKey.paragraphStyle,
+            NSAttributedString.Key.paragraphStyle,
             value: style,
             range: NSRange(location: 0, length: attributedString.length)
         )

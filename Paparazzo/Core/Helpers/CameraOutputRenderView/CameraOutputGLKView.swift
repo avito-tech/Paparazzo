@@ -12,7 +12,7 @@ final class CameraOutputGLKView: GLKView, CameraOutputRenderView, CameraCaptureO
     
     init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation, eaglContext: EAGLContext) {
         
-        ciContext = CIContext(eaglContext: eaglContext, options: [kCIContextWorkingColorSpace: NSNull()])
+        ciContext = CIContext(eaglContext: eaglContext, options: [CIContextOption.workingColorSpace: NSNull()])
         orientation = outputOrientation
         
         super.init(frame: .zero, context: eaglContext)

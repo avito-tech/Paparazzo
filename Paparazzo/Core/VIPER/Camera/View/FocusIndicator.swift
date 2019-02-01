@@ -70,7 +70,7 @@ final class FocusIndicatorScaleAnimation: CABasicAnimation {
         duration = 0.3
         autoreverses = true
         isRemovedOnCompletion = false
-        timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -87,7 +87,7 @@ final class FocusIndicatorOpacityAnimation: CABasicAnimation {
         duration = 0.3
         autoreverses = true
         isRemovedOnCompletion = false
-        timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
     }
     
     required init?(coder aDecoder: NSCoder) {

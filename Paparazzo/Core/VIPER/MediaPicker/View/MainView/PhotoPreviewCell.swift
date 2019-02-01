@@ -3,7 +3,7 @@ import UIKit
 
 final class PhotoPreviewCell: PhotoCollectionViewCell {
     
-    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let progressIndicator = UIActivityIndicatorView(style: .whiteLarge)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

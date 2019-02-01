@@ -1,68 +1,68 @@
 PODS:
   - Alamofire (4.8.1)
-  - AlamofireImage (3.5.0):
-    - Alamofire (~> 4.8)
-  - ImageSource (2.2.1):
-    - ImageSource/AlamofireImage (= 2.2.1)
-    - ImageSource/Core (= 2.2.1)
-    - ImageSource/Local (= 2.2.1)
-    - ImageSource/PHAsset (= 2.2.1)
-    - ImageSource/Remote (= 2.2.1)
-  - ImageSource/AlamofireImage (2.2.1):
-    - AlamofireImage (~> 3)
+  - AlamofireImage (3.4.0):
+    - Alamofire (~> 4.7)
+  - ImageSource (3.0.0):
+    - ImageSource/AlamofireImage (= 3.0.0)
+    - ImageSource/Core (= 3.0.0)
+    - ImageSource/Local (= 3.0.0)
+    - ImageSource/PHAsset (= 3.0.0)
+    - ImageSource/Remote (= 3.0.0)
+  - ImageSource/AlamofireImage (3.0.0):
+    - AlamofireImage (= 3.4.0)
     - ImageSource/Remote
-  - ImageSource/Core (2.2.1)
-  - ImageSource/Local (2.2.1):
+  - ImageSource/Core (3.0.0)
+  - ImageSource/Local (3.0.0):
     - ImageSource/Core
-  - ImageSource/PHAsset (2.2.1):
+  - ImageSource/PHAsset (3.0.0):
     - ImageSource/Core
-  - ImageSource/Remote (2.2.1):
+  - ImageSource/Remote (3.0.0):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/SDWebImage (2.2.1):
+  - ImageSource/SDWebImage (3.0.0):
     - ImageSource/Remote
     - SDWebImage (~> 3.8)
-  - ImageSource/UIKit (2.2.1):
+  - ImageSource/UIKit (3.0.0):
     - ImageSource/Core
   - JNWSpringAnimation (0.7.1)
   - Marshroute (0.4.2)
   - Paparazzo (3.0.0):
-    - ImageSource/Core (~> 2.2)
-    - ImageSource/Local (~> 2.2)
-    - ImageSource/PHAsset (~> 2.2)
-    - ImageSource/Remote (~> 2.2)
+    - ImageSource/Core (= 3.0.0)
+    - ImageSource/Local (= 3.0.0)
+    - ImageSource/PHAsset (= 3.0.0)
+    - ImageSource/Remote (= 3.0.0)
     - JNWSpringAnimation
     - Paparazzo/AlamofireImage (= 3.0.0)
     - Paparazzo/Core (= 3.0.0)
     - Paparazzo/Marshroute (= 3.0.0)
   - Paparazzo/AlamofireImage (3.0.0):
-    - ImageSource/AlamofireImage (~> 2.2)
-    - ImageSource/Core (~> 2.2)
-    - ImageSource/Local (~> 2.2)
-    - ImageSource/PHAsset (~> 2.2)
-    - ImageSource/Remote (~> 2.2)
+    - ImageSource/AlamofireImage (= 3.0.0)
+    - ImageSource/Core (= 3.0.0)
+    - ImageSource/Local (= 3.0.0)
+    - ImageSource/PHAsset (= 3.0.0)
+    - ImageSource/Remote (= 3.0.0)
     - JNWSpringAnimation
     - Paparazzo/Core
   - Paparazzo/Core (3.0.0):
-    - ImageSource/Core (~> 2.2)
-    - ImageSource/Local (~> 2.2)
-    - ImageSource/PHAsset (~> 2.2)
-    - ImageSource/Remote (~> 2.2)
+    - ImageSource/Core (= 3.0.0)
+    - ImageSource/Local (= 3.0.0)
+    - ImageSource/PHAsset (= 3.0.0)
+    - ImageSource/Remote (= 3.0.0)
     - JNWSpringAnimation
   - Paparazzo/Marshroute (3.0.0):
-    - ImageSource/Core (~> 2.2)
-    - ImageSource/Local (~> 2.2)
-    - ImageSource/PHAsset (~> 2.2)
-    - ImageSource/Remote (~> 2.2)
+    - ImageSource/Core (= 3.0.0)
+    - ImageSource/Local (= 3.0.0)
+    - ImageSource/PHAsset (= 3.0.0)
+    - ImageSource/Remote (= 3.0.0)
     - JNWSpringAnimation
     - Marshroute
     - Paparazzo/Core
   - Paparazzo/SDWebImage (3.0.0):
-    - ImageSource/Core (~> 2.2)
-    - ImageSource/Local (~> 2.2)
-    - ImageSource/PHAsset (~> 2.2)
-    - ImageSource/Remote (~> 2.2)
-    - ImageSource/SDWebImage (~> 2.2)
+    - ImageSource/Core (= 3.0.0)
+    - ImageSource/Local (= 3.0.0)
+    - ImageSource/PHAsset (= 3.0.0)
+    - ImageSource/Remote (= 3.0.0)
+    - ImageSource/SDWebImage (= 3.0.0)
     - JNWSpringAnimation
     - Paparazzo/Core
   - SDWebImage (3.8.2):
@@ -70,12 +70,12 @@ PODS:
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - ImageSource (= 2.2.1)
-  - ImageSource/Core (= 2.2.1)
-  - ImageSource/Local (= 2.2.1)
-  - ImageSource/PHAsset (= 2.2.1)
-  - ImageSource/Remote (= 2.2.1)
-  - ImageSource/SDWebImage (= 2.2.1)
+  - ImageSource (from `https://github.com/avito-tech/ImageSource`, branch `swift-4.2`)
+  - ImageSource/Core (from `https://github.com/avito-tech/ImageSource`, branch `swift-4.2`)
+  - ImageSource/Local (from `https://github.com/avito-tech/ImageSource`, branch `swift-4.2`)
+  - ImageSource/PHAsset (from `https://github.com/avito-tech/ImageSource`, branch `swift-4.2`)
+  - ImageSource/Remote (from `https://github.com/avito-tech/ImageSource`, branch `swift-4.2`)
+  - ImageSource/SDWebImage (from `https://github.com/avito-tech/ImageSource`, branch `swift-4.2`)
   - Marshroute (= 0.4.2)
   - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
@@ -85,24 +85,31 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
-    - ImageSource
     - JNWSpringAnimation
     - Marshroute
     - SDWebImage
 
 EXTERNAL SOURCES:
+  ImageSource:
+    :branch: swift-4.2
+    :git: https://github.com/avito-tech/ImageSource
   Paparazzo:
     :path: "../"
 
+CHECKOUT OPTIONS:
+  ImageSource:
+    :commit: 72a922bb45464bd4f783137148fc685b74e0420b
+    :git: https://github.com/avito-tech/ImageSource
+
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
-  AlamofireImage: 1aea346f4dda2f6c67622fa5a89fcbb80d79cc16
-  ImageSource: 51ae8710c111728e9243c50f57dc96b44795f096
+  AlamofireImage: 5f79836de27236819b13b27d0c97be6c205976fe
+  ImageSource: c58fa9f14fd294366dee4095853c80cd548975ec
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: 15cf8067a997bf298e9db9317dd7c32b8799a787
-  Paparazzo: 341cfe0119a30630e857d960cfac6bc344d848b0
+  Paparazzo: 2ba77e625c60e1a54ed7a6d4474eb33ebe482944
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 5ae377b4ed464a0fffa4c8ced781286c65669eba
+PODFILE CHECKSUM: c5c4e873e4ca6ae8b0b8cdb41bcf5a8f464856f9
 
 COCOAPODS: 1.5.3

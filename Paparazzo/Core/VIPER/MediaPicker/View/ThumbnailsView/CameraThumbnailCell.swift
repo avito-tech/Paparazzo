@@ -93,7 +93,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
         
         let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         
-        cameraOutputView?.frame = UIEdgeInsetsInsetRect(bounds, insets)
+        cameraOutputView?.frame = bounds.inset(by: insets)
         button.frame = bounds
     }
     

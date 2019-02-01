@@ -3,7 +3,7 @@ import UIKit
 final class ButtonWithActivity: UIButton {
     
     // MARK: - Subviews
-    private let activity = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private let activity = UIActivityIndicatorView(style: .gray)
     
     // MARK: - State
     private var cachedTitle: String? = nil
@@ -39,7 +39,7 @@ final class ButtonWithActivity: UIButton {
     }
     
     // MARK: - Title
-    override func setTitle(_ title: String?, for state: UIControlState) {
+    override func setTitle(_ title: String?, for state: UIControl.State) {
         switch style {
         case .normal:
             super.setTitle(title, for: state)
