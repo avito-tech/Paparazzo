@@ -72,7 +72,6 @@ public final class ImageStorageImpl: ImageStorage {
     public func removeAll() {
         let imageDirectoryPath = ImageStorageImpl.imageDirectoryPath()
         guard FileManager.default.fileExists(atPath: imageDirectoryPath) else {
-            ImageStorageImpl.createImageDirectoryIfNotExist()
             return
         }
 
