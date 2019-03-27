@@ -6,6 +6,7 @@ protocol ServiceFactory: class {
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider
     func imageCroppingService(image: ImageSource, canvasSize: CGSize) -> ImageCroppingService
     func locationProvider() -> LocationProvider
+    func imageMetadataWritingService() -> ImageMetadataWritingService
 }
 
 final class ServiceFactoryImpl: ServiceFactory {
@@ -41,5 +42,9 @@ final class ServiceFactoryImpl: ServiceFactory {
     
     func locationProvider() -> LocationProvider {
         return LocationProviderImpl()
+    }
+    
+    func imageMetadataWritingService() -> ImageMetadataWritingService {
+        return ImageMetadataWritingServiceImpl()
     }
 }
