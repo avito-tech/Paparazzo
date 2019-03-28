@@ -3,19 +3,28 @@ import ImageIO
 import ImageSource
 
 protocol ImageMetadataWritingService {
-    func writeGpsData(from: CLLocation, to: LocalImageSource, completion: (() -> ())?)
+    func writeGpsData(from: CLLocation, to: LocalImageSource, completion: ((_ success: Bool) -> ())?)
 }
 
 final class ImageMetadataWritingServiceImpl: ImageMetadataWritingService {
     
     // MARK: - ImageMetadataWritingService
-    func writeGpsData(from location: CLLocation, to imageSource: LocalImageSource, completion: (() -> ())?) {
+    func writeGpsData(
+        from location: CLLocation,
+        to imageSource: LocalImageSource,
+        completion: ((_ success: Bool) -> ())?)
+    {
         DispatchQueue.global(qos: .background).async {
             let url = NSURL(fileURLWithPath: imageSource.path)
             let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
             
-            guard let source = CGImageSourceCreateWithURL(url, sourceOptions) else { return }
-            guard let sourceType = CGImageSourceGetType(source) else { return }
+            guard let source = CGImageSourceCreateWithURL(url, sourceOptions),
+                let sourceType = CGImageSourceGetType(source),
+                let destination = CGImageDestinationCreateWithURL(url, sourceType, 1, nil)
+            else {
+                completion?(false)
+                return
+            }
             
             let gpsMetadata = self.gpsMetadataDictionary(for: location) as [NSObject: AnyObject]
             
@@ -27,12 +36,10 @@ final class ImageMetadataWritingServiceImpl: ImageMetadataWritingService {
                 }
                 ?? gpsMetadata
             
-            guard let destination = CGImageDestinationCreateWithURL(url, sourceType, 1, nil) else { return }
-            
             CGImageDestinationAddImageFromSource(destination, source, 0, metadata as CFDictionary)
-            CGImageDestinationFinalize(destination)
+            let success = CGImageDestinationFinalize(destination)
             
-            completion?()
+            completion?(success)
         }
     }
     
