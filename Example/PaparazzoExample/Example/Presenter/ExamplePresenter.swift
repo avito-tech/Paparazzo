@@ -240,7 +240,8 @@ final class ExamplePresenter {
             
             let options = ImageRequestOptions(
                 size: .fitSize(CGSize(width: 1000, height: 1000)),
-                deliveryMode: .best
+                deliveryMode: .best,
+                needsMetadata: true
             )
             
             items.first?.image.requestImage(options: options) { (result: ImageRequestResult<UIImage>) in
