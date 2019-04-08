@@ -26,16 +26,16 @@ PODS:
     - ImageSource/Core
   - JNWSpringAnimation (0.7.1)
   - Marshroute (0.4.2)
-  - Paparazzo (3.0.0):
+  - Paparazzo (3.0.1):
     - ImageSource/Core (~> 2.2)
     - ImageSource/Local (~> 2.2)
     - ImageSource/PHAsset (~> 2.2)
     - ImageSource/Remote (~> 2.2)
     - JNWSpringAnimation
-    - Paparazzo/AlamofireImage (= 3.0.0)
-    - Paparazzo/Core (= 3.0.0)
-    - Paparazzo/Marshroute (= 3.0.0)
-  - Paparazzo/AlamofireImage (3.0.0):
+    - Paparazzo/AlamofireImage (= 3.0.1)
+    - Paparazzo/Core (= 3.0.1)
+    - Paparazzo/Marshroute (= 3.0.1)
+  - Paparazzo/AlamofireImage (3.0.1):
     - ImageSource/AlamofireImage (~> 2.2)
     - ImageSource/Core (~> 2.2)
     - ImageSource/Local (~> 2.2)
@@ -43,13 +43,13 @@ PODS:
     - ImageSource/Remote (~> 2.2)
     - JNWSpringAnimation
     - Paparazzo/Core
-  - Paparazzo/Core (3.0.0):
+  - Paparazzo/Core (3.0.1):
     - ImageSource/Core (~> 2.2)
     - ImageSource/Local (~> 2.2)
     - ImageSource/PHAsset (~> 2.2)
     - ImageSource/Remote (~> 2.2)
     - JNWSpringAnimation
-  - Paparazzo/Marshroute (3.0.0):
+  - Paparazzo/Marshroute (3.0.1):
     - ImageSource/Core (~> 2.2)
     - ImageSource/Local (~> 2.2)
     - ImageSource/PHAsset (~> 2.2)
@@ -57,7 +57,7 @@ PODS:
     - JNWSpringAnimation
     - Marshroute
     - Paparazzo/Core
-  - Paparazzo/SDWebImage (3.0.0):
+  - Paparazzo/SDWebImage (3.0.1):
     - ImageSource/Core (~> 2.2)
     - ImageSource/Local (~> 2.2)
     - ImageSource/PHAsset (~> 2.2)
@@ -100,7 +100,7 @@ SPEC CHECKSUMS:
   ImageSource: 51ae8710c111728e9243c50f57dc96b44795f096
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
   Marshroute: 15cf8067a997bf298e9db9317dd7c32b8799a787
-  Paparazzo: 341cfe0119a30630e857d960cfac6bc344d848b0
+  Paparazzo: 33fceca71b87bb05c06197d40c11573122eba3bb
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
 PODFILE CHECKSUM: 5ae377b4ed464a0fffa4c8ced781286c65669eba

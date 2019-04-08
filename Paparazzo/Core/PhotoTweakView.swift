@@ -219,6 +219,31 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         return self.scrollView.imageView
     }
     
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        
+        let minSize = min(scrollView.bounds.size.width, scrollView.bounds.size.height)
+        let boundsWidthSurplus = scrollView.bounds.size.width - minSize
+        let boundsHeightSurplus = scrollView.bounds.size.height - minSize
+        
+        self.scrollView.contentSize = CGSize(
+            width: scrollView.bounds.size.width * scrollView.zoomScale + boundsWidthSurplus,
+            height: scrollView.bounds.size.height * scrollView.zoomScale + boundsHeightSurplus
+        )
+        
+        let offsetX = scrollView.bounds.size.width > scrollView.contentSize.width
+            ? (scrollView.bounds.size.width - scrollView.contentSize.width + boundsWidthSurplus) * 0.5
+            : 0
+        
+        let offsetY = scrollView.bounds.size.height > scrollView.contentSize.height
+            ? (scrollView.bounds.size.height - scrollView.contentSize.height + boundsHeightSurplus) * 0.5
+            : 0
+        
+        self.scrollView.imageView.center = CGPoint(
+            x: (scrollView.contentSize.width) * 0.5 + offsetX,
+            y: (scrollView.contentSize.height) * 0.5 + offsetY
+        )
+    }
+    
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         manuallyZoomed = true
         notifyAboutCroppingParametersChange()
