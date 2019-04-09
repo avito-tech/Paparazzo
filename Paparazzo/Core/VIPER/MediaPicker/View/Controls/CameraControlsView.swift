@@ -176,6 +176,7 @@ final class CameraControlsView: UIView, ThemeConfigurable {
     }
     
     func setPhotoLibraryButtonVisible(_ visible: Bool) {
+        photoOverlayView.isHidden = !visible
         photoView.isHidden = !visible
     }
     
