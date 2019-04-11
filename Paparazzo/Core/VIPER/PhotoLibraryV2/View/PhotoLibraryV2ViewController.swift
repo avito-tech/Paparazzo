@@ -29,7 +29,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     }
     
     override var prefersStatusBarHidden: Bool {
-        return !UIDevice.current.isIPhoneX
+        return false
     }
     
     // MARK: - ThemeConfigurable
