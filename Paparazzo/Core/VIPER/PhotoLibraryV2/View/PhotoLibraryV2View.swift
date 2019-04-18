@@ -514,6 +514,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         closeButton.accessibilityIdentifier = AccessibilityId.discardLibraryButton.rawValue
         topRightContinueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
+        bottomContinueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
     }
     
     private func setUpButtons() {
@@ -538,6 +539,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         bottomContinueButton.layer.cornerRadius = 5
         bottomContinueButton.titleEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
+        bottomContinueButton.addTarget(
+            self,
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
+        )
     }
     
     private func setUpCollectionView() {

@@ -445,8 +445,9 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         cameraControlsView.setPhotoLibraryButtonVisible(visible)
     }
     
-    func setContinueButtonVisible(_ visible: Bool) {
-        topRightContinueButton.isHidden = !visible
+    func setContinueButtonVisible(_ isVisible: Bool) {
+        topRightContinueButton.isHidden = !isVisible
+        bottomContinueButton.isHidden = !isVisible
     }
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
@@ -579,8 +580,9 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         bottomContinueButton.accessibilityValue = title
     }
     
-    func setContinueButtonEnabled(_ enabled: Bool) {
-        topRightContinueButton.isEnabled = enabled
+    func setContinueButtonEnabled(_ isEnabled: Bool) {
+        topRightContinueButton.isEnabled = isEnabled
+        bottomContinueButton.isEnabled = isEnabled
     }
     
     func setShowsCropButton(_ showsCropButton: Bool) {
@@ -660,11 +662,17 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         bottomContinueButton.layer.cornerRadius = 5
         bottomContinueButton.titleEdgeInsets = UIEdgeInsets(top: 6, left: 16, bottom: 8, right: 16)
+        bottomContinueButton.addTarget(
+            self,
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
+        )
     }
     
     private func setUpAccessibilityIdentifiers() {
         closeButton.setAccessibilityId(.closeButton)
         topRightContinueButton.setAccessibilityId(.continueButton)
+        bottomContinueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)
         
         accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
