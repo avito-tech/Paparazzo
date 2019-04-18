@@ -120,10 +120,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         let thumbnailRibbonUnderPreviewHeight = max(controlsIdealFrame.top - previewIdealBottom, 74)
         let previewTargetHeight = controlsIdealFrame.top - thumbnailRibbonUnderPreviewHeight - notchMaskingView.bottom
         
-        // If we are going to shrink preview area so that less than 85% of the ideal height is visible (iPhone 4 case),
+        // If we are going to shrink preview area so that less than 80% of the ideal height is visible (iPhone 4 case),
         // then we'd rather lay out thumbnail ribbon at the bottom of the preview area
         // and shrink controls height as well.
-        if previewTargetHeight / previewIdealHeight < 0.85 {
+        if previewTargetHeight / previewIdealHeight < 0.8 {
             layOutMainAreaWithThumbnailRibbonOverlappingPreview()
         } else {
             layOutMainAreaWithThumbnailRibbonUnderPreview(

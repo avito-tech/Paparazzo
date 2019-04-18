@@ -151,7 +151,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             top: 0,
             left: closeButton.right + 10,
             bottom: 0,
-            right: bounds.width - topRightContinueButton.left + 10
+            right: (continueButtonPlacement == .bottom)
+                ? closeButton.right + 10  // same as left, so that it stays centered
+                : bounds.width - topRightContinueButton.left + 10
         )
         
         let titleViewSize = titleView.sizeThatFits(bounds.size)
