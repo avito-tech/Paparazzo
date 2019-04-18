@@ -20,7 +20,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     // MARK: - State
-    var shouldScrollToTopOnFullReload = true
+    private var shouldScrollToTopOnFullReload = true
+    private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
+    private var continueButtonTitle: String?
     
     // MARK: - Init
     
@@ -67,6 +69,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        continueButtonPlacement = placement
         view?.setContinueButtonPlacement(placement)
     }
     
@@ -119,8 +122,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     // MARK: - Private
-    private var continueButtonTitle: String?
-    
     private func setUpView() {
         
         updateContinueButtonTitle()
@@ -212,34 +213,16 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     startIndex
                 )
                 
-                let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(
-                    selectedItems
-                )
+                let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
                 
                 self?.router.showMediaPicker(
                     data: data,
                     overridenTheme: strongSelf.overridenTheme,
                     isMetalEnabled: strongSelf.isMetalEnabled,
                     configure: { [weak self] module in
-                        weak var weakModule = module
-                        self?.mediaPickerModule = module
-                        module.onItemsAdd = self?.onItemsAdd
-                        module.onItemUpdate = self?.onItemUpdate
-                        module.onItemAutocorrect = self?.onItemAutocorrect
-                        module.onItemMove = self?.onItemMove
-                        module.onItemRemove = { mediaPickerItem, index in
-                            self?.view?.deselectItem(with: mediaPickerItem.image)
-                            self?.onItemRemove?(mediaPickerItem, index)
-                        }
-                        module.onCropFinish = self?.onCropFinish
-                        module.onCropCancel = self?.onCropCancel
-                        module.onContinueButtonTap = self?.onContinueButtonTap
-                        module.onCancel = {
-                            weakModule?.dismissModule()
-                        }
-                        
-                        module.onFinish = self?.onFinish
-                })
+                        self?.configureMediaPicker(module)
+                    }
+                )
             }
         }
         
@@ -352,31 +335,48 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 parameters: parameters,
                 onTap: { [weak self] in
                     guard let strongSelf = self else { return }
+                    
                     self?.router.showMediaPicker(
                         data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
                         overridenTheme: strongSelf.overridenTheme,
                         isMetalEnabled: strongSelf.isMetalEnabled,
                         configure: { [weak self] module in
-                            weak var weakModule = module
-                            self?.mediaPickerModule = module
-                            module.onItemsAdd = self?.onItemsAdd
-                            module.onItemUpdate = self?.onItemUpdate
-                            module.onItemAutocorrect = self?.onItemAutocorrect
-                            module.onItemMove = self?.onItemMove
-                            module.onItemRemove = self?.onItemRemove
-                            module.onCropFinish = self?.onCropFinish
-                            module.onCropCancel = self?.onCropCancel
-                            module.onContinueButtonTap = self?.onContinueButtonTap
-                            module.onCancel = {
-                                weakModule?.dismissModule()
-                            }
-                            
-                            module.onFinish = self?.onFinish
-                    })
+                            self?.configureMediaPicker(module)
+                        }
+                    )
                 }
             )
             
             completion(viewData)
+        }
+    }
+    
+    private func configureMediaPicker(_ module: MediaPickerModule) {
+        
+        mediaPickerModule = module
+        
+        if let continueButtonPlacement = continueButtonPlacement {
+            module.setContinueButtonPlacement(continueButtonPlacement)
+        }
+        
+        if let continueButtonTitle = continueButtonTitle {
+            module.setContinueButtonTitle(continueButtonTitle)
+        }
+        
+        module.onItemsAdd = onItemsAdd
+        module.onItemUpdate = onItemUpdate
+        module.onItemAutocorrect = onItemAutocorrect
+        module.onItemMove = onItemMove
+        module.onItemRemove = { [weak self] mediaPickerItem, index in
+            self?.view?.deselectItem(with: mediaPickerItem.image)
+            self?.onItemRemove?(mediaPickerItem, index)
+        }
+        module.onCropFinish = onCropFinish
+        module.onCropCancel = onCropCancel
+        module.onContinueButtonTap = onContinueButtonTap
+        module.onFinish = onFinish
+        module.onCancel = { [weak module] in
+            module?.dismissModule()
         }
     }
     
