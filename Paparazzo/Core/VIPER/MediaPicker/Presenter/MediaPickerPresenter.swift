@@ -52,6 +52,11 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setContinueButtonStyle(style)
     }
     
+    
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        view?.setContinueButtonPlacement(placement)
+    }
+    
     public func setCameraTitle(_ title: String) {
         cameraModuleInput.setTitle(title)
     }

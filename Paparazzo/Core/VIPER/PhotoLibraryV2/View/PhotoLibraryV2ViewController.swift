@@ -29,7 +29,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     }
     
     override var prefersStatusBarHidden: Bool {
-        return false
+        return !UIDevice.current.isIPhoneX
     }
     
     // MARK: - ThemeConfigurable
@@ -79,6 +79,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func setContinueButtonTitle(_ title: String) {
         photoLibraryView.setContinueButtonTitle(title)
+    }
+    
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        photoLibraryView.setContinueButtonPlacement(placement)
     }
     
     func setPlaceholderState(_ state: PhotoLibraryPlaceholderState) {

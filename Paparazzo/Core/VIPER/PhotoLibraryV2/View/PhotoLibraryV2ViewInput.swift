@@ -10,6 +10,7 @@ protocol PhotoLibraryV2ViewInput: class {
     func setTitleVisible(_: Bool)
     
     func setContinueButtonTitle(_: String)
+    func setContinueButtonPlacement(_: MediaPickerContinueButtonPlacement)
     
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
     

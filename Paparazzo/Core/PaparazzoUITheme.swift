@@ -40,6 +40,9 @@ public struct PaparazzoUITheme:
     public var cameraSubtitleColor = UIColor(white: 1, alpha: 1)
     public var cameraSubtitleFont = UIFont.systemFont(ofSize: 14)
     public var cameraHintFont = UIFont.systemFont(ofSize: 17)
+    public var cameraBottomContinueButtonBackgroundColor = UIColor(red: 0 / 255, green: 170.0 / 255, blue: 1, alpha: 1)
+    public var cameraBottomContinueButtonTitleColor = UIColor.white
+    public var cameraBottomContinueButtonFont = UIFont.systemFont(ofSize: 16)
     
     public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)
@@ -67,6 +70,9 @@ public struct PaparazzoUITheme:
     public var continueButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
     public var closeIcon = PaparazzoUITheme.image(named: "bt-close")
     public var continueButtonTitleFont = UIFont.systemFont(ofSize: 17)
+    public var libraryBottomContinueButtonBackgroundColor = UIColor(red: 0 / 255, green: 170.0 / 255, blue: 1, alpha: 1)
+    public var libraryBottomContinueButtonTitleColor = UIColor.white
+    public var libraryBottomContinueButtonFont = UIFont.systemFont(ofSize: 16)
     
     // MARK: - ImageCroppingUITheme
     

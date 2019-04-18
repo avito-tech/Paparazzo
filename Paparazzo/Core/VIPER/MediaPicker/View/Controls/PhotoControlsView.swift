@@ -76,7 +76,7 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
             button.size = CGSize.minimumTapAreaSize
             button.center = CGPoint(
                 x: (width * (2.0 * CGFloat(index) + 1.0)) / (2.0 * CGFloat(visibleButtons.count)),
-                y: bounds.centerY - paparazzoSafeAreaInsets.bottom / 2
+                y: bounds.centerY
             )
         }
     }
