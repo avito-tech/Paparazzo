@@ -30,7 +30,8 @@ protocol MediaPickerViewInput: class {
     func setPhotoTitleAlpha(_: CGFloat)
     func setContinueButtonTitle(_: String)
     func setContinueButtonEnabled(_: Bool)
-    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle)
+    func setContinueButtonStyle(_: MediaPickerContinueButtonStyle)
+    func setContinueButtonPlacement(_: MediaPickerContinueButtonPlacement)
     
     func setLatestLibraryPhoto(_: ImageSource?)
     
@@ -62,9 +63,9 @@ protocol MediaPickerViewInput: class {
     
     func setContinueButtonVisible(_: Bool)
     
-    func setShowPreview(_ showPreview: Bool)
+    func setShowPreview(_: Bool)
     
-    func showInfoMessage(_ message: String, timeout: TimeInterval)
+    func showInfoMessage(_: String, timeout: TimeInterval)
     
     // MARK: - Actions in photo ribbon
     var onItemSelect: ((MediaPickerItem) -> ())? { get set }

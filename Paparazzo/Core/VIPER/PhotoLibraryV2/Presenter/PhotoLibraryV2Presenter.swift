@@ -66,6 +66,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         mediaPickerModule?.setContinueButtonStyle(style)
     }
     
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        view?.setContinueButtonPlacement(placement)
+    }
+    
     public func setCameraTitle(_ title: String) {
         mediaPickerModule?.setCameraTitle(title)
     }

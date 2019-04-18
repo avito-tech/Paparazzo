@@ -55,6 +55,10 @@ extension CGRect {
         self.init(x: left, y: top, width: right - left, height: height)
     }
     
+    init(left: CGFloat, right: CGFloat, bottom: CGFloat, height: CGFloat) {
+        self.init(x: left, y: bottom - height, width: right - left, height: height)
+    }
+    
     // Возвращает прямоугольник, повернутый относительно исходного на угол angle и описанный
     // вокруг него (все вершины исходного прямоугольника лежат на сторонах искомого).
     // Результат описан в повернутой системе координат.

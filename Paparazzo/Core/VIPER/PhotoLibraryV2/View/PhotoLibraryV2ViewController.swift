@@ -81,6 +81,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setContinueButtonTitle(title)
     }
     
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        photoLibraryView.setContinueButtonPlacement(placement)
+    }
+    
     func setPlaceholderState(_ state: PhotoLibraryPlaceholderState) {
         switch state {
         case .hidden:
