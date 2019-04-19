@@ -119,11 +119,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         let previewIdealBottom = notchMaskingView.bottom + previewIdealHeight
         let thumbnailRibbonUnderPreviewHeight = max(controlsIdealFrame.top - previewIdealBottom, 74)
         let previewTargetHeight = controlsIdealFrame.top - thumbnailRibbonUnderPreviewHeight - notchMaskingView.bottom
+        let isIPhone = (UIDevice.current.userInterfaceIdiom == .phone)
         
         // If we are going to shrink preview area so that less than 80% of the ideal height is visible (iPhone 4 case),
         // then we'd rather lay out thumbnail ribbon at the bottom of the preview area
         // and shrink controls height as well.
-        if previewTargetHeight / previewIdealHeight < 0.8 {
+        if previewTargetHeight / previewIdealHeight < 0.8 && isIPhone {
             layOutMainAreaWithThumbnailRibbonOverlappingPreview()
         } else {
             layOutMainAreaWithThumbnailRibbonUnderPreview(
@@ -177,17 +178,21 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private func layOutMainAreaWithThumbnailRibbonOverlappingPreview() {
         
+        let hasBottomContinueButton = (continueButtonPlacement == .bottom)
+        
         // Controls
         //
         cameraControlsView.layout(
             left: bounds.left,
             right: bounds.right,
-            bottom: (continueButtonPlacement == .bottom)
-                ? bottomContinueButton.top
+            bottom: hasBottomContinueButton
+                ? bottomContinueButton.top - 8
                 : bounds.bottom - paparazzoSafeAreaInsets.bottom,
             height: 54
         )
         photoControlsView.frame = cameraControlsView.frame
+        
+        let previewTargetBottom = cameraControlsView.top - (hasBottomContinueButton ? 8 : 0)
         
         // Thumbnail ribbon
         //
@@ -196,7 +201,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         thumbnailRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
-            bottom: cameraControlsView.top,
+            bottom: previewTargetBottom,
             height: 72
         )
         
@@ -206,7 +211,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             left: bounds.left,
             right: bounds.right,
             top: notchMaskingView.bottom,
-            bottom: cameraControlsView.top
+            bottom: previewTargetBottom
         )
     }
     
