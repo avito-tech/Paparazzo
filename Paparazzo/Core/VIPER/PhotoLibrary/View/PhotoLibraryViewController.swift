@@ -22,13 +22,13 @@ final class PhotoLibraryViewController: PaparazzoViewController, PhotoLibraryVie
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        if !UIDevice.current.isIPhoneX {
+        if !UIDevice.current.hasSensorHousing {
             UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
         }
     }
     
     override var prefersStatusBarHidden: Bool {
-        return !UIDevice.current.isIPhoneX
+        return !UIDevice.current.hasSensorHousing
     }
     
     // MARK: - ThemeConfigurable
