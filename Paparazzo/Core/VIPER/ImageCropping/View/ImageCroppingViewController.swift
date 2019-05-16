@@ -21,13 +21,13 @@ final class ImageCroppingViewController: PaparazzoViewController, ImageCroppingV
         forcePortraitOrientation()
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        if !UIDevice.current.hasSensorHousing {
+        if !UIDevice.current.hasTopSafeAreaInset {
             UIApplication.shared.setStatusBarHidden(true, with: .fade)
         }
     }
     
     override var prefersStatusBarHidden: Bool {
-        return !UIDevice.current.hasSensorHousing
+        return !UIDevice.current.hasTopSafeAreaInset
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
