@@ -28,7 +28,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        if !UIDevice.current.hasSensorHousing {
+        if !UIDevice.current.hasTopSafeAreaInset {
             UIApplication.shared.setStatusBarHidden(true, with: .fade)
         }
         
@@ -134,7 +134,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     }
     
     override var prefersStatusBarHidden: Bool {
-        return !UIDevice.current.hasSensorHousing
+        return !UIDevice.current.hasTopSafeAreaInset
     }
     
     // MARK: - MediaPickerViewInput
