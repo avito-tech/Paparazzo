@@ -62,6 +62,7 @@ public protocol PaparazzoPickerModule: class {
     var onCropCancel: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }
     
+    var onViewDidLoad: (() -> ())? { get set }
     var onFinish: (([MediaPickerItem]) -> ())? { get set }
     var onCancel: (() -> ())? { get set }
 }

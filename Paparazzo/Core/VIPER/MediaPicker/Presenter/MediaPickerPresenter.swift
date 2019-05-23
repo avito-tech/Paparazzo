@@ -17,6 +17,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     weak var view: MediaPickerViewInput? {
         didSet {
             view?.onViewDidLoad = { [weak self] in
+                self?.onViewDidLoad?()
                 self?.setUpView()
             }
         }
@@ -32,6 +33,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
+    var onViewDidLoad: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onCancel: (() -> ())?
     
