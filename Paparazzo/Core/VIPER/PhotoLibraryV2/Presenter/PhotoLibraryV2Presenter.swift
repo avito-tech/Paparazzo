@@ -14,6 +14,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     weak var view: PhotoLibraryV2ViewInput? {
         didSet {
             view?.onViewDidLoad = { [weak self] in
+                self?.onViewDidLoad?()
                 self?.setUpView()
             }
         }
@@ -48,6 +49,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
+    var onViewDidLoad: (() -> ())?
     var onCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     
