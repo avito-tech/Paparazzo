@@ -25,7 +25,7 @@ final class ScannerViewController: PaparazzoViewController, ScannerViewInput, Th
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        if !UIDevice.current.isIPhoneX {
+        if !UIDevice.current.hasTopSafeAreaInset {
             UIApplication.shared.setStatusBarHidden(true, with: .fade)
         }
         
@@ -124,7 +124,7 @@ final class ScannerViewController: PaparazzoViewController, ScannerViewInput, Th
     }
     
     override var prefersStatusBarHidden: Bool {
-        return !UIDevice.current.isIPhoneX
+        return !UIDevice.current.hasTopSafeAreaInset
     }
     
     // MARK: - ScannerViewInput

@@ -8,6 +8,11 @@ public enum MediaPickerContinueButtonStyle {
     case spinner
 }
 
+public enum MediaPickerContinueButtonPlacement {
+    case topRight
+    case bottom
+}
+
 public struct CameraHintData {
     public let title: String
     public let delay: TimeInterval?
@@ -32,6 +37,7 @@ public protocol PaparazzoPickerModule: class {
     func setContinueButtonEnabled(_: Bool)
     func setContinueButtonVisible(_: Bool)
     func setContinueButtonStyle(_: MediaPickerContinueButtonStyle)
+    func setContinueButtonPlacement(_: MediaPickerContinueButtonPlacement)
     
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
@@ -56,6 +62,7 @@ public protocol PaparazzoPickerModule: class {
     var onCropCancel: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }
     
+    var onViewDidLoad: (() -> ())? { get set }
     var onFinish: (([MediaPickerItem]) -> ())? { get set }
     var onCancel: (() -> ())? { get set }
 }

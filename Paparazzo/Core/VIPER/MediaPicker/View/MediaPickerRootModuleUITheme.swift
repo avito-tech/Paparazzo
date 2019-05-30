@@ -1,3 +1,5 @@
+import UIKit
+
 public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     
     var shutterButtonColor: UIColor { get }
@@ -14,6 +16,9 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraSubtitleColor: UIColor { get }
     var cameraSubtitleFont: UIFont { get }
     var cameraHintFont: UIFont { get }
+    var cameraBottomContinueButtonBackgroundColor: UIColor { get }
+    var cameraBottomContinueButtonTitleColor: UIColor { get }
+    var cameraBottomContinueButtonFont: UIFont { get }
     
     var removePhotoIcon: UIImage? { get }
     var autocorrectPhotoIconInactive: UIImage? { get }

@@ -51,17 +51,19 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let labelsTargetCenterY = CGFloat(27)
+        
         accessDeniedView.bounds = bounds
         accessDeniedView.center = bounds.center
         
         cameraOutputView?.frame = bounds
         
         titleLabel.sizeToFit()
-        titleLabel.centerX = bounds.centerX
-        let hasSubtitle = (subtitleLabel.text?.count ?? 0) > 0
-        titleLabel.top = hasSubtitle ? 9 : 17
-        
         subtitleLabel.sizeToFit()
+        
+        titleLabel.centerX = bounds.centerX
+        titleLabel.top = floor(labelsTargetCenterY - (titleLabel.height + subtitleLabel.height) / 2)
+        
         subtitleLabel.centerX = bounds.centerX
         subtitleLabel.top = titleLabel.bottom
         

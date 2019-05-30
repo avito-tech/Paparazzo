@@ -6,12 +6,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     typealias ThemeType = MediaPickerRootModuleUITheme
     
     // MARK: - Subviews
-    
+    private let notchMaskingView = UIView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
     
     private let closeButton = UIButton()
-    private let continueButton = ButtonWithActivity()
+    private let topRightContinueButton = ButtonWithActivity()
+    private let bottomContinueButton = UIButton()
     private let photoTitleLabel = UILabel()
     private let flashView = UIView()
     
@@ -20,33 +21,30 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private var closeAndContinueButtonsSwapped = false
     
-    // MARK: - Constants
+    // MARK: - Layout constants
+    private let topRightContinueButtonHeight = CGFloat(38)
+    private let topRightContinueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
-    private let cameraAspectRatio = CGFloat(4) / CGFloat(3)
-    
-    private let bottomPanelMinHeight: CGFloat = {
-        let iPhone5ScreenSize = CGSize(width: 320, height: 568)
-        return iPhone5ScreenSize.height - iPhone5ScreenSize.width / 0.75
-    }()
-    
-    private let controlsCompactHeight = CGFloat(54) // (iPhone 4 height) - (iPhone 4 width) * 4/3 (photo aspect ratio) = 53,333...
-    
-    private var controlsExtendedHeight: CGFloat {
-        return 80 + paparazzoSafeAreaInsets.bottom
-    }
-    
-    private let closeButtonSize = CGSize(width: 38, height: 38)
-    
-    private let continueButtonHeight = CGFloat(38)
-    private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    
+    // MARK: - State
     private var theme: ThemeType?
     
     // MARK: - Helpers
-    
     private var mode = MediaPickerViewMode.camera
     private var deviceOrientation = DeviceOrientation.portrait
     private let infoMessageDisplayer = InfoMessageDisplayer()
+    
+    private var continueButtonPlacement = MediaPickerContinueButtonPlacement.topRight {
+        didSet {
+            switch continueButtonPlacement {
+            case .topRight:
+                bottomContinueButton.removeFromSuperview()
+                addSubview(topRightContinueButton)
+            case .bottom:
+                topRightContinueButton.removeFromSuperview()
+                addSubview(bottomContinueButton)
+            }
+        }
+    }
     
     private var showsPreview: Bool = true {
         didSet {
@@ -55,7 +53,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     // MARK: - UIView
-    
     override init(frame: CGRect) {
         
         thumbnailRibbonView = ThumbnailsView()
@@ -64,6 +61,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         super.init(frame: .zero)
         
         backgroundColor = .white
+        
+        notchMaskingView.backgroundColor = .black
         
         flashView.backgroundColor = .white
         flashView.alpha = 0
@@ -78,6 +77,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoTitleLabel.layer.masksToBounds = false
         photoTitleLabel.alpha = 0
         
+        addSubview(notchMaskingView)
         addSubview(photoPreviewView)
         addSubview(flashView)
         addSubview(cameraControlsView)
@@ -85,7 +85,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(thumbnailRibbonView)
         addSubview(closeButton)
         addSubview(photoTitleLabel)
-        addSubview(continueButton)
+        addSubview(topRightContinueButton)
         
         setMode(.camera)
         setUpAccessibilityIdentifiers()
@@ -96,20 +96,162 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     // MARK: - Layout
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // TODO: (ayutkin) develop common set of layout rules
-        if UIDevice.current.isIPhoneX {
-            layOutForIPhoneX()
+        let cameraAspectRatio = CGFloat(4) / 3
+        
+        layOutNotchMaskingView()
+        layOutFakeNavigationBarButtons()
+        layOutBottomContinueButton()
+        
+        let controlsIdealFrame = CGRect(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: (continueButtonPlacement == .bottom)
+                ? bottomContinueButton.top
+                : bounds.bottom - paparazzoSafeAreaInsets.bottom,
+            height: 93
+        )
+        
+        /// Ideal height of photoPreviewView is when it's aspect ratio is 4:3 (same as camera output)
+        let previewIdealHeight = bounds.width * cameraAspectRatio
+        let previewIdealBottom = notchMaskingView.bottom + previewIdealHeight
+        let thumbnailRibbonUnderPreviewHeight = max(controlsIdealFrame.top - previewIdealBottom, 74)
+        let previewTargetHeight = controlsIdealFrame.top - thumbnailRibbonUnderPreviewHeight - notchMaskingView.bottom
+        let isIPhone = (UIDevice.current.userInterfaceIdiom == .phone)
+        
+        // If we are going to shrink preview area so that less than 80% of the ideal height is visible (iPhone 4 case),
+        // then we'd rather lay out thumbnail ribbon at the bottom of the preview area
+        // and shrink controls height as well.
+        if previewTargetHeight / previewIdealHeight < 0.8 && isIPhone {
+            layOutMainAreaWithThumbnailRibbonOverlappingPreview()
         } else {
-            layOutForDevicesExpectForIPhoneX()
+            layOutMainAreaWithThumbnailRibbonUnderPreview(
+                controlsFrame: controlsIdealFrame,
+                thumbnailRibbonHeight: thumbnailRibbonUnderPreviewHeight
+            )
         }
+        
+        // Flash view
+        //
+        flashView.frame = photoPreviewView.frame
+    }
+    
+    private func layOutNotchMaskingView() {
+        notchMaskingView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            height: paparazzoSafeAreaInsets.top
+        )
+    }
+    
+    private func layOutFakeNavigationBarButtons() {
+        
+        let leftButton = closeAndContinueButtonsSwapped ? topRightContinueButton : closeButton
+        let rightButton = closeAndContinueButtonsSwapped ? closeButton : topRightContinueButton
+        
+        leftButton.frame = CGRect(
+            x: bounds.left + 8,
+            y: notchMaskingView.bottom + 8,
+            width: leftButton.width,
+            height: leftButton.height
+        )
+        
+        rightButton.frame = CGRect(
+            x: bounds.right - 8 - rightButton.width,
+            y: notchMaskingView.bottom + 8,
+            width: rightButton.width,
+            height: rightButton.height
+        )
+    }
+    
+    private func layOutBottomContinueButton() {
+        bottomContinueButton.layout(
+            left: bounds.left + 16,
+            right: bounds.right - 16,
+            bottom: bounds.bottom - max(14, paparazzoSafeAreaInsets.bottom),
+            height: 36
+        )
+    }
+    
+    private func layOutMainAreaWithThumbnailRibbonOverlappingPreview() {
+        
+        let hasBottomContinueButton = (continueButtonPlacement == .bottom)
+        
+        // Controls
+        //
+        cameraControlsView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: hasBottomContinueButton
+                ? bottomContinueButton.top - 8
+                : bounds.bottom - paparazzoSafeAreaInsets.bottom,
+            height: 54
+        )
+        photoControlsView.frame = cameraControlsView.frame
+        
+        let previewTargetBottom = cameraControlsView.top - (hasBottomContinueButton ? 8 : 0)
+        
+        // Thumbnail ribbon
+        //
+        thumbnailRibbonView.backgroundColor = UIColor(white: 1, alpha: 0.6)
+        thumbnailRibbonView.contentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        thumbnailRibbonView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: previewTargetBottom,
+            height: 72
+        )
+        
+        // Camera stream / photo preview area
+        //
+        photoPreviewView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: notchMaskingView.bottom,
+            bottom: previewTargetBottom
+        )
+    }
+    
+    private func layOutMainAreaWithThumbnailRibbonUnderPreview(
+        controlsFrame: CGRect,
+        thumbnailRibbonHeight: CGFloat)
+    {
+        // Controls
+        //
+        cameraControlsView.frame = controlsFrame
+        photoControlsView.frame = controlsFrame
+        
+        // Thumbnail ribbon
+        //
+        thumbnailRibbonView.backgroundColor = .white
+        thumbnailRibbonView.contentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 8)
+        thumbnailRibbonView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: cameraControlsView.top,
+            height: thumbnailRibbonHeight
+        )
+        
+        // Camera stream / photo preview area
+        //
+        photoPreviewView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: notchMaskingView.bottom,
+            bottom: thumbnailRibbonView.top
+        )
+    }
+    
+    private func layOutPhotoTitleLabel() {
+        photoTitleLabel.sizeToFit()
+        photoTitleLabel.left = ceil(bounds.centerX - photoTitleLabel.width / 2)
+        photoTitleLabel.top = max(8, paparazzoSafeAreaInsets.top) + 9
     }
     
     // MARK: - ThemeConfigurable
-    
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
         
@@ -117,20 +259,20 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoControlsView.setTheme(theme)
         thumbnailRibbonView.setTheme(theme)
         
-        continueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
-        continueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
+        topRightContinueButton.setTitleColor(theme.cameraContinueButtonTitleColor, for: .normal)
+        topRightContinueButton.titleLabel?.font = theme.cameraContinueButtonTitleFont
         
-        continueButton.setTitleColor(
+        topRightContinueButton.setTitleColor(
             theme.cameraContinueButtonTitleColor,
             for: .normal
         )
-        continueButton.setTitleColor(
+        topRightContinueButton.setTitleColor(
             theme.cameraContinueButtonTitleHighlightedColor,
             for: .highlighted
         )
         
         let onePointSize = CGSize(width: 1, height: 1)
-        for button in [continueButton, closeButton] {
+        for button in [topRightContinueButton, closeButton] {
             button.setBackgroundImage(
                 UIImage.imageWithColor(theme.cameraButtonsBackgroundNormalColor, imageSize: onePointSize),
                 for: .normal
@@ -144,10 +286,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
                 for: .disabled
             )
         }
+        
+        bottomContinueButton.backgroundColor = theme.cameraBottomContinueButtonBackgroundColor
+        bottomContinueButton.titleLabel?.font = theme.cameraBottomContinueButtonFont
+        bottomContinueButton.setTitleColor(theme.cameraBottomContinueButtonTitleColor, for: .normal)
     }
     
     // MARK: - MediaPickerView
-    
     var onShutterButtonTap: (() -> ())? {
         get { return cameraControlsView.onShutterButtonTap }
         set { cameraControlsView.onShutterButtonTap = newValue }
@@ -305,31 +450,36 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         cameraControlsView.setPhotoLibraryButtonVisible(visible)
     }
     
-    func setContinueButtonVisible(_ visible: Bool) {
-        continueButton.isHidden = !visible
+    func setContinueButtonVisible(_ isVisible: Bool) {
+        topRightContinueButton.isHidden = !isVisible
+        bottomContinueButton.isHidden = !isVisible
     }
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
-        guard continueButton.style != style else { return }
+        guard topRightContinueButton.style != style else { return }
         
         UIView.animate(
             withDuration: 0.3,
             animations: {
-                self.continueButton.style = style
+                self.topRightContinueButton.style = style
                 if self.deviceOrientation == .portrait {
-                    self.continueButton.size = CGSize(
-                        width: self.continueButton.sizeThatFits().width,
-                        height: self.continueButtonHeight
+                    self.topRightContinueButton.size = CGSize(
+                        width: self.topRightContinueButton.sizeThatFits().width,
+                        height: self.topRightContinueButtonHeight
                     )
                 } else {
-                    self.continueButton.size = CGSize(
-                        width: self.continueButtonHeight,
-                        height: self.continueButton.sizeThatFits().width
+                    self.topRightContinueButton.size = CGSize(
+                        width: self.topRightContinueButtonHeight,
+                        height: self.topRightContinueButton.sizeThatFits().width
                     )
                 }
-                self.layoutCloseAndContinueButtons()
+                self.layOutFakeNavigationBarButtons()
             }
         )
+    }
+    
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        continueButtonPlacement = placement
     }
     
     func addItems(_ items: [MediaPickerItem], animated: Bool, completion: @escaping () -> ()) {
@@ -381,7 +531,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         closeAndContinueButtonsSwapped = (orientation == .landscapeLeft)
         
         closeButton.transform = transform
-        continueButton.transform = transform
+        topRightContinueButton.transform = transform
         
         cameraControlsView.setControlsTransform(transform)
         photoControlsView.setControlsTransform(transform)
@@ -403,13 +553,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     func setPhotoTitle(_ title: String) {
         photoTitleLabel.text = title
         photoTitleLabel.accessibilityValue = title
-        layoutPhotoTitleLabel()
+        layOutPhotoTitleLabel()
     }
     
     func setPreferredPhotoTitleStyle(_ style: MediaPickerTitleStyle) {
         switch style {
         // TODO: (ayutkin) don't allow presenter to set title style directly
-        case .light where !UIDevice.current.isIPhoneX:
+        case .light where !UIDevice.current.hasTopSafeAreaInset:
             photoTitleLabel.textColor = .white
             photoTitleLabel.layer.shadowOpacity = 0.5
         case .dark, .light:
@@ -427,13 +577,17 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     func setContinueButtonTitle(_ title: String) {
-        continueButton.setTitle(title, for: .normal)
-        continueButton.accessibilityValue = title
-        continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
+        topRightContinueButton.setTitle(title, for: .normal)
+        topRightContinueButton.accessibilityValue = title
+        topRightContinueButton.size = CGSize(width: topRightContinueButton.sizeThatFits().width, height: topRightContinueButtonHeight)
+        
+        bottomContinueButton.setTitle(title, for: .normal)
+        bottomContinueButton.accessibilityValue = title
     }
     
-    func setContinueButtonEnabled(_ enabled: Bool) {
-        continueButton.isEnabled = enabled
+    func setContinueButtonEnabled(_ isEnabled: Bool) {
+        topRightContinueButton.isEnabled = isEnabled
+        bottomContinueButton.isEnabled = isEnabled
     }
     
     func setShowsCropButton(_ showsCropButton: Bool) {
@@ -467,7 +621,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     // MARK: - Private
-    
     private func setUpThumbnailRibbonView() {
         
         thumbnailRibbonView.onPhotoItemSelect = { [weak self] mediaPickerItem in
@@ -492,6 +645,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     }
     
     private func setUpButtons() {
+        let closeButtonSize = CGSize(width: 38, height: 38)
+        
         closeButton.layer.cornerRadius = closeButtonSize.height / 2
         closeButton.layer.masksToBounds = true
         closeButton.size = closeButtonSize
@@ -501,10 +656,18 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             for: .touchUpInside
         )
         
-        continueButton.layer.cornerRadius = continueButtonHeight / 2
-        continueButton.layer.masksToBounds = true
-        continueButton.contentEdgeInsets = continueButtonContentInsets
-        continueButton.addTarget(
+        topRightContinueButton.layer.cornerRadius = topRightContinueButtonHeight / 2
+        topRightContinueButton.layer.masksToBounds = true
+        topRightContinueButton.contentEdgeInsets = topRightContinueButtonContentInsets
+        topRightContinueButton.addTarget(
+            self,
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
+        bottomContinueButton.layer.cornerRadius = 5
+        bottomContinueButton.titleEdgeInsets = UIEdgeInsets(top: 6, left: 16, bottom: 8, right: 16)
+        bottomContinueButton.addTarget(
             self,
             action: #selector(onContinueButtonTap(_:)),
             for: .touchUpInside
@@ -513,134 +676,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private func setUpAccessibilityIdentifiers() {
         closeButton.setAccessibilityId(.closeButton)
-        continueButton.setAccessibilityId(.continueButton)
+        topRightContinueButton.setAccessibilityId(.continueButton)
+        bottomContinueButton.setAccessibilityId(.continueButton)
         photoTitleLabel.setAccessibilityId(.titleLabel)
         
         accessibilityIdentifier = AccessibilityId.mediaPicker.rawValue
-    }
-    
-    private func layOutForIPhoneX() {
-        
-        let controlsHeight = CGFloat(135)
-        let thumbnailRibbonHeight = CGFloat(74)
-        let thumbnailRibbonInsets = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 8)
-        
-        cameraControlsView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: bounds.bottom,
-            height: controlsHeight
-        )
-        
-        photoControlsView.frame = cameraControlsView.frame
-        
-        thumbnailRibbonView.backgroundColor = UIColor.white
-        thumbnailRibbonView.contentInsets = thumbnailRibbonInsets
-        thumbnailRibbonView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: cameraControlsView.top,
-            height: thumbnailRibbonHeight
-        )
-        
-        photoPreviewView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: thumbnailRibbonView.top,
-            height: bounds.size.width * cameraAspectRatio
-        )
-        
-        flashView.frame = photoPreviewView.frame
-        
-        layoutCloseAndContinueButtons()
-        layoutPhotoTitleLabel()
-    }
-    
-    private func layOutForDevicesExpectForIPhoneX() {
-        
-        let cameraFrame = CGRect(
-            left: bounds.left,
-            right: bounds.right,
-            top: bounds.top,
-            height: showsPreview ? bounds.size.width * cameraAspectRatio : bounds.size.height - controlsExtendedHeight
-        )
-        
-        let controlsHeight: CGFloat
-        if showsPreview {
-            let freeSpaceUnderCamera = bounds.bottom - cameraFrame.bottom
-            let canFitExtendedControls = (freeSpaceUnderCamera >= controlsExtendedHeight)
-            controlsHeight = canFitExtendedControls ? controlsExtendedHeight : controlsCompactHeight
-        } else {
-            controlsHeight = controlsExtendedHeight
-        }
-        
-        photoPreviewView.frame = cameraFrame
-        
-        cameraControlsView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: bounds.bottom,
-            height: controlsHeight
-        )
-        
-        photoControlsView.frame = cameraControlsView.frame
-        
-        let screenIsVerySmall = (cameraControlsView.top < cameraFrame.bottom)
-        
-        let thumbnailRibbonAlpha: CGFloat = screenIsVerySmall ? 0.6 : 1
-        let thumbnailRibbonInsets = UIEdgeInsets(
-            top: 8,
-            left: 8,
-            bottom: thumbnailRibbonAlpha < 1 ? 8 : 0,
-            right: 8
-        )
-        
-        let thumbnailHeightForSmallScreen = CGFloat(56)
-        let bottomPanelHeight = max(height - width / 0.75, bottomPanelMinHeight)
-        
-        let photoRibbonHeight = screenIsVerySmall
-            ? thumbnailHeightForSmallScreen + thumbnailRibbonInsets.top + thumbnailRibbonInsets.bottom
-            : bottomPanelHeight - controlsHeight
-        
-        thumbnailRibbonView.backgroundColor = UIColor.white.withAlphaComponent(thumbnailRibbonAlpha)
-        thumbnailRibbonView.contentInsets = thumbnailRibbonInsets
-        thumbnailRibbonView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: cameraControlsView.top,
-            height: photoRibbonHeight
-        )
-        
-        layoutCloseAndContinueButtons()
-        layoutPhotoTitleLabel()
-        
-        flashView.frame = cameraFrame
-    }
-    
-    private func layoutCloseAndContinueButtons() {
-        
-        let leftButton = closeAndContinueButtonsSwapped ? continueButton : closeButton
-        let rightButton = closeAndContinueButtonsSwapped ? closeButton : continueButton
-        
-        leftButton.frame = CGRect(
-            x: 8,
-            y: max(8, paparazzoSafeAreaInsets.top),
-            width: leftButton.width,
-            height: leftButton.height
-        )
-        
-        rightButton.frame = CGRect(
-            x: bounds.right - 8 - rightButton.width,
-            y: max(8, paparazzoSafeAreaInsets.top),
-            width: rightButton.width,
-            height: rightButton.height
-        )
-    }
-    
-    private func layoutPhotoTitleLabel() {
-        photoTitleLabel.sizeToFit()
-        photoTitleLabel.left = ceil(bounds.centerX - photoTitleLabel.width / 2)
-        photoTitleLabel.top = max(8, paparazzoSafeAreaInsets.top) + 9
     }
     
     @objc private func onCloseButtonTap(_: UIButton) {

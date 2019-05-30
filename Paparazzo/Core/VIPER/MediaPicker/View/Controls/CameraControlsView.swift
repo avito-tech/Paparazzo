@@ -109,7 +109,7 @@ final class CameraControlsView: UIView, ThemeConfigurable {
         let contentHeight = bounds.inset(by: insets).size.height
         let shutterButtonDiameter = max(shutterButtonMinDiameter, min(shutterButtonMaxDiameter, contentHeight))
         let shutterButtonSize = CGSize(width: shutterButtonDiameter, height: shutterButtonDiameter)
-        let centerY = bounds.centerY - paparazzoSafeAreaInsets.bottom / 2
+        let centerY = bounds.centerY
         
         shutterButton.frame = CGRect(origin: .zero, size: shutterButtonSize)
         shutterButton.center = CGPoint(x: bounds.midX, y: centerY)

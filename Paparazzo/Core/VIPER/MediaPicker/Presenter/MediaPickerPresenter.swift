@@ -18,6 +18,9 @@ final class MediaPickerPresenter: MediaPickerModule {
         didSet {
             view?.onViewDidLoad = { [weak self] in
                 self?.setUpView()
+                DispatchQueue.main.async {
+                    self?.onViewDidLoad?()
+                }
             }
         }
     }
@@ -32,6 +35,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
+    var onViewDidLoad: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onCancel: (() -> ())?
     
@@ -50,6 +54,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
         view?.setContinueButtonStyle(style)
+    }
+    
+    
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        view?.setContinueButtonPlacement(placement)
     }
     
     public func setCameraTitle(_ title: String) {

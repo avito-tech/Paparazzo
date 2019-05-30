@@ -24,6 +24,21 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     private var cameraViewData: PhotoLibraryCameraViewData?
     
+    private var continueButtonPlacement = MediaPickerContinueButtonPlacement.topRight {
+        didSet {
+            switch continueButtonPlacement {
+            case .topRight:
+                bottomContinueButton.removeFromSuperview()
+                bottomFadeView.removeFromSuperview()
+                insertSubview(topRightContinueButton, belowSubview: progressIndicator)
+            case .bottom:
+                topRightContinueButton.removeFromSuperview()
+                insertSubview(bottomContinueButton, belowSubview: albumsTableView)
+                insertSubview(bottomFadeView, belowSubview: bottomContinueButton)
+            }
+        }
+    }
+    
     // MARK: - Subviews
     
     private let layout = PhotoLibraryV2Layout()
@@ -36,7 +51,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let albumsTableView = PhotoLibraryAlbumsTableView()
     private let placeholderView = UILabel()
     private let closeButton = UIButton()
-    private let continueButton = UIButton()
+    private let topRightContinueButton = UIButton()
+    private let bottomContinueButton = UIButton()
+    private let bottomFadeView = FadeView(gradientHeight: 80)
     
     // MARK: - Specs
     
@@ -81,7 +98,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         addSubview(albumsTableView)
         addSubview(titleView)
         addSubview(closeButton)
-        addSubview(continueButton)
+        addSubview(topRightContinueButton)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -100,6 +117,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let fadeHeight = paparazzoSafeAreaInsets.bottom + bottomFadeView.gradientHeight
+        
         closeButton.frame = CGRect(
             x: 8,
             y: max(8, paparazzoSafeAreaInsets.top),
@@ -107,18 +126,34 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             height: closeButton.height
         )
         
-        continueButton.frame = CGRect(
-            x: bounds.right - 8 - continueButton.width,
+        topRightContinueButton.frame = CGRect(
+            x: bounds.right - 8 - topRightContinueButton.width,
             y: max(8, paparazzoSafeAreaInsets.top),
-            width: continueButton.width,
-            height: continueButton.height
+            width: topRightContinueButton.width,
+            height: topRightContinueButton.height
+        )
+        
+        bottomFadeView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: fadeHeight
+        )
+        
+        bottomContinueButton.layout(
+            left: bounds.left + 16,
+            right: bounds.right - 16,
+            bottom: bounds.bottom - paparazzoSafeAreaInsets.bottom - 16,
+            height: 48
         )
         
         titleView.contentInsets = UIEdgeInsets(
             top: 0,
             left: closeButton.right + 10,
             bottom: 0,
-            right: bounds.width - continueButton.left + 10
+            right: (continueButtonPlacement == .bottom)
+                ? closeButton.right + 10  // same as left, so that it stays centered
+                : bounds.width - topRightContinueButton.left + 10
         )
         
         let titleViewSize = titleView.sizeThatFits(bounds.size)
@@ -136,6 +171,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             top: titleView.bottom,
             bottom: bounds.bottom
         )
+        
+        collectionView.contentInset.bottom = (continueButtonPlacement == .bottom) ? 80 : 16
         
         placeholderView.resizeToFitSize(collectionView.size)
         placeholderView.center = collectionView.center
@@ -163,17 +200,21 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         closeButton.setImage(theme.closeIcon, for: .normal)
         
-        continueButton.setTitleColor(theme.continueButtonTitleColor, for: .normal)
-        continueButton.titleLabel?.font = theme.continueButtonTitleFont
+        topRightContinueButton.setTitleColor(theme.continueButtonTitleColor, for: .normal)
+        topRightContinueButton.titleLabel?.font = theme.continueButtonTitleFont
         
-        continueButton.setTitleColor(
+        topRightContinueButton.setTitleColor(
             theme.continueButtonTitleColor,
             for: .normal
         )
-        continueButton.setTitleColor(
+        topRightContinueButton.setTitleColor(
             theme.continueButtonTitleHighlightedColor,
             for: .highlighted
         )
+        
+        bottomContinueButton.backgroundColor = theme.libraryBottomContinueButtonBackgroundColor
+        bottomContinueButton.titleLabel?.font = theme.libraryBottomContinueButtonFont
+        bottomContinueButton.setTitleColor(theme.libraryBottomContinueButtonTitleColor, for: .normal)
         
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
         
@@ -195,10 +236,17 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     var onDimViewTap: (() -> ())?
     
     func setContinueButtonTitle(_ title: String) {
-        continueButton.setTitle(title, for: .normal)
-        continueButton.accessibilityValue = title
-        continueButton.size = CGSize(width: continueButton.sizeThatFits().width, height: continueButtonHeight)
+        topRightContinueButton.setTitle(title, for: .normal)
+        topRightContinueButton.accessibilityValue = title
+        topRightContinueButton.size = CGSize(width: topRightContinueButton.sizeThatFits().width, height: continueButtonHeight)
         titleView.setNeedsLayout()
+        
+        bottomContinueButton.setTitle(title, for: .normal)
+        bottomContinueButton.accessibilityValue = title
+    }
+    
+    func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
+        continueButtonPlacement = placement
     }
     
     func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
@@ -467,7 +515,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
         
         closeButton.accessibilityIdentifier = AccessibilityId.discardLibraryButton.rawValue
-        continueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
+        topRightContinueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
+        bottomContinueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
     }
     
     private func setUpButtons() {
@@ -478,13 +527,21 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             for: .touchUpInside
         )
         
-        continueButton.size = CGSize(
+        topRightContinueButton.size = CGSize(
             width: continueButtonHeight,
-            height: continueButton.sizeThatFits().width
+            height: topRightContinueButton.sizeThatFits().width
         )
         
-        continueButton.contentEdgeInsets = continueButtonContentInsets
-        continueButton.addTarget(
+        topRightContinueButton.contentEdgeInsets = continueButtonContentInsets
+        topRightContinueButton.addTarget(
+            self,
+            action: #selector(onContinueButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
+        bottomContinueButton.layer.cornerRadius = 5
+        bottomContinueButton.titleEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
+        bottomContinueButton.addTarget(
             self,
             action: #selector(onContinueButtonTap(_:)),
             for: .touchUpInside
@@ -650,5 +707,40 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     @objc private func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
+    }
+}
+
+private final class FadeView: UIView {
+    
+    let gradientHeight: CGFloat
+    
+    override class var layerClass: AnyClass {
+        return CAGradientLayer.self
+    }
+    
+    override var frame: CGRect {
+        didSet {
+            guard bounds.height > 0 else { return }
+            
+            (layer as? CAGradientLayer)?.endPoint = CGPoint(
+                x: 0.5,
+                y: min(gradientHeight / bounds.height, 1)
+            )
+        }
+    }
+    
+    init(gradientHeight: CGFloat) {
+        self.gradientHeight = gradientHeight
+        
+        super.init(frame: .zero)
+        
+        (layer as? CAGradientLayer)?.colors = [
+            UIColor(white: 1, alpha: 0).cgColor,
+            UIColor(white: 1, alpha: 1).cgColor
+        ]
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

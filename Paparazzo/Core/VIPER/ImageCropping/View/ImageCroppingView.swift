@@ -82,7 +82,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if UIDevice.current.isIPhoneX {
+        if UIDevice.current.hasTopSafeAreaInset {
             layOutForIPhoneX()
         } else {
             layOutForDevicesExpectForIPhoneX()
@@ -173,7 +173,7 @@ final class ImageCroppingView: UIView, ThemeConfigurable {
         
         switch aspectRatio {
         
-        case .portrait_3x4 where !UIDevice.current.isIPhoneX:
+        case .portrait_3x4 where !UIDevice.current.hasTopSafeAreaInset:
             
             titleLabel.textColor = .white
             
