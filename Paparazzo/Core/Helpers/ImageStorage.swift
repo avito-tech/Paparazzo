@@ -70,8 +70,13 @@ public final class ImageStorageImpl: ImageStorage {
     }
     
     public func removeAll() {
+        let imageDirectoryPath = ImageStorageImpl.imageDirectoryPath()
+        guard FileManager.default.fileExists(atPath: imageDirectoryPath) else {
+            return
+        }
+
         do {
-            try FileManager.default.removeItem(atPath: ImageStorageImpl.imageDirectoryPath())
+            try FileManager.default.removeItem(atPath: imageDirectoryPath)
             ImageStorageImpl.createImageDirectoryIfNotExist()
         } catch let error {
             assert(false, "Couldn't remove photo folder with error: \(error)")

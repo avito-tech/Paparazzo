@@ -17,6 +17,7 @@ final class CameraAssemblyImpl: BasePaparazzoAssembly, CameraAssembly {
         let interactor = CameraInteractorImpl(
             cameraService: cameraService,
             deviceOrientationService: deviceOrientationService,
+            imageMetadataWritingService: serviceFactory.imageMetadataWritingService(),
             locationProvider: locationProvider
         )
         
