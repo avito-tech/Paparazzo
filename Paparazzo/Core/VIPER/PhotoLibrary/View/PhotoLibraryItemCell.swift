@@ -42,7 +42,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         let onePixel = CGFloat(1) / UIScreen.main.nativeScale
         let backgroundInsets = UIEdgeInsets(top: onePixel, left: onePixel, bottom: onePixel, right: onePixel)
         
-        backgroundView?.frame = UIEdgeInsetsInsetRect(imageView.frame, backgroundInsets)
+        backgroundView?.frame = imageView.frame.inset(by: backgroundInsets)
         
         cloudIconView.sizeToFit()
         cloudIconView.right = contentView.bounds.right

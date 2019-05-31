@@ -43,7 +43,7 @@ final class DeviceOrientationServiceImpl: DeviceOrientationService {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onOrientationChange(_:)),
-            name: .UIDeviceOrientationDidChange,
+            name: UIDevice.orientationDidChangeNotification,
             object: device
         )
     }

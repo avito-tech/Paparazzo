@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, :deployment_target => '8.0'
+platform :ios, :deployment_target => '9.0'
 
 inhibit_all_warnings!
 use_frameworks!
@@ -7,25 +7,25 @@ use_frameworks!
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
   pod 'Marshroute', '0.4.2'
-  pod 'ImageSource', '2.2.1'
+  pod 'ImageSource', '3.0.0'
 end
 
 target 'PaparazzoExample_NoMarshroute' do
   pod 'Paparazzo/Core', :path => '../'
   pod 'Paparazzo/SDWebImage', :path => '../'
-  pod 'ImageSource/Core', '2.2.1'
-  pod 'ImageSource/PHAsset', '2.2.1'
-  pod 'ImageSource/Local', '2.2.1'
-  pod 'ImageSource/Remote', '2.2.1'
-  pod 'ImageSource/SDWebImage', '2.2.1'
+  pod 'ImageSource/Core', '3.0.0'
+  pod 'ImageSource/PHAsset', '3.0.0'
+  pod 'ImageSource/Local', '3.0.0'
+  pod 'ImageSource/Remote', '3.0.0'
+  pod 'ImageSource/SDWebImage', '3.0.0'
 end
 
 target 'PaparazzoExample_Storyboard' do
   pod 'Paparazzo/Core', :path => '../'
-  pod 'ImageSource', '2.2.1'
+  pod 'ImageSource', '3.0.0'
 end
 
 target 'PaparazzoTests' do
     pod 'Paparazzo', :path => '../'
-    pod 'ImageSource', '2.2.1'
+    pod 'ImageSource', '3.0.0'
 end

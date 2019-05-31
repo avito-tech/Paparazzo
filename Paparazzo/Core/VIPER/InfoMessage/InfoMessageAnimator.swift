@@ -65,7 +65,7 @@ final class InfoMessageAnimator: InfoMessageViewInput {
         messageView.size = messageView.sizeThatFits(container.size)
         behavior.configure(messageView: messageView, in: container)
         container.addSubview(messageView)
-        container.bringSubview(toFront: messageView)
+        container.bringSubviewToFront(messageView)
         
         changeState(to: .appearing)
     }

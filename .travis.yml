@@ -1,6 +1,6 @@
 language: objective-c
-osx_image: xcode9.4
-xcode_sdk: iphonesimulator11.4
+osx_image: xcode10.1
+xcode_sdk: iphonesimulator12.1
 
 before_install:
   - gem install cocoapods # Since Travis is not always on latest version

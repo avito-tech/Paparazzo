@@ -97,7 +97,7 @@ final class CameraPresenter: CameraModuleInput {
         view?.setAccessDeniedButtonTitle(localized("Allow access to camera"))
         
         view?.onAccessDeniedButtonTap = {
-            if let url = URL(string: UIApplicationOpenSettingsURLString) {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.openURL(url)
             }
         }

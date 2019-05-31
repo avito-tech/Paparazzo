@@ -99,7 +99,7 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     private func setUpHeaderAttributes(section: Int) -> CGFloat {
         let headerIndexPath = IndexPath(item: 0, section: section)
         let headerAttributes = UICollectionViewLayoutAttributes(
-            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             with: headerIndexPath
         )
         let origin = CGPoint(

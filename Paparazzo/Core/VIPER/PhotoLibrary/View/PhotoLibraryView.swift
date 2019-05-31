@@ -28,7 +28,7 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
     private var collectionSnapshotView: UIView?
     private let titleView = PhotoLibraryTitleView()
     private let accessDeniedView = AccessDeniedView()
-    private let progressIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let progressIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let toolbar = PhotoLibraryToolbar()
     private let dimView = UIView()
     private let albumsTableView = PhotoLibraryAlbumsTableView()

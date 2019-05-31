@@ -264,7 +264,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         
         let displayLink = CADisplayLink(target: self, selector: #selector(onContinuousScroll))
         displayLink.frameInterval = 1
-        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        displayLink.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
         self.displayLink = displayLink
     }
     
