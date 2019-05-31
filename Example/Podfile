@@ -7,25 +7,25 @@ use_frameworks!
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
   pod 'Marshroute', '0.4.2'
-  pod 'ImageSource', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
+  pod 'ImageSource', '3.0.0'
 end
 
 target 'PaparazzoExample_NoMarshroute' do
   pod 'Paparazzo/Core', :path => '../'
   pod 'Paparazzo/SDWebImage', :path => '../'
-  pod 'ImageSource/Core', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
-  pod 'ImageSource/PHAsset', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
-  pod 'ImageSource/Local', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
-  pod 'ImageSource/Remote', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
-  pod 'ImageSource/SDWebImage', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
+  pod 'ImageSource/Core', '3.0.0'
+  pod 'ImageSource/PHAsset', '3.0.0'
+  pod 'ImageSource/Local', '3.0.0'
+  pod 'ImageSource/Remote', '3.0.0'
+  pod 'ImageSource/SDWebImage', '3.0.0'
 end
 
 target 'PaparazzoExample_Storyboard' do
   pod 'Paparazzo/Core', :path => '../'
-  pod 'ImageSource', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
+  pod 'ImageSource', '3.0.0'
 end
 
 target 'PaparazzoTests' do
     pod 'Paparazzo', :path => '../'
-    pod 'ImageSource', :git => 'https://github.com/avito-tech/ImageSource', :branch => 'swift-4.2'
+    pod 'ImageSource', '3.0.0'
 end
