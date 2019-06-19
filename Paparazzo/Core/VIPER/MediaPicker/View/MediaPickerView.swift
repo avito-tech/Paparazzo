@@ -62,7 +62,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         backgroundColor = .white
         
-        notchMaskingView.backgroundColor = .black
+        notchMaskingView.backgroundColor =  UIDevice.current.hasNotch ? .black : .clear
         
         flashView.backgroundColor = .white
         flashView.alpha = 0
