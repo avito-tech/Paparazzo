@@ -24,7 +24,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     // MARK: - Layout constants
     private let topRightContinueButtonHeight = CGFloat(38)
     private let topRightContinueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    private let fakeNavigationBarButtonMinimumYOffset = CGFloat(20)
+    private let fakeNavigationBarMinimumYOffset = CGFloat(20)
+    private let fakeNavigationBarContentTopInset = CGFloat(8)
     
     // MARK: - State
     private var theme: ThemeType?
@@ -55,7 +56,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     // MARK: - UIView
     override init(frame: CGRect) {
-        
         thumbnailRibbonView = ThumbnailsView()
         photoPreviewView = PhotoPreviewView()
         
@@ -155,14 +155,14 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         leftButton.frame = CGRect(
             x: bounds.left + 8,
-            y: max(notchMaskingView.bottom, fakeNavigationBarButtonMinimumYOffset) + 8,
+            y: max(notchMaskingView.bottom, fakeNavigationBarMinimumYOffset) + fakeNavigationBarContentTopInset,
             width: leftButton.width,
             height: leftButton.height
         )
         
         rightButton.frame = CGRect(
             x: bounds.right - 8 - rightButton.width,
-            y: max(notchMaskingView.bottom, fakeNavigationBarButtonMinimumYOffset) + 8,
+            y: max(notchMaskingView.bottom, fakeNavigationBarMinimumYOffset) + fakeNavigationBarContentTopInset,
             width: rightButton.width,
             height: rightButton.height
         )
@@ -249,7 +249,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private func layOutPhotoTitleLabel() {
         photoTitleLabel.sizeToFit()
         photoTitleLabel.left = ceil(bounds.centerX - photoTitleLabel.width / 2)
-        photoTitleLabel.top = max(8, paparazzoSafeAreaInsets.top) + 9
+        photoTitleLabel.top = max(notchMaskingView.bottom, fakeNavigationBarMinimumYOffset) + fakeNavigationBarContentTopInset + 9
     }
     
     // MARK: - ThemeConfigurable
