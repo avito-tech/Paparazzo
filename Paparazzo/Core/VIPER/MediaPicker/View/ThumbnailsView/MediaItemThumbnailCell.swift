@@ -29,6 +29,5 @@ final class MediaItemThumbnailCell: PhotoCollectionViewCell, Customizable {
     
     func customizeWithItem(_ item: MediaPickerItem) {
         imageSource = item.image
-        setAccessibilityId(.mediaItemThumbnailCell)
     }
 }

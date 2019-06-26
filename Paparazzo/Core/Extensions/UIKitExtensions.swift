@@ -137,7 +137,11 @@ extension UIView {
     }
     
     func setAccessibilityId(_ id: AccessibilityId) {
-        accessibilityIdentifier = id.rawValue
+        setAccessibilityId(id.rawValue)
+    }
+    
+    func setAccessibilityId(_ identifier: String) {
+        accessibilityIdentifier = identifier
         isAccessibilityElement = true
     }
 }

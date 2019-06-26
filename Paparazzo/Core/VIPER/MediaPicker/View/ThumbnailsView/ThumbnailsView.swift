@@ -302,6 +302,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         if let cell = cell as? MediaItemThumbnailCell {
             cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
             cell.customizeWithItem(mediaPickerItem)
+            cell.setAccessibilityId("\(AccessibilityId.mediaItemThumbnailCell)-\(indexPath.row)")
         }
         
         return cell
