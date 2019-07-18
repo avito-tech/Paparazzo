@@ -8,6 +8,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     private let isMetalEnabled: Bool
+    private let isNewFlowPrototype: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -31,12 +32,20 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         interactor: PhotoLibraryV2Interactor,
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
-        isMetalEnabled: Bool)
+        isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool)
     {
         self.interactor = interactor
         self.router = router
         self.overridenTheme = overridenTheme
         self.isMetalEnabled = isMetalEnabled
+        self.isNewFlowPrototype = isNewFlowPrototype
+        
+        if isNewFlowPrototype {
+            interactor.observeSelectedItemsChange { [weak self] in
+                self?.adjustSelectedPhotosBar()
+            }
+        }
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -138,6 +147,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.setProgressVisible(true)
         
+        view?.setContinueButtonVisible(!isNewFlowPrototype)
+        
         interactor.observeAuthorizationStatus { [weak self] accessGranted in
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
             
@@ -196,36 +207,44 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         view?.onContinueButtonTap = { [weak self] in
-            if let strongSelf = self {
-                let selectedItems = strongSelf.interactor.selectedItems
-                guard selectedItems.isEmpty == false else {
-                    self?.onFinish?([])
-                    return
-                }
-                
-                let mediaPickerItems = selectedItems.map {
-                    MediaPickerItem(
-                        image: $0.image,
-                        source: .photoLibrary
-                    )
-                }
-                let startIndex = 0
-                self?.onItemsAdd?(
-                    mediaPickerItems,
-                    startIndex
-                )
-                
-                let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
-                
-                self?.router.showMediaPicker(
-                    data: data,
-                    overridenTheme: strongSelf.overridenTheme,
-                    isMetalEnabled: strongSelf.isMetalEnabled,
-                    configure: { [weak self] module in
-                        self?.configureMediaPicker(module)
-                    }
+            guard let strongSelf = self else { return }
+            
+            let selectedItems = strongSelf.interactor.selectedItems
+            
+            guard selectedItems.isEmpty == false else {
+                strongSelf.onFinish?([])
+                return
+            }
+            
+            let mediaPickerItems = selectedItems.map {
+                MediaPickerItem(
+                    image: $0.image,
+                    source: .photoLibrary
                 )
             }
+            
+            guard !strongSelf.isNewFlowPrototype else {
+                strongSelf.onFinish?(mediaPickerItems)
+                return
+            }
+            
+            let startIndex = 0
+            
+            self?.onItemsAdd?(
+                mediaPickerItems,
+                startIndex
+            )
+            
+            let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
+            
+            self?.router.showMediaPicker(
+                data: data,
+                overridenTheme: strongSelf.overridenTheme,
+                isMetalEnabled: strongSelf.isMetalEnabled,
+                configure: { [weak self] module in
+                    self?.configureMediaPicker(module)
+                }
+            )
         }
         
         view?.onCloseButtonTap = { [weak self] in
@@ -338,14 +357,21 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 onTap: { [weak self] in
                     guard let strongSelf = self else { return }
                     
-                    self?.router.showMediaPicker(
-                        data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
-                        overridenTheme: strongSelf.overridenTheme,
-                        isMetalEnabled: strongSelf.isMetalEnabled,
-                        configure: { [weak self] module in
-                            self?.configureMediaPicker(module)
-                        }
-                    )
+                    if strongSelf.isNewFlowPrototype {
+                        self?.router.showNewCamera(
+                            selectedImagesStorage: strongSelf.interactor.selectedPhotosStorage,
+                            configure: { _ in }
+                        )
+                    } else {
+                        self?.router.showMediaPicker(
+                            data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
+                            overridenTheme: strongSelf.overridenTheme,
+                            isMetalEnabled: strongSelf.isMetalEnabled,
+                            configure: { [weak self] module in
+                                self?.configureMediaPicker(module)
+                            }
+                        )
+                    }
                 }
             )
             
@@ -388,6 +414,19 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             insertedItems: changes.insertedItems.map { (index: $0, cellData: cellData($1)) },
             updatedItems: changes.updatedItems.map { (index: $0, cellData: cellData($1)) },
             movedIndexes: changes.movedIndexes
+        )
+    }
+    
+    func adjustSelectedPhotosBar() {
+        let images = interactor.selectedItems
+        
+        view?.setSelectedPhotosBarState(images.isEmpty
+            ? .hidden
+            : .visible(SelectedPhotosBarData(
+                lastPhoto: images.last?.image,
+                penultimatePhoto: images.count > 1 ? images[images.count - 2].image : nil,
+                countString: "\(images.count) фото"
+            ))
         )
     }
 }

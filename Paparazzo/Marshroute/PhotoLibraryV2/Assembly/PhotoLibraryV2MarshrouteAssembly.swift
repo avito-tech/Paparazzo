@@ -8,6 +8,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: class {
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
 }
@@ -26,6 +27,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
                 maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,
                 isMetalEnabled: false,
+                isNewFlowPrototype: false,
                 configure: configure
             )
     }

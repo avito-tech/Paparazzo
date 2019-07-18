@@ -54,6 +54,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let topRightContinueButton = UIButton()
     private let bottomContinueButton = UIButton()
     private let bottomFadeView = FadeView(gradientHeight: 80)
+    private let selectedPhotosBarView = SelectedPhotosBarView()
     
     // MARK: - Specs
     
@@ -89,6 +90,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         placeholderView.isHidden = true
         
+        selectedPhotosBarView.isHidden = true
+        selectedPhotosBarView.onButtonTap = { [weak self] in
+            self?.onContinueButtonTap?()
+        }
+        
         setUpButtons()
         
         addSubview(collectionView)
@@ -99,6 +105,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         addSubview(titleView)
         addSubview(closeButton)
         addSubview(topRightContinueButton)
+        addSubview(selectedPhotosBarView)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -186,6 +193,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         accessDeniedView.frame = collectionView.bounds
         
         progressIndicator.center = bounds.center
+        
+        selectedPhotosBarView.layout(
+            left: bounds.left + 16,
+            right: bounds.right - 16,
+            bottom: bounds.bottom - 16,
+            fitHeight: .greatestFiniteMagnitude
+        )
     }
     
     // MARK: - ThemeConfigurable
@@ -243,6 +257,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         bottomContinueButton.setTitle(title, for: .normal)
         bottomContinueButton.accessibilityValue = title
+    }
+    
+    func setContinueButtonVisible(_ isVisible: Bool) {
+        topRightContinueButton.isHidden = !isVisible
+        bottomContinueButton.isHidden = !isVisible
     }
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
@@ -456,6 +475,18 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             showAlbumsList()
         case .expanded:
             hideAlbumsList()
+        }
+    }
+    
+    func setSelectedPhotosBarState(_ state: SelectedPhotosBarState) {
+        switch state {
+        case .hidden:
+            selectedPhotosBarView.isHidden = true
+        case .visible(let data):
+            selectedPhotosBarView.isHidden = false
+            selectedPhotosBarView.label.text = data.countString
+            selectedPhotosBarView.lastPhotoThumbnailView.setImage(fromSource: data.lastPhoto)
+            selectedPhotosBarView.penultimatePhotoThumbnailView.setImage(fromSource: data.penultimatePhoto)
         }
     }
     

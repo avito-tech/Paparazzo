@@ -6,7 +6,7 @@ use_frameworks!
 
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
-  pod 'Marshroute', '0.4.2'
+  pod 'Marshroute', :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git', :branch => 'master'
   pod 'ImageSource', '3.0.0'
 end
 

@@ -6,6 +6,7 @@ protocol PhotoLibraryV2Interactor: class {
     var mediaPickerData: MediaPickerData { get }
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [PhotoLibraryItem] { get }
+    var selectedPhotosStorage: SelectedImageStorage { get }
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
@@ -20,4 +21,5 @@ protocol PhotoLibraryV2Interactor: class {
     func prepareSelection() -> PhotoLibraryItemSelectionState
     
     func setCurrentAlbum(_: PhotoLibraryAlbum)
+    func observeSelectedItemsChange(_: @escaping () -> ())
 }

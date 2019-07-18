@@ -3,7 +3,9 @@ import UIKit
 
 public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, MediaPickerMarshrouteAssembly {
     
-    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
+    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory
+        & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
+        & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     

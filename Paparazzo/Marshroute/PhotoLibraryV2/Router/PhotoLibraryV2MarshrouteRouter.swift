@@ -3,7 +3,7 @@ import UIKit
 
 final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory
+    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -13,13 +13,12 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     }
     
     // MARK: - PhotoLibraryV2Router
-    
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isMetalEnabled: Bool,
-        configure: (MediaPickerModule) -> ()
-        ) {
+        configure: (MediaPickerModule) -> ())
+    {
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = assemblyFactory.mediaPickerAssembly()
@@ -30,6 +29,21 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 routerSeed: routerSeed,
                 isMetalEnabled: isMetalEnabled,
                 configure: configure
+            )
+        }
+    }
+    
+    func showNewCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        configure: (NewCameraModule) -> ())
+    {
+        pushViewControllerDerivedFrom { routerSeed in
+            
+            let assembly = assemblyFactory.newCameraAssembly()
+            
+            return assembly.module(
+                selectedImagesStorage: selectedImagesStorage,
+                routerSeed: routerSeed
             )
         }
     }

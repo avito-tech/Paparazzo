@@ -5,7 +5,7 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     
     // MARK: - Subviews
     
-    private var cameraOutputView: CameraOutputView?
+    private var cameraOutputView: CameraOutputView?  // TODO: change to AVPreviewLayer
     private var dimView = UIView()
     private let button = UIButton()
     

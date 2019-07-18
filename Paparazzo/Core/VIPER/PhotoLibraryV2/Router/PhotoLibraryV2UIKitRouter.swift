@@ -2,7 +2,7 @@ import UIKit
 
 final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -17,9 +17,8 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isMetalEnabled: Bool,
-        configure: (MediaPickerModule) -> ()
-        ) {
-        
+        configure: (MediaPickerModule) -> ())
+    {
         let assembly = assemblyFactory.mediaPickerAssembly()
         
         let viewController = assembly.module(
@@ -32,5 +31,18 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         let navigationController = UINavigationController(rootViewController: viewController)
         
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    func showNewCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        configure: (NewCameraModule) -> ())
+    {
+        let assembly = assemblyFactory.newCameraAssembly()
+        
+        let viewController = assembly.module(
+            selectedImagesStorage: selectedImagesStorage
+        )
+        
+        present(viewController, animated: true)
     }
 }

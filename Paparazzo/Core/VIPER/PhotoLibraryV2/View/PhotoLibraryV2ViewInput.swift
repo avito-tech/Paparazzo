@@ -10,6 +10,7 @@ protocol PhotoLibraryV2ViewInput: class {
     func setTitleVisible(_: Bool)
     
     func setContinueButtonTitle(_: String)
+    func setContinueButtonVisible(_: Bool)
     func setContinueButtonPlacement(_: MediaPickerContinueButtonPlacement)
     
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
@@ -30,6 +31,8 @@ protocol PhotoLibraryV2ViewInput: class {
     func showAlbumsList()
     func hideAlbumsList()
     func toggleAlbumsList()
+    
+    func setSelectedPhotosBarState(_: SelectedPhotosBarState)
     
     var onContinueButtonTap: (() -> ())? { get set }
     var onCloseButtonTap: (() -> ())? { get set }

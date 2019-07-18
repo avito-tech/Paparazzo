@@ -14,6 +14,8 @@ protocol CameraService: class {
     func setFlashEnabled(_: Bool) -> Bool
     
     func takePhoto(completion: @escaping (PhotoFromCamera?) -> ())
+    func takePhotoToPhotoLibrary(completion: @escaping (PhotoLibraryItem?) -> ())
+    
     func setCaptureSessionRunning(_: Bool)
     
     func focusOnPoint(_ focusPoint: CGPoint) -> Bool

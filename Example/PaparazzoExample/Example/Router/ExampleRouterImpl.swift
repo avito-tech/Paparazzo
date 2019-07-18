@@ -83,6 +83,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItems: selectedItems,
                 maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,
+                isMetalEnabled: false,
+                isNewFlowPrototype: true,
                 configure: configure
             )
         }

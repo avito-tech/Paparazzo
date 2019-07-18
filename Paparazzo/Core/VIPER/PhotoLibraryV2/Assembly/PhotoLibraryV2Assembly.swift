@@ -4,6 +4,7 @@ public protocol PhotoLibraryV2Assembly: class {
     func module(
         data: PhotoLibraryV2Data,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController
 }

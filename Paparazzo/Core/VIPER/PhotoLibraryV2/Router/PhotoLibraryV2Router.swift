@@ -8,4 +8,9 @@ protocol PhotoLibraryV2Router: class {
         isMetalEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     )
+    
+    func showNewCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        configure: (NewCameraModule) -> ()
+    )
 }

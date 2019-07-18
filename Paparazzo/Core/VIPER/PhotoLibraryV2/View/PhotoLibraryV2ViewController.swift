@@ -10,7 +10,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     // MARK: - UIViewController
     
     override func loadView() {
-        view = photoLibraryView 
+        view = photoLibraryView
     }
     
     override func viewDidLoad() {
@@ -40,7 +40,6 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     }
     
     // MARK: - PhotoLibraryViewInput
-    
     var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onViewDidLoad: (() -> ())?
     
@@ -79,6 +78,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func setContinueButtonTitle(_ title: String) {
         photoLibraryView.setContinueButtonTitle(title)
+    }
+    
+    func setContinueButtonVisible(_ isVisible: Bool) {
+        photoLibraryView.setContinueButtonVisible(isVisible)
     }
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
@@ -165,6 +168,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func toggleAlbumsList() {
         photoLibraryView.toggleAlbumsList()
+    }
+    
+    func setSelectedPhotosBarState(_ state: SelectedPhotosBarState) {
+        photoLibraryView.setSelectedPhotosBarState(state)
     }
     
     // MARK: - Orientation

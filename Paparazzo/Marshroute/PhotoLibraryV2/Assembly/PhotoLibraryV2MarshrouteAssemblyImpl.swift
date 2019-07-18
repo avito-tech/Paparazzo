@@ -3,7 +3,7 @@ import Marshroute
 
 public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2MarshrouteAssembly {
     
-    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory
+    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -18,6 +18,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
@@ -45,7 +46,8 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isMetalEnabled: isMetalEnabled
+            isMetalEnabled: isMetalEnabled,
+            isNewFlowPrototype: isNewFlowPrototype
         )
         
         let viewController = PhotoLibraryV2ViewController()
