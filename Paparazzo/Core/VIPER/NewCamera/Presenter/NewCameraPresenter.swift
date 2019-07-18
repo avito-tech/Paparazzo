@@ -26,8 +26,15 @@ final class NewCameraPresenter:
     
     // MARK: - Private
     private func setUpView() {
+        
         view?.onCloseButtonTap = { [weak self] in
-            self?.router.dismissCurrentModule()
+            guard let strongSelf = self else { return }
+            self?.onFinish?(strongSelf, .cancelled)
+        }
+        
+        view?.onDoneButtonTap = { [weak self] in
+            guard let strongSelf = self else { return }
+            self?.onFinish?(strongSelf, .finished)
         }
     }
 }

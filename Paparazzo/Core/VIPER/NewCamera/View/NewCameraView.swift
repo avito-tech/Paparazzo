@@ -82,6 +82,11 @@ final class NewCameraView: UIView {
     var onCaptureButtonTap: (() -> ())?
     var onCloseButtonTap: (() -> ())?
     
+    var onDoneButtonTap: (() -> ())? {
+        get { return selectedPhotosBarView.onButtonTap }
+        set { selectedPhotosBarView.onButtonTap = newValue }
+    }
+    
     func setCaptureSession(_ captureSession: AVCaptureSession?) {
         previewLayer.session = captureSession
     }

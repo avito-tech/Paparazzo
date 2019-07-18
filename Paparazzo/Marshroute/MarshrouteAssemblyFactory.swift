@@ -57,7 +57,7 @@ public final class MarshrouteAssemblyFactory:
         return ScannerMarshrouteAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
     }
     
-    public func newCameraAssembly() -> NewCameraMarshrouteAssembly {
+    func newCameraAssembly() -> NewCameraMarshrouteAssembly {
         return NewCameraMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
 }

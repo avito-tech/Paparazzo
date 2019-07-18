@@ -43,7 +43,8 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
             
             return assembly.module(
                 selectedImagesStorage: selectedImagesStorage,
-                routerSeed: routerSeed
+                routerSeed: routerSeed,
+                configure: configure
             )
         }
     }

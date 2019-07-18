@@ -21,7 +21,7 @@ public final class AssemblyFactory:
         return CameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
     
-    public func newCameraAssembly() -> NewCameraAssembly {
+    func newCameraAssembly() -> NewCameraAssembly {
         return NewCameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
     }
     

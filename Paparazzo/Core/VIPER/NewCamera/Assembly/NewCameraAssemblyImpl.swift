@@ -6,7 +6,8 @@ final class NewCameraAssemblyImpl:
 {
     // MARK: - NewCameraAssembly
     func module(
-        selectedImagesStorage: SelectedImageStorage)
+        selectedImagesStorage: SelectedImageStorage,
+        configure: (NewCameraModule) -> ())
         -> UIViewController
     {
         let interactor = NewCameraInteractorImpl()
@@ -26,6 +27,8 @@ final class NewCameraAssemblyImpl:
         viewController.addDisposable(presenter)
         
         presenter.view = viewController
+        
+        configure(presenter)
         
         return viewController
     }

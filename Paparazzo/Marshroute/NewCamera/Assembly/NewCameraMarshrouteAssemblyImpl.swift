@@ -8,7 +8,8 @@ final class NewCameraMarshrouteAssemblyImpl:
     // MARK: - NewCameraAssembly
     func module(
         selectedImagesStorage: SelectedImageStorage,
-        routerSeed: RouterSeed)
+        routerSeed: RouterSeed,
+        configure: (NewCameraModule) -> ())
         -> UIViewController
     {
         let interactor = NewCameraInteractorImpl()
@@ -28,6 +29,8 @@ final class NewCameraMarshrouteAssemblyImpl:
         viewController.addDisposable(presenter)
         
         presenter.view = viewController
+        
+        configure(presenter)
         
         return viewController
     }

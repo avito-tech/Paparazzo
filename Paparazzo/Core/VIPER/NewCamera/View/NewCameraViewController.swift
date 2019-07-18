@@ -51,6 +51,11 @@ final class NewCameraViewController:
         set { cameraView.onCloseButtonTap = newValue }
     }
     
+    var onDoneButtonTap: (() -> ())? {
+        get { return cameraView.onDoneButtonTap }
+        set { cameraView.onDoneButtonTap = newValue }
+    }
+    
     // MARK: - Private
     func adjustSelectedPhotosBar() {
         let images = imageStorage.images

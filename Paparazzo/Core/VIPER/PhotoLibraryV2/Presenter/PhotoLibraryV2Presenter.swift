@@ -360,7 +360,16 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     if strongSelf.isNewFlowPrototype {
                         self?.router.showNewCamera(
                             selectedImagesStorage: strongSelf.interactor.selectedPhotosStorage,
-                            configure: { _ in }
+                            configure: { [weak self] module in
+                                module.onFinish = { module, result in
+                                    switch result {
+                                    case .finished:
+                                        self?.view?.onContinueButtonTap?()  // TODO: extract to `handle...` method
+                                    case .cancelled:
+                                        self?.router.focusOnCurrentModule()
+                                    }
+                                }
+                            }
                         )
                     } else {
                         self?.router.showMediaPicker(

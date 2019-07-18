@@ -2,13 +2,14 @@ import Marshroute
 import UIKit
 
 // TODO: rename module to StandaloneCamera
-public protocol NewCameraMarshrouteAssembly: class {
+protocol NewCameraMarshrouteAssembly: class {
     func module(
         selectedImagesStorage: SelectedImageStorage,
-        routerSeed: RouterSeed
+        routerSeed: RouterSeed,
+        configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }
 
-public protocol NewCameraMarshrouteAssemblyFactory: class {
+protocol NewCameraMarshrouteAssemblyFactory: class {
     func newCameraAssembly() -> NewCameraMarshrouteAssembly
 }

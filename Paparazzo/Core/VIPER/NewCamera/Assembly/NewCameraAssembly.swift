@@ -1,12 +1,13 @@
 import UIKit
 
 // TODO: rename module to StandaloneCamera
-public protocol NewCameraAssembly: class {
+protocol NewCameraAssembly: class {
     func module(
-        selectedImagesStorage: SelectedImageStorage
+        selectedImagesStorage: SelectedImageStorage,
+        configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }
 
-public protocol NewCameraAssemblyFactory: class {
+protocol NewCameraAssemblyFactory: class {
     func newCameraAssembly() -> NewCameraAssembly
 }

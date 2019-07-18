@@ -40,7 +40,8 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         let assembly = assemblyFactory.newCameraAssembly()
         
         let viewController = assembly.module(
-            selectedImagesStorage: selectedImagesStorage
+            selectedImagesStorage: selectedImagesStorage,
+            configure: configure
         )
         
         present(viewController, animated: true)
