@@ -32,8 +32,6 @@ final class NewCameraViewController:
                 self?.adjustSelectedPhotosBar()
             }
         }
-        
-        adjustSelectedPhotosBar()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,6 +41,14 @@ final class NewCameraViewController:
     // MARK: - Lifecycle
     override func loadView() {
         view = cameraView
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        DispatchQueue.main.async {
+            self.adjustSelectedPhotosBar()
+        }
     }
     
     // MARK: - NewCameraViewInput

@@ -5,6 +5,7 @@ import UIKit
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     private let cloudIconView = UIImageView()
+    private var getSelectionIndex: (() -> Int?)?
     
     private let selectionIndexBadge: UILabel = {
         let label = UILabel()
@@ -13,6 +14,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         label.font = .boldSystemFont(ofSize: 13)
         label.textAlignment = .center
         label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
         label.isHidden = true
         return label
     }()
@@ -24,13 +26,32 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         set { backgroundView?.backgroundColor = newValue }
     }
     
+    override var isSelected: Bool {
+        didSet {
+            guard let getSelectionIndex = getSelectionIndex else { return }
+            
+            layer.borderWidth = 0
+            
+            imageView.transform = isSelected ? CGAffineTransform(scaleX: 0.9, y: 0.9) : .identity
+            
+            DispatchQueue.main.async {
+                if self.isSelected, let selectionIndex = getSelectionIndex() {
+                    self.selectionIndexBadge.isHidden = false
+                    self.selectionIndexBadge.text = String(selectionIndex)
+                } else {
+                    self.selectionIndexBadge.isHidden = true
+                }
+            }
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         let backgroundView = UIView()
         let onePixel = 1.0 / UIScreen.main.nativeScale
         
-        self.backgroundView = backgroundView
+//        self.backgroundView = backgroundView
         
         selectedBorderThickness = 5
         
@@ -62,8 +83,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.bottom = contentView.bounds.bottom
         
         selectionIndexBadge.layout(
-            left: bounds.left + 5,
-            top: bounds.top + 5,
+            left: bounds.left + 10,
+            top: bounds.top + 10,
             width: 20,
             height: 20
         )
@@ -97,9 +118,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     func customizeWithItem(_ item: PhotoLibraryItemCellData) {
         imageSource = item.image
         isSelected = item.selected
-        
-        selectionIndexBadge.isHidden = (item.selectionIndex == nil)
-        selectionIndexBadge.text = item.selectionIndex.flatMap { String($0) }
+        getSelectionIndex = item.getSelectionIndex
     }
     
     // MARK: - Private

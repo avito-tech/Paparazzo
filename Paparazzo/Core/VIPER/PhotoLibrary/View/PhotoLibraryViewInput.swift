@@ -53,16 +53,17 @@ struct PhotoLibraryAlbumCellData {
 struct PhotoLibraryItemCellData: Equatable {
     
     var image: ImageSource
-    var selectionIndex: Int?
     var selected = false
     var previewAvailable = false
     
     var onSelect: (() -> ())?
     var onSelectionPrepare: (() -> ())?
     var onDeselect: (() -> ())?
+    var getSelectionIndex: (() -> Int?)?
     
-    init(image: ImageSource, selectionIndex: Int? = nil) {
+    init(image: ImageSource, getSelectionIndex: (() -> Int?)? = nil) {
         self.image = image
+        self.getSelectionIndex = getSelectionIndex
     }
     
     static func ==(cellData1: PhotoLibraryItemCellData, cellData2: PhotoLibraryItemCellData) -> Bool {

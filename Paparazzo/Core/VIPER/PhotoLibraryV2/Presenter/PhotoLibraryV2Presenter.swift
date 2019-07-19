@@ -223,17 +223,17 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 )
             }
             
-            guard !strongSelf.isNewFlowPrototype else {
-                strongSelf.onFinish?(mediaPickerItems)
-                return
-            }
-            
             let startIndex = 0
             
             self?.onItemsAdd?(
                 mediaPickerItems,
                 startIndex
             )
+            
+            guard !strongSelf.isNewFlowPrototype else {
+                strongSelf.onFinish?(mediaPickerItems)
+                return
+            }
             
             let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
             
@@ -319,9 +319,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
+//        let getSelectionIndex = { [weak self] in
+//            self?.interactor.selectedItems.index(of: item).flatMap { $0 + 1 }
+//        }
+        
         var cellData = PhotoLibraryItemCellData(
             image: item.image,
-            selectionIndex: isNewFlowPrototype ? 1 : nil
+            getSelectionIndex: nil
         )
 
         cellData.selected = interactor.isSelected(item)
