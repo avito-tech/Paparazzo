@@ -147,7 +147,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     }
     
     func setHeaderVisible(_ visible: Bool) {
-        photoLibraryView.setHeaderVisible(visible)
+//        photoLibraryView.setHeaderVisible(visible)
     }
     
     func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {

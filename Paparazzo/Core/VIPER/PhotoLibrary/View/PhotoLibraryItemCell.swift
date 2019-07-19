@@ -1,9 +1,21 @@
+
 import ImageSource
 import UIKit
 
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     private let cloudIconView = UIImageView()
+    
+    private let selectionIndexBadge: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.633195)
+        label.textColor = .white
+        label.font = .boldSystemFont(ofSize: 13)
+        label.textAlignment = .center
+        label.layer.cornerRadius = 10
+        label.isHidden = true
+        return label
+    }()
     
     // MARK: - UICollectionViewCell
     
@@ -30,6 +42,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         setUpRoundedCorners(for: imageView)
         
         contentView.insertSubview(cloudIconView, at: 0)
+        contentView.addSubview(selectionIndexBadge)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,6 +60,13 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.sizeToFit()
         cloudIconView.right = contentView.bounds.right
         cloudIconView.bottom = contentView.bounds.bottom
+        
+        selectionIndexBadge.layout(
+            left: bounds.left + 5,
+            top: bounds.top + 5,
+            width: 20,
+            height: 20
+        )
     }
     
     override func didRequestImage(requestId imageRequestId: ImageRequestId) {
@@ -77,6 +97,9 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     func customizeWithItem(_ item: PhotoLibraryItemCellData) {
         imageSource = item.image
         isSelected = item.selected
+        
+        selectionIndexBadge.isHidden = (item.selectionIndex == nil)
+        selectionIndexBadge.text = item.selectionIndex.flatMap { String($0) }
     }
     
     // MARK: - Private

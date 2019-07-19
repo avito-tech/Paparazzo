@@ -53,6 +53,7 @@ struct PhotoLibraryAlbumCellData {
 struct PhotoLibraryItemCellData: Equatable {
     
     var image: ImageSource
+    var selectionIndex: Int?
     var selected = false
     var previewAvailable = false
     
@@ -60,7 +61,7 @@ struct PhotoLibraryItemCellData: Equatable {
     var onSelectionPrepare: (() -> ())?
     var onDeselect: (() -> ())?
     
-    init(image: ImageSource) {
+    init(image: ImageSource, selectionIndex: Int? = nil) {
         self.image = image
     }
     

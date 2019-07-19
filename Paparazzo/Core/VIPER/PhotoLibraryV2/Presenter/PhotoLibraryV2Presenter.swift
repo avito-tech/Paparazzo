@@ -319,7 +319,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
-        var cellData = PhotoLibraryItemCellData(image: item.image)
+        var cellData = PhotoLibraryItemCellData(
+            image: item.image,
+            selectionIndex: isNewFlowPrototype ? 1 : nil
+        )
 
         cellData.selected = interactor.isSelected(item)
         
