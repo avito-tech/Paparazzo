@@ -25,12 +25,23 @@ final class NewCameraViewController:
         }
         
         cameraView.onCaptureButtonTap = { [weak self] in
+            self?.cameraView.animateFlash()
             self?.cameraService.takePhotoToPhotoLibrary { photo in
                 guard let photo = photo, let strongSelf = self else { return }
                 
                 self?.imageStorage.addItem(photo)
-                self?.adjustSelectedPhotosBar()
+                
+                self?.cameraView.animateTakenPhoto(photo.image) { finalizeAnimation in
+                    self?.adjustSelectedPhotosBar {
+                        finalizeAnimation()
+                    }
+                }
             }
+        }
+        
+        // TODO: Move to presenter
+        cameraView.onToggleCameraButtonTap = { [weak self] in
+            self?.cameraService.toggleCamera { _ in }
         }
     }
     
@@ -46,9 +57,9 @@ final class NewCameraViewController:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        DispatchQueue.main.async {
-            self.adjustSelectedPhotosBar()
-        }
+//        DispatchQueue.main.async {
+//            self.adjustSelectedPhotosBar()
+//        }
     }
     
     // MARK: - NewCameraViewInput
@@ -62,17 +73,24 @@ final class NewCameraViewController:
         set { cameraView.onDoneButtonTap = newValue }
     }
     
+//    var onToggleCameraButtonTap: (() -> ())? {
+//        get { return cameraView.onToggleCameraButtonTap }
+//        set { cameraView.onToggleCameraButtonTap = newValue }
+//    }
+    
     // MARK: - Private
-    func adjustSelectedPhotosBar() {
+    func adjustSelectedPhotosBar(completion: @escaping () -> ()) {
+        
         let images = imageStorage.images
         
-        cameraView.setSelectedPhotosBarState(images.isEmpty
+        let state: SelectedPhotosBarState = images.isEmpty
             ? .hidden
             : .visible(SelectedPhotosBarData(
                 lastPhoto: images.last?.image,
                 penultimatePhoto: images.count > 1 ? images[images.count - 2].image : nil,
                 countString: "\(images.count) фото"
             ))
-        )
+        
+        cameraView.setSelectedPhotosBarState(state, completion: completion)
     }
 }

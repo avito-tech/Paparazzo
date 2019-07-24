@@ -539,6 +539,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    func stopPreviewingCameraStream() {
+//        guard let cameraView = collectionView.supplementaryView(
+//            forElementKind: UICollectionView.elementKindSectionHeader,
+//            at: IndexPath(item: 0, section: 0)
+//        ) as? PhotoLibraryCameraView else { return }
+//        
+//        cameraView.clearOutputParameters()
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

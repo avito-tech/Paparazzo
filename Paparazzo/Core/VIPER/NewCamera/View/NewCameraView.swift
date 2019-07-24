@@ -24,6 +24,8 @@ final class NewCameraView: UIView {
     private let toggleCameraButton = UIButton()
     private let hintLabel = UILabel()
     private let selectedPhotosBarView = SelectedPhotosBarView()
+    private let flashView = UIView()
+    private let snapshotView = UIImageView()
     
     // TODO: extract to separate view
     private let previewView = UIView()
@@ -31,7 +33,7 @@ final class NewCameraView: UIView {
     
     // MARK: - Specs
     private let navigationBarHeight = CGFloat(52)
-    private let captureButtonSize = CGFloat(58)
+    private let captureButtonSize = CGFloat(64)
     
     // MARK: - Init
     init() {
@@ -42,6 +44,7 @@ final class NewCameraView: UIView {
         hintLabel.text = "Разместите объект внутри рамки и сделайте фото"
         
         addSubview(previewView)
+        addSubview(flashView)
         addSubview(closeButton)
         addSubview(photoLibraryButton)
         addSubview(captureButton)
@@ -49,6 +52,15 @@ final class NewCameraView: UIView {
         addSubview(toggleCameraButton)
         addSubview(hintLabel)
         addSubview(selectedPhotosBarView)
+        addSubview(snapshotView)
+        
+        snapshotView.contentMode = .scaleAspectFill
+        snapshotView.layer.cornerRadius = 10
+        snapshotView.layer.masksToBounds = true
+        snapshotView.isHidden = true
+        
+        flashView.backgroundColor = .white
+        flashView.alpha = 0
         
         closeButton.setImage(
             UIImage(named: "bt-close", in: Resources.bundle, compatibleWith: nil),
@@ -64,6 +76,13 @@ final class NewCameraView: UIView {
         
         previewView.layer.masksToBounds = true
         previewView.layer.addSublayer(previewLayer)
+        
+        toggleCameraButton.setImage(
+            UIImage(named: "back_front_new", in: Resources.bundle, compatibleWith: nil),
+            for: .normal
+        )
+        toggleCameraButton.addTarget(self, action: #selector(handleToggleCameraButtonTap), for: .touchUpInside)
+        toggleCameraButton.sizeToFit()
         
         hintLabel.textColor = .gray
         hintLabel.textAlignment = .center
@@ -81,6 +100,7 @@ final class NewCameraView: UIView {
     // MARK: - NewCameraView
     var onCaptureButtonTap: (() -> ())?
     var onCloseButtonTap: (() -> ())?
+    var onToggleCameraButtonTap: (() -> ())?
     
     var onDoneButtonTap: (() -> ())? {
         get { return selectedPhotosBarView.onButtonTap }
@@ -91,16 +111,107 @@ final class NewCameraView: UIView {
         previewLayer.session = captureSession
     }
     
-    func setSelectedPhotosBarState(_ state: SelectedPhotosBarState) {
+    func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
         switch state {
         case .hidden:
             selectedPhotosBarView.isHidden = true
+            completion()
         case .visible(let data):
             selectedPhotosBarView.isHidden = false
             selectedPhotosBarView.label.text = data.countString
-            selectedPhotosBarView.lastPhotoThumbnailView.setImage(fromSource: data.lastPhoto)
-            selectedPhotosBarView.penultimatePhotoThumbnailView.setImage(fromSource: data.penultimatePhoto)
+            
+            let dispatchGroup = DispatchGroup()
+            
+            dispatchGroup.enter()
+            selectedPhotosBarView.lastPhotoThumbnailView.setImage(
+                fromSource: data.lastPhoto,
+                resultHandler: { result in
+                    // TODO: fix possible but with leaving more times than entering
+                    if !result.degraded {
+                        dispatchGroup.leave()
+                    }
+                }
+            )
+            
+            dispatchGroup.enter()
+            selectedPhotosBarView.penultimatePhotoThumbnailView.setImage(
+                fromSource: data.penultimatePhoto,
+                resultHandler: { result in
+                    // TODO: fix possible but with leaving more times than entering
+                    if !result.degraded {
+                        dispatchGroup.leave()
+                    }
+                }
+            )
+            
+            dispatchGroup.notify(queue: .main, execute: completion)
         }
+    }
+    
+    func animateFlash() {
+        UIView.animate(
+            withDuration: 0.1,
+            animations: {
+                self.flashView.alpha = 1
+            },
+            completion: { _ in
+                UIView.animate(
+                    withDuration: 0.3,
+                    delay: 0.1,
+                    options: [.curveEaseOut],
+                    animations: {
+                        self.flashView.alpha = 0
+                    },
+                    completion: nil
+                )
+            }
+        )
+    }
+    
+    func animateTakenPhoto(
+        _ image: ImageSource,
+        completion: @escaping (_ finalizeAnimation: @escaping () -> ()) -> ())
+    {
+        let sideInsets = CGFloat(18)
+        let snapshotWidthToHeightRatio = CGFloat(4) / 3
+        let snapshotInitialWidth = previewView.width - 2 * sideInsets
+        let snapshotInitialHeight = snapshotInitialWidth / snapshotWidthToHeightRatio
+        
+        let snapshotFinalFrame = convert(
+            selectedPhotosBarView.lastPhotoThumbnailView.frame,
+            from: selectedPhotosBarView.lastPhotoThumbnailView.superview
+        )
+        
+        snapshotView.frame = CGRect(
+            x: previewView.left + sideInsets,
+            y: previewView.top + (previewView.height - snapshotInitialHeight) / 2,
+            width: snapshotInitialWidth,
+            height: snapshotInitialHeight
+        )
+        snapshotView.layer.cornerRadius = 10
+        snapshotView.isHidden = false
+        
+        snapshotView.setImage(
+            fromSource: image,
+            resultHandler: { result in
+                guard !result.degraded else { return }
+                
+                UIView.animate(
+                    withDuration: 1,
+                    delay: 1,
+                    options: [],
+                    animations: {
+                        self.snapshotView.frame = snapshotFinalFrame
+                        self.layer.cornerRadius = self.selectedPhotosBarView.lastPhotoThumbnailView.layer.cornerRadius
+                    },
+                    completion: { _ in
+                        completion {
+                            self.snapshotView.isHidden = true
+                        }
+                    }
+                )
+            }
+        )
     }
     
     // MARK: - UIView
@@ -125,6 +236,11 @@ final class NewCameraView: UIView {
         )
         
         layOutPreview()
+        
+        flashView.frame = previewView.frame
+        
+        toggleCameraButton.right = bounds.right - 23
+        toggleCameraButton.centerY = captureButton.centerY
         
         selectedPhotosBarView.layout(
             left: bounds.left + 16,
@@ -164,5 +280,9 @@ final class NewCameraView: UIView {
     
     @objc private func handleCloseButtonTap() {
         onCloseButtonTap?()
+    }
+    
+    @objc private func handleToggleCameraButtonTap() {
+        onToggleCameraButtonTap?()
     }
 }

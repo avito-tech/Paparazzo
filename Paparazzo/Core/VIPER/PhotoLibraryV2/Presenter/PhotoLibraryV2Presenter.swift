@@ -319,9 +319,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
-//        let getSelectionIndex = { [weak self] in
-//            self?.interactor.selectedItems.index(of: item).flatMap { $0 + 1 }
-//        }
+        let getSelectionIndex = { [weak self] in
+            self?.interactor.selectedItems.index(of: item).flatMap { $0 + 1 }
+        }
         
         var cellData = PhotoLibraryItemCellData(
             image: item.image,
