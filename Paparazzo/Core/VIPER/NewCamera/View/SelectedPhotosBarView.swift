@@ -11,6 +11,7 @@ final class SelectedPhotosBarView: UIView {
     private let penultimatePhotoThumbnailSize = CGSize(width: 43, height: 32)
     
     var onButtonTap: (() -> ())?
+    var onLastPhotoThumbnailTap: (() -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,6 +35,10 @@ final class SelectedPhotosBarView: UIView {
         button.layer.cornerRadius = 6
         button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
         
+        lastPhotoThumbnailView.isUserInteractionEnabled = true
+        lastPhotoThumbnailView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(handleLastPhotoThumbnailTap))
+        )
         
         addSubview(penultimatePhotoThumbnailView)
         addSubview(lastPhotoThumbnailView)
@@ -90,5 +95,9 @@ final class SelectedPhotosBarView: UIView {
     // MARK: - Private - Event handlers
     @objc private func handleButtonTap() {
         onButtonTap?()
+    }
+    
+    @objc private func handleLastPhotoThumbnailTap() {
+        onLastPhotoThumbnailTap?()
     }
 }

@@ -27,7 +27,9 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         canRotate: Bool)
     {
         self.mediaPickerData = mediaPickerData
-        self.selectedPhotosStorage = SelectedImageStorage(images: selectedItems)
+        self.selectedPhotosStorage = SelectedImageStorage(
+            images: mediaPickerData.items.map { PhotoLibraryItem(image: $0.image) }
+        )
         self.maxSelectedItemsCount = maxSelectedItemsCount
         self.photoLibraryItemsService = photoLibraryItemsService
         self.cameraService = cameraService

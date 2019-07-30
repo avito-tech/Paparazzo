@@ -34,7 +34,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             case .bottom:
                 topRightContinueButton.removeFromSuperview()
                 insertSubview(bottomContinueButton, belowSubview: albumsTableView)
-                insertSubview(bottomFadeView, belowSubview: bottomContinueButton)
+                insertSubview(bottomFadeView, belowSubview: selectedPhotosBarView)
             }
         }
     }
@@ -101,11 +101,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         addSubview(placeholderView)
         addSubview(accessDeniedView)
         addSubview(dimView)
+        addSubview(selectedPhotosBarView)
         addSubview(albumsTableView)
         addSubview(titleView)
         addSubview(closeButton)
         addSubview(topRightContinueButton)
-        addSubview(selectedPhotosBarView)
         
         progressIndicator.hidesWhenStopped = true
         progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
@@ -244,6 +244,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     var onAccessDeniedButtonTap: (() -> ())? {
         get { return accessDeniedView.onButtonTap }
         set { accessDeniedView.onButtonTap = newValue }
+    }
+    
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return selectedPhotosBarView.onLastPhotoThumbnailTap }
+        set { selectedPhotosBarView.onLastPhotoThumbnailTap = newValue }
     }
     
     var onTitleTap: (() -> ())?
@@ -438,6 +443,12 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func deselectAndAdjustAllCells() {
         collectionView.indexPathsForSelectedItems?.forEach { deselectCell(at: $0) }
+    }
+    
+    func reloadSelectedItems() {
+        if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems {
+            collectionView.reloadItems(at: indexPathsForSelectedItems)
+        }
     }
     
     func setTitle(_ title: String) {

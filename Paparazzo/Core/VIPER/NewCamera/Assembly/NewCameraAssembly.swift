@@ -4,6 +4,7 @@ import UIKit
 protocol NewCameraAssembly: class {
     func module(
         selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }

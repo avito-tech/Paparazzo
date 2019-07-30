@@ -257,6 +257,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
         }
         
+        view?.onLastPhotoThumbnailTap = { [weak self] in
+            self?.showMediaPickerInNewFlow()
+        }
+        
         view?.onTitleTap = { [weak self] in
             self?.view?.toggleAlbumsList()
         }
@@ -270,6 +274,23 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.view?.setCameraViewData(viewData)
             }
         }
+    }
+    
+    private func showMediaPickerInNewFlow() {
+        
+        let data = interactor.mediaPickerData.bySettingPhotoLibraryItems(interactor.selectedItems)
+        
+        router.showMediaPicker(
+            data: data,
+            overridenTheme: overridenTheme,
+            isMetalEnabled: isMetalEnabled,
+            configure: { [weak self] module in
+                self?.configureMediaPicker(module)
+                module.onFinish = { _ in
+                    self?.view?.onContinueButtonTap?()
+                }
+            }
+        )
     }
     
     private func updateContinueButtonTitle() {
@@ -325,7 +346,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         var cellData = PhotoLibraryItemCellData(
             image: item.image,
-            getSelectionIndex: nil
+            getSelectionIndex: isNewFlowPrototype ? getSelectionIndex : nil
         )
 
         cellData.selected = interactor.isSelected(item)
@@ -351,6 +372,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
             let hasNoItems = self?.interactor.selectedItems.isEmpty == true
             self?.view?.setHeaderVisible(hasNoItems)
+            self?.view?.reloadSelectedItems()
             self?.updateContinueButtonTitle()
         }
         
@@ -367,8 +389,15 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     if strongSelf.isNewFlowPrototype {
                         self?.router.showNewCamera(
                             selectedImagesStorage: strongSelf.interactor.selectedPhotosStorage,
-                            configure: { [weak self] module in
-                                module.onFinish = { module, result in
+                            mediaPickerData: strongSelf.interactor.mediaPickerData,
+                            configure: { [weak self] newCameraModule in
+                                newCameraModule.configureMediaPicker = { mediaPickerModule in
+                                    self?.configureMediaPicker(mediaPickerModule)
+                                    mediaPickerModule.onFinish = { _ in
+                                        self?.view?.onContinueButtonTap?()
+                                    }
+                                }
+                                newCameraModule.onFinish = { module, result in
                                     switch result {
                                     case .finished:
                                         self?.view?.onContinueButtonTap?()  // TODO: extract to `handle...` method

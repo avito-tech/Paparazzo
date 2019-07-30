@@ -16,7 +16,8 @@ struct SelectedPhotosBarData { // TODO: make final class
 final class NewCameraView: UIView {
     
     // MARK: - Subviews
-    private let previewLayer = AVCaptureVideoPreviewLayer()
+//    private let previewLayer = AVCaptureVideoPreviewLayer()
+    private var cameraOutputView: CameraOutputView?  // TODO: replace with AVCaptureVideoPreviewLayer
     private let closeButton = UIButton()
     private let photoLibraryButton = UIButton()
     private let captureButton = UIButton()
@@ -75,7 +76,6 @@ final class NewCameraView: UIView {
         captureButton.addTarget(self, action: #selector(handleCaptureButtonTap), for: .touchUpInside)
         
         previewView.layer.masksToBounds = true
-        previewView.layer.addSublayer(previewLayer)
         
         toggleCameraButton.setImage(
             UIImage(named: "back_front_new", in: Resources.bundle, compatibleWith: nil),
@@ -107,8 +107,23 @@ final class NewCameraView: UIView {
         set { selectedPhotosBarView.onButtonTap = newValue }
     }
     
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return selectedPhotosBarView.onLastPhotoThumbnailTap }
+        set { selectedPhotosBarView.onLastPhotoThumbnailTap = newValue }
+    }
+    
     func setCaptureSession(_ captureSession: AVCaptureSession?) {
-        previewLayer.session = captureSession
+        guard let captureSession = captureSession else {
+            cameraOutputView?.removeFromSuperview()
+            cameraOutputView = nil
+            return
+        }
+        
+        setOutputParameters(CameraOutputParameters(
+            captureSession: captureSession,
+            orientation: .up,
+            isMetalEnabled: false
+        ))
     }
     
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
@@ -146,6 +161,30 @@ final class NewCameraView: UIView {
             
             dispatchGroup.notify(queue: .main, execute: completion)
         }
+    }
+    
+    // TODO: remove after migration to AVCaptureVideoPreviewLayer
+    func setOutputParameters(_ parameters: CameraOutputParameters) {
+        
+        let newCameraOutputView = CameraOutputView(
+            captureSession: parameters.captureSession,
+            outputOrientation: parameters.orientation,
+            isMetalEnabled: parameters.isMetalEnabled
+        )
+        
+        newCameraOutputView.layer.cornerRadius = 6
+        cameraOutputView?.removeFromSuperview()
+        
+        previewView.insertSubview(newCameraOutputView, at: 0)
+        
+        self.cameraOutputView = newCameraOutputView
+        
+        layOutPreview()
+    }
+    
+    // TODO: remove after migration to AVCaptureVideoPreviewLayer
+    func setOutputOrientation(_ orientation: ExifOrientation) {
+        cameraOutputView?.orientation = orientation
     }
     
     func animateFlash() {
@@ -197,7 +236,7 @@ final class NewCameraView: UIView {
                 guard !result.degraded else { return }
                 
                 UIView.animate(
-                    withDuration: 1,
+                    withDuration: 0.5,
                     delay: 1,
                     options: [],
                     animations: {
@@ -263,12 +302,8 @@ final class NewCameraView: UIView {
             height: previewHeight
         )
         
-        previewLayer.frame = CGRect(
-            x: 0,
-            y: previewView.bounds.centerY - previewView.width / previewAspectRatio / 2,
-            width: previewView.width,
-            height: previewView.width / previewAspectRatio
-        )
+//        previewLayer.frame = previewView.layer.bounds
+        cameraOutputView?.frame = previewView.bounds
         
         viewfinderBorderView.frame = previewView.bounds
     }

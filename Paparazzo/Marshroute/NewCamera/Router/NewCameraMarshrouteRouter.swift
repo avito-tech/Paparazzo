@@ -1,4 +1,33 @@
 import Marshroute
 
-protocol NewCameraMarshrouteRouter: RouterDismissable {
+final class NewCameraMarshrouteRouter: BaseRouter, NewCameraRouter {
+    
+    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory
+    
+    private let assemblyFactory: AssemblyFactory
+    
+    init(assemblyFactory: AssemblyFactory, routerSeed: RouterSeed) {
+        self.assemblyFactory = assemblyFactory
+        super.init(routerSeed: routerSeed)
+    }
+    
+    // MARK: - NewCameraRouter
+    func showMediaPicker(
+        data: MediaPickerData,
+        overridenTheme: PaparazzoUITheme?,
+        configure: (MediaPickerModule) -> ())
+    {
+        pushViewControllerDerivedFrom { routerSeed in
+            
+            let assembly = assemblyFactory.mediaPickerAssembly()
+            
+            return assembly.module(
+                data: data,
+                overridenTheme: overridenTheme,
+                routerSeed: routerSeed,
+                isMetalEnabled: false,
+                configure: configure
+            )
+        }
+    }
 }

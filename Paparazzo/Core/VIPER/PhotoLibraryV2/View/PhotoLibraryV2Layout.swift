@@ -12,7 +12,6 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     private let insets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     private let cellSpacing = CGFloat(6)
     private let numberOfPhotosInRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 3
-    private let headerViewHeight = CGFloat(166)
     
     // MARK: - UICollectionViewLayout
     
@@ -106,10 +105,10 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
             x: insets.left,
             y: insets.top
         )
-        let size = CGSize(
-            width: (collectionView?.width ?? 0) - insets.left - insets.right,
-            height: hasHeader ? headerViewHeight : 0
-        )
+        
+        let width = (collectionView?.width ?? 0) - insets.left - insets.right
+        
+        let size = CGSize(width: width, height: width * 0.36)
         
         headerAttributes.frame = CGRect(
             origin: origin,

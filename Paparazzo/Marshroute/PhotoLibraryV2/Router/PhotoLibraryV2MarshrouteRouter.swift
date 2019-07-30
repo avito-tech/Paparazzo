@@ -35,6 +35,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
     func showNewCamera(
         selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
         configure: (NewCameraModule) -> ())
     {
         pushViewControllerDerivedFrom { routerSeed in
@@ -43,6 +44,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
             
             return assembly.module(
                 selectedImagesStorage: selectedImagesStorage,
+                mediaPickerData: mediaPickerData,
                 routerSeed: routerSeed,
                 configure: configure
             )

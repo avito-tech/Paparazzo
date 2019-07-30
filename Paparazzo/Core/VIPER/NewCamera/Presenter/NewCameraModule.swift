@@ -5,4 +5,5 @@ enum NewCameraModuleResult {
 
 protocol NewCameraModule: class {
     var onFinish: ((NewCameraModule, NewCameraModuleResult) -> ())? { get set }
+    var configureMediaPicker: ((MediaPickerModule) -> ())? { get set }
 }

@@ -23,6 +23,7 @@ final class NewCameraPresenter:
     
     // MARK: - NewCameraModule
     var onFinish: ((NewCameraModule, NewCameraModuleResult) -> ())?
+    var configureMediaPicker: ((MediaPickerModule) -> ())?
     
     // MARK: - Private
     private func setUpView() {
@@ -35,6 +36,20 @@ final class NewCameraPresenter:
         view?.onDoneButtonTap = { [weak self] in
             guard let strongSelf = self else { return }
             self?.onFinish?(strongSelf, .finished)
+        }
+        
+        view?.onLastPhotoThumbnailTap = { [weak self] in
+            guard let strongSelf = self, let selectedItems = self?.view?.imageStorage.images else { return }
+            
+            let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
+            
+            self?.router.showMediaPicker(
+                data: data,
+                overridenTheme: nil,
+                configure: { module in
+                    self?.configureMediaPicker?(module)
+                }
+            )
         }
     }
 }

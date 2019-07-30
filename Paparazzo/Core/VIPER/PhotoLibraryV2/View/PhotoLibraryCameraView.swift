@@ -55,7 +55,7 @@ class PhotoLibraryCameraView: UICollectionReusableView {
         newCameraOutputView.layer.cornerRadius = 6
         cameraOutputView?.removeFromSuperview()
         
-        insertSubview(newCameraOutputView, belowSubview: button)
+        insertSubview(newCameraOutputView, belowSubview: dimView)
         
         self.cameraOutputView = newCameraOutputView
     }

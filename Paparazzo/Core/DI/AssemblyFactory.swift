@@ -22,7 +22,7 @@ public final class AssemblyFactory:
     }
     
     func newCameraAssembly() -> NewCameraAssembly {
-        return NewCameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return NewCameraAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
     }
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {

@@ -68,6 +68,11 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         set { photoLibraryView.onDimViewTap = newValue }
     }
     
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return photoLibraryView.onLastPhotoThumbnailTap }
+        set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
+    }
+    
     @nonobjc func setTitle(_ title: String) {
         photoLibraryView.setTitle(title)
     }
@@ -124,6 +129,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func deselectAllItems() {
         photoLibraryView.deselectAndAdjustAllCells()
+    }
+    
+    func reloadSelectedItems() {
+        photoLibraryView.reloadSelectedItems()
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {

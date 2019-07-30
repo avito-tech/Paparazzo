@@ -58,6 +58,10 @@ public final class MarshrouteAssemblyFactory:
     }
     
     func newCameraAssembly() -> NewCameraMarshrouteAssembly {
-        return NewCameraMarshrouteAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+        return NewCameraMarshrouteAssemblyImpl(
+            assemblyFactory: self,
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
     }
 }

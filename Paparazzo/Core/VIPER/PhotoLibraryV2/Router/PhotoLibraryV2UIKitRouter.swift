@@ -35,12 +35,14 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
     func showNewCamera(
         selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
         configure: (NewCameraModule) -> ())
     {
         let assembly = assemblyFactory.newCameraAssembly()
         
         let viewController = assembly.module(
             selectedImagesStorage: selectedImagesStorage,
+            mediaPickerData: mediaPickerData,
             configure: configure
         )
         

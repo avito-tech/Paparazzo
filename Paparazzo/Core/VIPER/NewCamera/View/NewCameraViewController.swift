@@ -8,7 +8,7 @@ final class NewCameraViewController:
     // MARK: - Private properties
     private let cameraView = NewCameraView()
     private let cameraService: CameraService
-    private let imageStorage: SelectedImageStorage
+    let imageStorage: SelectedImageStorage
     
     // MARK: - Init
     init(
@@ -26,6 +26,7 @@ final class NewCameraViewController:
         
         cameraView.onCaptureButtonTap = { [weak self] in
             self?.cameraView.animateFlash()
+            
             self?.cameraService.takePhotoToPhotoLibrary { photo in
                 guard let photo = photo, let strongSelf = self else { return }
                 
@@ -50,16 +51,38 @@ final class NewCameraViewController:
     }
     
     // MARK: - Lifecycle
+    private var viewDidLayoutSubviewsBefore = false
+    private var didDisappear = false
+    
     override func loadView() {
         view = cameraView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if didDisappear {
+            DispatchQueue.main.async {
+                self.adjustSelectedPhotosBar {}
+            }
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        didDisappear = true
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-//        DispatchQueue.main.async {
-//            self.adjustSelectedPhotosBar()
-//        }
+        guard !viewDidLayoutSubviewsBefore else { return }
+        
+        DispatchQueue.main.async {
+            self.adjustSelectedPhotosBar {}
+        }
+        
+        viewDidLayoutSubviewsBefore = true
     }
     
     // MARK: - NewCameraViewInput
@@ -71,6 +94,11 @@ final class NewCameraViewController:
     var onDoneButtonTap: (() -> ())? {
         get { return cameraView.onDoneButtonTap }
         set { cameraView.onDoneButtonTap = newValue }
+    }
+    
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return cameraView.onLastPhotoThumbnailTap }
+        set { cameraView.onLastPhotoThumbnailTap = newValue }
     }
     
 //    var onToggleCameraButtonTap: (() -> ())? {

@@ -28,11 +28,15 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     override var isSelected: Bool {
         didSet {
+            imageView.transform = .identity
+            
             guard let getSelectionIndex = getSelectionIndex else { return }
             
             layer.borderWidth = 0
             
-            imageView.transform = isSelected ? CGAffineTransform(scaleX: 0.9, y: 0.9) : .identity
+            if isSelected {
+                imageView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            }
             
             DispatchQueue.main.async {
                 if self.isSelected, let selectionIndex = getSelectionIndex() {
@@ -43,6 +47,11 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
                 }
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        getSelectionIndex = nil
     }
     
     override init(frame: CGRect) {
@@ -117,8 +126,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     func customizeWithItem(_ item: PhotoLibraryItemCellData) {
         imageSource = item.image
-        isSelected = item.selected
         getSelectionIndex = item.getSelectionIndex
+        isSelected = item.selected
     }
     
     // MARK: - Private

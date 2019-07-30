@@ -11,6 +11,7 @@ protocol PhotoLibraryV2Router: class {
     
     func showNewCamera(
         selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
         configure: (NewCameraModule) -> ()
     )
 }

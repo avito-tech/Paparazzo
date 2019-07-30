@@ -5,6 +5,7 @@ protocol PhotoLibraryV2ViewInput: class {
     
     var onTitleTap: (() -> ())? { get set }
     var onDimViewTap: (() -> ())? { get set }
+    var onLastPhotoThumbnailTap: (() -> ())? { get set }
     
     func setTitle(_: String)
     func setTitleVisible(_: Bool)
@@ -25,6 +26,7 @@ protocol PhotoLibraryV2ViewInput: class {
     
     func deselectItem(with: ImageSource)
     func deselectAllItems()
+    func reloadSelectedItems()
     
     func setAlbums(_: [PhotoLibraryAlbumCellData])
     func selectAlbum(withId: String)

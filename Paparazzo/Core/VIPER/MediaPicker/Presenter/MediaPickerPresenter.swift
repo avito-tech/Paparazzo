@@ -117,16 +117,16 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
             view?.selectItem(itemToSelectAfterRemoval)
-        } else {
-            if canShowCamera {
-                view?.selectCamera()
-                view?.setPhotoTitleAlpha(0)
-            } else {
-                onCancel?()
-            }
+        } else if canShowCamera {
+            view?.selectCamera()
+            view?.setPhotoTitleAlpha(0)
         }
         
         onItemRemove?(item, index)
+        
+        if itemToSelectAfterRemoval == nil {
+            onFinish?([])
+        }
     }
     
     func focusOnModule() {
@@ -200,7 +200,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 let selectedItem = self?.interactor.selectedItem
                 if let selectedItem = selectedItem {
                     self?.selectItem(selectedItem)
-                } else if self?.interactor.canAddItems() == true {
+                } else if self?.interactor.canAddItems() == true && self?.interactor.cameraEnabled == true {
                     self?.selectCamera()
                 } else if let lastItem = items.last {
                     self?.selectItem(lastItem)
