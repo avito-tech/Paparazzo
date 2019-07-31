@@ -8,15 +8,19 @@ final class NewCameraViewController:
     // MARK: - Private properties
     private let cameraView = NewCameraView()
     private let cameraService: CameraService
+    private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
+    
     let imageStorage: SelectedImageStorage
     
     // MARK: - Init
     init(
         selectedImagesStorage: SelectedImageStorage,
-        cameraService: CameraService)
+        cameraService: CameraService,
+        latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider)
     {
         self.imageStorage = selectedImagesStorage
         self.cameraService = cameraService
+        self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
         
         super.init()
         
@@ -32,12 +36,16 @@ final class NewCameraViewController:
                 
                 self?.imageStorage.addItem(photo)
                 
-                self?.cameraView.animateTakenPhoto(photo.image) { finalizeAnimation in
+                self?.cameraView.animateCapturedPhoto(photo.image) { finalizeAnimation in
                     self?.adjustSelectedPhotosBar {
                         finalizeAnimation()
                     }
                 }
             }
+        }
+        
+        latestLibraryPhotoProvider.observePhoto { [weak self] imageSource in
+            self?.cameraView.setLatestPhotoLibraryItemImage(imageSource)
         }
         
         // TODO: Move to presenter

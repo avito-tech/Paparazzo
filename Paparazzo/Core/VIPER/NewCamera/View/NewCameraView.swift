@@ -27,6 +27,7 @@ final class NewCameraView: UIView {
     private let selectedPhotosBarView = SelectedPhotosBarView()
     private let flashView = UIView()
     private let snapshotView = UIImageView()
+    private let photoView = UIImageView()
     
     // TODO: extract to separate view
     private let previewView = UIView()
@@ -49,11 +50,22 @@ final class NewCameraView: UIView {
         addSubview(closeButton)
         addSubview(photoLibraryButton)
         addSubview(captureButton)
+        addSubview(photoView)
         addSubview(flashButton)
         addSubview(toggleCameraButton)
         addSubview(hintLabel)
         addSubview(selectedPhotosBarView)
         addSubview(snapshotView)
+        
+        photoView.backgroundColor = .lightGray
+        photoView.contentMode = .scaleAspectFill
+        photoView.layer.cornerRadius = 16
+        photoView.clipsToBounds = true
+        photoView.isUserInteractionEnabled = true
+        photoView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(onPhotoViewTap(_:))
+        ))
         
         snapshotView.contentMode = .scaleAspectFill
         snapshotView.layer.cornerRadius = 10
@@ -101,6 +113,7 @@ final class NewCameraView: UIView {
     var onCaptureButtonTap: (() -> ())?
     var onCloseButtonTap: (() -> ())?
     var onToggleCameraButtonTap: (() -> ())?
+    var onPhotoLibraryButtonTap: (() -> ())?
     
     var onDoneButtonTap: (() -> ())? {
         get { return selectedPhotosBarView.onButtonTap }
@@ -163,6 +176,15 @@ final class NewCameraView: UIView {
         }
     }
     
+    func setLatestPhotoLibraryItemImage(_ imageSource: ImageSource?) {
+        photoView.setImage(
+            fromSource: imageSource,
+            size: CGSize(width: 32, height: 32),
+            placeholder: nil,
+            placeholderDeferred: false
+        )
+    }
+    
     // TODO: remove after migration to AVCaptureVideoPreviewLayer
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         
@@ -207,7 +229,7 @@ final class NewCameraView: UIView {
         )
     }
     
-    func animateTakenPhoto(
+    func animateCapturedPhoto(
         _ image: ImageSource,
         completion: @escaping (_ finalizeAnimation: @escaping () -> ()) -> ())
     {
@@ -236,8 +258,8 @@ final class NewCameraView: UIView {
                 guard !result.degraded else { return }
                 
                 UIView.animate(
-                    withDuration: 0.5,
-                    delay: 1,
+                    withDuration: 0.3,
+                    delay: 0.5,
                     options: [],
                     animations: {
                         self.snapshotView.frame = snapshotFinalFrame
@@ -287,6 +309,10 @@ final class NewCameraView: UIView {
             bottom: bounds.bottom - 16,
             fitHeight: .greatestFiniteMagnitude
         )
+        
+        photoView.size = CGSize(width: 32, height: 32)
+        photoView.centerX = bounds.left + (captureButton.left - bounds.left) / 2
+        photoView.centerY = captureButton.centerY
     }
     
     // MARK: - Private - Layout
@@ -319,5 +345,10 @@ final class NewCameraView: UIView {
     
     @objc private func handleToggleCameraButtonTap() {
         onToggleCameraButtonTap?()
+    }
+    
+    @objc private func onPhotoViewTap(_ tapRecognizer: UITapGestureRecognizer) {
+//        onPhotoLibraryButtonTap?()
+        onCloseButtonTap?()
     }
 }
