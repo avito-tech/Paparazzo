@@ -26,6 +26,8 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         if !UIDevice.current.hasTopSafeAreaInset {
             UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
         }
+        
+        onViewWillAppear?()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -42,6 +44,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     // MARK: - PhotoLibraryViewInput
     var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onViewDidLoad: (() -> ())?
+    var onViewWillAppear: (() -> ())?
     
     var onTitleTap: (() -> ())? {
         get { return photoLibraryView.onTitleTap }

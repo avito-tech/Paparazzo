@@ -149,6 +149,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.setContinueButtonVisible(!isNewFlowPrototype)
         
+        view?.onViewWillAppear = { [weak self] in
+            DispatchQueue.main.async {
+                self?.adjustSelectedPhotosBar()
+            }
+        }
+        
         interactor.observeAuthorizationStatus { [weak self] accessGranted in
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
             
