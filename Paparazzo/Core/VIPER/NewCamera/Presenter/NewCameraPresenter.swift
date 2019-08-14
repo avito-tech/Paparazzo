@@ -41,7 +41,9 @@ final class NewCameraPresenter:
         view?.onLastPhotoThumbnailTap = { [weak self] in
             guard let strongSelf = self, let selectedItems = self?.view?.imageStorage.images else { return }
             
-            let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
+            let data = strongSelf.interactor.mediaPickerData
+                .bySettingPhotoLibraryItems(selectedItems)
+                .bySelectingLastItem()
             
             self?.router.showMediaPicker(
                 data: data,

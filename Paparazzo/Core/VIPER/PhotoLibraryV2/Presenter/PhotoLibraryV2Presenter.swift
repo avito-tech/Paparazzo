@@ -278,7 +278,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func showMediaPickerInNewFlow() {
         
-        let data = interactor.mediaPickerData.bySettingPhotoLibraryItems(interactor.selectedItems)
+        let data = interactor.mediaPickerData
+            .bySettingPhotoLibraryItems(interactor.selectedItems)
+            .bySelectingLastItem()
         
         router.showMediaPicker(
             data: data,
@@ -496,6 +498,22 @@ extension MediaPickerData {
             initialActiveCameraType: initialActiveCameraType,
             cameraEnabled: false,
             photoLibraryEnabled: false
+        )
+    }
+    
+    func bySelectingLastItem() -> MediaPickerData {
+        return MediaPickerData(
+            items: items,
+            autocorrectionFilters: autocorrectionFilters,
+            selectedItem: items.last,
+            maxItemsCount: maxItemsCount,
+            cropEnabled: cropEnabled,
+            autocorrectEnabled: autocorrectEnabled,
+            hapticFeedbackEnabled: hapticFeedbackEnabled,
+            cropCanvasSize: cropCanvasSize,
+            initialActiveCameraType: initialActiveCameraType,
+            cameraEnabled: cameraEnabled,
+            photoLibraryEnabled: photoLibraryEnabled
         )
     }
     
