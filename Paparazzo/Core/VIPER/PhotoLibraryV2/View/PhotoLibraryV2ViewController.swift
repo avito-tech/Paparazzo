@@ -1,3 +1,4 @@
+import AVFoundation
 import ImageSource
 import UIKit
 
@@ -7,13 +8,30 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     private let photoLibraryView: PhotoLibraryV2View
     
+    var previewLayer: AVCaptureVideoPreviewLayer? {
+        return photoLibraryView.previewLayer
+    }
+    
     init(isNewFlowPrototype: Bool) {
         photoLibraryView = PhotoLibraryV2View(isNewFlowPrototype: isNewFlowPrototype)
         super.init()
+        
+        if isNewFlowPrototype {
+            transitioningDelegate = PhotoLibraryToCameraTransitioningDelegate.shared
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - PhotoLibraryV2ViewController
+    func previewFrame(forBounds bounds: CGRect) -> CGRect {
+        return photoLibraryView.previewFrame(forBounds: bounds)
+    }
+    
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        photoLibraryView.setPreviewLayer(previewLayer)
     }
     
     // MARK: - UIViewController

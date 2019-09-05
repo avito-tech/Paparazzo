@@ -87,6 +87,7 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         setUpRoundedCorners(for: backgroundView)
         setUpRoundedCorners(for: imageView)
         
+        selectionIndexBadgeContainer.alpha = 0
         selectionIndexBadgeContainer.addSubview(selectionIndexBadge)
         
         contentView.insertSubview(cloudIconView, at: 0)

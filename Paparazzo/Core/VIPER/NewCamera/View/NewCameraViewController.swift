@@ -1,3 +1,4 @@
+import AVFoundation
 import ImageSource // TODO: delete
 import UIKit
 
@@ -12,6 +13,10 @@ final class NewCameraViewController:
     
     let imageStorage: SelectedImageStorage
     
+    var previewLayer: AVCaptureVideoPreviewLayer? {
+        return cameraView.cameraOutputLayer
+    }
+    
     // MARK: - Init
     init(
         selectedImagesStorage: SelectedImageStorage,
@@ -24,9 +29,11 @@ final class NewCameraViewController:
         
         super.init()
         
-        cameraService.getCaptureSession { [weak self] captureSession in
-            self?.cameraView.setCaptureSession(captureSession)
-        }
+        transitioningDelegate = PhotoLibraryToCameraTransitioningDelegate.shared
+        
+//        cameraService.getCaptureSession { [weak self] captureSession in
+//            self?.cameraView.setCaptureSession(captureSession)
+//        }
         
         cameraView.onCaptureButtonTap = { [weak self] in
             self?.cameraView.animateFlash()
@@ -152,5 +159,13 @@ final class NewCameraViewController:
     // MARK: - NewCameraViewController
     func setTheme(_ theme: NewCameraUITheme) {
         cameraView.setTheme(theme)
+    }
+    
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        cameraView.setPreviewLayer(previewLayer)
+    }
+    
+    func previewFrame(forBounds bounds: CGRect) -> CGRect {
+        return cameraView.previewFrame(forBounds: bounds)
     }
 }

@@ -16,7 +16,7 @@ struct SelectedPhotosBarData { // TODO: make final class
 final class NewCameraView: UIView {
     
     // MARK: - Subviews
-    private let cameraOutputLayer = AVCaptureVideoPreviewLayer()
+    var cameraOutputLayer: AVCaptureVideoPreviewLayer?
     private let closeButton = UIButton()
     private let photoLibraryButton = UIButton()
     private let captureButton = UIButton()
@@ -55,8 +55,6 @@ final class NewCameraView: UIView {
         addSubview(selectedPhotosBarView)
         addSubview(snapshotView)
         addSubview(flashView)
-        
-        cameraOutputLayer.videoGravity = .resizeAspectFill
         
         photoView.backgroundColor = .lightGray
         photoView.contentMode = .scaleAspectFill
@@ -105,7 +103,6 @@ final class NewCameraView: UIView {
         
         selectedPhotosBarView.isHidden = true
         
-        previewView.layer.addSublayer(cameraOutputLayer)
         previewView.addSubview(viewfinderBorderView)
     }
     
@@ -140,7 +137,7 @@ final class NewCameraView: UIView {
     }
     
     func setCaptureSession(_ captureSession: AVCaptureSession?) {
-        cameraOutputLayer.session = captureSession
+//        cameraOutputLayer?.session = captureSession
     }
     
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
@@ -264,6 +261,29 @@ final class NewCameraView: UIView {
         layOutFlashButton()
     }
     
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        self.cameraOutputLayer = previewLayer
+        
+        if let previewLayer = previewLayer {
+            previewView.layer.insertSublayer(previewLayer, below: viewfinderBorderView.layer)
+            layOutPreview()
+        }
+    }
+    
+    func previewFrame(forBounds bounds: CGRect) -> CGRect {
+        let previewAspectRatio = CGFloat(3) / 4
+        let previewHeight = bounds.width * previewAspectRatio
+        let captureButtonTop = bounds.bottom - 114 - captureButtonSize
+        
+        return CGRect(
+            x: 0,
+            y: paparazzoSafeAreaInsets.top + navigationBarHeight +
+                (captureButtonTop - (bounds.top + navigationBarHeight) - previewHeight) / 2,
+            width: bounds.width,
+            height: previewHeight
+        )
+    }
+    
     private func layOutFlashButton() {
         flashButton.sizeToFit()
         flashButton.right = toggleCameraButton.left - 20
@@ -291,6 +311,9 @@ final class NewCameraView: UIView {
             fitHeight: .greatestFiniteMagnitude
         )
         
+        previewView.frame = previewFrame(forBounds: bounds)
+        viewfinderBorderView.frame = previewView.bounds
+        
         layOutPreview()
         
         flashView.frame = bounds
@@ -315,20 +338,10 @@ final class NewCameraView: UIView {
     
     // MARK: - Private - Layout
     private func layOutPreview() {
-        
-        let previewAspectRatio = CGFloat(3) / 4
-        let previewHeight = bounds.width * previewAspectRatio
-        
-        previewView.frame = CGRect(
-            x: 0,
-            y: paparazzoSafeAreaInsets.top + navigationBarHeight + (captureButton.top - (bounds.top + navigationBarHeight) - previewHeight) / 2,
-            width: bounds.width,
-            height: previewHeight
-        )
-        
-        cameraOutputLayer.frame = previewView.layer.bounds
-        
-        viewfinderBorderView.frame = previewView.bounds
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        cameraOutputLayer?.frame = previewView.layer.bounds
+        CATransaction.commit()
     }
     
     // MARK: - Private - Event handling

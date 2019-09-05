@@ -1,3 +1,4 @@
+import AVFoundation
 import ImageSource
 import UIKit
 
@@ -36,6 +37,32 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 insertSubview(bottomContinueButton, belowSubview: albumsTableView)
             }
         }
+    }
+    
+    var newCameraView: NewPhotoLibraryCameraView? {
+        return collectionView.supplementaryView(
+            forElementKind: UICollectionView.elementKindSectionHeader,
+            at: IndexPath(item: 0, section: 0)
+        ) as? NewPhotoLibraryCameraView
+    }
+    
+    var previewLayer: AVCaptureVideoPreviewLayer? {
+        return newCameraView?.cameraOutputLayer
+    }
+    
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        newCameraView?.setPreviewLayer(previewLayer)
+    }
+    
+    func previewFrame(forBounds bounds: CGRect) -> CGRect {
+        let layout = collectionView.collectionViewLayout as? PhotoLibraryV2Layout
+        let indexPath = IndexPath(item: 0, section: 0)
+        
+        if let frame = layout?.frameForHeader(at: indexPath) {
+            return convert(frame, from: collectionView)
+        }
+        
+        return .zero
     }
     
     // MARK: - Subviews

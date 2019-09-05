@@ -5,7 +5,7 @@ import UIKit
 class NewPhotoLibraryCameraView: UICollectionReusableView, PhotoLibraryCameraViewInterface {
     
     // MARK: - Subviews
-    private var cameraOutputLayer = AVCaptureVideoPreviewLayer()
+    var cameraOutputLayer: AVCaptureVideoPreviewLayer? = AVCaptureVideoPreviewLayer()
     private var dimView = UIView()
     private let button = UIButton()
     
@@ -29,9 +29,11 @@ class NewPhotoLibraryCameraView: UICollectionReusableView, PhotoLibraryCameraVie
         
         addSubview(button)
         
-        cameraOutputLayer.videoGravity = .resizeAspectFill
-        cameraOutputLayer.cornerRadius = 6
-        layer.insertSublayer(cameraOutputLayer, below: dimView.layer)
+        if let cameraOutputLayer = cameraOutputLayer {
+            cameraOutputLayer.videoGravity = .resizeAspectFill
+            cameraOutputLayer.cornerRadius = 6
+            layer.insertSublayer(cameraOutputLayer, below: dimView.layer)
+        }
         
         setAccessibilityId(.cameraInLibraryButton)
     }
@@ -48,11 +50,20 @@ class NewPhotoLibraryCameraView: UICollectionReusableView, PhotoLibraryCameraVie
     }
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
-        cameraOutputLayer.session = parameters.captureSession
+        cameraOutputLayer?.session = parameters.captureSession
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
         // AVCaptureVideoPreviewLayer handles this itself
+    }
+    
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        self.cameraOutputLayer = previewLayer
+        
+        if let previewLayer = previewLayer {
+            layer.insertSublayer(previewLayer, below: dimView.layer)
+            layOutPreviewLayer()
+        }
     }
     
     // MARK: - Layout
@@ -61,7 +72,8 @@ class NewPhotoLibraryCameraView: UICollectionReusableView, PhotoLibraryCameraVie
         
         let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         
-        cameraOutputLayer.frame = layer.bounds
+        layOutPreviewLayer()
+        
         dimView.frame = bounds
         button.frame = bounds
     }
@@ -69,5 +81,12 @@ class NewPhotoLibraryCameraView: UICollectionReusableView, PhotoLibraryCameraVie
     // MARK: - Private
     @objc private func onButtonTap(_ sender: UIButton) {
         onTap?()
+    }
+    
+    private func layOutPreviewLayer() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        cameraOutputLayer?.frame = layer.bounds
+        CATransaction.commit()
     }
 }

@@ -12,6 +12,7 @@ protocol ServiceFactory: class {
 final class ServiceFactoryImpl: ServiceFactory {
     
     private let imageStorage: ImageStorage
+    private var cameraService: CameraServiceImpl?
     
     init(imageStorage: ImageStorage) {
         self.imageStorage = imageStorage
@@ -22,10 +23,16 @@ final class ServiceFactoryImpl: ServiceFactory {
     }
     
     func cameraService(initialActiveCameraType: CameraType) -> CameraService {
-        return CameraServiceImpl(
-            initialActiveCameraType: initialActiveCameraType,
-            imageStorage: imageStorage
-        )
+        if let cameraService = cameraService {
+            return cameraService
+        } else {
+            let cameraService = self.cameraService ?? CameraServiceImpl(
+                initialActiveCameraType: initialActiveCameraType,
+                imageStorage: imageStorage
+            )
+            self.cameraService = cameraService
+            return cameraService
+        }
     }
     
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider {

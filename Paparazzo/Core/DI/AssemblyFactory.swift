@@ -3,6 +3,7 @@ public final class AssemblyFactory:
     NewCameraAssemblyFactory,
     MediaPickerAssemblyFactory,
     PhotoLibraryAssemblyFactory,
+    PhotoLibraryV2AssemblyFactory,
     ImageCroppingAssemblyFactory,
     MaskCropperAssemblyFactory
 {
@@ -39,6 +40,14 @@ public final class AssemblyFactory:
 
     public func photoLibraryAssembly() -> PhotoLibraryAssembly {
         return PhotoLibraryAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+    }
+    
+    public func photoLibraryV2Assembly() -> PhotoLibraryV2Assembly {
+        return PhotoLibraryV2AssemblyImpl(
+            assemblyFactory: self,
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
     }
     
     public func maskCropperAssembly() -> MaskCropperAssembly {

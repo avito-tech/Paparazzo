@@ -13,6 +13,11 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     private let cellSpacing = CGFloat(6)
     private let numberOfPhotosInRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 3
     
+    // MARK: - PhotoLibraryV2Layout
+    func frameForHeader(at indexPath: IndexPath) -> CGRect? {
+        return headerAttributes[indexPath]?.frame
+    }
+    
     // MARK: - UICollectionViewLayout
     
     override var collectionViewContentSize: CGSize {
