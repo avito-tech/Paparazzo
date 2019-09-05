@@ -62,8 +62,27 @@ final class NewCameraViewController:
     private var viewDidLayoutSubviewsBefore = false
     private var didDisappear = false
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
     override func loadView() {
         view = cameraView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        cameraView.setFlashButtonVisible(cameraService.isFlashAvailable)
+        cameraView.setFlashButtonOn(cameraService.isFlashEnabled)
+        
+        cameraView.onFlashToggle = { [weak self] isFlashEnabled in
+            guard let strongSelf = self else { return }
+            
+            if !strongSelf.cameraService.setFlashEnabled(isFlashEnabled) {
+                strongSelf.cameraView.setFlashButtonOn(!isFlashEnabled)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,5 +147,10 @@ final class NewCameraViewController:
             ))
         
         cameraView.setSelectedPhotosBarState(state, completion: completion)
+    }
+    
+    // MARK: - NewCameraViewController
+    func setTheme(_ theme: NewCameraUITheme) {
+        cameraView.setTheme(theme)
     }
 }

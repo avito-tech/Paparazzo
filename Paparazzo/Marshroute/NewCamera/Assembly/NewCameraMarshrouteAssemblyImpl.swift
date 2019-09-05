@@ -42,6 +42,7 @@ final class NewCameraMarshrouteAssemblyImpl:
             router: router
         )
         
+        viewController.setTheme(theme)
         viewController.addDisposable(presenter)
         
         presenter.view = viewController

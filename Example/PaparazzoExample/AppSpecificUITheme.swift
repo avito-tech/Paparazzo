@@ -12,6 +12,7 @@ extension PaparazzoUITheme {
         theme.cameraTitleFont = UIFont(name: "LatotoSemibold", size: 17)!
         theme.cameraBottomContinueButtonFont = UIFont(name: "Latoto", size: 16)!
         theme.libraryBottomContinueButtonFont = UIFont(name: "Latoto", size: 16)!
+        theme.librarySelectionIndexFont = UIFont(name: "LatotoSemibold", size: 16)!
         return theme
     }
 }

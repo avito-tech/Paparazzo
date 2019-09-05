@@ -13,6 +13,7 @@ final class SelectedPhotosBarView: UIView {
     var onButtonTap: (() -> ())?
     var onLastPhotoThumbnailTap: (() -> ())?
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -30,7 +31,7 @@ final class SelectedPhotosBarView: UIView {
         penultimatePhotoThumbnailView.layer.cornerRadius = 5
         
         button.setTitle("Готово", for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 9, left: 28, bottom: 12, right: 28)
+        button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 11, right: 16)
         button.layer.backgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
         button.layer.cornerRadius = 6
         button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
@@ -50,6 +51,48 @@ final class SelectedPhotosBarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - SelectedPhotosBarView
+    func setTheme(_ theme: NewCameraUITheme) {
+        label.font = theme.newCameraPhotosCountFont
+        button.titleLabel?.font = theme.newCameraDoneButtonFont
+    }
+    
+    func setHidden(_ isHidden: Bool, animated: Bool) {
+        guard self.isHidden != isHidden else { return }
+        
+        if animated && isHidden {
+            transform = .identity
+            
+            UIView.animate(
+                withDuration: 0.15,
+                animations: {
+                    self.alpha = 0
+                    self.transform = CGAffineTransform(translationX: 0, y: 5)
+                },
+                completion: { _ in
+                    self.isHidden = true
+                    self.transform = .identity
+                }
+            )
+        } else if animated && !isHidden {
+            self.isHidden = false
+            
+            alpha = 0
+            transform = CGAffineTransform(translationX: 0, y: 5)
+            
+            UIView.animate(
+                withDuration: 0.15,
+                animations: {
+                    self.alpha = 1
+                    self.transform = .identity
+                }
+            )
+        } else {
+            self.isHidden = isHidden
+        }
+    }
+    
+    // MARK: - UIView
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         return CGSize(width: size.width, height: 66)
     }
@@ -71,18 +114,15 @@ final class SelectedPhotosBarView: UIView {
             height: penultimatePhotoThumbnailSize.height
         )
         
-        button.sizeToFit()
-        button.layout(
-            right: bounds.right - 16,
-            top: bounds.top + 12
-        )
+        let buttonLabelSize = button.titleLabel?.sizeThatFits() ?? .zero
         
-        button.layout(
-            top: bounds.top + 12,
-            bottom: bounds.bottom - 12,
-            right: bounds.right - 16,
-            width: 120  // TODO: sizeToFit() не работает 🤔
+        button.sizeToFit()
+        button.size = CGSize(  // sizeToFit() doesn't work for some reason
+            width: buttonLabelSize.width + button.titleEdgeInsets.left + button.titleEdgeInsets.right,
+            height: buttonLabelSize.height + button.titleEdgeInsets.top + button.titleEdgeInsets.bottom
         )
+        button.right = bounds.right - 16
+        button.centerY = bounds.centerY
         
         label.layout(
             left: lastPhotoThumbnailView.right + 8,

@@ -16,8 +16,7 @@ struct SelectedPhotosBarData { // TODO: make final class
 final class NewCameraView: UIView {
     
     // MARK: - Subviews
-//    private let previewLayer = AVCaptureVideoPreviewLayer()
-    private var cameraOutputView: CameraOutputView?  // TODO: replace with AVCaptureVideoPreviewLayer
+    private let cameraOutputLayer = AVCaptureVideoPreviewLayer()
     private let closeButton = UIButton()
     private let photoLibraryButton = UIButton()
     private let captureButton = UIButton()
@@ -46,7 +45,6 @@ final class NewCameraView: UIView {
         hintLabel.text = "Разместите объект внутри рамки и сделайте фото"
         
         addSubview(previewView)
-        addSubview(flashView)
         addSubview(closeButton)
         addSubview(photoLibraryButton)
         addSubview(captureButton)
@@ -56,10 +54,13 @@ final class NewCameraView: UIView {
         addSubview(hintLabel)
         addSubview(selectedPhotosBarView)
         addSubview(snapshotView)
+        addSubview(flashView)
+        
+        cameraOutputLayer.videoGravity = .resizeAspectFill
         
         photoView.backgroundColor = .lightGray
         photoView.contentMode = .scaleAspectFill
-        photoView.layer.cornerRadius = 16
+        photoView.layer.cornerRadius = 18.5
         photoView.clipsToBounds = true
         photoView.isUserInteractionEnabled = true
         photoView.addGestureRecognizer(UITapGestureRecognizer(
@@ -89,6 +90,8 @@ final class NewCameraView: UIView {
         
         previewView.layer.masksToBounds = true
         
+        flashButton.addTarget(self, action: #selector(handleFlashButtonTap), for: .touchUpInside)
+        
         toggleCameraButton.setImage(
             UIImage(named: "back_front_new", in: Resources.bundle, compatibleWith: nil),
             for: .normal
@@ -102,6 +105,7 @@ final class NewCameraView: UIView {
         
         selectedPhotosBarView.isHidden = true
         
+        previewView.layer.addSublayer(cameraOutputLayer)
         previewView.addSubview(viewfinderBorderView)
     }
     
@@ -114,6 +118,7 @@ final class NewCameraView: UIView {
     var onCloseButtonTap: (() -> ())?
     var onToggleCameraButtonTap: (() -> ())?
     var onPhotoLibraryButtonTap: (() -> ())?
+    var onFlashToggle: ((Bool) -> ())?
     
     var onDoneButtonTap: (() -> ())? {
         get { return selectedPhotosBarView.onButtonTap }
@@ -125,18 +130,17 @@ final class NewCameraView: UIView {
         set { selectedPhotosBarView.onLastPhotoThumbnailTap = newValue }
     }
     
-    func setCaptureSession(_ captureSession: AVCaptureSession?) {
-        guard let captureSession = captureSession else {
-            cameraOutputView?.removeFromSuperview()
-            cameraOutputView = nil
-            return
-        }
+    func setTheme(_ theme: NewCameraUITheme) {
+        flashButton.setImage(theme.newCameraFlashOffIcon, for: .normal)
+        flashButton.setImage(theme.newCameraFlashOnIcon, for: .selected)
         
-        setOutputParameters(CameraOutputParameters(
-            captureSession: captureSession,
-            orientation: .up,
-            isMetalEnabled: false
-        ))
+        hintLabel.font = theme.newCameraHintFont
+        
+        selectedPhotosBarView.setTheme(theme)
+    }
+    
+    func setCaptureSession(_ captureSession: AVCaptureSession?) {
+        cameraOutputLayer.session = captureSession
     }
     
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
@@ -183,30 +187,6 @@ final class NewCameraView: UIView {
             placeholder: nil,
             placeholderDeferred: false
         )
-    }
-    
-    // TODO: remove after migration to AVCaptureVideoPreviewLayer
-    func setOutputParameters(_ parameters: CameraOutputParameters) {
-        
-        let newCameraOutputView = CameraOutputView(
-            captureSession: parameters.captureSession,
-            outputOrientation: parameters.orientation,
-            isMetalEnabled: parameters.isMetalEnabled
-        )
-        
-        newCameraOutputView.layer.cornerRadius = 6
-        cameraOutputView?.removeFromSuperview()
-        
-        previewView.insertSubview(newCameraOutputView, at: 0)
-        
-        self.cameraOutputView = newCameraOutputView
-        
-        layOutPreview()
-    }
-    
-    // TODO: remove after migration to AVCaptureVideoPreviewLayer
-    func setOutputOrientation(_ orientation: ExifOrientation) {
-        cameraOutputView?.orientation = orientation
     }
     
     func animateFlash() {
@@ -275,6 +255,21 @@ final class NewCameraView: UIView {
         )
     }
     
+    func setFlashButtonVisible(_ visible: Bool) {
+        flashButton.isHidden = !visible
+    }
+    
+    func setFlashButtonOn(_ isOn: Bool) {
+        flashButton.isSelected = isOn
+        layOutFlashButton()
+    }
+    
+    private func layOutFlashButton() {
+        flashButton.sizeToFit()
+        flashButton.right = toggleCameraButton.left - 20
+        flashButton.centerY = toggleCameraButton.centerY
+    }
+    
     // MARK: - UIView
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -292,25 +287,28 @@ final class NewCameraView: UIView {
         hintLabel.layout(
             left: bounds.left + 16,
             right: bounds.right - 16,
-            bottom: bounds.bottom - 23,
+            bottom: bounds.bottom - max(23, paparazzoSafeAreaInsets.bottom),
             fitHeight: .greatestFiniteMagnitude
         )
         
         layOutPreview()
         
-        flashView.frame = previewView.frame
+        flashView.frame = bounds
         
         toggleCameraButton.right = bounds.right - 23
         toggleCameraButton.centerY = captureButton.centerY
         
-        selectedPhotosBarView.layout(
-            left: bounds.left + 16,
-            right: bounds.right - 16,
-            bottom: bounds.bottom - 16,
-            fitHeight: .greatestFiniteMagnitude
+        layOutFlashButton()
+        
+        selectedPhotosBarView.size = selectedPhotosBarView.sizeThatFits(
+            CGSize(width: bounds.width - 32, height: .greatestFiniteMagnitude)
+        )
+        selectedPhotosBarView.center = CGPoint(
+            x: bounds.centerX,
+            y: bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom) - selectedPhotosBarView.size.height / 2
         )
         
-        photoView.size = CGSize(width: 32, height: 32)
+        photoView.size = CGSize(width: 37, height: 37)
         photoView.centerX = bounds.left + (captureButton.left - bounds.left) / 2
         photoView.centerY = captureButton.centerY
     }
@@ -328,8 +326,7 @@ final class NewCameraView: UIView {
             height: previewHeight
         )
         
-//        previewLayer.frame = previewView.layer.bounds
-        cameraOutputView?.frame = previewView.bounds
+        cameraOutputLayer.frame = previewView.layer.bounds
         
         viewfinderBorderView.frame = previewView.bounds
     }
@@ -341,6 +338,11 @@ final class NewCameraView: UIView {
     
     @objc private func handleCloseButtonTap() {
         onCloseButtonTap?()
+    }
+    
+    @objc private func handleFlashButtonTap() {
+        flashButton.isSelected = !flashButton.isSelected
+        onFlashToggle?(flashButton.isSelected)
     }
     
     @objc private func handleToggleCameraButtonTap() {

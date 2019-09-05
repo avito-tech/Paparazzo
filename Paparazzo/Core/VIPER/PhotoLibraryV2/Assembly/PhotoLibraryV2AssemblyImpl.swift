@@ -30,7 +30,9 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             canRotate: UIDevice.current.userInterfaceIdiom == .pad
         )
         
-        let viewController = PhotoLibraryV2ViewController()
+        let viewController = PhotoLibraryV2ViewController(
+            isNewFlowPrototype: isNewFlowPrototype
+        )
         
         let router = PhotoLibraryV2UIKitRouter(
             assemblyFactory: assemblyFactory,

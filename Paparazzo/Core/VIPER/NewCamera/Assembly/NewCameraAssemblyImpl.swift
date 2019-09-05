@@ -40,6 +40,7 @@ final class NewCameraAssemblyImpl:
             router: router
         )
         
+        viewController.setTheme(theme)
         viewController.addDisposable(presenter)
         
         presenter.view = viewController

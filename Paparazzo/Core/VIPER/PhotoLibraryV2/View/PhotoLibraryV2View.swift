@@ -3,7 +3,7 @@ import UIKit
 
 final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, ThemeConfigurable {
     
-    typealias ThemeType = PhotoLibraryV2UITheme
+    typealias ThemeType = PhotoLibraryV2UITheme & NewCameraUITheme
     
     private enum AlbumsListState {
         case collapsed
@@ -13,6 +13,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     // MARK: - State
     
     private var albumsListState: AlbumsListState = .collapsed
+    private let isNewFlowPrototype: Bool
     
     var canSelectMoreItems = false
     
@@ -29,12 +30,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             switch continueButtonPlacement {
             case .topRight:
                 bottomContinueButton.removeFromSuperview()
-                bottomFadeView.removeFromSuperview()
                 insertSubview(topRightContinueButton, belowSubview: progressIndicator)
             case .bottom:
                 topRightContinueButton.removeFromSuperview()
                 insertSubview(bottomContinueButton, belowSubview: albumsTableView)
-                insertSubview(bottomFadeView, belowSubview: selectedPhotosBarView)
             }
         }
     }
@@ -53,7 +52,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let closeButton = UIButton()
     private let topRightContinueButton = UIButton()
     private let bottomContinueButton = UIButton()
-    private let bottomFadeView = FadeView(gradientHeight: 80)
     private let selectedPhotosBarView = SelectedPhotosBarView()
     
     // MARK: - Specs
@@ -69,8 +67,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     // MARK: - Init
     
-    init() {
+    init(isNewFlowPrototype: Bool) {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        self.isNewFlowPrototype = isNewFlowPrototype
         
         super.init(frame: .zero)
 
@@ -124,8 +124,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let fadeHeight = paparazzoSafeAreaInsets.bottom + bottomFadeView.gradientHeight
-        
         closeButton.frame = CGRect(
             x: 8,
             y: max(8, paparazzoSafeAreaInsets.top),
@@ -138,13 +136,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             y: max(8, paparazzoSafeAreaInsets.top),
             width: topRightContinueButton.width,
             height: topRightContinueButton.height
-        )
-        
-        bottomFadeView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            bottom: bounds.bottom,
-            height: fadeHeight
         )
         
         bottomContinueButton.layout(
@@ -194,11 +185,12 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         progressIndicator.center = bounds.center
         
-        selectedPhotosBarView.layout(
-            left: bounds.left + 16,
-            right: bounds.right - 16,
-            bottom: bounds.bottom - 16,
-            fitHeight: .greatestFiniteMagnitude
+        selectedPhotosBarView.size = selectedPhotosBarView.sizeThatFits(
+            CGSize(width: bounds.width - 32, height: .greatestFiniteMagnitude)
+        )
+        selectedPhotosBarView.center = CGPoint(
+            x: bounds.centerX,
+            y: bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom) - selectedPhotosBarView.size.height / 2
         )
     }
     
@@ -234,6 +226,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor
+        
+        selectedPhotosBarView.setTheme(theme)
     }
     
     // MARK: - PhotoLibraryView
@@ -541,9 +535,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState) {
         switch state {
         case .hidden:
-            selectedPhotosBarView.isHidden = true
+//            selectedPhotosBarView.isHidden = true
+            selectedPhotosBarView.setHidden(true, animated: true)
         case .visible(let data):
-            selectedPhotosBarView.isHidden = false
+//            selectedPhotosBarView.isHidden = false
+            selectedPhotosBarView.setHidden(false, animated: true)
             selectedPhotosBarView.label.text = data.countString
             selectedPhotosBarView.lastPhotoThumbnailView.setImage(fromSource: data.lastPhoto)
             selectedPhotosBarView.penultimatePhotoThumbnailView.setImage(fromSource: data.penultimatePhoto)
@@ -581,10 +577,18 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         dataSource.item(at: indexPath).onSelect?()
         
         adjustDimmingForCellAtIndexPath(indexPath)
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? PhotoLibraryItemCell {
+            cell.adjustAppearanceForSelected(true, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         onDeselectItem(at: indexPath)
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? PhotoLibraryItemCell {
+            cell.adjustAppearanceForSelected(false, animated: true)
+        }
     }
     
     // MARK: - Private
@@ -597,7 +601,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         
         dataSource.configureHeader = { [weak self] view in
-            guard let view = view as? PhotoLibraryCameraView else {
+            guard let view = view as? PhotoLibraryCameraViewInterface else {
                 return
             }
             
@@ -654,13 +658,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         collectionView.delegate = self
         collectionView.allowsMultipleSelection = true
         collectionView.alwaysBounceVertical = true
+        
         collectionView.register(
             PhotoLibraryItemCell.self,
             forCellWithReuseIdentifier: dataSource.cellReuseIdentifier
         )
+        
         if let headerReuseIdentifier = dataSource.headerReuseIdentifier {
             collectionView.register(
-                PhotoLibraryCameraView.self,
+                isNewFlowPrototype ? NewPhotoLibraryCameraView.self : PhotoLibraryCameraView.self,
                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                 withReuseIdentifier: headerReuseIdentifier
             )
@@ -729,6 +735,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     {
         cell.backgroundColor = theme?.photoCellBackgroundColor
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
+        cell.selectionIndexFont = theme?.librarySelectionIndexFont
         
         cell.setCloudIcon(theme?.iCloudIcon)
         
@@ -739,8 +746,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         
         cell.setAccessibilityId(index: indexPath.row)
-
-        // Без этого костыля невозможно снять выделение с preselected ячейки
+        
+        cell.adjustAppearanceForSelected(data.selected, animated: false)
+        
+        // TODO: move this out of `configureCell`
+        // TODO: restore selected cell after `reloadData` of `performBatchUpdates` instead
         if data.selected {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
@@ -807,40 +817,5 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     @objc private func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
-    }
-}
-
-private final class FadeView: UIView {
-    
-    let gradientHeight: CGFloat
-    
-    override class var layerClass: AnyClass {
-        return CAGradientLayer.self
-    }
-    
-    override var frame: CGRect {
-        didSet {
-            guard bounds.height > 0 else { return }
-            
-            (layer as? CAGradientLayer)?.endPoint = CGPoint(
-                x: 0.5,
-                y: min(gradientHeight / bounds.height, 1)
-            )
-        }
-    }
-    
-    init(gradientHeight: CGFloat) {
-        self.gradientHeight = gradientHeight
-        
-        super.init(frame: .zero)
-        
-        (layer as? CAGradientLayer)?.colors = [
-            UIColor(white: 1, alpha: 0).cgColor,
-            UIColor(white: 1, alpha: 1).cgColor
-        ]
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

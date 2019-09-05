@@ -3,9 +3,18 @@ import UIKit
 
 final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV2ViewInput, ThemeConfigurable {
     
-    typealias ThemeType = PhotoLibraryV2UITheme
+    typealias ThemeType = PhotoLibraryV2UITheme & NewCameraUITheme
     
-    private let photoLibraryView = PhotoLibraryV2View()
+    private let photoLibraryView: PhotoLibraryV2View
+    
+    init(isNewFlowPrototype: Bool) {
+        photoLibraryView = PhotoLibraryV2View(isNewFlowPrototype: isNewFlowPrototype)
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UIViewController
     

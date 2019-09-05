@@ -50,7 +50,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             isNewFlowPrototype: isNewFlowPrototype
         )
         
-        let viewController = PhotoLibraryV2ViewController()
+        let viewController = PhotoLibraryV2ViewController(isNewFlowPrototype: isNewFlowPrototype)
         viewController.addDisposable(presenter)
         viewController.setTheme(theme)
         

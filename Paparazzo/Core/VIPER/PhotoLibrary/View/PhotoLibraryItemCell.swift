@@ -1,4 +1,3 @@
-
 import ImageSource
 import UIKit
 
@@ -7,17 +6,24 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     private let cloudIconView = UIImageView()
     private var getSelectionIndex: (() -> Int?)?
     
+    private let selectionIndexBadgeContainer = UIView()
+    
     private let selectionIndexBadge: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.black.withAlphaComponent(0.633195)
+        label.backgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
         label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 13)
+        label.font = .boldSystemFont(ofSize: 16)
+        label.size = CGSize(width: 24, height: 24)
         label.textAlignment = .center
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 11
         label.layer.masksToBounds = true
-        label.isHidden = true
         return label
     }()
+    
+    var selectionIndexFont: UIFont? {
+        get { return selectionIndexBadge.font }
+        set { selectionIndexBadge.font = newValue }
+    }
     
     // MARK: - UICollectionViewCell
     
@@ -28,24 +34,36 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     override var isSelected: Bool {
         didSet {
-            imageView.transform = .identity
-            
             guard let getSelectionIndex = getSelectionIndex else { return }
-            
+
             layer.borderWidth = 0
-            
-            if isSelected {
-                imageView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-            }
-            
+
             DispatchQueue.main.async {
                 if self.isSelected, let selectionIndex = getSelectionIndex() {
-                    self.selectionIndexBadge.isHidden = false
                     self.selectionIndexBadge.text = String(selectionIndex)
-                } else {
-                    self.selectionIndexBadge.isHidden = true
                 }
             }
+        }
+    }
+    
+    func adjustAppearanceForSelected(_ isSelected: Bool, animated: Bool) {
+        
+        func adjustAppearance() {
+            if isSelected {
+                self.imageView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+                self.selectionIndexBadgeContainer.transform = self.imageView.transform
+                self.selectionIndexBadgeContainer.alpha = 1
+            } else {
+                self.imageView.transform = .identity
+                self.selectionIndexBadgeContainer.transform = self.imageView.transform
+                self.selectionIndexBadgeContainer.alpha = 0
+            }
+        }
+        
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: adjustAppearance)
+        } else {
+            adjustAppearance()
         }
     }
     
@@ -60,8 +78,6 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         let backgroundView = UIView()
         let onePixel = 1.0 / UIScreen.main.nativeScale
         
-//        self.backgroundView = backgroundView
-        
         selectedBorderThickness = 5
         
         imageView.isAccessibilityElement = true
@@ -71,8 +87,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         setUpRoundedCorners(for: backgroundView)
         setUpRoundedCorners(for: imageView)
         
+        selectionIndexBadgeContainer.addSubview(selectionIndexBadge)
+        
         contentView.insertSubview(cloudIconView, at: 0)
-        contentView.addSubview(selectionIndexBadge)
+        contentView.addSubview(selectionIndexBadgeContainer)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -91,12 +109,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         cloudIconView.right = contentView.bounds.right
         cloudIconView.bottom = contentView.bounds.bottom
         
-        selectionIndexBadge.layout(
-            left: bounds.left + 10,
-            top: bounds.top + 10,
-            width: 20,
-            height: 20
-        )
+        selectionIndexBadgeContainer.center = imageView.center
+        selectionIndexBadgeContainer.bounds = imageView.bounds
+        
+        selectionIndexBadge.center = CGPoint(x: 18, y: 18)
     }
     
     override func didRequestImage(requestId imageRequestId: ImageRequestId) {
@@ -127,7 +143,6 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     func customizeWithItem(_ item: PhotoLibraryItemCellData) {
         imageSource = item.image
         getSelectionIndex = item.getSelectionIndex
-        isSelected = item.selected
     }
     
     // MARK: - Private
