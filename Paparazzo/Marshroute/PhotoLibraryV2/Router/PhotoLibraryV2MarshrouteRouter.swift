@@ -38,7 +38,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         mediaPickerData: MediaPickerData,
         configure: (NewCameraModule) -> ())
     {
-        pushViewControllerDerivedFrom { routerSeed in
+        presentModalViewControllerDerivedFrom { routerSeed in
             
             let assembly = assemblyFactory.newCameraAssembly()
             

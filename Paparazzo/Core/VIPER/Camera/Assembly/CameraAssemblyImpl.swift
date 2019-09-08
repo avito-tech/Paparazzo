@@ -8,7 +8,8 @@ final class CameraAssemblyImpl: BasePaparazzoAssembly, CameraAssembly {
         let deviceOrientationService = DeviceOrientationServiceImpl()
         
         let cameraService = serviceFactory.cameraService(
-            initialActiveCameraType: initialActiveCameraType
+            initialActiveCameraType: initialActiveCameraType,
+            allowSharedSession: false
         )
         cameraService.isMetalEnabled = isMetalEnabled
         

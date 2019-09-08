@@ -25,7 +25,10 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             selectedItems: data.selectedItems,
             maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
-            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back),
+            cameraService: serviceFactory.cameraService(
+                initialActiveCameraType: .back,
+                allowSharedSession: true
+            ),
             deviceOrientationService: DeviceOrientationServiceImpl(),
             canRotate: UIDevice.current.userInterfaceIdiom == .pad
         )

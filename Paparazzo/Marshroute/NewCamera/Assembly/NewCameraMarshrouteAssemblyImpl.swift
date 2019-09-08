@@ -28,7 +28,7 @@ final class NewCameraMarshrouteAssemblyImpl:
         
         let viewController = NewCameraViewController(
             selectedImagesStorage: selectedImagesStorage,
-            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back),
+            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back, allowSharedSession: true),
             latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )
         

@@ -24,7 +24,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
         
-        let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
+        let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back, allowSharedSession: true)
         cameraService.isMetalEnabled = isMetalEnabled
         
         let interactor = PhotoLibraryV2InteractorImpl(

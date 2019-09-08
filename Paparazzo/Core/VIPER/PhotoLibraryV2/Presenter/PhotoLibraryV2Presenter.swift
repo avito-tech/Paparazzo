@@ -149,9 +149,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.setContinueButtonVisible(!isNewFlowPrototype)
         
-        view?.onViewWillAppear = { [weak self] in
-            DispatchQueue.main.async {
-                self?.adjustSelectedPhotosBar()
+        if isNewFlowPrototype {
+            view?.onViewWillAppear = { [weak self] in
+                DispatchQueue.main.async {
+                    self?.adjustSelectedPhotosBar()
+                }
             }
         }
         

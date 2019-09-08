@@ -17,7 +17,7 @@ final class NewCameraMarshrouteRouter: BaseRouter, NewCameraRouter {
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
     {
-        pushViewControllerDerivedFrom { routerSeed in
+        presentModalViewControllerDerivedFrom { routerSeed in
             
             let assembly = assemblyFactory.mediaPickerAssembly()
             

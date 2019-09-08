@@ -14,6 +14,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     init(isNewFlowPrototype: Bool) {
         photoLibraryView = PhotoLibraryV2View(isNewFlowPrototype: isNewFlowPrototype)
+        
         super.init()
         
         if isNewFlowPrototype {

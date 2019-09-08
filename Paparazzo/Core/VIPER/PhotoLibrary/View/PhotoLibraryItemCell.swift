@@ -25,6 +25,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         set { selectionIndexBadge.font = newValue }
     }
     
+    var isRedesign = false
+    
     // MARK: - UICollectionViewCell
     
     override var backgroundColor: UIColor? {
@@ -34,14 +36,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     override var isSelected: Bool {
         didSet {
-            guard let getSelectionIndex = getSelectionIndex else { return }
-
-            layer.borderWidth = 0
-
-            DispatchQueue.main.async {
-                if self.isSelected, let selectionIndex = getSelectionIndex() {
-                    self.selectionIndexBadge.text = String(selectionIndex)
-                }
+            if isRedesign {
+                layer.borderWidth = 0
             }
         }
     }
@@ -86,8 +82,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         setUpRoundedCorners(for: self)
         setUpRoundedCorners(for: backgroundView)
         setUpRoundedCorners(for: imageView)
+        setUpRoundedCorners(for: selectionIndexBadgeContainer)
         
         selectionIndexBadgeContainer.alpha = 0
+        selectionIndexBadgeContainer.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         selectionIndexBadgeContainer.addSubview(selectionIndexBadge)
         
         contentView.insertSubview(cloudIconView, at: 0)
@@ -135,6 +133,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     func setAccessibilityId(index: Int) {
         accessibilityIdentifier = AccessibilityId.mediaItemThumbnailCell.rawValue + "-\(index)"
+    }
+    
+    func setSelectionIndex(_ selectionIndex: Int?) {
+        selectionIndexBadge.text = selectionIndex.flatMap { String($0) }
     }
     
     // MARK: - Customizable
