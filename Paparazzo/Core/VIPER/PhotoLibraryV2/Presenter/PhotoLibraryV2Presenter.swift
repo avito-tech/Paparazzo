@@ -382,7 +382,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
             let hasNoItems = self?.interactor.selectedItems.isEmpty == true
             self?.view?.setHeaderVisible(hasNoItems)
-            self?.view?.reloadSelectedItems()
+            
+            if self?.isNewFlowPrototype == true {
+                self?.view?.reloadSelectedItems()
+            }
+            
             self?.updateContinueButtonTitle()
         }
         
