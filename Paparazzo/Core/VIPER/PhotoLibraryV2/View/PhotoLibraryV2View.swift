@@ -520,7 +520,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func setHeaderVisible(_ visible: Bool) {
         guard layout.hasHeader != visible else {
-            return 
+            return
         }
         collectionView.performBatchUpdates { [weak self] in
             self?.layout.hasHeader = visible

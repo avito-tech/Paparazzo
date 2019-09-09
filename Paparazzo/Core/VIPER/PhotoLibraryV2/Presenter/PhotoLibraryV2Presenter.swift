@@ -372,7 +372,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.adjustViewForSelectionState(selectionState)
             }
             
-            self?.view?.setHeaderVisible(false)
+            if self?.isNewFlowPrototype == false {
+                self?.view?.setHeaderVisible(false)
+            }
+            
             self?.updateContinueButtonTitle()
         }
         
@@ -381,7 +384,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.adjustViewForSelectionState(selectionState)
             }
             let hasNoItems = self?.interactor.selectedItems.isEmpty == true
-            self?.view?.setHeaderVisible(hasNoItems)
+            
+            if self?.isNewFlowPrototype == false {
+                self?.view?.setHeaderVisible(hasNoItems)
+            }
             
             if self?.isNewFlowPrototype == true {
                 self?.view?.reloadSelectedItems()
