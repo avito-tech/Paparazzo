@@ -82,7 +82,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
                 isMetalEnabled: false,
-                isNewFlowPrototype: true,
+                isNewFlowPrototype: false,
                 configure: configure
             )
         }

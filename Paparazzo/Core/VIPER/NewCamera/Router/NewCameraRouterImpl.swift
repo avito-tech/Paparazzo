@@ -25,6 +25,7 @@ final class NewCameraRouterImpl:
             data: data,
             overridenTheme: overridenTheme,
             isMetalEnabled: false,
+            isNewFlowPrototype: true,
             configure: configure
         )
         

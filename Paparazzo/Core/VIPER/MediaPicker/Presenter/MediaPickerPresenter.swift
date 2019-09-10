@@ -1,14 +1,22 @@
 final class MediaPickerPresenter: MediaPickerModule {
     
-    // MARK: - Dependencies
+    // MARK: - Config
+    private let isNewFlowPrototype: Bool
     
+    // MARK: - Dependencies
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
     private let cameraModuleInput: CameraModuleInput
     
     // MARK: - Init
     
-    init(interactor: MediaPickerInteractor, router: MediaPickerRouter, cameraModuleInput: CameraModuleInput) {
+    init(
+        isNewFlowPrototype: Bool,
+        interactor: MediaPickerInteractor,
+        router: MediaPickerRouter,
+        cameraModuleInput: CameraModuleInput)
+    {
+        self.isNewFlowPrototype = isNewFlowPrototype
         self.interactor = interactor
         self.router = router
         self.cameraModuleInput = cameraModuleInput
@@ -119,11 +127,13 @@ final class MediaPickerPresenter: MediaPickerModule {
         } else if canShowCamera {
             view?.selectCamera()
             view?.setPhotoTitleAlpha(0)
+        } else if !isNewFlowPrototype {
+            onCancel?()
         }
         
         onItemRemove?(item, index)
         
-        if itemToSelectAfterRemoval == nil {
+        if isNewFlowPrototype && itemToSelectAfterRemoval == nil {
             onFinish?([])
         }
     }
@@ -317,12 +327,12 @@ final class MediaPickerPresenter: MediaPickerModule {
                         if let updatedItem = updatedItem {
                             self?.updateItem(updatedItem, afterAutocorrect: true)
                         }
-                }, onError: { [weak self] errorMessage in
-                    if let errorMessage = errorMessage {
-                        self?.view?.showInfoMessage(errorMessage, timeout: 1.0)
+                    }, onError: { [weak self] errorMessage in
+                        if let errorMessage = errorMessage {
+                            self?.view?.showInfoMessage(errorMessage, timeout: 1.0)
+                        }
+                        self?.view?.setAutocorrectionStatus(.original)
                     }
-                    self?.view?.setAutocorrectionStatus(.original)
-                }
                 )
             }
         }

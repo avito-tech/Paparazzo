@@ -249,6 +249,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 data: data,
                 overridenTheme: strongSelf.overridenTheme,
                 isMetalEnabled: strongSelf.isMetalEnabled,
+                isNewFlowPrototype: strongSelf.isNewFlowPrototype,
                 configure: { [weak self] module in
                     self?.configureMediaPicker(module)
                 }
@@ -294,6 +295,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             data: data,
             overridenTheme: overridenTheme,
             isMetalEnabled: isMetalEnabled,
+            isNewFlowPrototype: true,
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)
                 module.onFinish = { _ in
@@ -432,6 +434,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                             data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
                             overridenTheme: strongSelf.overridenTheme,
                             isMetalEnabled: strongSelf.isMetalEnabled,
+                            isNewFlowPrototype: strongSelf.isNewFlowPrototype,
                             configure: { [weak self] module in
                                 self?.configureMediaPicker(module)
                             }

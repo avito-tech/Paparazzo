@@ -19,6 +19,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
     {
         pushViewControllerDerivedFrom { routerSeed in
@@ -30,6 +31,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
                 isMetalEnabled: isMetalEnabled,
+                isNewFlowPrototype: isNewFlowPrototype,
                 configure: configure
             )
         }

@@ -17,6 +17,7 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
@@ -47,6 +48,7 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         )
         
         let presenter = MediaPickerPresenter(
+            isNewFlowPrototype: isNewFlowPrototype,
             interactor: interactor,
             router: router,
             cameraModuleInput: cameraModuleInput
