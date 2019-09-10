@@ -6,9 +6,11 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
+    private let cameraService: CameraService
     
-    init(assemblyFactory: AssemblyFactory, routerSeed: RouterSeed) {
+    init(assemblyFactory: AssemblyFactory, cameraService: CameraService, routerSeed: RouterSeed) {
         self.assemblyFactory = assemblyFactory
+        self.cameraService = cameraService
         super.init(routerSeed: routerSeed)
     }
     
@@ -45,6 +47,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
             return assembly.module(
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
+                cameraService: cameraService,
                 routerSeed: routerSeed,
                 configure: configure
             )

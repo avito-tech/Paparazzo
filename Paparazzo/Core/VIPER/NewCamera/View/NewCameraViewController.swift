@@ -31,10 +31,6 @@ final class NewCameraViewController:
         
         transitioningDelegate = PhotoLibraryToCameraTransitioningDelegate.shared
         
-//        cameraService.getCaptureSession { [weak self] captureSession in
-//            self?.cameraView.setCaptureSession(captureSession)
-//        }
-        
         cameraView.onCaptureButtonTap = { [weak self] in
             self?.cameraView.animateFlash()
             
@@ -65,12 +61,33 @@ final class NewCameraViewController:
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Orientation
+    override open var shouldAutorotate: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .all
+        } else {
+            return .portrait
+        }
+    }
+    
+    override open var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return super.preferredInterfaceOrientationForPresentation
+        } else {
+            return .portrait
+        }
+    }
+    
     // MARK: - Lifecycle
     private var viewDidLayoutSubviewsBefore = false
     private var didDisappear = false
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+    override var prefersStatusBarHidden: Bool {
+        return !UIDevice.current.hasTopSafeAreaInset
     }
     
     override func loadView() {

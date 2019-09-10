@@ -19,16 +19,14 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         -> UIViewController
     {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
+        let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
         
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: data.mediaPickerData,
             selectedItems: data.selectedItems,
             maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
-            cameraService: serviceFactory.cameraService(
-                initialActiveCameraType: .back,
-                allowSharedSession: true
-            ),
+            cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             canRotate: UIDevice.current.userInterfaceIdiom == .pad
         )
@@ -39,6 +37,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         
         let router = PhotoLibraryV2UIKitRouter(
             assemblyFactory: assemblyFactory,
+            cameraService: cameraService,
             viewController: viewController
         )
         

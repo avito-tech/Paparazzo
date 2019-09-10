@@ -127,19 +127,65 @@ final class CameraServiceImpl: CameraService {
             self.output = output
             self.captureSession = captureSession
             
+            subscribeForNotifications(session: captureSession)
+            
         } catch {
             self.output = nil
             self.captureSession = nil
         }
     }
     
+    private func subscribeForNotifications(session: AVCaptureSession) {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionWasInterrupted),
+            name: .AVCaptureSessionWasInterrupted,
+            object: session
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionInterruptionEnded),
+            name: .AVCaptureSessionInterruptionEnded,
+            object: session
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionRuntimeError),
+            name: .AVCaptureSessionRuntimeError,
+            object: session
+        )
+    }
+    
+    private var shouldRestartSessionAfterInterruptionEnds = false
+    
+    @objc private func sessionWasInterrupted(notification: NSNotification) {
+        print("sessionWasInterrupted")
+        shouldRestartSessionAfterInterruptionEnds = (captureSession?.isRunning == true)
+    }
+    
+    @objc private func sessionInterruptionEnded(notification: NSNotification) {
+        print("sessionInterruptionEnded")
+        if shouldRestartSessionAfterInterruptionEnds && captureSession?.isRunning == false {
+            captureSessionSetupQueue.async {
+                self.captureSession?.startRunning()
+            }
+        }
+    }
+    
+    @objc private func sessionRuntimeError(notification: NSNotification) {
+        guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
+        print(error)
+    }
+    
     // MARK: - CameraService
     
     func setCaptureSessionRunning(_ needsRunning: Bool) {
-        if needsRunning {
-            captureSession?.startRunning()
-        } else {
-            captureSession?.stopRunning()
+        captureSessionSetupQueue.async {
+            if needsRunning {
+                self.captureSession?.startRunning()
+            } else {
+                self.captureSession?.stopRunning()
+            }
         }
     }
     

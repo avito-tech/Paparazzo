@@ -113,7 +113,10 @@ final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
         
         let width = (collectionView?.width ?? 0) - insets.left - insets.right
         
-        let size = CGSize(width: width, height: width * 0.36)
+        let size = CGSize(
+            width: width,
+            height: hasHeader ? width * 0.36 : 0
+        )
         
         headerAttributes.frame = CGRect(
             origin: origin,

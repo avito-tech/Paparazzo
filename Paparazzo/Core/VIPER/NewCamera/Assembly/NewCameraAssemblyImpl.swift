@@ -17,6 +17,7 @@ final class NewCameraAssemblyImpl:
     func module(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        cameraService: CameraService,
         configure: (NewCameraModule) -> ())
         -> UIViewController
     {
@@ -26,7 +27,7 @@ final class NewCameraAssemblyImpl:
         
         let viewController = NewCameraViewController(
             selectedImagesStorage: selectedImagesStorage,
-            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back, allowSharedSession: true),
+            cameraService: cameraService,
             latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )
         

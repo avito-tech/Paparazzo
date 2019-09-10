@@ -39,19 +39,19 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
-    var newCameraView: NewPhotoLibraryCameraView? {
+    var cameraView: PhotoLibraryCameraView? {
         return collectionView.supplementaryView(
             forElementKind: UICollectionView.elementKindSectionHeader,
             at: IndexPath(item: 0, section: 0)
-        ) as? NewPhotoLibraryCameraView
+        ) as? PhotoLibraryCameraView
     }
     
     var previewLayer: AVCaptureVideoPreviewLayer? {
-        return newCameraView?.cameraOutputLayer
+        return cameraView?.cameraOutputLayer
     }
     
     func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
-        newCameraView?.setPreviewLayer(previewLayer)
+        cameraView?.setPreviewLayer(previewLayer)
     }
     
     func previewFrame(forBounds bounds: CGRect) -> CGRect {
@@ -295,12 +295,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func setCameraViewData(_ viewData: PhotoLibraryCameraViewData?) {
-        
         cameraViewData = viewData
         
-        UIView.performWithoutAnimation {
-            // `collectionView.reloadSections(IndexSet(0..<1))` freezes app completely, don't use it
-            self.reloadDataPreservingSelection()
+        if let cameraView = cameraView {
+            dataSource.configureHeader?(cameraView)
         }
     }
     
@@ -342,57 +340,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
-        
-        print("applyChanges")
-        
-//        let toIndexPath = { (index: Int) in
-//            IndexPath(item: index, section: 0)
-//        }
-//
-//        // Order is important!
-//        // 1. Removing items
-//        let indexPathsToDelete = changes.removedIndexes.map(toIndexPath)
-//
-//        if indexPathsToDelete.count > 0 {
-//            dataSource.deleteItems(at: indexPathsToDelete)
-//        }
-//
-//        // 2. Inserting items
-//        let indexPathsToInsert = changes.insertedItems.map { toIndexPath($0.index) }
-//
-//        if indexPathsToInsert.count > 0 {
-//            dataSource.insertItems(changes.insertedItems.map { item in
-//                (item: item.cellData, indexPath: toIndexPath(item.index))
-//            })
-//        }
-//
-//        // 3. Updating items
-//        let indexPathsToUpdate = changes.updatedItems.map { toIndexPath($0.index) }
-//
-//        if indexPathsToUpdate.count > 0 {
-//
-//            changes.updatedItems.forEach { index, newCellData in
-//
-//                let indexPath = toIndexPath(index)
-//                let oldCellData = dataSource.item(at: indexPath)
-//
-//                var newCellData = newCellData
-//                newCellData.selected = oldCellData.selected     // preserving selection
-//
-//                dataSource.replaceItem(at: indexPath, with: newCellData)
-//            }
-//        }
-//
-//        // 4. Moving items
-//        changes.movedIndexes.forEach { from, to in
-//            let sourceIndexPath = toIndexPath(from)
-//            let targetIndexPath = toIndexPath(to)
-//
-//            dataSource.moveItem(at: sourceIndexPath, to: targetIndexPath)
-//        }
-//
-//        reloadDataPreservingSelection()
-        
         ObjCExceptionCatcher.tryClosure(
             tryClosure: { [collectionView, dataSource] in
                 collectionView.performBatchUpdates(animated: true, updates: {
@@ -567,10 +514,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState) {
         switch state {
         case .hidden:
-//            selectedPhotosBarView.isHidden = true
             selectedPhotosBarView.setHidden(true, animated: true)
         case .visible(let data):
-//            selectedPhotosBarView.isHidden = false
             selectedPhotosBarView.setHidden(false, animated: true)
             selectedPhotosBarView.label.text = data.countString
             selectedPhotosBarView.lastPhotoThumbnailView.setImage(fromSource: data.lastPhoto)
@@ -578,27 +523,25 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
-    func stopPreviewingCameraStream() {
-//        guard let cameraView = collectionView.supplementaryView(
-//            forElementKind: UICollectionView.elementKindSectionHeader,
-//            at: IndexPath(item: 0, section: 0)
-//        ) as? PhotoLibraryCameraView else { return }
-//        
-//        cameraView.clearOutputParameters()
-    }
-    
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath)
+    {
         adjustDimmingForCell(cell)
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         let cellData = dataSource.item(at: indexPath)
+        let shouldSelect = canSelectMoreItems && cellData.previewAvailable
         
-        cellData.onSelectionPrepare?()
+        if shouldSelect {
+            cellData.onSelectionPrepare?()
+        }
         
-        return canSelectMoreItems && cellData.previewAvailable
+        return shouldSelect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -637,7 +580,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
         
         dataSource.configureHeader = { [weak self] view in
-            guard let view = view as? PhotoLibraryCameraViewInterface else {
+            guard let view = view as? PhotoLibraryCameraView else {
                 return
             }
             
@@ -702,7 +645,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         
         if let headerReuseIdentifier = dataSource.headerReuseIdentifier {
             collectionView.register(
-                isNewFlowPrototype ? NewPhotoLibraryCameraView.self : PhotoLibraryCameraView.self,
+                PhotoLibraryCameraView.self,
                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                 withReuseIdentifier: headerReuseIdentifier
             )

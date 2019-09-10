@@ -70,7 +70,6 @@ final class CameraToPhotoLibraryTransitionAnimator: NSObject, UIViewControllerAn
         containerView.layer.addSublayer(previewLayer)
         previewLayer.frame = initialFrame
         previewLayer.presentation()?.frame = initialFrame
-        print("initial frame: \(previewLayer.frame)")
         CATransaction.commit()
         
         containerView.insertSubview(toView, aboveSubview: fromView)
@@ -81,8 +80,6 @@ final class CameraToPhotoLibraryTransitionAnimator: NSObject, UIViewControllerAn
         CATransaction.setAnimationDuration(transitionDuration(using: transitionContext))
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
         CATransaction.setCompletionBlock {
-            print("final frame: \(previewLayer.frame)")
-            
             let success = !transitionContext.transitionWasCancelled
             
             toViewController.setPreviewLayer(previewLayer)
@@ -152,7 +149,6 @@ final class PhotoLibraryToCameraTransitionAnimator: NSObject, UIViewControllerAn
         containerView.layer.addSublayer(previewLayer)
         previewLayer.frame = initialFrame
         previewLayer.presentation()?.frame = initialFrame
-        print("initial frame: \(previewLayer.frame)")
         CATransaction.commit()
 
         containerView.insertSubview(toView, aboveSubview: fromView)
@@ -163,8 +159,6 @@ final class PhotoLibraryToCameraTransitionAnimator: NSObject, UIViewControllerAn
         CATransaction.setAnimationDuration(transitionDuration(using: transitionContext))
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
         CATransaction.setCompletionBlock {
-            print("final frame: \(previewLayer.frame)")
-
             let success = !transitionContext.transitionWasCancelled
 
             toViewController.setPreviewLayer(previewLayer)

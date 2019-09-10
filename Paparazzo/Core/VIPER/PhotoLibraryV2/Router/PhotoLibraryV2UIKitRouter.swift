@@ -5,9 +5,11 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
+    private let cameraService: CameraService
     
-    init(assemblyFactory: AssemblyFactory, viewController: UIViewController) {
+    init(assemblyFactory: AssemblyFactory, cameraService: CameraService, viewController: UIViewController) {
         self.assemblyFactory = assemblyFactory
+        self.cameraService = cameraService
         super.init(viewController: viewController)
     }
     
@@ -43,6 +45,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         let viewController = assembly.module(
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
+            cameraService: cameraService,
             configure: configure
         )
         

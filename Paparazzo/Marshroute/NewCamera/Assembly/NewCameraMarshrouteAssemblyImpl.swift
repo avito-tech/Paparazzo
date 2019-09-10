@@ -18,6 +18,7 @@ final class NewCameraMarshrouteAssemblyImpl:
     func module(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        cameraService: CameraService,
         routerSeed: RouterSeed,
         configure: (NewCameraModule) -> ())
         -> UIViewController
@@ -28,7 +29,7 @@ final class NewCameraMarshrouteAssemblyImpl:
         
         let viewController = NewCameraViewController(
             selectedImagesStorage: selectedImagesStorage,
-            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back, allowSharedSession: true),
+            cameraService: cameraService,
             latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )
         

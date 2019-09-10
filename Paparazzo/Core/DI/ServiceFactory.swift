@@ -2,7 +2,7 @@ import ImageSource
 
 protocol ServiceFactory: class {
     func deviceOrientationService() -> DeviceOrientationService
-    func cameraService(initialActiveCameraType: CameraType, allowSharedSession: Bool) -> CameraService
+    func cameraService(initialActiveCameraType: CameraType) -> CameraService
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider
     func imageCroppingService(image: ImageSource, canvasSize: CGSize) -> ImageCroppingService
     func locationProvider() -> LocationProvider
@@ -12,7 +12,6 @@ protocol ServiceFactory: class {
 final class ServiceFactoryImpl: ServiceFactory {
     
     private let imageStorage: ImageStorage
-    private var cameraService: CameraServiceImpl?
     
     init(imageStorage: ImageStorage) {
         self.imageStorage = imageStorage
@@ -22,17 +21,11 @@ final class ServiceFactoryImpl: ServiceFactory {
         return DeviceOrientationServiceImpl()
     }
     
-    func cameraService(initialActiveCameraType: CameraType, allowSharedSession: Bool) -> CameraService {
-        if let cameraService = cameraService, allowSharedSession {
-            return cameraService
-        } else {
-            let cameraService = CameraServiceImpl(
-                initialActiveCameraType: initialActiveCameraType,
-                imageStorage: imageStorage
-            )
-            self.cameraService = cameraService
-            return cameraService
-        }
+    func cameraService(initialActiveCameraType: CameraType) -> CameraService {
+        return CameraServiceImpl(
+            initialActiveCameraType: initialActiveCameraType,
+            imageStorage: imageStorage
+        )
     }
     
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider {

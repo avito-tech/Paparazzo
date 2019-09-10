@@ -5,6 +5,7 @@ protocol NewCameraAssembly: class {
     func module(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        cameraService: CameraService,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }
