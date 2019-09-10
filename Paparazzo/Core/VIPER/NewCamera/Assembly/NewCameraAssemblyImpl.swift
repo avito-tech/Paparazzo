@@ -22,14 +22,13 @@ final class NewCameraAssemblyImpl:
         -> UIViewController
     {
         let interactor = NewCameraInteractorImpl(
-            mediaPickerData: mediaPickerData
-        )
-        
-        let viewController = NewCameraViewController(
+            mediaPickerData: mediaPickerData,
             selectedImagesStorage: selectedImagesStorage,
             cameraService: cameraService,
             latestLibraryPhotoProvider: serviceFactory.photoLibraryLatestPhotoProvider()
         )
+        
+        let viewController = NewCameraViewController()
         
         let router = NewCameraRouterImpl(
             assemblyFactory: assemblyFactory,

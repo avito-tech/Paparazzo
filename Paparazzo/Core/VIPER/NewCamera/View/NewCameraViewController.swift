@@ -8,53 +8,15 @@ final class NewCameraViewController:
 {
     // MARK: - Private properties
     private let cameraView = NewCameraView()
-    private let cameraService: CameraService
-    private let latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider
-    
-    let imageStorage: SelectedImageStorage
     
     var previewLayer: AVCaptureVideoPreviewLayer? {
         return cameraView.cameraOutputLayer
     }
     
     // MARK: - Init
-    init(
-        selectedImagesStorage: SelectedImageStorage,
-        cameraService: CameraService,
-        latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider)
-    {
-        self.imageStorage = selectedImagesStorage
-        self.cameraService = cameraService
-        self.latestLibraryPhotoProvider = latestLibraryPhotoProvider
-        
+    override init() {
         super.init()
-        
         transitioningDelegate = PhotoLibraryToCameraTransitioningDelegate.shared
-        
-        cameraView.onCaptureButtonTap = { [weak self] in
-            self?.cameraView.animateFlash()
-            
-            self?.cameraService.takePhotoToPhotoLibrary { photo in
-                guard let photo = photo, let strongSelf = self else { return }
-                
-                self?.imageStorage.addItem(photo)
-                
-                self?.cameraView.animateCapturedPhoto(photo.image) { finalizeAnimation in
-                    self?.adjustSelectedPhotosBar {
-                        finalizeAnimation()
-                    }
-                }
-            }
-        }
-        
-        latestLibraryPhotoProvider.observePhoto { [weak self] imageSource in
-            self?.cameraView.setLatestPhotoLibraryItemImage(imageSource)
-        }
-        
-        // TODO: Move to presenter
-        cameraView.onToggleCameraButtonTap = { [weak self] in
-            self?.cameraService.toggleCamera { _ in }
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -83,9 +45,6 @@ final class NewCameraViewController:
     }
     
     // MARK: - Lifecycle
-    private var viewDidLayoutSubviewsBefore = false
-    private var didDisappear = false
-    
     override var prefersStatusBarHidden: Bool {
         return !UIDevice.current.hasTopSafeAreaInset
     }
@@ -94,49 +53,26 @@ final class NewCameraViewController:
         view = cameraView
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        cameraView.setFlashButtonVisible(cameraService.isFlashAvailable)
-        cameraView.setFlashButtonOn(cameraService.isFlashEnabled)
-        
-        cameraView.onFlashToggle = { [weak self] isFlashEnabled in
-            guard let strongSelf = self else { return }
-            
-            if !strongSelf.cameraService.setFlashEnabled(isFlashEnabled) {
-                strongSelf.cameraView.setFlashButtonOn(!isFlashEnabled)
-            }
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if didDisappear {
-            DispatchQueue.main.async {
-                self.adjustSelectedPhotosBar {}
-            }
-        }
+        onViewWillAppear?(animated)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        didDisappear = true
+        onViewDidDisappear?(animated)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        guard !viewDidLayoutSubviewsBefore else { return }
-        
-        DispatchQueue.main.async {
-            self.adjustSelectedPhotosBar {}
-        }
-        
-        viewDidLayoutSubviewsBefore = true
+        onViewDidLayoutSubviews?()
     }
     
     // MARK: - NewCameraViewInput
+    var onViewWillAppear: ((_ animated: Bool) -> ())?
+    var onViewDidDisappear: ((_ animated: Bool) -> ())?
+    var onViewDidLayoutSubviews: (() -> ())?
+    
     var onCloseButtonTap: (() -> ())? {
         get { return cameraView.onCloseButtonTap }
         set { cameraView.onCloseButtonTap = newValue }
@@ -152,25 +88,46 @@ final class NewCameraViewController:
         set { cameraView.onLastPhotoThumbnailTap = newValue }
     }
     
-//    var onToggleCameraButtonTap: (() -> ())? {
-//        get { return cameraView.onToggleCameraButtonTap }
-//        set { cameraView.onToggleCameraButtonTap = newValue }
-//    }
+    var onToggleCameraButtonTap: (() -> ())? {
+        get { return cameraView.onToggleCameraButtonTap }
+        set { cameraView.onToggleCameraButtonTap = newValue }
+    }
     
-    // MARK: - Private
-    func adjustSelectedPhotosBar(completion: @escaping () -> ()) {
-        
-        let images = imageStorage.images
-        
-        let state: SelectedPhotosBarState = images.isEmpty
-            ? .hidden
-            : .visible(SelectedPhotosBarData(
-                lastPhoto: images.last?.image,
-                penultimatePhoto: images.count > 1 ? images[images.count - 2].image : nil,
-                countString: "\(images.count) фото"
-            ))
-        
+    var onFlashToggle: ((Bool) -> ())? {
+        get { return cameraView.onFlashToggle }
+        set { cameraView.onFlashToggle = newValue }
+    }
+    
+    var onCaptureButtonTap: (() -> ())? {
+        get { return cameraView.onCaptureButtonTap }
+        set { cameraView.onCaptureButtonTap = newValue }
+    }
+    
+    func setFlashButtonVisible(_ isVisible: Bool) {
+        cameraView.setFlashButtonVisible(isVisible)
+    }
+    
+    func setFlashButtonOn(_ isOn: Bool) {
+        cameraView.setFlashButtonOn(isOn)
+    }
+    
+    func setLatestPhotoLibraryItemImage(_ imageSource: ImageSource?) {
+        cameraView.setLatestPhotoLibraryItemImage(imageSource)
+    }
+    
+    func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
         cameraView.setSelectedPhotosBarState(state, completion: completion)
+    }
+    
+    func animateFlash() {
+        cameraView.animateFlash()
+    }
+    
+    func animateCapturedPhoto(
+        _ image: ImageSource,
+        completion: @escaping (_ finalizeAnimation: @escaping () -> ()) -> ())
+    {
+        cameraView.animateCapturedPhoto(image, completion: completion)
     }
     
     // MARK: - NewCameraViewController
