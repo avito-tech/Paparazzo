@@ -24,7 +24,6 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: data.mediaPickerData,
             selectedItems: data.selectedItems,
-            maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
             cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),

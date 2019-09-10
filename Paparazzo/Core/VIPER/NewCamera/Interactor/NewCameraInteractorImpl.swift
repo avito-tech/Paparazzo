@@ -46,4 +46,8 @@ final class NewCameraInteractorImpl: NewCameraInteractor {
     func takePhoto(completion: @escaping (PhotoLibraryItem?) -> ()) {
         cameraService.takePhotoToPhotoLibrary(completion: completion)
     }
+    
+    func canAddItems() -> Bool {
+        return mediaPickerData.maxItemsCount.flatMap { self.selectedImagesStorage.images.count < $0 } ?? true
+    }
 }

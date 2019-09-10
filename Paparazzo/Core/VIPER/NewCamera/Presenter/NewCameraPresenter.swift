@@ -73,12 +73,14 @@ final class NewCameraPresenter:
         }
         
         view?.onCaptureButtonTap = { [weak self] in
+            self?.view?.setCaptureButtonState(.nonInteractive)
             self?.view?.animateFlash()
             
             self?.interactor.takePhoto { photo in
                 guard let photo = photo, let strongSelf = self else { return }
                 
                 self?.interactor.selectedImagesStorage.addItem(photo)
+                self?.adjustCaptureButtonAvailability()
                 
                 self?.view?.animateCapturedPhoto(photo.image) { finalizeAnimation in
                     self?.adjustSelectedPhotosBar {
@@ -89,6 +91,7 @@ final class NewCameraPresenter:
         }
         
         bindSelectedPhotosBarAdjustmentToViewControllerLifecycle()
+        adjustCaptureButtonAvailability()
         
         interactor.observeLatestLibraryPhoto { [weak self] imageSource in
             self?.view?.setLatestPhotoLibraryItemImage(imageSource)
@@ -135,5 +138,9 @@ final class NewCameraPresenter:
             ))
         
         view?.setSelectedPhotosBarState(state, completion: completion)
+    }
+    
+    private func adjustCaptureButtonAvailability() {
+        view?.setCaptureButtonState(interactor.canAddItems() ? .enabled : .disabled)
     }
 }

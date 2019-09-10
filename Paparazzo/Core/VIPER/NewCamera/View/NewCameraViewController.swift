@@ -111,6 +111,10 @@ final class NewCameraViewController:
         cameraView.setFlashButtonOn(isOn)
     }
     
+    func setCaptureButtonState(_ state: CaptureButtonState) {
+        cameraView.setCaptureButtonState(state)
+    }
+    
     func setLatestPhotoLibraryItemImage(_ imageSource: ImageSource?) {
         cameraView.setLatestPhotoLibraryItemImage(imageSource)
     }

@@ -82,9 +82,9 @@ final class NewCameraView: UIView {
         closeButton.sizeToFit()
         
         captureButton.layer.cornerRadius = captureButtonSize / 2
-        captureButton.layer.borderColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
         captureButton.layer.borderWidth = 6
         captureButton.addTarget(self, action: #selector(handleCaptureButtonTap), for: .touchUpInside)
+        setCaptureButtonState(.enabled)
         
         previewView.layer.masksToBounds = true
         
@@ -259,6 +259,19 @@ final class NewCameraView: UIView {
     func setFlashButtonOn(_ isOn: Bool) {
         flashButton.isSelected = isOn
         layOutFlashButton()
+    }
+    
+    func setCaptureButtonState(_ state: CaptureButtonState) {
+        captureButton.isEnabled = (state == .enabled)
+        
+        switch state {
+        case .enabled, .nonInteractive:
+            captureButton.layer.borderColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
+            captureButton.layer.backgroundColor = UIColor.white.cgColor
+        case .disabled:
+            captureButton.layer.borderColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1).cgColor
+            captureButton.layer.backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1).cgColor
+        }
     }
     
     func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {

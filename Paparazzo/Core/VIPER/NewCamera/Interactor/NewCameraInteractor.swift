@@ -10,4 +10,5 @@ protocol NewCameraInteractor: class {
     func toggleCamera(completion: @escaping (ExifOrientation) -> ())
     func setFlashEnabled(_ isEnabled: Bool) -> Bool
     func takePhoto(completion: @escaping (PhotoLibraryItem?) -> ())
+    func canAddItems() -> Bool
 }

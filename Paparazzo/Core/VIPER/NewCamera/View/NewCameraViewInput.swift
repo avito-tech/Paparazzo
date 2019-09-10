@@ -14,6 +14,7 @@ protocol NewCameraViewInput: class {
     
     func setFlashButtonVisible(_: Bool)
     func setFlashButtonOn(_: Bool)
+    func setCaptureButtonState(_: CaptureButtonState)
     func setLatestPhotoLibraryItemImage(_: ImageSource?)
     func setSelectedPhotosBarState(_: SelectedPhotosBarState, completion: @escaping () -> ())
     
@@ -21,4 +22,10 @@ protocol NewCameraViewInput: class {
     func animateCapturedPhoto(
         _: ImageSource,
         completion: @escaping (_ finalizeAnimation: @escaping () -> ()) -> ())
+}
+
+enum CaptureButtonState {
+    case enabled
+    case nonInteractive  // appears as enabled, but doesn't respond to touches
+    case disabled
 }

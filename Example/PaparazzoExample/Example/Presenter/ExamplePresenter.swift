@@ -64,7 +64,7 @@ final class ExamplePresenter {
         view?.onShowPhotoLibraryV2ButtonTap = { [weak self] in
             self?.interactor.photoLibraryItems { items in
                 let data = MediaPickerData(
-                    maxItemsCount: 20,
+                    maxItemsCount: 5,
                     cropEnabled: true,
                     autocorrectEnabled: true,
                     hapticFeedbackEnabled: true,
@@ -73,17 +73,17 @@ final class ExamplePresenter {
                 self?.router.showPhotoLibraryV2(
                     mediaPickerData: data,
                     selectedItems: items,
-                    maxSelectedItemsCount: 5)
-                { module in
-                    weak var weakModule = module
-                    module.setContinueButtonPlacement(.bottom)
-                    module.onFinish = { result in
-                        weakModule?.dismissModule()
+                    configure: { module in
+                        weak var weakModule = module
+                        module.setContinueButtonPlacement(.bottom)
+                        module.onFinish = { result in
+                            weakModule?.dismissModule()
+                        }
+                        module.onCancel = {
+                            weakModule?.dismissModule()
+                        }
                     }
-                    module.onCancel = {
-                        weakModule?.dismissModule()
-                    }
-                }
+                )
             }
         }
         
@@ -185,7 +185,7 @@ final class ExamplePresenter {
             items: items,
             autocorrectionFilters: [AutoAdjustmentFilter()],
             selectedItem: items.last,
-            maxItemsCount: 20,
+            maxItemsCount: 5,
             cropEnabled: true,
             autocorrectEnabled: true,
             hapticFeedbackEnabled: true,

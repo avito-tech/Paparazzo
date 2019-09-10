@@ -18,8 +18,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
     func showMediaPicker(
         data: MediaPickerData,
-        configure: (MediaPickerModule) -> ()
-    ) {
+        configure: (MediaPickerModule) -> ())
+    {
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.mediaPickerAssembly()
@@ -35,8 +35,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showMaskCropper(
         data: MaskCropperData,
         croppingOverlayProvider: CroppingOverlayProvider,
-        configure: (MaskCropperModule) -> ()
-    ) {
+        configure: (MaskCropperModule) -> ())
+    {
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.maskCropperAssembly()
@@ -53,8 +53,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showPhotoLibrary(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
-        configure: (PhotoLibraryModule) -> ()
-    ) {
+        configure: (PhotoLibraryModule) -> ())
+    {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.photoLibraryAssembly()
@@ -71,9 +71,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showPhotoLibraryV2(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
-        configure: (PhotoLibraryV2Module) -> ()
-    ) {
+        configure: (PhotoLibraryV2Module) -> ())
+    {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.photoLibraryV2Assembly()
@@ -81,7 +80,6 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
             return assembly.module(
                 mediaPickerData: mediaPickerData,
                 selectedItems: selectedItems,
-                maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,
                 isMetalEnabled: false,
                 isNewFlowPrototype: true,
@@ -92,8 +90,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     
     func showScanner(
         data: ScannerData,
-        configure: (ScannerModule) -> ()
-    ) {
+        configure: (ScannerModule) -> ())
+    {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
             
             let assembly = mediaPickerAssemblyFactory.scannerAssembly()
