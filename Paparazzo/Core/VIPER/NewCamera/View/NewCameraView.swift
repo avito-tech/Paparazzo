@@ -279,9 +279,7 @@ final class NewCameraView: UIView {
     }
     
     func previewFrame(forBounds bounds: CGRect) -> CGRect {
-        let frame = layout(for: bounds).previewViewFrame
-        print("----- previewFrame(for:)\nbounds: \(bounds)\npreviewFrame: \(frame)")
-        return frame
+        return layout(for: bounds).previewViewFrame
     }
     
     // MARK: - UIView
@@ -298,8 +296,6 @@ final class NewCameraView: UIView {
         flashView.frame = layout.flashViewFrame
         toggleCameraButton.frame = layout.toggleCameraButtonFrame
         photoView.frame = layout.photoViewFrame
-        
-        print("----- layoutSubviews()\nbounds: \(bounds)\npreviewFrame: \(layout.previewViewFrame)")
         
         viewfinderBorderView.frame = previewView.bounds
         
@@ -321,6 +317,8 @@ final class NewCameraView: UIView {
     
     private func layout(for bounds: CGRect) -> Layout {
         
+        let paparazzoSafeAreaInsets = window?.paparazzoSafeAreaInsets ?? self.paparazzoSafeAreaInsets
+        
         let closeButtonSize = closeButton.sizeThatFits(bounds.size)
         let closeButtonFrame = CGRect(
             x: bounds.left + 8,
@@ -330,9 +328,10 @@ final class NewCameraView: UIView {
         )
         
         let selectedPhotosBarViewSize = selectedPhotosBarSize(for: bounds)
+        let selectedPhotosBarBottom = bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom)
         let selectedPhotosBarViewFrame = CGRect(
             x: bounds.left + (bounds.width - selectedPhotosBarViewSize.width) / 2,
-            y: selectedPhotosBarBottom(for: bounds) - selectedPhotosBarViewSize.height,
+            y: selectedPhotosBarBottom - selectedPhotosBarViewSize.height,
             width: selectedPhotosBarViewSize.width,
             height: selectedPhotosBarViewSize.height
         )
@@ -407,10 +406,6 @@ final class NewCameraView: UIView {
     private func selectedPhotosBarSize(for bounds: CGRect) -> CGSize {
         let maxSize = CGSize(width: bounds.width - 32, height: .greatestFiniteMagnitude)
         return selectedPhotosBarView.sizeThatFits(maxSize)
-    }
-    
-    private func selectedPhotosBarBottom(for bounds: CGRect) -> CGFloat {
-        return bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom)
     }
     
     private func layOutPreview() {
