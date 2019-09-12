@@ -21,6 +21,7 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
@@ -29,7 +30,7 @@ public extension MediaPickerMarshrouteAssembly {
             overridenTheme: nil,
             routerSeed: routerSeed,
             isMetalEnabled: isMetalEnabled,
-            isNewFlowPrototype: false,
+            isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
         )
     }

@@ -114,7 +114,6 @@ final class NewCameraView: UIView {
     var onCaptureButtonTap: (() -> ())?
     var onCloseButtonTap: (() -> ())?
     var onToggleCameraButtonTap: (() -> ())?
-    var onPhotoLibraryButtonTap: (() -> ())?
     var onFlashToggle: ((Bool) -> ())?
     
     var onDoneButtonTap: (() -> ())? {
@@ -134,10 +133,6 @@ final class NewCameraView: UIView {
         hintLabel.font = theme.newCameraHintFont
         
         selectedPhotosBarView.setTheme(theme)
-    }
-    
-    func setCaptureSession(_ captureSession: AVCaptureSession?) {
-//        cameraOutputLayer?.session = captureSession
     }
     
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
@@ -284,16 +279,122 @@ final class NewCameraView: UIView {
     }
     
     func previewFrame(forBounds bounds: CGRect) -> CGRect {
-        let previewAspectRatio = CGFloat(3) / 4
-        let previewHeight = bounds.width * previewAspectRatio
-        let captureButtonTop = bounds.bottom - 114 - captureButtonSize
+        let frame = layout(for: bounds).previewViewFrame
+        print("----- previewFrame(for:)\nbounds: \(bounds)\npreviewFrame: \(frame)")
+        return frame
+    }
+    
+    // MARK: - UIView
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        return CGRect(
-            x: 0,
-            y: paparazzoSafeAreaInsets.top + navigationBarHeight +
-                (captureButtonTop - (bounds.top + navigationBarHeight) - previewHeight) / 2,
+        let layout = self.layout(for: bounds)
+        
+        closeButton.frame = layout.closeButtonFrame
+        selectedPhotosBarView.frame = layout.selectedPhotosBarFrame
+        captureButton.frame = layout.captureButtonFrame
+        hintLabel.frame = layout.hintLabelFrame
+        previewView.frame = layout.previewViewFrame
+        flashView.frame = layout.flashViewFrame
+        toggleCameraButton.frame = layout.toggleCameraButtonFrame
+        photoView.frame = layout.photoViewFrame
+        
+        print("----- layoutSubviews()\nbounds: \(bounds)\npreviewFrame: \(layout.previewViewFrame)")
+        
+        viewfinderBorderView.frame = previewView.bounds
+        
+        layOutPreview()
+        layOutFlashButton()
+    }
+    
+    // MARK: - Private - Layout
+    private struct Layout {
+        let closeButtonFrame: CGRect
+        let selectedPhotosBarFrame: CGRect
+        let captureButtonFrame: CGRect
+        let hintLabelFrame: CGRect
+        let previewViewFrame: CGRect
+        let flashViewFrame: CGRect
+        let toggleCameraButtonFrame: CGRect
+        let photoViewFrame: CGRect
+    }
+    
+    private func layout(for bounds: CGRect) -> Layout {
+        
+        let closeButtonSize = closeButton.sizeThatFits(bounds.size)
+        let closeButtonFrame = CGRect(
+            x: bounds.left + 8,
+            y: bounds.top + paparazzoSafeAreaInsets.top + navigationBarHeight / 2 - closeButtonSize.height,
+            width: closeButtonSize.width,
+            height: closeButtonSize.height
+        )
+        
+        let selectedPhotosBarViewSize = selectedPhotosBarSize(for: bounds)
+        let selectedPhotosBarViewFrame = CGRect(
+            x: bounds.left + (bounds.width - selectedPhotosBarViewSize.width) / 2,
+            y: selectedPhotosBarBottom(for: bounds) - selectedPhotosBarViewSize.height,
+            width: selectedPhotosBarViewSize.width,
+            height: selectedPhotosBarViewSize.height
+        )
+        
+        let freeHeight = selectedPhotosBarViewFrame.top - closeButtonFrame.bottom
+        let previewAspectRatio = CGFloat(3) / 4
+        let previewHeight = floor(bounds.width * previewAspectRatio)
+        let contentHeight = captureButtonSize + previewHeight
+        let spacing = floor((freeHeight - contentHeight) / 3)
+        
+        let captureButtonBottom = selectedPhotosBarViewFrame.top - spacing
+        let captureButtonFrame = CGRect(
+            x: bounds.centerX - captureButtonSize / 2,
+            y: captureButtonBottom - captureButtonSize,
+            width: captureButtonSize,
+            height: captureButtonSize
+        )
+        
+        let hintLabelWidth = bounds.width - 2 * 16
+        let hintLabelHeight = hintLabel.sizeForWidth(hintLabelWidth).height
+        let hintLabelBottom = bounds.bottom - max(23, paparazzoSafeAreaInsets.bottom)
+        let hintLabelFrame = CGRect(
+            x: bounds.left + 16,
+            y: hintLabelBottom - hintLabelHeight,
+            width: hintLabelWidth,
+            height: hintLabelHeight
+        )
+        
+        let previewViewBottom = captureButtonFrame.top - spacing
+        let previewViewFrame = CGRect(
+            x: bounds.left,
+            y: previewViewBottom - previewHeight,
             width: bounds.width,
             height: previewHeight
+        )
+        
+        let toggleCameraButtonSize = toggleCameraButton.sizeThatFits()
+        let toggleCameraButtonRight = bounds.right - 23
+        let toggleCameraButtonFrame = CGRect(
+            x: toggleCameraButtonRight - toggleCameraButtonSize.width,
+            y: captureButtonFrame.centerY - toggleCameraButtonSize.height / 2,
+            width: toggleCameraButtonSize.width,
+            height: toggleCameraButtonSize.height
+        )
+        
+        let photoViewSize = CGSize(width: 37, height: 37)
+        let photoViewFrame = CGRect(
+            centerX: bounds.left + (captureButtonFrame.left - bounds.left) / 2,
+            centerY: captureButtonFrame.centerY,
+            width: photoViewSize.width,
+            height: photoViewSize.height
+        )
+        
+        return Layout(
+            closeButtonFrame: closeButtonFrame,
+            selectedPhotosBarFrame: selectedPhotosBarViewFrame,
+            captureButtonFrame: captureButtonFrame,
+            hintLabelFrame: hintLabelFrame,
+            previewViewFrame: previewViewFrame,
+            flashViewFrame: bounds,
+            toggleCameraButtonFrame: toggleCameraButtonFrame,
+            photoViewFrame: photoViewFrame
         )
     }
     
@@ -303,53 +404,15 @@ final class NewCameraView: UIView {
         flashButton.centerY = toggleCameraButton.centerY
     }
     
-    // MARK: - UIView
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        closeButton.left = 8
-        closeButton.centerY = paparazzoSafeAreaInsets.top + navigationBarHeight / 2
-        
-        captureButton.layout(
-            left: bounds.centerX - captureButtonSize / 2,
-            right: bounds.centerX + captureButtonSize / 2,
-            bottom: bounds.bottom - 114,
-            height: captureButtonSize
-        )
-        
-        hintLabel.layout(
-            left: bounds.left + 16,
-            right: bounds.right - 16,
-            bottom: bounds.bottom - max(23, paparazzoSafeAreaInsets.bottom),
-            fitHeight: .greatestFiniteMagnitude
-        )
-        
-        previewView.frame = previewFrame(forBounds: bounds)
-        viewfinderBorderView.frame = previewView.bounds
-        
-        layOutPreview()
-        
-        flashView.frame = bounds
-        
-        toggleCameraButton.right = bounds.right - 23
-        toggleCameraButton.centerY = captureButton.centerY
-        
-        layOutFlashButton()
-        
-        selectedPhotosBarView.size = selectedPhotosBarView.sizeThatFits(
-            CGSize(width: bounds.width - 32, height: .greatestFiniteMagnitude)
-        )
-        selectedPhotosBarView.center = CGPoint(
-            x: bounds.centerX,
-            y: bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom) - selectedPhotosBarView.size.height / 2
-        )
-        
-        photoView.size = CGSize(width: 37, height: 37)
-        photoView.centerX = bounds.left + (captureButton.left - bounds.left) / 2
-        photoView.centerY = captureButton.centerY
+    private func selectedPhotosBarSize(for bounds: CGRect) -> CGSize {
+        let maxSize = CGSize(width: bounds.width - 32, height: .greatestFiniteMagnitude)
+        return selectedPhotosBarView.sizeThatFits(maxSize)
     }
     
-    // MARK: - Private - Layout
+    private func selectedPhotosBarBottom(for bounds: CGRect) -> CGFloat {
+        return bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom)
+    }
+    
     private func layOutPreview() {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -376,7 +439,6 @@ final class NewCameraView: UIView {
     }
     
     @objc private func onPhotoViewTap(_ tapRecognizer: UITapGestureRecognizer) {
-//        onPhotoLibraryButtonTap?()
         onCloseButtonTap?()
     }
 }

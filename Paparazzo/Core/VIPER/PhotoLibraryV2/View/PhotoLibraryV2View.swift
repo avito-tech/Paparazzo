@@ -418,9 +418,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func reloadSelectedItems() {
-        if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems {
-            collectionView.reloadItems(at: indexPathsForSelectedItems)
-            selectCollectionViewCellsAccordingToDataSource()
+        guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems else { return }
+        
+        collectionView.reloadItems(at: indexPathsForSelectedItems)
+        
+        // Restore selection after reload
+        for indexPath in indexPathsForSelectedItems {
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
     }
     
@@ -796,7 +800,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     private func deselectCell(at indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
+        
         onDeselectItem(at: indexPath)
+        
+        // TODO: убрать дублирование
+        if let cell = collectionView.cellForItem(at: indexPath) as? PhotoLibraryItemCell, isNewFlowPrototype {
+            let data = dataSource.item(at: indexPath)
+            cell.setSelectionIndex(data.getSelectionIndex?())
+            cell.adjustAppearanceForSelected(false, animated: true)
+        }
     }
     
     @objc private func onCloseButtonTap(_: UIButton) {
