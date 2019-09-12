@@ -25,6 +25,10 @@ final class NewCameraPresenter:
     var onFinish: ((NewCameraModule, NewCameraModuleResult) -> ())?
     var configureMediaPicker: ((MediaPickerModule) -> ())?
     
+    func focusOnModule() {
+        router.focusOnCurrentModule()
+    }
+    
     // MARK: - Private
     private func setUpView() {
         

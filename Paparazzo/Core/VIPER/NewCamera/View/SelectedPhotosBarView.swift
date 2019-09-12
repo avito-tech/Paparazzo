@@ -31,7 +31,7 @@ final class SelectedPhotosBarView: UIView {
         penultimatePhotoThumbnailView.layer.cornerRadius = 5
         
         button.setTitle("Готово", for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 11, right: 16)
+        button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 24, bottom: 11, right: 24)
         button.layer.backgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
         button.layer.cornerRadius = 6
         button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
@@ -94,7 +94,7 @@ final class SelectedPhotosBarView: UIView {
     
     // MARK: - UIView
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: size.width, height: 66)
+        return CGSize(width: size.width, height: 72)
     }
     
     override func layoutSubviews() {
@@ -102,14 +102,14 @@ final class SelectedPhotosBarView: UIView {
         
         lastPhotoThumbnailView.layout(
             left: bounds.left + 15,
-            top: bounds.top + 16,
+            top: bounds.top + 18,
             width: lastPhotoThumbnailSize.width,
             height: lastPhotoThumbnailSize.height
         )
         
         penultimatePhotoThumbnailView.layout(
             left: bounds.left + 19,
-            top: bounds.top + 25,
+            top: lastPhotoThumbnailView.top + 9,
             width: penultimatePhotoThumbnailSize.width,
             height: penultimatePhotoThumbnailSize.height
         )

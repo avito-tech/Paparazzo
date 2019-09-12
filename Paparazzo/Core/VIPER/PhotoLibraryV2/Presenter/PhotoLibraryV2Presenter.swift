@@ -299,7 +299,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)
                 module.onFinish = { _ in
-                    self?.view?.onContinueButtonTap?()
+                    self?.router.focusOnCurrentModule()
                 }
             }
         )
@@ -415,17 +415,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                             configure: { [weak self] newCameraModule in
                                 newCameraModule.configureMediaPicker = { mediaPickerModule in
                                     self?.configureMediaPicker(mediaPickerModule)
-                                    mediaPickerModule.onFinish = { _ in
-                                        self?.view?.onContinueButtonTap?()
+                                    mediaPickerModule.onFinish = { [weak newCameraModule] _ in
+                                        newCameraModule?.focusOnModule()
                                     }
                                 }
-                                newCameraModule.onFinish = { module, result in
-                                    switch result {
-                                    case .finished:
-                                        self?.view?.onContinueButtonTap?()  // TODO: extract to `handle...` method
-                                    case .cancelled:
-                                        self?.router.focusOnCurrentModule()
-                                    }
+                                newCameraModule.onFinish = { _, _ in
+                                    self?.router.focusOnCurrentModule()
                                 }
                             }
                         )
