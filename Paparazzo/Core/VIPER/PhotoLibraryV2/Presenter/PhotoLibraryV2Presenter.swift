@@ -61,6 +61,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onViewDidLoad: (() -> ())?
     var onCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
+    var onNewCameraShow: (() -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
@@ -410,6 +411,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     guard let strongSelf = self else { return }
                     
                     if strongSelf.isNewFlowPrototype {
+                        self?.onNewCameraShow?()
                         self?.router.showNewCamera(
                             selectedImagesStorage: strongSelf.interactor.selectedPhotosStorage,
                             mediaPickerData: strongSelf.interactor.mediaPickerData,
