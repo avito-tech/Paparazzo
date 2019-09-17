@@ -2,7 +2,7 @@ import UIKit
 
 public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2Assembly {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -14,25 +14,29 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     public func module(
         data: PhotoLibraryV2Data,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
     {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
+        let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
         
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: data.mediaPickerData,
             selectedItems: data.selectedItems,
-            maxSelectedItemsCount: data.maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
-            cameraService: serviceFactory.cameraService(initialActiveCameraType: .back),
+            cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
             canRotate: UIDevice.current.userInterfaceIdiom == .pad
         )
         
-        let viewController = PhotoLibraryV2ViewController()
+        let viewController = PhotoLibraryV2ViewController(
+            isNewFlowPrototype: isNewFlowPrototype
+        )
         
         let router = PhotoLibraryV2UIKitRouter(
             assemblyFactory: assemblyFactory,
+            cameraService: cameraService,
             viewController: viewController
         )
         
@@ -40,7 +44,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isMetalEnabled: isMetalEnabled
+            isMetalEnabled: isMetalEnabled,
+            isNewFlowPrototype: isNewFlowPrototype
         )
         
         viewController.addDisposable(presenter)

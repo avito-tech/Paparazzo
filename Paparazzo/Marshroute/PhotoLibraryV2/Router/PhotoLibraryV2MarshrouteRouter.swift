@@ -3,23 +3,25 @@ import UIKit
 
 final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory
+    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
+    private let cameraService: CameraService
     
-    init(assemblyFactory: AssemblyFactory, routerSeed: RouterSeed) {
+    init(assemblyFactory: AssemblyFactory, cameraService: CameraService, routerSeed: RouterSeed) {
         self.assemblyFactory = assemblyFactory
+        self.cameraService = cameraService
         super.init(routerSeed: routerSeed)
     }
     
     // MARK: - PhotoLibraryV2Router
-    
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isMetalEnabled: Bool,
-        configure: (MediaPickerModule) -> ()
-        ) {
+        isNewFlowPrototype: Bool,
+        configure: (MediaPickerModule) -> ())
+    {
         pushViewControllerDerivedFrom { routerSeed in
             
             let assembly = assemblyFactory.mediaPickerAssembly()
@@ -29,6 +31,26 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
                 isMetalEnabled: isMetalEnabled,
+                isNewFlowPrototype: isNewFlowPrototype,
+                configure: configure
+            )
+        }
+    }
+    
+    func showNewCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (NewCameraModule) -> ())
+    {
+        presentModalViewControllerDerivedFrom { routerSeed in
+            
+            let assembly = assemblyFactory.newCameraAssembly()
+            
+            return assembly.module(
+                selectedImagesStorage: selectedImagesStorage,
+                mediaPickerData: mediaPickerData,
+                cameraService: cameraService,
+                routerSeed: routerSeed,
                 configure: configure
             )
         }

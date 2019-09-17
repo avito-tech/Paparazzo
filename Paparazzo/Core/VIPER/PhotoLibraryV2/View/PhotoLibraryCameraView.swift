@@ -1,20 +1,20 @@
-import UIKit
+import AVFoundation
 import ImageSource
+import UIKit
 
 class PhotoLibraryCameraView: UICollectionReusableView {
     
     // MARK: - Subviews
-    
-    private var cameraOutputView: CameraOutputView?
+    var cameraOutputLayer: AVCaptureVideoPreviewLayer? = AVCaptureVideoPreviewLayer()
     private var dimView = UIView()
     private let button = UIButton()
     
     // MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .black
+        
         layer.cornerRadius = 6
         layer.rasterizationScale = UIScreen.main.nativeScale
         layer.shouldRasterize = true
@@ -29,6 +29,12 @@ class PhotoLibraryCameraView: UICollectionReusableView {
         
         addSubview(button)
         
+        if let cameraOutputLayer = cameraOutputLayer {
+            cameraOutputLayer.videoGravity = .resizeAspectFill
+            cameraOutputLayer.cornerRadius = 6
+            layer.insertSublayer(cameraOutputLayer, below: dimView.layer)
+        }
+        
         setAccessibilityId(.cameraInLibraryButton)
     }
     
@@ -37,7 +43,6 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     }
     
     // MARK: - PhotoLibraryCameraView
-    
     var onTap: (() -> ())?
     
     func setCameraIcon(_ icon: UIImage?) {
@@ -45,40 +50,43 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     }
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
-        
-        let newCameraOutputView = CameraOutputView(
-            captureSession: parameters.captureSession,
-            outputOrientation: parameters.orientation,
-            isMetalEnabled: parameters.isMetalEnabled
-        )
-        
-        newCameraOutputView.layer.cornerRadius = 6
-        cameraOutputView?.removeFromSuperview()
-        
-        insertSubview(newCameraOutputView, belowSubview: button)
-        
-        self.cameraOutputView = newCameraOutputView
+        cameraOutputLayer?.session = parameters.captureSession
     }
     
     func setOutputOrientation(_ orientation: ExifOrientation) {
-        cameraOutputView?.orientation = orientation
+        // AVCaptureVideoPreviewLayer handles this itself
+    }
+    
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        self.cameraOutputLayer = previewLayer
+        
+        if let previewLayer = previewLayer {
+            layer.insertSublayer(previewLayer, below: dimView.layer)
+            layOutPreviewLayer()
+        }
     }
     
     // MARK: - Layout
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
         let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
         
-        cameraOutputView?.frame = bounds
+        layOutPreviewLayer()
+        
         dimView.frame = bounds
         button.frame = bounds
     }
     
     // MARK: - Private
-    
     @objc private func onButtonTap(_ sender: UIButton) {
         onTap?()
+    }
+    
+    private func layOutPreviewLayer() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        cameraOutputLayer?.frame = layer.bounds
+        CATransaction.commit()
     }
 }

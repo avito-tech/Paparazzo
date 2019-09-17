@@ -1,6 +1,7 @@
 import AVFoundation
 import ImageIO
 import ImageSource
+import Photos
 
 public enum CameraType {
     case back
@@ -126,19 +127,63 @@ final class CameraServiceImpl: CameraService {
             self.output = output
             self.captureSession = captureSession
             
+            subscribeForNotifications(session: captureSession)
+            
         } catch {
             self.output = nil
             self.captureSession = nil
         }
     }
     
+    private func subscribeForNotifications(session: AVCaptureSession) {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionWasInterrupted),
+            name: .AVCaptureSessionWasInterrupted,
+            object: session
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionInterruptionEnded),
+            name: .AVCaptureSessionInterruptionEnded,
+            object: session
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionRuntimeError),
+            name: .AVCaptureSessionRuntimeError,
+            object: session
+        )
+    }
+    
+    private var shouldRestartSessionAfterInterruptionEnds = false
+    
+    @objc private func sessionWasInterrupted(notification: NSNotification) {
+        shouldRestartSessionAfterInterruptionEnds = (captureSession?.isRunning == true)
+    }
+    
+    @objc private func sessionInterruptionEnded(notification: NSNotification) {
+        if shouldRestartSessionAfterInterruptionEnds && captureSession?.isRunning == false {
+            captureSessionSetupQueue.async {
+                self.captureSession?.startRunning()
+            }
+        }
+    }
+    
+    @objc private func sessionRuntimeError(notification: NSNotification) {
+        guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
+        print(error)
+    }
+    
     // MARK: - CameraService
     
     func setCaptureSessionRunning(_ needsRunning: Bool) {
-        if needsRunning {
-            captureSession?.startRunning()
-        } else {
-            captureSession?.stopRunning()
+        captureSessionSetupQueue.async {
+            if needsRunning {
+                self.captureSession?.startRunning()
+            } else {
+                self.captureSession?.stopRunning()
+            }
         }
     }
     
@@ -260,10 +305,8 @@ final class CameraServiceImpl: CameraService {
     }
     
     func takePhoto(completion: @escaping (PhotoFromCamera?) -> ()) {
-        
         guard let output = output, let connection = videoOutputConnection() else {
-            completion(nil)
-            return
+            return completion(nil)
         }
         
         if connection.isVideoOrientationSupported {
@@ -277,6 +320,61 @@ final class CameraServiceImpl: CameraService {
                     return
                 }
                 completion(PhotoFromCamera(path: path))
+            }
+        }
+    }
+    
+    func takePhotoToPhotoLibrary(completion callersCompletion: @escaping (PhotoLibraryItem?) -> ()) {
+        
+        func completion(_ mediaPickerItem: PhotoLibraryItem?) {
+            dispatch_to_main_queue {
+                callersCompletion(mediaPickerItem)
+            }
+        }
+        
+        guard let output = output, let connection = videoOutputConnection() else {
+            return completion(nil)
+        }
+        
+        if connection.isVideoOrientationSupported {
+            connection.videoOrientation = avOrientationForCurrentDeviceOrientation()
+        }
+        
+        output.captureStillImageAsynchronously(from: connection) { [weak self] sampleBuffer, error in
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                guard let imageData =
+                    sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) })
+                    else {
+                        return completion(nil)
+                    }
+                
+                PHPhotoLibrary.requestAuthorization { status in
+                    guard status == .authorized else {
+                        return completion(nil)
+                    }
+                    
+                    var placeholderForCreatedAsset: PHObjectPlaceholder?
+                    
+                    PHPhotoLibrary.shared().performChanges({
+                        // Add the captured photo's file data as the main resource for the Photos asset.
+                        let creationRequest = PHAssetCreationRequest.forAsset()
+                        creationRequest.addResource(with: .photo, data: imageData, options: nil)
+                        
+                        placeholderForCreatedAsset = creationRequest.placeholderForCreatedAsset
+                        
+                    }, completionHandler: { isSuccessful, error in
+                        guard isSuccessful, let localIdentifier = placeholderForCreatedAsset?.localIdentifier else {
+                            return completion(nil)
+                        }
+                        
+                        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil)
+                        
+                        completion(fetchResult.lastObject.flatMap { asset in
+                            PhotoLibraryItem(image: PHAssetImageSource(asset: asset))
+                        })
+                    })
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ import Marshroute
 
 public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2MarshrouteAssembly {
     
-    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory
+    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -15,9 +15,9 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     public func module(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
@@ -29,7 +29,6 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: mediaPickerData,
             selectedItems: selectedItems,
-            maxSelectedItemsCount: maxSelectedItemsCount,
             photoLibraryItemsService: photoLibraryItemsService,
             cameraService: cameraService,
             deviceOrientationService: DeviceOrientationServiceImpl(),
@@ -38,6 +37,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         
         let router = PhotoLibraryV2MarshrouteRouter(
             assemblyFactory: assemblyFactory,
+            cameraService: cameraService,
             routerSeed: routerSeed
         )
         
@@ -45,10 +45,11 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isMetalEnabled: isMetalEnabled
+            isMetalEnabled: isMetalEnabled,
+            isNewFlowPrototype: isNewFlowPrototype
         )
         
-        let viewController = PhotoLibraryV2ViewController()
+        let viewController = PhotoLibraryV2ViewController(isNewFlowPrototype: isNewFlowPrototype)
         viewController.addDisposable(presenter)
         viewController.setTheme(theme)
         

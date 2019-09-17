@@ -1,11 +1,12 @@
 public final class AssemblyFactory:
     CameraAssemblyFactory,
+    NewCameraAssemblyFactory,
     MediaPickerAssemblyFactory,
     PhotoLibraryAssemblyFactory,
+    PhotoLibraryV2AssemblyFactory,
     ImageCroppingAssemblyFactory,
     MaskCropperAssemblyFactory
 {
-    
     private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
     
@@ -19,6 +20,10 @@ public final class AssemblyFactory:
     
     func cameraAssembly() -> CameraAssembly {
         return CameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+    }
+    
+    func newCameraAssembly() -> NewCameraAssembly {
+        return NewCameraAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
     }
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {
@@ -35,6 +40,14 @@ public final class AssemblyFactory:
 
     public func photoLibraryAssembly() -> PhotoLibraryAssembly {
         return PhotoLibraryAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
+    }
+    
+    public func photoLibraryV2Assembly() -> PhotoLibraryV2Assembly {
+        return PhotoLibraryV2AssemblyImpl(
+            assemblyFactory: self,
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
     }
     
     public func maskCropperAssembly() -> MaskCropperAssembly {

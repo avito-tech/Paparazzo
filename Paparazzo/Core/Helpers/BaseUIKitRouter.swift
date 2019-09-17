@@ -55,6 +55,10 @@ class BaseUIKitRouter {
     }
     
     func present(_ viewController: UIViewController, animated: Bool, completion: (() -> ())? = nil) {
-        self.viewController?.present(viewController, animated: animated, completion: completion)
+        if let topViewController = (self.viewController as? UINavigationController)?.topViewController {
+            topViewController.present(viewController, animated: animated, completion: completion)
+        } else {
+            self.viewController?.present(viewController, animated: animated, completion: completion)
+        }
     }
 }

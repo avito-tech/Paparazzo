@@ -92,6 +92,34 @@ public final class PaparazzoFacade {
         return NavigationController(rootViewController: galleryController)
     }
     
+    public static func libraryV2ViewController<NavigationController: UINavigationController>(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        parameters: PhotoLibraryV2Data,
+        onFinish: @escaping ([MediaPickerItem]) -> (),
+        onCancel: (() -> ())? = nil)
+        -> NavigationController
+    {
+        let assembly = assemblyFactory(theme: theme).photoLibraryV2Assembly()
+        
+        let galleryController = assembly.module(
+            data: parameters,
+            isMetalEnabled: false,
+            isNewFlowPrototype: true,
+            configure: { (module: PhotoLibraryV2Module) in
+                module.onFinish = { [weak module] result in
+                    module?.dismissModule()
+                    onFinish(result)
+                }
+                module.onCancel = { [weak module] in
+                    module?.dismissModule()
+                    onCancel?()
+                }
+            }
+        )
+        
+        return NavigationController(rootViewController: galleryController)
+    }
+    
     private static func assemblyFactory(theme: PaparazzoUITheme) -> AssemblyFactory {
         return AssemblyFactory(theme: theme, imageStorage: imageStorage)
     }

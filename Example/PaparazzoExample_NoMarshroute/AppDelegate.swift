@@ -82,6 +82,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             exampleController?.present(viewController, animated: true, completion: nil)
         }
         
+        exampleController.onShowPhotoLibraryV2ButtonTap = { [weak exampleController] in
+            
+            let viewController = PaparazzoFacade.libraryV2ViewController(
+                theme: PaparazzoUITheme.appSpecificTheme(),
+                parameters: PhotoLibraryV2Data(
+                    mediaPickerData: MediaPickerData()
+                ),
+                onFinish: { result in
+                    print(result)
+                }
+            )
+            
+            exampleController?.present(viewController, animated: true, completion: nil)
+        }
+        
         return NavigationController(rootViewController: exampleController)
     }
 }

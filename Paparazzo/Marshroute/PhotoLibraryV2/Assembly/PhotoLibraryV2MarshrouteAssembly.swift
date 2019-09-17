@@ -5,9 +5,9 @@ public protocol PhotoLibraryV2MarshrouteAssembly: class {
     func module(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
 }
@@ -16,16 +16,16 @@ public extension PhotoLibraryV2MarshrouteAssembly {
     func module(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
-        maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
         configure: (PhotoLibraryV2Module) -> ())
-        -> UIViewController {
+        -> UIViewController
+    {
             return module(
                 mediaPickerData: mediaPickerData,
                 selectedItems: selectedItems,
-                maxSelectedItemsCount: maxSelectedItemsCount,
                 routerSeed: routerSeed,
                 isMetalEnabled: false,
+                isNewFlowPrototype: false,
                 configure: configure
             )
     }

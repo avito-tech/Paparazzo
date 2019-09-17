@@ -3,7 +3,9 @@ import UIKit
 
 public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, MediaPickerMarshrouteAssembly {
     
-    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
+    typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory
+        & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
+        & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -19,6 +21,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
@@ -47,6 +50,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         )
         
         let presenter = MediaPickerPresenter(
+            isNewFlowPrototype: isNewFlowPrototype,
             interactor: interactor,
             router: router,
             cameraModuleInput: cameraModuleInput

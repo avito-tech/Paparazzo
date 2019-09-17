@@ -7,6 +7,7 @@ public protocol MediaPickerMarshrouteAssembly: class {
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
 }
@@ -20,10 +21,18 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isMetalEnabled: Bool,
+        isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
-        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, isMetalEnabled: isMetalEnabled, configure: configure)
+        return module(
+            data: data,
+            overridenTheme: nil,
+            routerSeed: routerSeed,
+            isMetalEnabled: isMetalEnabled,
+            isNewFlowPrototype: isNewFlowPrototype,
+            configure: configure
+        )
     }
     
     func module(
@@ -32,6 +41,13 @@ public extension MediaPickerMarshrouteAssembly {
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
-        return module(data: data, overridenTheme: nil, routerSeed: routerSeed, isMetalEnabled: false, configure: configure)
+        return module(
+            data: data,
+            overridenTheme: nil,
+            routerSeed: routerSeed,
+            isMetalEnabled: false,
+            isNewFlowPrototype: false,
+            configure: configure
+        )
     }
 }

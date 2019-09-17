@@ -16,6 +16,7 @@ public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     var libraryBottomContinueButtonBackgroundColor: UIColor { get }
     var libraryBottomContinueButtonTitleColor: UIColor { get }
     var libraryBottomContinueButtonFont: UIFont { get }
+    var librarySelectionIndexFont: UIFont { get }
     
     var closeIcon: UIImage? { get }
     

@@ -1,14 +1,22 @@
 final class MediaPickerPresenter: MediaPickerModule {
     
-    // MARK: - Dependencies
+    // MARK: - Config
+    private let isNewFlowPrototype: Bool
     
+    // MARK: - Dependencies
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
     private let cameraModuleInput: CameraModuleInput
     
     // MARK: - Init
     
-    init(interactor: MediaPickerInteractor, router: MediaPickerRouter, cameraModuleInput: CameraModuleInput) {
+    init(
+        isNewFlowPrototype: Bool,
+        interactor: MediaPickerInteractor,
+        router: MediaPickerRouter,
+        cameraModuleInput: CameraModuleInput)
+    {
+        self.isNewFlowPrototype = isNewFlowPrototype
         self.interactor = interactor
         self.router = router
         self.cameraModuleInput = cameraModuleInput
@@ -55,7 +63,6 @@ final class MediaPickerPresenter: MediaPickerModule {
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
         view?.setContinueButtonStyle(style)
     }
-    
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
         view?.setContinueButtonPlacement(placement)
@@ -117,16 +124,18 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         if let itemToSelectAfterRemoval = itemToSelectAfterRemoval {
             view?.selectItem(itemToSelectAfterRemoval)
-        } else {
-            if canShowCamera {
-                view?.selectCamera()
-                view?.setPhotoTitleAlpha(0)
-            } else {
-                onCancel?()
-            }
+        } else if canShowCamera {
+            view?.selectCamera()
+            view?.setPhotoTitleAlpha(0)
+        } else if !isNewFlowPrototype {
+            onCancel?()
         }
         
         onItemRemove?(item, index)
+        
+        if isNewFlowPrototype && itemToSelectAfterRemoval == nil {
+            onFinish?([])
+        }
     }
     
     func focusOnModule() {
@@ -200,7 +209,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 let selectedItem = self?.interactor.selectedItem
                 if let selectedItem = selectedItem {
                     self?.selectItem(selectedItem)
-                } else if self?.interactor.canAddItems() == true {
+                } else if self?.interactor.canAddItems() == true && self?.interactor.cameraEnabled == true {
                     self?.selectCamera()
                 } else if let lastItem = items.last {
                     self?.selectItem(lastItem)
@@ -318,12 +327,12 @@ final class MediaPickerPresenter: MediaPickerModule {
                         if let updatedItem = updatedItem {
                             self?.updateItem(updatedItem, afterAutocorrect: true)
                         }
-                }, onError: { [weak self] errorMessage in
-                    if let errorMessage = errorMessage {
-                        self?.view?.showInfoMessage(errorMessage, timeout: 1.0)
+                    }, onError: { [weak self] errorMessage in
+                        if let errorMessage = errorMessage {
+                            self?.view?.showInfoMessage(errorMessage, timeout: 1.0)
+                        }
+                        self?.view?.setAutocorrectionStatus(.original)
                     }
-                    self?.view?.setAutocorrectionStatus(.original)
-                }
                 )
             }
         }

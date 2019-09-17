@@ -1,16 +1,44 @@
+import AVFoundation
 import ImageSource
 import UIKit
 
 final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV2ViewInput, ThemeConfigurable {
     
-    typealias ThemeType = PhotoLibraryV2UITheme
+    typealias ThemeType = PhotoLibraryV2UITheme & NewCameraUITheme
     
-    private let photoLibraryView = PhotoLibraryV2View()
+    private let photoLibraryView: PhotoLibraryV2View
+    
+    var previewLayer: AVCaptureVideoPreviewLayer? {
+        return photoLibraryView.previewLayer
+    }
+    
+    init(isNewFlowPrototype: Bool) {
+        photoLibraryView = PhotoLibraryV2View(isNewFlowPrototype: isNewFlowPrototype)
+        
+        super.init()
+        
+        if isNewFlowPrototype {
+            transitioningDelegate = PhotoLibraryToCameraTransitioningDelegate.shared
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - PhotoLibraryV2ViewController
+    func previewFrame(forBounds bounds: CGRect) -> CGRect {
+        return photoLibraryView.previewFrame(forBounds: bounds)
+    }
+    
+    func setPreviewLayer(_ previewLayer: AVCaptureVideoPreviewLayer?) {
+        photoLibraryView.setPreviewLayer(previewLayer)
+    }
     
     // MARK: - UIViewController
     
     override func loadView() {
-        view = photoLibraryView 
+        view = photoLibraryView
     }
     
     override func viewDidLoad() {
@@ -26,6 +54,8 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         if !UIDevice.current.hasTopSafeAreaInset {
             UIApplication.shared.setStatusBarHidden(true, with: animated ? .fade : .none)
         }
+        
+        onViewWillAppear?()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -40,9 +70,9 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     }
     
     // MARK: - PhotoLibraryViewInput
-    
     var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onViewDidLoad: (() -> ())?
+    var onViewWillAppear: (() -> ())?
     
     var onTitleTap: (() -> ())? {
         get { return photoLibraryView.onTitleTap }
@@ -69,6 +99,11 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         set { photoLibraryView.onDimViewTap = newValue }
     }
     
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return photoLibraryView.onLastPhotoThumbnailTap }
+        set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
+    }
+    
     @nonobjc func setTitle(_ title: String) {
         photoLibraryView.setTitle(title)
     }
@@ -79,6 +114,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func setContinueButtonTitle(_ title: String) {
         photoLibraryView.setContinueButtonTitle(title)
+    }
+    
+    func setContinueButtonVisible(_ isVisible: Bool) {
+        photoLibraryView.setContinueButtonVisible(isVisible)
     }
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
@@ -123,6 +162,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.deselectAndAdjustAllCells()
     }
     
+    func reloadSelectedItems() {
+        photoLibraryView.reloadSelectedItems()
+    }
+    
     func setAccessDeniedViewVisible(_ visible: Bool) {
         photoLibraryView.setAccessDeniedViewVisible(visible)
     }
@@ -165,6 +208,14 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     
     func toggleAlbumsList() {
         photoLibraryView.toggleAlbumsList()
+    }
+    
+    func setSelectedPhotosBarState(_ state: SelectedPhotosBarState) {
+        photoLibraryView.setSelectedPhotosBarState(state)
+    }
+    
+    func setDoneButtonTitle(_ title: String) {
+        photoLibraryView.setDoneButtonTitle(title)
     }
     
     // MARK: - Orientation
