@@ -159,12 +159,10 @@ final class CameraServiceImpl: CameraService {
     private var shouldRestartSessionAfterInterruptionEnds = false
     
     @objc private func sessionWasInterrupted(notification: NSNotification) {
-        print("sessionWasInterrupted")
         shouldRestartSessionAfterInterruptionEnds = (captureSession?.isRunning == true)
     }
     
     @objc private func sessionInterruptionEnded(notification: NSNotification) {
-        print("sessionInterruptionEnded")
         if shouldRestartSessionAfterInterruptionEnds && captureSession?.isRunning == false {
             captureSessionSetupQueue.async {
                 self.captureSession?.startRunning()
@@ -353,7 +351,6 @@ final class CameraServiceImpl: CameraService {
                 
                 PHPhotoLibrary.requestAuthorization { status in
                     guard status == .authorized else {
-                        // TODO: handle this case
                         return completion(nil)
                     }
                     

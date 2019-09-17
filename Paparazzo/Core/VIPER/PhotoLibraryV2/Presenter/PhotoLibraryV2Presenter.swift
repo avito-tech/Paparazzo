@@ -144,6 +144,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         view?.setAccessDeniedTitle(localized("To pick photo from library"))
         view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
         view?.setAccessDeniedButtonTitle(localized("Allow access to photo library"))
+        view?.setDoneButtonTitle(localized("Done"))
         
         view?.setProgressVisible(true)
         

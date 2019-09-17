@@ -18,6 +18,9 @@ protocol NewCameraViewInput: class {
     func setLatestPhotoLibraryItemImage(_: ImageSource?)
     func setSelectedPhotosBarState(_: SelectedPhotosBarState, completion: @escaping () -> ())
     
+    func setHintText(_: String)
+    func setDoneButtonTitle(_: String)
+    
     func animateFlash()
     func animateCapturedPhoto(
         _: ImageSource,

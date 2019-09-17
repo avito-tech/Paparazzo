@@ -42,8 +42,6 @@ final class NewCameraView: UIView {
         
         backgroundColor = .white
         
-        hintLabel.text = "Разместите объект внутри рамки и сделайте фото"
-        
         addSubview(previewView)
         addSubview(closeButton)
         addSubview(photoLibraryButton)
@@ -167,6 +165,14 @@ final class NewCameraView: UIView {
             
             dispatchGroup.notify(queue: .main, execute: completion)
         }
+    }
+    
+    func setHintText(_ hintText: String) {
+        hintLabel.text = hintText
+    }
+    
+    func setDoneButtonTitle(_ title: String) {
+        selectedPhotosBarView.setDoneButtonTitle(title)
     }
     
     func setLatestPhotoLibraryItemImage(_ imageSource: ImageSource?) {
@@ -327,7 +333,7 @@ final class NewCameraView: UIView {
         let selectedPhotosBarViewSize = selectedPhotosBarSize(for: bounds)
         let selectedPhotosBarBottom = bounds.bottom - max(16, paparazzoSafeAreaInsets.bottom)
         let selectedPhotosBarViewFrame = CGRect(
-            x: bounds.left + (bounds.width - selectedPhotosBarViewSize.width) / 2,
+            x: bounds.left + floor((bounds.width - selectedPhotosBarViewSize.width) / 2),
             y: selectedPhotosBarBottom - selectedPhotosBarViewSize.height,
             width: selectedPhotosBarViewSize.width,
             height: selectedPhotosBarViewSize.height
@@ -341,7 +347,7 @@ final class NewCameraView: UIView {
         
         let captureButtonBottom = selectedPhotosBarViewFrame.top - spacing
         let captureButtonFrame = CGRect(
-            x: bounds.centerX - captureButtonSize / 2,
+            x: floor(bounds.centerX - captureButtonSize / 2),
             y: captureButtonBottom - captureButtonSize,
             width: captureButtonSize,
             height: captureButtonSize
@@ -369,14 +375,14 @@ final class NewCameraView: UIView {
         let toggleCameraButtonRight = bounds.right - 23
         let toggleCameraButtonFrame = CGRect(
             x: toggleCameraButtonRight - toggleCameraButtonSize.width,
-            y: captureButtonFrame.centerY - toggleCameraButtonSize.height / 2,
+            y: floor(captureButtonFrame.centerY - toggleCameraButtonSize.height / 2),
             width: toggleCameraButtonSize.width,
             height: toggleCameraButtonSize.height
         )
         
         let photoViewSize = CGSize(width: 37, height: 37)
         let photoViewFrame = CGRect(
-            centerX: bounds.left + (captureButtonFrame.left - bounds.left) / 2,
+            centerX: bounds.left + floor((captureButtonFrame.left - bounds.left) / 2),
             centerY: captureButtonFrame.centerY,
             width: photoViewSize.width,
             height: photoViewSize.height

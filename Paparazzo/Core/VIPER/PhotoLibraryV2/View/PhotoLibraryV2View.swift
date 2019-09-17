@@ -527,6 +527,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    func setDoneButtonTitle(_ title: String) {
+        selectedPhotosBarView.setDoneButtonTitle(title)
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(

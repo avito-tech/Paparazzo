@@ -214,6 +214,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setSelectedPhotosBarState(state)
     }
     
+    func setDoneButtonTitle(_ title: String) {
+        photoLibraryView.setDoneButtonTitle(title)
+    }
+    
     // MARK: - Orientation
     override open var shouldAutorotate: Bool {
         return UIDevice.current.userInterfaceIdiom == .pad

@@ -30,7 +30,6 @@ final class SelectedPhotosBarView: UIView {
         penultimatePhotoThumbnailView.alpha = 0.26
         penultimatePhotoThumbnailView.layer.cornerRadius = 5
         
-        button.setTitle("Готово", for: .normal)
         button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 24, bottom: 11, right: 24)
         button.layer.backgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
         button.layer.cornerRadius = 6
@@ -55,6 +54,11 @@ final class SelectedPhotosBarView: UIView {
     func setTheme(_ theme: NewCameraUITheme) {
         label.font = theme.newCameraPhotosCountFont
         button.titleLabel?.font = theme.newCameraDoneButtonFont
+    }
+    
+    func setDoneButtonTitle(_ title: String) {
+        button.setTitle(title, for: .normal)
+        setNeedsLayout()
     }
     
     func setHidden(_ isHidden: Bool, animated: Bool) {

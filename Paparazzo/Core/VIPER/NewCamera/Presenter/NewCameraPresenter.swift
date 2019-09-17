@@ -35,6 +35,9 @@ final class NewCameraPresenter:
         view?.setFlashButtonVisible(interactor.isFlashAvailable)
         view?.setFlashButtonOn(interactor.isFlashEnabled)
         
+        view?.setDoneButtonTitle(localized("Done"))
+        view?.setHintText(localized("Place the object inside the frame and take a photo"))
+        
         view?.onCloseButtonTap = { [weak self] in
             guard let strongSelf = self else { return }
             self?.onFinish?(strongSelf, .cancelled)

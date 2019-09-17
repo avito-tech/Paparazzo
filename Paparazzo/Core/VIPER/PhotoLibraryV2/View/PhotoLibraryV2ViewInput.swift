@@ -52,6 +52,8 @@ protocol PhotoLibraryV2ViewInput: class {
     func setAccessDeniedTitle(_: String)
     func setAccessDeniedMessage(_: String)
     func setAccessDeniedButtonTitle(_: String)
+    
+    func setDoneButtonTitle(_: String)
 }
 
 struct PhotoLibraryCameraViewData {

@@ -123,6 +123,14 @@ final class NewCameraViewController:
         cameraView.setSelectedPhotosBarState(state, completion: completion)
     }
     
+    func setHintText(_ hintText: String) {
+        cameraView.setHintText(hintText)
+    }
+    
+    func setDoneButtonTitle(_ title: String) {
+        cameraView.setDoneButtonTitle(title)
+    }
+    
     func animateFlash() {
         cameraView.animateFlash()
     }
