@@ -92,9 +92,10 @@ public struct PaparazzoUITheme:
     
     public var maskCropperDiscardPhotoIcon = PaparazzoUITheme.image(named: "discard")
     public var maskCropperConfirmPhotoIcon = PaparazzoUITheme.image(named: "confirm")
-    public var cameraIcon = PaparazzoUITheme.image(named: "camera")
+    public var cameraIcon = PaparazzoUITheme.image(named: "camera-new")
     
     // MARK: - NewCameraUITheme
+    public var newCameraCloseIcon = PaparazzoUITheme.image(named: "bt-close")
     public var newCameraFlashOnIcon = PaparazzoUITheme.image(named: "flash_on")
     public var newCameraFlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
     public var newCameraDoneButtonFont = UIFont.systemFont(ofSize: 16)

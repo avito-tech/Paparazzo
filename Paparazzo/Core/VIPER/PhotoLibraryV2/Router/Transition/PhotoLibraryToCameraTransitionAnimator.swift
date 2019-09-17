@@ -10,26 +10,19 @@ final class PhotoLibraryToCameraTransitionAnimator: NSObject, UIViewControllerAn
         
         let containerView = transitionContext.containerView
         
-        let untypedFromViewController = transitionContext.viewController(forKey: .from)
-        
-        let libraryViewController1 = untypedFromViewController as? PhotoLibraryV2ViewController
-        let libraryViewController2 =
-            (untypedFromViewController as? UINavigationController)?.topViewController as? PhotoLibraryV2ViewController
-        
         guard
-            let fromViewController = libraryViewController1 ?? libraryViewController2,
+            let fromViewController = photoLibraryViewController(from: transitionContext.viewController(forKey: .from)),
             let fromView = transitionContext.view(forKey: .from),
             let toViewController = transitionContext.viewController(forKey: .to) as? NewCameraViewController,
             let toView = transitionContext.view(forKey: .to),
             let previewLayer = fromViewController.previewLayer
-            else {
-                // TODO: transition as usual
-                transitionContext.completeTransition(false /* TODO */)
-                return
+        else {
+            transitionContext.completeTransition(false)
+            return
         }
         
         let initialFrame = containerView.convert(
-            fromViewController.previewFrame(forBounds: containerView.bounds),  // TODO: параметр не нужен
+            fromViewController.previewFrame(forBounds: containerView.bounds),
             from: fromViewController.view
         )
         
@@ -76,6 +69,11 @@ final class PhotoLibraryToCameraTransitionAnimator: NSObject, UIViewControllerAn
         toView.layer.add(toViewOpacityAnimation, forKey: "opacity")
         
         CATransaction.commit()
+    }
+    
+    private func photoLibraryViewController(from viewController: UIViewController?) -> PhotoLibraryV2ViewController? {
+        return viewController as? PhotoLibraryV2ViewController
+            ?? (viewController as? UINavigationController)?.topViewController as? PhotoLibraryV2ViewController
     }
 }
 

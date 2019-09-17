@@ -74,12 +74,7 @@ final class NewCameraView: UIView {
         flashView.backgroundColor = .white
         flashView.alpha = 0
         
-        closeButton.setImage(
-            UIImage(named: "bt-close", in: Resources.bundle, compatibleWith: nil),
-            for: .normal
-        )
         closeButton.addTarget(self, action: #selector(handleCloseButtonTap), for: .touchUpInside)
-        closeButton.sizeToFit()
         
         captureButton.layer.cornerRadius = captureButtonSize / 2
         captureButton.layer.borderWidth = 6
@@ -127,6 +122,8 @@ final class NewCameraView: UIView {
     }
     
     func setTheme(_ theme: NewCameraUITheme) {
+        closeButton.setImage(theme.newCameraCloseIcon, for: .normal)
+        
         flashButton.setImage(theme.newCameraFlashOffIcon, for: .normal)
         flashButton.setImage(theme.newCameraFlashOnIcon, for: .selected)
         
@@ -322,9 +319,9 @@ final class NewCameraView: UIView {
         let closeButtonSize = closeButton.sizeThatFits(bounds.size)
         let closeButtonFrame = CGRect(
             x: bounds.left + 8,
-            y: bounds.top + paparazzoSafeAreaInsets.top + navigationBarHeight / 2 - closeButtonSize.height,
-            width: closeButtonSize.width,
-            height: closeButtonSize.height
+            y: max(8, paparazzoSafeAreaInsets.top),
+            width: 38,
+            height: 38
         )
         
         let selectedPhotosBarViewSize = selectedPhotosBarSize(for: bounds)

@@ -701,6 +701,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     private func selectCollectionViewCellsAccordingToDataSource() {
+        // TODO: Сейчас тут замедляется UI на огромных галереях из-за итерирования по всем айтемам
         for indexPath in dataSource.indexPaths(where: { $0.selected }) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
