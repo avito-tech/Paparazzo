@@ -109,7 +109,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         super.viewWillTransition(to: size, with: coordinator)
     }
     
-    override open var shouldAutorotate: Bool {
+    override public var shouldAutorotate: Bool {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return true
         } else {
@@ -117,7 +117,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         }
     }
     
-    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return .all
         } else {
@@ -125,7 +125,7 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         }
     }
     
-    override open var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return super.preferredInterfaceOrientationForPresentation
         } else {

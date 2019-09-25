@@ -24,11 +24,11 @@ final class NewCameraViewController:
     }
     
     // MARK: - Orientation
-    override open var shouldAutorotate: Bool {
+    override public var shouldAutorotate: Bool {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
     
-    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return .all
         } else {
@@ -36,7 +36,7 @@ final class NewCameraViewController:
         }
     }
     
-    override open var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return super.preferredInterfaceOrientationForPresentation
         } else {
