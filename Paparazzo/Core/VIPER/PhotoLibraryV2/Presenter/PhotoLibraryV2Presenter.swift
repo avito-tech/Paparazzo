@@ -422,8 +422,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                                         newCameraModule?.focusOnModule()
                                     }
                                 }
-                                newCameraModule.onFinish = { _, _ in
-                                    self?.router.focusOnCurrentModule()
+                                newCameraModule.onFinish = { module, result in
+                                    switch result {
+                                    case .finished:
+                                        self?.view?.onContinueButtonTap?()
+                                    case .cancelled:
+                                        self?.router.focusOnCurrentModule()
+                                    }
                                 }
                             }
                         )
