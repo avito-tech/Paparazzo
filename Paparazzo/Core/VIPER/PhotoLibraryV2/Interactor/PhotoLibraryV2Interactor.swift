@@ -18,6 +18,7 @@ protocol PhotoLibraryV2Interactor: class {
     func isSelected(_: PhotoLibraryItem) -> Bool
     func selectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
     func deselectItem(_: PhotoLibraryItem) -> PhotoLibraryItemSelectionState
+    func moveSelectedItem(at sourceIndex: Int, to destinationIndex: Int)
     func prepareSelection() -> PhotoLibraryItemSelectionState
     
     func setCurrentAlbum(_: PhotoLibraryAlbum)

@@ -155,6 +155,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             view?.onViewWillAppear = { [weak self] in
                 DispatchQueue.main.async {
                     self?.adjustSelectedPhotosBar()
+                    self?.view?.reloadSelectedItems()
                 }
             }
         }
@@ -465,7 +466,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         module.onItemsAdd = onItemsAdd
         module.onItemUpdate = onItemUpdate
         module.onItemAutocorrect = onItemAutocorrect
-        module.onItemMove = onItemMove
+        module.onItemMove = { [weak self] sourceIndex, destinationIndex in
+            self?.interactor.moveSelectedItem(at: sourceIndex, to: destinationIndex)
+            self?.onItemMove?(sourceIndex, destinationIndex)
+        }
         module.onItemRemove = { [weak self] mediaPickerItem, index in
             self?.view?.deselectItem(with: mediaPickerItem.image)
             self?.onItemRemove?(mediaPickerItem, index)
