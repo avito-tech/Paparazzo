@@ -522,8 +522,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         case .visible(let data):
             selectedPhotosBarView.setHidden(false, animated: true)
             selectedPhotosBarView.label.text = data.countString
-            selectedPhotosBarView.lastPhotoThumbnailView.setImage(fromSource: data.lastPhoto)
-            selectedPhotosBarView.penultimatePhotoThumbnailView.setImage(fromSource: data.penultimatePhoto)
+            selectedPhotosBarView.setLastImage(data.lastPhoto)
+            selectedPhotosBarView.setPenultimateImage(data.penultimatePhoto)
         }
     }
     
