@@ -1,9 +1,10 @@
+import ImageSource
 import UIKit
 
 final class SelectedPhotosBarView: UIView {
     
     let lastPhotoThumbnailView = UIImageView()
-    let penultimatePhotoThumbnailView = UIImageView()
+    private let penultimatePhotoThumbnailView = UIImageView()
     let label = UILabel()
     private let button = UIButton()
     
@@ -51,6 +52,22 @@ final class SelectedPhotosBarView: UIView {
     }
     
     // MARK: - SelectedPhotosBarView
+    func setLastImage(_ imageSource: ImageSource?, resultHandler: ((ImageRequestResult<UIImage>) -> ())? = nil) {
+        lastPhotoThumbnailView.setImage(
+            fromSource: imageSource,
+            size: lastPhotoThumbnailSize,
+            resultHandler: resultHandler
+        )
+    }
+    
+    func setPenultimateImage(_ imageSource: ImageSource?, resultHandler: ((ImageRequestResult<UIImage>) -> ())? = nil) {
+        penultimatePhotoThumbnailView.setImage(
+            fromSource: imageSource,
+            size: penultimatePhotoThumbnailSize,
+            resultHandler: resultHandler
+        )
+    }
+    
     func setTheme(_ theme: NewCameraUITheme) {
         label.font = theme.newCameraPhotosCountFont
         button.titleLabel?.font = theme.newCameraDoneButtonFont
