@@ -142,21 +142,23 @@ final class NewCameraView: UIView {
             let dispatchGroup = DispatchGroup()
             
             if let lastPhoto = data.lastPhoto {
+                var didLeaveGroup = false
                 dispatchGroup.enter()
                 selectedPhotosBarView.setLastImage(lastPhoto) { result in
-                    // TODO: fix possible bug with leaving more times than entering
-                    if !result.degraded {
+                    if !result.degraded && !didLeaveGroup {
                         dispatchGroup.leave()
+                        didLeaveGroup = true  // prevent leaving dispatch group more times than entering
                     }
                 }
             }
             
             if let penultimatePhoto = data.penultimatePhoto {
+                var didLeaveGroup = false
                 dispatchGroup.enter()
                 selectedPhotosBarView.setPenultimateImage(penultimatePhoto) { result in
-                    // TODO: fix possible bug with leaving more times than entering
-                    if !result.degraded {
+                    if !result.degraded && !didLeaveGroup {
                         dispatchGroup.leave()
+                        didLeaveGroup = true  // prevent leaving dispatch group more times than entering
                     }
                 }
             }
