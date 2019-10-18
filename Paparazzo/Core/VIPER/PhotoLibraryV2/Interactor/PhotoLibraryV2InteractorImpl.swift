@@ -107,6 +107,10 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         return selectionState()
     }
     
+    func moveSelectedItem(at sourceIndex: Int, to destinationIndex: Int) {
+        selectedPhotosStorage.moveItem(at: sourceIndex, to: destinationIndex)
+    }
+    
     func prepareSelection() -> PhotoLibraryItemSelectionState {
         if selectedItems.count > 0 && mediaPickerData.maxItemsCount == 1 {
             selectedPhotosStorage.removeAllItems()

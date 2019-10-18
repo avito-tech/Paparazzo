@@ -29,6 +29,11 @@ public final class SelectedImageStorage {
         }
     }
     
+    func moveItem(at sourceIndex: Int, to destinationIndex: Int) {
+        images.moveElement(from: sourceIndex, to: destinationIndex)
+        onChange?()
+    }
+    
     func observeImagesChange(_ onChange: @escaping () -> ()) {
         self.onChange = onChange
     }
