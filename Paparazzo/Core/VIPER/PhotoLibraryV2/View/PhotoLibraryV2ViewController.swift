@@ -58,6 +58,11 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         onViewWillAppear?()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onViewDidDisappear?()
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return !UIDevice.current.hasTopSafeAreaInset
     }
@@ -73,6 +78,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onViewDidLoad: (() -> ())?
     var onViewWillAppear: (() -> ())?
+    var onViewDidDisappear: (() -> ())?
     
     var onTitleTap: (() -> ())? {
         get { return photoLibraryView.onTitleTap }

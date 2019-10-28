@@ -611,7 +611,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSource.default-UIKit/ImageSource.framework",
@@ -630,7 +630,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PaparazzoExample/Pods-PaparazzoExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3F7D7B75A0D0D814B69B4169 /* [CP] Embed Pods Frameworks */ = {
@@ -639,7 +639,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ImageSource-Core-Local-PHAsset-Remote-SDWebImage-UIKit/ImageSource.framework",
 				"${BUILT_PRODUCTS_DIR}/JNWSpringAnimation/JNWSpringAnimation.framework",
 				"${BUILT_PRODUCTS_DIR}/Paparazzo-Core-SDWebImage/Paparazzo.framework",
@@ -654,7 +654,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PaparazzoExample_NoMarshroute/Pods-PaparazzoExample_NoMarshroute-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		653986DC6000528CE9CF668C /* [CP] Check Pods Manifest.lock */ = {
@@ -699,7 +699,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoTests/Pods-PaparazzoTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PaparazzoTests/Pods-PaparazzoTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSource.default-UIKit/ImageSource.framework",
@@ -718,7 +718,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoTests/Pods-PaparazzoTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PaparazzoTests/Pods-PaparazzoTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D52DD72F772717FAF15EC035 /* [CP] Check Pods Manifest.lock */ = {
@@ -745,7 +745,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageSource.default-UIKit/ImageSource.framework",
@@ -762,7 +762,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PaparazzoExample_Storyboard/Pods-PaparazzoExample_Storyboard-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

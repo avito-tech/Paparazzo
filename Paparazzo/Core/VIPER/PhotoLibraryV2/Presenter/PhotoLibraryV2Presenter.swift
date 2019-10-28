@@ -18,6 +18,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.onViewDidLoad?()
                 self?.setUpView()
             }
+            view?.onViewDidDisappear = { [weak self] in
+                self?.shouldProceed = true
+            }
         }
     }
     
@@ -25,6 +28,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private var shouldScrollToTopOnFullReload = true
     private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
     private var continueButtonTitle: String?
+    private var shouldProceed = true
     
     // MARK: - Init
     
@@ -219,6 +223,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.onContinueButtonTap = { [weak self] in
             guard let strongSelf = self else { return }
+            guard strongSelf.shouldProceed else { return }
+            
+            strongSelf.shouldProceed = false
             
             let selectedItems = strongSelf.interactor.selectedItems
             

@@ -41,6 +41,7 @@ protocol PhotoLibraryV2ViewInput: class {
     
     var onViewDidLoad: (() -> ())? { get set }
     var onViewWillAppear: (() -> ())? { get set }
+    var onViewDidDisappear: (() -> ())? { get set }
     
     func setProgressVisible(_ visible: Bool)
     func setHeaderVisible(_ visible: Bool)
