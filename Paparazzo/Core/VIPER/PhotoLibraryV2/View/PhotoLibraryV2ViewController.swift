@@ -120,6 +120,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setContinueButtonVisible(isVisible)
     }
     
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        photoLibraryView.setContinueButtonStyle(style)
+    }
+    
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
         photoLibraryView.setContinueButtonPlacement(placement)
     }

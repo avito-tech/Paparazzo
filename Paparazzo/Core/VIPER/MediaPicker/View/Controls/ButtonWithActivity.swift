@@ -3,7 +3,7 @@ import UIKit
 final class ButtonWithActivity: UIButton {
     
     // MARK: - Subviews
-    private let activity = UIActivityIndicatorView(style: .gray)
+    private let activity: UIActivityIndicatorView
     
     // MARK: - State
     private var cachedTitle: String? = nil
@@ -26,9 +26,10 @@ final class ButtonWithActivity: UIButton {
         }
     }
     
-    
     // MARK: - Init
-    init() {
+    init(activityStyle: UIActivityIndicatorView.Style = .gray) {
+        self.activity = UIActivityIndicatorView(style: activityStyle)
+        
         super.init(frame: .zero)
         
         addSubview(activity)
@@ -50,17 +51,16 @@ final class ButtonWithActivity: UIButton {
                 super.setTitle(title, for: state)
             }
         }
-        
     }
     
     // MARK: - Layout
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        switch style {
-        case .normal:
-            return super.sizeThatFits(size)
-        case .spinner:
-            return size.intersectionWidth(self.height)
-        }
+        let labelSize = titleLabel?.sizeThatFits(size) ?? .zero
+        
+        return CGSize(
+            width: labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right,
+            height: labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+        )
     }
     
     override func layoutSubviews() {

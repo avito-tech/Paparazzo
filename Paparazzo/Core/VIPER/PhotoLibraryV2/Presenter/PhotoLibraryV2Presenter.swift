@@ -78,6 +78,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
         mediaPickerModule?.setContinueButtonStyle(style)
+        view?.setContinueButtonStyle(style)
     }
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
