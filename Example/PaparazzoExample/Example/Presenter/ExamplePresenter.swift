@@ -73,10 +73,12 @@ final class ExamplePresenter {
                 self?.router.showPhotoLibraryV2(
                     mediaPickerData: data,
                     selectedItems: items,
+                    isNewFlowPrototype: false,
                     configure: { module in
                         weak var weakModule = module
-                        module.setContinueButtonPlacement(.bottom)
+//                        module.setContinueButtonPlacement(.bottom)
                         module.onFinish = { result in
+                            print("onFinish")
                             weakModule?.setContinueButtonStyle(.spinner)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 weakModule?.dismissModule()
