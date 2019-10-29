@@ -230,3 +230,14 @@ extension UIColor {
         return UIColor(red: rgb/255, green: rgb/255, blue: rgb/255, alpha: alpha)
     }
 }
+
+extension UIEdgeInsets {
+    
+    var width: CGFloat {
+        return left + right
+    }
+    
+    var height: CGFloat {
+        return top + bottom
+    }
+}

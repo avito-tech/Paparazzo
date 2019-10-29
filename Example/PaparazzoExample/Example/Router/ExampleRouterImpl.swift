@@ -71,6 +71,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showPhotoLibraryV2(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ())
     {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
@@ -82,7 +83,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
                 isMetalEnabled: false,
-                isNewFlowPrototype: true,
+                isNewFlowPrototype: isNewFlowPrototype,
                 configure: configure
             )
         }

@@ -7,6 +7,7 @@ final class ButtonWithActivity: UIButton {
     
     // MARK: - State
     private var cachedTitle: String? = nil
+    private var shouldResizeToFitActivity: Bool
     
     var style: MediaPickerContinueButtonStyle = .normal {
         didSet {
@@ -27,8 +28,9 @@ final class ButtonWithActivity: UIButton {
     }
     
     // MARK: - Init
-    init(activityStyle: UIActivityIndicatorView.Style = .gray) {
+    init(activityStyle: UIActivityIndicatorView.Style = .gray, shouldResizeToFitActivity: Bool = false) {
         self.activity = UIActivityIndicatorView(style: activityStyle)
+        self.shouldResizeToFitActivity = shouldResizeToFitActivity
         
         super.init(frame: .zero)
         
@@ -55,12 +57,17 @@ final class ButtonWithActivity: UIButton {
     
     // MARK: - Layout
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let labelSize = titleLabel?.sizeThatFits(size) ?? .zero
-        
-        return CGSize(
-            width: labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right,
-            height: labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
-        )
+        switch style {
+        case .normal, .spinner where !shouldResizeToFitActivity:
+            let labelSize = titleLabel?.sizeThatFits(size) ?? .zero
+            
+            return CGSize(
+                width: labelSize.width + titleEdgeInsets.width + contentEdgeInsets.width,
+                height: labelSize.height + titleEdgeInsets.height + contentEdgeInsets.height
+            )
+        case .spinner:
+            return size.intersectionWidth(self.height)
+        }
     }
     
     override func layoutSubviews() {

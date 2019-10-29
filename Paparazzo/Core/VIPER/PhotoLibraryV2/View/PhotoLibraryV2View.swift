@@ -77,8 +77,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     private let albumsTableView = PhotoLibraryAlbumsTableView()
     private let placeholderView = UILabel()
     private let closeButton = UIButton()
-    private let topRightContinueButton = UIButton()
-    private let bottomContinueButton = UIButton()
+    private let topRightContinueButton = ButtonWithActivity(shouldResizeToFitActivity: true)
+    private let bottomContinueButton = ButtonWithActivity(activityStyle: .white)
     private let selectedPhotosBarView = SelectedPhotosBarView()
     
     // MARK: - Specs
@@ -158,12 +158,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             height: closeButton.height
         )
         
-        topRightContinueButton.frame = CGRect(
-            x: bounds.right - 8 - topRightContinueButton.width,
-            y: max(8, paparazzoSafeAreaInsets.top),
-            width: topRightContinueButton.width,
-            height: topRightContinueButton.height
-        )
+        layOutTopRightContinueButton()
         
         bottomContinueButton.layout(
             left: bounds.left + 16,
@@ -278,7 +273,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     func setContinueButtonTitle(_ title: String) {
         topRightContinueButton.setTitle(title, for: .normal)
         topRightContinueButton.accessibilityValue = title
-        topRightContinueButton.size = CGSize(width: topRightContinueButton.sizeThatFits().width, height: continueButtonHeight)
+        topRightContinueButton.size = CGSize(
+            width: topRightContinueButton.sizeThatFits().width,
+            height: continueButtonHeight
+        )
         titleView.setNeedsLayout()
         
         bottomContinueButton.setTitle(title, for: .normal)
@@ -292,7 +290,20 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
         selectedPhotosBarView.setContinueButtonStyle(style)
-        // TODO: topRightContinueButton & bottomContinueButton
+        bottomContinueButton.style = style
+        setTopRightContinueButtonStyle(style)
+    }
+    
+    private func setTopRightContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        guard topRightContinueButton.style != style else { return }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            animations: {
+                self.topRightContinueButton.style = style
+                self.layOutTopRightContinueButton()
+            }
+        )
     }
     
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
@@ -623,11 +634,6 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             for: .touchUpInside
         )
         
-        topRightContinueButton.size = CGSize(
-            width: continueButtonHeight,
-            height: topRightContinueButton.sizeThatFits().width
-        )
-        
         topRightContinueButton.contentEdgeInsets = continueButtonContentInsets
         topRightContinueButton.addTarget(
             self,
@@ -805,6 +811,17 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             right: bounds.right,
             top: top,
             height: size.height
+        )
+    }
+    
+    private func layOutTopRightContinueButton() {
+        let width = topRightContinueButton.sizeThatFits().width
+        
+        topRightContinueButton.frame = CGRect(
+            x: bounds.right - 8 - width,
+            y: max(8, paparazzoSafeAreaInsets.top),
+            width: width,
+            height: continueButtonHeight
         )
     }
     

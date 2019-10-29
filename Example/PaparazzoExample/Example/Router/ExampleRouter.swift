@@ -23,6 +23,7 @@ protocol ExampleRouter: RouterFocusable, RouterDismissable {
     func showPhotoLibraryV2(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
+        isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     )
     
