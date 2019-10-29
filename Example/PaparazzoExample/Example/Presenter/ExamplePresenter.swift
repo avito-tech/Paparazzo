@@ -77,7 +77,10 @@ final class ExamplePresenter {
                         weak var weakModule = module
                         module.setContinueButtonPlacement(.bottom)
                         module.onFinish = { result in
-                            weakModule?.dismissModule()
+                            weakModule?.setContinueButtonStyle(.spinner)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                weakModule?.dismissModule()
+                            }
                         }
                         module.onCancel = {
                             weakModule?.dismissModule()

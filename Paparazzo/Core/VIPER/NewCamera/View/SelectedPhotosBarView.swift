@@ -6,7 +6,7 @@ final class SelectedPhotosBarView: UIView {
     let lastPhotoThumbnailView = UIImageView()
     private let penultimatePhotoThumbnailView = UIImageView()
     let label = UILabel()
-    private let button = UIButton()
+    private let button = ButtonWithActivity(activityStyle: .white)
     
     private let lastPhotoThumbnailSize = CGSize(width: 48, height: 36)
     private let penultimatePhotoThumbnailSize = CGSize(width: 43, height: 32)
@@ -113,6 +113,18 @@ final class SelectedPhotosBarView: UIView {
         }
     }
     
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        guard button.style != style else { return }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            animations: {
+                self.button.style = style
+                self.layOutButton()
+            }
+        )
+    }
+    
     // MARK: - UIView
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         return CGSize(width: size.width, height: 72)
@@ -135,21 +147,25 @@ final class SelectedPhotosBarView: UIView {
             height: penultimatePhotoThumbnailSize.height
         )
         
-        let buttonLabelSize = button.titleLabel?.sizeThatFits() ?? .zero
-        
-        button.sizeToFit()
-        button.size = CGSize(  // sizeToFit() doesn't work for some reason
-            width: buttonLabelSize.width + button.titleEdgeInsets.left + button.titleEdgeInsets.right,
-            height: buttonLabelSize.height + button.titleEdgeInsets.top + button.titleEdgeInsets.bottom
-        )
-        button.right = bounds.right - 16
-        button.centerY = bounds.centerY
+        layOutButton()
         
         label.layout(
             left: lastPhotoThumbnailView.right + 8,
             right: button.left - 16,
             top: bounds.top,
             bottom: bounds.bottom
+        )
+    }
+    
+    // MARK: - Private - Layout
+    private func layOutButton() {
+        let buttonSize = button.sizeThatFits()
+        
+        button.frame = CGRect(
+            x: bounds.right - 16 - buttonSize.width,
+            y: floor(bounds.centerY - buttonSize.height / 2),
+            width: buttonSize.width,
+            height: buttonSize.height
         )
     }
     

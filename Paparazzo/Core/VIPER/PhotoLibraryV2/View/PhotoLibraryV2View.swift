@@ -290,6 +290,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         bottomContinueButton.isHidden = !isVisible
     }
     
+    func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+        selectedPhotosBarView.setContinueButtonStyle(style)
+        // TODO: topRightContinueButton & bottomContinueButton
+    }
+    
     func setContinueButtonPlacement(_ placement: MediaPickerContinueButtonPlacement) {
         continueButtonPlacement = placement
     }
