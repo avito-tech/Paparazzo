@@ -76,7 +76,7 @@ final class ExamplePresenter {
                     isNewFlowPrototype: false,
                     configure: { module in
                         weak var weakModule = module
-//                        module.setContinueButtonPlacement(.bottom)
+                        module.setContinueButtonPlacement(.bottom)
                         module.onFinish = { result in
                             print("onFinish")
                             weakModule?.setContinueButtonStyle(.spinner)
