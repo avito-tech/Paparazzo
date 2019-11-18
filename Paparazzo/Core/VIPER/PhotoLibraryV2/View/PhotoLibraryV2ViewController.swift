@@ -158,8 +158,8 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.dimsUnselectedItems = dimUnselectedItems
     }
     
-    func deselectItem(with imageSource: ImageSource) {
-        photoLibraryView.deselectCell(with: imageSource)
+    func deselectItem(with imageSource: ImageSource) -> Bool {
+        return photoLibraryView.deselectCell(with: imageSource)
     }
     
     func deselectAllItems() {

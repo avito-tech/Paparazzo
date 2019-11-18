@@ -474,8 +474,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.onItemMove?(sourceIndex, destinationIndex)
         }
         module.onItemRemove = { [weak self] mediaPickerItem, index in
-            self?.view?.deselectItem(with: mediaPickerItem.image)
-            self?.handleItemDeselect(PhotoLibraryItem(image: mediaPickerItem.image))
+            if self?.view?.deselectItem(with: mediaPickerItem.image) == false {
+                // Кейс, когда удаляется "виртуальная" фотка (серверная, которой нет в галерее)
+                self?.handleItemDeselect(PhotoLibraryItem(image: mediaPickerItem.image))
+            }
             self?.onItemRemove?(mediaPickerItem, index)
         }
         module.onCropFinish = onCropFinish
