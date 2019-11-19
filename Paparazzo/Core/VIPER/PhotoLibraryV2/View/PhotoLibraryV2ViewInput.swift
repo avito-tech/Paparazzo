@@ -25,7 +25,7 @@ protocol PhotoLibraryV2ViewInput: class {
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
     
-    func deselectItem(with: ImageSource)
+    func deselectItem(with: ImageSource) -> Bool
     func deselectAllItems()
     func reloadSelectedItems()
     

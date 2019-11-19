@@ -386,23 +386,25 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onDeselect = { [weak self] in
-            if let selectionState = self?.interactor.deselectItem(item) {
-                self?.adjustViewForSelectionState(selectionState)
-            }
-            let hasNoItems = self?.interactor.selectedItems.isEmpty == true
-            
-            if self?.isNewFlowPrototype == false {
-                self?.view?.setHeaderVisible(hasNoItems)
-            }
-            
-            if self?.isNewFlowPrototype == true {
-                self?.view?.reloadSelectedItems()
-            }
-            
-            self?.updateContinueButtonTitle()
+            self?.handleItemDeselect(item)
         }
         
         return cellData
+    }
+    
+    private func handleItemDeselect(_ item: PhotoLibraryItem) {
+        
+        let selectionState = interactor.deselectItem(item)
+        
+        adjustViewForSelectionState(selectionState)
+        
+        if isNewFlowPrototype {
+            view?.reloadSelectedItems()
+        } else {
+            view?.setHeaderVisible(interactor.selectedItems.isEmpty)
+        }
+        
+        updateContinueButtonTitle()
     }
     
     private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
@@ -472,7 +474,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.onItemMove?(sourceIndex, destinationIndex)
         }
         module.onItemRemove = { [weak self] mediaPickerItem, index in
-            self?.view?.deselectItem(with: mediaPickerItem.image)
+            if self?.view?.deselectItem(with: mediaPickerItem.image) == false {
+                // Кейс, когда удаляется "виртуальная" фотка (серверная, которой нет в галерее)
+                self?.handleItemDeselect(PhotoLibraryItem(image: mediaPickerItem.image))
+            }
             self?.onItemRemove?(mediaPickerItem, index)
         }
         module.onCropFinish = onCropFinish

@@ -423,9 +423,12 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         )
     }
     
-    func deselectCell(with imageSource: ImageSource) {
+    func deselectCell(with imageSource: ImageSource) -> Bool {
         if let indexPath = dataSource.indexPath(where: { $0.image == imageSource }) {
             deselectCell(at: indexPath)
+            return true
+        } else {
+            return false
         }
     }
     
