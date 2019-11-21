@@ -40,6 +40,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     func showNewCamera(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        shouldAllowFinishingWithNoPhotos: Bool,
         configure: (NewCameraModule) -> ())
     {
         let assembly = assemblyFactory.newCameraAssembly()
@@ -48,6 +49,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
             cameraService: cameraService,
+            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
             configure: configure
         )
         

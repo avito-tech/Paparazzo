@@ -4,6 +4,7 @@ import UIKit
 
 enum SelectedPhotosBarState {
     case hidden
+    case placeholder
     case visible(SelectedPhotosBarData)
 }
 
@@ -135,8 +136,12 @@ final class NewCameraView: UIView {
         case .hidden:
             selectedPhotosBarView.isHidden = true
             completion()
+        case .placeholder:
+            selectedPhotosBarView.isHidden = false
+            selectedPhotosBarView.setPlaceholderHidden(false)
         case .visible(let data):
             selectedPhotosBarView.isHidden = false
+            selectedPhotosBarView.setPlaceholderHidden(true)
             selectedPhotosBarView.label.text = data.countString
             
             let dispatchGroup = DispatchGroup()
@@ -173,6 +178,10 @@ final class NewCameraView: UIView {
     
     func setDoneButtonTitle(_ title: String) {
         selectedPhotosBarView.setDoneButtonTitle(title)
+    }
+    
+    func setPlaceholderText(_ text: String) {
+        selectedPhotosBarView.setPlaceholderText(text)
     }
     
     func setLatestPhotoLibraryItemImage(_ imageSource: ImageSource?) {

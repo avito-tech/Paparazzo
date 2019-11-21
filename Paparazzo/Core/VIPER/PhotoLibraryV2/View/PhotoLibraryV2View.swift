@@ -538,7 +538,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         switch state {
         case .hidden:
             selectedPhotosBarView.setHidden(true, animated: true)
+        case .placeholder:
+            selectedPhotosBarView.setPlaceholderHidden(false)
         case .visible(let data):
+            selectedPhotosBarView.setPlaceholderHidden(true)
             selectedPhotosBarView.setHidden(false, animated: true)
             selectedPhotosBarView.label.text = data.countString
             selectedPhotosBarView.setLastImage(data.lastPhoto)
@@ -548,6 +551,10 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func setDoneButtonTitle(_ title: String) {
         selectedPhotosBarView.setDoneButtonTitle(title)
+    }
+    
+    func setPlaceholderText(_ text: String) {
+        selectedPhotosBarView.setPlaceholderText(text)
     }
     
     // MARK: - UICollectionViewDelegate

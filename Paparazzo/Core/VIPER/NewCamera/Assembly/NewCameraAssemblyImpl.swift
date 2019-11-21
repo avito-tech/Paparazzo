@@ -18,6 +18,7 @@ final class NewCameraAssemblyImpl:
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        shouldAllowFinishingWithNoPhotos: Bool,
         configure: (NewCameraModule) -> ())
         -> UIViewController
     {
@@ -37,7 +38,8 @@ final class NewCameraAssemblyImpl:
         
         let presenter = NewCameraPresenter(
             interactor: interactor,
-            router: router
+            router: router,
+            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos
         )
         
         viewController.setTheme(theme)

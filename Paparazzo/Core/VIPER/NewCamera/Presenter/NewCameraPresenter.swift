@@ -1,17 +1,22 @@
 final class NewCameraPresenter:
     NewCameraModule
 {
-    // MARK: - Private properties
+    // MARK: - Dependencies
     private let interactor: NewCameraInteractor
     private let router: NewCameraRouter
+    
+    // MARK: - Config
+    private let shouldAllowFinishingWithNoPhotos: Bool
     
     // MARK: - Init
     init(
         interactor: NewCameraInteractor,
-        router: NewCameraRouter)
+        router: NewCameraRouter,
+        shouldAllowFinishingWithNoPhotos: Bool)
     {
         self.interactor = interactor
         self.router = router
+        self.shouldAllowFinishingWithNoPhotos = shouldAllowFinishingWithNoPhotos
     }
     
     // MARK: - Weak properties
@@ -36,6 +41,7 @@ final class NewCameraPresenter:
         view?.setFlashButtonOn(interactor.isFlashEnabled)
         
         view?.setDoneButtonTitle(localized("Done"))
+        view?.setPlaceholderText(localized("Select at least one photo"))
         view?.setHintText(localized("Place the object inside the frame and take a photo"))
         
         view?.onCloseButtonTap = { [weak self] in
@@ -137,7 +143,7 @@ final class NewCameraPresenter:
         let images = interactor.selectedImagesStorage.images
         
         let state: SelectedPhotosBarState = images.isEmpty
-            ? .hidden
+            ? (shouldAllowFinishingWithNoPhotos ? .placeholder : .hidden)
             : .visible(SelectedPhotosBarData(
                 lastPhoto: images.last?.image,
                 penultimatePhoto: images.count > 1 ? images[images.count - 2].image : nil,
