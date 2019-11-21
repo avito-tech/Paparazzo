@@ -13,6 +13,7 @@ protocol PhotoLibraryV2Router: class {
     func showNewCamera(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        shouldAllowFinishingWithNoPhotos: Bool,
         configure: (NewCameraModule) -> ()
     )
 }

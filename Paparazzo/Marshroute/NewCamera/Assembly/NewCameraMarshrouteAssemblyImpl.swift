@@ -19,6 +19,7 @@ final class NewCameraMarshrouteAssemblyImpl:
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        shouldAllowFinishingWithNoPhotos: Bool,
         routerSeed: RouterSeed,
         configure: (NewCameraModule) -> ())
         -> UIViewController
@@ -39,7 +40,8 @@ final class NewCameraMarshrouteAssemblyImpl:
         
         let presenter = NewCameraPresenter(
             interactor: interactor,
-            router: router
+            router: router,
+            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos
         )
         
         viewController.setTheme(theme)

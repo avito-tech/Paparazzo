@@ -7,6 +7,7 @@ protocol NewCameraMarshrouteAssembly: class {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        shouldAllowFinishingWithNoPhotos: Bool,
         routerSeed: RouterSeed,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController

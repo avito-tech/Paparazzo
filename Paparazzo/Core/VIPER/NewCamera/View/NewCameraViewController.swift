@@ -131,6 +131,10 @@ final class NewCameraViewController:
         cameraView.setDoneButtonTitle(title)
     }
     
+    func setPlaceholderText(_ text: String) {
+        cameraView.setPlaceholderText(text)
+    }
+    
     func animateFlash() {
         cameraView.animateFlash()
     }

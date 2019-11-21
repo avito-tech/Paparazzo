@@ -100,6 +100,7 @@ public struct PaparazzoUITheme:
     public var newCameraFlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
     public var newCameraDoneButtonFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountFont = UIFont.systemFont(ofSize: 16)
+    public var newCameraPhotosCountPlaceholderFont: UIFont = UIFont.systemFont(ofSize: 16)
     public var newCameraHintFont = UIFont.systemFont(ofSize: 16)
 
     // MARK: - Private

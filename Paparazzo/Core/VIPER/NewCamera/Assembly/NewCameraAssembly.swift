@@ -6,6 +6,7 @@ protocol NewCameraAssembly: class {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        shouldAllowFinishingWithNoPhotos: Bool,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }

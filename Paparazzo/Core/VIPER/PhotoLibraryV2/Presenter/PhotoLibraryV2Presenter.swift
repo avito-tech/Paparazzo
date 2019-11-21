@@ -21,6 +21,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
     }
     
+    // MARK: - Config
+    private let shouldAllowFinishingWithNoPhotos: Bool
+    
     // MARK: - State
     private var shouldScrollToTopOnFullReload = true
     private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
@@ -40,6 +43,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.overridenTheme = overridenTheme
         self.isMetalEnabled = isMetalEnabled
         self.isNewFlowPrototype = isNewFlowPrototype
+        self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         
         if isNewFlowPrototype {
             interactor.observeSelectedItemsChange { [weak self] in
@@ -147,6 +151,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         view?.setAccessDeniedMessage(localized("Allow %@ to access your photo library", appName()))
         view?.setAccessDeniedButtonTitle(localized("Allow access to photo library"))
         view?.setDoneButtonTitle(localized("Done"))
+        view?.setPlaceholderText(localized("Select at least one photo"))
         
         view?.setProgressVisible(true)
         
@@ -408,7 +413,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
-        interactor.getOutputParameters { parameters in
+        interactor.getOutputParameters { [shouldAllowFinishingWithNoPhotos] parameters in
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: { [weak self] in
@@ -419,6 +424,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                         self?.router.showNewCamera(
                             selectedImagesStorage: strongSelf.interactor.selectedPhotosStorage,
                             mediaPickerData: strongSelf.interactor.mediaPickerData,
+                            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
                             configure: { [weak self] newCameraModule in
                                 newCameraModule.configureMediaPicker = { mediaPickerModule in
                                     self?.configureMediaPicker(mediaPickerModule)
@@ -502,7 +508,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         let images = interactor.selectedItems
         
         view?.setSelectedPhotosBarState(images.isEmpty
-            ? .hidden
+            ? (shouldAllowFinishingWithNoPhotos ? .placeholder : .hidden)
             : .visible(SelectedPhotosBarData(
                 lastPhoto: images.last?.image,
                 penultimatePhoto: images.count > 1 ? images[images.count - 2].image : nil,

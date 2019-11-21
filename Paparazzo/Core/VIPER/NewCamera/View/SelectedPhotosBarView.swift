@@ -7,6 +7,7 @@ final class SelectedPhotosBarView: UIView {
     private let penultimatePhotoThumbnailView = UIImageView()
     let label = UILabel()
     private let button = ButtonWithActivity(activityStyle: .white)
+    private let placeholderLabel = UILabel()
     
     private let lastPhotoThumbnailSize = CGSize(width: 48, height: 36)
     private let penultimatePhotoThumbnailSize = CGSize(width: 43, height: 32)
@@ -21,6 +22,9 @@ final class SelectedPhotosBarView: UIView {
         backgroundColor = .white
         
         layer.cornerRadius = 10
+        
+        placeholderLabel.numberOfLines = 2
+        placeholderLabel.textColor = UIColor(red: 0.646, green: 0.646, blue: 0.646, alpha: 1)
         
         lastPhotoThumbnailView.contentMode = .scaleAspectFill
         lastPhotoThumbnailView.clipsToBounds = true
@@ -44,6 +48,7 @@ final class SelectedPhotosBarView: UIView {
         addSubview(penultimatePhotoThumbnailView)
         addSubview(lastPhotoThumbnailView)
         addSubview(label)
+        addSubview(placeholderLabel)
         addSubview(button)
     }
     
@@ -70,12 +75,33 @@ final class SelectedPhotosBarView: UIView {
     
     func setTheme(_ theme: NewCameraUITheme) {
         label.font = theme.newCameraPhotosCountFont
+        placeholderLabel.font = theme.newCameraPhotosCountPlaceholderFont
         button.titleLabel?.font = theme.newCameraDoneButtonFont
     }
     
     func setDoneButtonTitle(_ title: String) {
         button.setTitle(title, for: .normal)
         setNeedsLayout()
+    }
+    
+    func setPlaceholderText(_ text: String) {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.07
+        
+        placeholderLabel.attributedText = NSMutableAttributedString(
+            string: text,
+            attributes: [.paragraphStyle: paragraphStyle]
+        )
+        
+        setNeedsLayout()
+    }
+    
+    func setPlaceholderHidden(_ isHidden: Bool) {
+        placeholderLabel.isHidden = isHidden
+        
+        label.isHidden = !isHidden
+        lastPhotoThumbnailView.isHidden = !isHidden
+        penultimatePhotoThumbnailView.isHidden = !isHidden
     }
     
     func setHidden(_ isHidden: Bool, animated: Bool) {
@@ -148,6 +174,16 @@ final class SelectedPhotosBarView: UIView {
         )
         
         layOutButton()
+        
+        let placeholderInsets = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 7)
+        let placeholderSize = placeholderLabel.sizeForWidth(button.left - bounds.left - placeholderInsets.width)
+        
+        placeholderLabel.frame = CGRect(
+            x: bounds.left + placeholderInsets.left,
+            y: floor(bounds.top + (bounds.height - placeholderSize.height) / 2),
+            width: placeholderSize.width,
+            height: placeholderSize.height
+        )
         
         label.layout(
             left: lastPhotoThumbnailView.right + 8,

@@ -40,6 +40,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     func showNewCamera(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        shouldAllowFinishingWithNoPhotos: Bool,
         configure: (NewCameraModule) -> ())
     {
         presentModalViewControllerDerivedFrom { routerSeed in
@@ -50,6 +51,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
+                shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
                 routerSeed: routerSeed,
                 configure: configure
             )

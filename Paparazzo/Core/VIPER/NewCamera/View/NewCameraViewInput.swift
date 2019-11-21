@@ -20,6 +20,7 @@ protocol NewCameraViewInput: class {
     
     func setHintText(_: String)
     func setDoneButtonTitle(_: String)
+    func setPlaceholderText(_: String)
     
     func animateFlash()
     func animateCapturedPhoto(
