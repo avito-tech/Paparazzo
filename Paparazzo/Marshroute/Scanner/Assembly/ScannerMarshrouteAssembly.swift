@@ -5,7 +5,6 @@ public protocol ScannerMarshrouteAssembly: class {
     func module(
         data: ScannerData,
         routerSeed: RouterSeed,
-        isMetalEnabled: Bool,
         configure: (ScannerModule) -> ())
         -> UIViewController
 }
@@ -17,7 +16,7 @@ public extension ScannerMarshrouteAssembly {
         configure: (ScannerModule) -> ())
         -> UIViewController
     {
-        return module(data: data, routerSeed: routerSeed, isMetalEnabled: false, configure: configure)
+        return module(data: data, routerSeed: routerSeed, configure: configure)
     }
 }
 

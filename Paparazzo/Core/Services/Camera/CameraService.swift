@@ -5,7 +5,6 @@ protocol CameraService: class {
     
     var isFlashAvailable: Bool { get }
     var isFlashEnabled: Bool { get }
-    var isMetalEnabled: Bool { get set }
     
     func getCaptureSession(completion: @escaping (AVCaptureSession?) -> ())
     func getOutputOrientation(completion: @escaping (ExifOrientation) -> ())

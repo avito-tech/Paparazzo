@@ -16,7 +16,6 @@ public final class ScannerAssemblyImpl: BasePaparazzoAssembly, ScannerAssembly {
     public func module(
         data: ScannerData,
         overridenTheme: PaparazzoUITheme?,
-        isMetalEnabled: Bool,
         configure: (ScannerModule) -> ())
         -> UIViewController
     {
@@ -34,8 +33,7 @@ public final class ScannerAssemblyImpl: BasePaparazzoAssembly, ScannerAssembly {
         let cameraAssembly = assemblyFactory.cameraAssembly()
         let (cameraView, cameraModuleInput) = cameraAssembly.module(
             initialActiveCameraType: data.initialActiveCameraType,
-            overridenTheme: overridenTheme,
-            isMetalEnabled: isMetalEnabled
+            overridenTheme: overridenTheme
         )
         
         let presenter = ScannerPresenter(

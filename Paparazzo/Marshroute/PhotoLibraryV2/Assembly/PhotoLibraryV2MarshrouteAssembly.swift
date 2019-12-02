@@ -6,7 +6,6 @@ public protocol PhotoLibraryV2MarshrouteAssembly: class {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
-        isMetalEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
@@ -24,7 +23,6 @@ public extension PhotoLibraryV2MarshrouteAssembly {
                 mediaPickerData: mediaPickerData,
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
-                isMetalEnabled: false,
                 isNewFlowPrototype: false,
                 configure: configure
             )

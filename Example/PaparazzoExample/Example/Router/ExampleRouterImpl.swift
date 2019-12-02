@@ -82,7 +82,6 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 mediaPickerData: mediaPickerData,
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
-                isMetalEnabled: false,
                 isNewFlowPrototype: isNewFlowPrototype,
                 configure: configure
             )

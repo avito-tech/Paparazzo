@@ -8,13 +8,13 @@ public final class CameraOutputView: UIView {
     
     // MARK: - Init
     
-    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation, isMetalEnabled: Bool) {
+    public init(captureSession: AVCaptureSession, outputOrientation: ExifOrientation) {
         
         self.orientation = outputOrientation
         
         super.init(frame: .zero)
         
-        if let metalDevice = MTLCreateSystemDefaultDevice(), isMetalEnabled, #available(iOS 9.0, *) {
+        if let metalDevice = MTLCreateSystemDefaultDevice(), #available(iOS 9.0, *) {
             #if !(arch(i386) || arch(x86_64))
             let metalView = CameraOutputMTKView(captureSession: captureSession, outputOrientation: outputOrientation, mtlDevice: metalDevice)
             cameraView = metalView

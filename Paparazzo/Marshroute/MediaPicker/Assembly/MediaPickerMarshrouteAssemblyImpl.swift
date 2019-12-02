@@ -20,7 +20,6 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
-        isMetalEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
@@ -45,8 +44,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         let cameraAssembly = assemblyFactory.cameraAssembly()
         let (cameraView, cameraModuleInput) = cameraAssembly.module(
             initialActiveCameraType: data.initialActiveCameraType,
-            overridenTheme: overridenTheme,
-            isMetalEnabled: isMetalEnabled
+            overridenTheme: overridenTheme
         )
         
         let presenter = MediaPickerPresenter(

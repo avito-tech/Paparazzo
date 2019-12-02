@@ -7,7 +7,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let interactor: PhotoLibraryV2Interactor
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
-    private let isMetalEnabled: Bool
     private let isNewFlowPrototype: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
@@ -35,13 +34,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         interactor: PhotoLibraryV2Interactor,
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
-        isMetalEnabled: Bool,
         isNewFlowPrototype: Bool)
     {
         self.interactor = interactor
         self.router = router
         self.overridenTheme = overridenTheme
-        self.isMetalEnabled = isMetalEnabled
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         
@@ -257,7 +254,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.router.showMediaPicker(
                 data: data,
                 overridenTheme: strongSelf.overridenTheme,
-                isMetalEnabled: strongSelf.isMetalEnabled,
                 isNewFlowPrototype: strongSelf.isNewFlowPrototype,
                 configure: { [weak self] module in
                     self?.configureMediaPicker(module)
@@ -303,7 +299,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router.showMediaPicker(
             data: data,
             overridenTheme: overridenTheme,
-            isMetalEnabled: isMetalEnabled,
             isNewFlowPrototype: true,
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)
@@ -446,7 +441,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                         self?.router.showMediaPicker(
                             data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
                             overridenTheme: strongSelf.overridenTheme,
-                            isMetalEnabled: strongSelf.isMetalEnabled,
                             isNewFlowPrototype: strongSelf.isNewFlowPrototype,
                             configure: { [weak self] module in
                                 self?.configureMediaPicker(module)

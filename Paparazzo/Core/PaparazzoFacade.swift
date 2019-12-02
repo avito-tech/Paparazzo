@@ -103,7 +103,6 @@ public final class PaparazzoFacade {
         
         let galleryController = assembly.module(
             data: parameters,
-            isMetalEnabled: false,
             isNewFlowPrototype: true,
             configure: { (module: PhotoLibraryV2Module) in
                 module.onFinish = { [weak module] result in
