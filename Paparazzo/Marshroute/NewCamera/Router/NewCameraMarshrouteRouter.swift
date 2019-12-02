@@ -25,7 +25,6 @@ final class NewCameraMarshrouteRouter: BaseRouter, NewCameraRouter {
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
-                isMetalEnabled: false,
                 isNewFlowPrototype: true,
                 configure: configure
             )

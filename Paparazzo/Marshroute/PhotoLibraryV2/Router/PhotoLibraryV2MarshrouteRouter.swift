@@ -18,7 +18,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
-        isMetalEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
     {
@@ -30,7 +29,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
-                isMetalEnabled: isMetalEnabled,
                 isNewFlowPrototype: isNewFlowPrototype,
                 configure: configure
             )

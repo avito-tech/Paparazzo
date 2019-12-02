@@ -24,7 +24,6 @@ final class NewCameraRouterImpl:
         let viewController = assembly.module(
             data: data,
             overridenTheme: overridenTheme,
-            isMetalEnabled: false,
             isNewFlowPrototype: true,
             configure: configure
         )

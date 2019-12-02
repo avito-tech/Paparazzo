@@ -18,7 +18,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
-        isMetalEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
     {
@@ -27,7 +26,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         let viewController = assembly.module(
             data: data,
             overridenTheme: overridenTheme,
-            isMetalEnabled: isMetalEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
         )

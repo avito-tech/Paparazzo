@@ -25,8 +25,7 @@ final class CameraThumbnailCell: UICollectionViewCell {
         
         let newCameraOutputView = CameraOutputView(
             captureSession: parameters.captureSession,
-            outputOrientation: parameters.orientation,
-            isMetalEnabled: parameters.isMetalEnabled
+            outputOrientation: parameters.orientation
         )
         
         newCameraOutputView.layer.cornerRadius = 6

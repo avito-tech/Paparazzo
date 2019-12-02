@@ -26,8 +26,6 @@ final class CameraServiceImpl: CameraService {
     
     private var activeCameraType: CameraType
 
-    var isMetalEnabled: Bool = false
-
     // MARK: - Init
     
     init(
