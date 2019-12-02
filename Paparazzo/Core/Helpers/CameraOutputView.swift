@@ -14,27 +14,19 @@ public final class CameraOutputView: UIView {
         
         super.init(frame: .zero)
         
-        if let metalDevice = MTLCreateSystemDefaultDevice(), #available(iOS 9.0, *) {
-            #if !(arch(i386) || arch(x86_64))
-            let metalView = CameraOutputMTKView(captureSession: captureSession, outputOrientation: outputOrientation, mtlDevice: metalDevice)
-            cameraView = metalView
-            addSubview(metalView)
-            #endif
-        } else {
-            let eaglContext: EAGLContext? = EAGLContext(api: .openGLES2)
+        let eaglContext: EAGLContext? = EAGLContext(api: .openGLES2)
 
-            let glkView = eaglContext.flatMap { eaglContext in
-                CameraOutputGLKView(
-                    captureSession: captureSession,
-                    outputOrientation: outputOrientation,
-                    eaglContext: eaglContext
-                )
-            }
-            
-            if let glkView = glkView {
-                cameraView = glkView
-                addSubview(glkView)
-            }
+        let glkView = eaglContext.flatMap { eaglContext in
+            CameraOutputGLKView(
+                captureSession: captureSession,
+                outputOrientation: outputOrientation,
+                eaglContext: eaglContext
+            )
+        }
+        
+        if let glkView = glkView {
+            cameraView = glkView
+            addSubview(glkView)
         }
     }
     
