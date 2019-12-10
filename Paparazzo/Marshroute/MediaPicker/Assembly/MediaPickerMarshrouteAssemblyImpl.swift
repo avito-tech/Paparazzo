@@ -19,6 +19,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
     public func module(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
+        viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
@@ -61,6 +62,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         viewController.setShowsCropButton(data.cropEnabled)
         viewController.setShowsAutocorrectButton(data.autocorrectEnabled)
         viewController.setHapticFeedbackEnabled(data.hapticFeedbackEnabled)
+        viewController.setViewfinderOverlay(viewfinderOverlay)
         
         presenter.view = viewController
         

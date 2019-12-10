@@ -13,6 +13,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     // MARK: - Constants
     
     private var cameraView: UIView?
+    private var cameraOverlayView: UIView?
     
     private let photoCellReuseId = "PhotoCell"
     private let cameraCellReuseId = "CameraCell"
@@ -133,6 +134,10 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         }
     }
     
+    func setViewfinderOverlay(_ overlay: UIView?) {
+        self.cameraOverlayView = overlay
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -148,6 +153,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
             
             if let cell = cell as? MainCameraCell {
                 cell.cameraView = cameraView
+                cell.cameraOverlayView = cameraOverlayView
             }
             
             return cell
