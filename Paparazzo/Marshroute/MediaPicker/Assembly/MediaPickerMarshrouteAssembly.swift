@@ -5,6 +5,7 @@ public protocol MediaPickerMarshrouteAssembly: class {
     func module(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
+        viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
@@ -18,6 +19,24 @@ public protocol MediaPickerMarshrouteAssemblyFactory: class {
 public extension MediaPickerMarshrouteAssembly {
     func module(
         data: MediaPickerData,
+        overridenTheme: PaparazzoUITheme?,
+        routerSeed: RouterSeed,
+        isNewFlowPrototype: Bool,
+        configure: (MediaPickerModule) -> ())
+        -> UIViewController
+    {
+        return module(
+            data: data,
+            overridenTheme: overridenTheme,
+            viewfinderOverlay: nil,
+            routerSeed: routerSeed,
+            isNewFlowPrototype: isNewFlowPrototype,
+            configure: configure
+        )
+    }
+    
+    func module(
+        data: MediaPickerData,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
@@ -26,6 +45,7 @@ public extension MediaPickerMarshrouteAssembly {
         return module(
             data: data,
             overridenTheme: nil,
+            viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
@@ -41,6 +61,7 @@ public extension MediaPickerMarshrouteAssembly {
         return module(
             data: data,
             overridenTheme: nil,
+            viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: false,
             configure: configure

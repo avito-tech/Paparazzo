@@ -611,6 +611,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         self.showsPreview = showsPreview
     }
     
+    func setViewfinderOverlay(_ overlay: UIView?) {
+        photoPreviewView.setViewfinderOverlay(overlay)
+    }
+    
     func reloadCamera() {
         photoPreviewView.reloadCamera()
         thumbnailRibbonView.reloadCamera()

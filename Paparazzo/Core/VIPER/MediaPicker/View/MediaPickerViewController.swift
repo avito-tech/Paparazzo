@@ -388,6 +388,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setShowsPreview(showPreview)
     }
     
+    func setViewfinderOverlay(_ overlay: UIView?) {
+        mediaPickerView.setViewfinderOverlay(overlay)
+    }
+    
     // MARK: - Private
     
     func layoutMediaPickerView(bounds: CGRect) {

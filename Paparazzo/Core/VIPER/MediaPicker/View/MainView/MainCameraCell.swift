@@ -12,9 +12,21 @@ final class MainCameraCell: UICollectionViewCell {
             }
         }
     }
+    
+    var cameraOverlayView: UIView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+            
+            if let cameraOverlayView = cameraOverlayView {
+                addSubview(cameraOverlayView)
+            }
+        }
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         cameraView?.frame = contentView.bounds
+        cameraOverlayView?.frame = contentView.bounds
     }
 }
