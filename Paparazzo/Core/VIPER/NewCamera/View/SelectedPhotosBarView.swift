@@ -35,6 +35,7 @@ final class SelectedPhotosBarView: UIView {
         penultimatePhotoThumbnailView.alpha = 0.26
         penultimatePhotoThumbnailView.layer.cornerRadius = 5
         
+        button.accessibilityIdentifier = AccessibilityId.doneButton.rawValue
         button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 24, bottom: 11, right: 24)
         button.layer.backgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
         button.layer.cornerRadius = 6

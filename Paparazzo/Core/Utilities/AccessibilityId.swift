@@ -35,6 +35,7 @@ public enum AccessibilityId: String {
     case confirmLibraryButton
     case discardLibraryButton
     case cameraInLibraryButton
+    case doneButton
     
     // PhotoLibrary
     case photoLibrary
