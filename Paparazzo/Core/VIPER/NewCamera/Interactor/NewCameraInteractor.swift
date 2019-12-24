@@ -6,6 +6,7 @@ protocol NewCameraInteractor: class {
     var isFlashAvailable: Bool { get }
     var isFlashEnabled: Bool { get }
     
+    func observeCameraAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeLatestLibraryPhoto(handler: @escaping (ImageSource?) -> ())
     func toggleCamera(completion: @escaping (ExifOrientation) -> ())
     func setFlashEnabled(_ isEnabled: Bool) -> Bool
