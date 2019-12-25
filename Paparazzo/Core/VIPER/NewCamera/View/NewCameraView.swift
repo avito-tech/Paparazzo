@@ -28,6 +28,7 @@ final class NewCameraView: UIView {
     private let flashView = UIView()
     private let snapshotView = UIImageView()
     private let photoView = UIImageView()
+    private let accessDeniedView = AccessDeniedView()
     
     // TODO: extract to separate view
     private let previewView = UIView()
@@ -54,6 +55,9 @@ final class NewCameraView: UIView {
         addSubview(selectedPhotosBarView)
         addSubview(snapshotView)
         addSubview(flashView)
+        addSubview(accessDeniedView)
+        
+        accessDeniedView.isHidden = true
         
         photoView.backgroundColor = .lightGray
         photoView.contentMode = .scaleAspectFill
@@ -120,6 +124,11 @@ final class NewCameraView: UIView {
         set { selectedPhotosBarView.onLastPhotoThumbnailTap = newValue }
     }
     
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return accessDeniedView.onButtonTap }
+        set { accessDeniedView.onButtonTap = newValue }
+    }
+    
     func setTheme(_ theme: NewCameraUITheme) {
         closeButton.setImage(theme.newCameraCloseIcon, for: .normal)
         
@@ -129,6 +138,7 @@ final class NewCameraView: UIView {
         hintLabel.font = theme.newCameraHintFont
         
         selectedPhotosBarView.setTheme(theme)
+        accessDeniedView.setTheme(theme)
     }
     
     func setSelectedPhotosBarState(_ state: SelectedPhotosBarState, completion: @escaping () -> ()) {
@@ -294,6 +304,22 @@ final class NewCameraView: UIView {
         return layout(for: bounds).previewViewFrame
     }
     
+    func setAccessDeniedViewVisible(_ visible: Bool) {
+        accessDeniedView.isHidden = !visible
+    }
+    
+    func setAccessDeniedTitle(_ title: String) {
+        accessDeniedView.title = title
+    }
+    
+    func setAccessDeniedMessage(_ message: String) {
+        accessDeniedView.message = message
+    }
+    
+    func setAccessDeniedButtonTitle(_ title: String) {
+        accessDeniedView.buttonTitle = title
+    }
+    
     // MARK: - UIView
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -308,6 +334,7 @@ final class NewCameraView: UIView {
         flashView.frame = layout.flashViewFrame
         toggleCameraButton.frame = layout.toggleCameraButtonFrame
         photoView.frame = layout.photoViewFrame
+        accessDeniedView.frame = layout.accessDeniedViewFrame
         
         viewfinderBorderView.frame = previewView.bounds
         
@@ -325,6 +352,7 @@ final class NewCameraView: UIView {
         let flashViewFrame: CGRect
         let toggleCameraButtonFrame: CGRect
         let photoViewFrame: CGRect
+        let accessDeniedViewFrame: CGRect
     }
     
     private func layout(for bounds: CGRect) -> Layout {
@@ -397,6 +425,18 @@ final class NewCameraView: UIView {
             height: photoViewSize.height
         )
         
+        let accessDeniedViewMaxSize = CGSize(
+            width: bounds.width,
+            height: captureButtonFrame.top - closeButtonFrame.bottom
+        )
+        let accessDeniedViewSize = accessDeniedView.sizeThatFits(accessDeniedViewMaxSize)
+        let accessDeniedViewFrame = CGRect(
+            centerX: previewViewFrame.centerX,
+            centerY: previewViewFrame.centerY,
+            width: accessDeniedViewSize.width,
+            height: accessDeniedViewSize.height
+        )
+        
         return Layout(
             closeButtonFrame: closeButtonFrame,
             selectedPhotosBarFrame: selectedPhotosBarViewFrame,
@@ -405,7 +445,8 @@ final class NewCameraView: UIView {
             previewViewFrame: previewViewFrame,
             flashViewFrame: bounds,
             toggleCameraButtonFrame: toggleCameraButtonFrame,
-            photoViewFrame: photoViewFrame
+            photoViewFrame: photoViewFrame,
+            accessDeniedViewFrame: accessDeniedViewFrame
         )
     }
     

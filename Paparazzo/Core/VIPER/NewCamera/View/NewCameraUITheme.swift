@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol NewCameraUITheme {
+public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraCloseIcon: UIImage? { get }
     var newCameraFlashOnIcon: UIImage? { get }
     var newCameraFlashOffIcon: UIImage? { get }

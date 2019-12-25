@@ -103,6 +103,11 @@ final class NewCameraViewController:
         set { cameraView.onCaptureButtonTap = newValue }
     }
     
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return cameraView.onAccessDeniedButtonTap }
+        set { cameraView.onAccessDeniedButtonTap = newValue }
+    }
+    
     func setFlashButtonVisible(_ isVisible: Bool) {
         cameraView.setFlashButtonVisible(isVisible)
     }
@@ -144,6 +149,22 @@ final class NewCameraViewController:
         completion: @escaping (_ finalizeAnimation: @escaping () -> ()) -> ())
     {
         cameraView.animateCapturedPhoto(image, completion: completion)
+    }
+    
+    func setAccessDeniedViewVisible(_ visible: Bool) {
+        cameraView.setAccessDeniedViewVisible(visible)
+    }
+    
+    func setAccessDeniedTitle(_ title: String) {
+        cameraView.setAccessDeniedTitle(title)
+    }
+    
+    func setAccessDeniedMessage(_ message: String) {
+        cameraView.setAccessDeniedMessage(message)
+    }
+    
+    func setAccessDeniedButtonTitle(_ title: String) {
+        cameraView.setAccessDeniedButtonTitle(title)
     }
     
     // MARK: - NewCameraViewController

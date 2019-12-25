@@ -43,6 +43,9 @@ final class NewCameraPresenter:
         view?.setDoneButtonTitle(localized("Done"))
         view?.setPlaceholderText(localized("Select at least one photo"))
         view?.setHintText(localized("Place the object inside the frame and take a photo"))
+        view?.setAccessDeniedTitle(localized("To take photo"))
+        view?.setAccessDeniedMessage(localized("Allow %@ to use your camera", appName()))
+        view?.setAccessDeniedButtonTitle(localized("Allow access to camera"))
         
         view?.onCloseButtonTap = { [weak self] in
             guard let strongSelf = self else { return }
@@ -103,11 +106,21 @@ final class NewCameraPresenter:
             }
         }
         
+        view?.onAccessDeniedButtonTap = {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.openURL(url)
+            }
+        }
+        
         bindSelectedPhotosBarAdjustmentToViewControllerLifecycle()
         adjustCaptureButtonAvailability()
         
         interactor.observeLatestLibraryPhoto { [weak self] imageSource in
             self?.view?.setLatestPhotoLibraryItemImage(imageSource)
+        }
+        
+        interactor.observeCameraAuthorizationStatus { [weak self] accessGranted in
+            self?.view?.setAccessDeniedViewVisible(!accessGranted)
         }
     }
     
@@ -155,5 +168,9 @@ final class NewCameraPresenter:
     
     private func adjustCaptureButtonAvailability() {
         view?.setCaptureButtonState(interactor.canAddItems() ? .enabled : .disabled)
+    }
+    
+    private func appName() -> String {
+        return Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
     }
 }
