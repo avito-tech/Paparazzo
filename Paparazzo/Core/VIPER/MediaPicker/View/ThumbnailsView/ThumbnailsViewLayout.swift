@@ -10,6 +10,8 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     private var draggingIndexPath: IndexPath?
     private var draggingView: UIView?
     private var dragOffset = CGPoint.zero
+    private var frames = [IndexPath: CGRect]()
+    private var contentSize = CGSize.zero
     
     var onDragStart: (() -> ())?
     var onDragFinish: (() -> ())?
@@ -24,6 +26,32 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     
     override func prepare() {
         super.prepare()
+        
+        let itemsCount = collectionView?.numberOfItems(inSection: 0) ?? 0
+        let collectionViewBounds = collectionView?.bounds ?? .zero
+        let height = collectionViewBounds.size.height - sectionInset.top - sectionInset.bottom
+        let width = height
+        var maxX = CGFloat(0)
+        
+        for index in 0..<itemsCount {
+            
+            let indexPath = IndexPath(item: index, section: 0)
+            let frame = CGRect(
+                centerX: sectionInset.left + width / 2 + CGFloat(index) * (width + minimumLineSpacing),
+                centerY: collectionViewBounds.midY,
+                width: width,
+                height: height
+            )
+            
+            frames[indexPath] = frame
+            
+            maxX = frame.maxX
+        }
+        
+        contentSize = CGSize(
+            width: maxX + sectionInset.right,
+            height: collectionViewBounds.height
+        )
         
         setUpGestureRecognizer()
     }
@@ -47,6 +75,13 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     }
     
     // MARK: - UICollectionViewLayout
+    override var collectionViewContentSize: CGSize {
+        return contentSize
+    }
+    
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        return newBounds != collectionView?.bounds
+    }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let attributes = super.layoutAttributesForItem(at: indexPath)
@@ -62,6 +97,11 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             
             let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate
             let shouldApplyTransform = delegate?.shouldApplyTransformToItemAtIndexPath(attributes.indexPath) ?? true
+            
+            if let frame = frames[attributes.indexPath] {
+                attributes.bounds = CGRect(origin: .zero, size: frame.size)
+                attributes.center = frame.center
+            }
             
             attributes.transform = shouldApplyTransform ? itemsTransform : .identity
         }
@@ -154,7 +194,7 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             animations: {
                 dragView.center = targetCenter
                 dragView.transform = self.itemsTransform
-        },
+            },
             completion: { _ in
                 cell.isHidden = false
                 dragView.removeFromSuperview()
