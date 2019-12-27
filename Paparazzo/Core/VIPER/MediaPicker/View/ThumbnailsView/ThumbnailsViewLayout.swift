@@ -90,29 +90,25 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        
         let attributes = super.layoutAttributesForElements(in: rect)
-        
-        attributes?.forEach { attributes in
-            
-            let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate
-            let shouldApplyTransform = delegate?.shouldApplyTransformToItemAtIndexPath(attributes.indexPath) ?? true
-            
-            if let frame = frames[attributes.indexPath] {
-                attributes.bounds = CGRect(origin: .zero, size: frame.size)
-                attributes.center = frame.center
-            }
-            
-            attributes.transform = shouldApplyTransform ? itemsTransform : .identity
-        }
-        
+        attributes?.forEach { adjustAttributes($0) }
         return attributes
     }
     
     // MARK: - Private
     
     private func adjustAttributes(_ attributes: UICollectionViewLayoutAttributes?) {
-        attributes?.transform = itemsTransform
+        guard let attributes = attributes else { return }
+        
+        let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate
+        let shouldApplyTransform = delegate?.shouldApplyTransformToItemAtIndexPath(attributes.indexPath) ?? true
+        
+        if let frame = frames[attributes.indexPath] {
+            attributes.bounds = CGRect(origin: .zero, size: frame.size)
+            attributes.center = frame.center
+        }
+        
+        attributes.transform = shouldApplyTransform ? itemsTransform : .identity
     }
     
     @objc private func onLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
