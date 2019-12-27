@@ -1,5 +1,9 @@
 public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     
+    var photoLibraryAlbumsTableViewCellBackgroundColor: UIColor { get }
+    var photoLibraryAlbumsTableViewBackgroundColor: UIColor { get }
+    var photoLibraryCollectionBackgroundColor: UIColor { get }
+    
     var photoLibraryTitleFont: UIFont { get }
     var photoLibraryAlbumsDisclosureIcon: UIImage? { get }
     
