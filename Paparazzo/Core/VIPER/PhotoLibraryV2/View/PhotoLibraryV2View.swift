@@ -221,8 +221,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
         
+        collectionView.backgroundColor = theme.photoLibraryCollectionBackgroundColor
+        
         titleView.setLabelFont(theme.photoLibraryTitleFont)
         titleView.setIcon(theme.photoLibraryAlbumsDisclosureIcon)
+        titleView.backgroundColor = theme.photoLibraryCollectionBackgroundColor
         
         accessDeniedView.setTheme(theme)
         
@@ -245,6 +248,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         bottomContinueButton.setTitleColor(theme.libraryBottomContinueButtonTitleColor, for: .normal)
         
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
+        albumsTableView.setCellBackgroundColor(theme.photoLibraryAlbumsTableViewCellBackgroundColor)
+        albumsTableView.setTableViewBackgroundColor(theme.photoLibraryAlbumsTableViewBackgroundColor)
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor

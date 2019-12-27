@@ -12,6 +12,7 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     
     private let cellId = "AlbumCell"
     private var cellLabelFont: UIFont?
+    private var cellBackgroundColor: UIColor?
     
     private let separatorHeight: CGFloat = 1
     private let minInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
@@ -61,8 +62,16 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         tableView.reloadRows(at: indexPathsToReload, with: .fade)
     }
     
+    func setTableViewBackgroundColor(_ color: UIColor) {
+        tableView.backgroundColor = color
+    }
+    
     func setCellLabelFont(_ font: UIFont) {
         cellLabelFont = font
+    }
+    
+    func setCellBackgroundColor(_ color: UIColor) {
+        cellBackgroundColor = color
     }
     
     // MARK: - UITableViewDataSource
@@ -83,6 +92,10 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         
         if let cellLabelFont = cellLabelFont {
             cell.setLabelFont(cellLabelFont)
+        }
+        
+        if let cellBackgroundColor = cellBackgroundColor {
+            cell.backgroundColor = cellBackgroundColor
         }
         
         return cell
