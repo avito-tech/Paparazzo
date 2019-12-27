@@ -241,11 +241,6 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     // MARK: - MediaRibbonLayoutDelegate
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = bounds.size.height - contentInsets.top - contentInsets.bottom
-        return CGSize(width: height, height: height)
-    }
-    
     func shouldApplyTransformToItemAtIndexPath(_ indexPath: IndexPath) -> Bool {
         switch dataSource[indexPath] {
         case .photo:
