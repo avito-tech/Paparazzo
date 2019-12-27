@@ -7,6 +7,13 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     var onSwipeToCameraProgressChange: ((CGFloat) -> ())?
     var hapticFeedbackEnabled = false
     
+    var collectionViewBackgroundColor = UIColor.white {
+        didSet {
+            guard collectionViewBackgroundColor != oldValue else { return }
+            collectionView.backgroundColor = collectionViewBackgroundColor
+        }
+    }
+    
     private let collectionView: UICollectionView
     private let dataSource = MediaRibbonDataSource()
     
@@ -29,7 +36,7 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
         layout.minimumInteritemSpacing = 0
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = collectionViewBackgroundColor
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.isPagingEnabled = true

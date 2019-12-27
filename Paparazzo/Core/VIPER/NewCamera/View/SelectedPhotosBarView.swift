@@ -75,6 +75,7 @@ final class SelectedPhotosBarView: UIView {
     }
     
     func setTheme(_ theme: NewCameraUITheme) {
+        backgroundColor = theme.newCameraSelectedPhotosBarBackgroundColor
         label.font = theme.newCameraPhotosCountFont
         placeholderLabel.font = theme.newCameraPhotosCountPlaceholderFont
         button.titleLabel?.font = theme.newCameraDoneButtonFont
