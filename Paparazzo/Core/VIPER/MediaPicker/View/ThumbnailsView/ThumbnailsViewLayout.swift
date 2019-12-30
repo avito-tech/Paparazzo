@@ -1,31 +1,27 @@
 import UIKit
 
-final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
+final class ThumbnailsViewLayout: UICollectionViewLayout {
     
     var itemsTransform = CGAffineTransform.identity
     var hapticFeedbackEnabled = false
+    var sectionInset = UIEdgeInsets.zero
+    var spacing = CGFloat(0)
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer?
     private var originalIndexPath: IndexPath?
     private var draggingIndexPath: IndexPath?
     private var draggingView: UIView?
     private var dragOffset = CGPoint.zero
-    private var frames = [IndexPath: CGRect]()
+    private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
     private var contentSize = CGSize.zero
     
     var onDragStart: (() -> ())?
     var onDragFinish: (() -> ())?
     
-    override init() {
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func prepare() {
         super.prepare()
+        
+        attributes.removeAll()
         
         let itemsCount = collectionView?.numberOfItems(inSection: 0) ?? 0
         let collectionViewBounds = collectionView?.bounds ?? .zero
@@ -37,13 +33,17 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
             
             let indexPath = IndexPath(item: index, section: 0)
             let frame = CGRect(
-                centerX: sectionInset.left + width / 2 + CGFloat(index) * (width + minimumLineSpacing),
+                centerX: sectionInset.left + width / 2 + CGFloat(index) * (width + spacing),
                 centerY: collectionViewBounds.midY,
                 width: width,
                 height: height
             )
             
-            frames[indexPath] = frame
+            let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            cellAttributes.bounds = CGRect(origin: .zero, size: frame.size)
+            cellAttributes.center = frame.center
+            
+            attributes[indexPath] = cellAttributes
             
             maxX = frame.maxX
         }
@@ -84,14 +84,14 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        let attributes = super.layoutAttributesForItem(at: indexPath)
+        guard let attributes = self.attributes[indexPath] else { return nil }
         adjustAttributes(attributes)
         return attributes
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let attributes = super.layoutAttributesForElements(in: rect)
-        attributes?.forEach { adjustAttributes($0) }
+        let attributes = self.attributes.filter { $1.frame.intersects(rect) }.map { $1 }
+        attributes.forEach { adjustAttributes($0) }
         return attributes
     }
     
@@ -102,11 +102,6 @@ final class ThumbnailsViewLayout: UICollectionViewFlowLayout {
         
         let delegate = collectionView?.delegate as? MediaRibbonLayoutDelegate
         let shouldApplyTransform = delegate?.shouldApplyTransformToItemAtIndexPath(attributes.indexPath) ?? true
-        
-        if let frame = frames[attributes.indexPath] {
-            attributes.bounds = CGRect(origin: .zero, size: frame.size)
-            attributes.center = frame.center
-        }
         
         attributes.transform = shouldApplyTransform ? itemsTransform : .identity
     }
