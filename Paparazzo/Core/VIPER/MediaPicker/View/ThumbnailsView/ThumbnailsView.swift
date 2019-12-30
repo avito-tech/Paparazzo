@@ -41,8 +41,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     init() {
         
         layout = ThumbnailsViewLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = mediaRibbonInteritemSpacing
+        layout.spacing = mediaRibbonInteritemSpacing
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.clipsToBounds = false
