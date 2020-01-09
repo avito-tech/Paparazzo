@@ -404,10 +404,10 @@ final class CameraServiceImpl: CameraService {
         let targetHeight = targetWidth / cropRatio
         
         let cropRect = CGRect(
-            x: (sourceHeight - targetHeight) / 2,
-            y: 0,
-            width: targetHeight,
-            height: targetWidth
+            x: isDimensionsFlipped ? (sourceHeight - targetHeight) / 2 : 0,
+            y: isDimensionsFlipped ? 0 : (sourceHeight - targetHeight) / 2,
+            width: isDimensionsFlipped ? targetHeight : targetWidth,
+            height: isDimensionsFlipped ? targetWidth : targetHeight
         )
         
         if targetHeight < sourceHeight,
