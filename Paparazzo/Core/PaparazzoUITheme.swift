@@ -73,9 +73,12 @@ public struct PaparazzoUITheme:
     public var photoLibraryAlbumCellFont = UIFont.systemFont(ofSize: 17)
     public var photoLibraryPlaceholderFont = UIFont.systemFont(ofSize: 17)
     public var photoLibraryPlaceholderColor = UIColor.gray
+    public var photoLibraryTitleColor = UIColor.black
+    public var photoLibraryAlbumsDisclosureIconColor = UIColor.black
     
     public var photoLibraryAlbumsTableViewCellBackgroundColor = UIColor.white
     public var photoLibraryAlbumsTableViewBackgroundColor = UIColor.white
+    public var photoLibraryAlbumsTableTopSeparatorColor = UIColor.RGB(red: 215, green: 215, blue: 215)
     public var photoLibraryCollectionBackgroundColor = UIColor.white
     
     // MARK: - PhotoLibraryV2UITheme
@@ -112,6 +115,7 @@ public struct PaparazzoUITheme:
     public var newCameraFlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
     public var newCameraDoneButtonFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountFont = UIFont.systemFont(ofSize: 16)
+    public var newCameraPhotosCountColor = UIColor.black
     public var newCameraPhotosCountPlaceholderFont: UIFont = UIFont.systemFont(ofSize: 16)
     public var newCameraHintFont = UIFont.systemFont(ofSize: 16)
     public var newCameraViewBackgroundColor = UIColor.white
