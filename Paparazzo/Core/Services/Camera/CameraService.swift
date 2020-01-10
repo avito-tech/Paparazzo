@@ -13,7 +13,7 @@ protocol CameraService: class {
     func setFlashEnabled(_: Bool) -> Bool
     
     func takePhoto(completion: @escaping (PhotoFromCamera?) -> ())
-    func takePhotoToPhotoLibrary(completion: @escaping (PhotoLibraryItem?) -> ())
+    func takePhotoToPhotoLibrary(croppedToRatio: CGFloat?, completion: @escaping (PhotoLibraryItem?) -> ())
     
     func setCaptureSessionRunning(_: Bool)
     

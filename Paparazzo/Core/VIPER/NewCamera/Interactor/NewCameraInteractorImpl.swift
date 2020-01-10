@@ -58,7 +58,7 @@ final class NewCameraInteractorImpl: NewCameraInteractor {
     }
     
     func takePhoto(completion: @escaping (PhotoLibraryItem?) -> ()) {
-        cameraService.takePhotoToPhotoLibrary(completion: completion)
+        cameraService.takePhotoToPhotoLibrary(croppedToRatio: 4.0 / 3.0, completion: completion)
     }
     
     func canAddItems() -> Bool {

@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreGraphics
 import ImageIO
 import ImageSource
 import Photos
@@ -322,8 +323,10 @@ final class CameraServiceImpl: CameraService {
         }
     }
     
-    func takePhotoToPhotoLibrary(completion callersCompletion: @escaping (PhotoLibraryItem?) -> ()) {
-        
+    func takePhotoToPhotoLibrary(
+        croppedToRatio cropRatio: CGFloat?,
+        completion callersCompletion: @escaping (PhotoLibraryItem?) -> ())
+    {
         func completion(_ mediaPickerItem: PhotoLibraryItem?) {
             dispatch_to_main_queue {
                 callersCompletion(mediaPickerItem)
@@ -338,14 +341,18 @@ final class CameraServiceImpl: CameraService {
             connection.videoOrientation = avOrientationForCurrentDeviceOrientation()
         }
         
-        output.captureStillImageAsynchronously(from: connection) { [weak self] sampleBuffer, error in
+        output.captureStillImageAsynchronously(from: connection) { sampleBuffer, error in
             DispatchQueue.global(qos: .userInitiated).async {
                 
-                guard let imageData =
+                guard var imageData =
                     sampleBuffer.flatMap({ AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation($0) })
                     else {
                         return completion(nil)
                     }
+                
+                if let cropRatio = cropRatio {
+                    imageData = self.dataForImage(croppedTo: cropRatio, uncroppedImageData: imageData)
+                }
                 
                 PHPhotoLibrary.requestAuthorization { status in
                     guard status == .authorized else {
@@ -374,6 +381,33 @@ final class CameraServiceImpl: CameraService {
                     })
                 }
             }
+        }
+    }
+    
+    private func dataForImage(croppedTo cropRatio: CGFloat, uncroppedImageData: Data) -> Data {
+        
+        guard let uiImage = UIImage(data: uncroppedImageData), let cgImage = uiImage.cgImage else {
+            return uncroppedImageData
+        }
+        
+        let sourceHeight = CGFloat(cgImage.width)
+        let targetWidth = CGFloat(cgImage.height)
+        let targetHeight = targetWidth / cropRatio
+        
+        let cropRect = CGRect(
+            x: (sourceHeight - targetHeight) / 2,
+            y: 0,
+            width: targetHeight,
+            height: targetWidth
+        )
+        
+        if targetHeight < sourceHeight,
+            let croppedImage = cgImage.cropping(to: cropRect),
+            let croppedImageData = UIImage(cgImage: croppedImage, scale: uiImage.scale, orientation: .right).jpegData(compressionQuality: 1)
+        {
+            return croppedImageData
+        } else {
+            return uncroppedImageData
         }
     }
     
