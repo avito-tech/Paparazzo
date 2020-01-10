@@ -390,29 +390,20 @@ final class CameraServiceImpl: CameraService {
             return uncroppedImageData
         }
         
-        let isDimensionsFlipped: Bool = {
-            switch uiImage.imageOrientation {
-            case .left, .leftMirrored, .right, .rightMirrored:
-                return true
-            case .up, .upMirrored, .down, .downMirrored:
-                return false
-            }
-        }()
-        
-        let sourceHeight = CGFloat(isDimensionsFlipped ? cgImage.width : cgImage.height)
-        let targetWidth = CGFloat(isDimensionsFlipped ? cgImage.height : cgImage.width)
+        let sourceHeight = CGFloat(cgImage.width)
+        let targetWidth = CGFloat(cgImage.height)
         let targetHeight = targetWidth / cropRatio
         
         let cropRect = CGRect(
-            x: isDimensionsFlipped ? (sourceHeight - targetHeight) / 2 : 0,
-            y: isDimensionsFlipped ? 0 : (sourceHeight - targetHeight) / 2,
-            width: isDimensionsFlipped ? targetHeight : targetWidth,
-            height: isDimensionsFlipped ? targetWidth : targetHeight
+            x: (sourceHeight - targetHeight) / 2,
+            y: 0,
+            width: targetHeight,
+            height: targetWidth
         )
         
         if targetHeight < sourceHeight,
             let croppedImage = cgImage.cropping(to: cropRect),
-            let croppedImageData = UIImage(cgImage: croppedImage, scale: uiImage.scale, orientation: uiImage.imageOrientation).jpegData(compressionQuality: 1)
+            let croppedImageData = UIImage(cgImage: croppedImage, scale: uiImage.scale, orientation: .right).jpegData(compressionQuality: 1)
         {
             return croppedImageData
         } else {
