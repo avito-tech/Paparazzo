@@ -74,6 +74,10 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         cellBackgroundColor = color
     }
     
+    func setTopSeparatorColor(_ color: UIColor) {
+        topSeparator.backgroundColor = color
+    }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellDataList.count

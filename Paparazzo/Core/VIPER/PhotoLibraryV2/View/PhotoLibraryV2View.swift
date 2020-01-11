@@ -226,6 +226,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         titleView.setLabelFont(theme.photoLibraryTitleFont)
         titleView.setIcon(theme.photoLibraryAlbumsDisclosureIcon)
         titleView.backgroundColor = theme.photoLibraryCollectionBackgroundColor
+        titleView.setTitleColor(theme.photoLibraryTitleColor)
+        titleView.setIconColor(theme.photoLibraryAlbumsDisclosureIconColor)
         
         accessDeniedView.setTheme(theme)
         
@@ -250,6 +252,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
         albumsTableView.setCellBackgroundColor(theme.photoLibraryAlbumsTableViewCellBackgroundColor)
         albumsTableView.setTableViewBackgroundColor(theme.photoLibraryAlbumsTableViewBackgroundColor)
+        albumsTableView.setTopSeparatorColor(theme.photoLibraryAlbumsTableTopSeparatorColor)
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor

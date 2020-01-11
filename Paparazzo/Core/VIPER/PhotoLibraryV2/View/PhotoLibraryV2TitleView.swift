@@ -33,6 +33,10 @@ final class PhotoLibraryV2TitleView: UIView {
         setNeedsLayout()
     }
     
+    func setTitleColor(_ color: UIColor) {
+        label.textColor = color
+    }
+    
     func setTitleVisible(_ visible: Bool) {
         label.isHidden = !visible
         iconView.isHidden = !visible
@@ -46,6 +50,10 @@ final class PhotoLibraryV2TitleView: UIView {
     func setIcon(_ icon: UIImage?) {
         iconView.image = icon
         setNeedsLayout()
+    }
+    
+    func setIconColor(_ color: UIColor) {
+        iconView.tintColor = color
     }
     
     func rotateIconUp() {

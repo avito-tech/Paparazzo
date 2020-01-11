@@ -6,6 +6,7 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraFlashOffIcon: UIImage? { get }
     var newCameraDoneButtonFont: UIFont { get }
     var newCameraPhotosCountFont: UIFont { get }
+    var newCameraPhotosCountColor: UIColor { get }
     var newCameraPhotosCountPlaceholderFont: UIFont { get }
     var newCameraHintFont: UIFont { get }
     var newCameraViewBackgroundColor: UIColor { get }
