@@ -253,6 +253,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         albumsTableView.setCellBackgroundColor(theme.photoLibraryAlbumsTableViewCellBackgroundColor)
         albumsTableView.setTableViewBackgroundColor(theme.photoLibraryAlbumsTableViewBackgroundColor)
         albumsTableView.setTopSeparatorColor(theme.photoLibraryAlbumsTableTopSeparatorColor)
+        albumsTableView.setCellDefaultLabelColor(theme.photoLibraryAlbumsCellDefaultLabelColor)
+        albumsTableView.setCellSelectedLabelColor(theme.photoLibraryAlbumsCellSelectedLabelColor)
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor
