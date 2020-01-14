@@ -4,6 +4,8 @@ public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     var photoLibraryAlbumsTableViewBackgroundColor: UIColor { get }
     var photoLibraryAlbumsTableTopSeparatorColor: UIColor { get }
     var photoLibraryCollectionBackgroundColor: UIColor { get }
+    var photoLibraryAlbumsCellDefaultLabelColor: UIColor { get }
+    var photoLibraryAlbumsCellSelectedLabelColor: UIColor { get }
     
     var photoLibraryTitleFont: UIFont { get }
     var photoLibraryTitleColor: UIColor { get }
@@ -24,6 +26,8 @@ public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     var libraryBottomContinueButtonTitleColor: UIColor { get }
     var libraryBottomContinueButtonFont: UIFont { get }
     var librarySelectionIndexFont: UIFont { get }
+    var libraryItemBadgeTextColor: UIColor { get }
+    var libraryItemBadgeBackgroundColor: UIColor { get }
     
     var closeIcon: UIImage? { get }
     

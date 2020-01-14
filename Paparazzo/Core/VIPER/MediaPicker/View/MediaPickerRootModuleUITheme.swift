@@ -9,6 +9,9 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var photoPreviewBackgroundColor: UIColor { get }
     var photoPreviewCollectionBackgroundColor: UIColor { get }
 
+    var mediaPickerTitleLightColor: UIColor { get }
+    var mediaPickerTitleDarkColor: UIColor { get }
+
     var shutterButtonColor: UIColor { get }
     var shutterButtonDisabledColor: UIColor { get }
     var focusIndicatorColor: UIColor { get }
