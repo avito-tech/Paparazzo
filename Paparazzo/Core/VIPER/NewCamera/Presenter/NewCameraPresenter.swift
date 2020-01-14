@@ -64,7 +64,7 @@ final class NewCameraPresenter:
             else { return }
             
             let data = strongSelf.interactor.mediaPickerData
-                .bySettingPhotoLibraryItems(selectedItems)
+                .bySettingMediaPickerItems(selectedItems)
                 .bySelectingLastItem()
             
             self?.router.showMediaPicker(
@@ -95,7 +95,7 @@ final class NewCameraPresenter:
             self?.interactor.takePhoto { photo in
                 guard let photo = photo, let strongSelf = self else { return }
                 
-                self?.interactor.selectedImagesStorage.addItem(photo)
+                self?.interactor.selectedImagesStorage.addItem(MediaPickerItem(photo))
                 self?.adjustCaptureButtonAvailability()
                 
                 self?.view?.animateCapturedPhoto(photo.image) { finalizeAnimation in

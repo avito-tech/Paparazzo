@@ -3,23 +3,30 @@ import ImageSource
 // TODO: rename everything uniformely
 public final class SelectedImageStorage {
     
-    private(set) var images: [PhotoLibraryItem]
+    private(set) var images: [MediaPickerItem]
     private var onChange: (() -> ())?  // TODO: array
     
-    init(images: [PhotoLibraryItem] = []) {
+    init(images: [MediaPickerItem] = []) {
         self.images = images
     }
     
-    func addItem(_ item: PhotoLibraryItem) {
+    func addItem(_ item: MediaPickerItem) {
         images.append(item)
         onChange?()
     }
     
-    func removeItem(_ item: PhotoLibraryItem) {
+    func removeItem(_ item: MediaPickerItem) {
         if let index = images.index(of: item) {
             images.remove(at: index)
             onChange?()
         }
+    }
+    
+    func replaceItem(at index: Int, with item: MediaPickerItem) -> Bool {
+        guard index >= 0 && index < images.count else { return false }
+        images[index] = item
+        onChange?()
+        return true
     }
     
     func removeAllItems() {
