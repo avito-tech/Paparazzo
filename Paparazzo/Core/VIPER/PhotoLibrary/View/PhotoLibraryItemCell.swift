@@ -126,6 +126,14 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     // MARK: - PhotoLibraryItemCell
     
+    func setBadgeBackgroundColor(_ color: UIColor?) {
+        selectionIndexBadge.backgroundColor = color
+    }
+    
+    func setBadgeTextColor(_ color: UIColor?) {
+        selectionIndexBadge.textColor = color
+    }
+    
     func setCloudIcon(_ icon: UIImage?) {
         cloudIconView.image = icon
         setNeedsLayout()

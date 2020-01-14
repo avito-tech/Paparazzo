@@ -9,8 +9,8 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     private let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     private let imageSize = CGSize(width: 44, height: 44)
     private let imageToTitleSpacing: CGFloat = 16
-    private let defaultLabelColor = UIColor.RGB(red: 51, green: 51, blue: 51)
-    private let selectedLabelColor = UIColor.RGB(red: 0, green: 170, blue: 255)
+    private var defaultLabelColor = UIColor.RGB(red: 51, green: 51, blue: 51)
+    private var selectedLabelColor = UIColor.RGB(red: 0, green: 170, blue: 255)
     
     // MARK: - Subviews
     private let label = UILabel()
@@ -61,6 +61,14 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     
     func setLabelFont(_ font: UIFont) {
         label.font = font
+    }
+    
+    func setDefaultLabelColor(_ color: UIColor) {
+        defaultLabelColor = color
+    }
+    
+    func setSelectedLabelColor(_ color: UIColor) {
+        selectedLabelColor = color
     }
     
     // MARK: - UITableViewCell
