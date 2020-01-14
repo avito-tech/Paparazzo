@@ -23,7 +23,7 @@ public final class SelectedImageStorage {
     }
     
     func replaceItem(at index: Int, with item: MediaPickerItem) -> Bool {
-        guard index >= 0 && index < images.count else { return false }
+        guard images.indices.contains(index) else { return false }
         images[index] = item
         onChange?()
         return true
