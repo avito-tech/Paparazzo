@@ -323,7 +323,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
             cell.setCameraIcon(theme?.returnToCameraIcon)
             cell.setCameraIconTransform(cameraIconTransform)
             
-            if let cameraOutputParameters = cameraOutputParameters {
+            if let cameraOutputParameters = cameraOutputParameters, !isHidden {
                 cell.setOutputParameters(cameraOutputParameters)
             }
         }
