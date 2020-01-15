@@ -148,6 +148,7 @@ final class NewCameraView: UIView {
         flashButton.setImage(theme.newCameraFlashOnIcon, for: .selected)
         
         hintLabel.font = theme.newCameraHintFont
+        hintLabel.textColor = theme.newCameraHintTextColor
         
         selectedPhotosBarView.setTheme(theme)
         accessDeniedView.setTheme(theme)
