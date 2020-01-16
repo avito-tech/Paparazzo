@@ -8,6 +8,7 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraPhotosCountFont: UIFont { get }
     var newCameraPhotosCountColor: UIColor { get }
     var newCameraPhotosCountPlaceholderFont: UIFont { get }
+    var newCameraPhotosCountPlaceholderColor: UIColor { get }
     var newCameraHintFont: UIFont { get }
     var newCameraHintTextColor: UIColor { get }
     var newCameraViewBackgroundColor: UIColor { get }
