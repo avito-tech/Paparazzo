@@ -79,7 +79,7 @@ final class SelectedPhotosBarView: UIView {
         label.textColor = theme.newCameraPhotosCountColor
         label.font = theme.newCameraPhotosCountFont
         placeholderLabel.font = theme.newCameraPhotosCountPlaceholderFont
-        placeholderLabel.textColor = theme.newCameraPhotosCountColor
+        placeholderLabel.textColor = theme.newCameraPhotosCountPlaceholderColor
         button.titleLabel?.font = theme.newCameraDoneButtonFont
         button.setTitleColor(theme.newCameraSelectedPhotosBarButtonTitleColorNormal, for: .normal)
         button.backgroundColor = theme.newCameraSelectedPhotosBarButtonBackgroundColor

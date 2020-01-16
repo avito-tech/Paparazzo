@@ -123,6 +123,7 @@ public struct PaparazzoUITheme:
     public var newCameraPhotosCountFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountColor = UIColor.black
     public var newCameraPhotosCountPlaceholderFont: UIFont = UIFont.systemFont(ofSize: 16)
+    public var newCameraPhotosCountPlaceholderColor = UIColor(red: 0.646, green: 0.646, blue: 0.646, alpha: 1)
     public var newCameraHintFont = UIFont.systemFont(ofSize: 16)
     public var newCameraHintTextColor = UIColor.gray
     public var newCameraViewBackgroundColor = UIColor.white
