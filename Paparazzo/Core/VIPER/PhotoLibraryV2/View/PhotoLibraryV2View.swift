@@ -221,8 +221,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
         
+        collectionView.backgroundColor = theme.photoLibraryCollectionBackgroundColor
+        
         titleView.setLabelFont(theme.photoLibraryTitleFont)
         titleView.setIcon(theme.photoLibraryAlbumsDisclosureIcon)
+        titleView.backgroundColor = theme.photoLibraryCollectionBackgroundColor
+        titleView.setTitleColor(theme.photoLibraryTitleColor)
+        titleView.setIconColor(theme.photoLibraryAlbumsDisclosureIconColor)
         
         accessDeniedView.setTheme(theme)
         
@@ -245,6 +250,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         bottomContinueButton.setTitleColor(theme.libraryBottomContinueButtonTitleColor, for: .normal)
         
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
+        albumsTableView.setCellBackgroundColor(theme.photoLibraryAlbumsTableViewCellBackgroundColor)
+        albumsTableView.setTableViewBackgroundColor(theme.photoLibraryAlbumsTableViewBackgroundColor)
+        albumsTableView.setTopSeparatorColor(theme.photoLibraryAlbumsTableTopSeparatorColor)
+        albumsTableView.setCellDefaultLabelColor(theme.photoLibraryAlbumsCellDefaultLabelColor)
+        albumsTableView.setCellSelectedLabelColor(theme.photoLibraryAlbumsCellSelectedLabelColor)
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor
@@ -757,6 +767,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
         cell.selectionIndexFont = theme?.librarySelectionIndexFont
         cell.isRedesign = isNewFlowPrototype
+        cell.setBadgeTextColor(theme?.libraryItemBadgeTextColor)
+        cell.setBadgeBackgroundColor(theme?.libraryItemBadgeBackgroundColor)
         
         cell.setCloudIcon(theme?.iCloudIcon)
         

@@ -84,6 +84,7 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        backgroundColor = theme.photoControlsViewBackgroundColor
         removeButton.setImage(theme.removePhotoIcon, for: .normal)
         autocorrectButton.setImage(theme.autocorrectPhotoIconInactive, for: .normal)
         autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .highlighted)

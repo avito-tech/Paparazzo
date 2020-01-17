@@ -37,6 +37,10 @@ final class NewCameraView: UIView {
     // MARK: - Specs
     private let navigationBarHeight = CGFloat(52)
     private let captureButtonSize = CGFloat(64)
+    private var captureButtonBorderColorEnabled = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
+    private var captureButtonBackgroundColorEnabled = UIColor.white
+    private var captureButtonBorderColorDisabled = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
+    private var captureButtonBackgroundColorDisabled = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1)
     
     // MARK: - Init
     init() {
@@ -130,12 +134,21 @@ final class NewCameraView: UIView {
     }
     
     func setTheme(_ theme: NewCameraUITheme) {
+        backgroundColor = theme.newCameraViewBackgroundColor
+        flashView.backgroundColor = theme.newCameraFlashBackgroundColor
+        
+        captureButtonBorderColorEnabled = theme.newCameraCaptureButtonBorderColorEnabled
+        captureButtonBorderColorDisabled = theme.newCameraCaptureButtonBorderColorDisabled
+        captureButtonBackgroundColorEnabled = theme.newCameraCaptureButtonBackgroundColorEnabled
+        captureButtonBackgroundColorDisabled = theme.newCameraCaptureButtonBackgroundColorDisabled
+        
         closeButton.setImage(theme.newCameraCloseIcon, for: .normal)
         
         flashButton.setImage(theme.newCameraFlashOffIcon, for: .normal)
         flashButton.setImage(theme.newCameraFlashOnIcon, for: .selected)
         
         hintLabel.font = theme.newCameraHintFont
+        hintLabel.textColor = theme.newCameraHintTextColor
         
         selectedPhotosBarView.setTheme(theme)
         accessDeniedView.setTheme(theme)
@@ -283,11 +296,11 @@ final class NewCameraView: UIView {
         
         switch state {
         case .enabled, .nonInteractive:
-            captureButton.layer.borderColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
-            captureButton.layer.backgroundColor = UIColor.white.cgColor
+            captureButton.layer.borderColor = captureButtonBorderColorEnabled.cgColor
+            captureButton.layer.backgroundColor = captureButtonBackgroundColorEnabled.cgColor
         case .disabled:
-            captureButton.layer.borderColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1).cgColor
-            captureButton.layer.backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1).cgColor
+            captureButton.layer.borderColor = captureButtonBorderColorDisabled.cgColor
+            captureButton.layer.backgroundColor = captureButtonBackgroundColorDisabled.cgColor
         }
     }
     

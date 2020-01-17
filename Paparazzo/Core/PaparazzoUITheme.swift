@@ -13,6 +13,15 @@ public struct PaparazzoUITheme:
 
     // MARK: - MediaPickerRootModuleUITheme
 
+    public var mediaPickerBackgroundColor = UIColor.white
+    public var cameraControlsViewBackgroundColor = UIColor.white
+    public var photoControlsViewBackgroundColor = UIColor.white
+    public var thumbnailsViewBackgroundColor = UIColor.white
+    public var photoPreviewBackgroundColor = UIColor.white
+    public var photoPreviewCollectionBackgroundColor = UIColor.white
+    public var mediaPickerTitleLightColor = UIColor.white
+    public var mediaPickerTitleDarkColor = UIColor.black
+
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var shutterButtonDisabledColor = UIColor.lightGray
     public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
@@ -45,6 +54,7 @@ public struct PaparazzoUITheme:
     public var cameraBottomContinueButtonTitleColor = UIColor.white
     public var cameraBottomContinueButtonFont = UIFont.systemFont(ofSize: 16)
     
+    public var accessDeniedBackgroundColor = UIColor.white
     public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)
     public var accessDeniedButtonFont = UIFont.systemFont(ofSize: 17)
@@ -65,6 +75,15 @@ public struct PaparazzoUITheme:
     public var photoLibraryAlbumCellFont = UIFont.systemFont(ofSize: 17)
     public var photoLibraryPlaceholderFont = UIFont.systemFont(ofSize: 17)
     public var photoLibraryPlaceholderColor = UIColor.gray
+    public var photoLibraryTitleColor = UIColor.black
+    public var photoLibraryAlbumsDisclosureIconColor = UIColor.black
+    
+    public var photoLibraryAlbumsTableViewCellBackgroundColor = UIColor.white
+    public var photoLibraryAlbumsTableViewBackgroundColor = UIColor.white
+    public var photoLibraryAlbumsTableTopSeparatorColor = UIColor.RGB(red: 215, green: 215, blue: 215)
+    public var photoLibraryAlbumsCellSelectedLabelColor = UIColor.RGB(red: 0, green: 170, blue: 255)
+    public var photoLibraryAlbumsCellDefaultLabelColor = UIColor.RGB(red: 51, green: 51, blue: 51)
+    public var photoLibraryCollectionBackgroundColor = UIColor.white
     
     // MARK: - PhotoLibraryV2UITheme
     public var continueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
@@ -75,6 +94,8 @@ public struct PaparazzoUITheme:
     public var libraryBottomContinueButtonTitleColor = UIColor.white
     public var libraryBottomContinueButtonFont = UIFont.systemFont(ofSize: 16)
     public var librarySelectionIndexFont = UIFont.systemFont(ofSize: 16)
+    public var libraryItemBadgeTextColor = UIColor.white
+    public var libraryItemBadgeBackgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
     
     // MARK: - ImageCroppingUITheme
     
@@ -100,8 +121,22 @@ public struct PaparazzoUITheme:
     public var newCameraFlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
     public var newCameraDoneButtonFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountFont = UIFont.systemFont(ofSize: 16)
+    public var newCameraPhotosCountColor = UIColor.black
     public var newCameraPhotosCountPlaceholderFont: UIFont = UIFont.systemFont(ofSize: 16)
+    public var newCameraPhotosCountPlaceholderColor = UIColor(red: 0.646, green: 0.646, blue: 0.646, alpha: 1)
     public var newCameraHintFont = UIFont.systemFont(ofSize: 16)
+    public var newCameraHintTextColor = UIColor.gray
+    public var newCameraViewBackgroundColor = UIColor.white
+    public var newCameraFlashBackgroundColor = UIColor.white
+    public var newCameraButtonBackgroundColor = UIColor.white
+    public var newCameraSelectedPhotosBarBackgroundColor = UIColor.white
+    
+    public var newCameraCaptureButtonBorderColorEnabled = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
+    public var newCameraCaptureButtonBackgroundColorEnabled = UIColor.white
+    public var newCameraCaptureButtonBorderColorDisabled = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
+    public var newCameraCaptureButtonBackgroundColorDisabled = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1)
+    public var newCameraSelectedPhotosBarButtonTitleColorNormal = UIColor.white
+    public var newCameraSelectedPhotosBarButtonBackgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
 
     // MARK: - Private
     private static func image(named name: String) -> UIImage? {

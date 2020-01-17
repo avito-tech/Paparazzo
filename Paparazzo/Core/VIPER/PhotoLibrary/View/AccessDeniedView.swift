@@ -73,6 +73,7 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        backgroundColor = theme.accessDeniedBackgroundColor
         titleLabel.font = theme.accessDeniedTitleFont
         messageLabel.font = theme.accessDeniedMessageFont
         button.titleLabel?.font = theme.accessDeniedButtonFont

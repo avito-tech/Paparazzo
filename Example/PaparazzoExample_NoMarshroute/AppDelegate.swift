@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 theme: PaparazzoUITheme.appSpecificTheme(),
                 parameters: MediaPickerData(
                     items: mediaPickerItems,
-                    maxItemsCount: 3
+                    maxItemsCount: 1
                 ),
                 onFinish: { images in
                     mediaPickerItems = images

@@ -27,6 +27,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let fakeNavigationBarMinimumYOffset = CGFloat(20)
     private let fakeNavigationBarContentTopInset = CGFloat(8)
     
+    // MARK: - MediaPickerTitleStyle
+    private var photoTitleLabelLightTextColor = UIColor.white
+    private var photoTitleLabelDarkTextColor = UIColor.black
+    
     // MARK: - State
     private var theme: ThemeType?
     
@@ -197,7 +201,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         // Thumbnail ribbon
         //
-        thumbnailRibbonView.backgroundColor = UIColor(white: 1, alpha: 0.6)
+        thumbnailRibbonView.backgroundColor = theme?.thumbnailsViewBackgroundColor.withAlphaComponent(0.6)
         thumbnailRibbonView.contentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         thumbnailRibbonView.layout(
             left: bounds.left,
@@ -227,7 +231,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         // Thumbnail ribbon
         //
-        thumbnailRibbonView.backgroundColor = .white
+        thumbnailRibbonView.backgroundColor = theme?.thumbnailsViewBackgroundColor
         thumbnailRibbonView.contentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 8)
         thumbnailRibbonView.layout(
             left: bounds.left,
@@ -255,6 +259,13 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     // MARK: - ThemeConfigurable
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
+        
+        backgroundColor = theme.mediaPickerBackgroundColor
+        photoPreviewView.backgroundColor = theme.photoPreviewBackgroundColor
+        photoPreviewView.collectionViewBackgroundColor = theme.photoPreviewCollectionBackgroundColor
+        
+        photoTitleLabelLightTextColor = theme.mediaPickerTitleLightColor
+        photoTitleLabelDarkTextColor = theme.mediaPickerTitleDarkColor
         
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
@@ -561,10 +572,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         switch style {
         // TODO: (ayutkin) don't allow presenter to set title style directly
         case .light where !UIDevice.current.hasTopSafeAreaInset:
-            photoTitleLabel.textColor = .white
+            photoTitleLabel.textColor = photoTitleLabelLightTextColor
             photoTitleLabel.layer.shadowOpacity = 0.5
         case .dark, .light:
-            photoTitleLabel.textColor = .black
+            photoTitleLabel.textColor = photoTitleLabelDarkTextColor
             photoTitleLabel.layer.shadowOpacity = 0
         }
     }
