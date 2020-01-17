@@ -767,6 +767,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
         cell.selectionIndexFont = theme?.librarySelectionIndexFont
         cell.isRedesign = isNewFlowPrototype
+        cell.setBadgeTextColor(theme?.libraryItemBadgeTextColor)
+        cell.setBadgeBackgroundColor(theme?.libraryItemBadgeBackgroundColor)
         
         cell.setCloudIcon(theme?.iCloudIcon)
         
