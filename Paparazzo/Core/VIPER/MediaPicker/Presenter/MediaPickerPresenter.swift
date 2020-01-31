@@ -523,7 +523,6 @@ final class MediaPickerPresenter: MediaPickerModule {
                 
                 self?.onCropFinish?()
                 let croppedItem = MediaPickerItem(
-                    identifier: item.identifier,
                     image: croppedImageSource,
                     source: item.source
                 )

@@ -176,7 +176,6 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
                 }
                 
                 let updatedItem = MediaPickerItem(
-                    identifier: originalItem.identifier,
                     image: image,
                     source: originalItem.source,
                     originalItem: originalItem

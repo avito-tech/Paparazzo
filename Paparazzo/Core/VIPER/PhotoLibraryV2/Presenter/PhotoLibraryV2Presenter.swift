@@ -230,26 +230,19 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 return
             }
             
-            let mediaPickerItems = selectedItems.map {
-                MediaPickerItem(
-                    image: $0.image,
-                    source: .photoLibrary
-                )
-            }
-            
             let startIndex = 0
             
             self?.onItemsAdd?(
-                mediaPickerItems,
+                selectedItems,
                 startIndex
             )
             
             guard !strongSelf.isNewFlowPrototype else {
-                strongSelf.onFinish?(mediaPickerItems)
+                strongSelf.onFinish?(selectedItems)
                 return
             }
             
-            let data = strongSelf.interactor.mediaPickerData.bySettingPhotoLibraryItems(selectedItems)
+            let data = strongSelf.interactor.mediaPickerData.bySettingMediaPickerItems(selectedItems)
             
             self?.router.showMediaPicker(
                 data: data,
@@ -293,7 +286,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private func showMediaPickerInNewFlow() {
         
         let data = interactor.mediaPickerData
-            .bySettingPhotoLibraryItems(interactor.selectedItems)
+            .bySettingMediaPickerItems(interactor.selectedItems)
             .bySelectingLastItem()
         
         router.showMediaPicker(
@@ -356,8 +349,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
         
+        let mediaPickerItem = MediaPickerItem(item)
+        
         let getSelectionIndex = { [weak self] in
-            self?.interactor.selectedItems.index(of: item).flatMap { $0 + 1 }
+            self?.interactor.selectedItems.index(of: mediaPickerItem).flatMap { $0 + 1 }
         }
         
         var cellData = PhotoLibraryItemCellData(
@@ -365,7 +360,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             getSelectionIndex: isNewFlowPrototype ? getSelectionIndex : nil
         )
 
-        cellData.selected = interactor.isSelected(item)
+        cellData.selected = interactor.isSelected(mediaPickerItem)
         
         cellData.onSelectionPrepare = { [weak self] in
             if let selectionState = self?.interactor.prepareSelection() {
@@ -374,7 +369,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onSelect = { [weak self] in
-            if let selectionState = self?.interactor.selectItem(item) {
+            if let selectionState = self?.interactor.selectItem(mediaPickerItem) {
                 self?.adjustViewForSelectionState(selectionState)
             }
             
@@ -386,13 +381,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         cellData.onDeselect = { [weak self] in
-            self?.handleItemDeselect(item)
+            self?.handleItemDeselect(mediaPickerItem)
         }
         
         return cellData
     }
     
-    private func handleItemDeselect(_ item: PhotoLibraryItem) {
+    private func handleItemDeselect(_ item: MediaPickerItem) {
         
         let selectionState = interactor.deselectItem(item)
         
@@ -468,7 +463,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         module.onItemsAdd = onItemsAdd
         module.onItemUpdate = onItemUpdate
-        module.onItemAutocorrect = onItemAutocorrect
+        module.onItemAutocorrect = { [weak self] item, isAutocorrected, index in
+            if let index = index {
+                self?.interactor.replaceSelectedItem(at: index, with: item)
+            }
+            self?.onItemAutocorrect?(item, isAutocorrected, index)
+        }
         module.onItemMove = { [weak self] sourceIndex, destinationIndex in
             self?.interactor.moveSelectedItem(at: sourceIndex, to: destinationIndex)
             self?.onItemMove?(sourceIndex, destinationIndex)
@@ -476,7 +476,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         module.onItemRemove = { [weak self] mediaPickerItem, index in
             if self?.view?.deselectItem(with: mediaPickerItem.image) == false {
                 // Кейс, когда удаляется "виртуальная" фотка (серверная, которой нет в галерее)
-                self?.handleItemDeselect(PhotoLibraryItem(image: mediaPickerItem.image))
+                self?.handleItemDeselect(mediaPickerItem)
+            }
+            if let originalItem = mediaPickerItem.originalItem {
+                // Кейс, когда удаляется фотка, на которую наложен фильтр
+                // (вьюха не знает про связь измененной фотки с оригинальной)
+                self?.view?.deselectItem(with: originalItem.image)
             }
             self?.onItemRemove?(mediaPickerItem, index)
         }
@@ -513,13 +518,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
 }
 
 extension MediaPickerData {
-    func bySettingPhotoLibraryItems(_ items: [PhotoLibraryItem]) -> MediaPickerData {
-        let mediaPickerItems = items.map {
-            MediaPickerItem(
-                image: $0.image,
-                source: .photoLibrary
-            )
-        }
+    func bySettingMediaPickerItems(_ mediaPickerItems: [MediaPickerItem]) -> MediaPickerData {
         return MediaPickerData(
             items: mediaPickerItems,
             autocorrectionFilters: autocorrectionFilters,
