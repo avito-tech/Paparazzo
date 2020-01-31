@@ -478,6 +478,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 // Кейс, когда удаляется "виртуальная" фотка (серверная, которой нет в галерее)
                 self?.handleItemDeselect(mediaPickerItem)
             }
+            if let originalItem = mediaPickerItem.originalItem {
+                // Кейс, когда удаляется фотка, на которую наложен фильтр
+                // (вьюха не знает про связь измененной фотки с оригинальной)
+                self?.view?.deselectItem(with: originalItem.image)
+            }
             self?.onItemRemove?(mediaPickerItem, index)
         }
         module.onCropFinish = onCropFinish
