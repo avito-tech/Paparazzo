@@ -2,6 +2,15 @@ import UIKit
 
 final class ExampleView: UIView {
     
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 8
+        return stackView
+    }()
+    
     private let mediaPickerButton = UIButton()
     private let maskCropperButton = UIButton()
     private let photoLibraryButton = UIButton()
@@ -56,12 +65,19 @@ final class ExampleView: UIView {
             for: .touchUpInside
         )
         
-        addSubview(mediaPickerButton)
-        addSubview(maskCropperButton)
-        addSubview(photoLibraryButton)
-        addSubview(photoLibraryV2Button)
-        addSubview(photoLibraryV2NewFlowButton)
-        addSubview(scannerButton)
+        stackView.addArrangedSubview(mediaPickerButton)
+        stackView.addArrangedSubview(maskCropperButton)
+        stackView.addArrangedSubview(photoLibraryButton)
+        stackView.addArrangedSubview(photoLibraryV2Button)
+        stackView.addArrangedSubview(photoLibraryV2NewFlowButton)
+        stackView.addArrangedSubview(scannerButton)
+        
+        addSubview(stackView)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -96,30 +112,6 @@ final class ExampleView: UIView {
     var onShowPhotoLibraryV2ButtonTap: (() -> ())?
     var onShowPhotoLibraryV2NewFlowButtonTap: (() -> ())?
     var onShowScannerButtonTap: (() -> ())?
-    
-    // MARK: - UIView
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        mediaPickerButton.sizeToFit()
-        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 60)
-        
-        maskCropperButton.sizeToFit()
-        maskCropperButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 30)
-        
-        photoLibraryButton.sizeToFit()
-        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        
-        photoLibraryV2Button.sizeToFit()
-        photoLibraryV2Button.center = CGPoint(x: bounds.midX, y: bounds.midY + 30)
-        
-        photoLibraryV2NewFlowButton.sizeToFit()
-        photoLibraryV2NewFlowButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 60)
-        
-        scannerButton.sizeToFit()
-        scannerButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 90)
-    }
     
     // MARK: - Private
     
