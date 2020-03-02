@@ -2,57 +2,26 @@ import UIKit
 
 final class ExampleView: UIView {
     
-    private let mediaPickerButton = UIButton()
-    private let maskCropperButton = UIButton()
-    private let photoLibraryButton = UIButton()
-    private let photoLibraryV2Button = UIButton()
-    private let scannerButton = UIButton()
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 8
+        return stackView
+    }()
     
     // MARK: - Init
     
     init() {
         super.init(frame: .zero)
         
-        mediaPickerButton.setTitle("Show Media Picker", for: .normal)
-        mediaPickerButton.addTarget(
-            self,
-            action: #selector(onShowMediaPickerButtonTap(_:)),
-            for: .touchUpInside
-        )
+        addSubview(stackView)
         
-        maskCropperButton.setTitle("Show Mask Cropper", for: .normal)
-        maskCropperButton.addTarget(
-            self,
-            action: #selector(onMaskCropperButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        photoLibraryButton.setTitle("Show Photo Library", for: .normal)
-        photoLibraryButton.addTarget(
-            self,
-            action: #selector(onShowPhotoLibraryButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        photoLibraryV2Button.setTitle("Show Photo Library V2", for: .normal)
-        photoLibraryV2Button.addTarget(
-            self,
-            action: #selector(onShowPhotoLibraryV2ButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        scannerButton.setTitle("Show Scanner", for: .normal)
-        scannerButton.addTarget(
-            self,
-            action: #selector(onShowScannerButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        addSubview(mediaPickerButton)
-        addSubview(maskCropperButton)
-        addSubview(photoLibraryButton)
-        addSubview(photoLibraryV2Button)
-        addSubview(scannerButton)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -61,72 +30,31 @@ final class ExampleView: UIView {
     
     // MARK: - ExampleView
     
-    func setMediaPickerButtonTitle(_ title: String) {
-        mediaPickerButton.setTitle(title, for: .normal)
-    }
-    
-    func setMaskCropperButtonTitle(_ title: String) {
-        maskCropperButton.setTitle(title, for: .normal)
-    }
-    
-    func setPhotoLibraryButtonTitle(_ title: String) {
-        photoLibraryButton.setTitle(title, for: .normal)
-    }
-    
-    func setPhotoLibraryV2ButtonTitle(_ title: String) {
-        photoLibraryV2Button.setTitle(title, for: .normal)
-    }
-    
-    func setScannerButtonTitle(_ title: String) {
-        scannerButton.setTitle(title, for: .normal)
-    }
-    
-    var onShowMediaPickerButtonTap: (() -> ())?
-    var onShowMaskCropperButtonTap: (() -> ())?
-    var onShowPhotoLibraryButtonTap: (() -> ())?
-    var onShowPhotoLibraryV2ButtonTap: (() -> ())?
-    var onShowScannerButtonTap: (() -> ())?
-    
-    // MARK: - UIView
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setItems(_ items: [ExampleViewItem]) {
+        actions = items.map { $0.onTap }
         
-        mediaPickerButton.sizeToFit()
-        mediaPickerButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 60)
+        let buttons: [UIButton] = items.map {
+            let button = UIButton()
+            button.setTitle($0.title, for: .normal)
+            button.addTarget(
+                self,
+                action: #selector(onButtonTap(_:)),
+                for: .touchUpInside
+            )
+            return button
+        }
         
-        maskCropperButton.sizeToFit()
-        maskCropperButton.center = CGPoint(x: bounds.midX, y: bounds.midY - 30)
-        
-        photoLibraryButton.sizeToFit()
-        photoLibraryButton.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        
-        photoLibraryV2Button.sizeToFit()
-        photoLibraryV2Button.center = CGPoint(x: bounds.midX, y: bounds.midY + 30)
-        
-        scannerButton.sizeToFit()
-        scannerButton.center = CGPoint(x: bounds.midX, y: bounds.midY + 60)
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        buttons.forEach { stackView.addArrangedSubview($0) }
     }
     
-    // MARK: - Private
+    private var actions = [(() -> ())?]()
     
-    @objc private func onShowMediaPickerButtonTap(_: UIButton) {
-        onShowMediaPickerButtonTap?()
-    }
-    
-    @objc private func onMaskCropperButtonTap(_: UIButton) {
-        onShowMaskCropperButtonTap?()
-    }
-    
-    @objc private func onShowPhotoLibraryButtonTap(_: UIButton) {
-        onShowPhotoLibraryButtonTap?()
-    }
-    
-    @objc private func onShowPhotoLibraryV2ButtonTap(_: UIButton) {
-        onShowPhotoLibraryV2ButtonTap?()
-    }
-    
-    @objc private func onShowScannerButtonTap(_: UIButton) {
-        onShowScannerButtonTap?()
+    @objc func onButtonTap(_ sender: UIButton) {
+        if let index  = stackView.arrangedSubviews.index(of: sender),
+            actions.indices.contains(index)
+        {
+            actions[index]?()
+        }
     }
 }
