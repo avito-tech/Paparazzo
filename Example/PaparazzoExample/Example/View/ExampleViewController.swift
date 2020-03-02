@@ -60,6 +60,11 @@ final class ExampleViewController: UIViewController, ExampleViewInput {
         set { exampleView?.onShowPhotoLibraryV2ButtonTap = newValue }
     }
     
+    var onShowPhotoLibraryV2NewFlowButtonTap: (() -> ())? {
+        get { return exampleView?.onShowPhotoLibraryV2NewFlowButtonTap }
+        set { exampleView?.onShowPhotoLibraryV2NewFlowButtonTap = newValue }
+    }
+    
     var onShowMaskCropperButtonTap: (() -> ())? {
         get { return exampleView?.onShowMaskCropperButtonTap }
         set { exampleView?.onShowMaskCropperButtonTap = newValue }

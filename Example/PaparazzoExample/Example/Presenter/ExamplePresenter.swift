@@ -62,34 +62,11 @@ final class ExamplePresenter {
         }
         
         view?.onShowPhotoLibraryV2ButtonTap = { [weak self] in
-            self?.interactor.photoLibraryItems { items in
-                let data = MediaPickerData(
-                    maxItemsCount: 5,
-                    cropEnabled: true,
-                    autocorrectEnabled: true,
-                    hapticFeedbackEnabled: true,
-                    cropCanvasSize: self?.cropCanvasSize ?? .zero
-                )
-                self?.router.showPhotoLibraryV2(
-                    mediaPickerData: data,
-                    selectedItems: items,
-                    isNewFlowPrototype: false,
-                    configure: { module in
-                        weak var weakModule = module
-                        module.setContinueButtonPlacement(.bottom)
-                        module.onFinish = { result in
-                            print("onFinish")
-                            weakModule?.setContinueButtonStyle(.spinner)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                weakModule?.dismissModule()
-                            }
-                        }
-                        module.onCancel = {
-                            weakModule?.dismissModule()
-                        }
-                    }
-                )
-            }
+            self?.showPhotoLibraryV2(newFlow: false)
+        }
+        
+        view?.onShowPhotoLibraryV2NewFlowButtonTap = { [weak self] in
+            self?.showPhotoLibraryV2(newFlow: true)
         }
         
         view?.onShowMaskCropperButtonTap = { [weak self] in
@@ -158,6 +135,37 @@ final class ExamplePresenter {
                     }
                 }
             )   
+        }
+    }
+    
+    private func showPhotoLibraryV2(newFlow: Bool) {
+        interactor.photoLibraryItems { [weak self] items in
+            let data = MediaPickerData(
+                maxItemsCount: 5,
+                cropEnabled: true,
+                autocorrectEnabled: true,
+                hapticFeedbackEnabled: true,
+                cropCanvasSize: self?.cropCanvasSize ?? .zero
+            )
+            self?.router.showPhotoLibraryV2(
+                mediaPickerData: data,
+                selectedItems: items,
+                isNewFlowPrototype: newFlow,
+                configure: { module in
+                    weak var weakModule = module
+                    module.setContinueButtonPlacement(.bottom)
+                    module.onFinish = { result in
+                        print("onFinish")
+                        weakModule?.setContinueButtonStyle(.spinner)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            weakModule?.dismissModule()
+                        }
+                    }
+                    module.onCancel = {
+                        weakModule?.dismissModule()
+                    }
+                }
+            )
         }
     }
     

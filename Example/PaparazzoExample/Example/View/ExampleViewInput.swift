@@ -12,5 +12,6 @@ protocol ExampleViewInput: class {
     var onShowMaskCropperButtonTap: (() -> ())? { get set }
     var onShowPhotoLibraryButtonTap: (() -> ())? { get set }
     var onShowPhotoLibraryV2ButtonTap: (() -> ())? { get set }
+    var onShowPhotoLibraryV2NewFlowButtonTap: (() -> ())? { get set }
     var onShowScannerButtonTap: (() -> ())? { get set }
 }
