@@ -30,51 +30,9 @@ final class ExamplePresenter {
     private let croppingOverlayProvidersFactory = Paparazzo.CroppingOverlayProvidersFactoryImpl()
     
     private func setUpView() {
-        
-        view?.setMediaPickerButtonTitle("Media Picker")
-        view?.setMaskCropperButtonTitle("Mask Cropper")
-        view?.setPhotoLibraryButtonTitle("Photo Library")
-        view?.setPhotoLibraryV2ButtonTitle("Photo Library version 2")
-        view?.setScannerButtonTitle("Scanner")
-        
-        view?.onShowMediaPickerButtonTap = { [weak self] in
-            self?.interactor.remoteItems { remoteItems in
-                self?.showMediaPicker(remoteItems: remoteItems)
-            }
-        }
-        
-        view?.onShowPhotoLibraryButtonTap = { [weak self] in
-            self?.interactor.photoLibraryItems { items in
-                self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
-                    weak var weakModule = module
-                    module.onFinish = { result in
-                        weakModule?.dismissModule()
-                        
-                        switch result {
-                        case .selectedItems(let items):
-                            self?.interactor.setPhotoLibraryItems(items)
-                        case .cancelled:
-                            break
-                        }
-                    }
-                }
-            }
-        }
-        
-        view?.onShowPhotoLibraryV2ButtonTap = { [weak self] in
-            self?.showPhotoLibraryV2(newFlow: false)
-        }
-        
-        view?.onShowPhotoLibraryV2NewFlowButtonTap = { [weak self] in
-            self?.showPhotoLibraryV2(newFlow: true)
-        }
-        
-        view?.onShowMaskCropperButtonTap = { [weak self] in
-            self?.showMaskCropperCamera()
-        }
-        
-        view?.onShowScannerButtonTap = { [weak self] in
-            self?.showScanner()
+        view?.onViewDidLoad = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.view?.setItems(strongSelf.exampleViewItems())
         }
     }
     
@@ -267,4 +225,86 @@ final class ExamplePresenter {
         }
     }
     
+    // MARK: - ExampleView Items
+    
+    private func exampleViewItems() -> [ExampleViewItem] {
+        return [
+            mediaPickerItem(),
+            maskCropperItem(),
+            photoLibraryItem(),
+            photoLibraryV2Item(),
+            photoLibraryV2NewFlowItem(),
+            scannerItem()
+        ]
+    }
+    
+    private func mediaPickerItem() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Media Picker",
+            onTap: { [weak self] in
+                self?.interactor.remoteItems { remoteItems in
+                    self?.showMediaPicker(remoteItems: remoteItems)
+                }
+            }
+        )
+    }
+    
+    private func maskCropperItem() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Mask Cropper",
+            onTap: { [weak self] in
+                self?.showMaskCropperCamera()
+            }
+        )
+    }
+    
+    private func photoLibraryItem() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Photo Library",
+            onTap: { [weak self] in
+                self?.interactor.photoLibraryItems { items in
+                    self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
+                        weak var weakModule = module
+                        module.onFinish = { result in
+                            weakModule?.dismissModule()
+                            
+                            switch result {
+                            case .selectedItems(let items):
+                                self?.interactor.setPhotoLibraryItems(items)
+                            case .cancelled:
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    }
+    
+    private func photoLibraryV2Item() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Photo Library v2",
+            onTap: { [weak self] in
+                self?.showPhotoLibraryV2(newFlow: false)
+            }
+        )
+    }
+    
+    private func photoLibraryV2NewFlowItem() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Photo Library v2 — New flow",
+            onTap: { [weak self] in
+                self?.showPhotoLibraryV2(newFlow: true)
+            }
+        )
+    }
+    
+    private func scannerItem() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Scanner",
+            onTap: { [weak self] in
+                self?.showScanner()
+            }
+        )
+    }
 }

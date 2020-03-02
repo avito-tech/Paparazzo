@@ -11,66 +11,10 @@ final class ExampleView: UIView {
         return stackView
     }()
     
-    private let mediaPickerButton = UIButton()
-    private let maskCropperButton = UIButton()
-    private let photoLibraryButton = UIButton()
-    private let photoLibraryV2Button = UIButton()
-    private let photoLibraryV2NewFlowButton = UIButton()
-    private let scannerButton = UIButton()
-    
     // MARK: - Init
     
     init() {
         super.init(frame: .zero)
-        
-        mediaPickerButton.setTitle("Show Media Picker", for: .normal)
-        mediaPickerButton.addTarget(
-            self,
-            action: #selector(onShowMediaPickerButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        maskCropperButton.setTitle("Show Mask Cropper", for: .normal)
-        maskCropperButton.addTarget(
-            self,
-            action: #selector(onMaskCropperButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        photoLibraryButton.setTitle("Show Photo Library", for: .normal)
-        photoLibraryButton.addTarget(
-            self,
-            action: #selector(onShowPhotoLibraryButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        photoLibraryV2Button.setTitle("Show Photo Library V2", for: .normal)
-        photoLibraryV2Button.addTarget(
-            self,
-            action: #selector(onShowPhotoLibraryV2ButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        photoLibraryV2NewFlowButton.setTitle("Show Photo Library V2 New Flow", for: .normal)
-        photoLibraryV2NewFlowButton.addTarget(
-            self,
-            action: #selector(onShowPhotoLibraryV2NewFlowButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        scannerButton.setTitle("Show Scanner", for: .normal)
-        scannerButton.addTarget(
-            self,
-            action: #selector(onShowScannerButtonTap(_:)),
-            for: .touchUpInside
-        )
-        
-        stackView.addArrangedSubview(mediaPickerButton)
-        stackView.addArrangedSubview(maskCropperButton)
-        stackView.addArrangedSubview(photoLibraryButton)
-        stackView.addArrangedSubview(photoLibraryV2Button)
-        stackView.addArrangedSubview(photoLibraryV2NewFlowButton)
-        stackView.addArrangedSubview(scannerButton)
         
         addSubview(stackView)
         
@@ -86,56 +30,31 @@ final class ExampleView: UIView {
     
     // MARK: - ExampleView
     
-    func setMediaPickerButtonTitle(_ title: String) {
-        mediaPickerButton.setTitle(title, for: .normal)
+    func setItems(_ items: [ExampleViewItem]) {
+        actions = items.map { $0.onTap }
+        
+        let buttons: [UIButton] = items.map {
+            let button = UIButton()
+            button.setTitle($0.title, for: .normal)
+            button.addTarget(
+                self,
+                action: #selector(onButtonTap(_:)),
+                for: .touchUpInside
+            )
+            return button
+        }
+        
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        buttons.forEach { stackView.addArrangedSubview($0) }
     }
     
-    func setMaskCropperButtonTitle(_ title: String) {
-        maskCropperButton.setTitle(title, for: .normal)
-    }
+    private var actions = [(() -> ())?]()
     
-    func setPhotoLibraryButtonTitle(_ title: String) {
-        photoLibraryButton.setTitle(title, for: .normal)
-    }
-    
-    func setPhotoLibraryV2ButtonTitle(_ title: String) {
-        photoLibraryV2Button.setTitle(title, for: .normal)
-    }
-    
-    func setScannerButtonTitle(_ title: String) {
-        scannerButton.setTitle(title, for: .normal)
-    }
-    
-    var onShowMediaPickerButtonTap: (() -> ())?
-    var onShowMaskCropperButtonTap: (() -> ())?
-    var onShowPhotoLibraryButtonTap: (() -> ())?
-    var onShowPhotoLibraryV2ButtonTap: (() -> ())?
-    var onShowPhotoLibraryV2NewFlowButtonTap: (() -> ())?
-    var onShowScannerButtonTap: (() -> ())?
-    
-    // MARK: - Private
-    
-    @objc private func onShowMediaPickerButtonTap(_: UIButton) {
-        onShowMediaPickerButtonTap?()
-    }
-    
-    @objc private func onMaskCropperButtonTap(_: UIButton) {
-        onShowMaskCropperButtonTap?()
-    }
-    
-    @objc private func onShowPhotoLibraryButtonTap(_: UIButton) {
-        onShowPhotoLibraryButtonTap?()
-    }
-    
-    @objc private func onShowPhotoLibraryV2ButtonTap(_: UIButton) {
-        onShowPhotoLibraryV2ButtonTap?()
-    }
-    
-    @objc private func onShowPhotoLibraryV2NewFlowButtonTap(_: UIButton) {
-        onShowPhotoLibraryV2NewFlowButtonTap?()
-    }
-    
-    @objc private func onShowScannerButtonTap(_: UIButton) {
-        onShowScannerButtonTap?()
+    @objc func onButtonTap(_ sender: UIButton) {
+        if let index  = stackView.arrangedSubviews.index(of: sender),
+            actions.indices.contains(index)
+        {
+            actions[index]?()
+        }
     }
 }
