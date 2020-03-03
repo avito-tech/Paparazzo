@@ -112,8 +112,7 @@ final class NewCameraPresenter:
             }
         }
         
-        bindSelectedPhotosBarAdjustmentToViewControllerLifecycle()
-        adjustCaptureButtonAvailability()
+        bindAdjustmentsToViewControllerLifecycle()
         
         interactor.observeLatestLibraryPhoto { [weak self] imageSource in
             self?.view?.setLatestPhotoLibraryItemImage(imageSource)
@@ -123,8 +122,8 @@ final class NewCameraPresenter:
             self?.view?.setAccessDeniedViewVisible(!accessGranted)
         }
     }
-    
-    private func bindSelectedPhotosBarAdjustmentToViewControllerLifecycle() {
+        
+    private func bindAdjustmentsToViewControllerLifecycle() {
         var didDisappear = false
         var viewDidLayoutSubviewsBefore = false
         
@@ -133,6 +132,7 @@ final class NewCameraPresenter:
             
             DispatchQueue.main.async {
                 self.adjustSelectedPhotosBar {}
+                self.adjustCaptureButtonAvailability()
             }
         }
         
