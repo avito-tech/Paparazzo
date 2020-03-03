@@ -47,6 +47,10 @@ final class NewCameraPresenter:
         view?.setAccessDeniedMessage(localized("Allow %@ to use your camera", appName()))
         view?.setAccessDeniedButtonTitle(localized("Allow access to camera"))
         
+        view?.onViewWillAppear = { [weak self] _ in
+            self?.onViewWillAppearActions.forEach { $0() }
+        }
+        
         view?.onCloseButtonTap = { [weak self] in
             guard let strongSelf = self else { return }
             self?.onFinish?(strongSelf, .cancelled)
@@ -113,7 +117,7 @@ final class NewCameraPresenter:
         }
         
         bindSelectedPhotosBarAdjustmentToViewControllerLifecycle()
-        adjustCaptureButtonAvailability()
+        bindCaptureButtonAdjustmentToViewControllerLifecycle()
         
         interactor.observeLatestLibraryPhoto { [weak self] imageSource in
             self?.view?.setLatestPhotoLibraryItemImage(imageSource)
@@ -124,15 +128,17 @@ final class NewCameraPresenter:
         }
     }
     
+    private var onViewWillAppearActions = [(() -> ())]()
+    
     private func bindSelectedPhotosBarAdjustmentToViewControllerLifecycle() {
         var didDisappear = false
         var viewDidLayoutSubviewsBefore = false
         
-        view?.onViewWillAppear = { _ in
+        onViewWillAppearActions.append { [weak self] in
             guard didDisappear else { return }
             
             DispatchQueue.main.async {
-                self.adjustSelectedPhotosBar {}
+                self?.adjustSelectedPhotosBar {}
             }
         }
         
@@ -164,6 +170,14 @@ final class NewCameraPresenter:
             ))
         
         view?.setSelectedPhotosBarState(state, completion: completion)
+    }
+    
+    private func bindCaptureButtonAdjustmentToViewControllerLifecycle() {
+        onViewWillAppearActions.append { [weak self] in
+            DispatchQueue.main.async {
+                self?.adjustCaptureButtonAvailability()
+            }
+        }
     }
     
     private func adjustCaptureButtonAvailability() {
