@@ -55,6 +55,9 @@ public struct PaparazzoUITheme:
     public var cameraBottomContinueButtonFont = UIFont.systemFont(ofSize: 16)
     
     public var accessDeniedBackgroundColor = UIColor.white
+    public var accessDeniedTitleColor = UIColor.black
+    public var accessDeniedMessageColor = UIColor.black
+    public var accessDeniedButtonTextColor = UIColor.white
     public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)
     public var accessDeniedButtonFont = UIFont.systemFont(ofSize: 17)
