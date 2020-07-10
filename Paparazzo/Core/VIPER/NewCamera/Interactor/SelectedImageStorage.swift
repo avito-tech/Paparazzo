@@ -6,7 +6,7 @@ public final class SelectedImageStorage {
     private(set) var images: [MediaPickerItem]
     private var onChange: (() -> ())?  // TODO: array
     
-    init(images: [MediaPickerItem] = []) {
+    public init(images: [MediaPickerItem] = []) {
         self.images = images
     }
     
