@@ -121,6 +121,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         selectedPhotosBarView.onButtonTap = { [weak self] in
             self?.onContinueButtonTap?()
         }
+        selectedPhotosBarView.accessibilityIdentifier = "selectedPhotosBarView"
         
         setUpButtons()
         

@@ -29,11 +29,13 @@ final class SelectedPhotosBarView: UIView {
         lastPhotoThumbnailView.contentMode = .scaleAspectFill
         lastPhotoThumbnailView.clipsToBounds = true
         lastPhotoThumbnailView.layer.cornerRadius = 5
+        lastPhotoThumbnailView.accessibilityIdentifier = "lastPhotoThumbnailView"
         
         penultimatePhotoThumbnailView.contentMode = .scaleAspectFill
         penultimatePhotoThumbnailView.clipsToBounds = true
         penultimatePhotoThumbnailView.alpha = 0.26
         penultimatePhotoThumbnailView.layer.cornerRadius = 5
+        penultimatePhotoThumbnailView.accessibilityIdentifier = "penultimatePhotoThumbnailView"
         
         button.accessibilityIdentifier = AccessibilityId.doneButton.rawValue
         button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 24, bottom: 11, right: 24)
