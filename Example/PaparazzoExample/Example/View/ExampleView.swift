@@ -51,7 +51,7 @@ final class ExampleView: UIView {
     private var actions = [(() -> ())?]()
     
     @objc func onButtonTap(_ sender: UIButton) {
-        if let index  = stackView.arrangedSubviews.index(of: sender),
+        if let index  = stackView.arrangedSubviews.firstIndex(of: sender),
             actions.indices.contains(index)
         {
             actions[index]?()

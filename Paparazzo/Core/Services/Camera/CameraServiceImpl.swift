@@ -354,7 +354,7 @@ public final class CameraServiceImpl: CameraService {
                     imageData = self.dataForImage(croppedTo: cropRatio, uncroppedImageData: imageData)
                 }
                 
-                PHPhotoLibrary.requestAuthorization { status in
+                PHPhotoLibrary.requestReadWriteAuthorization { status in
                     guard status == .authorized else {
                         return completion(nil)
                     }

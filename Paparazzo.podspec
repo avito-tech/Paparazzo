@@ -16,21 +16,21 @@ Pod::Spec.new do |s|
   
   s.dependency 'JNWSpringAnimation'
   
-  s.dependency 'ImageSource/Core', '3.0.0'
-  s.dependency 'ImageSource/PHAsset', '3.0.0'
-  s.dependency 'ImageSource/Local', '3.0.0'
-  s.dependency 'ImageSource/Remote', '3.0.0'
+  s.dependency 'ImageSource/Core', '3.0.1'
+  s.dependency 'ImageSource/PHAsset', '3.0.1'
+  s.dependency 'ImageSource/Local', '3.0.1'
+  s.dependency 'ImageSource/Remote', '3.0.1'
 
   s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage'
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'Paparazzo/Core'
-    ai.dependency 'ImageSource/AlamofireImage', '3.0.0'
+    ai.dependency 'ImageSource/AlamofireImage', '3.0.1'
   end
 
   s.subspec 'SDWebImage' do |sd|
     sd.dependency 'Paparazzo/Core'
-    sd.dependency 'ImageSource/SDWebImage', '3.0.0'
+    sd.dependency 'ImageSource/SDWebImage', '3.0.1'
   end
   
   s.subspec 'Core' do |cs|
