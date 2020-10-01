@@ -93,7 +93,7 @@ final class NewCameraPresenter:
             self?.view?.animateFlash()
             
             self?.interactor.takePhoto { photo in
-                guard let photo = photo, let strongSelf = self else { return }
+                guard let photo = photo else { return }
                 
                 self?.interactor.selectedImagesStorage.addItem(MediaPickerItem(photo))
                 self?.adjustCaptureButtonAvailability()

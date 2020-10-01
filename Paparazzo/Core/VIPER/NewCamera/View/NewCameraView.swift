@@ -372,7 +372,6 @@ final class NewCameraView: UIView {
         
         let paparazzoSafeAreaInsets = window?.paparazzoSafeAreaInsets ?? self.paparazzoSafeAreaInsets
         
-        let closeButtonSize = closeButton.sizeThatFits(bounds.size)
         let closeButtonFrame = CGRect(
             x: bounds.left + 8,
             y: max(8, paparazzoSafeAreaInsets.top),

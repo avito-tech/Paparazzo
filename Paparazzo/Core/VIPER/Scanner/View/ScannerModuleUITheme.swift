@@ -1,1 +1,1 @@
-public protocol ScannerRootModuleUITheme: AccessDeniedViewTheme, MediaPickerRootModuleUITheme {}
+public protocol ScannerRootModuleUITheme: MediaPickerRootModuleUITheme {}

@@ -33,7 +33,7 @@ final class MediaRibbonDataSource {
     }
     
     func updateItem(_ item: MediaPickerItem) -> IndexPath? {
-        if let index = mediaPickerItems.index(of: item) {
+        if let index = mediaPickerItems.firstIndex(of: item) {
             mediaPickerItems[index] = item
             return IndexPath(item: index, section: 0)
         } else {
@@ -42,7 +42,7 @@ final class MediaRibbonDataSource {
     }
     
     func removeItem(_ item: MediaPickerItem) -> IndexPath? {
-        if let index = mediaPickerItems.index(of: item) {
+        if let index = mediaPickerItems.firstIndex(of: item) {
             mediaPickerItems.remove(at: index)
             return IndexPath(item: index, section: 0)
         } else {
@@ -55,7 +55,7 @@ final class MediaRibbonDataSource {
     }
     
     func indexPathForItem(_ item: MediaPickerItem) -> IndexPath? {
-        return mediaPickerItems.index(of: item).flatMap { IndexPath(item: $0, section: 0) }
+        return mediaPickerItems.firstIndex(of: item).flatMap { IndexPath(item: $0, section: 0) }
     }
     
     func indexPathForCameraItem() -> IndexPath {

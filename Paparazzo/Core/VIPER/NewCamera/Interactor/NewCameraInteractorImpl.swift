@@ -42,6 +42,9 @@ final class NewCameraInteractorImpl: NewCameraInteractor {
             handler(true)
         case .notDetermined, .denied, .restricted:
             handler(false)
+        @unknown default:
+            assertionFailure("Unknown authorization status")
+            handler(false)
         }
     }
     

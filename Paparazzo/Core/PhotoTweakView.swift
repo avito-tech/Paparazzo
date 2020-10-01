@@ -119,8 +119,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     
     private func adjustRotation(contentOffsetCenter: CGPoint) {
         
-        let width = fabs(cos(angle)) * cropSize.width + fabs(sin(angle)) * cropSize.height
-        let height = fabs(sin(angle)) * cropSize.width + fabs(cos(angle)) * cropSize.height
+        let width = abs(cos(angle)) * cropSize.width + abs(sin(angle)) * cropSize.height
+        let height = abs(sin(angle)) * cropSize.width + abs(cos(angle)) * cropSize.height
         let center = scrollView.center
         
         let newBounds = CGRect(x: 0, y: 0, width: width, height: height)

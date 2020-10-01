@@ -179,6 +179,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         case .restricted, .denied:
             wasSetUp = true
             completion()
+        
+        @unknown default:
+            assertionFailure("Unknown authorization status")
+            wasSetUp = true
+            completion()
         }
     }
     
@@ -428,7 +433,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         var albums = fetchResults.flatMap { $0.albums }
         
         // "All Photos" album should be the first one.
-        if let allPhotosAlbumIndex = albums.index(where: { $0.isAllPhotos }), allPhotosAlbumIndex > 0 {
+        if let allPhotosAlbumIndex = albums.firstIndex(where: { $0.isAllPhotos }), allPhotosAlbumIndex > 0 {
             albums.insert(albums.remove(at: allPhotosAlbumIndex), at: 0)
         }
         

@@ -22,6 +22,9 @@ public class LocationProviderImpl: NSObject, LocationProvider, CLLocationManager
             getLocationWhenAuthorized(completion: completion)
         case .notDetermined, .denied, .restricted:
             completion(nil)
+        @unknown default:
+            assertionFailure("Unknown authorization status")
+            completion(nil)
         }
     }
     

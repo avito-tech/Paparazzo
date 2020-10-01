@@ -2,16 +2,16 @@ import ImageSource
 
 public extension ImageSource {
     
-    public func fullResolutionImage<T: InitializableWithCGImage>(_ completion: @escaping (T?) -> ()) {
+    func fullResolutionImage<T: InitializableWithCGImage>(_ completion: @escaping (T?) -> ()) {
         fullResolutionImage(deliveryMode: .best, resultHandler: completion)
     }
     
     @discardableResult
-    public func imageFittingSize<T: InitializableWithCGImage>(_ size: CGSize, resultHandler: @escaping (T?) -> ()) -> ImageRequestId {
+    func imageFittingSize<T: InitializableWithCGImage>(_ size: CGSize, resultHandler: @escaping (T?) -> ()) -> ImageRequestId {
         return imageFittingSize(size, contentMode: .aspectFill, deliveryMode: .progressive, resultHandler: resultHandler)
     }
     
-    public func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode: ImageDeliveryMode, resultHandler: @escaping (T?) -> ()) {
+    func fullResolutionImage<T: InitializableWithCGImage>(deliveryMode: ImageDeliveryMode, resultHandler: @escaping (T?) -> ()) {
         
         var options = ImageRequestOptions()
         options.size = .fullResolution
@@ -23,7 +23,7 @@ public extension ImageSource {
     }
     
     @discardableResult
-    public func requestImage<T: InitializableWithCGImage>(
+    func requestImage<T: InitializableWithCGImage>(
         options: ImageRequestOptions,
         resultHandler: @escaping (T?) -> ())
         -> ImageRequestId
@@ -35,7 +35,7 @@ public extension ImageSource {
     
     @available(*, deprecated, message: "Use ImageSource.requestImage(options:resultHandler:) instead")
     @discardableResult
-    public func imageFittingSize<T: InitializableWithCGImage>(
+    func imageFittingSize<T: InitializableWithCGImage>(
         _ size: CGSize,
         contentMode: ImageContentMode,
         deliveryMode: ImageDeliveryMode,
