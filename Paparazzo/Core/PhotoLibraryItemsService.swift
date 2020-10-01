@@ -219,9 +219,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         fetchResultQueue.async {
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
-            if #available(iOS 9.0, *) {
-                fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
-            }
+            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
             
             let assetsFetchResult = PHAsset.fetchAssets(with: fetchOptions)
             print("Assets in fetch result: \(assetsFetchResult.count)")
@@ -483,9 +481,7 @@ final class PhotoLibraryAlbum: Equatable {
         
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
-        if #available(iOS 9.0, *) {
-            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
-        }
+        fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
         
         let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
         
