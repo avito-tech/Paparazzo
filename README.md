@@ -195,11 +195,5 @@ You can see the list of supported languages [here](Paparazzo/Localization). If y
 
 If you're not satisfied with a string that is provided by Paparazzo, you can override it in your project. Just add `Paparazzo.strings` to your main bundle. Override only the strings you need (you can see an example of this in PaparazzoExample project).
 
-# Authors
-* Andrey Yutkin (ayutkin@avito.ru)
-* Timofey Khomutnikov (tnkhomutnikov@avito.ru)
-* Artem Peskishev (aopeskishev@avito.ru)
-* Vladimir Kaltyrin (vkaltyrin@avito.ru)
-
 # License
 MIT
