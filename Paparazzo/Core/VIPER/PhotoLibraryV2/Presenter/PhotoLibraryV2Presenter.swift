@@ -352,7 +352,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         let mediaPickerItem = MediaPickerItem(item)
         
         let getSelectionIndex = { [weak self] in
-            self?.interactor.selectedItems.index(of: mediaPickerItem).flatMap { $0 + 1 }
+            self?.interactor.selectedItems.firstIndex(of: mediaPickerItem).flatMap { $0 + 1 }
         }
         
         var cellData = PhotoLibraryItemCellData(

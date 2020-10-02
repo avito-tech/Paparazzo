@@ -87,7 +87,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     
     func updateItem(_ item: MediaPickerItem) {
         
-        if let index = items.index(of: item) {
+        if let index = items.firstIndex(of: item) {
             items[index] = item
         }
         
@@ -100,7 +100,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         
         var adjacentItem: MediaPickerItem?
         
-        if let index = items.index(of: item) {
+        if let index = items.firstIndex(of: item) {
         
             items.remove(at: index)
             // TODO: хорошо бы если это фото с камеры, удалять также и файл из папки temp (куда они сейчас складываются)
@@ -113,7 +113,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
             }
         }
         
-        if let matchingPhotoLibraryItemIndex = photoLibraryItems.index(where: { $0.image == item.image }) {
+        if let matchingPhotoLibraryItemIndex = photoLibraryItems.firstIndex(where: { $0.image == item.image }) {
             photoLibraryItems.remove(at: matchingPhotoLibraryItemIndex)
         }
         
@@ -129,7 +129,7 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
     }
     
     func indexOfItem(_ item: MediaPickerItem) -> Int? {
-        return items.index(of: item)
+        return items.firstIndex(of: item)
     }
     
     func numberOfItemsAvailableForAdding() -> Int? {

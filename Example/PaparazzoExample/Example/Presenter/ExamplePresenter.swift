@@ -229,11 +229,11 @@ final class ExamplePresenter {
     
     private func exampleViewItems() -> [ExampleViewItem] {
         return [
+            photoLibraryV2NewFlowItem(),
+            photoLibraryV2Item(),
+            photoLibraryItem(),
             mediaPickerItem(),
             maskCropperItem(),
-            photoLibraryItem(),
-            photoLibraryV2Item(),
-            photoLibraryV2NewFlowItem(),
             scannerItem()
         ]
     }
@@ -260,7 +260,7 @@ final class ExamplePresenter {
     
     private func photoLibraryItem() -> ExampleViewItem {
         return ExampleViewItem(
-            title: "Photo Library",
+            title: "Photo Library v1",
             onTap: { [weak self] in
                 self?.interactor.photoLibraryItems { items in
                     self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
@@ -283,7 +283,7 @@ final class ExamplePresenter {
     
     private func photoLibraryV2Item() -> ExampleViewItem {
         return ExampleViewItem(
-            title: "Photo Library v2",
+            title: "Photo Library v2 — Old flow",
             onTap: { [weak self] in
                 self?.showPhotoLibraryV2(newFlow: false)
             }

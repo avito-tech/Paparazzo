@@ -10,7 +10,7 @@ import ImageSource
 final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     // MARK: - CaptureSessionPreviewService
-    
+    @discardableResult
     static func startStreamingPreview(
         of captureSession: AVCaptureSession,
         to handler: CameraCaptureOutputHandler,

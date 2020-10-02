@@ -26,76 +26,70 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var mediaPickerItems = [MediaPickerItem]()
         var photoLibraryItems = [PhotoLibraryItem]()
         
-        // Show full media picker
-        exampleController.onShowMediaPickerButtonTap = { [weak exampleController] in
-            
-            let viewController = PaparazzoFacade.paparazzoViewController(
-                theme: PaparazzoUITheme.appSpecificTheme(),
-                parameters: MediaPickerData(
-                    items: mediaPickerItems,
-                    maxItemsCount: 1
-                ),
-                onFinish: { images in
-                    mediaPickerItems = images
+        exampleController.setItems([
+            ExampleViewItem(title: "Photo Library v2 — New flow", onTap: { [weak exampleController] in
+
+                let viewController = PaparazzoFacade.libraryV2ViewController(
+                    theme: PaparazzoUITheme.appSpecificTheme(),
+                    parameters: PhotoLibraryV2Data(
+                        mediaPickerData: MediaPickerData()
+                    ),
+                    onFinish: { result in
+                        print(result)
+                    }
+                )
+                
+                exampleController?.present(viewController, animated: true, completion: nil)
+            }),
+            ExampleViewItem(title: "Photo Library v1", onTap: { [weak exampleController] in
+                
+                let viewController = PaparazzoFacade.libraryViewController(
+                    theme: PaparazzoUITheme.appSpecificTheme(),
+                    parameters: PhotoLibraryData(
+                        selectedItems: photoLibraryItems,
+                        maxSelectedItemsCount: 3
+                    ),
+                    onFinish: { images in
+                        photoLibraryItems = images
+                    }
+                )
+                
+                exampleController?.present(viewController, animated: true, completion: nil)
+            }),
+            ExampleViewItem(title: "Media Picker", onTap: { [weak exampleController] in
+                let viewController = PaparazzoFacade.paparazzoViewController(
+                    theme: PaparazzoUITheme.appSpecificTheme(),
+                    parameters: MediaPickerData(
+                        items: mediaPickerItems,
+                        maxItemsCount: 1
+                    ),
+                    onFinish: { images in
+                        mediaPickerItems = images
+                    }
+                )
+                
+                exampleController?.present(viewController, animated: true)
+            }),
+            ExampleViewItem(title: "Mask Cropper", onTap: { [weak exampleController] in
+                guard let pathToImage = Bundle.main.path(forResource: "kitten", ofType: "jpg") else {
+                    assertionFailure("Oooops. Kitten is lost :(")
+                    return
                 }
-            )
-            
-            exampleController?.present(viewController, animated: true)
-        }
-        
-        // Show mask cropper
-        exampleController.onShowMaskCropperButtonTap = { [weak exampleController] in
-            
-            guard let pathToImage = Bundle.main.path(forResource: "kitten", ofType: "jpg") else {
-                assertionFailure("Oooops. Kitten is lost :(")
-                return
-            }
-            
-            let viewController = PaparazzoFacade.maskCropperViewController(
-                theme: PaparazzoUITheme.appSpecificTheme(),
-                parameters: MaskCropperData(
-                    imageSource: LocalImageSource(path: pathToImage)
-                ),
-                croppingOverlayProvider: CroppingOverlayProvidersFactoryImpl().circleCroppingOverlayProvider(),
-                onFinish: { imageSource in
-                    print("Cropped image: \(imageSource)")
-                }
-            )
-            
-            exampleController?.present(viewController, animated: true, completion: nil)
-        }
-        
-        // Show only photo library
-        exampleController.onShowPhotoLibraryButtonTap = { [weak exampleController] in
-            
-            let viewController = PaparazzoFacade.libraryViewController(
-                theme: PaparazzoUITheme.appSpecificTheme(),
-                parameters: PhotoLibraryData(
-                    selectedItems: photoLibraryItems,
-                    maxSelectedItemsCount: 3
-                ),
-                onFinish: { images in
-                    photoLibraryItems = images
-                }
-            )
-            
-            exampleController?.present(viewController, animated: true, completion: nil)
-        }
-        
-        exampleController.onShowPhotoLibraryV2ButtonTap = { [weak exampleController] in
-            
-            let viewController = PaparazzoFacade.libraryV2ViewController(
-                theme: PaparazzoUITheme.appSpecificTheme(),
-                parameters: PhotoLibraryV2Data(
-                    mediaPickerData: MediaPickerData()
-                ),
-                onFinish: { result in
-                    print(result)
-                }
-            )
-            
-            exampleController?.present(viewController, animated: true, completion: nil)
-        }
+                
+                let viewController = PaparazzoFacade.maskCropperViewController(
+                    theme: PaparazzoUITheme.appSpecificTheme(),
+                    parameters: MaskCropperData(
+                        imageSource: LocalImageSource(path: pathToImage)
+                    ),
+                    croppingOverlayProvider: CroppingOverlayProvidersFactoryImpl().circleCroppingOverlayProvider(),
+                    onFinish: { imageSource in
+                        print("Cropped image: \(imageSource)")
+                    }
+                )
+                
+                exampleController?.present(viewController, animated: true, completion: nil)
+            })
+        ])
         
         return NavigationController(rootViewController: exampleController)
     }

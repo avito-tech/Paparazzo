@@ -20,10 +20,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
         
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        
-        if #available(iOS 9.0, *) {
-            options.fetchLimit = 1
-        }
+        options.fetchLimit = 1
         
         fetchResult = PHAsset.fetchAssets(with: .image, options: options)
         

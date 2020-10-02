@@ -83,6 +83,10 @@ public final class CameraServiceImpl: CameraService {
                     
                 case .restricted, .denied:
                     callCompletionOnMainQueue(with: nil)
+                    
+                @unknown default:
+                    assertionFailure("Unknown authorization status")
+                    callCompletionOnMainQueue(with: nil)
                 }
             }
         }
@@ -234,8 +238,7 @@ public final class CameraServiceImpl: CameraService {
             
             try captureSession.configure {
                 
-                let currentInputs = captureSession.inputs as? [AVCaptureInput]
-                currentInputs?.forEach { captureSession.removeInput($0) }
+                captureSession.inputs.forEach { captureSession.removeInput($0) }
                 
                 // Always reset preset before testing canAddInput because preset will cause it to return NO
                 captureSession.sessionPreset = .high
@@ -354,7 +357,7 @@ public final class CameraServiceImpl: CameraService {
                     imageData = self.dataForImage(croppedTo: cropRatio, uncroppedImageData: imageData)
                 }
                 
-                PHPhotoLibrary.requestAuthorization { status in
+                PHPhotoLibrary.requestReadWriteAuthorization { status in
                     guard status == .authorized else {
                         return completion(nil)
                     }

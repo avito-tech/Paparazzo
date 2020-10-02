@@ -94,12 +94,12 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
     }
     
     func indexPath(where findItem: (ItemType) -> Bool) -> IndexPath? {
-        return items.index(where: findItem).flatMap { IndexPath(item: $0, section: 0) }
+        return items.firstIndex(where: findItem).flatMap { IndexPath(item: $0, section: 0) }
     }
     
     func indexPaths(where findItem: (ItemType) -> Bool) -> [IndexPath] {
         return items.enumerated()
-            .flatMap { findItem($0.element) ? $0.offset : nil }
+            .compactMap { findItem($0.element) ? $0.offset : nil }
             .map { IndexPath(item: $0, section: 0) }
     }
     

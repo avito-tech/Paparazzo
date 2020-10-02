@@ -1,31 +1,30 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, :deployment_target => '9.0'
 
-inhibit_all_warnings!
 use_frameworks!
 
 target 'PaparazzoExample' do
   pod 'Paparazzo', :path => '../'
   pod 'Marshroute', :git => 'ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git', :branch => 'master'
-  pod 'ImageSource', '3.0.0'
+  pod 'ImageSource', '3.0.2'
 end
 
 target 'PaparazzoExample_NoMarshroute' do
   pod 'Paparazzo/Core', :path => '../'
   pod 'Paparazzo/SDWebImage', :path => '../'
-  pod 'ImageSource/Core', '3.0.0'
-  pod 'ImageSource/PHAsset', '3.0.0'
-  pod 'ImageSource/Local', '3.0.0'
-  pod 'ImageSource/Remote', '3.0.0'
-  pod 'ImageSource/SDWebImage', '3.0.0'
+  pod 'ImageSource/Core', '3.0.2'
+  pod 'ImageSource/PHAsset', '3.0.2'
+  pod 'ImageSource/Local', '3.0.2'
+  pod 'ImageSource/Remote', '3.0.2'
+  pod 'ImageSource/SDWebImage', '3.0.2'
 end
 
 target 'PaparazzoExample_Storyboard' do
   pod 'Paparazzo/Core', :path => '../'
-  pod 'ImageSource', '3.0.0'
+  pod 'ImageSource', '3.0.2'
 end
 
 target 'PaparazzoTests' do
     pod 'Paparazzo', :path => '../'
-    pod 'ImageSource', '3.0.0'
+    pod 'ImageSource', '3.0.2'
 end

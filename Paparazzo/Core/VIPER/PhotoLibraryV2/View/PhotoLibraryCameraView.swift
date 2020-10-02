@@ -70,8 +70,6 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let insets = UIEdgeInsets(top: 0.5, left: 0.5, bottom: 0.5, right: 0.5)
-        
         layOutPreviewLayer()
         
         dimView.frame = bounds

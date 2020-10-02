@@ -35,7 +35,7 @@ class BaseUIKitRouter {
         guard let viewController = viewController else { return }
         
         if let navigationController = viewController.navigationController {
-            if let index = navigationController.viewControllers.index(of: viewController), index > 0 {
+            if let index = navigationController.viewControllers.firstIndex(of: viewController), index > 0 {
                 let previousController = navigationController.viewControllers[index - 1]
                 navigationController.popToViewController(previousController, animated: animated)
             } else {

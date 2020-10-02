@@ -16,12 +16,13 @@ public final class SelectedImageStorage {
     }
     
     func removeItem(_ item: MediaPickerItem) {
-        if let index = images.index(of: item) {
+        if let index = images.firstIndex(of: item) {
             images.remove(at: index)
             onChange?()
         }
     }
     
+    @discardableResult
     func replaceItem(at index: Int, with item: MediaPickerItem) -> Bool {
         guard images.indices.contains(index) else { return false }
         images[index] = item

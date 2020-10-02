@@ -40,7 +40,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         onAuthorizationStatusChange = handler
-        callAuthorizationHandler(for: PHPhotoLibrary.authorizationStatus())
+        callAuthorizationHandler(for: PHPhotoLibrary.readWriteAuthorizationStatus())
     }
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
@@ -96,8 +96,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     return album
                 }
                 
-                if let changeDetails = change.changeDetails(for: fetchResult.phFetchResult) {
-                    
+                if let collectionFetchResult = fetchResult.phFetchResult,
+                   let changeDetails = change.changeDetails(for: collectionFetchResult)
+                {
                     fetchResult.phFetchResult = changeDetails.fetchResultAfterChanges
                     
                     changeDetails.removedIndexes?.reversed().forEach { index in
@@ -150,14 +151,18 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             return
         }
         
-        switch PHPhotoLibrary.authorizationStatus() {
+        switch PHPhotoLibrary.readWriteAuthorizationStatus() {
         
         case .authorized:
             wasSetUp = true
             setUpFetchResult(completion: completion)
+            
+        case .limited:
+            wasSetUp = true
+            setUpFetchResultForLimitedAccess(completion: completion)
         
         case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { [weak self] status in
+            PHPhotoLibrary.requestReadWriteAuthorization { [weak self] status in
                 
                 DispatchQueue.main.async {
                     self?.callAuthorizationHandler(for: status)
@@ -172,6 +177,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             }
             
         case .restricted, .denied:
+            wasSetUp = true
+            completion()
+        
+        @unknown default:
+            assertionFailure("Unknown authorization status")
             wasSetUp = true
             completion()
         }
@@ -205,8 +215,39 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
+    private func setUpFetchResultForLimitedAccess(completion: @escaping () -> ()) {
+        fetchResultQueue.async {
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
+            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
+            
+            let assetsFetchResult = PHAsset.fetchAssets(with: fetchOptions)
+            print("Assets in fetch result: \(assetsFetchResult.count)")
+            
+            let assetCollection = PHAssetCollection.transientAssetCollection(
+                withAssetFetchResult: assetsFetchResult,
+                title: localized("All photos")
+            )
+            print("Transient album id = \(assetCollection.localIdentifier)")
+            
+            let albums = [PhotoLibraryAlbum(assetCollection: assetCollection)]
+            
+            self.fetchResults = [PhotoLibraryFetchResult(albums: albums, phFetchResult: nil)]
+            self.photoLibrary.register(self)
+
+            DispatchQueue.main.async(execute: completion)
+        }
+    }
+    
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
-        onAuthorizationStatusChange?(status == .authorized)
+        let isAccessGranted: Bool = {
+            if #available(iOS 14, *) {
+                return status == .authorized || status == .limited
+            } else {
+                return status == .authorized
+            }
+        }()
+        onAuthorizationStatusChange?(isAccessGranted)
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
@@ -390,7 +431,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         var albums = fetchResults.flatMap { $0.albums }
         
         // "All Photos" album should be the first one.
-        if let allPhotosAlbumIndex = albums.index(where: { $0.isAllPhotos }), allPhotosAlbumIndex > 0 {
+        if let allPhotosAlbumIndex = albums.firstIndex(where: { $0.isAllPhotos }), allPhotosAlbumIndex > 0 {
             albums.insert(albums.remove(at: allPhotosAlbumIndex), at: 0)
         }
         
@@ -402,10 +443,10 @@ private final class PhotoLibraryFetchResult {
     
     // MARK: - Data
     var albums: [PhotoLibraryAlbum]
-    var phFetchResult: PHFetchResult<PHAssetCollection>
+    var phFetchResult: PHFetchResult<PHAssetCollection>?
     
     // MARK: - Init
-    init(albums: [PhotoLibraryAlbum], phFetchResult: PHFetchResult<PHAssetCollection>) {
+    init(albums: [PhotoLibraryAlbum], phFetchResult: PHFetchResult<PHAssetCollection>?) {
         self.albums = albums
         self.phFetchResult = phFetchResult
     }
@@ -440,9 +481,7 @@ final class PhotoLibraryAlbum: Equatable {
         
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
-        if #available(iOS 9.0, *) {
-            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
-        }
+        fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
         
         let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
         
