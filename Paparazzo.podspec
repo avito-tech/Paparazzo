@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.swift_version          = '5.0'
   s.requires_arc           = true
 
-  s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'MobileCoreServices', 'GLKit', 'OpenGLES', 'CoreMedia', 'CoreVideo', 'AVFoundation', 'QuartzCore'
+  s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'CoreServices', 'GLKit', 'OpenGLES', 'CoreMedia', 'CoreVideo', 'AVFoundation', 'QuartzCore'
   
   s.dependency 'JNWSpringAnimation'
   
