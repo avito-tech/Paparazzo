@@ -27,6 +27,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var photoLibraryItems = [PhotoLibraryItem]()
         
         exampleController.setItems([
+            ExampleViewItem(title: "Photo Library v2 — New flow", onTap: { [weak exampleController] in
+
+                let viewController = PaparazzoFacade.libraryV2ViewController(
+                    theme: PaparazzoUITheme.appSpecificTheme(),
+                    parameters: PhotoLibraryV2Data(
+                        mediaPickerData: MediaPickerData()
+                    ),
+                    onFinish: { result in
+                        print(result)
+                    }
+                )
+                
+                exampleController?.present(viewController, animated: true, completion: nil)
+            }),
+            ExampleViewItem(title: "Photo Library v1", onTap: { [weak exampleController] in
+                
+                let viewController = PaparazzoFacade.libraryViewController(
+                    theme: PaparazzoUITheme.appSpecificTheme(),
+                    parameters: PhotoLibraryData(
+                        selectedItems: photoLibraryItems,
+                        maxSelectedItemsCount: 3
+                    ),
+                    onFinish: { images in
+                        photoLibraryItems = images
+                    }
+                )
+                
+                exampleController?.present(viewController, animated: true, completion: nil)
+            }),
             ExampleViewItem(title: "Media Picker", onTap: { [weak exampleController] in
                 let viewController = PaparazzoFacade.paparazzoViewController(
                     theme: PaparazzoUITheme.appSpecificTheme(),
@@ -55,35 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     croppingOverlayProvider: CroppingOverlayProvidersFactoryImpl().circleCroppingOverlayProvider(),
                     onFinish: { imageSource in
                         print("Cropped image: \(imageSource)")
-                    }
-                )
-                
-                exampleController?.present(viewController, animated: true, completion: nil)
-            }),
-            ExampleViewItem(title: "Photo Library", onTap: { [weak exampleController] in
-                
-                let viewController = PaparazzoFacade.libraryViewController(
-                    theme: PaparazzoUITheme.appSpecificTheme(),
-                    parameters: PhotoLibraryData(
-                        selectedItems: photoLibraryItems,
-                        maxSelectedItemsCount: 3
-                    ),
-                    onFinish: { images in
-                        photoLibraryItems = images
-                    }
-                )
-                
-                exampleController?.present(viewController, animated: true, completion: nil)
-            }),
-            ExampleViewItem(title: "Photo Library v2", onTap: { [weak exampleController] in
-
-                let viewController = PaparazzoFacade.libraryV2ViewController(
-                    theme: PaparazzoUITheme.appSpecificTheme(),
-                    parameters: PhotoLibraryV2Data(
-                        mediaPickerData: MediaPickerData()
-                    ),
-                    onFinish: { result in
-                        print(result)
                     }
                 )
                 
