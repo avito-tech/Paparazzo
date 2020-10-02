@@ -2,7 +2,10 @@
 
 @implementation AvitoMediaPicker_ObjCExceptionCatcherHelper
 
-+ (void)try:(NS_NOESCAPE void(^)())tryBlock catch:(void(^)(NSException *))catchBlock finally:(void(^)())finallyBlock {
++ (void)try:(NS_NOESCAPE void(^)(void))tryBlock
+      catch:(void(^)(NSException *))catchBlock
+    finally:(void(^)(void))finallyBlock
+{
     @try {
         tryBlock();
     }
