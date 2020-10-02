@@ -25,7 +25,7 @@ PODS:
   - ImageSource/UIKit (3.0.2):
     - ImageSource/Core
   - JNWSpringAnimation (0.7.1)
-  - Marshroute (0.4.3)
+  - Marshroute (0.4.5)
   - Paparazzo (5.0.0):
     - ImageSource/Core (= 3.0.2)
     - ImageSource/Local (= 3.0.2)
@@ -76,7 +76,7 @@ DEPENDENCIES:
   - ImageSource/PHAsset (= 3.0.2)
   - ImageSource/Remote (= 3.0.2)
   - ImageSource/SDWebImage (= 3.0.2)
-  - "Marshroute (from `ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git`, branch `master`)"
+  - Marshroute (from `https://github.com/avito-tech/Marshroute.git`, branch `master`)
   - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
   - Paparazzo/SDWebImage (from `../`)
@@ -92,24 +92,24 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Marshroute:
     :branch: master
-    :git: "ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git"
+    :git: https://github.com/avito-tech/Marshroute.git
   Paparazzo:
     :path: "../"
 
 CHECKOUT OPTIONS:
   Marshroute:
-    :commit: 467e6cc1daca8cae6c2628c655688726e6148256
-    :git: "ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git"
+    :commit: d580713ef13f140d1984a330d82f85a9a6e50ba7
+    :git: https://github.com/avito-tech/Marshroute.git
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   ImageSource: 20ea769ba6110044ab960c3ff3820d6db3fb913a
   JNWSpringAnimation: cd4c2f4464324f63f176c3624ffccf205211a100
-  Marshroute: 6b4c721ab944e4f15e9210aa498a41b38454a029
-  Paparazzo: b249bc526366cc789b86b1124745089992bdafd7
+  Marshroute: 39d1bc2659a720feb5e90e454f8a79f8886faade
+  Paparazzo: 85985c9c2f2a0ed864efeea45e53df896e1772f8
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
 
-PODFILE CHECKSUM: 37fc0684c02253d9d451642fe9c480a646ce8b28
+PODFILE CHECKSUM: dc2fc9aed4c6bb7bd54cc444ef46ad210c804f65
 
 COCOAPODS: 1.9.0.beta.2
