@@ -156,10 +156,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         case .authorized:
             wasSetUp = true
             setUpFetchResult(completion: completion)
-            
+
+            #if compiler(>=5.3)
+            // Xcode 12+
         case .limited:
             wasSetUp = true
             setUpFetchResultForLimitedAccess(completion: completion)
+            
+            #endif
         
         case .notDetermined:
             PHPhotoLibrary.requestReadWriteAuthorization { [weak self] status in
@@ -241,11 +245,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
         let isAccessGranted: Bool = {
+            #if compiler(>=5.3)
+            // Xcode 12+
             if #available(iOS 14, *) {
                 return status == .authorized || status == .limited
             } else {
                 return status == .authorized
             }
+            #else
+            return status == .authorized
+            #endif
         }()
         onAuthorizationStatusChange?(isAccessGranted)
     }
