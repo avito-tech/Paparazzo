@@ -57,5 +57,5 @@ struct PhotoLibraryChanges {
     let updatedItems: [(index: Int, item: PhotoLibraryItem)]
     let movedIndexes: [(from: Int, to: Int)]
     
-    let itemsAfterChanges: [PhotoLibraryItem]
+    let itemsAfterChangesCount: Int
 }

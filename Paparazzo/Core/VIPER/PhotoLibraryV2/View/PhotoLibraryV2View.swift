@@ -335,20 +335,16 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             coverCollectionViewWithItsSnapshot()
         }
         
-        dataSource.deleteAllItems()
-        
+        dataSource.setItems(items)
         collectionView.reloadData()
         
+        let startTime = Date()
+        
         ObjCExceptionCatcher.tryClosure(
-            tryClosure: { [collectionView, collectionSnapshotView, dataSource] in
+            tryClosure: { [collectionView, collectionSnapshotView] in
                 collectionView.performBatchUpdates(
-                    animated: true,
-                    updates: {
-                        let indexPathsToInsert = (0 ..< items.count).map { IndexPath(item: $0, section: 0) }
-                        collectionView.insertItems(at: indexPathsToInsert)
-                        
-                        dataSource.setItems(items)
-                    },
+                    animated: false,
+                    updates: {},
                     completion: { _ in
                         if scrollToTop {
                             collectionView.scrollToTop()
@@ -356,6 +352,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                         }
                         self.selectCollectionViewCellsAccordingToDataSource()
                         completion?()
+                        print("`setItems` took \(Date().timeIntervalSince(startTime)) sec")
                     }
                 )
             },
@@ -693,6 +690,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     private func recreateCollectionView() {
+        print("recreateCollectionView")
         
         // Save the previously visible bounds
         let oldBounds = collectionView.bounds
@@ -732,6 +730,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     private func reloadDataPreservingSelection() {
+        print("reloadDataPreservingSelection")
         collectionView.reloadData()
         selectCollectionViewCellsAccordingToDataSource()
     }

@@ -209,7 +209,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 )
                 
             case .incrementalChanges(let changes):
-                needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
+                needToShowPlaceholder = (changes.itemsAfterChangesCount == 0)
                 self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
                     self?.adjustViewForSelectionState(selectionState)
                 })
