@@ -3,20 +3,10 @@ import ImageSource
 import Photos
 import XCTest
 
-
-// TODO: fix build
-
-
 final class PhotoLibraryChangesBuilderTests: XCTestCase {
     
-    // TODO: PhotoLibraryChangesBuilder
-    // Static to prevent crashing on PhotoLibraryItemsServiceImpl.imageManager deallocation
-    // due to disabled access to photos in unit tests
-    // THIS IS A TEMPORARY WORKAROUND!
-    private static let builder = PhotoLibraryItemsServiceImpl(photosOrder: .normal)
-    private static let reversedBuilder = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
-    
     func test_insertionToTheBeginning_withNormalOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let preservedAsset1 = PHAssetMock()
         let preservedAsset2 = PHAssetMock()
@@ -37,19 +27,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setInsertedIndexes([0, 1])
         changes.setInsertedObjects([insertedAsset1, insertedAsset2])
         
-        let result = type(of: self).builder.photoLibraryChanges(from: changes)
-        let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .normal, itemsBefore: changes).handleChanges(changes) { result in
+            let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, result.insertedItems.count)
+            
+            XCTAssertEqual(0, insertedItems[0].index)
+            XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(1, insertedItems[1].index)
+            XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, result.insertedItems.count)
-        
-        XCTAssertEqual(0, insertedItems[0].index)
-        XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(1, insertedItems[1].index)
-        XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_insertionToTheEnd_withNormalOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let preservedAsset1 = PHAssetMock()
         let preservedAsset2 = PHAssetMock()
@@ -70,19 +66,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setInsertedIndexes([2, 3])
         changes.setInsertedObjects([insertedAsset1, insertedAsset2])
         
-        let result = type(of: self).builder.photoLibraryChanges(from: changes)
-        let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .normal, itemsBefore: changes).handleChanges(changes) { result in
+            let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, result.insertedItems.count)
+            
+            XCTAssertEqual(2, insertedItems[0].index)
+            XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(3, insertedItems[1].index)
+            XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, result.insertedItems.count)
-        
-        XCTAssertEqual(2, insertedItems[0].index)
-        XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(3, insertedItems[1].index)
-        XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_insertionToTheBeginning_withReversedOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let preservedAsset1 = PHAssetMock()
         let preservedAsset2 = PHAssetMock()
@@ -103,19 +105,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setInsertedIndexes([0, 1])
         changes.setInsertedObjects([insertedAsset1, insertedAsset2])
         
-        let result = type(of: self).reversedBuilder.photoLibraryChanges(from: changes)
-        let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .reversed, itemsBefore: changes).handleChanges(changes) { result in
+            let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, result.insertedItems.count)
+            
+            XCTAssertEqual(2, insertedItems[0].index)
+            XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(3, insertedItems[1].index)
+            XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, result.insertedItems.count)
-        
-        XCTAssertEqual(2, insertedItems[0].index)
-        XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(3, insertedItems[1].index)
-        XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_insertionToTheEnd_withReversedOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let preservedAsset1 = PHAssetMock()
         let preservedAsset2 = PHAssetMock()
@@ -136,19 +144,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setInsertedIndexes([2, 3])
         changes.setInsertedObjects([insertedAsset1, insertedAsset2])
         
-        let result = type(of: self).reversedBuilder.photoLibraryChanges(from: changes)
-        let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .reversed, itemsBefore: changes).handleChanges(changes) { result in
+            let insertedItems = result.insertedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, result.insertedItems.count)
+            
+            XCTAssertEqual(0, insertedItems[0].index)
+            XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(1, insertedItems[1].index)
+            XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, result.insertedItems.count)
-        
-        XCTAssertEqual(0, insertedItems[0].index)
-        XCTAssertEqual(insertedAsset2.localIdentifier, insertedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(1, insertedItems[1].index)
-        XCTAssertEqual(insertedAsset1.localIdentifier, insertedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_updateAtTheBeginning_withNormalOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let asset0 = PHAssetMock()
         let asset1 = PHAssetMock()
@@ -160,19 +174,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setChangedIndexes([0, 1])
         changes.setChangedObjects([asset0, asset1])
         
-        let result = type(of: self).builder.photoLibraryChanges(from: changes)
-        let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .normal, itemsBefore: changes).handleChanges(changes) { result in
+            let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, updatedItems.count)
+            
+            XCTAssertEqual(0, updatedItems[0].index)
+            XCTAssertEqual(asset0.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(1, updatedItems[1].index)
+            XCTAssertEqual(asset1.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, updatedItems.count)
-        
-        XCTAssertEqual(0, updatedItems[0].index)
-        XCTAssertEqual(asset0.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(1, updatedItems[1].index)
-        XCTAssertEqual(asset1.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_updateAtTheBeginning_withReversedOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let asset0 = PHAssetMock()
         let asset1 = PHAssetMock()
@@ -184,19 +204,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setChangedIndexes([0, 1])
         changes.setChangedObjects([asset0, asset1])
         
-        let result = type(of: self).reversedBuilder.photoLibraryChanges(from: changes)
-        let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .reversed, itemsBefore: changes).handleChanges(changes) { result in
+            let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, updatedItems.count)
+            
+            XCTAssertEqual(1, updatedItems[0].index)
+            XCTAssertEqual(asset1.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(2, updatedItems[1].index)
+            XCTAssertEqual(asset0.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, updatedItems.count)
-        
-        XCTAssertEqual(1, updatedItems[0].index)
-        XCTAssertEqual(asset1.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(2, updatedItems[1].index)
-        XCTAssertEqual(asset0.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_updateAtTheEnd_withNormalOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let asset0 = PHAssetMock()
         let asset1 = PHAssetMock()
@@ -208,19 +234,25 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setChangedIndexes([1, 2])
         changes.setChangedObjects([asset1, asset2])
         
-        let result = type(of: self).builder.photoLibraryChanges(from: changes)
-        let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .normal, itemsBefore: changes).handleChanges(changes) { result in
+            let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, updatedItems.count)
+            
+            XCTAssertEqual(1, updatedItems[0].index)
+            XCTAssertEqual(asset1.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(2, updatedItems[1].index)
+            XCTAssertEqual(asset2.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, updatedItems.count)
-        
-        XCTAssertEqual(1, updatedItems[0].index)
-        XCTAssertEqual(asset1.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
-        
-        XCTAssertEqual(2, updatedItems[1].index)
-        XCTAssertEqual(asset2.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+        wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
     func test_updateAtTheEnd_withReversedOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
         
         let asset0 = PHAssetMock()
         let asset1 = PHAssetMock()
@@ -232,20 +264,38 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         changes.setChangedIndexes([1, 2])
         changes.setChangedObjects([asset1, asset2])
         
-        let result = type(of: self).reversedBuilder.photoLibraryChanges(from: changes)
-        let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+        imageManager(photosOrder: .reversed, itemsBefore: changes).handleChanges(changes) { result in
+            let updatedItems = result.updatedItems.sorted { $0.index < $1.index }
+            
+            XCTAssertEqual(2, updatedItems.count)
+            
+            XCTAssertEqual(0, updatedItems[0].index)
+            XCTAssertEqual(asset2.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
+            
+            XCTAssertEqual(1, updatedItems[1].index)
+            XCTAssertEqual(asset1.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+            
+            changesHasBeenHandled.fulfill()
+        }
         
-        XCTAssertEqual(2, updatedItems.count)
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
+    
+    // MARK: - Private
+    private func imageManager(photosOrder: PhotosOrder, itemsBefore changes: PHFetchResultChangeDetails<PHAsset>)
+    -> PhotoLibraryItemsManager
+    {
+        let items = changes.fetchResultBeforeChanges
         
-        XCTAssertEqual(0, updatedItems[0].index)
-        XCTAssertEqual(asset2.localIdentifier, updatedItems[0].item.assetLocalIdentifier)
+        let manager = PhotoLibraryItemsManager(photosOrder: photosOrder, imageManager: PHImageManager.default())
+        manager.minConsecutiveRecentImagesCount = items.count
+        _ = manager.setItems(from: items, onLibraryChanged: { _ in })
         
-        XCTAssertEqual(1, updatedItems[1].index)
-        XCTAssertEqual(asset1.localIdentifier, updatedItems[1].item.assetLocalIdentifier)
+        return manager
     }
 }
 
-private extension PhotoLibraryItem {
+extension PhotoLibraryItem {
     var assetLocalIdentifier: String {
         return (image as! PHAssetImageSource).asset.localIdentifier
     }

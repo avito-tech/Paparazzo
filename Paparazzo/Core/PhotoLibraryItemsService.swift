@@ -275,6 +275,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             }
             onAlbumEvent?(.fullReload(photoLibraryItems))
         } else {
+            // TODO: use itemsManager?
             onAlbumEvent?(.fullReload([]))
         }
     }

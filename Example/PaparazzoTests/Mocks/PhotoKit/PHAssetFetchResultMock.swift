@@ -2,7 +2,7 @@ import Photos
 
 final class PHAssetFetchResultMock: PHFetchResult<PHAsset> {
     
-    private let assets: [PHAssetMock]
+    let assets: [PHAssetMock]
     
     init(assets: [PHAssetMock]) {
         self.assets = assets

@@ -23,29 +23,48 @@ final class PhotoLibraryItemsManager {
     private let photosOrder: PhotosOrder
     private let imageManager: PHImageManager
     
-    var indexMap = [Int: ItemIndex]()
-    var imagesCountdown = 1000
+    let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.PhotoLibraryItemsManager.queue", qos: .userInitiated)
+    private(set) var indexMap = [ItemIndex]()
+    
+    /**
+     The guaranteed number of **consecutive** most recent image assets returned synchronously from `setItems` method
+     if number of images in fetch result in more than that.
+     
+     See `setItems` for more info about the algorithm.
+     */
+    var minConsecutiveRecentImagesCount = 1000
     
     init(photosOrder: PhotosOrder = .normal, imageManager: PHImageManager) {
         self.photosOrder = photosOrder
         self.imageManager = imageManager
     }
     
+    /**
+     `setItems` method enumerates assets in fetch result filtering out non-image assets synchronously
+     until the number of consecutive most recent image assets corresponds to `minConsecutiveRecentImagesCount`.
+     It leaves less recent assets unfiltered.
+     
+     So, it returns an array where the most recent assets are **only images** and the less recent ones may as well be
+     videos, audios etc.
+     
+     It then dispatches the removal of non-image assets on background queue, and the result of this removal
+     is presented in a form of incremental change via `onLibraryChanged` closure.
+     */
     func setItems(from fetchResult: PHFetchResult<PHAsset>, onLibraryChanged: @escaping (PhotoLibraryChanges) -> ())
         -> [PhotoLibraryItem]
     {
         var skippedItemsCount = 0
-        var imagesCountdown = self.imagesCountdown
+        var imagesCountdown = self.minConsecutiveRecentImagesCount
         
         let totalAssetsCount = fetchResult.count
         var lastIndex: Int?
         
         var finalIndexes = IndexSet()
         
-        //  TODO: if photosOrder == .reversed, we need to filter out LAST photos
+        indexMap = (0 ..< fetchResult.count).map { .finalIndex($0) }
         
-        // filtering `imagesCountdown` first images
-        fetchResult.enumerateObjects { asset, originalIndex, stop in
+        // filtering `imagesCountdown` last images
+        fetchResult.enumerateObjects(options: [.reverse]) { asset, originalIndex, stop in
             guard asset.mediaType == .image else {
                 self.indexMap[originalIndex] = .skipped
                 skippedItemsCount += 1
@@ -54,34 +73,61 @@ final class PhotoLibraryItemsManager {
             
             finalIndexes.insert(originalIndex)
             
-            self.indexMap[originalIndex] = .finalIndex(originalIndex - skippedItemsCount)
-            
             imagesCountdown -= 1
             
             if imagesCountdown == 0 {
-                lastIndex = originalIndex + 1
+                lastIndex = originalIndex - 1
                 stop.pointee = true
             }
         }
         
         
-        if let lastIndex = lastIndex, lastIndex < totalAssetsCount - 1 {
-            
+        if let lastIndex = lastIndex {
             // iterating indexes is much faster than enumerating assets in fetch result
-            (lastIndex ..< totalAssetsCount).forEach { index in
-                finalIndexes.insert(index)
-                self.indexMap[index] = .finalIndex(index - skippedItemsCount)
-            }
-            
+            finalIndexes.insert(integersIn: 0...lastIndex)
+        }
+        
+        let initialItems = photoLibraryItems(from: fetchResult, indexes: finalIndexes)
+        
+        if let lastIndex = lastIndex {
             // launch background removal of assets with mediaType other than .image
-            DispatchQueue.global(qos: .background).async {
-                let indexSet = IndexSet(integersIn: lastIndex ..< totalAssetsCount)
+            queue.async { [photosOrder] in
+                let indexSet = IndexSet(integersIn: 0...lastIndex)
                 var indexesToRemove = IndexSet()
                 
                 fetchResult.enumerateObjects(at: indexSet, options: []) { asset, originalIndex, _ in
                     if asset.mediaType != .image {
-                        indexesToRemove.insert(originalIndex - skippedItemsCount)
+                        switch photosOrder {
+                        case .normal:
+                            indexesToRemove.insert(originalIndex)
+                        case .reversed:
+                            indexesToRemove.insert(totalAssetsCount - originalIndex - 1 - skippedItemsCount)
+                        }
                     }
+                }
+                
+                guard !indexesToRemove.isEmpty else { return }
+                
+                // TODO: rename
+                var numberOfItemsSkippedDuringBackgroundPass = 0
+                
+                let updateIndexMap = { (indexInFetchResult: Int, finalIndex: ItemIndex) in
+                    if case let .finalIndex(finalIndex) = finalIndex {
+                        if indexesToRemove.contains(finalIndex) {
+                            self.indexMap[indexInFetchResult] = .skipped
+                            numberOfItemsSkippedDuringBackgroundPass += 1
+                        } else {
+                            self.indexMap[indexInFetchResult] =
+                                .finalIndex(finalIndex - numberOfItemsSkippedDuringBackgroundPass)
+                        }
+                    }
+                }
+                
+                switch photosOrder {
+                case .normal:
+                    self.indexMap.enumerated().forEach(updateIndexMap)
+                case .reversed:
+                    self.indexMap.enumerated().reversed().forEach(updateIndexMap)
                 }
                 
                 onLibraryChanged(PhotoLibraryChanges(
@@ -94,22 +140,24 @@ final class PhotoLibraryItemsManager {
             }
         }
         
-        return photoLibraryItems(from: fetchResult, indexes: finalIndexes)
+        return initialItems
     }
     
     func handleChanges(
         _ changes: PHFetchResultChangeDetails<PHAsset>,
         completion: @escaping (PhotoLibraryChanges) -> ())
     {
-        // TODO: calculate indexes on background thread
-        
-        completion(PhotoLibraryChanges(
-            removedIndexes: removedIndexes(from: changes),
-            insertedItems: insertedObjects(from: changes),
-            updatedItems: updatedObjects(from: changes),
-            movedIndexes: movedIndexes(from: changes),
-            itemsAfterChangesCount: changes.fetchResultAfterChanges.count
-        ))
+//        queue.async {
+            
+            
+            completion(PhotoLibraryChanges(
+                removedIndexes: removedIndexes(from: changes),
+                insertedItems: insertedObjects(from: changes),
+                updatedItems: updatedObjects(from: changes),
+                movedIndexes: movedIndexes(from: changes),
+                itemsAfterChangesCount: changes.fetchResultAfterChanges.count  // TODO needs to be counted
+            ))
+//        }
     }
     
     // MARK: - Private
@@ -259,9 +307,15 @@ final class PhotoLibraryItemsManager {
         
         switch photosOrder {
         case .normal:
-            return (0 ..< fetchResult.count).map(getPhotoLibraryItem)
+            return indexes.enumerated().map { finalIndex, originalIndex in
+                indexMap[originalIndex] = .finalIndex(finalIndex)
+                return getPhotoLibraryItem(originalIndex)
+            }
         case .reversed:
-            return (0 ..< fetchResult.count).reversed().map(getPhotoLibraryItem)
+            return indexes.reversed().enumerated().map { finalIndex, originalIndex in
+                indexMap[originalIndex] = .finalIndex(finalIndex)
+                return getPhotoLibraryItem(originalIndex)
+            }
         }
     }
 }

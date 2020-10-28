@@ -40,6 +40,7 @@
 		25647E002107623A006B8A89 /* PHAssetFetchResultMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25647DFF2107623A006B8A89 /* PHAssetFetchResultMock.swift */; };
 		256EF7F6254310B60018AAF9 /* PhotoLibraryItemsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256EF7F5254310B60018AAF9 /* PhotoLibraryItemsManagerTests.swift */; };
 		2573AD71210741F600DE0CE9 /* CollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2573AD70210741F600DE0CE9 /* CollectionViewDataSourceTests.swift */; };
+		257746802549C694001901E2 /* PhotoLibraryChangesBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25647DF921075F1D006B8A89 /* PhotoLibraryChangesBuilderTests.swift */; };
 		2588E3511F8F8BB9009A2FD2 /* Paparazzo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2588E3531F8F8BB9009A2FD2 /* Paparazzo.strings */; };
 		2590D1021F9CCCB2009AAB6D /* kitten.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2590D1011F9CCCB2009AAB6D /* kitten.jpg */; };
 		25A489B41E656A2B00CC431B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A489B31E656A2B00CC431B /* AppDelegate.swift */; };
@@ -818,6 +819,7 @@
 			files = (
 				25647DFE2107620E006B8A89 /* PHAssetMock.swift in Sources */,
 				25D303711FCDC9BF003BEEF3 /* ImageSourceStub.swift in Sources */,
+				257746802549C694001901E2 /* PhotoLibraryChangesBuilderTests.swift in Sources */,
 				256EF7F6254310B60018AAF9 /* PhotoLibraryItemsManagerTests.swift in Sources */,
 				25D3036B1FCDC5DD003BEEF3 /* PhotoLibraryViewTests.swift in Sources */,
 				25647E002107623A006B8A89 /* PHAssetFetchResultMock.swift in Sources */,
