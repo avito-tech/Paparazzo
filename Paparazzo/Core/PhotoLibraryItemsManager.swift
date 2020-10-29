@@ -82,14 +82,14 @@ final class PhotoLibraryItemsManager {
         }
         
         
-        if let lastIndex = lastIndex {
+        if let lastIndex = lastIndex, lastIndex >= 0 {
             // iterating indexes is much faster than enumerating assets in fetch result
             finalIndexes.insert(integersIn: 0...lastIndex)
         }
         
         let initialItems = photoLibraryItems(from: fetchResult, indexes: finalIndexes)
         
-        if let lastIndex = lastIndex {
+        if let lastIndex = lastIndex, lastIndex >= 0 {
             // launch background removal of assets with mediaType other than .image
             queue.async { [photosOrder] in
                 let indexSet = IndexSet(integersIn: 0...lastIndex)
@@ -147,35 +147,58 @@ final class PhotoLibraryItemsManager {
         _ changes: PHFetchResultChangeDetails<PHAsset>,
         completion: @escaping (PhotoLibraryChanges) -> ())
     {
-//        queue.async {
+        queue.async {
+            let removedIndexes = self.removedIndexes(from: changes)
+            let insertedIndexes = self.insertedObjects(from: changes)
             
+            var lastFinalIndex = 0
+            
+            let updateIndexMap = { (indexInFetchResult: Int, finalIndex: ItemIndex) in
+                switch finalIndex {
+                case .finalIndex:
+                    self.indexMap[indexInFetchResult] = .finalIndex(lastFinalIndex)
+                    lastFinalIndex += 1
+                case .skipped:
+                    break
+                }
+            }
+            
+            switch self.photosOrder {
+            case .normal:
+                self.indexMap.enumerated().forEach(updateIndexMap)
+            case .reversed:
+                self.indexMap.enumerated().reversed().forEach(updateIndexMap)
+            }
             
             completion(PhotoLibraryChanges(
-                removedIndexes: removedIndexes(from: changes),
-                insertedItems: insertedObjects(from: changes),
-                updatedItems: updatedObjects(from: changes),
-                movedIndexes: movedIndexes(from: changes),
-                itemsAfterChangesCount: changes.fetchResultAfterChanges.count  // TODO needs to be counted
+                removedIndexes: removedIndexes,
+                insertedItems: insertedIndexes,
+                updatedItems: self.updatedObjects(from: changes),
+                movedIndexes: self.movedIndexes(from: changes),
+                itemsAfterChangesCount: lastFinalIndex
             ))
-//        }
+            
+            // TODO: itemsAfterChangesCount needs to be counted
+            
+            // TODO: call on main thread?
+        }
     }
     
     // MARK: - Private
     private func removedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> IndexSet
     {
-        let assetsCountBeforeChanges = changes.fetchResultBeforeChanges.count
         var removedIndexes = IndexSet()
         
-        switch photosOrder {
-        case .normal:
-            changes.removedIndexes?.reversed().forEach { index in
-                removedIndexes.insert(index)
+        changes.removedIndexes?.reversed().forEach { phIndex in
+            switch indexMap[phIndex] {
+            case  .finalIndex(let finalIndex):
+                removedIndexes.insert(finalIndex)
+            case .skipped:
+                break
             }
-        case .reversed:
-            changes.removedIndexes?.forEach { index in
-                removedIndexes.insert(assetsCountBeforeChanges - index - 1)
-            }
+            
+            indexMap.remove(at: phIndex)
         }
         
         return removedIndexes

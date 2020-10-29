@@ -228,54 +228,115 @@ final class PhotoLibraryItemsManagerTests: XCTestCase {
     
     // MARK: - `handleChanges` tests
     
-//    func test_handleChanges_allImages_normalPhotosOrder() {
-//        let changesHasBeenHandled = expectation(description: "`handleChanges` completion has been called")
-//        
-//        let manager = PhotoLibraryItemsManager(photosOrder: .normal, imageManager: PHImageManager.default())
-//        manager.minConsecutiveRecentImagesCount = 3
-//        
-//        let assetsBeforeChange = [
-//            PHAssetMock(localIdentifier: "0", mediaType: .image),   // 0
-//            PHAssetMock(localIdentifier: "1", mediaType: .video),
-//            PHAssetMock(localIdentifier: "2", mediaType: .image),   // 1
-//            PHAssetMock(localIdentifier: "3", mediaType: .image),   // 2
-//            PHAssetMock(localIdentifier: "4", mediaType: .audio),
-//            PHAssetMock(localIdentifier: "5", mediaType: .image),   // 3
-//            PHAssetMock(localIdentifier: "6", mediaType: .video),
-//            PHAssetMock(localIdentifier: "7", mediaType: .image),   // 4
-//            PHAssetMock(localIdentifier: "8", mediaType: .image),   // 5
-//            PHAssetMock(localIdentifier: "9", mediaType: .unknown)
-//        ]
-//        
-//        let removedLocalIds = ["1", "4", "6"]
-//        let assetsAfterChange = assetsBeforeChange.filter { !removedLocalIds.contains($0.localIdentifier) }
-//        
-//        let fetchResultBeforeChange = PHAssetFetchResultMock(assets: assetsBeforeChange)
-//        
-//        _ = manager.setItems(from: fetchResultBeforeChange, onLibraryChanged: { _ in })
-//        
-//        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: true)
-//        changes.setFetchResultBeforeChanges(fetchResultBeforeChange)
-//        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: assetsAfterChange))
-//        changes.setRemovedIndexes([1, 4, 6])
-//        changes.setRemovedObjects([assetsBeforeChange[1], assetsBeforeChange[4], assetsBeforeChange[6]])
-//        changes.setInsertedIndexes(nil)
-//        changes.setInsertedObjects([])
-//        changes.setChangedIndexes(nil)
-//        changes.setChangedObjects([])
-//        changes.setMoves([])
-//        
-//        manager.handleChanges(changes) { finalChanges in
-//            XCTAssert(finalChanges.removedIndexes.isEmpty)
-//            XCTAssert(finalChanges.insertedItems.isEmpty)
-//            XCTAssert(finalChanges.updatedItems.isEmpty)
-//            XCTAssert(finalChanges.movedIndexes.isEmpty)
-//            
-//            changesHasBeenHandled.fulfill()
-//        }
-//        
-//        wait(for: [changesHasBeenHandled], timeout: 1)
-//    }
+    func test_handleChanges_normalPhotosOrder() {
+        let changesHasBeenHandled = expectation(description: "`handleChanges` completion has been called")
+        
+        let assetsBeforeChange = [
+            PHAssetMock(localIdentifier: "0", mediaType: .image),   // 0                // -> 0
+            PHAssetMock(localIdentifier: "1", mediaType: .video),           // removed
+            PHAssetMock(localIdentifier: "2", mediaType: .image),   // 1                // -> 1
+            PHAssetMock(localIdentifier: "3", mediaType: .image),   // 2    // removed
+            PHAssetMock(localIdentifier: "4", mediaType: .audio),           // removed
+            PHAssetMock(localIdentifier: "5", mediaType: .image),   // 3                // -> 2
+            PHAssetMock(localIdentifier: "6", mediaType: .video),           // removed
+            PHAssetMock(localIdentifier: "7", mediaType: .image),   // 4    // removed
+            PHAssetMock(localIdentifier: "8", mediaType: .image),   // 5                // -> 3
+            PHAssetMock(localIdentifier: "9", mediaType: .unknown)
+        ]
+        
+        let manager = PhotoLibraryItemsManager(photosOrder: .normal, imageManager: PHImageManager.default())
+        manager.minConsecutiveRecentImagesCount = assetsBeforeChange.count
+        
+        let removedLocalIds = ["1", "3", "4", "6", "7"]
+        let assetsAfterChange = assetsBeforeChange.filter { !removedLocalIds.contains($0.localIdentifier) }
+        
+        let fetchResultBeforeChange = PHAssetFetchResultMock(assets: assetsBeforeChange)
+        
+        _ = manager.setItems(from: fetchResultBeforeChange, onLibraryChanged: { _ in })
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(fetchResultBeforeChange)
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: assetsAfterChange))
+        changes.setRemovedIndexes([1, 3, 4, 6, 7])
+        changes.setRemovedObjects([1, 3, 4, 6, 7].map { assetsBeforeChange[$0] })
+        
+        manager.handleChanges(changes) { finalChanges in
+            XCTAssertEqual(finalChanges.removedIndexes.count, 2)
+            XCTAssert(finalChanges.removedIndexes.contains(2))
+            XCTAssert(finalChanges.removedIndexes.contains(4))
+            XCTAssertEqual(finalChanges.itemsAfterChangesCount, 4)
+            
+            XCTAssert(finalChanges.insertedItems.isEmpty)
+            XCTAssert(finalChanges.updatedItems.isEmpty)
+            XCTAssert(finalChanges.movedIndexes.isEmpty)
+            
+            XCTAssertEqual(manager.indexMap.count, 5)
+            XCTAssertEqual(manager.indexMap[0], .finalIndex(0))
+            XCTAssertEqual(manager.indexMap[1], .finalIndex(1))
+            XCTAssertEqual(manager.indexMap[2], .finalIndex(2))
+            XCTAssertEqual(manager.indexMap[3], .finalIndex(3))
+            XCTAssertEqual(manager.indexMap[4], .skipped)
+            
+            changesHasBeenHandled.fulfill()
+        }
+        
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
+    
+    func test_handleChanges_reversedPhotosOrder() {
+        let changesHasBeenHandled = expectation(description: "`handleChanges` completion has been called")
+        
+        let assetsBeforeChange = [
+            PHAssetMock(localIdentifier: "0", mediaType: .image),   // 5                // -> 3
+            PHAssetMock(localIdentifier: "1", mediaType: .video),           // removed
+            PHAssetMock(localIdentifier: "2", mediaType: .image),   // 4                // -> 2
+            PHAssetMock(localIdentifier: "3", mediaType: .image),   // 3    // removed
+            PHAssetMock(localIdentifier: "4", mediaType: .audio),           // removed
+            PHAssetMock(localIdentifier: "5", mediaType: .image),   // 2                // -> 1
+            PHAssetMock(localIdentifier: "6", mediaType: .video),           // removed
+            PHAssetMock(localIdentifier: "7", mediaType: .image),   // 1    // removed
+            PHAssetMock(localIdentifier: "8", mediaType: .image),   // 0                // -> 0
+            PHAssetMock(localIdentifier: "9", mediaType: .unknown)
+        ]
+        
+        let manager = PhotoLibraryItemsManager(photosOrder: .reversed, imageManager: PHImageManager.default())
+        manager.minConsecutiveRecentImagesCount = assetsBeforeChange.count
+        
+        let removedLocalIds = ["1", "3", "4", "6", "7"]
+        let assetsAfterChange = assetsBeforeChange.filter { !removedLocalIds.contains($0.localIdentifier) }
+        
+        let fetchResultBeforeChange = PHAssetFetchResultMock(assets: assetsBeforeChange)
+        
+        _ = manager.setItems(from: fetchResultBeforeChange, onLibraryChanged: { _ in })
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(fetchResultBeforeChange)
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: assetsAfterChange))
+        changes.setRemovedIndexes([1, 3, 4, 6, 7])
+        changes.setRemovedObjects([1, 3, 4, 6, 7].map { assetsBeforeChange[$0] })
+        
+        manager.handleChanges(changes) { finalChanges in
+            XCTAssertEqual(finalChanges.removedIndexes.count, 2)
+            XCTAssert(finalChanges.removedIndexes.contains(1))
+            XCTAssert(finalChanges.removedIndexes.contains(3))
+            XCTAssertEqual(finalChanges.itemsAfterChangesCount, 4)
+            
+            XCTAssert(finalChanges.insertedItems.isEmpty)
+            XCTAssert(finalChanges.updatedItems.isEmpty)
+            XCTAssert(finalChanges.movedIndexes.isEmpty)
+            
+            XCTAssertEqual(manager.indexMap.count, 5)
+            XCTAssertEqual(manager.indexMap[0], .finalIndex(3))
+            XCTAssertEqual(manager.indexMap[1], .finalIndex(2))
+            XCTAssertEqual(manager.indexMap[2], .finalIndex(1))
+            XCTAssertEqual(manager.indexMap[3], .finalIndex(0))
+            XCTAssertEqual(manager.indexMap[4], .skipped)
+            
+            changesHasBeenHandled.fulfill()
+        }
+        
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
     
     // MARK: - Bad tests
     func test_setItems_returnsCorrectItems_withNormalPhotosOrder() {
@@ -377,8 +438,6 @@ final class PhotoLibraryItemsManagerTests: XCTestCase {
         XCTAssertEqual(manager.indexMap[18], .finalIndex(0))
         XCTAssertEqual(manager.indexMap[19], .skipped)
     }
-    
-    
     
     // TODO: naming
     func test2() {

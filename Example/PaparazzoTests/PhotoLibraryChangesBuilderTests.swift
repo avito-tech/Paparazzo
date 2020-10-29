@@ -281,6 +281,140 @@ final class PhotoLibraryChangesBuilderTests: XCTestCase {
         wait(for: [changesHasBeenHandled], timeout: 1)
     }
     
+    func test_removalFromTheBeginning_withNormalOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
+        
+        let preservedAsset1 = PHAssetMock(mediaType: .video)
+        let preservedAsset2 = PHAssetMock(mediaType: .image)
+        let removedAsset1 = PHAssetMock(mediaType: .image)
+        let removedAsset2 = PHAssetMock(mediaType: .image)
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(PHAssetFetchResultMock(assets: [
+            removedAsset1,
+            removedAsset2,
+            preservedAsset1,
+            preservedAsset2
+        ]))
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: [
+            preservedAsset1,
+            preservedAsset2
+        ]))
+        changes.setRemovedIndexes([0, 1])
+        changes.setRemovedObjects([removedAsset1, removedAsset2])
+        
+        imageManager(photosOrder: .normal, itemsBefore: changes).handleChanges(changes) { result in
+            XCTAssertEqual(result.removedIndexes.count, 2)
+            XCTAssert(result.removedIndexes.contains(0))
+            XCTAssert(result.removedIndexes.contains(1))
+            XCTAssertEqual(result.itemsAfterChangesCount, 1)
+            
+            changesHasBeenHandled.fulfill()
+        }
+        
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
+    
+    func test_removalFromTheEnd_withNormalOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
+        
+        let preservedAsset1 = PHAssetMock(mediaType: .video)
+        let preservedAsset2 = PHAssetMock(mediaType: .image)
+        let removedAsset1 = PHAssetMock(mediaType: .image)
+        let removedAsset2 = PHAssetMock(mediaType: .image)
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(PHAssetFetchResultMock(assets: [
+            preservedAsset1,
+            preservedAsset2,
+            removedAsset1,
+            removedAsset2
+        ]))
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: [
+            preservedAsset1,
+            preservedAsset2
+        ]))
+        changes.setRemovedIndexes([2, 3])
+        changes.setRemovedObjects([removedAsset1, removedAsset2])
+        
+        imageManager(photosOrder: .normal, itemsBefore: changes).handleChanges(changes) { result in
+            XCTAssertEqual(result.removedIndexes.count, 2)
+            XCTAssert(result.removedIndexes.contains(1))
+            XCTAssert(result.removedIndexes.contains(2))
+            XCTAssertEqual(result.itemsAfterChangesCount, 1)
+            
+            changesHasBeenHandled.fulfill()
+        }
+        
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
+    
+    func test_removalFromTheBeginning_withReversedOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
+        
+        let preservedAsset1 = PHAssetMock(mediaType: .image)
+        let preservedAsset2 = PHAssetMock(mediaType: .image)
+        let removedAsset1 = PHAssetMock(mediaType: .image)
+        let removedAsset2 = PHAssetMock(mediaType: .image)
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(PHAssetFetchResultMock(assets: [
+            removedAsset1,
+            removedAsset2,
+            preservedAsset1,
+            preservedAsset2
+        ]))
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: [
+            preservedAsset1,
+            preservedAsset2
+        ]))
+        changes.setRemovedIndexes([0, 1])
+        changes.setRemovedObjects([removedAsset1, removedAsset2])
+        
+        imageManager(photosOrder: .reversed, itemsBefore: changes).handleChanges(changes) { result in
+            XCTAssertEqual(result.removedIndexes.count, 2)
+            XCTAssert(result.removedIndexes.contains(2))
+            XCTAssert(result.removedIndexes.contains(3))
+            
+            changesHasBeenHandled.fulfill()
+        }
+        
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
+    
+    func test_removalFromTheEnd_withReversedOrder() {
+        let changesHasBeenHandled = expectation(description: "Changes has been handled")
+        
+        let preservedAsset1 = PHAssetMock(mediaType: .image)
+        let preservedAsset2 = PHAssetMock(mediaType: .image)
+        let removedAsset1 = PHAssetMock(mediaType: .image)
+        let removedAsset2 = PHAssetMock(mediaType: .image)
+        
+        let changes = PHAssetFetchResultChangeDetailsMock(isStrict: false)
+        changes.setFetchResultBeforeChanges(PHAssetFetchResultMock(assets: [
+            preservedAsset1,
+            preservedAsset2,
+            removedAsset1,
+            removedAsset2
+        ]))
+        changes.setFetchResultAfterChanges(PHAssetFetchResultMock(assets: [
+            preservedAsset1,
+            preservedAsset2
+        ]))
+        changes.setRemovedIndexes([2, 3])
+        changes.setRemovedObjects([removedAsset1, removedAsset2])
+        
+        imageManager(photosOrder: .reversed, itemsBefore: changes).handleChanges(changes) { result in
+            XCTAssertEqual(result.removedIndexes.count, 2)
+            XCTAssert(result.removedIndexes.contains(0))
+            XCTAssert(result.removedIndexes.contains(1))
+            
+            changesHasBeenHandled.fulfill()
+        }
+        
+        wait(for: [changesHasBeenHandled], timeout: 1)
+    }
+    
     // MARK: - Private
     private func imageManager(photosOrder: PhotosOrder, itemsBefore changes: PHFetchResultChangeDetails<PHAsset>)
     -> PhotoLibraryItemsManager
