@@ -514,14 +514,13 @@ final class MediaPickerPresenter: MediaPickerModule {
         router.showCroppingModule(forImage: item.image, canvasSize: cropCanvasSize) { [weak self] module in
             
             module.onDiscard = { [weak self] in
-                
                 self?.onCropCancel?()
                 self?.router.focusOnCurrentModule()
             }
             
             module.onConfirm = { [weak self] croppedImageSource in
-                
                 self?.onCropFinish?()
+                
                 let croppedItem = MediaPickerItem(
                     image: croppedImageSource,
                     source: item.source
@@ -530,6 +529,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 self?.interactor.updateItem(croppedItem)
                 self?.view?.updateItem(croppedItem)
                 self?.adjustPhotoTitleForItem(croppedItem)
+                
                 if let index = self?.interactor.indexOfItem(croppedItem) {
                     self?.onItemUpdate?(croppedItem, index)
                     self?.router.focusOnCurrentModule()

@@ -81,7 +81,7 @@ final class CroppedImageSource: ImageSource {
     
     func isEqualTo(_ other: ImageSource) -> Bool {
         if let other = other as? CroppedImageSource {
-            return originalImage.isEqualTo(other.originalImage) && croppingParameters == other.croppingParameters
+            return originalImage.isEqualTo(other.originalImage)
         } else {
             return false
         }
