@@ -53,6 +53,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
     func showPhotoLibrary(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
+        showVideos: Bool,
         configure: (PhotoLibraryModule) -> ())
     {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
@@ -62,6 +63,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
             return assembly.module(
                 selectedItems: selectedItems,
                 maxSelectedItemsCount: maxSelectedItemsCount,
+                showVideos: showVideos,
                 routerSeed: routerSeed,
                 configure: configure
             )

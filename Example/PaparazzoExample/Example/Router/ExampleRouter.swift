@@ -17,6 +17,7 @@ protocol ExampleRouter: RouterFocusable, RouterDismissable {
     func showPhotoLibrary(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
+        showVideos: Bool,
         configure: (PhotoLibraryModule) -> ()
     )
     

@@ -20,7 +20,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
+            photosOrder: .reversed,
+            showVideos: mediaPickerData.showVideosInPhotoLibrary
+        )
         
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
         

@@ -6,11 +6,12 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: BasePaparazzoAssembly, Ph
     public func module(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
+        showVideos: Bool,
         routerSeed: RouterSeed,
         configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController {
         
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(showVideos: showVideos)
         
         let interactor = PhotoLibraryInteractorImpl(
             selectedItems: selectedItems,

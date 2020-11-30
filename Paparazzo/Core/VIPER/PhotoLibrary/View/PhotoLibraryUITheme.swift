@@ -11,6 +11,7 @@ public protocol PhotoLibraryUITheme: AccessDeniedViewTheme {
     var photoCellBackgroundColor: UIColor { get }
     
     var iCloudIcon: UIImage? { get }
+    var videoIcon: UIImage? { get }
     var photoLibraryDiscardButtonIcon: UIImage? { get }
     var photoLibraryConfirmButtonIcon: UIImage? { get }
     var photoLibraryAlbumCellFont: UIFont { get }

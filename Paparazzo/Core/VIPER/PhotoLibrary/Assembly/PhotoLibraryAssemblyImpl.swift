@@ -7,7 +7,7 @@ public final class PhotoLibraryAssemblyImpl: BasePaparazzoAssembly, PhotoLibrary
         configure: (PhotoLibraryModule) -> ())
         -> UIViewController
     {
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(showVideos: data.showVideos)
         
         let interactor = PhotoLibraryInteractorImpl(
             selectedItems: data.selectedItems,

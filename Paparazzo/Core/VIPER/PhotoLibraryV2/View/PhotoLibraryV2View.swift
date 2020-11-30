@@ -343,7 +343,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         ObjCExceptionCatcher.tryClosure(
             tryClosure: { [collectionView, collectionSnapshotView] in
                 collectionView.performBatchUpdates(
-                    animated: false,
+                    animated: true,
                     updates: {},
                     completion: { _ in
                         if scrollToTop {
@@ -771,6 +771,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         cell.setBadgeBackgroundColor(theme?.libraryItemBadgeBackgroundColor)
         
         cell.setCloudIcon(theme?.iCloudIcon)
+        cell.setVideoIcon(theme?.videoIcon)
+        
+        cell.setVideoIconVisible((cell.imageSource as? PHAssetImageSource)?.asset.mediaType == .video)
         
         cell.onImageSetFromSource = { [weak self] in
             self?.dataSource.mutateItem(data, at: indexPath) { (data: inout PhotoLibraryItemCellData) in

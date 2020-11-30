@@ -73,6 +73,7 @@ public struct PaparazzoUITheme:
     public var photoCellBackgroundColor = UIColor.RGB(red: 215, green: 215, blue: 215)
     
     public var iCloudIcon = PaparazzoUITheme.image(named: "icon-cloud")
+    public var videoIcon = PaparazzoUITheme.image(named: "video")
     public var photoLibraryDiscardButtonIcon = PaparazzoUITheme.image(named: "discard")
     public var photoLibraryConfirmButtonIcon = PaparazzoUITheme.image(named: "confirm")
     public var photoLibraryAlbumCellFont = UIFont.systemFont(ofSize: 17)

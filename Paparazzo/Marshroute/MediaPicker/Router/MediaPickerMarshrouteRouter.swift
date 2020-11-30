@@ -25,6 +25,7 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
             return assembly.module(
                 selectedItems: data.selectedItems,
                 maxSelectedItemsCount: data.maxSelectedItemsCount,
+                showVideos: data.showVideos,
                 routerSeed: routerSeed,
                 configure: configure
             )

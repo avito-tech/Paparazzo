@@ -4,6 +4,10 @@ import UIKit
 final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     
     private let cloudIconView = UIImageView()
+    
+    private let videoIconViewContainer = UIView()  // for correct selection animation
+    private let videoIconView = UIImageView()
+    
     private var getSelectionIndex: (() -> Int?)?
     
     private let selectionIndexBadgeContainer = UIView()
@@ -47,10 +51,12 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         func adjustAppearance() {
             if isSelected {
                 self.imageView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+                self.videoIconViewContainer.transform = self.imageView.transform
                 self.selectionIndexBadgeContainer.transform = self.imageView.transform
                 self.selectionIndexBadgeContainer.alpha = 1
             } else {
                 self.imageView.transform = .identity
+                self.videoIconViewContainer.transform = self.imageView.transform
                 self.selectionIndexBadgeContainer.transform = self.imageView.transform
                 self.selectionIndexBadgeContainer.alpha = 0
             }
@@ -79,6 +85,8 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         imageView.isAccessibilityElement = true
         imageViewInsets = UIEdgeInsets(top: onePixel, left: onePixel, bottom: onePixel, right: onePixel)
         
+        videoIconView.tintColor = .white
+        
         setUpRoundedCorners(for: self)
         setUpRoundedCorners(for: backgroundView)
         setUpRoundedCorners(for: imageView)
@@ -88,7 +96,10 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         selectionIndexBadgeContainer.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         selectionIndexBadgeContainer.addSubview(selectionIndexBadge)
         
+        videoIconViewContainer.addSubview(videoIconView)
+        
         contentView.insertSubview(cloudIconView, at: 0)
+        contentView.addSubview(videoIconViewContainer)
         contentView.addSubview(selectionIndexBadgeContainer)
     }
     
@@ -101,12 +112,21 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
         
         let onePixel = CGFloat(1) / UIScreen.main.nativeScale
         let backgroundInsets = UIEdgeInsets(top: onePixel, left: onePixel, bottom: onePixel, right: onePixel)
+        let videoIconSize = videoIconView.image?.size ?? .zero
         
         backgroundView?.frame = imageView.frame.inset(by: backgroundInsets)
         
         cloudIconView.sizeToFit()
         cloudIconView.right = contentView.bounds.right
         cloudIconView.bottom = contentView.bounds.bottom
+        
+        videoIconViewContainer.center = imageView.center
+        videoIconViewContainer.bounds = imageView.bounds
+        
+        videoIconView.center = CGPoint(
+            x: contentView.bounds.left + 8 + videoIconSize.width / 2,
+            y: contentView.bounds.bottom - 8 - videoIconSize.height / 2
+        )
         
         selectionIndexBadgeContainer.center = imageView.center
         selectionIndexBadgeContainer.bounds = imageView.bounds
@@ -137,6 +157,16 @@ final class PhotoLibraryItemCell: PhotoCollectionViewCell, Customizable {
     func setCloudIcon(_ icon: UIImage?) {
         cloudIconView.image = icon
         setNeedsLayout()
+    }
+    
+    func setVideoIcon(_ icon: UIImage?) {
+        videoIconView.image = icon
+        videoIconView.sizeToFit()
+        setNeedsLayout()
+    }
+    
+    func setVideoIconVisible(_ isVisible: Bool) {
+        videoIconView.isHidden = !isVisible
     }
     
     func setAccessibilityId(index: Int) {

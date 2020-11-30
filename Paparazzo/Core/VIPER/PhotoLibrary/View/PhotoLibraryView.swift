@@ -1,3 +1,4 @@
+import ImageSource
 import UIKit
 
 final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeConfigurable {
@@ -483,6 +484,9 @@ final class PhotoLibraryView: UIView, UICollectionViewDelegateFlowLayout, ThemeC
         cell.selectedBorderColor = theme?.photoLibraryItemSelectionColor
         
         cell.setCloudIcon(theme?.iCloudIcon)
+        cell.setVideoIcon(theme?.videoIcon)
+        
+        cell.setVideoIconVisible((cell.imageSource as? PHAssetImageSource)?.asset.mediaType == .video)
         
         cell.onImageSetFromSource = { [weak self] in
             self?.dataSource.mutateItem(data, at: indexPath) { (data: inout PhotoLibraryItemCellData) in

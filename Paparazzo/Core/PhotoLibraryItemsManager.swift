@@ -22,6 +22,7 @@ final class PhotoLibraryItemsManager {
     
     private let photosOrder: PhotosOrder
     private let imageManager: PHImageManager
+    private let allowedMediaTypes: Set<PHAssetMediaType>
     
     let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.PhotoLibraryItemsManager.queue", qos: .userInitiated)
     private(set) var indexMap = [ItemIndex]()
@@ -34,8 +35,13 @@ final class PhotoLibraryItemsManager {
      */
     var minConsecutiveRecentImagesCount = 1000
     
-    init(photosOrder: PhotosOrder = .normal, imageManager: PHImageManager) {
+    init(
+        photosOrder: PhotosOrder = .normal,
+        allowedMediaTypes: Set<PHAssetMediaType> = [.image, .video],
+        imageManager: PHImageManager)
+    {
         self.photosOrder = photosOrder
+        self.allowedMediaTypes = allowedMediaTypes
         self.imageManager = imageManager
     }
     
@@ -65,7 +71,7 @@ final class PhotoLibraryItemsManager {
         
         // filtering `imagesCountdown` last images
         fetchResult.enumerateObjects(options: [.reverse]) { asset, originalIndex, stop in
-            guard asset.mediaType == .image else {
+            guard self.allowedMediaTypes.contains(asset.mediaType) else {
                 self.indexMap[originalIndex] = .skipped
                 skippedItemsCount += 1
                 return
@@ -90,13 +96,13 @@ final class PhotoLibraryItemsManager {
         let initialItems = photoLibraryItems(from: fetchResult, indexes: finalIndexes)
         
         if let lastIndex = lastIndex, lastIndex >= 0 {
-            // launch background removal of assets with mediaType other than .image
+            // launch background removal of assets with mediaType other than one of `allowedMediaTypes`
             queue.async { [photosOrder] in
                 let indexSet = IndexSet(integersIn: 0...lastIndex)
                 var indexesToRemove = IndexSet()
                 
                 fetchResult.enumerateObjects(at: indexSet, options: []) { asset, originalIndex, _ in
-                    if asset.mediaType != .image {
+                    if !self.allowedMediaTypes.contains(asset.mediaType) {
                         switch photosOrder {
                         case .normal:
                             indexesToRemove.insert(originalIndex)

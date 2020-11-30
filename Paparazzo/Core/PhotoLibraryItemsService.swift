@@ -15,6 +15,7 @@ enum PhotosOrder {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
     
     private let photosOrder: PhotosOrder
+    private let allowedMediaTypes: Set<PHAssetMediaType>
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
     
@@ -28,12 +29,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     private lazy var itemsManager: PhotoLibraryItemsManager = {
-        PhotoLibraryItemsManager(photosOrder: photosOrder, imageManager: imageManager)
+        PhotoLibraryItemsManager(photosOrder: photosOrder, allowedMediaTypes: allowedMediaTypes, imageManager: imageManager)
     }()
     
     // MARK: - Init
-    init(photosOrder: PhotosOrder = .normal) {
+    init(photosOrder: PhotosOrder = .normal, showVideos: Bool) {
         self.photosOrder = photosOrder
+        self.allowedMediaTypes = showVideos ? [.image, .video] : [.image]
     }
     
     deinit {

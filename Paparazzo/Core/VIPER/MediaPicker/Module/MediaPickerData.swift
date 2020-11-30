@@ -12,6 +12,7 @@ public struct MediaPickerData {
     public let initialActiveCameraType: CameraType
     public let cameraEnabled: Bool
     public let photoLibraryEnabled: Bool
+    public let showVideosInPhotoLibrary: Bool
     
     public init(
         items: [MediaPickerItem] = [],
@@ -24,7 +25,8 @@ public struct MediaPickerData {
         cropCanvasSize: CGSize = CGSize(width: 1280, height: 960),
         initialActiveCameraType: CameraType = .back,
         cameraEnabled: Bool = true,
-        photoLibraryEnabled: Bool = true)
+        photoLibraryEnabled: Bool = true,
+        showVideosInPhotoLibrary: Bool = false)
     {
         self.items = items
         self.autocorrectionFilters = autocorrectionFilters
@@ -37,5 +39,6 @@ public struct MediaPickerData {
         self.initialActiveCameraType = initialActiveCameraType
         self.cameraEnabled = cameraEnabled
         self.photoLibraryEnabled = photoLibraryEnabled
+        self.showVideosInPhotoLibrary = showVideosInPhotoLibrary
     }
 }

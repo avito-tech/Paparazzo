@@ -17,7 +17,11 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
     {
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
+            photosOrder: .reversed,
+            showVideos: data.mediaPickerData.showVideosInPhotoLibrary
+        )
+        
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
         
         let interactor = PhotoLibraryV2InteractorImpl(

@@ -103,7 +103,8 @@ final class ExamplePresenter {
                 cropEnabled: true,
                 autocorrectEnabled: true,
                 hapticFeedbackEnabled: true,
-                cropCanvasSize: self?.cropCanvasSize ?? .zero
+                cropCanvasSize: self?.cropCanvasSize ?? .zero,
+                showVideosInPhotoLibrary: true
             )
             self?.router.showPhotoLibraryV2(
                 mediaPickerData: data,
@@ -263,7 +264,7 @@ final class ExamplePresenter {
             title: "Photo Library v1",
             onTap: { [weak self] in
                 self?.interactor.photoLibraryItems { items in
-                    self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5) { module in
+                    self?.router.showPhotoLibrary(selectedItems: items, maxSelectedItemsCount: 5, showVideos: true) { module in
                         weak var weakModule = module
                         module.onFinish = { result in
                             weakModule?.dismissModule()
