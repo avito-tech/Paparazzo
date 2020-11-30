@@ -14,7 +14,7 @@ final class NewCameraInteractorImpl: NewCameraInteractor {
         cameraService: CameraService,
         latestLibraryPhotoProvider: PhotoLibraryLatestPhotoProvider)
     {
-        self.mediaPickerData = mediaPickerData
+        self.mediaPickerData = mediaPickerData.bySettingCropEnabled(false)
         self.selectedImagesStorage = selectedImagesStorage
         self.cameraService = cameraService
         self.latestLibraryPhotoProvider = latestLibraryPhotoProvider

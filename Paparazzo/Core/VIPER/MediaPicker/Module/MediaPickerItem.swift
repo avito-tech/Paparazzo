@@ -36,5 +36,7 @@ public final class MediaPickerItem: Equatable {
             // Let's hope we will not shoot ourselves in a foot by this
             || item1.originalItem?.image == item2.image
             || item2.originalItem?.image == item1.image
+            || (item1.image as? CroppedImageSource).flatMap { $0.originalImage == item2.image } ?? false
+            || (item2.image as? CroppedImageSource).flatMap { $0.originalImage == item1.image } ?? false
     }
 }

@@ -26,7 +26,7 @@ protocol MediaPickerInteractor: class {
     
     func moveItem(from sourceIndex: Int, to destinationIndex: Int)
     
-    func indexOfItem(_ item: MediaPickerItem) -> Int?
+    func indexOfItem(_: MediaPickerItem) -> Int?
     
     func numberOfItemsAvailableForAdding() -> Int?
     

@@ -462,7 +462,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         module.onItemsAdd = onItemsAdd
-        module.onItemUpdate = onItemUpdate
+        module.onItemUpdate = { [weak self] item, index in
+            if let index = index {
+                self?.interactor.replaceSelectedItem(at: index, with: item)
+            }
+            self?.onItemUpdate?(item, index)
+        }
         module.onItemAutocorrect = { [weak self] item, isAutocorrected, index in
             if let index = index {
                 self?.interactor.replaceSelectedItem(at: index, with: item)
@@ -563,6 +568,22 @@ extension MediaPickerData {
             initialActiveCameraType: initialActiveCameraType,
             cameraEnabled: cameraEnabled,
             photoLibraryEnabled: false
+        )
+    }
+    
+    func bySettingCropEnabled(_ cropEnabled: Bool) -> MediaPickerData {
+        return MediaPickerData(
+            items: items,
+            autocorrectionFilters: autocorrectionFilters,
+            selectedItem: selectedItem,
+            maxItemsCount: maxItemsCount,
+            cropEnabled: cropEnabled,
+            autocorrectEnabled: autocorrectEnabled,
+            hapticFeedbackEnabled: hapticFeedbackEnabled,
+            cropCanvasSize: cropCanvasSize,
+            initialActiveCameraType: initialActiveCameraType,
+            cameraEnabled: cameraEnabled,
+            photoLibraryEnabled: photoLibraryEnabled
         )
     }
 }

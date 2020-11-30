@@ -99,6 +99,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
             if cropAspectRatio != oldValue {
                 resetScale()
                 calculateFrames()
+                adjustRotation()
                 notifyAboutCroppingParametersChange()
             }
         }
@@ -110,6 +111,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         scrollView.imageView.image = image
         resetScale()
         calculateFrames()
+        adjustRotation()
         notifyAboutCroppingParametersChange()
     }
     
@@ -118,6 +120,7 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
     }
     
     private func adjustRotation(contentOffsetCenter: CGPoint) {
+        guard scrollView.imageView.image != nil else { return }
         
         let width = abs(cos(angle)) * cropSize.width + abs(sin(angle)) * cropSize.height
         let height = abs(sin(angle)) * cropSize.width + abs(cos(angle)) * cropSize.height
@@ -135,7 +138,8 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         scrollView.contentOffset = newContentOffset
         
         // scale scroll view
-        let shouldScale = scrollView.contentSize.width / scrollView.bounds.size.width <= 1.0 || self.scrollView.contentSize.height / self.scrollView.bounds.size.height <= 1.0
+        let shouldScale = scrollView.contentSize.width / scrollView.bounds.size.width <= 1.0
+            || scrollView.contentSize.height / scrollView.bounds.size.height <= 1.0
         
         if !manuallyZoomed || shouldScale {
             
@@ -269,21 +273,9 @@ final class PhotoTweakView: UIView, UIScrollViewDelegate {
         
         scrollView.bounds = minZoomBounds
         scrollView.center = center
+        scrollView.contentSize = minZoomBounds.size
         
-        let minSize = min(scrollView.bounds.size.width, scrollView.bounds.size.height)
-        
-        // Increasing content size to allow selection of edges
-        scrollView.contentSize = CGSize(
-            width: scrollView.bounds.size.width + (scrollView.bounds.size.width - minSize),
-            height: scrollView.bounds.size.height + (scrollView.bounds.size.height - minSize)
-        )
-        
-        scrollView.imageView.frame = CGRect(
-            x: scrollView.bounds.origin.x + (scrollView.bounds.size.width - minSize) / 2,
-            y: scrollView.bounds.origin.y + (scrollView.bounds.size.height - minSize) / 2,
-            width: scrollView.bounds.size.width,
-            height: scrollView.bounds.size.height
-        )
+        scrollView.imageView.frame = scrollView.bounds
         
         gridView.bounds = CGRect(origin: .zero, size: cropSize)
         gridView.center = center
