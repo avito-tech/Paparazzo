@@ -37,7 +37,7 @@ final class PhotoLibraryItemsManager {
     
     init(
         photosOrder: PhotosOrder = .normal,
-        allowedMediaTypes: Set<PHAssetMediaType> = [.image, .video],
+        allowedMediaTypes: Set<PHAssetMediaType> = [.image],
         imageManager: PHImageManager)
     {
         self.photosOrder = photosOrder
