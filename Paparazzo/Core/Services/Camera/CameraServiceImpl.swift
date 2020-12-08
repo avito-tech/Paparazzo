@@ -99,9 +99,9 @@ public final class CameraServiceImpl: CameraService {
     private func setUpCaptureSession() {
         
         do {
-            #if arch(i386) || arch(x86_64)
-                // Preventing crash in simulator
-                throw Error()
+            // Preventing crash in simulator
+            #if targetEnvironment(simulator)
+            throw Error()
             #endif
             
             guard let activeCamera = activeCamera else {
@@ -264,7 +264,11 @@ public final class CameraServiceImpl: CameraService {
     }
     
     public var isFlashAvailable: Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
         return backCamera?.isFlashAvailable == true
+        #endif
     }
     
     public var isFlashEnabled: Bool {
@@ -335,6 +339,11 @@ public final class CameraServiceImpl: CameraService {
                 callersCompletion(mediaPickerItem)
             }
         }
+        
+        // Return fake photo in simulator
+        #if targetEnvironment(simulator)
+        return completion(PhotoLibraryItem(image: DummyImageSource()))
+        #endif
         
         guard let output = output, let connection = videoOutputConnection() else {
             return completion(nil)

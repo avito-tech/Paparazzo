@@ -34,7 +34,7 @@ final class NewCameraInteractorImpl: NewCameraInteractor {
     
     func observeCameraAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         #if targetEnvironment(simulator)
-            return handler(false)
+            return handler(true)
         #endif
         
         switch AVCaptureDevice.authorizationStatus(for: .video) {
