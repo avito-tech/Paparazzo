@@ -88,6 +88,9 @@ final class NewCameraView: UIView {
         captureButton.addTarget(self, action: #selector(handleCaptureButtonTap), for: .touchUpInside)
         setCaptureButtonState(.enabled)
         
+        #if targetEnvironment(simulator)
+        previewView.backgroundColor = .black
+        #endif
         previewView.layer.masksToBounds = true
         
         flashButton.addTarget(self, action: #selector(handleFlashButtonTap), for: .touchUpInside)
@@ -106,10 +109,22 @@ final class NewCameraView: UIView {
         selectedPhotosBarView.isHidden = true
         
         previewView.addSubview(viewfinderBorderView)
+        
+        setAccessibilityIds()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setAccessibilityIds() {
+        photoView.setAccessibilityId(.photoView)
+        closeButton.setAccessibilityId(.closeButton)
+        captureButton.setAccessibilityId(.shutterButton)
+        flashButton.setAccessibilityId(.flashButton)
+        toggleCameraButton.setAccessibilityId(.cameraToggleButton)
+        hintLabel.setAccessibilityId(.cameraHint)
+        previewView.setAccessibilityId(.cameraViewfinder)
     }
     
     // MARK: - NewCameraView

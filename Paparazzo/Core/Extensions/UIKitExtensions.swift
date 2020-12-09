@@ -229,6 +229,14 @@ extension UIColor {
     static func RGBS(rgb: CGFloat, alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: rgb/255, green: rgb/255, blue: rgb/255, alpha: alpha)
     }
+    
+    static func random() -> UIColor {
+        return RGB(
+            red: CGFloat(arc4random() % 256),
+            green: CGFloat(arc4random() % 256),
+            blue: CGFloat(arc4random() % 256)
+        )
+    }
 }
 
 extension UIEdgeInsets {

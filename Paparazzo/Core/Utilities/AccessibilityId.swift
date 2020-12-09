@@ -44,4 +44,5 @@ public enum AccessibilityId: String {
     case cameraView
     case cameraTitle
     case cameraSubtitle
+    case cameraViewfinder
 }
