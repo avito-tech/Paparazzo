@@ -244,19 +244,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
-        let isAccessGranted: Bool = {
-            #if compiler(>=5.3)
-            // Xcode 12+
-            if #available(iOS 14, *) {
-                return status == .authorized || status == .limited
-            } else {
-                return status == .authorized
-            }
-            #else
-            return status == .authorized
-            #endif
-        }()
-        onAuthorizationStatusChange?(isAccessGranted)
+        onAuthorizationStatusChange?(status.isAuthorizedOrLimited)
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
