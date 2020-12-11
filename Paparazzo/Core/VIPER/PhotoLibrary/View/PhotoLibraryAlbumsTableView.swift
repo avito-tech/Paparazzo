@@ -31,6 +31,7 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         tableView.rowHeight = 60
         tableView.alwaysBounceVertical = false
         tableView.register(PhotoLibraryAlbumsTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.accessibilityIdentifier = "tableView"
         
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never

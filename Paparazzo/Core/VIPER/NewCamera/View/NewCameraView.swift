@@ -107,6 +107,7 @@ final class NewCameraView: UIView {
         hintLabel.numberOfLines = 0
         
         selectedPhotosBarView.isHidden = true
+        selectedPhotosBarView.accessibilityIdentifier = "selectedPhotosBarView"
         
         previewView.addSubview(viewfinderBorderView)
         

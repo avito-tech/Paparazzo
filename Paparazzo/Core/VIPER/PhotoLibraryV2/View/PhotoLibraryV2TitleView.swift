@@ -21,6 +21,7 @@ final class PhotoLibraryV2TitleView: UIView {
         addSubview(iconView)
         
         iconView.tintColor = .black
+        iconView.accessibilityIdentifier = "iconView"
     }
     
     required init?(coder aDecoder: NSCoder) {

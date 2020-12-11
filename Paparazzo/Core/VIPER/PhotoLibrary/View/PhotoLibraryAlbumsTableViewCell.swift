@@ -44,6 +44,7 @@ final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
         coverImageView.layer.masksToBounds = true
         coverImageView.layer.shouldRasterize = true
         coverImageView.layer.rasterizationScale = UIScreen.main.nativeScale
+        coverImageView.accessibilityIdentifier = "coverImageView"
         
         contentView.addSubview(coverImageView)
         contentView.addSubview(label)
