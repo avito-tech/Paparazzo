@@ -367,7 +367,7 @@ public final class CameraServiceImpl: CameraService {
                 }
                 
                 PHPhotoLibrary.requestReadWriteAuthorization { status in
-                    guard status == .authorized else {
+                    guard status.isAuthorizedOrLimited else {
                         return completion(nil)
                     }
                     
