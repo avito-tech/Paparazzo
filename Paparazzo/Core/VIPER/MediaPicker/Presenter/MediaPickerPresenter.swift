@@ -167,7 +167,9 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.setPhotoTitle(localized("Photo %d", 1))
         updateThumbnailsVisibility()
         
+        #if !targetEnvironment(simulator)
         view?.setCameraControlsEnabled(false)
+        #endif
         
         view?.setPhotoLibraryButtonVisible(interactor.photoLibraryEnabled)
         view?.setCameraButtonVisible(interactor.cameraEnabled)

@@ -20,6 +20,10 @@ final class CameraView: UIView, CameraViewInput, ThemeConfigurable {
     init() {
         super.init(frame: .zero)
         
+        #if targetEnvironment(simulator)
+        backgroundColor = .black
+        #endif
+        
         accessDeniedView.isHidden = true
         titleLabel.backgroundColor = .clear
         titleLabel.isUserInteractionEnabled = false

@@ -106,7 +106,9 @@ final class CameraPresenter: CameraModuleInput {
             if let parameters = parameters {
                 self?.view?.setOutputParameters(parameters)
             } else {
+                #if !targetEnvironment(simulator)
                 self?.view?.setAccessDeniedViewVisible(true)
+                #endif
             }
         }
         

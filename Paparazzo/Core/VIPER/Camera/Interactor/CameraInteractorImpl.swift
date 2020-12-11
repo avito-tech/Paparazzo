@@ -50,7 +50,11 @@ final class CameraInteractorImpl: CameraInteractor {
     }
     
     func canToggleCamera(completion: @escaping (Bool) -> ()) {
+        #if targetEnvironment(simulator)
+        completion(true)
+        #else
         cameraService.canToggleCamera(completion: completion)
+        #endif
     }
     
     func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
@@ -58,6 +62,10 @@ final class CameraInteractorImpl: CameraInteractor {
     }
     
     func takePhoto(completion: @escaping (MediaPickerItem?) -> ()) {
+        #if targetEnvironment(simulator)
+        return completion(MediaPickerItem(image: DummyImageSource(), source: .camera))
+        #endif
+        
         cameraService.takePhoto { [weak self] photo in
             guard let imageSource = photo.flatMap({ LocalImageSource(path: $0.path) }) else {
                 return completion(nil)
