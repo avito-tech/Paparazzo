@@ -108,6 +108,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         setUpCollectionView()
         
         titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTitleViewTap(_:))))
+        titleView.accessibilityIdentifier = "titleView"
         
         accessDeniedView.isHidden = true
         
