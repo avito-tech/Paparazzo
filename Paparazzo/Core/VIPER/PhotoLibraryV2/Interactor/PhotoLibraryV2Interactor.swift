@@ -10,6 +10,7 @@ protocol PhotoLibraryV2Interactor: class {
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
+    func setCameraOutputNeeded(_: Bool)
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
