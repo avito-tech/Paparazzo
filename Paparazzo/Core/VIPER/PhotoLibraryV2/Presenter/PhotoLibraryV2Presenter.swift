@@ -17,6 +17,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.onViewDidLoad?()
                 self?.setUpView()
             }
+            view?.onViewDidDisappear = { [weak self] animated in
+                self?.interactor.setCameraOutputNeeded(false)
+            }
         }
     }
     

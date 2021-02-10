@@ -70,6 +70,10 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         }
     }
     
+    func setCameraOutputNeeded(_ isCameraOutputNeeded: Bool) {
+        cameraService.setCaptureSessionRunning(isCameraOutputNeeded)
+    }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
