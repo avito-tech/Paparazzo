@@ -17,9 +17,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 self?.onViewDidLoad?()
                 self?.setUpView()
             }
-            view?.onViewDidDisappear = { [weak self] animated in
-                self?.interactor.setCameraOutputNeeded(false)
-            }
         }
     }
     
@@ -229,6 +226,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             let selectedItems = strongSelf.interactor.selectedItems
             
             guard selectedItems.isEmpty == false else {
+                strongSelf.interactor.setCameraOutputNeeded(false)
                 strongSelf.onFinish?([])
                 return
             }
@@ -241,6 +239,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             )
             
             guard !strongSelf.isNewFlowPrototype else {
+                strongSelf.interactor.setCameraOutputNeeded(false)
                 strongSelf.onFinish?(selectedItems)
                 return
             }
@@ -258,6 +257,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         view?.onCloseButtonTap = { [weak self] in
+            self?.interactor.setCameraOutputNeeded(false)
             self?.onCancel?()
         }
         
