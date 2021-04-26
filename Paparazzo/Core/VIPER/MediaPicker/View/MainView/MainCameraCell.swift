@@ -7,7 +7,7 @@ final class MainCameraCell: UICollectionViewCell {
             oldValue?.removeFromSuperview()
             
             if let cameraView = cameraView {
-                addSubview(cameraView)
+                contentView.addSubview(cameraView)
                 setAccessibilityId(.mainCameraCell)
             }
         }
@@ -18,7 +18,7 @@ final class MainCameraCell: UICollectionViewCell {
             oldValue?.removeFromSuperview()
             
             if let cameraOverlayView = cameraOverlayView {
-                addSubview(cameraOverlayView)
+                contentView.addSubview(cameraOverlayView)
             }
         }
     }
