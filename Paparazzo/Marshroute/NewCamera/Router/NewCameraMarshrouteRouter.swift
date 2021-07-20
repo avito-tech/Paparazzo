@@ -17,7 +17,7 @@ final class NewCameraMarshrouteRouter: BaseRouter, NewCameraRouter {
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
     {
-        presentModalViewControllerDerivedFrom { routerSeed in
+        presentModalNavigationControllerWithRootViewControllerDerivedFrom({ routerSeed in
             
             let assembly = assemblyFactory.mediaPickerAssembly()
             
@@ -28,6 +28,6 @@ final class NewCameraMarshrouteRouter: BaseRouter, NewCameraRouter {
                 isNewFlowPrototype: true,
                 configure: configure
             )
-        }
+        }, animator: ModalNavigationTransitionsAnimator())
     }
 }
