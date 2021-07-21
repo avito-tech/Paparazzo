@@ -573,20 +573,4 @@ extension MediaPickerData {
             photoLibraryEnabled: false
         )
     }
-    
-    func bySettingCropEnabled(_ cropEnabled: Bool) -> MediaPickerData {
-        return MediaPickerData(
-            items: items,
-            autocorrectionFilters: autocorrectionFilters,
-            selectedItem: selectedItem,
-            maxItemsCount: maxItemsCount,
-            cropEnabled: cropEnabled,
-            autocorrectEnabled: autocorrectEnabled,
-            hapticFeedbackEnabled: hapticFeedbackEnabled,
-            cropCanvasSize: cropCanvasSize,
-            initialActiveCameraType: initialActiveCameraType,
-            cameraEnabled: cameraEnabled,
-            photoLibraryEnabled: photoLibraryEnabled
-        )
-    }
 }
