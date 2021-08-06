@@ -76,7 +76,7 @@ DEPENDENCIES:
   - ImageSource/PHAsset (from `https://github.com/avito-tech/ImageSource.git`, tag `3.1.0`)
   - ImageSource/Remote (from `https://github.com/avito-tech/ImageSource.git`, tag `3.1.0`)
   - ImageSource/SDWebImage (from `https://github.com/avito-tech/ImageSource.git`, tag `3.1.0`)
-  - Marshroute (from `https://github.com/avito-tech/Marshroute.git`, tag `0.4.5`)
+  - Marshroute (from `https://github.com/avito-tech/Marshroute.git`, branch `master`)
   - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
   - Paparazzo/SDWebImage (from `../`)
@@ -93,8 +93,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/avito-tech/ImageSource.git
     :tag: 3.1.0
   Marshroute:
+    :branch: master
     :git: https://github.com/avito-tech/Marshroute.git
-    :tag: 0.4.5
   Paparazzo:
     :path: "../"
 
@@ -103,8 +103,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/avito-tech/ImageSource.git
     :tag: 3.1.0
   Marshroute:
+    :commit: d580713ef13f140d1984a330d82f85a9a6e50ba7
     :git: https://github.com/avito-tech/Marshroute.git
-    :tag: 0.4.5
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
@@ -115,6 +115,6 @@ SPEC CHECKSUMS:
   Paparazzo: 12685f217666e4c4bab7f8e19841ff0b14811edb
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
 
-PODFILE CHECKSUM: 6b525fd8803d85514aa753207575bad3c928f255
+PODFILE CHECKSUM: b7329622672d3ff59ac3b5db9fdb126727dec5ac
 
 COCOAPODS: 1.10.0
