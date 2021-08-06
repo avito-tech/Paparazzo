@@ -1,6 +1,6 @@
 import CoreLocation
 
-public protocol LocationProvider: class {
+public protocol LocationProvider: AnyObject {
     func location(completion: @escaping ((CLLocation?) -> ()))
 }
 

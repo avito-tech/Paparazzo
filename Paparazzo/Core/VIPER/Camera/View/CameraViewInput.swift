@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol CameraViewInput: class {
+protocol CameraViewInput: AnyObject {
     
     func setTitle(_: String?)
     func setSubtitle(_: String?)

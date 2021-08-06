@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol MaskCropperViewInput: class {
+protocol MaskCropperViewInput: AnyObject {
     func setImage(_: ImageSource, previewImage: ImageSource?, completion: @escaping () -> ())
     func setCroppingParameters(_: ImageCroppingParameters)
     func setCanvasSize(_: CGSize)

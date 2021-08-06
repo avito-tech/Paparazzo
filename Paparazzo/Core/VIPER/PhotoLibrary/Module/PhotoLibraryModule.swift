@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol PhotoLibraryModule: class {
+public protocol PhotoLibraryModule: AnyObject {
     
     func dismissModule()
     

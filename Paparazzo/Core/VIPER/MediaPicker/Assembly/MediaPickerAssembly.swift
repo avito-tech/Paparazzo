@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol MediaPickerAssembly: class {
+public protocol MediaPickerAssembly: AnyObject {
     func module(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
@@ -9,7 +9,7 @@ public protocol MediaPickerAssembly: class {
         -> UIViewController
 }
 
-public protocol MediaPickerAssemblyFactory: class {
+public protocol MediaPickerAssemblyFactory: AnyObject {
     func mediaPickerAssembly() -> MediaPickerAssembly
 }
 

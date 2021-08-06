@@ -1,3 +1,3 @@
-protocol PhotoLibraryRouter: class {
+protocol PhotoLibraryRouter: AnyObject {
     func dismissCurrentModule()
 }
