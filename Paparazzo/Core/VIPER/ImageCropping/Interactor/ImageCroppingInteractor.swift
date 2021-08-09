@@ -1,7 +1,7 @@
 import Foundation
 import ImageSource
 
-protocol ImageCroppingInteractor: class {
+protocol ImageCroppingInteractor: AnyObject {
     
     func canvasSize(completion: @escaping (CGSize) -> ())
     

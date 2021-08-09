@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol PhotoLibraryV2Assembly: class {
+public protocol PhotoLibraryV2Assembly: AnyObject {
     func module(
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
@@ -8,6 +8,6 @@ public protocol PhotoLibraryV2Assembly: class {
     ) -> UIViewController
 }
 
-public protocol PhotoLibraryV2AssemblyFactory: class {
+public protocol PhotoLibraryV2AssemblyFactory: AnyObject {
     func photoLibraryV2Assembly() -> PhotoLibraryV2Assembly
 }

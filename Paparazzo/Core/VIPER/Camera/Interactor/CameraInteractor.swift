@@ -1,7 +1,7 @@
 import AVFoundation
 import ImageSource
 
-protocol CameraInteractor: class {
+protocol CameraInteractor: AnyObject {
     
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
     func setCameraOutputNeeded(_: Bool)

@@ -3,7 +3,7 @@ import ImageSource
 
 /// Delete `@objc` when the problem in Swift will be resolved
 /// https://bugs.swift.org/browse/SR-55
-@objc public protocol CameraCaptureOutputHandler: class {
+@objc public protocol CameraCaptureOutputHandler: AnyObject {
     var imageBuffer: CVImageBuffer? { get set }
 }
 

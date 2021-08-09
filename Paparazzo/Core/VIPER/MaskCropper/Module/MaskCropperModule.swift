@@ -1,6 +1,6 @@
 import ImageSource
 
-public protocol MaskCropperModule: class {
+public protocol MaskCropperModule: AnyObject {
     
     func dismissModule()
     

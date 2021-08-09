@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol CameraModuleInput: class {
+protocol CameraModuleInput: AnyObject {
     
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
     func setCameraOutputNeeded(_: Bool)

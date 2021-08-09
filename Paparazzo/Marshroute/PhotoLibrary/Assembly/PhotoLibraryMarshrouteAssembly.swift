@@ -1,7 +1,7 @@
 import UIKit
 import Marshroute
 
-public protocol PhotoLibraryMarshrouteAssembly: class {
+public protocol PhotoLibraryMarshrouteAssembly: AnyObject {
     func module(
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
@@ -10,6 +10,6 @@ public protocol PhotoLibraryMarshrouteAssembly: class {
         -> UIViewController
 }
 
-public protocol PhotoLibraryMarshrouteAssemblyFactory: class {
+public protocol PhotoLibraryMarshrouteAssemblyFactory: AnyObject {
     func photoLibraryAssembly() -> PhotoLibraryMarshrouteAssembly
 }

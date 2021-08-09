@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol ScannerInteractor: class {
+protocol ScannerInteractor: AnyObject {
     
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     

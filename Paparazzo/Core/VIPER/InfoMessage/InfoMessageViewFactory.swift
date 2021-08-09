@@ -1,4 +1,4 @@
-protocol InfoMessageViewFactory: class {
+protocol InfoMessageViewFactory: AnyObject {
     
     func create(
         from viewData: InfoMessageViewData

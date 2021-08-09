@@ -1,4 +1,4 @@
-public protocol CroppingOverlayProvidersFactory: class {
+public protocol CroppingOverlayProvidersFactory: AnyObject {
     func circleCroppingOverlayProvider() -> CroppingOverlayProvider
     func rectangleCroppingOverlayProvider(cornerRadius: CGFloat, margin: CGFloat) -> CroppingOverlayProvider
     func heartShapeCroppingOverlayProvider() -> CroppingOverlayProvider

@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol MaskCropperRouter: class {
+protocol MaskCropperRouter: AnyObject {
     func focusOnCurrentModule()
     func dismissCurrentModule()
 }

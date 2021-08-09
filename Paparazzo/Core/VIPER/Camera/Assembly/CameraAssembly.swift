@@ -1,6 +1,6 @@
 import UIKit
 
-protocol CameraAssembly: class {
+protocol CameraAssembly: AnyObject {
     func module(initialActiveCameraType: CameraType, overridenTheme: PaparazzoUITheme?) -> (UIView, CameraModuleInput)
 }
 

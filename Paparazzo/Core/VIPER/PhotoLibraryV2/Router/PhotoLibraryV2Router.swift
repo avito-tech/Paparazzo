@@ -1,4 +1,4 @@
-protocol PhotoLibraryV2Router: class {
+protocol PhotoLibraryV2Router: AnyObject {
     func dismissCurrentModule()
     func focusOnCurrentModule()
     

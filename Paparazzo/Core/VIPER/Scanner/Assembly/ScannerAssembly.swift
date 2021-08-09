@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol ScannerAssembly: class {
+public protocol ScannerAssembly: AnyObject {
     func module(
         data: ScannerData,
         overridenTheme: PaparazzoUITheme?,
@@ -8,7 +8,7 @@ public protocol ScannerAssembly: class {
         -> UIViewController
 }
 
-public protocol ScannerAssemblyFactory: class {
+public protocol ScannerAssemblyFactory: AnyObject {
     func scannerAssembly() -> ScannerAssembly
 }
 

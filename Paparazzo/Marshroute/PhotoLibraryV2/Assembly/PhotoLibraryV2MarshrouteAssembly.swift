@@ -1,7 +1,7 @@
 import UIKit
 import Marshroute
 
-public protocol PhotoLibraryV2MarshrouteAssembly: class {
+public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
     func module(
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
@@ -29,6 +29,6 @@ public extension PhotoLibraryV2MarshrouteAssembly {
     }
 }
 
-public protocol PhotoLibraryV2MarshrouteAssemblyFactory: class {
+public protocol PhotoLibraryV2MarshrouteAssemblyFactory: AnyObject {
     func photoLibraryV2Assembly() -> PhotoLibraryV2MarshrouteAssembly
 }

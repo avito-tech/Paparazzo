@@ -1,6 +1,6 @@
 import UIKit
 
-protocol DeviceOrientationService: class {
+protocol DeviceOrientationService: AnyObject {
     var currentOrientation: DeviceOrientation { get }
     var onOrientationChange: ((DeviceOrientation) -> ())? { get set }
 }

@@ -6,7 +6,7 @@ struct ImageCroppingData {
     var parameters: ImageCroppingParameters?
 }
 
-protocol ImageCroppingService: class {
+protocol ImageCroppingService: AnyObject {
     func canvasSize(completion: @escaping (CGSize) -> ())
     func imageWithParameters(completion: @escaping (ImageCroppingData) -> ())
     func croppedImage(previewImage: CGImage, completion: @escaping (CroppedImageSource) -> ())

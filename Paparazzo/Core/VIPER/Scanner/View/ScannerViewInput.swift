@@ -1,7 +1,7 @@
 import ImageSource
 import UIKit
 
-protocol ScannerViewInput: class {
+protocol ScannerViewInput: AnyObject {
     
     func adjustForDeviceOrientation(_: DeviceOrientation)
     

@@ -1,7 +1,7 @@
 import AVFoundation
 import ImageSource
 
-public protocol CameraService: class {
+public protocol CameraService: AnyObject {
     
     var isFlashAvailable: Bool { get }
     var isFlashEnabled: Bool { get }
