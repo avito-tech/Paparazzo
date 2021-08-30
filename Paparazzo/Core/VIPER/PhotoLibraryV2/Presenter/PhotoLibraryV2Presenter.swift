@@ -63,6 +63,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onNewCameraShow: (() -> ())?
+    var onCropButtonTap: (() -> ())?
+    var onLastPhotoThumbnailTap: (() -> ())?
+    var onRotationAngleChange: (() -> ())?
+    var onRotateButtonTap: (() -> ())?
+    var onGridButtonTap: ((Bool) -> ())?
+    var onAspectRatioButtonTap: ((String) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
@@ -269,6 +275,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.onLastPhotoThumbnailTap = { [weak self] in
             self?.showMediaPickerInNewFlow()
+            self?.onLastPhotoThumbnailTap?()
         }
         
         view?.onTitleTap = { [weak self] in
@@ -500,6 +507,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         module.onCancel = { [weak module] in
             module?.dismissModule()
         }
+        module.onCropButtonTap = onCropButtonTap
+        module.onRotationAngleChange = onRotationAngleChange
+        module.onRotateButtonTap = onRotateButtonTap
+        module.onGridButtonTap = onGridButtonTap
+        module.onAspectRatioButtonTap = onAspectRatioButtonTap
     }
     
     private func viewChanges(from changes: PhotoLibraryChanges) -> PhotoLibraryViewChanges {

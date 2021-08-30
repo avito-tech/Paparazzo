@@ -198,6 +198,11 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         set { mediaPickerView.onSwipeToCameraProgressChange = newValue }
     }
     
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return mediaPickerView.onPhotoLibraryButtonTap }
+        set { mediaPickerView.onPhotoLibraryButtonTap = newValue }
+    }
+    
     var onViewDidLoad: (() -> ())?
     var onViewWillAppear: ((_ animated: Bool) -> ())?
     var onViewDidAppear: ((_ animated: Bool) -> ())?
