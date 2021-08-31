@@ -46,6 +46,12 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onViewDidLoad: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onCancel: (() -> ())?
+    var onCropButtonTap: (() -> ())?
+    var onLastPhotoThumbnailTap: (() -> ())?
+    var onRotationAngleChange: (() -> ())?
+    var onRotateButtonTap: (() -> ())?
+    var onGridButtonTap: ((Bool) -> ())?
+    var onAspectRatioButtonTap: ((String) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
@@ -314,6 +320,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onCropButtonTap = { [weak self] in
             if let item = self?.interactor.selectedItem {
                 self?.showCroppingModule(forItem: item)
+                self?.onCropButtonTap?()
             }
         }
         
@@ -362,6 +369,8 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onViewDidDisappear = { [weak self] animated in
             self?.cameraModuleInput.setCameraOutputNeeded(false)
         }
+        
+        view?.onLastPhotoThumbnailTap = onLastPhotoThumbnailTap
     }
     
     private func updateItem(_ updatedItem: MediaPickerItem, afterAutocorrect: Bool = false) {
@@ -537,6 +546,11 @@ final class MediaPickerPresenter: MediaPickerModule {
                     self?.router.focusOnCurrentModule()
                 }
             }
+            
+            module.onAspectRatioButtonTap = onAspectRatioButtonTap
+            module.onGridButtonTap = onGridButtonTap
+            module.onRotateButtonTap = onRotateButtonTap
+            module.onRotationAngleChange = onRotationAngleChange
         }
     }
 }

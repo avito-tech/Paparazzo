@@ -17,4 +17,13 @@ enum AspectRatio {
     func heightToWidthRatio() -> Float {
         return 1 / widthToHeightRatio()
     }
+    
+    var description: String {
+        switch self {
+        case .portrait_3x4:
+            return "3:4"
+        case .landscape_4x3:
+            return "4:3"
+        }
+    }
 }

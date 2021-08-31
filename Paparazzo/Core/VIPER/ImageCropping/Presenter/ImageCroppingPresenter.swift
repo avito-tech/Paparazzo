@@ -23,6 +23,10 @@ final class ImageCroppingPresenter: ImageCroppingModule {
     
     var onDiscard: (() -> ())?
     var onConfirm: ((ImageSource) -> ())?
+    var onRotationAngleChange: (() -> ())?
+    var onRotateButtonTap: (() -> ())?
+    var onGridButtonTap: ((Bool) -> ())?
+    var onAspectRatioButtonTap: ((String) -> ())?
     
     // MARK: - Private
     
@@ -37,10 +41,12 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         
         view?.onRotationAngleChange = { [weak self] angle in
             self?.setImageRotation(angle)
+            self?.onRotationAngleChange?()
         }
         
         view?.onRotateButtonTap = { [weak self] in
             self?.view?.turnImageCounterclockwise()
+            self?.onRotateButtonTap?()
         }
         
         view?.onRotationCancelButtonTap = { [weak self] in
@@ -114,6 +120,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         
         view?.onGridButtonTap = { [weak self] in
             self?.setGridVisible(!visible)
+            self?.onGridButtonTap?(!visible)
         }
     }
     
@@ -125,6 +132,7 @@ final class ImageCroppingPresenter: ImageCroppingModule {
         view?.onAspectRatioButtonTap = { [weak self] in
             if let nextRatio = self?.aspectRatioAfter(aspectRatio) {
                 self?.setAspectRatio(nextRatio)
+                self?.onAspectRatioButtonTap?(nextRatio.description)
             }
         }
     }

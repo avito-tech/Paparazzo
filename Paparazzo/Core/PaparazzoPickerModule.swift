@@ -61,6 +61,12 @@ public protocol PaparazzoPickerModule: AnyObject {
     var onCropFinish: (() -> ())? { get set }
     var onCropCancel: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }
+    var onCropButtonTap: (() -> ())? { get set }
+    var onLastPhotoThumbnailTap: (() -> ())? { get set }
+    var onRotationAngleChange: (() -> ())? { get set }
+    var onRotateButtonTap: (() -> ())? { get set }
+    var onGridButtonTap: ((Bool) -> ())? { get set }
+    var onAspectRatioButtonTap: ((String) -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
     var onFinish: (([MediaPickerItem]) -> ())? { get set }
