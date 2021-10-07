@@ -440,6 +440,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                                         self?.router.focusOnCurrentModule()
                                     }
                                 }
+                                newCameraModule.onLastPhotoThumbnailTap = { [weak self] in
+                                    self?.onLastPhotoThumbnailTap?()
+                                }
                             }
                         )
                     } else {

@@ -29,6 +29,7 @@ final class NewCameraPresenter:
     // MARK: - NewCameraModule
     var onFinish: ((NewCameraModule, NewCameraModuleResult) -> ())?
     var configureMediaPicker: ((MediaPickerModule) -> ())?
+    var onLastPhotoThumbnailTap: (() -> ())?
     
     func focusOnModule() {
         router.focusOnCurrentModule()
@@ -74,6 +75,8 @@ final class NewCameraPresenter:
                     self?.configureMediaPicker?(module)
                 }
             )
+
+            self?.onLastPhotoThumbnailTap?()
         }
         
         view?.onToggleCameraButtonTap = { [weak self] in
