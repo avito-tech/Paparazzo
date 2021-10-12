@@ -226,6 +226,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onPhotoLibraryButtonTap = { [weak self] in
+            self?.onLastPhotoThumbnailTap?()
             self?.showPhotoLibrary()
         }
         
@@ -369,8 +370,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onViewDidDisappear = { [weak self] animated in
             self?.cameraModuleInput.setCameraOutputNeeded(false)
         }
-        
-        view?.onLastPhotoThumbnailTap = onLastPhotoThumbnailTap
     }
     
     private func updateItem(_ updatedItem: MediaPickerItem, afterAutocorrect: Bool = false) {
