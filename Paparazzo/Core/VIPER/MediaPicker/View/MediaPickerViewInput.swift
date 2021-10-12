@@ -92,6 +92,4 @@ protocol MediaPickerViewInput: AnyObject {
     var onViewDidDisappear: ((_ animated: Bool) -> ())? { get set }
     
     var onPreviewSizeDetermined: ((_ previewSize: CGSize) -> ())? { get set }
-    
-    var onLastPhotoThumbnailTap: (() -> ())? { get set }
 }
