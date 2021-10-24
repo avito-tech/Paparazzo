@@ -1,7 +1,7 @@
 import Foundation
 import ImageSource
 
-protocol PhotoLibraryV2ViewInput: class {
+protocol PhotoLibraryV2ViewInput: AnyObject {
     
     var onTitleTap: (() -> ())? { get set }
     var onDimViewTap: (() -> ())? { get set }

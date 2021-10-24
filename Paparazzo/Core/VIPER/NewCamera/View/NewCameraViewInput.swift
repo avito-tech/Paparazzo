@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol NewCameraViewInput: class {
+protocol NewCameraViewInput: AnyObject {
     var onCloseButtonTap: (() -> ())? { get set }
     var onDoneButtonTap: (() -> ())? { get set }
     var onToggleCameraButtonTap: (() -> ())? { get set }

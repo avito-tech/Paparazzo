@@ -1,4 +1,4 @@
-public protocol ScannerModule: class {
+public protocol ScannerModule: AnyObject {
 
     func focusOnModule()
     func dismissModule()

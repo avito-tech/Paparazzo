@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol MediaPickerRouter: class {
+protocol MediaPickerRouter: AnyObject {
     
     func showPhotoLibrary(
         data: PhotoLibraryData,

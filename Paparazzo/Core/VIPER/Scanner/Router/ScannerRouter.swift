@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol ScannerRouter: class {
+protocol ScannerRouter: AnyObject {
     
     func focusOnCurrentModule()
     func dismissCurrentModule()

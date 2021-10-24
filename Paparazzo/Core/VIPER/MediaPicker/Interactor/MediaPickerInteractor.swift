@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol MediaPickerInteractor: class {
+protocol MediaPickerInteractor: AnyObject {
     
     var items: [MediaPickerItem] { get }
     var cropCanvasSize: CGSize { get }

@@ -1,7 +1,7 @@
 import Foundation
 import ImageSource
 
-protocol ImageCroppingViewInput: class {
+protocol ImageCroppingViewInput: AnyObject {
     
     func setTitle(_: String)
     

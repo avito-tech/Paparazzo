@@ -1,4 +1,4 @@
-protocol NewCameraRouter: class {
+protocol NewCameraRouter: AnyObject {
     func focusOnCurrentModule()
     
     func showMediaPicker(

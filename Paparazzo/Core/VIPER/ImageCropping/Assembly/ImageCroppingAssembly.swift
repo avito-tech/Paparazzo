@@ -1,7 +1,7 @@
 import ImageSource
 import UIKit
 
-protocol ImageCroppingAssembly: class {
+protocol ImageCroppingAssembly: AnyObject {
     func module(
         image: ImageSource,
         canvasSize: CGSize,
@@ -9,6 +9,6 @@ protocol ImageCroppingAssembly: class {
         -> UIViewController
 }
 
-protocol ImageCroppingAssemblyFactory: class {
+protocol ImageCroppingAssemblyFactory: AnyObject {
     func imageCroppingAssembly() -> ImageCroppingAssembly
 }

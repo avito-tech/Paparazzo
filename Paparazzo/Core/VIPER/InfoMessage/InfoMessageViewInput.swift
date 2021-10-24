@@ -1,4 +1,4 @@
-public protocol InfoMessageViewInput: class {
+public protocol InfoMessageViewInput: AnyObject {
     func dismiss()
 }
 

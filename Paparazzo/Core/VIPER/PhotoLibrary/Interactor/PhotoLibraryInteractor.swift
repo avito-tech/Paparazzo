@@ -1,7 +1,7 @@
 import Foundation
 import ImageSource
 
-protocol PhotoLibraryInteractor: class {
+protocol PhotoLibraryInteractor: AnyObject {
     
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [PhotoLibraryItem] { get }

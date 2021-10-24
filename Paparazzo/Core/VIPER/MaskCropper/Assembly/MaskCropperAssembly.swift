@@ -1,7 +1,7 @@
 import ImageSource
 import UIKit
 
-public protocol MaskCropperAssembly: class {
+public protocol MaskCropperAssembly: AnyObject {
     func module(
         data: MaskCropperData,
         croppingOverlayProvider: CroppingOverlayProvider,
@@ -9,6 +9,6 @@ public protocol MaskCropperAssembly: class {
         -> UIViewController
 }
 
-public protocol MaskCropperAssemblyFactory: class {
+public protocol MaskCropperAssemblyFactory: AnyObject {
     func maskCropperAssembly() -> MaskCropperAssembly
 }

@@ -1,7 +1,7 @@
 import Marshroute
 import UIKit
 
-public protocol MediaPickerMarshrouteAssembly: class {
+public protocol MediaPickerMarshrouteAssembly: AnyObject {
     func module(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
@@ -12,7 +12,7 @@ public protocol MediaPickerMarshrouteAssembly: class {
         -> UIViewController
 }
 
-public protocol MediaPickerMarshrouteAssemblyFactory: class {
+public protocol MediaPickerMarshrouteAssemblyFactory: AnyObject {
     func mediaPickerAssembly() -> MediaPickerMarshrouteAssembly
 }
 

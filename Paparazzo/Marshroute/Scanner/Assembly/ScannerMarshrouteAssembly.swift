@@ -1,7 +1,7 @@
 import UIKit
 import Marshroute
 
-public protocol ScannerMarshrouteAssembly: class {
+public protocol ScannerMarshrouteAssembly: AnyObject {
     func module(
         data: ScannerData,
         routerSeed: RouterSeed,
@@ -20,6 +20,6 @@ public extension ScannerMarshrouteAssembly {
     }
 }
 
-public protocol ScannerMarshrouteAssemblyFactory: class {
+public protocol ScannerMarshrouteAssemblyFactory: AnyObject {
     func scannerAssembly() -> ScannerMarshrouteAssembly
 }

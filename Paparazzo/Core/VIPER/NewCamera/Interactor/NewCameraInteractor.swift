@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol NewCameraInteractor: class {
+protocol NewCameraInteractor: AnyObject {
     var mediaPickerData: MediaPickerData { get }
     var selectedImagesStorage: SelectedImageStorage { get }
     var isFlashAvailable: Bool { get }

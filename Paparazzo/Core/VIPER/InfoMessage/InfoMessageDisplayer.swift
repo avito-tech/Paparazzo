@@ -19,7 +19,7 @@ final class InfoMessageDisplayer {
     }
 }
 
-protocol InfoMessageDisplayable: class {
+protocol InfoMessageDisplayable: AnyObject {
     @discardableResult
     func showInfoMessage(_ viewData: InfoMessageViewData) -> InfoMessageViewInput
 }

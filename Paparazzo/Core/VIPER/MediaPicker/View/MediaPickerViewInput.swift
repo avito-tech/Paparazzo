@@ -16,7 +16,7 @@ enum MediaPickerAutocorrectionStatus {
     case corrected
 }
 
-protocol MediaPickerViewInput: class {
+protocol MediaPickerViewInput: AnyObject {
     
     func setMode(_: MediaPickerViewMode)
     func setAutocorrectionStatus(_: MediaPickerAutocorrectionStatus)

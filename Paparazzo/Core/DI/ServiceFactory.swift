@@ -1,6 +1,6 @@
 import ImageSource
 
-protocol ServiceFactory: class {
+protocol ServiceFactory: AnyObject {
     func deviceOrientationService() -> DeviceOrientationService
     func cameraService(initialActiveCameraType: CameraType) -> CameraService
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider

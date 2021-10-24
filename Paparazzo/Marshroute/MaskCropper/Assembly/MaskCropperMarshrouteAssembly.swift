@@ -1,7 +1,7 @@
 import Marshroute
 import UIKit
 
-public protocol MaskCropperMarshrouteAssembly: class {
+public protocol MaskCropperMarshrouteAssembly: AnyObject {
     func module(
         data: MaskCropperData,
         croppingOverlayProvider: CroppingOverlayProvider,
@@ -10,6 +10,6 @@ public protocol MaskCropperMarshrouteAssembly: class {
         -> UIViewController
 }
 
-public protocol MaskCropperMarshrouteAssemblyFactory: class {
+public protocol MaskCropperMarshrouteAssemblyFactory: AnyObject {
     func maskCropperAssembly() -> MaskCropperMarshrouteAssembly
 }
