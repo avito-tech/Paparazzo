@@ -2,7 +2,7 @@ import UIKit
 
 final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory & LimitedAccessAlertFactory
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
@@ -52,5 +52,10 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         )
         
         present(viewController, animated: true)
+    }
+    
+    @available(iOS 14, *)
+    func showLimitedAccessAlert() {
+        present(assemblyFactory.limitedAccessAlert(), animated: true)
     }
 }

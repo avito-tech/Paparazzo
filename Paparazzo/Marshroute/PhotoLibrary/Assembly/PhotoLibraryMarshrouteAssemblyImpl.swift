@@ -18,7 +18,10 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: BasePaparazzoAssembly, Ph
             photoLibraryItemsService: photoLibraryItemsService
         )
         
-        let router = PhotoLibraryMarshrouteRouter(routerSeed: routerSeed)
+        let router = PhotoLibraryMarshrouteRouter(
+            limitedAccessAlertFactory: LimitedAccessAlertFactoryImpl(), 
+            routerSeed: routerSeed
+        )
         
         let presenter = PhotoLibraryPresenter(
             interactor: interactor,

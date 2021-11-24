@@ -2,7 +2,7 @@ import UIKit
 
 public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2Assembly {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory & LimitedAccessAlertFactory
     
     private let assemblyFactory: AssemblyFactory
     

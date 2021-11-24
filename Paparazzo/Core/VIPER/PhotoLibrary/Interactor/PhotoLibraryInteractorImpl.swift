@@ -25,6 +25,11 @@ final class PhotoLibraryInteractorImpl: PhotoLibraryInteractor {
     // MARK: - PhotoLibraryInteractor
     private(set) var currentAlbum: PhotoLibraryAlbum?
     private(set) var selectedItems = [PhotoLibraryItem]()
+
+    var onLimitedAccess: (() -> ())? {
+        get { return photoLibraryItemsService.onLimitedAccess }
+        set { photoLibraryItemsService.onLimitedAccess = newValue }
+    }
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)

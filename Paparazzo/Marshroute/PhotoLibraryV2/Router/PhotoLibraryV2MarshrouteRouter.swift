@@ -3,7 +3,7 @@ import UIKit
 
 final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory
+    typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory & NewCameraMarshrouteAssemblyFactory & LimitedAccessAlertFactory
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
@@ -53,6 +53,13 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 routerSeed: routerSeed,
                 configure: configure
             )
+        }
+    }
+    
+    @available(iOS 14, *)
+    func showLimitedAccessAlert() {
+        presentModalViewControllerDerivedFrom { _ in
+            return assemblyFactory.limitedAccessAlert()
         }
     }
 }

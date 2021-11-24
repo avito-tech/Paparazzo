@@ -55,6 +55,12 @@ final class PhotoLibraryPresenter: PhotoLibraryModule {
             }
         }
         
+        if #available(iOS 14, *) {
+            interactor.onLimitedAccess = { [weak self] in
+                self?.router.showLimitedAccessAlert()
+            } 
+        }
+        
         interactor.observeAlbums { [weak self] albums in
             guard let strongSelf = self else { return }
             

@@ -15,4 +15,7 @@ protocol PhotoLibraryV2Router: AnyObject {
         shouldAllowFinishingWithNoPhotos: Bool,
         configure: (NewCameraModule) -> ()
     )
+    
+    @available(iOS 14, *)
+    func showLimitedAccessAlert()
 }

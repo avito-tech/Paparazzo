@@ -1,10 +1,12 @@
 import Photos
 import ImageSource
 
-protocol PhotoLibraryItemsService {
+
+protocol PhotoLibraryItemsService: AnyObject {
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
+    var onLimitedAccess: (() -> ())? { get set }
 }
 
 enum PhotosOrder {
@@ -13,6 +15,7 @@ enum PhotosOrder {
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
+    var onLimitedAccess: (() -> ())?
     
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
@@ -163,6 +166,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             wasSetUp = true
             setUpFetchResultForLimitedAccess(completion: completion)
             
+            onLimitedAccess?()
             #endif
         
         case .notDetermined:

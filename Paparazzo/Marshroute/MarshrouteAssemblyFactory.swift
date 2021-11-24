@@ -8,18 +8,22 @@ public final class MarshrouteAssemblyFactory:
     PhotoLibraryV2MarshrouteAssemblyFactory,
     MaskCropperMarshrouteAssemblyFactory,
     ScannerMarshrouteAssemblyFactory,
-    NewCameraMarshrouteAssemblyFactory
+    NewCameraMarshrouteAssemblyFactory,
+    LimitedAccessAlertFactory
 {
     private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
     private let imageStorage: ImageStorage
+    private let alertFactory: LimitedAccessAlertFactory
     
     public init(theme: PaparazzoUITheme = PaparazzoUITheme(),
-                imageStorage: ImageStorage = ImageStorageImpl())
+                imageStorage: ImageStorage = ImageStorageImpl(),
+                limitedAccessAlertFactory: LimitedAccessAlertFactory = LimitedAccessAlertFactoryImpl())
     {
         self.theme = theme
         self.imageStorage = imageStorage
         self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
+        self.alertFactory = limitedAccessAlertFactory
     }
     
     func cameraAssembly() -> CameraAssembly {
@@ -63,5 +67,10 @@ public final class MarshrouteAssemblyFactory:
             theme: theme,
             serviceFactory: serviceFactory
         )
+    }
+    
+    @available(iOS 14, *)
+    public func limitedAccessAlert() -> UIAlertController {
+        return alertFactory.limitedAccessAlert()
     }
 }

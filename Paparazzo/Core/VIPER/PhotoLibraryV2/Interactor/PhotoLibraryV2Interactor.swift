@@ -8,6 +8,8 @@ protocol PhotoLibraryV2Interactor: AnyObject {
     var selectedItems: [MediaPickerItem] { get }
     var selectedPhotosStorage: SelectedImageStorage { get }
     
+    var onLimitedAccess: (() -> ())? { get set }
+    
     func observeDeviceOrientation(handler: @escaping (DeviceOrientation) -> ())
     func getOutputParameters(completion: @escaping (CameraOutputParameters?) -> ())
     func setCameraOutputNeeded(_: Bool)
