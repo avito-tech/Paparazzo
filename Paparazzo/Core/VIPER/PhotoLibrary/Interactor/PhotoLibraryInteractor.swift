@@ -5,6 +5,7 @@ protocol PhotoLibraryInteractor: AnyObject {
     
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [PhotoLibraryItem] { get }
+    var onLimitedAccess: (() -> ())? { get set }
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())

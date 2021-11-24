@@ -17,7 +17,10 @@ public final class PhotoLibraryAssemblyImpl: BasePaparazzoAssembly, PhotoLibrary
         
         let viewController = PhotoLibraryViewController()
         
-        let router = PhotoLibraryUIKitRouter(viewController: viewController)
+        let router = PhotoLibraryUIKitRouter(
+            limitedAccessAlertFactory: LimitedAccessAlertFactoryImpl(), 
+            viewController: viewController
+        )
         
         let presenter = PhotoLibraryPresenter(
             interactor: interactor,

@@ -15,6 +15,11 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     // MARK: - Properties
     let mediaPickerData: MediaPickerData
     
+    var onLimitedAccess: (() -> ())? {
+        get { return photoLibraryItemsService.onLimitedAccess }
+        set { photoLibraryItemsService.onLimitedAccess = newValue }
+    }
+    
     // MARK: - Init
     init(
         mediaPickerData: MediaPickerData,
