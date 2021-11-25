@@ -20,11 +20,9 @@ public final class LimitedAccessAlertFactoryImpl: LimitedAccessAlertFactory {
             title: "Выбрать еще фото...",
             style: .default
         ) { _ in
-            guard let viewController = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController else {
-                return
-            }
+            guard let topViewController = UIApplication.shared.topViewController else { return }
             
-            PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: viewController)
+            PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: topViewController)
         }
         
         limitedAccessAlert.addAction(selectPhotosAction)
@@ -44,5 +42,40 @@ public final class LimitedAccessAlertFactoryImpl: LimitedAccessAlertFactory {
         limitedAccessAlert.addAction(allowFullAccessAction)
         
         return limitedAccessAlert
+    }
+}
+
+private extension UIApplication {
+    func findTopViewController(in viewController: UIViewController?) -> UIViewController? {
+        func searchIntoNavigation(_ navVC: UINavigationController) -> UIViewController? {
+            return findTopViewController(in: navVC.topViewController)
+        }
+        func searchIntoTab(_ tabVC: UITabBarController) -> UIViewController? {
+            guard let selectedViewController = tabVC.selectedViewController else {
+                return nil
+            }
+            if let selectedNav = selectedViewController as? UINavigationController {
+                return searchIntoNavigation(selectedNav)
+            }
+            return selectedViewController
+        }
+        if var topController = viewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+            if let navController = topController as? UINavigationController {
+                return searchIntoNavigation(navController)
+            }
+            if let tabController = topController as? UITabBarController {
+                return searchIntoTab(tabController)
+            }
+            return topController
+        }
+        return viewController
+    }
+    
+    var topViewController: UIViewController? {
+        let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
+        return findTopViewController(in: keyWindow?.rootViewController)
     }
 }
