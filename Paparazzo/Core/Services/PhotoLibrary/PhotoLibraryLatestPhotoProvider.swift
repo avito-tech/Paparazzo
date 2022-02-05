@@ -9,28 +9,23 @@ protocol PhotoLibraryLatestPhotoProvider {
 final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPhotoProvider, PHPhotoLibraryChangeObserver {
     
     private let photoLibrary = PHPhotoLibrary.shared()
-    
-    private(set) var fetchResult: PHFetchResult<PHAsset> {
+    private var isObservingPhotoLibraryChanges = false
+
+    private let fetchResultQueue = DispatchQueue(
+        label: "ru.avito.Paparazzo.PhotoLibraryLatestPhotoProviderImpl.fetchResultQueue",
+        qos: .userInitiated
+    )
+
+    private(set) lazy var fetchResult = setUpInitialFetchResult() {
         didSet {
             callObserver()
         }
     }
     
-    override init() {
-        
-        let options = PHFetchOptions()
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        options.fetchLimit = 1
-        
-        fetchResult = PHAsset.fetchAssets(with: .image, options: options)
-        
-        super.init()
-        
-        photoLibrary.register(self)
-    }
-    
     deinit {
-        photoLibrary.unregisterChangeObserver(self)
+        if isObservingPhotoLibraryChanges {
+            photoLibrary.unregisterChangeObserver(self)
+        }
     }
     
     // MARK: - PhotoLibraryLatestPhotoProvider
@@ -45,8 +40,8 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     // MARK: - PHPhotoLibraryChangeObserver
     
     func photoLibraryDidChange(_ changeInfo: PHChange) {
-        DispatchQueue.main.async {
-            if let collectionChanges = changeInfo.changeDetails(for: self.fetchResult) {
+        fetchResultQueue.async {
+            if let fetchResult = self.fetchResult, let collectionChanges = changeInfo.changeDetails(for: fetchResult) {
                 self.fetchResult = collectionChanges.fetchResultAfterChanges
             }
         }
@@ -54,9 +49,53 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     // MARK: - Private
     
+    @discardableResult
+    private func setUpInitialFetchResult() -> PHFetchResult<PHAsset>? {
+
+        func setUpFetchResult() {
+            fetchResultQueue.async { [weak self] in
+                let options = PHFetchOptions()
+                options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+                options.fetchLimit = 1
+
+                let fetchResult = PHAsset.fetchAssets(with: .image, options: options)
+
+                if let strongSelf = self {
+                    strongSelf.photoLibrary.register(strongSelf)
+                    strongSelf.isObservingPhotoLibraryChanges = true
+                }
+
+                self?.fetchResult = fetchResult
+            }
+        }
+
+        switch PHPhotoLibrary.readWriteAuthorizationStatus() {
+        case .authorized:
+            setUpFetchResult()
+        #if compiler(>=5.3)
+        // Xcode 12+
+        case .limited:
+            setUpFetchResult()
+        #endif
+        case .notDetermined:
+            PHPhotoLibrary.requestReadWriteAuthorization { [weak self] status in
+                self?.setUpInitialFetchResult()
+            }
+        case .restricted, .denied:
+            break
+        @unknown default:
+            assertionFailure("Unknown authorization status")
+        }
+        
+        return nil
+    }
+    
     private func callObserver() {
-        let asset = fetchResult.firstObject
+        let asset = fetchResult?.firstObject
         let image = asset.flatMap { PHAssetImageSource(asset: $0) }
-        photoObserverHandler?(image)
+        
+        DispatchQueue.main.async { [photoObserverHandler] in
+            photoObserverHandler?(image)
+        }
     }
 }
