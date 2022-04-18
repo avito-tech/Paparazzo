@@ -54,6 +54,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     private let queue = DispatchQueue(label: "ru.avito.AvitoMediaPicker.CaptureSessionPreviewService.queue")
     private var handlers = [WeakWrapper<CameraCaptureOutputHandler>]()
     private var isInBackground = false
+    private var synchronizer: CaptureSessionSynchronizer?
     
     private init(captureSession: AVCaptureSession, isMirrored: Bool) {
         super.init()
@@ -92,7 +93,7 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
     }
     
     private func setUpVideoDataOutput(for captureSession: AVCaptureSession, isMirrored: Bool) {
-        
+        synchronizer = CaptureSessionSynchronizer(captureSession: captureSession)
         let captureOutput = AVCaptureVideoDataOutput()
         
         // CoreImage wants BGRA pixel format
@@ -102,22 +103,21 @@ final class CaptureSessionPreviewService: NSObject, AVCaptureVideoDataOutputSamp
         
         captureOutput.setSampleBufferDelegate(self, queue: queue)
         
-        do {
-            try captureSession.configure {
-                if captureSession.canAddOutput(captureOutput) {
-                    captureSession.addOutput(captureOutput)
-                }
+        synchronizer?.configuration = { [weak captureSession] in
+            guard let captureSession = captureSession else { return }
+            if captureSession.canAddOutput(captureOutput) {
+                captureSession.addOutput(captureOutput)
+            }
 
-                for connection in captureOutput.connections {
-                    if connection.isVideoOrientationSupported {
-                        connection.videoOrientation = .portrait
-                        connection.isVideoMirrored = isMirrored
-                    }
+            for connection in captureOutput.connections {
+                if connection.isVideoOrientationSupported {
+                    connection.videoOrientation = .portrait
+                    connection.isVideoMirrored = isMirrored
                 }
             }
-        } catch {
-            debugPrint("Couldn't configure AVCaptureSession: \(error)")
         }
+
+        synchronizer?.startSynchronize()
     }
     
     @objc private func handleAppWillResignActive(_: NSNotification) {
