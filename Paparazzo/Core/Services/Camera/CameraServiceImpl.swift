@@ -20,7 +20,7 @@ public final class CameraServiceImpl: CameraService {
     private var output: AVCaptureStillImageOutput?
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
-    
+    private var synchronizer: CaptureSessionSynchronizer?
     private var activeCamera: AVCaptureDevice? {
         return camera(for: activeCameraType)
     }
@@ -226,6 +226,8 @@ public final class CameraServiceImpl: CameraService {
     public func toggleCamera(completion: @escaping (_ newOutputOrientation: ExifOrientation) -> ()) {
         guard let captureSession = captureSession else { return }
         
+        synchronizer = CaptureSessionSynchronizer(captureSession: captureSession)
+        
         do {
             
             let targetCameraType: CameraType = (activeCamera == backCamera) ? .front : .back
@@ -236,8 +238,8 @@ public final class CameraServiceImpl: CameraService {
             
             let newInput = try AVCaptureDeviceInput(device: targetCamera)
             
-            try captureSession.configure {
-                
+            synchronizer?.configuration = { [weak self, weak captureSession] in
+                guard let captureSession = captureSession, let self = self else { return }
                 captureSession.inputs.forEach { captureSession.removeInput($0) }
                 
                 // Always reset preset before testing canAddInput because preset will cause it to return NO
@@ -248,19 +250,19 @@ public final class CameraServiceImpl: CameraService {
                 }
                 
                 captureSession.sessionPreset = .photo
-                
-                setupOrientationFor(captureSession: captureSession, cameraType: targetCameraType)
+
+                self.setupOrientationFor(captureSession: captureSession, cameraType: targetCameraType)
                 
                 try CameraServiceImpl.configureCamera(targetCamera)
+                self.activeCameraType = targetCameraType
+                completion(self.outputOrientationForCamera(self.activeCamera))
             }
-            
-            activeCameraType = targetCameraType
-            
+
         } catch {
             debugPrint("Couldn't toggle camera: \(error)")
         }
         
-        completion(outputOrientationForCamera(activeCamera))
+        synchronizer?.startSynchronize()
     }
     
     public var isFlashAvailable: Bool {
