@@ -86,7 +86,7 @@ Method parameters:
 Additional parameters is described in protocol `MediaPickerModule`:
 
 * `setContinueButtonTitle(_:)`,  `setContinueButtonEnabled(_:)` , `setContinueButtonVisible(_:)` and `setContinueButtonStyle(_:)` allow to customize "Continue" button text and availability.
-* `setAccessDeniedTitle(_:)`,  `setAccessDeniedMessage(_:)`  and `setAccessDeniedButtonTitle(_:)` allow to customize "Access Deined" view texts.
+* `setAccessDeniedTitle(_:)`,  `setAccessDeniedMessage(_:)`  and `setAccessDeniedButtonTitle(_:)` allow to customize "Access Denied" view texts.
 * `setCropMode(_:)` allow to customize photo crop behavior.
 * `onItemsAdd` is called when user picks items from photo library or takes a new photo using camera.
 * `onItemUpdate` is called after user performed cropping.
@@ -96,7 +96,7 @@ Additional parameters is described in protocol `MediaPickerModule`:
 * `onFinish` and `onCancel` is called when user taps Continue and Close respectively.
 
 ### <a name="memory-constraints" />Memory constraints when cropping
-When cropping photo on devices with low RAM capacity your application can crash due to memory warning. It happens because in order to perform actual cropping we need to put a bitmap of the original photo in memory. To descrease a chance of crashing on older devices (such as iPhone 4 or 4s) we can scale the source photo beforehand so that it takes up less space in memory. _cropCanvasSize_ is used for that. It specifies the size of the photo we should be targeting when scaling.
+When cropping photo on devices with low RAM capacity your application can crash due to memory warning. It happens because in order to perform actual cropping we need to put a bitmap of the original photo in memory. To decrease a chance of crashing on older devices (such as iPhone 4 or 4s) we can scale the source photo beforehand so that it takes up less space in memory. _cropCanvasSize_ is used for that. It specifies the size of the photo we should be targeting when scaling.
 
 ## <a name="present-gallery" />Presenting photo library
 Initialize module assembly using `Paparazzo.AssemblyFactory` (or `Paparazzo.MarshrouteAssemblyFactory` if you use [Marshroute](https://github.com/avito-tech/Marshroute)):
@@ -188,7 +188,7 @@ let assemblyFactory = Paparazzo.AssemblyFactory(theme: theme)
 ```
 
 # <a name="ImageSource" />ImageSource
-Photos picked by user via Paparazzo is provided to you either as `MediaPickerItem` (when using MediaPicker module) or as `PhotoLibraryItem` (when using PhotoLibrary module). Both of these enitities are just wrappers around `ImageSource`, which is a protocol that allows you to get different image representations regardless of where it comes from. To find out how to use it go to https://github.com/avito-tech/ImageSource
+Photos picked by user via Paparazzo is provided to you either as `MediaPickerItem` (when using MediaPicker module) or as `PhotoLibraryItem` (when using PhotoLibrary module). Both of these entities are just wrappers around `ImageSource`, which is a protocol that allows you to get different image representations regardless of where it comes from. To find out how to use it go to https://github.com/avito-tech/ImageSource
 
 # <a name="localization" />Localization
 You can see the list of supported languages [here](Paparazzo/Localization). If you don't see your language, we encourage you to contribute to the project by creating pull request that adds `Localizable.strings` file for that language.
