@@ -384,6 +384,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setShowsAutocorrectButton(showsAutocorrectButton)
     }
     
+    func setShowsRemoveButton(_ showsRemoveButton: Bool) {
+        mediaPickerView.setShowsRemoveButton(showsRemoveButton)
+    }
+    
     func setShowPreview(_ showPreview: Bool) {
         mediaPickerView.setShowsPreview(showPreview)
     }

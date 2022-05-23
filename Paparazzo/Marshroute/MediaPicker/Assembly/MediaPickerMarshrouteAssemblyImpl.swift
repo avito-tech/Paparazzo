@@ -63,6 +63,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         viewController.setShowsAutocorrectButton(data.autocorrectEnabled)
         viewController.setHapticFeedbackEnabled(data.hapticFeedbackEnabled)
         viewController.setViewfinderOverlay(viewfinderOverlay)
+        viewController.setShowsRemoveButton(data.removeEnabled)
         
         presenter.view = viewController
         

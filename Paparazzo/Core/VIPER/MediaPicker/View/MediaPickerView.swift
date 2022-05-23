@@ -618,6 +618,14 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         }
     }
     
+    func setShowsRemoveButton(_ showsRemoveButton: Bool) {
+        if showsRemoveButton {
+            photoControlsView.mode.insert(.hasRemoveButton)
+        } else {
+            photoControlsView.mode.remove(.hasRemoveButton)
+        }
+    }
+    
     func setShowsPreview(_ showsPreview: Bool) {
         self.showsPreview = showsPreview
     }
