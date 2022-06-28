@@ -177,9 +177,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     self?.wasSetUp = true
                 }
                 
-                if case .authorized = status {
+                switch status {
+                case .authorized:
                     self?.setUpFetchResult(completion: completion)
-                } else {
+                #if compiler(>=5.3)
+                case .limited:
+                    self?.setUpFetchResult(completion: completion)
+                #endif
+                default:
                     DispatchQueue.main.async(execute: completion)
                 }
             }
