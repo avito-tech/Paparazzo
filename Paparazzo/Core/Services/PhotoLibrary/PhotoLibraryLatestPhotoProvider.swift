@@ -2,11 +2,11 @@ import ImageSource
 import Photos
 import UIKit
 
-protocol PhotoLibraryLatestPhotoProvider {
+public protocol PhotoLibraryLatestPhotoProvider {
     func observePhoto(handler: @escaping (ImageSource?) -> ())
 }
 
-final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPhotoProvider, PHPhotoLibraryChangeObserver {
+public final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPhotoProvider, PHPhotoLibraryChangeObserver {
     
     private let photoLibrary = PHPhotoLibrary.shared()
     
@@ -16,7 +16,7 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
         }
     }
     
-    override init() {
+    public override init() {
         
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -37,14 +37,14 @@ final class PhotoLibraryLatestPhotoProviderImpl: NSObject, PhotoLibraryLatestPho
     
     private var photoObserverHandler: ((ImageSource?) -> ())?
     
-    func observePhoto(handler: @escaping (ImageSource?) -> ()) {
+    public func observePhoto(handler: @escaping (ImageSource?) -> ()) {
         photoObserverHandler = handler
         callObserver()
     }
     
     // MARK: - PHPhotoLibraryChangeObserver
     
-    func photoLibraryDidChange(_ changeInfo: PHChange) {
+    public func photoLibraryDidChange(_ changeInfo: PHChange) {
         DispatchQueue.main.async {
             if let collectionChanges = changeInfo.changeDetails(for: self.fetchResult) {
                 self.fetchResult = collectionChanges.fetchResultAfterChanges

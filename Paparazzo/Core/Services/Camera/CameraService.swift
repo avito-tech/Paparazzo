@@ -24,5 +24,5 @@ public protocol CameraService: AnyObject {
 }
 
 public struct PhotoFromCamera {
-    let path: String
+    public let path: String
 }
