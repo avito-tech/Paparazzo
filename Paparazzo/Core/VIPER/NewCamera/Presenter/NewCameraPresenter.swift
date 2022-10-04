@@ -134,6 +134,10 @@ final class NewCameraPresenter:
         var viewDidLayoutSubviewsBefore = false
         
         view?.onViewWillAppear = { _ in
+            DispatchQueue.main.async {
+                self.adjustCaptureButtonAvailability()
+            }
+            
             guard didDisappear else { return }
             
             DispatchQueue.main.async {
