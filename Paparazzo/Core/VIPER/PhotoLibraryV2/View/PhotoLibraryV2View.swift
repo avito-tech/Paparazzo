@@ -367,7 +367,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         )
     }
     
-    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: @convention(block) @escaping () -> ()) {
         ObjCExceptionCatcher.tryClosure(
             tryClosure: { [collectionView, dataSource] in
                 collectionView.performBatchUpdates(animated: true, updates: {
@@ -424,13 +424,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
 
                     }, completion: { [weak self] _ in
                         self?.selectCollectionViewCellsAccordingToDataSource()
-                        completion?()
+                        completion()
                     }
                 )
             },
             catchClosure: { _ in
                 self.recreateCollectionView()
-                completion?()
+                completion()
             }
         )
     }

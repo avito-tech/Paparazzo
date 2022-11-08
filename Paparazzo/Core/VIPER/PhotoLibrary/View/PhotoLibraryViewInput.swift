@@ -12,7 +12,7 @@ protocol PhotoLibraryViewInput: AnyObject {
     func setPlaceholderState(_: PhotoLibraryPlaceholderState)
     
     func setItems(_: [PhotoLibraryItemCellData], scrollToBottom: Bool, completion: (() -> ())?)
-    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
+    func applyChanges(_: PhotoLibraryViewChanges, completion: @escaping () -> ())
     
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
