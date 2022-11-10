@@ -153,7 +153,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setItems(items, scrollToTop: scrollToTop, completion: completion)
     }
     
-    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: (() -> ())?) {
+    func applyChanges(_ changes: PhotoLibraryViewChanges, completion: @escaping () -> ()) {
         photoLibraryView.applyChanges(changes, completion: completion)
     }
     

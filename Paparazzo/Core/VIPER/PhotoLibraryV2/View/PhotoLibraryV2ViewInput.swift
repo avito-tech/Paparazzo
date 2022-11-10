@@ -20,7 +20,7 @@ protocol PhotoLibraryV2ViewInput: AnyObject {
     func setCameraViewData(_: PhotoLibraryCameraViewData?)
     
     func setItems(_: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
-    func applyChanges(_: PhotoLibraryViewChanges, completion: (() -> ())?)
+    func applyChanges(_: PhotoLibraryViewChanges, completion: @escaping () -> ())
     
     func setCanSelectMoreItems(_: Bool)
     func setDimsUnselectedItems(_: Bool)
