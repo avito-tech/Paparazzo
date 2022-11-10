@@ -122,6 +122,7 @@ public struct PaparazzoUITheme:
     public var newCameraCloseIcon = PaparazzoUITheme.image(named: "bt-close")
     public var newCameraFlashOnIcon = PaparazzoUITheme.image(named: "flash_on")
     public var newCameraFlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
+    public var newCameraToggleCameraIcon = PaparazzoUITheme.image(named: "back_front_new")
     public var newCameraDoneButtonFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountColor = UIColor.black
