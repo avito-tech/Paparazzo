@@ -20,5 +20,7 @@
     "version" : 1,
     "author" : "xcode"
   },
-  "template-rendering-intent" : "template"
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
 }
