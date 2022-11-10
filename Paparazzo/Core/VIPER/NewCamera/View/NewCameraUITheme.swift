@@ -12,7 +12,7 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraHintFont: UIFont { get }
     var newCameraHintTextColor: UIColor { get }
     var newCameraViewBackgroundColor: UIColor { get }
-    var newCameraFlashBackgroundColor: UIColor { get }
+    var newCameraFlashBackgroundColor: UIColor { get }  // TODO: Investigate why it is unused
     var newCameraSelectedPhotosBarBackgroundColor: UIColor { get }
     var newCameraSelectedPhotosBarButtonTitleColorNormal: UIColor { get }
     var newCameraSelectedPhotosBarButtonBackgroundColor: UIColor { get }
@@ -20,4 +20,5 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraCaptureButtonBackgroundColorEnabled: UIColor { get }
     var newCameraCaptureButtonBorderColorDisabled: UIColor { get }
     var newCameraCaptureButtonBackgroundColorDisabled: UIColor { get }
+    var newCameraButtonTintColor: UIColor { get }
 }

@@ -159,9 +159,13 @@ final class NewCameraView: UIView {
         captureButtonBackgroundColorDisabled = theme.newCameraCaptureButtonBackgroundColorDisabled
         
         closeButton.setImage(theme.newCameraCloseIcon, for: .normal)
+        closeButton.tintColor = theme.newCameraButtonTintColor
         
         flashButton.setImage(theme.newCameraFlashOffIcon, for: .normal)
         flashButton.setImage(theme.newCameraFlashOnIcon, for: .selected)
+        flashButton.tintColor = theme.newCameraButtonTintColor
+
+        toggleCameraButton.tintColor = theme.newCameraButtonTintColor
         
         hintLabel.font = theme.newCameraHintFont
         hintLabel.textColor = theme.newCameraHintTextColor
