@@ -122,6 +122,7 @@ public struct PaparazzoUITheme:
     public var newCameraCloseIcon = PaparazzoUITheme.image(named: "bt-close")
     public var newCameraFlashOnIcon = PaparazzoUITheme.image(named: "flash_on")
     public var newCameraFlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
+    public var newCameraToggleCameraIcon = PaparazzoUITheme.image(named: "back_front_new")
     public var newCameraDoneButtonFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountFont = UIFont.systemFont(ofSize: 16)
     public var newCameraPhotosCountColor = UIColor.black
@@ -140,6 +141,7 @@ public struct PaparazzoUITheme:
     public var newCameraCaptureButtonBackgroundColorDisabled = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1)
     public var newCameraSelectedPhotosBarButtonTitleColorNormal = UIColor.white
     public var newCameraSelectedPhotosBarButtonBackgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
+    public var newCameraButtonTintColor = UIColor.black
 
     // MARK: - Private
     private static func image(named name: String) -> UIImage? {

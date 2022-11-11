@@ -4,6 +4,7 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraCloseIcon: UIImage? { get }
     var newCameraFlashOnIcon: UIImage? { get }
     var newCameraFlashOffIcon: UIImage? { get }
+    var newCameraToggleCameraIcon: UIImage? { get }
     var newCameraDoneButtonFont: UIFont { get }
     var newCameraPhotosCountFont: UIFont { get }
     var newCameraPhotosCountColor: UIColor { get }
@@ -20,4 +21,5 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraCaptureButtonBackgroundColorEnabled: UIColor { get }
     var newCameraCaptureButtonBorderColorDisabled: UIColor { get }
     var newCameraCaptureButtonBackgroundColorDisabled: UIColor { get }
+    var newCameraButtonTintColor: UIColor { get }
 }

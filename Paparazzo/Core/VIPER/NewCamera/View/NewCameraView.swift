@@ -95,10 +95,6 @@ final class NewCameraView: UIView {
         
         flashButton.addTarget(self, action: #selector(handleFlashButtonTap), for: .touchUpInside)
         
-        toggleCameraButton.setImage(
-            UIImage(named: "back_front_new", in: Resources.bundle, compatibleWith: nil),
-            for: .normal
-        )
         toggleCameraButton.addTarget(self, action: #selector(handleToggleCameraButtonTap), for: .touchUpInside)
         toggleCameraButton.sizeToFit()
         
@@ -159,9 +155,14 @@ final class NewCameraView: UIView {
         captureButtonBackgroundColorDisabled = theme.newCameraCaptureButtonBackgroundColorDisabled
         
         closeButton.setImage(theme.newCameraCloseIcon, for: .normal)
+        closeButton.tintColor = theme.newCameraButtonTintColor
         
         flashButton.setImage(theme.newCameraFlashOffIcon, for: .normal)
         flashButton.setImage(theme.newCameraFlashOnIcon, for: .selected)
+        flashButton.tintColor = theme.newCameraButtonTintColor
+
+        toggleCameraButton.setImage(theme.newCameraToggleCameraIcon, for: .normal)
+        toggleCameraButton.tintColor = theme.newCameraButtonTintColor
         
         hintLabel.font = theme.newCameraHintFont
         hintLabel.textColor = theme.newCameraHintTextColor
