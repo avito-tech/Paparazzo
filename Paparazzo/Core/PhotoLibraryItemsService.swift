@@ -47,12 +47,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
-         let allAlbums = self.fetchResultQueue.sync { self.allAlbums() }
-         executeAfterSetup {
-             self.onAlbumsChange = handler
-             handler(allAlbums)
-         }
-     }
+        executeAfterSetup {
+            self.onAlbumsChange = handler
+            handler(self.allAlbums())
+        }
+    }
     
     func observeEvents(in album: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ()) {
         executeAfterSetup {
