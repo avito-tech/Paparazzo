@@ -369,8 +369,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, completion: @convention(block) @escaping () -> ()) {
         ObjCExceptionCatcher.tryClosure(
-            tryClosure: { [collectionView, dataSource] in
+            tryClosure: { [collectionView, weak self] in
                 collectionView.performBatchUpdates(animated: true, updates: {
+                    guard let self = self else { return }
 
                     let toIndexPath = { (index: Int) in
                         IndexPath(item: index, section: 0)
@@ -378,49 +379,16 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
 
                     // Order is important!
                     // 1. Removing items
-                    let indexPathsToDelete = changes.removedIndexes.map(toIndexPath)
-
-                    if indexPathsToDelete.count > 0 {
-                        collectionView.deleteItems(at: indexPathsToDelete)
-                        dataSource.deleteItems(at: indexPathsToDelete)
-                    }
+                    self.removeItems(changes: changes, toIndexPath: toIndexPath, collectionView: self.collectionView, dataSource: self.dataSource)
 
                     // 2. Inserting items
-                    let indexPathsToInsert = changes.insertedItems.map { toIndexPath($0.index) }
-
-                    if indexPathsToInsert.count > 0 {
-                        collectionView.insertItems(at: indexPathsToInsert)
-                        dataSource.insertItems(changes.insertedItems.map { item in
-                            (item: item.cellData, indexPath: toIndexPath(item.index))
-                        })
-                    }
+                    self.insertItems(changes: changes, toIndexPath: toIndexPath, collectionView: self.collectionView, dataSource: self.dataSource)
 
                     // 3. Updating items
-                    let indexPathsToUpdate = changes.updatedItems.map { toIndexPath($0.index) }
-
-                    if indexPathsToUpdate.count > 0 {
-                        collectionView.reloadItems(at: indexPathsToUpdate)
-
-                        changes.updatedItems.forEach { index, newCellData in
-
-                            let indexPath = toIndexPath(index)
-                            let oldCellData = dataSource.item(at: indexPath)
-
-                            var newCellData = newCellData
-                            newCellData.selected = oldCellData.selected     // preserving selection
-
-                            dataSource.replaceItem(at: indexPath, with: newCellData)
-                        }
-                    }
+                    self.updateItems(changes: changes, toIndexPath: toIndexPath, collectionView: self.collectionView, dataSource: self.dataSource)
 
                     // 4. Moving items
-                    changes.movedIndexes.forEach { from, to in
-                        let sourceIndexPath = toIndexPath(from)
-                        let targetIndexPath = toIndexPath(to)
-
-                        collectionView.moveItem(at: sourceIndexPath, to: targetIndexPath)
-                        dataSource.moveItem(at: sourceIndexPath, to: targetIndexPath)
-                    }
+                    self.moveItems(changes: changes, toIndexPath: toIndexPath, collectionView: self.collectionView, dataSource: self.dataSource)
 
                     }, completion: { [weak self] _ in
                         self?.selectCollectionViewCellsAccordingToDataSource()
@@ -859,6 +827,75 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             let data = dataSource.item(at: indexPath)
             cell.setSelectionIndex(data.getSelectionIndex?())
             cell.adjustAppearanceForSelected(false, animated: true)
+        }
+    }
+    
+    private func removeItems(
+        changes: PhotoLibraryViewChanges,
+        toIndexPath: (Int) -> IndexPath,
+        collectionView: UICollectionView,
+        dataSource: CollectionViewDataSource<PhotoLibraryItemCell>
+    ) {
+        let indexPathsToDelete = changes.removedIndexes.map(toIndexPath)
+
+        if indexPathsToDelete.count > 0 {
+            collectionView.deleteItems(at: indexPathsToDelete)
+            dataSource.deleteItems(at: indexPathsToDelete)
+        }
+    }
+    
+    private func insertItems(
+        changes: PhotoLibraryViewChanges,
+        toIndexPath: (Int) -> IndexPath,
+        collectionView: UICollectionView,
+        dataSource: CollectionViewDataSource<PhotoLibraryItemCell>
+    ) {
+        let indexPathsToInsert = changes.insertedItems.map { toIndexPath($0.index) }
+
+        if indexPathsToInsert.count > 0 {
+            collectionView.insertItems(at: indexPathsToInsert)
+            dataSource.insertItems(changes.insertedItems.map { item in
+                (item: item.cellData, indexPath: toIndexPath(item.index))
+            })
+        }
+    }
+    
+    private func updateItems(
+        changes: PhotoLibraryViewChanges,
+        toIndexPath: (Int) -> IndexPath,
+        collectionView: UICollectionView,
+        dataSource: CollectionViewDataSource<PhotoLibraryItemCell>
+    ) {
+        let indexPathsToUpdate = changes.updatedItems.map { toIndexPath($0.index) }
+
+        if indexPathsToUpdate.count > 0 {
+            collectionView.reloadItems(at: indexPathsToUpdate)
+
+            changes.updatedItems.forEach { index, newCellData in
+
+                let indexPath = toIndexPath(index)
+                let oldCellData = dataSource.item(at: indexPath)
+
+                var newCellData = newCellData
+                newCellData.selected = oldCellData.selected     // preserving selection
+
+                dataSource.replaceItem(at: indexPath, with: newCellData)
+            }
+        }
+    }
+    
+    private func moveItems(
+        changes: PhotoLibraryViewChanges,
+        toIndexPath: (Int) -> IndexPath,
+        collectionView: UICollectionView,
+        dataSource: CollectionViewDataSource<PhotoLibraryItemCell>
+    ) {
+        changes.movedIndexes.forEach { from, to in
+            let sourceIndexPath = toIndexPath(from)
+            let targetIndexPath = toIndexPath(to)
+
+            collectionView.moveItem(at: sourceIndexPath, to: targetIndexPath)
+            dataSource.moveItem(at: sourceIndexPath, to: targetIndexPath)
         }
     }
     
