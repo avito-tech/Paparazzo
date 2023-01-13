@@ -21,6 +21,8 @@ public struct PaparazzoUITheme:
     public var photoPreviewCollectionBackgroundColor = UIColor.white
     public var mediaPickerTitleLightColor = UIColor.white
     public var mediaPickerTitleDarkColor = UIColor.black
+    public var mediaPickerIconColor = UIColor.black
+    public var mediaPickerIconActiveColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var shutterButtonDisabledColor = UIColor.lightGray
@@ -28,8 +30,7 @@ public struct PaparazzoUITheme:
     public var focusIndicatorColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var removePhotoIcon = PaparazzoUITheme.image(named: "delete")
-    public var autocorrectPhotoIconInactive = PaparazzoUITheme.image(named: "autocorrect_inactive")
-    public var autocorrectPhotoIconActive = PaparazzoUITheme.image(named: "autocorrect_active")
+    public var autocorrectPhotoIcon = PaparazzoUITheme.image(named: "autocorrect_inactive")
     public var cropPhotoIcon = PaparazzoUITheme.image(named: "crop")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")
@@ -92,6 +93,7 @@ public struct PaparazzoUITheme:
     public var continueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var continueButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
     public var closeIcon = PaparazzoUITheme.image(named: "bt-close")
+    public var closeIconColor = UIColor.black
     public var continueButtonTitleFont = UIFont.systemFont(ofSize: 17)
     public var libraryBottomContinueButtonBackgroundColor = UIColor(red: 0 / 255, green: 170.0 / 255, blue: 1, alpha: 1)
     public var libraryBottomContinueButtonTitleColor = UIColor.white
@@ -99,6 +101,8 @@ public struct PaparazzoUITheme:
     public var librarySelectionIndexFont = UIFont.systemFont(ofSize: 16)
     public var libraryItemBadgeTextColor = UIColor.white
     public var libraryItemBadgeBackgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
+    public var cameraIcon = PaparazzoUITheme.image(named: "camera-new")
+    public var cameraIconColor = UIColor.white
     
     // MARK: - ImageCroppingUITheme
     
@@ -116,7 +120,6 @@ public struct PaparazzoUITheme:
     
     public var maskCropperDiscardPhotoIcon = PaparazzoUITheme.image(named: "discard")
     public var maskCropperConfirmPhotoIcon = PaparazzoUITheme.image(named: "confirm")
-    public var cameraIcon = PaparazzoUITheme.image(named: "camera-new")
     
     // MARK: - NewCameraUITheme
     public var newCameraCloseIcon = PaparazzoUITheme.image(named: "bt-close")

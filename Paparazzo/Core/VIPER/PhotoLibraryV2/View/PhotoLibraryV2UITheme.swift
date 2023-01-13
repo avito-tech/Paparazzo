@@ -30,6 +30,8 @@ public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     var libraryItemBadgeBackgroundColor: UIColor { get }
     
     var closeIcon: UIImage? { get }
+    var closeIconColor: UIColor { get }
     
     var cameraIcon: UIImage? { get }
+    var cameraIconColor: UIColor { get }
 }

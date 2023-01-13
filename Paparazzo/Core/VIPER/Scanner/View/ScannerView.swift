@@ -57,6 +57,7 @@ final class ScannerView: UIView, ThemeConfigurable {
         self.theme = theme
         
         closeButton.setImage(theme.closeCameraIcon, for: .normal)
+        closeButton.tintColor = theme.mediaPickerIconColor
         
         let onePointSize = CGSize(width: 1, height: 1)
         closeButton.setBackgroundImage(

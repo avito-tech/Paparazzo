@@ -302,6 +302,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         bottomContinueButton.backgroundColor = theme.cameraBottomContinueButtonBackgroundColor
         bottomContinueButton.titleLabel?.font = theme.cameraBottomContinueButtonFont
         bottomContinueButton.setTitleColor(theme.cameraBottomContinueButtonTitleColor, for: .normal)
+
+        closeButton.tintColor = theme.mediaPickerIconColor
     }
     
     // MARK: - MediaPickerView

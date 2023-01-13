@@ -48,6 +48,14 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     func setCameraIcon(_ icon: UIImage?) {
         button.setImage(icon, for: .normal)
     }
+
+    func setCameraIconColor(_ color: UIColor?) {
+        guard let color = color else {
+            return
+        }
+
+        button.tintColor = color
+    }
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
         cameraOutputLayer?.session = parameters.captureSession

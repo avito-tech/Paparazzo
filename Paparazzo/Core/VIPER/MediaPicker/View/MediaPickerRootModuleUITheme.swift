@@ -12,6 +12,9 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var mediaPickerTitleLightColor: UIColor { get }
     var mediaPickerTitleDarkColor: UIColor { get }
 
+    var mediaPickerIconColor: UIColor { get }
+    var mediaPickerIconActiveColor: UIColor { get }
+
     var shutterButtonColor: UIColor { get }
     var shutterButtonDisabledColor: UIColor { get }
     var focusIndicatorColor: UIColor { get }
@@ -31,8 +34,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraBottomContinueButtonFont: UIFont { get }
     
     var removePhotoIcon: UIImage? { get }
-    var autocorrectPhotoIconInactive: UIImage? { get }
-    var autocorrectPhotoIconActive: UIImage? { get }
+    var autocorrectPhotoIcon: UIImage? { get }
     var cropPhotoIcon: UIImage? { get }
     var returnToCameraIcon: UIImage? { get }
     var closeCameraIcon: UIImage? { get }
