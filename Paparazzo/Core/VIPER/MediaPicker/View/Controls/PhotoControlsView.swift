@@ -21,6 +21,7 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     private let cropButton = UIButton()
     
     private var buttons = [UIButton]()
+    private var theme: ThemeType?
     
     // MARK: UIView
     
@@ -84,12 +85,16 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
+        self.theme = theme
+
         backgroundColor = theme.photoControlsViewBackgroundColor
         removeButton.setImage(theme.removePhotoIcon, for: .normal)
-        autocorrectButton.setImage(theme.autocorrectPhotoIconInactive, for: .normal)
-        autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .highlighted)
-        autocorrectButton.setImage(theme.autocorrectPhotoIconActive, for: .selected)
+        autocorrectButton.setImage(theme.autocorrectPhotoIcon, for: .normal)
         cropButton.setImage(theme.cropPhotoIcon, for: .normal)
+
+        for button in buttons {
+            button.tintColor = theme.mediaPickerIconColor
+        }
     }
     
     // MARK: - PhotoControlsView
@@ -115,7 +120,8 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     }
     
     func setAutocorrectButtonSelected(_ selected: Bool) {
-        autocorrectButton.isSelected = selected
+        let color = selected ? theme?.mediaPickerIconActiveColor : theme?.mediaPickerIconColor
+        autocorrectButton.tintColor = color
     }
     
     // MARK: - Private
