@@ -30,7 +30,7 @@ public struct PaparazzoUITheme:
     public var focusIndicatorColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var removePhotoIcon = PaparazzoUITheme.image(named: "delete")
-    public var autocorrectPhotoIcon = PaparazzoUITheme.image(named: "autocorrect_inactive")
+    public var autocorrectPhotoIcon = PaparazzoUITheme.image(named: "autocorrect")
     public var cropPhotoIcon = PaparazzoUITheme.image(named: "crop")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")

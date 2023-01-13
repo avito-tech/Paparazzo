@@ -50,10 +50,6 @@ class PhotoLibraryCameraView: UICollectionReusableView {
     }
 
     func setCameraIconColor(_ color: UIColor?) {
-        guard let color = color else {
-            return
-        }
-
         button.tintColor = color
     }
     

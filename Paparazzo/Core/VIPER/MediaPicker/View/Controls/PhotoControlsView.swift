@@ -120,10 +120,7 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     }
     
     func setAutocorrectButtonSelected(_ selected: Bool) {
-        guard let color = selected ? theme?.mediaPickerIconActiveColor : theme?.mediaPickerIconColor else {
-            return
-        }
-
+        let color = selected ? theme?.mediaPickerIconActiveColor : theme?.mediaPickerIconColor
         autocorrectButton.tintColor = color
     }
     
