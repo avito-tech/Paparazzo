@@ -234,7 +234,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         accessDeniedView.setTheme(theme)
         
         closeButton.setImage(theme.closeIcon, for: .normal)
-        closeButton.tintColor = theme.closeButtonColor
+        closeButton.tintColor = theme.closeIconColor
         
         topRightContinueButton.setTitleColor(theme.continueButtonTitleColor, for: .normal)
         topRightContinueButton.titleLabel?.font = theme.continueButtonTitleFont
