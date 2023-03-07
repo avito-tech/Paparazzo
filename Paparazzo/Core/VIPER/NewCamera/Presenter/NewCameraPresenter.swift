@@ -101,7 +101,7 @@ final class NewCameraPresenter:
                     return
                 }
                 
-                self?.interactor.selectedImagesStorage.addItem(MediaPickerItem(photo))
+                self?.interactor.selectedImagesStorage.addItem(MediaPickerItem(image: photo.image, source: .camera))
                 self?.adjustCaptureButtonAvailability()
                 
                 self?.view?.animateCapturedPhoto(photo.image) { finalizeAnimation in
