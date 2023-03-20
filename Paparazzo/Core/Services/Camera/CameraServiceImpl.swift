@@ -36,10 +36,19 @@ public final class CameraServiceImpl: CameraService {
 
         self.imageStorage = imageStorage
 
-        let videoDevices = AVCaptureDevice.devices(for: .video)
-        
-        backCamera = videoDevices.filter({ $0.position == .back }).first
-        frontCamera = videoDevices.filter({ $0.position == .front }).first
+        let videoDevices: [AVCaptureDevice]
+        if #available(iOS 13, *) {
+            videoDevices = AVCaptureDevice.DiscoverySession(
+                deviceTypes: [.builtInTripleCamera, .builtInDualWideCamera, .builtInDualCamera, .builtInWideAngleCamera],
+                mediaType: .video,
+                position: .unspecified
+            ).devices
+        } else {
+            videoDevices = AVCaptureDevice.devices(for: .video)
+        }
+ 
+        backCamera = videoDevices.first { $0.position == .back }
+        frontCamera = videoDevices.first { $0.position == .front }
         
         self.activeCameraType = initialActiveCameraType
     }
@@ -111,8 +120,6 @@ public final class CameraServiceImpl: CameraService {
             let captureSession = AVCaptureSession()
             captureSession.sessionPreset = .photo
             
-            try CameraServiceImpl.configureCamera(backCamera)
-            
             let input = try AVCaptureDeviceInput(device: activeCamera)
             
             let output = AVCaptureStillImageOutput()
@@ -124,6 +131,8 @@ public final class CameraServiceImpl: CameraService {
             } else {
                 throw Error()
             }
+            
+            try CameraServiceImpl.configureCamera(backCamera)
             
             captureSession.startRunning()
             
@@ -464,6 +473,9 @@ public final class CameraServiceImpl: CameraService {
     private static func configureCamera(_ camera: AVCaptureDevice?) throws {
         try camera?.lockForConfiguration()
         camera?.isSubjectAreaChangeMonitoringEnabled = true
+        if #available(iOS 13.0, *) {
+            camera?.videoZoomFactor = camera?.deviceType == .builtInDualWideCamera || camera?.deviceType == .builtInTripleCamera ? 2.0 : 1.0
+        }
         camera?.unlockForConfiguration()
     }
     
