@@ -2,8 +2,7 @@ import UIKit
 import Marshroute
 import Paparazzo
 
-final class ExampleRouterImpl: BaseRouter, ExampleRouter {
-    
+final class ExampleRouterImpl: BaseRouter, ExampleRouter {    
     private let mediaPickerAssemblyFactory: MarshrouteAssemblyFactory
     
     init(
@@ -72,6 +71,7 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         isNewFlowPrototype: Bool,
+        isUsingCameraV3: Bool,
         configure: (PhotoLibraryV2Module) -> ())
     {
         presentModalNavigationControllerWithRootViewControllerDerivedFrom { routerSeed in
@@ -83,11 +83,12 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
                 isNewFlowPrototype: isNewFlowPrototype,
+                isUsingCameraV3: isUsingCameraV3,
                 configure: configure
             )
         }
     }
-    
+
     func showScanner(
         data: ScannerData,
         configure: (ScannerModule) -> ())

@@ -2,7 +2,7 @@ import UIKit
 
 public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2Assembly {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory & LimitedAccessAlertFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory & LimitedAccessAlertFactory & CameraV3AssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -14,6 +14,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     public func module(
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
+        isUsingCameraV3: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
     {
@@ -43,7 +44,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isNewFlowPrototype: isNewFlowPrototype
+            isNewFlowPrototype: isNewFlowPrototype,
+            isUsingCameraV3: isUsingCameraV3
         )
         
         viewController.addDisposable(presenter)

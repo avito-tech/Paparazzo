@@ -96,7 +96,7 @@ final class ExamplePresenter {
         }
     }
     
-    private func showPhotoLibraryV2(newFlow: Bool) {
+    private func showPhotoLibraryV2(newFlow: Bool, cameraV3: Bool) {
         interactor.photoLibraryItems { [weak self] items in
             let data = MediaPickerData(
                 maxItemsCount: 5,
@@ -109,6 +109,7 @@ final class ExamplePresenter {
                 mediaPickerData: data,
                 selectedItems: items,
                 isNewFlowPrototype: newFlow,
+                isUsingCameraV3: cameraV3,
                 configure: { module in
                     weak var weakModule = module
                     module.setContinueButtonPlacement(.bottom)
@@ -231,6 +232,7 @@ final class ExamplePresenter {
         return [
             photoLibraryV2NewFlowItem(),
             photoLibraryV2Item(),
+            photoLibraryV2NewFlowItemWithCameraV3(),
             photoLibraryItem(),
             mediaPickerItem(),
             maskCropperItem(),
@@ -285,7 +287,7 @@ final class ExamplePresenter {
         return ExampleViewItem(
             title: "Photo Library v2 — Old flow",
             onTap: { [weak self] in
-                self?.showPhotoLibraryV2(newFlow: false)
+                self?.showPhotoLibraryV2(newFlow: false, cameraV3: false)
             }
         )
     }
@@ -294,11 +296,20 @@ final class ExamplePresenter {
         return ExampleViewItem(
             title: "Photo Library v2 — New flow",
             onTap: { [weak self] in
-                self?.showPhotoLibraryV2(newFlow: true)
+                self?.showPhotoLibraryV2(newFlow: true, cameraV3: false)
             }
         )
     }
     
+    private func photoLibraryV2NewFlowItemWithCameraV3() -> ExampleViewItem {
+        return ExampleViewItem(
+            title: "Photo Library v2 — V3 Camera",
+            onTap: { [weak self] in
+                self?.showPhotoLibraryV2(newFlow: true, cameraV3: true)
+            }
+        )
+    }
+
     private func scannerItem() -> ExampleViewItem {
         return ExampleViewItem(
             title: "Scanner",

@@ -40,6 +40,7 @@ final class DeviceOrientationServiceImpl: DeviceOrientationService {
     private let device = UIDevice.current
     
     init() {
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onOrientationChange(_:)),
@@ -49,6 +50,7 @@ final class DeviceOrientationServiceImpl: DeviceOrientationService {
     }
     
     deinit {
+        UIDevice.current.endGeneratingDeviceOrientationNotifications()
         NotificationCenter.default.removeObserver(self)
     }
     

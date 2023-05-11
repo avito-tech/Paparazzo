@@ -16,6 +16,12 @@ protocol PhotoLibraryV2Router: AnyObject {
         configure: (NewCameraModule) -> ()
     )
     
+    func showCameraV3(
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (CameraV3Module) -> ()
+    )
+    
     @available(iOS 14, *)
     func showLimitedAccessAlert()
 }

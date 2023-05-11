@@ -7,7 +7,8 @@ public struct PaparazzoUITheme:
     ImageCroppingUITheme,
     MaskCropperUITheme,
     ScannerRootModuleUITheme,
-    NewCameraUITheme
+    NewCameraUITheme,
+    CameraV3UITheme
 {
     public init() {}
 
@@ -145,7 +146,40 @@ public struct PaparazzoUITheme:
     public var newCameraSelectedPhotosBarButtonTitleColorNormal = UIColor.white
     public var newCameraSelectedPhotosBarButtonBackgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
     public var newCameraButtonTintColor = UIColor.black
+    
+    // MARK: - CameraV3Theme
 
+    public var cameraV3ViewBackground = UIColor.black
+    public var cameraV3CloseIcon = PaparazzoUITheme.image(named: "bt-close")
+    public var cameraV3CloseIconColor = UIColor.white
+    public var cameraV3FlashOnIcon = PaparazzoUITheme.image(named: "flash_on")
+    public var cameraV3FlashOffIcon = PaparazzoUITheme.image(named: "flash_off")
+    public var cameraV3FlashIconColor = UIColor.white
+    public var cameraV3ToggleCameraIcon = PaparazzoUITheme.image(named: "back_front_new")
+    public var cameraV3ToggleCameraIconColor = UIColor.white
+
+    public var cameraV3HintViewBackground = UIColor.black.withAlphaComponent(0.6)
+    public var cameraV3HintViewFont = UIFont.systemFont(ofSize: 16)
+    public var cameraV3HintViewFontColor = UIColor.white
+    
+    public var cameraV3ShutterScaleFactor = CGFloat(0.85)
+    public var cameraV3ShutterEnabledColor = UIColor.white
+    public var cameraV3ShutterDisabledColor = UIColor.gray
+    
+    public var cameraV3SelectedPhotosFont = UIFont.systemFont(ofSize: 16)
+    public var cameraV3SelectedPhotosFontColor = UIColor.white
+
+    public var cameraV3BeforeAnimationStrokeColor = UIColor.yellow
+    public var cameraV3AfterAnimationStrokeColor = UIColor.white
+    
+    public var cameraV3AccessDeniedBackgroundColor = UIColor.black
+    public var cameraV3AccessDeniedTitleColor = UIColor.white
+    public var cameraV3AccessDeniedMessageColor = UIColor.white
+    public var cameraV3AccessDeniedButtonTextColor = UIColor.white
+    public var cameraV3AccessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
+    public var cameraV3AccessDeniedMessageFont = UIFont.boldSystemFont(ofSize: 17)
+    public var cameraV3AccessDeniedButtonFont = UIFont.boldSystemFont(ofSize: 17)
+    
     // MARK: - Private
     private static func image(named name: String) -> UIImage? {
         return UIImage(named: name, in: Resources.bundle, compatibleWith: nil)
