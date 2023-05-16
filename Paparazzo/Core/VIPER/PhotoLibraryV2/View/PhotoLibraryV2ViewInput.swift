@@ -48,6 +48,7 @@ protocol PhotoLibraryV2ViewInput: AnyObject {
     
     func setProgressVisible(_ visible: Bool)
     func setHeaderVisible(_ visible: Bool)
+    func setHintVisible(_ visible: Bool)
     
     // MARK: - Access denied view
     var onAccessDeniedButtonTap: (() -> ())? { get set }

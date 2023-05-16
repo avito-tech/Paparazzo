@@ -89,7 +89,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     
     private let dataSource = CollectionViewDataSource<PhotoLibraryItemCell>(
         cellReuseIdentifier: "PhotoLibraryItemCell",
-        headerReuseIdentifier: "PhotoLibraryCameraView"
+        headerReuseIdentifier: "PhotoLibraryCameraView",
+        hintReuseIdentifier: "HintCollectionReusableView"
     )
     
     // MARK: - Init
@@ -478,6 +479,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    func setHintVisible(_ visible: Bool) {
+        guard layout.hasHint != visible else {
+            return
+        }
+        collectionView.performBatchUpdates { [weak self] in
+            self?.layout.hasHint = visible
+        }
+    }
+    
     func setAlbums(_ albums: [PhotoLibraryAlbumCellData]) {
         albumsTableView.setCellDataList(albums) { [weak self] in
             self?.setNeedsLayout()
@@ -659,6 +669,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 PhotoLibraryCameraView.self,
                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                 withReuseIdentifier: headerReuseIdentifier
+            )
+        }
+        if let hintReuseIdentifier = dataSource.hintReuseIdentifier {
+            collectionView.register(
+                HintCollectionReusableView.self,
+                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHint,
+                withReuseIdentifier: hintReuseIdentifier
             )
         }
     }

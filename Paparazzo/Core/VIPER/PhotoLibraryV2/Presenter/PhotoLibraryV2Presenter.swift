@@ -160,6 +160,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.setContinueButtonVisible(!isNewFlowPrototype)
         
+        view?.setHintVisible(false)
+        
         if isNewFlowPrototype {
             view?.onViewWillAppear = { [weak self] in
                 DispatchQueue.main.async {
