@@ -7,6 +7,7 @@ protocol ServiceFactory: AnyObject {
     func imageCroppingService(image: ImageSource, canvasSize: CGSize) -> ImageCroppingService
     func locationProvider() -> LocationProvider
     func imageMetadataWritingService() -> ImageMetadataWritingService
+    func volumeService() -> VolumeService
 }
 
 final class ServiceFactoryImpl: ServiceFactory {
@@ -46,5 +47,9 @@ final class ServiceFactoryImpl: ServiceFactory {
     
     func imageMetadataWritingService() -> ImageMetadataWritingService {
         return ImageMetadataWritingServiceImpl()
+    }
+    
+    func volumeService() -> VolumeService {
+        VolumeServiceImpl()
     }
 }

@@ -7,6 +7,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
+        isUsingCameraV3: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
 }
@@ -24,6 +25,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
                 isNewFlowPrototype: false,
+                isUsingCameraV3: false,
                 configure: configure
             )
     }

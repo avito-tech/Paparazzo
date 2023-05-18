@@ -17,6 +17,13 @@ final class PhotoLibraryToCameraTransitioningDelegate: NSObject, UIViewControlle
             return PhotoLibraryToCameraTransitionAnimator()
         }
         
+        if (presenting is PhotoLibraryV2ViewController
+            || (presenting as? UINavigationController)?.topViewController is PhotoLibraryV2ViewController)
+            && presented is CameraV3ViewController
+        {
+            return CameraV3PresentAnimator()
+        }
+        
         return nil
     }
     
@@ -25,6 +32,9 @@ final class PhotoLibraryToCameraTransitioningDelegate: NSObject, UIViewControlle
     {
         if dismissed is NewCameraViewController {
             return CameraToPhotoLibraryTransitionAnimator()
+        }
+        if dismissed is CameraV3ViewController {
+            return CameraV3DismissAnimator()
         }
         return nil
     }

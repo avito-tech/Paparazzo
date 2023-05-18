@@ -8,6 +8,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
+    private let isUsingCameraV3: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -34,13 +35,15 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         interactor: PhotoLibraryV2Interactor,
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
-        isNewFlowPrototype: Bool)
-    {
+        isNewFlowPrototype: Bool,
+        isUsingCameraV3: Bool
+    ) {
         self.interactor = interactor
         self.router = router
         self.overridenTheme = overridenTheme
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
+        self.isUsingCameraV3 = isUsingCameraV3
         
         if isNewFlowPrototype {
             interactor.observeSelectedItemsChange { [weak self] in
@@ -422,53 +425,92 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func cameraViewData(completion: @escaping (_ viewData: PhotoLibraryCameraViewData?) -> ()) {
-        interactor.getOutputParameters { [shouldAllowFinishingWithNoPhotos] parameters in
+        interactor.getOutputParameters { parameters in
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: { [weak self] in
-                    guard let strongSelf = self else { return }
-                    
-                    if strongSelf.isNewFlowPrototype {
-                        self?.onNewCameraShow?()
-                        self?.router.showNewCamera(
-                            selectedImagesStorage: strongSelf.interactor.selectedPhotosStorage,
-                            mediaPickerData: strongSelf.interactor.mediaPickerData,
-                            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
-                            configure: { [weak self] newCameraModule in
-                                newCameraModule.configureMediaPicker = { mediaPickerModule in
-                                    self?.configureMediaPicker(mediaPickerModule)
-                                    mediaPickerModule.onFinish = { [weak newCameraModule] _ in
-                                        newCameraModule?.focusOnModule()
-                                    }
-                                }
-                                newCameraModule.onFinish = { module, result in
-                                    switch result {
-                                    case .finished:
-                                        self?.view?.onContinueButtonTap?()
-                                    case .cancelled:
-                                        self?.router.focusOnCurrentModule()
-                                    }
-                                }
-                                newCameraModule.onLastPhotoThumbnailTap = { [weak self] in
-                                    self?.onLastPhotoThumbnailTap?()
-                                }
-                            }
-                        )
-                    } else {
-                        self?.router.showMediaPicker(
-                            data: strongSelf.interactor.mediaPickerData.byDisablingLibrary(),
-                            overridenTheme: strongSelf.overridenTheme,
-                            isNewFlowPrototype: strongSelf.isNewFlowPrototype,
-                            configure: { [weak self] module in
-                                self?.configureMediaPicker(module)
-                            }
-                        )
-                    }
+                    self?.handlePhotoLibraryCameraTap()
                 }
             )
             
             completion(viewData)
         }
+    }
+    
+    private func handlePhotoLibraryCameraTap() {
+        if isUsingCameraV3 {
+            openCameraV3()
+        } else if isNewFlowPrototype {
+            openNewCamera()
+        } else {
+            openPicker()
+        }
+    }
+    
+    private func openNewCamera() {
+        onNewCameraShow?()
+        router.showNewCamera(
+            selectedImagesStorage: interactor.selectedPhotosStorage,
+            mediaPickerData: interactor.mediaPickerData,
+            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
+            configure: { [weak self] newCameraModule in
+                newCameraModule.configureMediaPicker = { [weak newCameraModule] mediaPickerModule in
+                    self?.configureMediaPicker(mediaPickerModule)
+                    mediaPickerModule.onFinish = { _ in
+                        newCameraModule?.focusOnModule()
+                    }
+                }
+                newCameraModule.onFinish = { module, result in
+                    switch result {
+                    case .finished:
+                        self?.view?.onContinueButtonTap?()
+                    case .cancelled:
+                        self?.router.focusOnCurrentModule()
+                    }
+                }
+                newCameraModule.onLastPhotoThumbnailTap = { [weak self] in
+                    self?.onLastPhotoThumbnailTap?()
+                }
+            }
+        )
+    }
+    
+    func openCameraV3() {
+        router.showCameraV3(
+            selectedImagesStorage: interactor.selectedPhotosStorage,
+            mediaPickerData: interactor.mediaPickerData,
+            configure: { [weak self] cameraV3Module in
+                cameraV3Module.configureMediaPicker = { [weak self, weak cameraV3Module] pickerModule in
+                    self?.configureMediaPicker(pickerModule)
+                    pickerModule.onFinish = { _ in
+                        cameraV3Module?.focusOnCurrentModule()
+                    }
+                }
+                
+                cameraV3Module.onFinish = { module, result in
+                    switch result {
+                    case .finished:
+                        self?.view?.onContinueButtonTap?()
+                    case .cancelled:
+                        self?.router.focusOnCurrentModule()
+                    }
+                }
+                cameraV3Module.onLastPhotoThumbnailTap = { [weak self] in
+                    self?.onLastPhotoThumbnailTap?()
+                }
+            }
+        )
+    }
+    
+    private func openPicker() {
+        router.showMediaPicker(
+            data: interactor.mediaPickerData.byDisablingLibrary(),
+            overridenTheme: overridenTheme,
+            isNewFlowPrototype: isNewFlowPrototype,
+            configure: { [weak self] module in
+                self?.configureMediaPicker(module)
+            }
+        )
     }
     
     private func configureMediaPicker(_ module: MediaPickerModule) {
