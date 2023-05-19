@@ -268,6 +268,7 @@ final class CameraV3View: UIView {
             self.closeButton.transform = nextTransform
             self.flashButton.transform = nextTransform
             self.toggleButton.transform = nextTransform
+            self.selectedPhotosView.transform = nextTransform
         }
     }
     

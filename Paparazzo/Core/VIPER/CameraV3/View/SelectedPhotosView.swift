@@ -12,6 +12,8 @@ final class SelectedPhotosView: UIView {
         static let size = CGSize(width: 56, height: 60)
         static let topItemSize = CGSize(width: 56, height: 56)
         static let behindItemSize = CGSize(width: 48, height: 48)
+        static let behindImageTopOffset: CGFloat = 12
+        static let behindImageLeftOffset: CGFloat = 4
         static let cornerRadius: CGFloat = 12
         static let overlaySize = CGSize(width: size.width * 1.3, height: size.width * 1.3)
     }
@@ -36,6 +38,12 @@ final class SelectedPhotosView: UIView {
         behindImage.layer.borderColor = UIColor.black.cgColor
         topImage.layer.borderWidth = 1
         behindImage.layer.borderWidth = 1
+        
+        addSubview(behindImage)
+        addSubview(topImage)
+        addSubview(overlay)
+        addSubview(label)
+        
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
     }
     
@@ -48,7 +56,29 @@ final class SelectedPhotosView: UIView {
         topImage.layer.cornerRadius = Spec.cornerRadius
         behindImage.layer.cornerRadius = Spec.cornerRadius
         
+        overlay.size = CGSize(width: Spec.overlaySize.width, height: Spec.overlaySize.height)
         overlay.center = bounds.center
+        
+        topImage.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: Spec.topItemSize.width,
+            height:  Spec.topItemSize.height
+        )
+        
+        behindImage.frame = CGRect(
+            x: Spec.behindImageLeftOffset,
+            y: Spec.behindImageTopOffset,
+            width: Spec.behindItemSize.width,
+            height: Spec.behindItemSize.height
+        )
+        
+        label.frame = CGRect(
+            centerX: topImage.centerX,
+            centerY: topImage.centerY,
+            width: Spec.topItemSize.width,
+            height: Spec.topItemSize.height
+        )
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
@@ -62,52 +92,20 @@ final class SelectedPhotosView: UIView {
     
     func setViewData(_ viewData: SelectedPhotosViewData?, animated: Bool) {
         guard let viewData = viewData else {
-            clearContent()
+            isHidden = true
             return
         }
-        
-        addSubview(behindImage)
-        addSubview(topImage)
-        addSubview(overlay)
-        addSubview(label)
-    
+            
         label.text = viewData.text
         topImage.setImage(fromSource: viewData.topItem, size: Spec.topItemSize)
-
-        overlay.frame = CGRect(
-            centerX: bounds.centerX,
-            centerY: bounds.centerY,
-            width: Spec.overlaySize.width,
-            height: Spec.overlaySize.height
-        )
-        
-        topImage.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: Spec.topItemSize.width,
-            height: Spec.topItemSize.height
-        )
-        
-        behindImage.frame = CGRect(
-            x: 4,
-            y: 12,
-            width: Spec.behindItemSize.width,
-            height: Spec.behindItemSize.height
-        )
-        topImage.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        
         
         if let behind = viewData.behindItem {
             behindImage.setImage(fromSource: behind, size: Spec.behindItemSize)
-            behindImage.alpha = 0.4
+        } else {
+            behindImage.image = nil
         }
         
-        label.frame = CGRect(
-            centerX: topImage.centerX,
-            centerY: topImage.centerY,
-            width: Spec.topItemSize.width,
-            height: Spec.topItemSize.height
-        )
+        topImage.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         
         UIView.animate(
             withDuration: animated ? 0.6 : 0,
@@ -118,10 +116,8 @@ final class SelectedPhotosView: UIView {
         ) {
             self.topImage.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
-    }
-    
-    private func clearContent() {
-        subviews.forEach { $0.removeFromSuperview() }
+
+        isHidden = false
     }
 
     @objc private func handleTap() {
