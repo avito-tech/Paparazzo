@@ -66,6 +66,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
     var onNewCameraShow: (() -> ())?
+    var onCameraV3Show: (() -> ())?
     var onCropButtonTap: (() -> ())?
     var onLastPhotoThumbnailTap: (() -> ())?
     var onRotationAngleChange: (() -> ())?
@@ -476,6 +477,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     func openCameraV3() {
+        onCameraV3Show?()
         router.showCameraV3(
             selectedImagesStorage: interactor.selectedPhotosStorage,
             mediaPickerData: interactor.mediaPickerData,
