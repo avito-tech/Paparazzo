@@ -52,9 +52,26 @@ final class CameraV3ViewController:
         super.viewDidLayoutSubviews()
         onViewDidLayoutSubviews?()
     }
+
+    // MARK: - Orientation
+    override public var shouldAutorotate: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        .portrait
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .all
+        } else {
+            return .portrait
+        }
+    }
+    
+    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return super.preferredInterfaceOrientationForPresentation
+        } else {
+            return .portrait
+        }
     }
     
     // MARK: - Configure

@@ -7,6 +7,12 @@ final class CameraV3View: UIView {
         static let topButtonsSize = CGSize(width: 38, height: 38)
         static let topButtonInsets = UIEdgeInsets(top: 10, left: 8, bottom: 0, right: 8)
         static let shutterButtonBottomOffset: CGFloat = 16
+        static let cameraOutputViewIPadBottomOffset: CGFloat = 118
+        static let selectedPhotosViewIPadXOffset: CGFloat = 48
+        static let hintDefaultHeight: CGFloat = 65
+        static let closeButtonDefaultTopOffset: CGFloat = {
+            UIDevice.current.userInterfaceIdiom == .phone ? 20 : 24
+        }()
     }
     
     var cameraOutputLayer: AVCaptureVideoPreviewLayer?
@@ -93,7 +99,7 @@ final class CameraV3View: UIView {
         
         closeButton.frame = CGRect(
             x: bounds.left + Spec.topButtonInsets.left,
-            y: max(Spec.topButtonInsets.top, paparazzoSafeAreaInsets.top),
+            y: max(Spec.closeButtonDefaultTopOffset, paparazzoSafeAreaInsets.top),
             width: Spec.topButtonsSize.width,
             height: Spec.topButtonsSize.height
         )
@@ -124,25 +130,38 @@ final class CameraV3View: UIView {
             height: Spec.shutterButtonSize.height
         )
         
+        let height: CGFloat
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            height = bounds.width / 3 * 4
+        } else  {
+            height = bounds.height
+            - paparazzoSafeAreaInsets.bottom
+            - Spec.cameraOutputViewIPadBottomOffset
+            - closeButton.bottom
+            + Spec.topButtonInsets.top
+        }
+        
         cameraOutputView.frame = CGRect(
             left: left,
             right: right,
             top: closeButton.bottom + Spec.topButtonInsets.top,
-            height: bounds.width / 3 * 4
+            height: height
         )
+        
+        let hintHeight = max((cameraOutputView.height - cameraOutputView.width) / 2, Spec.hintDefaultHeight)
         
         hintView.frame = CGRect(
             left: left,
             right: right,
             top: cameraOutputView.top,
-            height: (cameraOutputView.height - cameraOutputView.width) / 2
+            height: hintHeight
         )
         
         bottomView.frame = CGRect(
             left: left,
             right: right,
             bottom: cameraOutputView.bottom,
-            height: (cameraOutputView.height - cameraOutputView.width) / 2
+            height: hintHeight
         )
         
         gridView.frame = CGRect(
@@ -156,9 +175,14 @@ final class CameraV3View: UIView {
         accessDeniedView.frame = cameraOutputView.frame
         flashView.frame = cameraOutputView.frame
         
+        let selectedPhotosViewX: CGFloat
+        let shutterButtonRightX = shutterButton.centerX + shutterButton.width / 2
         let selectedPhotosViewSize = selectedPhotosView.sizeThatFits(size)
-        let startX = shutterButton.centerX + shutterButton.width / 2
-        let selectedPhotosViewX = startX + (self.right - startX - selectedPhotosViewSize.width) / 2
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            selectedPhotosViewX = shutterButtonRightX + (self.right - shutterButtonRightX - selectedPhotosViewSize.width) / 2
+        } else  {
+            selectedPhotosViewX = shutterButtonRightX + Spec.selectedPhotosViewIPadXOffset
+        }
         
         selectedPhotosView.frame = CGRect(
             x: selectedPhotosViewX,
