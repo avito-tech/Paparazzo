@@ -52,7 +52,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             isUsingCameraV3: isUsingCameraV3
         )
         
-        let viewController = PhotoLibraryV2ViewController(isNewFlowPrototype: isNewFlowPrototype)
+        let viewController = PhotoLibraryV2ViewController(
+            isNewFlowPrototype: isNewFlowPrototype,
+            deviceOrientationService: serviceFactory.deviceOrientationService()
+        )
         viewController.addDisposable(presenter)
         viewController.setTheme(theme)
         
