@@ -74,8 +74,15 @@ final class CameraV3ViewController:
         }
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        guard UIDevice.current.userInterfaceIdiom == .pad else { return }
+        previewLayer?.connection?.videoOrientation = deviceOrientationService.currentOrientation.toAVCaptureVideoOrientation
+    }
+    
     // MARK: - Configure
     private func configure() {
+        guard UIDevice.current.userInterfaceIdiom == .phone else { return }
         deviceOrientationService.onOrientationChange = { [weak self] deviceOrientation in
             self?.cameraView.rotateButtons(nextTransform: CGAffineTransform(deviceOrientation: deviceOrientation))
         }

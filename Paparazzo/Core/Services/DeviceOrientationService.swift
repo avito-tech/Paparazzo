@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 protocol DeviceOrientationService: AnyObject {
     var currentOrientation: DeviceOrientation { get }
@@ -78,6 +79,23 @@ extension DeviceOrientation {
             return .left
         case .unknown:
             return .left
+        }
+    }
+}
+
+extension DeviceOrientation {
+    var toAVCaptureVideoOrientation: AVCaptureVideoOrientation {
+        switch self {
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeRight:
+            return .landscapeLeft
+        case .landscapeLeft:
+            return .landscapeRight
+        case .unknown:
+            return .portrait
         }
     }
 }

@@ -7,14 +7,15 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     typealias ThemeType = PhotoLibraryV2UITheme & NewCameraUITheme
     
     private let photoLibraryView: PhotoLibraryV2View
+    private let deviceOrientationService: DeviceOrientationService
     
     var previewLayer: AVCaptureVideoPreviewLayer? {
         return photoLibraryView.previewLayer
     }
     
-    init(isNewFlowPrototype: Bool) {
+    init(isNewFlowPrototype: Bool, deviceOrientationService: DeviceOrientationService) {
         photoLibraryView = PhotoLibraryV2View(isNewFlowPrototype: isNewFlowPrototype)
-        
+        self.deviceOrientationService = deviceOrientationService
         super.init()
         
         if isNewFlowPrototype {
@@ -62,6 +63,11 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         super.viewDidDisappear(animated)
         
         onViewDidDisappear?(animated)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        previewLayer?.connection?.videoOrientation = deviceOrientationService.currentOrientation.toAVCaptureVideoOrientation
     }
     
     override var prefersStatusBarHidden: Bool {

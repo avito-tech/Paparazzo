@@ -31,7 +31,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         )
         
         let viewController = PhotoLibraryV2ViewController(
-            isNewFlowPrototype: isNewFlowPrototype
+            isNewFlowPrototype: isNewFlowPrototype,
+            deviceOrientationService: serviceFactory.deviceOrientationService()
         )
         
         let router = PhotoLibraryV2UIKitRouter(
