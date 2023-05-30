@@ -9,9 +9,15 @@ final class ShutterButton: UIView {
     struct Spec {
         static let borderWidth: CGFloat = 4
         static let cornerRadius: CGFloat = size.height / 2
-        static let innerSize = CGSize(width: 56, height: 56)
+        static let innerSize: CGSize = {
+            let width = UIDevice.current.isIPhoneSE1OrLess ? 39 : 56
+            return CGSize(width: width, height: width)
+        }()
         static let innerCornerRadius: CGFloat = innerSize.height / 2
-        static let size = CGSize(width: 72, height: 72)
+        static let size: CGSize = {
+            let width = UIDevice.current.isIPhoneSE1OrLess ? 50 : 72
+            return CGSize(width: width, height: width)
+        }()
     }
     
     struct Theme {
@@ -52,6 +58,10 @@ final class ShutterButton: UIView {
         
         innerButton.centerY = bounds.centerY
         innerButton.centerX = bounds.centerX
+    }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        Spec.size
     }
     
     // MARK: - State

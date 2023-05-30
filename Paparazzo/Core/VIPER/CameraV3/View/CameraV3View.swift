@@ -3,7 +3,6 @@ import AVFoundation
 
 final class CameraV3View: UIView {
     struct Spec {
-        static let shutterButtonSize = CGSize(width: 72, height: 72)
         static let topButtonsSize = CGSize(width: 38, height: 38)
         static let topButtonInsets = UIEdgeInsets(top: 10, left: 8, bottom: 0, right: 8)
         static let shutterButtonBottomOffset: CGFloat = 16
@@ -118,16 +117,18 @@ final class CameraV3View: UIView {
             height: Spec.topButtonsSize.height
         )
         
+        let shutterButtonSize = shutterButton.sizeThatFits(size)
+        
         let centerYTakePhoto = bottom
-            - (Spec.shutterButtonSize.height / 2)
+            - (shutterButtonSize.height / 2)
             - paparazzoSafeAreaInsets.bottom
             - Spec.shutterButtonBottomOffset
         
         shutterButton.frame = CGRect(
             centerX: centerX,
             centerY: centerYTakePhoto,
-            width: Spec.shutterButtonSize.width,
-            height: Spec.shutterButtonSize.height
+            width: shutterButtonSize.width,
+            height: shutterButtonSize.height
         )
         
         let height: CGFloat

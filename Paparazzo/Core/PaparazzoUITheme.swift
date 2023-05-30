@@ -166,7 +166,7 @@ public struct PaparazzoUITheme:
     public var cameraV3ShutterEnabledColor = UIColor.white
     public var cameraV3ShutterDisabledColor = UIColor.gray
     
-    public var cameraV3SelectedPhotosFont = UIFont.systemFont(ofSize: 16)
+    public var cameraV3SelectedPhotosFont = UIFont.systemFont(ofSize: 15)
     public var cameraV3SelectedPhotosFontColor = UIColor.white
 
     public var cameraV3BeforeAnimationStrokeColor = UIColor.yellow
