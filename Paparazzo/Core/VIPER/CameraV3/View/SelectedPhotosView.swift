@@ -9,9 +9,24 @@ struct SelectedPhotosViewData {
 
 final class SelectedPhotosView: UIView {
     struct Spec {
-        static let size = CGSize(width: 56, height: 60)
-        static let topItemSize = CGSize(width: 56, height: 56)
-        static let behindItemSize = CGSize(width: 48, height: 48)
+        static let size: CGSize = {
+            if UIDevice.current.isIPhoneSE1OrLess {
+                return CGSize(width: 45, height: 48)
+            }
+            return CGSize(width: 56, height: 60)
+        }()
+        static let topItemSize: CGSize = {
+            if UIDevice.current.isIPhoneSE1OrLess {
+                return CGSize(width: 45, height: 45)
+            }
+            return CGSize(width: 56, height: 56)
+        }()
+        static let behindItemSize: CGSize = {
+            if UIDevice.current.isIPhoneSE1OrLess {
+                return CGSize(width: 38, height: 38)
+            }
+            return CGSize(width: 48, height: 48)
+        }()
         static let behindImageTopOffset: CGFloat = 12
         static let behindImageLeftOffset: CGFloat = 4
         static let cornerRadius: CGFloat = 12
@@ -38,6 +53,7 @@ final class SelectedPhotosView: UIView {
         behindImage.layer.borderColor = UIColor.black.cgColor
         topImage.layer.borderWidth = 1
         behindImage.layer.borderWidth = 1
+        label.adjustsFontSizeToFitWidth = true
         
         addSubview(behindImage)
         addSubview(topImage)

@@ -27,4 +27,8 @@ extension UIDevice {
         }
         return false
     }
+    
+    var isIPhoneSE1OrLess: Bool {
+        userInterfaceIdiom == .phone && UIScreen.main.bounds.width <= 320
+    }
 }
