@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'Paparazzo'
   s.module_name            = 'Paparazzo'
-  s.version                = '5.0.0'
+  s.version                = '5.0.1'
   s.summary                = "iOS component for picking and editing photos from camera and user's photo library"
   s.homepage               = 'https://github.com/avito-tech/Paparazzo'
   s.license                = 'MIT'
@@ -16,21 +16,21 @@ Pod::Spec.new do |s|
   
   s.dependency 'JNWSpringAnimation'
   
-  s.dependency 'ImageSource/Core', '3.1.0'
-  s.dependency 'ImageSource/PHAsset', '3.1.0'
-  s.dependency 'ImageSource/Local', '3.1.0'
-  s.dependency 'ImageSource/Remote', '3.1.0'
+  s.dependency 'ImageSource/Core', '3.1.1'
+  s.dependency 'ImageSource/PHAsset', '3.1.1'
+  s.dependency 'ImageSource/Local', '3.1.1'
+  s.dependency 'ImageSource/Remote', '3.1.1'
 
   s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage'
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'Paparazzo/Core'
-    ai.dependency 'ImageSource/AlamofireImage', '3.1.0'
+    ai.dependency 'ImageSource/AlamofireImage', '3.1.1'
   end
 
   s.subspec 'SDWebImage' do |sd|
     sd.dependency 'Paparazzo/Core'
-    sd.dependency 'ImageSource/SDWebImage', '3.1.0'
+    sd.dependency 'ImageSource/SDWebImage', '3.1.1'
   end
   
   s.subspec 'Core' do |cs|
