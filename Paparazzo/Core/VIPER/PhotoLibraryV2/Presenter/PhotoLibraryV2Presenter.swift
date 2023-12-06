@@ -44,12 +44,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
-        
-        if isNewFlowPrototype {
-            interactor.observeSelectedItemsChange { [weak self] in
-                self?.adjustSelectedPhotosBar()
-            }
-        }
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -147,7 +141,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     // MARK: - Private
     private func setUpView() {
-        
         updateContinueButtonTitle()
         
         view?.setTitleVisible(false)
@@ -167,6 +160,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         if isNewFlowPrototype {
             view?.onViewWillAppear = { [weak self] in
                 DispatchQueue.main.async {
+                    self?.addObserveSelectedItemsChange()
                     self?.adjustSelectedPhotosBar()
                     self?.view?.reloadSelectedItems()
                 }
@@ -307,7 +301,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func showMediaPickerInNewFlow() {
-        
         let data = interactor.mediaPickerData
             .bySettingMediaPickerItems(interactor.selectedItems)
             .bySelectingLastItem()
@@ -476,7 +469,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         )
     }
     
-    func openCameraV3() {
+    private func openCameraV3() {
         onCameraV3Show?()
         router.showCameraV3(
             selectedImagesStorage: interactor.selectedPhotosStorage,
@@ -516,7 +509,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func configureMediaPicker(_ module: MediaPickerModule) {
-        
         mediaPickerModule = module
         
         if let continueButtonPlacement = continueButtonPlacement {
@@ -579,7 +571,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         )
     }
     
-    func adjustSelectedPhotosBar() {
+    private func adjustSelectedPhotosBar() {
         let images = interactor.selectedItems
         
         view?.setSelectedPhotosBarState(images.isEmpty
@@ -590,6 +582,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 countString: "\(images.count) фото"
             ))
         )
+    }
+
+    private func addObserveSelectedItemsChange() {
+        interactor.observeSelectedItemsChange { [weak self] in
+            self?.adjustSelectedPhotosBar()
+        }
     }
 }
 
