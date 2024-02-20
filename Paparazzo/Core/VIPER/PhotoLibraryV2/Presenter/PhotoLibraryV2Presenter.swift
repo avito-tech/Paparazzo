@@ -1,4 +1,5 @@
 import Foundation
+import FeatureToggle
 
 final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
@@ -162,7 +163,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 DispatchQueue.main.async {
                     self?.addObserveSelectedItemsChange()
                     self?.adjustSelectedPhotosBar()
-                    self?.view?.reloadSelectedItems()
+
+                    if FeatureToggle.features.isFillingParametersEnabled, let selectionState = self?.interactor.prepareSelection() {
+                        self?.adjustViewForSelectionState(selectionState)
+                    } else {
+                        self?.view?.reloadSelectedItems()
+                    }
                 }
             }
         }
