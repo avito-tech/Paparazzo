@@ -164,7 +164,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     self?.addObserveSelectedItemsChange()
                     self?.adjustSelectedPhotosBar()
 
-                    if FeatureToggle.features.isFillingParametersEnabled, let selectionState = self?.interactor.prepareSelection() {
+                    if FeatureToggle.features. isPaparazzoCellDisablingFixEnabled, let selectionState = self?.interactor.prepareSelection() {
                         self?.adjustViewForSelectionState(selectionState)
                     } else {
                         self?.view?.reloadSelectedItems()
