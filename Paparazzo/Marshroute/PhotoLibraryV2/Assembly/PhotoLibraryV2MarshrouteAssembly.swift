@@ -18,6 +18,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
+        isPaparazzoCellDisablingFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
     {
@@ -27,7 +28,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
                 routerSeed: routerSeed,
                 isNewFlowPrototype: false,
                 isUsingCameraV3: false,
-                isPaparazzoCellDisablingFixEnabled: false,
+                isPaparazzoCellDisablingFixEnabled: isPaparazzoCellDisablingFixEnabled,
                 configure: configure
             )
     }
