@@ -8,6 +8,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
+        isPaparazzoCellDisablingFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
 }
@@ -26,6 +27,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
                 routerSeed: routerSeed,
                 isNewFlowPrototype: false,
                 isUsingCameraV3: false,
+                isPaparazzoCellDisablingFixEnabled: false,
                 configure: configure
             )
     }
