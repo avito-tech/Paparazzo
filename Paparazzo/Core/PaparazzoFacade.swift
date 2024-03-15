@@ -95,6 +95,7 @@ public final class PaparazzoFacade {
     public static func libraryV2ViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV2Data,
+        isPaparazzoCellDisablingFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
@@ -105,6 +106,7 @@ public final class PaparazzoFacade {
             data: parameters,
             isNewFlowPrototype: true,
             isUsingCameraV3: true,
+            isPaparazzoCellDisablingFixEnabled: isPaparazzoCellDisablingFixEnabled,
             configure: { (module: PhotoLibraryV2Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()
