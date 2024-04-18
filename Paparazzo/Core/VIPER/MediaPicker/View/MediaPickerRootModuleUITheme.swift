@@ -14,6 +14,8 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
 
     var mediaPickerIconColor: UIColor { get }
     var mediaPickerIconActiveColor: UIColor { get }
+    
+    var buttonGrayHighlightedColor: UIColor { get }
 
     var shutterButtonColor: UIColor { get }
     var shutterButtonDisabledColor: UIColor { get }
@@ -30,6 +32,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraSubtitleFont: UIFont { get }
     var cameraHintFont: UIFont { get }
     var cameraBottomContinueButtonBackgroundColor: UIColor { get }
+    var cameraBottomContinueButtonHighlightedBackgroundColor: UIColor { get }
     var cameraBottomContinueButtonTitleColor: UIColor { get }
     var cameraBottomContinueButtonFont: UIFont { get }
     

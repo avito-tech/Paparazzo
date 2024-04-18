@@ -95,6 +95,13 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         for button in buttons {
             button.tintColor = theme.mediaPickerIconColor
         }
+        
+        for button in buttons {
+            let highlightedImage = button
+                .image(for: .normal)?
+                .withTintColor(theme.buttonGrayHighlightedColor, renderingMode: .alwaysOriginal)
+            button.setImage(highlightedImage, for: .highlighted)
+        }
     }
     
     // MARK: - PhotoControlsView

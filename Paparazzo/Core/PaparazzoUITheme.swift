@@ -24,6 +24,7 @@ public struct PaparazzoUITheme:
     public var mediaPickerTitleDarkColor = UIColor.black
     public var mediaPickerIconColor = UIColor.black
     public var mediaPickerIconActiveColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var buttonGrayHighlightedColor = UIColor(red: 227.0/255, green: 226.0/255, blue: 225.0/255, alpha: 1)
 
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var shutterButtonDisabledColor = UIColor.lightGray
@@ -53,6 +54,7 @@ public struct PaparazzoUITheme:
     public var cameraSubtitleFont = UIFont.systemFont(ofSize: 14)
     public var cameraHintFont = UIFont.systemFont(ofSize: 17)
     public var cameraBottomContinueButtonBackgroundColor = UIColor(red: 0 / 255, green: 170.0 / 255, blue: 1, alpha: 1)
+    public var cameraBottomContinueButtonHighlightedBackgroundColor = UIColor(red: 0 / 255, green: 153.0 / 255, blue: 247.0/255, alpha: 1)
     public var cameraBottomContinueButtonTitleColor = UIColor.white
     public var cameraBottomContinueButtonFont = UIFont.systemFont(ofSize: 16)
     

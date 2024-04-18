@@ -299,11 +299,16 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             )
         }
         
-        bottomContinueButton.backgroundColor = theme.cameraBottomContinueButtonBackgroundColor
+        bottomContinueButton.setBackgroundColor(theme.cameraBottomContinueButtonBackgroundColor, for: .normal)
+        bottomContinueButton.setBackgroundColor(theme.cameraBottomContinueButtonHighlightedBackgroundColor, for: .highlighted)
         bottomContinueButton.titleLabel?.font = theme.cameraBottomContinueButtonFont
         bottomContinueButton.setTitleColor(theme.cameraBottomContinueButtonTitleColor, for: .normal)
 
         closeButton.tintColor = theme.mediaPickerIconColor
+        let highlightedImage = closeButton
+            .image(for: .normal)?
+            .withTintColor(theme.buttonGrayHighlightedColor, renderingMode: .alwaysOriginal)
+        closeButton.setImage(highlightedImage, for: .highlighted)
     }
     
     // MARK: - MediaPickerView
@@ -715,5 +720,26 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     @objc private func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
+    }
+}
+
+private extension UIButton {
+    private func imageWithColor(color: UIColor) -> UIImage? {
+        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        
+        context.setFillColor(color.cgColor)
+        context.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
+    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
+        self.setBackgroundImage(imageWithColor(color: color), for: state)
     }
 }
