@@ -1,4 +1,3 @@
-import JNWSpringAnimation
 import ImageSource
 import UIKit
 
