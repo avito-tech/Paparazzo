@@ -1,4 +1,5 @@
 import Foundation
+import ObjCExceptionsCatcherHelpers
 
 final class ObjCExceptionCatcher {
     static func tryClosure(
