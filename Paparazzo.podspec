@@ -7,35 +7,34 @@ Pod::Spec.new do |s|
   s.license                = 'MIT'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
   s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "#{s.version}" }
-  s.platform               = :ios, '9.0'
-  s.ios.deployment_target  = '9.0'
+  s.platform               = :ios, '12.0'
+  s.ios.deployment_target  = '12.0'
   s.swift_version          = '5.0'
   s.requires_arc           = true
+  s.vendored_frameworks = 'Paparazzo.xcframework'
 
   s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'CoreServices', 'GLKit', 'OpenGLES', 'CoreMedia', 'CoreVideo', 'AVFoundation', 'QuartzCore'
   
-  s.dependency 'JNWSpringAnimation'
-  
-  s.dependency 'ImageSource/Core', '3.0.2'
-  s.dependency 'ImageSource/PHAsset', '3.0.2'
-  s.dependency 'ImageSource/Local', '3.0.2'
-  s.dependency 'ImageSource/Remote', '3.0.2'
+  s.dependency 'ImageSource/Core', '4.0.0'
+  s.dependency 'ImageSource/PHAsset', '4.0.0'
+  s.dependency 'ImageSource/Local', '4.0.0'
+  s.dependency 'ImageSource/Remote', '4.0.0'
 
-  s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage'
+  s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage', 'JNWSpringAnimation'
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'Paparazzo/Core'
-    ai.dependency 'ImageSource/AlamofireImage', '3.0.2'
+    ai.dependency 'ImageSource/AlamofireImage', '4.0.0'
   end
 
-  s.subspec 'SDWebImage' do |sd|
-    sd.dependency 'Paparazzo/Core'
-    sd.dependency 'ImageSource/SDWebImage', '3.0.2'
+  s.subspec 'JNWSpringAnimation' do |ja|
+    ja.source_files = 'JNWSpringAnimation/*.{h,m}'
   end
   
   s.subspec 'Core' do |cs|
     cs.source_files = 'Paparazzo/Core/**/*'
-  
+    cs.dependency 'Paparazzo/JNWSpringAnimation'
+
     cs.ios.resource_bundle = {
       'Paparazzo' => [
         'Paparazzo/Shader/CameraShader.metallib',
