@@ -1,4 +1,5 @@
 import ImageSource
+import CoreGraphics
 
 struct ImageCroppingData {
     let originalImage: ImageSource

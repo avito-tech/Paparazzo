@@ -1,4 +1,5 @@
 import ImageSource
+import CoreGraphics
 
 final class MaskCropperPresenter: MaskCropperModule {
     
@@ -26,7 +27,7 @@ final class MaskCropperPresenter: MaskCropperModule {
             self?.interactor.setCroppingParameters(parameters)
         }
         
-        view?.onConfirmTap = { [weak self] previewImage in
+        view?.onConfirmTap = { [weak self] (previewImage: CGImage?) in
             if let previewImage = previewImage {
                 self?.interactor.croppedImage(previewImage: previewImage) { image in
                     self?.onConfirm?(image)

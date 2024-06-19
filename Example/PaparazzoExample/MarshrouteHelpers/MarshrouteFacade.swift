@@ -25,7 +25,8 @@ final class MarshrouteFacade {
             presentingTransitionsHandler: nil,
             transitionsHandlersProvider: marshrouteStack.transitionsHandlersProvider,
             transitionIdGenerator: marshrouteStack.transitionIdGenerator,
-            controllersProvider: marshrouteStack.routerControllersProvider
+            controllersProvider: marshrouteStack.routerControllersProvider,
+            routerTransitionDelegate: nil
         )
         
         let viewController = deriveViewController(routerSeed)
@@ -33,7 +34,7 @@ final class MarshrouteFacade {
         let resetContext = ResettingTransitionContext(
             settingRootViewController: viewController,
             forNavigationController: navigationController,
-            animatingTransitionsHandler: navigationTransitionsHandler,
+            navigationTransitionsHandler: navigationTransitionsHandler,
             animator: SetNavigationTransitionsAnimator(),
             transitionId: transitionId
         )

@@ -1,4 +1,5 @@
 import ImageSource
+import UIKit
 
 final class MaskCropperViewController:
     PaparazzoViewController,

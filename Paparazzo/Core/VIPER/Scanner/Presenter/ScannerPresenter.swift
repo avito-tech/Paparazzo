@@ -1,3 +1,5 @@
+import Foundation
+
 final class ScannerPresenter: ScannerModule {
     
     // MARK: - Dependencies

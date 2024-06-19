@@ -1,4 +1,5 @@
 import ImageSource
+import CoreGraphics
 
 final class MaskCropperInteractorImpl: MaskCropperInteractor {
     

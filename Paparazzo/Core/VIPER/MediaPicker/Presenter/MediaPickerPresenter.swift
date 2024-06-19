@@ -1,3 +1,5 @@
+import Foundation
+
 final class MediaPickerPresenter: MediaPickerModule {
     
     // MARK: - Config
@@ -521,7 +523,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         let cropCanvasSize = interactor.cropCanvasSize
         
-        router.showCroppingModule(forImage: item.image, canvasSize: cropCanvasSize) { [weak self] module in
+        router.showCroppingModule(forImage: item.image, canvasSize: cropCanvasSize) { [weak self] (module: ImageCroppingModule) in
             
             module.onDiscard = { [weak self] in
                 self?.onCropCancel?()

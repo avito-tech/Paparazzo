@@ -1,3 +1,5 @@
+import Foundation
+
 protocol Debouncable {
     func debounce(_ closure: @escaping () -> ())
     func cancel()
