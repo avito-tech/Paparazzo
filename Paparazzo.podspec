@@ -33,9 +33,9 @@ Pod::Spec.new do |s|
 #   end
   
   s.subspec 'Core' do |cs|
-    cs.source_files = 'Paparazzo/Core/**/*', 'JNWSpringAnimation/**/*'
+    cs.source_files = 'Paparazzo/Core/**/*', 'JNWSpringAnimation/Sources/**/*'
 #     cs.dependency 'Paparazzo/JNWSpringAnimation'
-    cs.project_header_files = 'JNWSpringAnimation/Headers/*.h'
+    cs.project_header_files = 'JNWSpringAnimation/Sources/**/*.h'
 
     cs.ios.resource_bundle = {
       'Paparazzo' => [
