@@ -29,6 +29,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'JNWSpringAnimation' do |ja|
     ja.source_files = 'JNWSpringAnimation/**/*'
+    ja.public_header_files = 'JNWSpringAnimation/Headers/*.h'
   end
   
   s.subspec 'Core' do |cs|
