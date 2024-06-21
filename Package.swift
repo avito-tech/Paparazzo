@@ -14,7 +14,7 @@ let package = Package(
             targets: ["avito-ios-media-picker"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/avito-tech/ImageSource.git", exact: "4.1.0")
+        .package(url: "https://github.com/avito-tech/ImageSource.git", from: "4.1.0")
     ],
     targets: [
         .target(
