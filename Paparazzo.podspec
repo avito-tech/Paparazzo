@@ -26,16 +26,9 @@ Pod::Spec.new do |s|
     ai.dependency 'Paparazzo/Core'
     ai.dependency 'ImageSource/AlamofireImage', '4.0.0'
   end
-
-#   s.subspec 'JNWSpringAnimation' do |ja|
-#     ja.source_files = 'JNWSpringAnimation/**/*'
-#     ja.public_header_files = 'JNWSpringAnimation/Headers/*.h'
-#   end
   
   s.subspec 'Core' do |cs|
     cs.source_files = 'Paparazzo/Core/**/*', 'JNWSpringAnimation/Sources/**/*'
-#     cs.dependency 'Paparazzo/JNWSpringAnimation'
-#     cs.project_header_files = 'JNWSpringAnimation/Sources/**/*.h'
 
     cs.ios.resource_bundle = {
       'Paparazzo' => [
