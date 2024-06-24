@@ -36,7 +36,10 @@ let package = Package(
             ],
             path: "Paparazzo/Core",
             exclude: ["Helpers/ObjCExceptionsCatcher/Helpers"]
-//            resources: [.copy("Shader/")]
+            resources: [
+                .copy("Shader/"),
+                .copy("Localization/")
+            ]
         )
     ]
 )
