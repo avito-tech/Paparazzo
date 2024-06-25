@@ -1,3 +1,5 @@
+import Foundation
+
 final class Resources {
     static let bundle = Bundle(for: Resources.self)
         .path(forResource: "Paparazzo", ofType: "bundle")

@@ -1,3 +1,5 @@
+import Foundation
+
 final class SingleObjectCache<T: AnyObject> {
     
     private let cacheKey = "key" as NSString

@@ -83,7 +83,8 @@ final class ExampleRouterImpl: BaseRouter, ExampleRouter {
                 selectedItems: selectedItems,
                 routerSeed: routerSeed,
                 isNewFlowPrototype: isNewFlowPrototype,
-                isUsingCameraV3: isUsingCameraV3,
+                isUsingCameraV3: isUsingCameraV3, 
+                isPaparazzoCellDisablingFixEnabled: true,
                 configure: configure
             )
         }

@@ -1,3 +1,5 @@
+import UIKit
+
 final class CircleCroppingOverlayProvider: CroppingOverlayProvider {
     
     func calculateRectToCrop(in bounds: CGRect) -> CGRect {

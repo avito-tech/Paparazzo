@@ -1,3 +1,5 @@
+import UIKit
+
 public protocol PhotoLibraryV2UITheme: AccessDeniedViewTheme {
     
     var photoLibraryAlbumsTableViewCellBackgroundColor: UIColor { get }

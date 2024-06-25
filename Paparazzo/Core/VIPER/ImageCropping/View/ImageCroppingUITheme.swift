@@ -1,3 +1,5 @@
+import UIKit
+
 public protocol ImageCroppingUITheme {
     var rotationIcon: UIImage? { get }
     var gridIcon: UIImage? { get }

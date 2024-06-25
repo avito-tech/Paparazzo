@@ -1,3 +1,5 @@
+import UIKit
+
 public protocol AccessDeniedViewTheme {
     var accessDeniedBackgroundColor: UIColor { get }
     var accessDeniedTitleColor: UIColor { get }

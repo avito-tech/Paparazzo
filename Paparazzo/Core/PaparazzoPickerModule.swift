@@ -1,3 +1,5 @@
+import Foundation
+
 public enum MediaPickerCropMode {
     case normal
     case custom(CroppingOverlayProvider)

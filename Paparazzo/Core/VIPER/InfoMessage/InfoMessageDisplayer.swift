@@ -1,3 +1,5 @@
+import UIKit
+
 final class InfoMessageDisplayer {
     
     private var currentInfoMessage: InfoMessageViewInput?

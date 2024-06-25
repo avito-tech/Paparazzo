@@ -3,6 +3,7 @@ import CoreGraphics
 import ImageIO
 import ImageSource
 import Photos
+import UIKit
 
 public enum CameraType {
     case back

@@ -1,4 +1,5 @@
 import ImageSource
+import UIKit
 
 final class CameraPresenter: CameraModuleInput {
     
@@ -98,7 +99,7 @@ final class CameraPresenter: CameraModuleInput {
         
         view?.onAccessDeniedButtonTap = {
             if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url)
             }
         }
         
@@ -112,7 +113,7 @@ final class CameraPresenter: CameraModuleInput {
             }
         }
         
-        view?.onFocusTap = { [weak self] focusPoint, touchPoint in
+        view?.onFocusTap = { [weak self] (focusPoint: CGPoint, touchPoint: CGPoint) in
             if self?.interactor.focusCameraOnPoint(focusPoint) == true {
                 self?.view?.displayFocus(onPoint: touchPoint)
             }

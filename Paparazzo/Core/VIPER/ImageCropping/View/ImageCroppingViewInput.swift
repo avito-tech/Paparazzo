@@ -1,5 +1,6 @@
 import Foundation
 import ImageSource
+import CoreGraphics
 
 protocol ImageCroppingViewInput: AnyObject {
     

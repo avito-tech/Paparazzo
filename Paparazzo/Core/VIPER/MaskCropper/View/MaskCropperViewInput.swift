@@ -1,4 +1,5 @@
 import ImageSource
+import CoreGraphics
 
 protocol MaskCropperViewInput: AnyObject {
     func setImage(_: ImageSource, previewImage: ImageSource?, completion: @escaping () -> ())

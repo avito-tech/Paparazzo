@@ -1,4 +1,7 @@
 import Foundation
+#if !COCOAPODS
+import ObjCExceptionsCatcherHelpers
+#endif
 
 final class ObjCExceptionCatcher {
     static func tryClosure(
