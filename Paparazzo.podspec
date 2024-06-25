@@ -15,16 +15,16 @@ Pod::Spec.new do |s|
 
   s.frameworks = 'UIKit', 'Photos', 'ImageIO', 'CoreServices', 'GLKit', 'OpenGLES', 'CoreMedia', 'CoreVideo', 'AVFoundation', 'QuartzCore'
   
-  s.dependency 'ImageSource/Core', '4.0.0'
-  s.dependency 'ImageSource/PHAsset', '4.0.0'
-  s.dependency 'ImageSource/Local', '4.0.0'
-  s.dependency 'ImageSource/Remote', '4.0.0'
+  s.dependency 'ImageSource/Core', '~> 4.0'
+  s.dependency 'ImageSource/PHAsset', '~> 4.0'
+  s.dependency 'ImageSource/Local', '~> 4.0'
+  s.dependency 'ImageSource/Remote', '~> 4.0'
 
   s.default_subspec = 'Core', 'Marshroute', 'AlamofireImage'
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'Paparazzo/Core'
-    ai.dependency 'ImageSource/AlamofireImage', '4.0.0'
+    ai.dependency 'ImageSource/AlamofireImage', '~> 4.0'
   end
   
   s.subspec 'Core' do |cs|

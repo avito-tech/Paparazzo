@@ -2,73 +2,73 @@ PODS:
   - Alamofire (5.9.1)
   - AlamofireImage (4.3.0):
     - Alamofire (~> 5.8)
-  - ImageSource (4.0.0):
-    - ImageSource/AlamofireImage (= 4.0.0)
-    - ImageSource/Core (= 4.0.0)
-    - ImageSource/Local (= 4.0.0)
-    - ImageSource/PHAsset (= 4.0.0)
-    - ImageSource/Remote (= 4.0.0)
-  - ImageSource/AlamofireImage (4.0.0):
-    - AlamofireImage (~> 4.2)
+  - ImageSource (4.1.2):
+    - ImageSource/AlamofireImage (= 4.1.2)
+    - ImageSource/Core (= 4.1.2)
+    - ImageSource/Local (= 4.1.2)
+    - ImageSource/PHAsset (= 4.1.2)
+    - ImageSource/Remote (= 4.1.2)
+  - ImageSource/AlamofireImage (4.1.2):
+    - AlamofireImage (~> 4.3)
     - ImageSource/Remote
-  - ImageSource/Core (4.0.0)
-  - ImageSource/Local (4.0.0):
+  - ImageSource/Core (4.1.2)
+  - ImageSource/Local (4.1.2):
     - ImageSource/Core
-  - ImageSource/PHAsset (4.0.0):
+  - ImageSource/PHAsset (4.1.2):
     - ImageSource/Core
-  - ImageSource/Remote (4.0.0):
+  - ImageSource/Remote (4.1.2):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/UIKit (4.0.0):
+  - ImageSource/UIKit (4.1.2):
     - ImageSource/Core
   - Marshroute (1.0.1)
   - Paparazzo (5.0.0):
-    - ImageSource/Core (= 4.0.0)
-    - ImageSource/Local (= 4.0.0)
-    - ImageSource/PHAsset (= 4.0.0)
-    - ImageSource/Remote (= 4.0.0)
+    - ImageSource/Core (~> 4.0)
+    - ImageSource/Local (~> 4.0)
+    - ImageSource/PHAsset (~> 4.0)
+    - ImageSource/Remote (~> 4.0)
     - Paparazzo/AlamofireImage (= 5.0.0)
     - Paparazzo/Core (= 5.0.0)
     - Paparazzo/Marshroute (= 5.0.0)
   - Paparazzo/AlamofireImage (5.0.0):
-    - ImageSource/AlamofireImage (= 4.0.0)
-    - ImageSource/Core (= 4.0.0)
-    - ImageSource/Local (= 4.0.0)
-    - ImageSource/PHAsset (= 4.0.0)
-    - ImageSource/Remote (= 4.0.0)
+    - ImageSource/AlamofireImage (~> 4.0)
+    - ImageSource/Core (~> 4.0)
+    - ImageSource/Local (~> 4.0)
+    - ImageSource/PHAsset (~> 4.0)
+    - ImageSource/Remote (~> 4.0)
     - Paparazzo/Core
   - Paparazzo/Core (5.0.0):
-    - ImageSource/Core (= 4.0.0)
-    - ImageSource/Local (= 4.0.0)
-    - ImageSource/PHAsset (= 4.0.0)
-    - ImageSource/Remote (= 4.0.0)
+    - ImageSource/Core (~> 4.0)
+    - ImageSource/Local (~> 4.0)
+    - ImageSource/PHAsset (~> 4.0)
+    - ImageSource/Remote (~> 4.0)
   - Paparazzo/Marshroute (5.0.0):
-    - ImageSource/Core (= 4.0.0)
-    - ImageSource/Local (= 4.0.0)
-    - ImageSource/PHAsset (= 4.0.0)
-    - ImageSource/Remote (= 4.0.0)
+    - ImageSource/Core (~> 4.0)
+    - ImageSource/Local (~> 4.0)
+    - ImageSource/PHAsset (~> 4.0)
+    - ImageSource/Remote (~> 4.0)
     - Marshroute
     - Paparazzo/Core
 
 DEPENDENCIES:
-  - ImageSource (from `https://github.com/avito-tech/ImageSource.git`, tag `4.0.0`)
-  - ImageSource/Core (from `https://github.com/avito-tech/ImageSource.git`, tag `4.0.0`)
-  - ImageSource/Local (from `https://github.com/avito-tech/ImageSource.git`, tag `4.0.0`)
-  - ImageSource/PHAsset (from `https://github.com/avito-tech/ImageSource.git`, tag `4.0.0`)
-  - ImageSource/Remote (from `https://github.com/avito-tech/ImageSource.git`, tag `4.0.0`)
+  - ImageSource (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
+  - ImageSource/Core (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
+  - ImageSource/Local (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
+  - ImageSource/PHAsset (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
+  - ImageSource/Remote (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
   - Marshroute (from `https://github.com/avito-tech/Marshroute.git`, tag `1.0.1`)
   - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AlamofireImage
 
 EXTERNAL SOURCES:
   ImageSource:
     :git: https://github.com/avito-tech/ImageSource.git
-    :tag: 4.0.0
+    :tag: 4.1.2
   Marshroute:
     :git: https://github.com/avito-tech/Marshroute.git
     :tag: 1.0.1
@@ -78,7 +78,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   ImageSource:
     :git: https://github.com/avito-tech/ImageSource.git
-    :tag: 4.0.0
+    :tag: 4.1.2
   Marshroute:
     :git: https://github.com/avito-tech/Marshroute.git
     :tag: 1.0.1
@@ -86,10 +86,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
-  ImageSource: 4df771402da92e260c89535e41a4d85b51e05a3f
+  ImageSource: 6b96028daa3a04e4ba7945a393a5aaca12517229
   Marshroute: 79f2c46d5bcd0a6a91486e69bf5b2f82c7a5be06
-  Paparazzo: 5403136e2aba2a28f365a58b628a32614a93c97d
+  Paparazzo: 7d49b39f32f8165c2aaf175cafa4e5565e1d63a6
 
-PODFILE CHECKSUM: d5880ad53ecc77253c2789b2b226a50062df288d
+PODFILE CHECKSUM: df1160d3d551c314bb4eea1d746dce1248403344
 
 COCOAPODS: 1.15.2
