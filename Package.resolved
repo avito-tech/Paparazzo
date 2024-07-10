@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "avito-ios-navigation",
+      "kind" : "remoteSourceControl",
+      "location" : "ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git",
+      "state" : {
+        "revision" : "b2ccce6229f21fbad4fd2bc8fe4df62a9f7c107e",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "imagesource",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/avito-tech/ImageSource.git",

@@ -5,41 +5,51 @@ import PackageDescription
 
 let package = Package(
     name: "Paparazzo",
+    defaultLocalization: "ru_RU",
     platforms: [
-            .iOS(.v12)
-        ],
+        .iOS(.v13)
+    ],
     products: [
         .library(
             name: "Paparazzo",
-            targets: ["avito-ios-media-picker"]),
+            targets: ["PaparazzoCore"]),
+        .library(
+            name: "PaparazzoMarshroute",
+            targets: ["PaparazzoMarshroute"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/avito-tech/ImageSource.git", from: "4.1.0")
+        .package(url: "https://github.com/avito-tech/ImageSource.git", from: "4.1.0"),
+        .package(url: "ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git", from: "1.0.2"),
     ],
     targets: [
         .target(
-            name: "JNWSpringAnimation",
-            path: "JNWSpringAnimation",
-            publicHeadersPath: "Headers"
+            name: "JNWSpringAnimation"
         ),
         .target(
-            name: "ObjCExceptionsCatcherHelpers",
-            path: "Paparazzo/Core/Helpers/ObjCExceptionsCatcher/Helpers",
-            publicHeadersPath: "Headers"
+            name: "ObjCExceptionCatcherHelper"
         ),
         .target(
-            name: "avito-ios-media-picker",
+            name: "PaparazzoCore",
             dependencies: [
                 "ImageSource",
                 "JNWSpringAnimation",
-                "ObjCExceptionsCatcherHelpers"
+                "ObjCExceptionCatcherHelper"
             ],
-            path: "Paparazzo/Core",
-            exclude: ["Helpers/ObjCExceptionsCatcher/Helpers"]
             resources: [
-                .copy("Shader/"),
-                .copy("Localization/")
+                .copy("Resources/CameraShader.metallib"),
             ]
-        )
+        ),
+        .target(
+            name: "PaparazzoMarshroute",
+            dependencies: [
+                "ImageSource",
+                "JNWSpringAnimation",
+                "ObjCExceptionCatcherHelper",
+                .product(name: "Marshroute", package: "avito-ios-navigation"),
+            ],
+            resources: [
+                .copy("PaparazzoCore/Resources/CameraShader.metallib"),
+            ]
+        ),
     ]
 )

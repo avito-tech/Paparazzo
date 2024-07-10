@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     parameters: PhotoLibraryV2Data(
                         mediaPickerData: MediaPickerData()
                     ),
+                    isPaparazzoCellDisablingFixEnabled: true,
                     onFinish: { result in
                         print(result)
                     }

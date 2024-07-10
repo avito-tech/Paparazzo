@@ -22,27 +22,12 @@ PODS:
   - ImageSource/UIKit (4.1.2):
     - ImageSource/Core
   - Marshroute (1.0.1)
-  - Paparazzo (5.0.0):
+  - Paparazzo/Core (7.0.1):
     - ImageSource/Core (~> 4.0)
     - ImageSource/Local (~> 4.0)
     - ImageSource/PHAsset (~> 4.0)
     - ImageSource/Remote (~> 4.0)
-    - Paparazzo/AlamofireImage (= 5.0.0)
-    - Paparazzo/Core (= 5.0.0)
-    - Paparazzo/Marshroute (= 5.0.0)
-  - Paparazzo/AlamofireImage (5.0.0):
-    - ImageSource/AlamofireImage (~> 4.0)
-    - ImageSource/Core (~> 4.0)
-    - ImageSource/Local (~> 4.0)
-    - ImageSource/PHAsset (~> 4.0)
-    - ImageSource/Remote (~> 4.0)
-    - Paparazzo/Core
-  - Paparazzo/Core (5.0.0):
-    - ImageSource/Core (~> 4.0)
-    - ImageSource/Local (~> 4.0)
-    - ImageSource/PHAsset (~> 4.0)
-    - ImageSource/Remote (~> 4.0)
-  - Paparazzo/Marshroute (5.0.0):
+  - Paparazzo/Marshroute (7.0.1):
     - ImageSource/Core (~> 4.0)
     - ImageSource/Local (~> 4.0)
     - ImageSource/PHAsset (~> 4.0)
@@ -57,11 +42,11 @@ DEPENDENCIES:
   - ImageSource/PHAsset (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
   - ImageSource/Remote (from `https://github.com/avito-tech/ImageSource.git`, tag `4.1.2`)
   - Marshroute (from `https://github.com/avito-tech/Marshroute.git`, tag `1.0.1`)
-  - Paparazzo (from `../`)
   - Paparazzo/Core (from `../`)
+  - Paparazzo/Marshroute (from `../`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  http://nexus-speed.msk.avito.ru/repository/ios-speed-cocoapods-proxy/:
     - Alamofire
     - AlamofireImage
 
@@ -84,12 +69,12 @@ CHECKOUT OPTIONS:
     :tag: 1.0.1
 
 SPEC CHECKSUMS:
-  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
+  Alamofire: b15e4fe652c0d55f3e1ddad7b6499a8f8fd6b1eb
+  AlamofireImage: 4ac22d34a303bd4f50ede14a5d7bec3f50642367
   ImageSource: 6b96028daa3a04e4ba7945a393a5aaca12517229
   Marshroute: 79f2c46d5bcd0a6a91486e69bf5b2f82c7a5be06
-  Paparazzo: 7d49b39f32f8165c2aaf175cafa4e5565e1d63a6
+  Paparazzo: d2dbc9d0637afe9a8c5e0f080c21b0e6bf35774c
 
-PODFILE CHECKSUM: df1160d3d551c314bb4eea1d746dce1248403344
+PODFILE CHECKSUM: 9e2e020b0af162b3f090252397f382058fd81e69
 
 COCOAPODS: 1.15.2
