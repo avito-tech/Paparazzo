@@ -252,7 +252,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private func layOutPhotoTitleLabel() {
         photoTitleLabel.sizeToFit()
-        photoTitleLabel.left = ceil(bounds.centerX - photoTitleLabel.width / 2)
+        photoTitleLabel.centerX = bounds.centerX
         photoTitleLabel.top = max(notchMaskingView.bottom, fakeNavigationBarMinimumYOffset) + fakeNavigationBarContentTopInset + 9
     }
     
