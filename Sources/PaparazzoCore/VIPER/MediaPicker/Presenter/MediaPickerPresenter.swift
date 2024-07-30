@@ -27,8 +27,8 @@ final class MediaPickerPresenter: MediaPickerModule {
     weak var view: MediaPickerViewInput? {
         didSet {
             view?.onViewDidLoad = { [weak self] in
-                self?.setUpView()
                 DispatchQueue.main.async {
+                    self?.setUpView()
                     self?.onViewDidLoad?()
                 }
             }

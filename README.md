@@ -15,6 +15,15 @@
 
 ![Demo](PaparazzoDemo.gif)
 
+# Branches
+
+At the current moment framework has the two branches for development (Literally because of SPM).
+- The first branch is `develop`. Use it for the open source app.
+- The second branch is `MA-4071-add-spm-support`. Use it for the Avito app.
+Please contact with @gnikiriy to find more information.
+
+Keep in mind to push changes in two bracnhes.
+
 # Contents
 
 * [Installation](#installation)
