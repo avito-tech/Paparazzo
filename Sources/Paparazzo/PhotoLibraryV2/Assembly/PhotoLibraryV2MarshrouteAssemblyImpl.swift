@@ -22,7 +22,6 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
-        isPaparazzoCellDisablingFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
@@ -50,8 +49,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             router: router,
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype,
-            isUsingCameraV3: isUsingCameraV3,
-            isPaparazzoCellDisablingFixEnabled: isPaparazzoCellDisablingFixEnabled
+            isUsingCameraV3: isUsingCameraV3
         )
         
         let viewController = PhotoLibraryV2ViewController(
