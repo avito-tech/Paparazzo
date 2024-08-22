@@ -10,7 +10,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
     private let isUsingCameraV3: Bool
-    private let isPaparazzoCellDisablingFixEnabled: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -38,8 +37,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
-        isUsingCameraV3: Bool,
-        isPaparazzoCellDisablingFixEnabled: Bool
+        isUsingCameraV3: Bool
     ) {
         self.interactor = interactor
         self.router = router
@@ -47,7 +45,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
-        self.isPaparazzoCellDisablingFixEnabled = isPaparazzoCellDisablingFixEnabled
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -167,7 +164,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     self?.addObserveSelectedItemsChange()
                     self?.adjustSelectedPhotosBar()
 
-                    if self?.isPaparazzoCellDisablingFixEnabled ?? false, let selectionState = self?.interactor.prepareSelection() {
+                    if let selectionState = self?.interactor.prepareSelection() {
                         self?.adjustViewForSelectionState(selectionState)
                     } else {
                         self?.view?.reloadSelectedItems()
