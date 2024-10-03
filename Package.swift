@@ -39,6 +39,9 @@ let package = Package(
                 "ImageSource",
                 "ObjCExceptionsCatcher",
                 "JNWSpringAnimation",
+            ],
+            resources: [
+                .process("Resources")
             ]
         ),
         .target(
@@ -48,6 +51,9 @@ let package = Package(
                 "ObjCExceptionsCatcher",
                 "JNWSpringAnimation",
                 .product(name: "Marshroute", package: "avito-ios-navigation"),
+            ],
+            resources: [
+                .process("Core/Resources")
             ]
         )
     ]
