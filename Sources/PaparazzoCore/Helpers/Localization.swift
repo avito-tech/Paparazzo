@@ -1,9 +1,13 @@
 import UIKit
 
 final class Resources {
-    static let bundle = Bundle(for: Resources.self)
+    #if SWIFT_PACKAGE
+    static let bundle: Bundle = .module
+    #else
+    static let bundle: Bundle = .init(for: Resources.self)
         .path(forResource: "Paparazzo", ofType: "bundle")
         .flatMap { Bundle(path: $0) } ?? Bundle.main
+    #endif
 }
 
 func localized(_ string: String, _ arguments: CVarArg...) -> String {
