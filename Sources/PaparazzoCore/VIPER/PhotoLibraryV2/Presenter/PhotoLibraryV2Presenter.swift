@@ -178,7 +178,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 guard let self else { return }
                 
                 self.view?.setAccessDeniedViewVisible(!accessGranted)
-                self.view?.setProgressVisible(false)
+                if !accessGranted {
+                    self.view?.setProgressVisible(false)
+                }
             }
         }
         
