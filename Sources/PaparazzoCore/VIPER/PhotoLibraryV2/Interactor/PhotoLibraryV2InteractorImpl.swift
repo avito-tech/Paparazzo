@@ -85,10 +85,9 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         photoLibraryItemsService.observeAlbums { [weak self] albums in
-            if let currentAlbum = self?.currentAlbum {
-                // Reset current album if it has been removed, otherwise refresh it (title might have been changed).
-                self?.currentAlbum = albums.first { $0 == currentAlbum }
-            }
+            guard let self else { return }
+            
+            self.currentAlbum = albums.first { $0 == self.currentAlbum }
             handler(albums)
         }
     }
@@ -131,19 +130,15 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     }
     
     func setCurrentAlbum(_ album: PhotoLibraryAlbum) {
-        guard album != currentAlbum else { return }
-        
         currentAlbum = album
         
         photoLibraryItemsService.observeEvents(in: album) { [weak self] event in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             
             // TODO: (ayutkin) find a way to remove items in `selectedItems` that refer to removed assets
             
-            if let onAlbumEvent = strongSelf.onAlbumEvent {
-                dispatch_to_main_queue {
-                    onAlbumEvent(event, strongSelf.selectionState())
-                }
+            dispatch_to_main_queue {
+                self.onAlbumEvent?(event, self.selectionState())
             }
         }
     }

@@ -1,4 +1,5 @@
 import Foundation
+import ImageSource
 import UIKit
 
 final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
@@ -160,83 +161,94 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         if isNewFlowPrototype {
             view?.onViewWillAppear = { [weak self] in
-                DispatchQueue.main.async {
-                    self?.addObserveSelectedItemsChange()
-                    self?.adjustSelectedPhotosBar()
-
-                    if let selectionState = self?.interactor.prepareSelection() {
-                        self?.adjustViewForSelectionState(selectionState)
-                    } else {
-                        self?.view?.reloadSelectedItems()
-                    }
+                dispatch_to_main_queue {
+                    guard let self else { return }
+                    
+                    self.addObserveSelectedItemsChange()
+                    self.adjustSelectedPhotosBar()
+                    
+                    let selectionState = self.interactor.prepareSelection()
+                    self.adjustViewForSelectionState(selectionState)
                 }
             }
         }
         
         interactor.observeAuthorizationStatus { [weak self] accessGranted in
-            self?.view?.setAccessDeniedViewVisible(!accessGranted)
-            
-            if !accessGranted {
-                self?.view?.setProgressVisible(false)
+            dispatch_to_main_queue {
+                guard let self else { return }
+                
+                self.view?.setAccessDeniedViewVisible(!accessGranted)
+                if !accessGranted {
+                    self.view?.setProgressVisible(false)
+                }
             }
         }
         
         if #available(iOS 14, *) {
             interactor.onLimitedAccess = { [weak self] in
-                DispatchQueue.main.async {
+                dispatch_to_main_queue {
                     self?.router.showLimitedAccessAlert()
                 } 
             }
         }
         
         interactor.observeAlbums { [weak self] albums in
-            guard let strongSelf = self else { return }
-            
-            // We're showing only non-empty albums
-            let albums = albums.filter { $0.numberOfItems > 0 }
-            
-            self?.view?.setAlbums(albums.map(strongSelf.albumCellData))
-            
-            if let currentAlbum = strongSelf.interactor.currentAlbum, albums.contains(currentAlbum) {
-                self?.adjustView(for: currentAlbum)  // title might have been changed
-            } else if let album = albums.first {
-                self?.selectAlbum(album)
-            } else {
-                self?.view?.setTitleVisible(false)
-                self?.view?.setPlaceholderState(.visible(title: localized("No photos")))
-                self?.view?.setProgressVisible(false)
+            dispatch_to_main_queue {
+                guard let self else { return }
+                
+                // We're showing only non-empty albums
+                let albums = albums.filter { $0.numberOfItems > 0 }
+                
+                self.view?.setAlbums(albums.map(self.albumCellData))
+                
+                if let currentAlbum = self.interactor.currentAlbum, albums.contains(currentAlbum) {
+                    self.adjustView(for: currentAlbum)  // title might have been changed
+                } else if let album = albums.first {
+                    self.selectAlbum(album)
+                } else {
+                    self.view?.setTitleVisible(false)
+                    self.view?.setPlaceholderState(.visible(title: localized("No photos")))
+                    self.view?.setProgressVisible(false)
+                }
             }
         }
         
         interactor.observeCurrentAlbumEvents { [weak self] event, selectionState in
-            guard let strongSelf = self else { return }
-            
-            var needToShowPlaceholder: Bool
-            
-            switch event {
-            case .fullReload(let items):
-                needToShowPlaceholder = items.isEmpty
-                self?.view?.setItems(
-                    items.map(strongSelf.cellData),
-                    scrollToTop: strongSelf.shouldScrollToTopOnFullReload,
-                    completion: {
-                        self?.shouldScrollToTopOnFullReload = false
-                        self?.adjustViewForSelectionState(selectionState)
-                        self?.view?.setProgressVisible(false)
-                    }
-                )
+            dispatch_to_main_queue {
+                guard let self else { return }
                 
-            case .incrementalChanges(let changes):
-                needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
-                self?.view?.applyChanges(strongSelf.viewChanges(from: changes), completion: {
-                    guard let self = self else { return }
-                    self.adjustViewForSelectionState(selectionState)
-                })
+                var needToShowPlaceholder: Bool
+                
+                switch event {
+                case .fullReload(let items):
+                    needToShowPlaceholder = items.isEmpty
+                    self.view?.setItems(
+                        items.map(self.cellData),
+                        scrollToTop: self.shouldScrollToTopOnFullReload,
+                        completion: { [weak self] in
+                            dispatch_to_main_queue {
+                                guard let self else { return }
+                                self.shouldScrollToTopOnFullReload = false
+                                self.adjustViewForSelectionState(selectionState)
+                                self.view?.setProgressVisible(false)
+                            }
+                        }
+                    )
+                    
+                case .incrementalChanges(let changes):
+                    needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
+                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
+                        dispatch_to_main_queue {
+                            guard let self else { return }
+                            self.adjustViewForSelectionState(selectionState)
+                        }
+                    })
+                }
+                
+                self.view?.setPlaceholderState(
+                    needToShowPlaceholder ? .visible(title: localized("Album is empty")) : .hidden
+                )
             }
-            
-            self?.view?.setPlaceholderState(
-                needToShowPlaceholder ? .visible(title: localized("Album is empty")) : .hidden
-            )
         }
         
         view?.onContinueButtonTap = { [weak self] in
