@@ -8,8 +8,9 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         static let hasRemoveButton  = ModeOptions(rawValue: 1 << 0)
         static let hasAutocorrectButton  = ModeOptions(rawValue: 1 << 1)
         static let hasCropButton = ModeOptions(rawValue: 1 << 2)
+        static let hasAutoEnhanceButton = ModeOptions(rawValue: 1 << 3)
         
-        static let allButtons: ModeOptions = [.hasRemoveButton, .hasAutocorrectButton, .hasCropButton]
+        static let allButtons: ModeOptions = [.hasRemoveButton, .hasAutocorrectButton, .hasCropButton, .hasAutoEnhanceButton]
     }
     
     typealias ThemeType = MediaPickerRootModuleUITheme
@@ -19,6 +20,7 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     private let removeButton = UIButton()
     private let autocorrectButton = UIButton()
     private let cropButton = UIButton()
+    private let autoEnhanceButton = UIButton()
     
     private var buttons = [UIButton]()
     private var theme: ThemeType?
@@ -50,11 +52,18 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
             for: .touchUpInside
         )
         
+        autoEnhanceButton.addTarget(
+            self,
+            action: #selector(onAutoEnhanceButtonTap(_:)),
+            for: .touchUpInside
+        )
+        
         addSubview(removeButton)
         addSubview(autocorrectButton)
+        addSubview(autoEnhanceButton)
         addSubview(cropButton)
         
-        buttons = [removeButton, autocorrectButton, cropButton]
+        buttons = [removeButton, autocorrectButton, autoEnhanceButton, cropButton]
         
         setUpAccessibilityIdentifiers()
     }
@@ -86,12 +95,13 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
-
+        
         backgroundColor = theme.photoControlsViewBackgroundColor
         removeButton.setImage(theme.removePhotoIcon, for: .normal)
         autocorrectButton.setImage(theme.autocorrectPhotoIcon, for: .normal)
         cropButton.setImage(theme.cropPhotoIcon, for: .normal)
-
+        autoEnhanceButton.setImage(theme.autoEnhanceImageIcon, for: .normal)
+        
         for button in buttons {
             button.tintColor = theme.mediaPickerIconColor
         }
@@ -110,12 +120,14 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     var onAutocorrectButtonTap: (() -> ())?
     var onCropButtonTap: (() -> ())?
     var onCameraButtonTap: (() -> ())?
+    var onAutoEnhanceButtonTap: (() -> ())?
     
     var mode: ModeOptions {
         didSet {
             removeButton.isHidden = !mode.contains(.hasRemoveButton)
             autocorrectButton.isHidden = !mode.contains(.hasAutocorrectButton)
             cropButton.isHidden = !mode.contains(.hasCropButton)
+            autoEnhanceButton.isHidden = !mode.contains(.hasAutoEnhanceButton)
             setNeedsLayout()
         }
     }
@@ -124,11 +136,17 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         removeButton.transform = transform
         autocorrectButton.transform = transform
         cropButton.transform = transform
+        autoEnhanceButton.transform = transform
     }
     
     func setAutocorrectButtonSelected(_ selected: Bool) {
         let color = selected ? theme?.mediaPickerIconActiveColor : theme?.mediaPickerIconColor
         autocorrectButton.tintColor = color
+    }
+    
+    func setAutoEnhanceButtonSelected(_ selected: Bool) {
+        let color = selected ? theme?.mediaPickerIconActiveColor : theme?.mediaPickerIconColor
+        autoEnhanceButton.tintColor = color
     }
     
     // MARK: - Private
@@ -143,5 +161,9 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
     
     @objc private func onCropButtonTap(_: UIButton) {
         onCropButtonTap?()
+    }
+    
+    @objc private func onAutoEnhanceButtonTap(_: UIButton) {
+        onAutoEnhanceButtonTap?()
     }
 }

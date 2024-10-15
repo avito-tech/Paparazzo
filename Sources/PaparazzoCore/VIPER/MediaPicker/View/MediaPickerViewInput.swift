@@ -81,6 +81,7 @@ protocol MediaPickerViewInput: AnyObject {
     var onAutocorrectButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onCameraThumbnailTap: (() -> ())? { get set }
+    var onAutoEnhanceButtonTap: (() -> ())? { get set }
     
     var onSwipeToItem: ((MediaPickerItem) -> ())? { get set }
     var onSwipeToCamera: (() -> ())? { get set }
