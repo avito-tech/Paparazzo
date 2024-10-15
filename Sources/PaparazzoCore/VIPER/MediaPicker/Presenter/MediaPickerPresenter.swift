@@ -42,6 +42,8 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemAutoEnhance: ((MediaPickerItem) -> ())?
+    var onItemSelectSetAutoEnhanceStatusIfNeeded: ((MediaPickerItem) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
@@ -99,6 +101,31 @@ final class MediaPickerPresenter: MediaPickerModule {
     
     public func setAccessDeniedButtonTitle(_ title: String) {
         cameraModuleInput.setAccessDeniedButtonTitle(title)
+    }
+    
+    public func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool) {
+        guard let image else {
+            let status: MediaPickerAutoEnhanceStatus = isEnhanced ? .enhanced : .original
+            view?.setAutoEnhanceStatus(status)
+            return
+        }
+        
+        if let index = interactor.indexOfItem(prevImage) {
+            view?.removeItem(prevImage)
+            interactor.removeItem(prevImage)
+
+            let startIndex = interactor.addItems([image]).startIndex
+            interactor.moveItem(from: startIndex, to: index)
+            interactor.updateItem(image)
+            
+            view?.addItems([image], animated: false, completion: { [weak self] in
+                guard let self else { return }
+                self.view?.moveItem(from: startIndex, to: index)
+                self.view?.moveItemThumbnail(from: startIndex, to: index)
+                self.view?.selectItem(image)
+                self.adjustPhotoTitleForItem(image)
+            })
+        }
     }
     
     func setItems(_ items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
@@ -270,6 +297,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         view?.onItemSelect = { [weak self] item in
             self?.interactor.selectItem(item)
             self?.updateAutocorrectionStatusForItem(item)
+            self?.onItemSelectSetAutoEnhanceStatusIfNeeded?(item)
             self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: true)
         }
         
@@ -346,6 +374,12 @@ final class MediaPickerPresenter: MediaPickerModule {
                         self?.view?.setAutocorrectionStatus(.original)
                     }
                 )
+            }
+        }
+        
+        view?.onAutoEnhanceButtonTap = { [weak self] in
+            if let item = self?.interactor.selectedItem {
+                self?.onItemAutoEnhance?(item)
             }
         }
         

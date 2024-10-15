@@ -177,6 +177,22 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         }
     }
     
+    func moveItemThumbnail(from sourceIndex: Int, to destinationIndex: Int) {
+        guard sourceIndex != destinationIndex else { return }
+        
+        collectionView.performBatchUpdates(animated: false, updates: { [weak self] in
+            self?.dataSource.moveItem(
+                from: sourceIndex,
+                to: destinationIndex
+            )
+            
+            self?.collectionView.moveItem(
+                at: IndexPath(item: sourceIndex, section: 0),
+                to: IndexPath(item: destinationIndex, section: 0)
+            )
+        })
+    }
+    
     func setCameraItemVisible(_ visible: Bool) {
         
         if dataSource.cameraCellVisible != visible {

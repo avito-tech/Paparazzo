@@ -34,6 +34,7 @@ public struct PaparazzoUITheme:
     public var removePhotoIcon = PaparazzoUITheme.image(named: "delete")
     public var autocorrectPhotoIcon = PaparazzoUITheme.image(named: "autocorrect")
     public var cropPhotoIcon = PaparazzoUITheme.image(named: "crop")
+    public var autoEnhanceImageIcon = PaparazzoUITheme.image(named: "autoEnhanceImage")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")
     public var backIcon = PaparazzoUITheme.image(named: "bt-back")
