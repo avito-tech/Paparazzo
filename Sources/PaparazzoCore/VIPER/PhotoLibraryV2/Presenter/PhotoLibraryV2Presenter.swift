@@ -55,6 +55,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemAutoEnhance: ((MediaPickerItem) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?

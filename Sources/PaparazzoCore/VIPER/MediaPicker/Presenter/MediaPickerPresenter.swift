@@ -42,6 +42,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemAutoEnhance: ((MediaPickerItem) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
@@ -347,6 +348,13 @@ final class MediaPickerPresenter: MediaPickerModule {
                     }
                 )
             }
+        }
+        
+        view?.onAutoEnhanceButtonTap = { [weak self] in
+            if let item = self?.interactor.selectedItem {
+                self?.onItemAutoEnhance?(item)
+            }
+            self?.view?.setAutoEnhanceStatus(.enhanced)
         }
         
         view?.onRemoveButtonTap = { [weak self] in

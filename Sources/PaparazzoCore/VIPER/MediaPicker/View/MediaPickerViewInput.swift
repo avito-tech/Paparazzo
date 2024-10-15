@@ -16,10 +16,16 @@ enum MediaPickerAutocorrectionStatus {
     case corrected
 }
 
+enum MediaPickerAutoEnhanceStatus {
+    case original
+    case enhanced
+}
+
 protocol MediaPickerViewInput: AnyObject {
     
     func setMode(_: MediaPickerViewMode)
     func setAutocorrectionStatus(_: MediaPickerAutocorrectionStatus)
+    func setAutoEnhanceStatus(_: MediaPickerAutoEnhanceStatus)
     func adjustForDeviceOrientation(_: DeviceOrientation)
     
     func setCameraOutputParameters(_: CameraOutputParameters)
@@ -81,6 +87,7 @@ protocol MediaPickerViewInput: AnyObject {
     var onAutocorrectButtonTap: (() -> ())? { get set }
     var onCropButtonTap: (() -> ())? { get set }
     var onCameraThumbnailTap: (() -> ())? { get set }
+    var onAutoEnhanceButtonTap: (() -> ())? { get set }
     
     var onSwipeToItem: ((MediaPickerItem) -> ())? { get set }
     var onSwipeToCamera: (() -> ())? { get set }

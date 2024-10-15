@@ -3,9 +3,10 @@ import ImageIO
 import ImageSource
 import UIKit
 
-final class CroppedImageSource: ImageSource {
+public final class CroppedImageSource: ImageSource {
     
-    let originalImage: ImageSource
+    public let originalImage: ImageSource
+    
     let sourceSize: CGSize
     let croppingParameters: ImageCroppingParameters?
     let previewImage: CGImage?
@@ -31,7 +32,7 @@ final class CroppedImageSource: ImageSource {
     
     // MARK: - ImageSource
     
-    func requestImage<T: InitializableWithCGImage>(
+    public func requestImage<T: InitializableWithCGImage>(
         options: ImageRequestOptions,
         resultHandler: @escaping (ImageRequestResult<T>) -> ())
         -> ImageRequestId
@@ -56,11 +57,11 @@ final class CroppedImageSource: ImageSource {
         return requestId
     }
     
-    func cancelRequest(_ requestID: ImageRequestId) {
+    public func cancelRequest(_ requestID: ImageRequestId) {
         // TODO: надо будет как-нибудь на досуге сделать возможность отмены, но сейчас здесь это не критично
     }
     
-    func imageSize(completion: @escaping (CGSize?) -> ()) {
+    public func imageSize(completion: @escaping (CGSize?) -> ()) {
         getCroppedImage { croppedImageSource in
             if let croppedImageSource = croppedImageSource {
                 croppedImageSource.imageSize(completion: completion)
@@ -70,7 +71,7 @@ final class CroppedImageSource: ImageSource {
         }
     }
     
-    func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
+    public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
         getCroppedImage { croppedImageSource in
             if let croppedImageSource = croppedImageSource {
                 croppedImageSource.fullResolutionImageData(completion: completion)
@@ -80,7 +81,7 @@ final class CroppedImageSource: ImageSource {
         }
     }
     
-    func isEqualTo(_ other: ImageSource) -> Bool {
+    public func isEqualTo(_ other: ImageSource) -> Bool {
         if let other = other as? CroppedImageSource {
             return originalImage.isEqualTo(other.originalImage)
         } else {

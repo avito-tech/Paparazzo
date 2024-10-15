@@ -173,9 +173,15 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         get { return mediaPickerView.onAutocorrectButtonTap }
         set { mediaPickerView.onAutocorrectButtonTap = newValue }
     }
+    
     var onCropButtonTap: (() -> ())? {
         get { return mediaPickerView.onCropButtonTap }
         set { mediaPickerView.onCropButtonTap = newValue }
+    }
+    
+    var onAutoEnhanceButtonTap: (() -> ())? {
+        get { return mediaPickerView.onAutoEnhanceButtonTap }
+        set { mediaPickerView.onAutoEnhanceButtonTap = newValue }
     }
     
     var onCameraThumbnailTap: (() -> ())? {
@@ -214,6 +220,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     func setAutocorrectionStatus(_ status: MediaPickerAutocorrectionStatus) {
         mediaPickerView.setAutocorrectionStatus(status)
+    }
+    
+    func setAutoEnhanceStatus(_ status: MediaPickerAutoEnhanceStatus) {
+        mediaPickerView.setAutoEnhanceStatus(status)
     }
     
     func setCameraOutputParameters(_ parameters: CameraOutputParameters) {
@@ -386,6 +396,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     func setShowsRemoveButton(_ showsRemoveButton: Bool) {
         mediaPickerView.setShowsRemoveButton(showsRemoveButton)
+    }
+
+    func setShowsAutoEnhanceButton(_ showsAutoEnhanceButton: Bool) {
+        mediaPickerView.setShowsAutoEnhanceButton(showsAutoEnhanceButton)
     }
     
     func setShowPreview(_ showPreview: Bool) {

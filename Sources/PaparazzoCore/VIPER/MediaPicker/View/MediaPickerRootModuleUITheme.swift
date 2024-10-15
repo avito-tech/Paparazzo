@@ -39,6 +39,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var removePhotoIcon: UIImage? { get }
     var autocorrectPhotoIcon: UIImage? { get }
     var cropPhotoIcon: UIImage? { get }
+    var autoEnhanceImageIcon: UIImage? { get }
     var returnToCameraIcon: UIImage? { get }
     var closeCameraIcon: UIImage? { get }
     var backIcon: UIImage? { get }
