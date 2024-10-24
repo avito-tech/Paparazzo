@@ -173,6 +173,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     
                     let selectionState = self.interactor.prepareSelection()
                     self.adjustViewForSelectionState(selectionState)
+                    
+                    guard let album = self.interactor.currentAlbum else { return }
+                    self.selectAlbum(album)
                 }
             }
         }
@@ -234,8 +237,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 switch event {
                 case .fullReload(let items):
                     needToShowPlaceholder = items.isEmpty
+                    let photoGalleryItems = items.map { self.cellData(MediaPickerItem($0)) }
+                    // Images from the Camera that are not in the Gallery
+                    let cameraItems = self.interactor.selectedItems
+                        .map { self.cellData($0) }
+                        .filter { !photoGalleryItems.contains($0) }
                     self.view?.setItems(
-                        items.map(self.cellData),
+                        cameraItems + photoGalleryItems,
                         scrollToTop: self.shouldScrollToTopOnFullReload,
                         completion: { [weak self] in
                             dispatch_to_main_queue {
@@ -393,16 +401,13 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         view?.selectAlbum(withId: album.identifier)
     }
     
-    private func cellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
-        
-        let mediaPickerItem = MediaPickerItem(item)
-        
+    private func cellData(_ mediaPickerItem: MediaPickerItem) -> PhotoLibraryItemCellData {
         let getSelectionIndex = { [weak self] in
             self?.interactor.selectedItems.firstIndex(of: mediaPickerItem).flatMap { $0 + 1 }
         }
         
         var cellData = PhotoLibraryItemCellData(
-            image: item.image,
+            image: mediaPickerItem.image,
             getSelectionIndex: isNewFlowPrototype ? getSelectionIndex : nil
         )
 
@@ -595,8 +600,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private func viewChanges(from changes: PhotoLibraryChanges) -> PhotoLibraryViewChanges {
         return PhotoLibraryViewChanges(
             removedIndexes: changes.removedIndexes,
-            insertedItems: changes.insertedItems.map { (index: $0, cellData: cellData($1)) },
-            updatedItems: changes.updatedItems.map { (index: $0, cellData: cellData($1)) },
+            insertedItems: changes.insertedItems.map { (index: $0, cellData: cellData(MediaPickerItem($1))) },
+            updatedItems: changes.updatedItems.map { (index: $0, cellData: cellData(MediaPickerItem($1))) },
             movedIndexes: changes.movedIndexes
         )
     }
