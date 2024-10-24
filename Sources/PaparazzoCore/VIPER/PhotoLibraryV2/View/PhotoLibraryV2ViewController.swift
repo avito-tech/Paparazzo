@@ -59,6 +59,12 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         onViewWillAppear?()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        onViewDidAppear?()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -85,6 +91,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
     var onItemSelect: ((PhotoLibraryItem) -> ())?
     var onViewDidLoad: (() -> ())?
     var onViewWillAppear: (() -> ())?
+    var onViewDidAppear: (() -> ())?
     var onViewDidDisappear: ((Bool) -> ())?
     
     var onTitleTap: (() -> ())? {
