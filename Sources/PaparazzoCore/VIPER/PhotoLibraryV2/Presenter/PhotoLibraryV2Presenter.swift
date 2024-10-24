@@ -177,7 +177,23 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     let selectionState = self.interactor.prepareSelection()
                     self.adjustViewForSelectionState(selectionState)
                     
-                    guard self.isPresentingPhotosFromCameraFixEnabled, let album = self.interactor.currentAlbum else { return }
+                    guard
+                        self.isPresentingPhotosFromCameraFixEnabled,
+                        self.interactor.authorizationStatus == .limited,
+                        let album = self.interactor.currentAlbum
+                    else { return }
+                    self.selectAlbum(album)
+                }
+            }
+        } else {
+            view?.onViewWillAppear = { [weak self] in
+                dispatch_to_main_queue {
+                    guard let self else { return }
+                    guard
+                        self.isPresentingPhotosFromCameraFixEnabled,
+                        self.interactor.authorizationStatus == .limited,
+                        let album = self.interactor.currentAlbum
+                    else { return }
                     self.selectAlbum(album)
                 }
             }

@@ -3,10 +3,12 @@ import ImageSource
 
 
 protocol PhotoLibraryItemsService: AnyObject {
+    var onLimitedAccess: (() -> ())? { get set }
+    var authorizationStatus: PHAuthorizationStatus { get }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
-    var onLimitedAccess: (() -> ())? { get set }
 }
 
 enum PhotosOrder {
@@ -41,9 +43,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
+    var authorizationStatus: PHAuthorizationStatus {
+        PHPhotoLibrary.readWriteAuthorizationStatus()
+    }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         onAuthorizationStatusChange = handler
-        callAuthorizationHandler(for: PHPhotoLibrary.readWriteAuthorizationStatus())
+        callAuthorizationHandler(for: authorizationStatus)
     }
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
@@ -154,7 +160,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             return
         }
         
-        switch PHPhotoLibrary.readWriteAuthorizationStatus() {
+        switch authorizationStatus {
         
         case .authorized:
             wasSetUp = true
