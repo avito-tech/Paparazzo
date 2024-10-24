@@ -1,5 +1,6 @@
 import Foundation
 import ImageSource
+import Toolkit
 import UIKit
 
 final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
@@ -30,6 +31,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private var shouldScrollToTopOnFullReload = true
     private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
     private var continueButtonTitle: String?
+    
+    // MARK: - Executor
+    private let viewWillAppearExecutor = ConditionalExecutorImpl()
     
     // MARK: - Init
     
@@ -143,6 +147,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     // MARK: - Private
     private func setUpView() {
+        viewWillAppearExecutor.reachCondition()
+        
         updateContinueButtonTitle()
         
         view?.setTitleVisible(false)
@@ -163,6 +169,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             view?.onViewWillAppear = { [weak self] in
                 dispatch_to_main_queue {
                     guard let self else { return }
+                    
+                    self.viewWillAppearExecutor.reachCondition()
                     
                     self.addObserveSelectedItemsChange()
                     self.adjustSelectedPhotosBar()
@@ -187,8 +195,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         if #available(iOS 14, *) {
             interactor.onLimitedAccess = { [weak self] in
                 dispatch_to_main_queue {
-                    self?.router.showLimitedAccessAlert()
-                } 
+                    // Отображение Alert о частичном доступе к фото должен быть только после того
+                    // как экран начинает отображаться в навигационном стеке
+                    self?.viewWillAppearExecutor.takeForExecution(once: true) {
+                        self?.router.showLimitedAccessAlert()
+                    }
+                }
             }
         }
         
