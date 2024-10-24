@@ -5,6 +5,7 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController
 }

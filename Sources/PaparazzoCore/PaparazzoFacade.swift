@@ -95,6 +95,7 @@ public final class PaparazzoFacade {
     public static func libraryV2ViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV2Data,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
@@ -104,7 +105,8 @@ public final class PaparazzoFacade {
         let galleryController = assembly.module(
             data: parameters,
             isNewFlowPrototype: true,
-            isUsingCameraV3: true,
+            isUsingCameraV3: true, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: { (module: PhotoLibraryV2Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()

@@ -15,6 +15,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ())
         -> UIViewController
     {
@@ -46,7 +47,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             router: router,
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype,
-            isUsingCameraV3: isUsingCameraV3
+            isUsingCameraV3: isUsingCameraV3, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
         )
         
         viewController.addDisposable(presenter)

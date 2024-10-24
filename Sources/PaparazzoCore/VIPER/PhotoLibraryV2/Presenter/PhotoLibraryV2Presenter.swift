@@ -12,6 +12,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
     private let isUsingCameraV3: Bool
+    private let isPresentingPhotosFromCameraFixEnabled: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -42,7 +43,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
-        isUsingCameraV3: Bool
+        isUsingCameraV3: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool
     ) {
         self.interactor = interactor
         self.router = router
@@ -50,6 +52,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
+        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -174,7 +177,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     let selectionState = self.interactor.prepareSelection()
                     self.adjustViewForSelectionState(selectionState)
                     
-                    guard let album = self.interactor.currentAlbum else { return }
+                    guard self.isPresentingPhotosFromCameraFixEnabled, let album = self.interactor.currentAlbum else { return }
                     self.selectAlbum(album)
                 }
             }
@@ -228,47 +231,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
         }
         
-        interactor.observeCurrentAlbumEvents { [weak self] event, selectionState in
-            dispatch_to_main_queue {
-                guard let self else { return }
-                
-                var needToShowPlaceholder: Bool
-                
-                switch event {
-                case .fullReload(let items):
-                    needToShowPlaceholder = items.isEmpty
-                    let photoGalleryItems = items.map { self.cellData(MediaPickerItem($0)) }
-                    // Images from the Camera that are not in the Gallery
-                    let cameraItems = self.interactor.selectedItems
-                        .map { self.cellData($0) }
-                        .filter { !photoGalleryItems.contains($0) }
-                    self.view?.setItems(
-                        cameraItems + photoGalleryItems,
-                        scrollToTop: self.shouldScrollToTopOnFullReload,
-                        completion: { [weak self] in
-                            dispatch_to_main_queue {
-                                guard let self else { return }
-                                self.shouldScrollToTopOnFullReload = false
-                                self.adjustViewForSelectionState(selectionState)
-                                self.view?.setProgressVisible(false)
-                            }
-                        }
-                    )
-                    
-                case .incrementalChanges(let changes):
-                    needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
-                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
-                        dispatch_to_main_queue {
-                            guard let self else { return }
-                            self.adjustViewForSelectionState(selectionState)
-                        }
-                    })
-                }
-                
-                self.view?.setPlaceholderState(
-                    needToShowPlaceholder ? .visible(title: localized("Album is empty")) : .hidden
-                )
-            }
+        if isPresentingPhotosFromCameraFixEnabled {
+            observeCurrentAlbumEvents()
+        } else {
+            legacyObserveCurrentAlbumEvents()
         }
         
         view?.onContinueButtonTap = { [weak self] in
@@ -408,6 +374,45 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         var cellData = PhotoLibraryItemCellData(
             image: mediaPickerItem.image,
+            getSelectionIndex: isNewFlowPrototype ? getSelectionIndex : nil
+        )
+
+        cellData.selected = interactor.isSelected(mediaPickerItem)
+        
+        cellData.onSelectionPrepare = { [weak self] in
+            if let selectionState = self?.interactor.prepareSelection() {
+                self?.adjustViewForSelectionState(selectionState)
+            }
+        }
+        
+        cellData.onSelect = { [weak self] in
+            if let selectionState = self?.interactor.selectItem(mediaPickerItem) {
+                self?.adjustViewForSelectionState(selectionState)
+            }
+            
+            if self?.isNewFlowPrototype == false {
+                self?.view?.setHeaderVisible(false)
+            }
+            
+            self?.updateContinueButtonTitle()
+        }
+        
+        cellData.onDeselect = { [weak self] in
+            self?.handleItemDeselect(mediaPickerItem)
+        }
+        
+        return cellData
+    }
+    
+    private func legacyCellData(_ item: PhotoLibraryItem) -> PhotoLibraryItemCellData {
+        let mediaPickerItem = MediaPickerItem(item)
+        
+        let getSelectionIndex = { [weak self] in
+            self?.interactor.selectedItems.firstIndex(of: mediaPickerItem).flatMap { $0 + 1 }
+        }
+        
+        var cellData = PhotoLibraryItemCellData(
+            image: item.image,
             getSelectionIndex: isNewFlowPrototype ? getSelectionIndex : nil
         )
 
@@ -606,6 +611,15 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         )
     }
     
+    private func legacyViewChanges(from changes: PhotoLibraryChanges) -> PhotoLibraryViewChanges {
+        return PhotoLibraryViewChanges(
+            removedIndexes: changes.removedIndexes,
+            insertedItems: changes.insertedItems.map { (index: $0, cellData: legacyCellData($1)) },
+            updatedItems: changes.updatedItems.map { (index: $0, cellData: legacyCellData($1)) },
+            movedIndexes: changes.movedIndexes
+        )
+    }
+    
     private func adjustSelectedPhotosBar() {
         let images = interactor.selectedItems
         
@@ -622,6 +636,91 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private func addObserveSelectedItemsChange() {
         interactor.observeSelectedItemsChange { [weak self] in
             self?.adjustSelectedPhotosBar()
+        }
+    }
+    
+    private func observeCurrentAlbumEvents() {
+        interactor.observeCurrentAlbumEvents { [weak self] event, selectionState in
+            dispatch_to_main_queue {
+                guard let self else { return }
+                
+                var needToShowPlaceholder: Bool
+                
+                switch event {
+                case .fullReload(let items):
+                    needToShowPlaceholder = items.isEmpty
+                    let photoGalleryItems = items.map { self.cellData(MediaPickerItem($0)) }
+                    // Images from the Camera that are not in the Gallery
+                    let cameraItems = self.interactor.selectedItems
+                        .map { self.cellData($0) }
+                        .filter { !photoGalleryItems.contains($0) }
+                    self.view?.setItems(
+                        cameraItems + photoGalleryItems,
+                        scrollToTop: self.shouldScrollToTopOnFullReload,
+                        completion: { [weak self] in
+                            dispatch_to_main_queue {
+                                guard let self else { return }
+                                self.shouldScrollToTopOnFullReload = false
+                                self.adjustViewForSelectionState(selectionState)
+                                self.view?.setProgressVisible(false)
+                            }
+                        }
+                    )
+                    
+                case .incrementalChanges(let changes):
+                    needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
+                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
+                        dispatch_to_main_queue {
+                            guard let self else { return }
+                            self.adjustViewForSelectionState(selectionState)
+                        }
+                    })
+                }
+                
+                self.view?.setPlaceholderState(
+                    needToShowPlaceholder ? .visible(title: localized("Album is empty")) : .hidden
+                )
+            }
+        }
+    }
+    
+    private func legacyObserveCurrentAlbumEvents() {
+        interactor.observeCurrentAlbumEvents { [weak self] event, selectionState in
+            dispatch_to_main_queue {
+                guard let self else { return }
+                
+                var needToShowPlaceholder: Bool
+                
+                switch event {
+                case .fullReload(let items):
+                    needToShowPlaceholder = items.isEmpty
+                    self.view?.setItems(
+                        items.map(self.legacyCellData),
+                        scrollToTop: self.shouldScrollToTopOnFullReload,
+                        completion: { [weak self] in
+                            dispatch_to_main_queue {
+                                guard let self else { return }
+                                self.shouldScrollToTopOnFullReload = false
+                                self.adjustViewForSelectionState(selectionState)
+                                self.view?.setProgressVisible(false)
+                            }
+                        }
+                    )
+                    
+                case .incrementalChanges(let changes):
+                    needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
+                    self.view?.applyChanges(self.legacyViewChanges(from: changes), completion: { [weak self] in
+                        dispatch_to_main_queue {
+                            guard let self else { return }
+                            self.adjustViewForSelectionState(selectionState)
+                        }
+                    })
+                }
+                
+                self.view?.setPlaceholderState(
+                    needToShowPlaceholder ? .visible(title: localized("Album is empty")) : .hidden
+                )
+            }
         }
     }
 }
