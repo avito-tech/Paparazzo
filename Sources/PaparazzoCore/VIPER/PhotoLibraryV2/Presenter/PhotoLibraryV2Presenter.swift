@@ -209,17 +209,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 guard let self else { return }
                 
                 if self.isPresentingPhotosFromCameraFixEnabled {
-                    // Отображение Alert о частичном доступе к фото должен быть только после того
-                    // как экран начинает отображаться в навигационном стеке
-                    self.viewDidAppearExecutor.takeForExecution(once: true) { [weak self] in
-                        dispatch_to_main_queue {
-                            self?.router.showLimitedAccessAlert()
-                        }
+                    dispatch_to_main_queue { [weak self] in
+                        self?.router.showLimitedAccessAlert()
                     }
                 } else {
-                    // Всё решает RunLoop и DispatchQueue.main.async, который всегда отправляет блок кода в следующий цикл
-                    // Тред уже Main, так как вызов из interactor.observeAlbums происходит всегда в Main треде
-                    // выглядит как хак, что бы обойти какой-то баг (видимо показ этого алёрта)
                     DispatchQueue.main.async { [weak self] in
                         self?.router.showLimitedAccessAlert()
                     }
@@ -227,30 +220,15 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
         }
         
-        interactor.observeAlbums { [weak self] albums in
-            dispatch_to_main_queue {
-                guard let self else { return }
-                
-                // We're showing only non-empty albums
-                let albums = albums.filter { $0.numberOfItems > 0 }
-                
-                self.view?.setAlbums(albums.map(self.albumCellData))
-                
-                if let currentAlbum = self.interactor.currentAlbum, albums.contains(currentAlbum) {
-                    self.adjustView(for: currentAlbum)  // title might have been changed
-                } else if let album = albums.first {
-                    self.selectAlbum(album)
-                } else {
-                    self.view?.setTitleVisible(false)
-                    self.view?.setPlaceholderState(.visible(title: localized("No photos")))
-                    self.view?.setProgressVisible(false)
-                }
-            }
-        }
-        
         if isPresentingPhotosFromCameraFixEnabled {
+            // Если есть состояние гонки и подписка на фото срабатывает позже, чем получение данных и вызов подписчика
+            // Сначала подписаться и только после того как экран открылся начать загружать фото
+            viewDidAppearExecutor.takeForExecution(once: true) { [weak self] in
+                self?.observeAlbums()
+            }
             observeCurrentAlbumEvents()
         } else {
+            observeAlbums()
             legacyObserveCurrentAlbumEvents()
         }
         
@@ -653,6 +631,29 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private func addObserveSelectedItemsChange() {
         interactor.observeSelectedItemsChange { [weak self] in
             self?.adjustSelectedPhotosBar()
+        }
+    }
+    
+    private func observeAlbums() {
+        interactor.observeAlbums { [weak self] albums in
+            dispatch_to_main_queue {
+                guard let self else { return }
+                
+                // We're showing only non-empty albums
+                let albums = albums.filter { $0.numberOfItems > 0 }
+                
+                self.view?.setAlbums(albums.map(self.albumCellData))
+                
+                if let currentAlbum = self.interactor.currentAlbum, albums.contains(currentAlbum) {
+                    self.adjustView(for: currentAlbum)  // title might have been changed
+                } else if let album = albums.first {
+                    self.selectAlbum(album)
+                } else {
+                    self.view?.setTitleVisible(false)
+                    self.view?.setPlaceholderState(.visible(title: localized("No photos")))
+                    self.view?.setProgressVisible(false)
+                }
+            }
         }
     }
     
