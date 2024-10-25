@@ -1,6 +1,5 @@
 import Foundation
 import ImageSource
-import Toolkit
 import UIKit
 
 final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
@@ -34,7 +33,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private var continueButtonTitle: String?
     
     // MARK: - Executor
-    private let viewDidAppearExecutor = ConditionalExecutorImpl()
+    private let viewDidAppearExecutor = PaparazzoConditionalExecutorImpl()
     
     // MARK: - Init
     
@@ -177,24 +176,15 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     let selectionState = self.interactor.prepareSelection()
                     self.adjustViewForSelectionState(selectionState)
                     
-                    guard
-                        self.isPresentingPhotosFromCameraFixEnabled,
-                        self.interactor.authorizationStatus == .limited,
-                        let album = self.interactor.currentAlbum
-                    else { return }
-                    self.selectAlbum(album)
+                    self.selectAlbumOnViewWillAppear()
                 }
             }
         } else {
             view?.onViewWillAppear = { [weak self] in
                 dispatch_to_main_queue {
                     guard let self else { return }
-                    guard
-                        self.isPresentingPhotosFromCameraFixEnabled,
-                        self.interactor.authorizationStatus == .limited,
-                        let album = self.interactor.currentAlbum
-                    else { return }
-                    self.selectAlbum(album)
+                    
+                    self.selectAlbumOnViewWillAppear()
                 }
             }
         }
@@ -216,10 +206,21 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         if #available(iOS 14, *) {
             interactor.onLimitedAccess = { [weak self] in
-                // Отображение Alert о частичном доступе к фото должен быть только после того
-                // как экран начинает отображаться в навигационном стеке
-                self?.viewDidAppearExecutor.takeForExecution(once: true) {
-                    dispatch_to_main_queue {
+                guard let self else { return }
+                
+                if self.isPresentingPhotosFromCameraFixEnabled {
+                    // Отображение Alert о частичном доступе к фото должен быть только после того
+                    // как экран начинает отображаться в навигационном стеке
+                    self.viewDidAppearExecutor.takeForExecution(once: true) { [weak self] in
+                        dispatch_to_main_queue {
+                            self?.router.showLimitedAccessAlert()
+                        }
+                    }
+                } else {
+                    // Всё решает RunLoop и DispatchQueue.main.async, который всегда отправляет блок кода в следующий цикл
+                    // Тред уже Main, так как вызов из interactor.observeAlbums происходит всегда в Main треде
+                    // выглядит как хак, что бы обойти какой-то баг (видимо показ этого алёрта)
+                    DispatchQueue.main.async { [weak self] in
                         self?.router.showLimitedAccessAlert()
                     }
                 }
@@ -739,6 +740,16 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             }
         }
     }
+    
+    private func selectAlbumOnViewWillAppear() {
+        guard
+            isPresentingPhotosFromCameraFixEnabled,
+            interactor.authorizationStatus == .limited,
+            let album = interactor.currentAlbum
+        else { return }
+        
+        selectAlbum(album)
+    }
 }
 
 extension MediaPickerData {
@@ -788,5 +799,56 @@ extension MediaPickerData {
             cameraEnabled: cameraEnabled,
             photoLibraryEnabled: false
         )
+    }
+}
+
+private protocol PaparazzoConditionalExecutor: AnyObject {
+    func takeForExecution(once: Bool, block: @escaping () -> ())
+    func reachCondition()
+    func dropCondition()
+}
+
+private final class PaparazzoConditionalExecutorImpl: PaparazzoConditionalExecutor {
+    typealias PaparazzoExecutionBlock = () -> ()
+    
+    // MARK: Private struct
+    private struct PaparazzoExecutionItem {
+        let block: PaparazzoConditionalExecutorImpl.PaparazzoExecutionBlock
+        let once: Bool
+    }
+    
+    // MARK: - Private properties
+    private var items = [PaparazzoExecutionItem]()
+    private var conditionReached = false
+
+    // MARK: - ConditionalExecutor
+    func takeForExecution(once: Bool, block: @escaping PaparazzoExecutionBlock) {
+        // make local copy, becase condition can be droped inside block closure
+        let conditionReached = self.conditionReached
+        
+        if conditionReached {
+            block()
+        }
+
+        if !conditionReached || !once {
+            let item = PaparazzoExecutionItem(block: block, once: once)
+            items.append(item)
+        }
+    }
+
+    func reachCondition() {
+        conditionReached = true
+        executeBlocksIfNeeded()
+    }
+
+    func dropCondition() {
+        conditionReached = false
+    }
+
+    // MARK: - Private
+    private func executeBlocksIfNeeded() {
+        guard conditionReached else { return }
+        items.forEach { $0.block() }
+        items = items.filter { !$0.once }
     }
 }
