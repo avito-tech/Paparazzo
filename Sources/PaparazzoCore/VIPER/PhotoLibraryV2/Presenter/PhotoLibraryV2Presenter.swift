@@ -186,7 +186,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         if #available(iOS 14, *) {
             interactor.onLimitedAccess = { [weak self] in
-                dispatch_to_main_queue {
+                DispatchQueue.main.async {
                     self?.router.showLimitedAccessAlert()
                 } 
             }
