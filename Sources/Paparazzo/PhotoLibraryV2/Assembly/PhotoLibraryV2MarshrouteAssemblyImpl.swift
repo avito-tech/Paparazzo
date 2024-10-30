@@ -26,7 +26,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(photosOrder: .reversed)
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            photosOrder: .reversed
+        )
         
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
         
@@ -49,9 +52,9 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isNewFlowPrototype: isNewFlowPrototype,
-            isUsingCameraV3: isUsingCameraV3, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
+            isNewFlowPrototype: isNewFlowPrototype, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isUsingCameraV3: isUsingCameraV3
         )
         
         let viewController = PhotoLibraryV2ViewController(

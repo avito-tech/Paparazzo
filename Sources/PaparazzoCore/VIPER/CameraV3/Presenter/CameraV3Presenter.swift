@@ -6,16 +6,19 @@ final class CameraV3Presenter: CameraV3Module {
     private let interactor: CameraV3Interactor
     private let router: CameraV3Router
     private let volumeService: VolumeService
+    private let isPresentingPhotosFromCameraFixEnabled: Bool
     
     // MARK: - Init
     init(
         interactor: CameraV3Interactor,
         volumeService: VolumeService,
-        router: CameraV3Router
+        router: CameraV3Router,
+        isPresentingPhotosFromCameraFixEnabled: Bool
     ) {
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
+        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
     }
     
     var onLastPhotoThumbnailTap: (() -> ())?
@@ -65,8 +68,9 @@ final class CameraV3Presenter: CameraV3Module {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router, isPresentingPhotosFromCameraFixEnabled] in
             router.showMediaPicker(
+                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
                 data: interactor.mediaPickerDataWithSelectedLastItem,
                 overridenTheme: nil,
                 configure: { module in

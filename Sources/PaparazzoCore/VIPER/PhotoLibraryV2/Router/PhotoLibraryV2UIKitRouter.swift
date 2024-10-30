@@ -19,6 +19,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ())
     {
         let assembly = assemblyFactory.mediaPickerAssembly()
@@ -27,6 +28,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             data: data,
             overridenTheme: overridenTheme,
             isNewFlowPrototype: isNewFlowPrototype,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
         
@@ -39,6 +41,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         shouldAllowFinishingWithNoPhotos: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (NewCameraModule) -> ())
     {
         let assembly = assemblyFactory.newCameraAssembly()
@@ -47,7 +50,8 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
             cameraService: cameraService,
-            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
+            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
         
@@ -57,13 +61,15 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     func showCameraV3(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> ()
     ) {
         let assembly = assemblyFactory.cameraV3Assembly()
         let viewController = assembly.module(
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
-            cameraService: cameraService,
+            cameraService: cameraService, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
         present(viewController, animated: true)

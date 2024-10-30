@@ -19,6 +19,7 @@ final class CameraV3AssemblyImpl:
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> ())
         -> UIViewController
     {
@@ -41,7 +42,8 @@ final class CameraV3AssemblyImpl:
         let presenter = CameraV3Presenter(
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
-            router: router
+            router: router, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
         )
         
         viewController.setTheme(theme)
