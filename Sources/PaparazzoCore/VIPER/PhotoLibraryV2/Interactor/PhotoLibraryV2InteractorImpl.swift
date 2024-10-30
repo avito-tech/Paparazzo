@@ -1,8 +1,8 @@
 import Foundation
-import Photos
 import ImageSource
 
 final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
+    
     // MARK: - State
     private var onAlbumEvent: ((PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())?
     

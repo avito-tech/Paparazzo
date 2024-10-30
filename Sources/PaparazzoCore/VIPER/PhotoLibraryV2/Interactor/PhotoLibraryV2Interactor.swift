@@ -1,8 +1,8 @@
 import Foundation
-import Photos
 import ImageSource
 
 protocol PhotoLibraryV2Interactor: AnyObject {
+    
     var mediaPickerData: MediaPickerData { get }
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [MediaPickerItem] { get }
