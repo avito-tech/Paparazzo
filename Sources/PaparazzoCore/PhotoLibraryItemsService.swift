@@ -263,13 +263,21 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
-        if let phChanges = phChanges, phChanges.hasIncrementalChanges {
-            onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
-        } else if let observedAlbum = observedAlbum {
+        if let observedAlbum = observedAlbum {
             onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+        } else if let phChanges = phChanges, phChanges.hasIncrementalChanges {
+            onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
         } else {
             onAlbumEvent?(.fullReload([]))
         }
+        
+//        if let phChanges = phChanges, phChanges.hasIncrementalChanges {
+//            onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
+//        } else if let observedAlbum = observedAlbum {
+//            onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+//        } else {
+//            onAlbumEvent?(.fullReload([]))
+//        }
     }
     
     private func photoLibraryItems(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
