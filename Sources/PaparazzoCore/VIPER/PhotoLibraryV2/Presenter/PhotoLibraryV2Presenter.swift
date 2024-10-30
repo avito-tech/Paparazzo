@@ -11,7 +11,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
     private let isUsingCameraV3: Bool
-    private let isPresentingPhotosFromCameraFixEnabled: Bool
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -39,8 +38,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
-        isUsingCameraV3: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool
+        isUsingCameraV3: Bool
     ) {
         self.interactor = interactor
         self.router = router
@@ -48,7 +46,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
-        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -225,7 +222,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 switch event {
                 case .fullReload(let items):
                     needToShowPlaceholder = items.isEmpty
-                    print("Photo fullReload")
                     self.view?.setItems(
                         items.map(self.cellData),
                         scrollToTop: self.shouldScrollToTopOnFullReload,
@@ -241,27 +237,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     
                 case .incrementalChanges(let changes):
                     needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
-                    print("Photo incrementalChanges")
-
-                    self.view?.setItems(
-                        changes.itemsAfterChanges.map(self.cellData),
-                        scrollToTop: self.shouldScrollToTopOnFullReload,
-                        completion: { [weak self] in
-                            dispatch_to_main_queue {
-                                guard let self else { return }
-                                self.shouldScrollToTopOnFullReload = false
-                                self.adjustViewForSelectionState(selectionState)
-                                self.view?.setProgressVisible(false)
-                            }
+                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
+                        dispatch_to_main_queue {
+                            guard let self else { return }
+                            self.adjustViewForSelectionState(selectionState)
                         }
-                    )
-                    
-//                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
-//                        dispatch_to_main_queue {
-//                            guard let self else { return }
-//                            self.adjustViewForSelectionState(selectionState)
-//                        }
-//                    })
+                    })
                 }
                 
                 self.view?.setPlaceholderState(
