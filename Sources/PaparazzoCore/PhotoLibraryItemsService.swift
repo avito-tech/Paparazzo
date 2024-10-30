@@ -169,7 +169,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             // Xcode 12+
         case .limited:
             wasSetUp = true
-            setUpFetchResultForLimitedAccess(completion: completion)
+            setUpFetchResult(completion: completion)
+//            setUpFetchResultForLimitedAccess(completion: completion)
             
             onLimitedAccess?()
             #endif
