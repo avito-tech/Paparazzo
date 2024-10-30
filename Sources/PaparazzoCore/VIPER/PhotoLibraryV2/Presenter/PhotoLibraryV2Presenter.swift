@@ -240,12 +240,26 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     
                 case .incrementalChanges(let changes):
                     needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
-                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
-                        dispatch_to_main_queue {
-                            guard let self else { return }
-                            self.adjustViewForSelectionState(selectionState)
+                    
+                    self.view?.setItems(
+                        changes.itemsAfterChanges.map(self.cellData),
+                        scrollToTop: self.shouldScrollToTopOnFullReload,
+                        completion: { [weak self] in
+                            dispatch_to_main_queue {
+                                guard let self else { return }
+                                self.shouldScrollToTopOnFullReload = false
+                                self.adjustViewForSelectionState(selectionState)
+                                self.view?.setProgressVisible(false)
+                            }
                         }
-                    })
+                    )
+                    
+//                    self.view?.applyChanges(self.viewChanges(from: changes), completion: { [weak self] in
+//                        dispatch_to_main_queue {
+//                            guard let self else { return }
+//                            self.adjustViewForSelectionState(selectionState)
+//                        }
+//                    })
                 }
                 
                 self.view?.setPlaceholderState(
