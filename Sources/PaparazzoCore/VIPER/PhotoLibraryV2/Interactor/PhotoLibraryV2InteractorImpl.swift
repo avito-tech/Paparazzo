@@ -20,10 +20,6 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         set { photoLibraryItemsService.onLimitedAccess = newValue }
     }
     
-    var authorizationStatus: PHAuthorizationStatus {
-        photoLibraryItemsService.authorizationStatus
-    }
-    
     // MARK: - Init
     init(
         mediaPickerData: MediaPickerData,

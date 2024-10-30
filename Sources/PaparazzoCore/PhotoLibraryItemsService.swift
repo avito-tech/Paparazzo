@@ -4,7 +4,6 @@ import ImageSource
 
 protocol PhotoLibraryItemsService: AnyObject {
     var onLimitedAccess: (() -> ())? { get set }
-    var authorizationStatus: PHAuthorizationStatus { get }
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
@@ -43,7 +42,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
-    var authorizationStatus: PHAuthorizationStatus {
+    private var authorizationStatus: PHAuthorizationStatus {
         PHPhotoLibrary.readWriteAuthorizationStatus()
     }
     

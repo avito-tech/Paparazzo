@@ -208,14 +208,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             interactor.onLimitedAccess = { [weak self] in
                 guard let self else { return }
                 
-                if self.isPresentingPhotosFromCameraFixEnabled {
-                    dispatch_to_main_queue { [weak self] in
-                        self?.router.showLimitedAccessAlert()
-                    }
-                } else {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.router.showLimitedAccessAlert()
-                    }
+                DispatchQueue.main.async { [weak self] in
+                    self?.router.showLimitedAccessAlert()
                 }
             }
         }
@@ -666,14 +660,15 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 
                 switch event {
                 case .fullReload(let items):
-                    needToShowPlaceholder = items.isEmpty
                     let photoGalleryItems = items.map { self.cellData(MediaPickerItem($0)) }
                     // Images from the Camera that are not in the Gallery
                     let cameraItems = self.interactor.selectedItems
                         .map { self.cellData($0) }
                         .filter { !photoGalleryItems.contains($0) }
+                    let photoItems = cameraItems + photoGalleryItems
+                    needToShowPlaceholder = photoItems.isEmpty
                     self.view?.setItems(
-                        cameraItems + photoGalleryItems,
+                        photoItems,
                         scrollToTop: self.shouldScrollToTopOnFullReload,
                         completion: { [weak self] in
                             dispatch_to_main_queue {
@@ -743,11 +738,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func selectAlbumOnViewWillAppear() {
-        guard
-            isPresentingPhotosFromCameraFixEnabled,
-            interactor.authorizationStatus == .limited,
-            let album = interactor.currentAlbum
-        else { return }
+        guard isPresentingPhotosFromCameraFixEnabled, let album = interactor.currentAlbum else { return }
         
         selectAlbum(album)
     }

@@ -3,8 +3,6 @@ import Photos
 import ImageSource
 
 protocol PhotoLibraryV2Interactor: AnyObject {
-    var authorizationStatus: PHAuthorizationStatus { get }
-    
     var mediaPickerData: MediaPickerData { get }
     var currentAlbum: PhotoLibraryAlbum? { get }
     var selectedItems: [MediaPickerItem] { get }
