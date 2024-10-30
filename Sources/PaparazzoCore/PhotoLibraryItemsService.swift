@@ -69,6 +69,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     // MARK: - PHPhotoLibraryChangeObserver
     
     func photoLibraryDidChange(_ change: PHChange) {
+        print("PHOTO photoLibraryDidChange")
         
         fetchResultQueue.async {
             guard self.fetchResults.count > 0 else { return }
@@ -168,6 +169,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             #if compiler(>=5.3)
             // Xcode 12+
         case .limited:
+            print("PHOTO limited")
             wasSetUp = true
             setUpFetchResult(completion: completion)
 //            setUpFetchResultForLimitedAccess(completion: completion)
@@ -188,6 +190,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     self?.setUpFetchResult(completion: completion)
                 #if compiler(>=5.3)
                 case .limited:
+                    print("PHOTO from requestReadWriteAuthorization")
                     self?.setUpFetchResult(completion: completion)
                 #endif
                 default:
@@ -264,7 +267,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
         if let phChanges = phChanges, phChanges.hasIncrementalChanges {
-            onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
+            if authorizationStatus == .limited {
+                onAlbumEvent?(.fullReload(photoLibraryChanges(from: phChanges).itemsAfterChanges))
+            } else {
+                onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
+            }
         } else if let observedAlbum = observedAlbum {
             onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
         } else {
@@ -319,6 +326,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func removedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> IndexSet
     {
+        if let removedIndexes = changes.removedIndexes {
+            print("PHOTO removedIndexes \(removedIndexes)")
+        } else {
+            print("PHOTO removedIndexes empty")
+        }
+        
         let assetsCountBeforeChanges = changes.fetchResultBeforeChanges.count
         var removedIndexes = IndexSet()
         
@@ -339,6 +352,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func insertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
+        if let insertedIndexes = changes.insertedIndexes {
+            print("PHOTO insertedIndexes \(changes.insertedIndexes)")
+        } else {
+            print("PHOTO insertedIndexes empty")
+        }
+        
         guard let insertedIndexes = changes.insertedIndexes else { return [] }
         
         let objectsCountAfterRemovalsAndInsertions =
@@ -377,6 +396,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private func updatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
+        if let changedIndexes = changes.changedIndexes {
+            print("PHOTO changedIndexes \(changes.changedIndexes)")
+        } else {
+            print("PHOTO changedIndexes empty")
+        }
+        
         guard let changedIndexes = changes.changedIndexes else { return [] }
         
         let objectsCountAfterRemovalsAndInsertions =

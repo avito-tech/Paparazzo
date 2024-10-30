@@ -225,6 +225,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 switch event {
                 case .fullReload(let items):
                     needToShowPlaceholder = items.isEmpty
+                    print("Photo fullReload")
                     self.view?.setItems(
                         items.map(self.cellData),
                         scrollToTop: self.shouldScrollToTopOnFullReload,
@@ -240,7 +241,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     
                 case .incrementalChanges(let changes):
                     needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
-                    
+                    print("Photo incrementalChanges")
+
                     self.view?.setItems(
                         changes.itemsAfterChanges.map(self.cellData),
                         scrollToTop: self.shouldScrollToTopOnFullReload,
