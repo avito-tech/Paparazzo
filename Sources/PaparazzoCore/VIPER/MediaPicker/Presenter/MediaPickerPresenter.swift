@@ -104,28 +104,29 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     public func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool) {
-        guard let image else {
+        guard
+            let image,
+            let index = interactor.indexOfItem(prevImage)
+        else {
             let status: MediaPickerAutoEnhanceStatus = isEnhanced ? .enhanced : .original
             view?.setAutoEnhanceStatus(status)
             return
         }
         
-        if let index = interactor.indexOfItem(prevImage) {
-            view?.removeItem(prevImage)
-            interactor.removeItem(prevImage)
-
-            let startIndex = interactor.addItems([image]).startIndex
-            interactor.moveItem(from: startIndex, to: index)
-            interactor.updateItem(image)
-            
-            view?.addItems([image], animated: false, completion: { [weak self] in
-                guard let self else { return }
-                self.view?.moveItem(from: startIndex, to: index)
-                self.view?.moveItemThumbnail(from: startIndex, to: index)
-                self.view?.selectItem(image)
-                self.adjustPhotoTitleForItem(image)
-            })
-        }
+        view?.removeItem(prevImage)
+        interactor.removeItem(prevImage)
+        
+        let startIndex = interactor.addItems([image]).startIndex
+        interactor.moveItem(from: startIndex, to: index)
+        interactor.updateItem(image)
+        
+        view?.addItems([image], animated: false, completion: { [weak self] in
+            guard let self else { return }
+            self.view?.moveItem(from: startIndex, to: index)
+            self.view?.moveItemThumbnail(from: startIndex, to: index)
+            self.view?.selectItem(image)
+            self.adjustPhotoTitleForItem(image)
+        })
     }
     
     func setItems(_ items: [MediaPickerItem], selectedItem: MediaPickerItem?) {
@@ -378,9 +379,8 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onAutoEnhanceButtonTap = { [weak self] in
-            if let item = self?.interactor.selectedItem {
-                self?.onItemAutoEnhance?(item)
-            }
+            guard let item = self?.interactor.selectedItem else { return }
+            self?.onItemAutoEnhance?(item)
         }
         
         view?.onRemoveButtonTap = { [weak self] in
