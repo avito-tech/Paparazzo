@@ -16,12 +16,14 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     // MARK: - PhotoPickerRouter
 
     func showPhotoLibrary(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ())
     {
         let assembly = assemblyFactory.photoLibraryAssembly()
         
         let viewController = assembly.module(
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             data: data,
             configure: configure
         )

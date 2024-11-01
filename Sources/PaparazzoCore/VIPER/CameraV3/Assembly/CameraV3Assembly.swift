@@ -5,6 +5,7 @@ protocol CameraV3Assembly: AnyObject {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> ()
     ) -> UIViewController
 }

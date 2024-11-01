@@ -3,11 +3,12 @@ import Marshroute
 
 public protocol PhotoLibraryMarshrouteAssembly: AnyObject {
     func module(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
-        configure: (PhotoLibraryModule) -> ())
-        -> UIViewController
+        configure: (PhotoLibraryModule) -> ()
+    ) -> UIViewController
 }
 
 public protocol PhotoLibraryMarshrouteAssemblyFactory: AnyObject {

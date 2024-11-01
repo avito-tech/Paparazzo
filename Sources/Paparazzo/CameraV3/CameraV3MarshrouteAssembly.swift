@@ -7,6 +7,7 @@ protocol CameraV3MarshrouteAssembly: AnyObject {
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         routerSeed: RouterSeed,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> ()
     ) -> UIViewController
 }
@@ -33,6 +34,7 @@ final class CameraV3MarshrouteAssemblyImpl:
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         routerSeed: RouterSeed,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> ())
         -> UIViewController
     {
@@ -54,7 +56,8 @@ final class CameraV3MarshrouteAssemblyImpl:
         let presenter = CameraV3Presenter(
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
-            router: router
+            router: router, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
         )
         
         viewController.setTheme(theme)

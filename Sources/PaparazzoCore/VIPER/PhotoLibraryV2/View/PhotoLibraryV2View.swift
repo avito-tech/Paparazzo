@@ -187,10 +187,11 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             height: titleViewSize.height
         )
         
+        let collectionViewTop = max(closeButton.bottom, titleView.bottom)
         collectionView.layout(
             left: bounds.left,
             right: bounds.right,
-            top: titleView.bottom,
+            top: collectionViewTop,
             bottom: bounds.bottom
         )
         

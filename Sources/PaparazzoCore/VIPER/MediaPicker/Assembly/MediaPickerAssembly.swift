@@ -5,8 +5,9 @@ public protocol MediaPickerAssembly: AnyObject {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
-        configure: (MediaPickerModule) -> ())
-        -> UIViewController
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (MediaPickerModule) -> ()
+    ) -> UIViewController
 }
 
 public protocol MediaPickerAssemblyFactory: AnyObject {
@@ -14,11 +15,16 @@ public protocol MediaPickerAssemblyFactory: AnyObject {
 }
 
 public extension MediaPickerAssembly {
-    func module(data: MediaPickerData, configure: (MediaPickerModule) -> ()) -> UIViewController {
+    func module(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        data: MediaPickerData,
+        configure: (MediaPickerModule) -> ()
+    ) -> UIViewController {
         return module(
             data: data,
             overridenTheme: nil,
             isNewFlowPrototype: false,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }

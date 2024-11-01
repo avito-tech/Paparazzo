@@ -8,8 +8,9 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
-        configure: (PhotoLibraryV2Module) -> ())
-        -> UIViewController
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (PhotoLibraryV2Module) -> ()
+    ) -> UIViewController
 }
 
 public extension PhotoLibraryV2MarshrouteAssembly {
@@ -17,17 +18,18 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
-        configure: (PhotoLibraryV2Module) -> ())
-        -> UIViewController
-    {
-            return module(
-                mediaPickerData: mediaPickerData,
-                selectedItems: selectedItems,
-                routerSeed: routerSeed,
-                isNewFlowPrototype: false,
-                isUsingCameraV3: false,
-                configure: configure
-            )
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (PhotoLibraryV2Module) -> ()
+    ) -> UIViewController {
+        module(
+            mediaPickerData: mediaPickerData,
+            selectedItems: selectedItems,
+            routerSeed: routerSeed,
+            isNewFlowPrototype: false,
+            isUsingCameraV3: false,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            configure: configure
+        )
     }
 }
 

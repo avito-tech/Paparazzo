@@ -3,10 +3,11 @@ import ImageSource
 
 
 protocol PhotoLibraryItemsService: AnyObject {
+    var onLimitedAccess: (() -> ())? { get set }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
-    var onLimitedAccess: (() -> ())? { get set }
 }
 
 enum PhotosOrder {
@@ -17,6 +18,7 @@ enum PhotosOrder {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
     var onLimitedAccess: (() -> ())?
     
+    private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
@@ -31,7 +33,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    init(photosOrder: PhotosOrder = .normal) {
+    init(isPresentingPhotosFromCameraFixEnabled: Bool, photosOrder: PhotosOrder = .normal) {
+        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
         self.photosOrder = photosOrder
     }
     
@@ -41,9 +44,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     
     // MARK: - PhotoLibraryItemsService
     
+    private var authorizationStatus: PHAuthorizationStatus {
+        PHPhotoLibrary.readWriteAuthorizationStatus()
+    }
+    
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ()) {
         onAuthorizationStatusChange = handler
-        callAuthorizationHandler(for: PHPhotoLibrary.readWriteAuthorizationStatus())
+        callAuthorizationHandler(for: authorizationStatus)
     }
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
@@ -64,7 +71,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     // MARK: - PHPhotoLibraryChangeObserver
     
     func photoLibraryDidChange(_ change: PHChange) {
-        
         fetchResultQueue.async {
             guard self.fetchResults.count > 0 else { return }
             
@@ -154,7 +160,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             return
         }
         
-        switch PHPhotoLibrary.readWriteAuthorizationStatus() {
+        switch authorizationStatus {
         
         case .authorized:
             wasSetUp = true
@@ -164,7 +170,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             // Xcode 12+
         case .limited:
             wasSetUp = true
-            setUpFetchResultForLimitedAccess(completion: completion)
+            if isPresentingPhotosFromCameraFixEnabled {
+                setUpFetchResult(completion: completion)
+            } else {
+                setUpFetchResultForLimitedAccess(completion: completion)
+            }
             
             onLimitedAccess?()
             #endif
@@ -235,13 +245,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
             
             let assetsFetchResult = PHAsset.fetchAssets(with: fetchOptions)
-            print("Assets in fetch result: \(assetsFetchResult.count)")
             
             let assetCollection = PHAssetCollection.transientAssetCollection(
                 withAssetFetchResult: assetsFetchResult,
                 title: localized("All photos")
             )
-            print("Transient album id = \(assetCollection.localIdentifier)")
             
             let albums = [PhotoLibraryAlbum(assetCollection: assetCollection)]
             
@@ -257,12 +265,26 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
-        if let phChanges = phChanges, phChanges.hasIncrementalChanges {
-            onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
-        } else if let observedAlbum = observedAlbum {
-            onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+        if isPresentingPhotosFromCameraFixEnabled {
+            if let phChanges = phChanges, phChanges.hasIncrementalChanges {
+                if authorizationStatus == .limited {
+                    onAlbumEvent?(.fullReload(photoLibraryChanges(from: phChanges).itemsAfterChanges))
+                } else {
+                    onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
+                }
+            } else if let observedAlbum = observedAlbum {
+                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+            } else {
+                onAlbumEvent?(.fullReload([]))
+            }
         } else {
-            onAlbumEvent?(.fullReload([]))
+            if let phChanges = phChanges, phChanges.hasIncrementalChanges {
+                onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
+            } else if let observedAlbum = observedAlbum {
+                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+            } else {
+                onAlbumEvent?(.fullReload([]))
+            }
         }
     }
     

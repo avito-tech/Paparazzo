@@ -6,6 +6,7 @@ protocol PhotoLibraryV2Router: AnyObject {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     )
     
@@ -13,12 +14,14 @@ protocol PhotoLibraryV2Router: AnyObject {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         shouldAllowFinishingWithNoPhotos: Bool,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (NewCameraModule) -> ()
     )
     
     func showCameraV3(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> ()
     )
     

@@ -4,6 +4,7 @@ import UIKit
 protocol MediaPickerRouter: AnyObject {
     
     func showPhotoLibrary(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ()
     )
