@@ -13,6 +13,7 @@ final class CameraV3MarshrouteRouter: BaseRouter, CameraV3Router {
     
     // MARK: - NewCameraRouter
     func showMediaPicker(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
@@ -25,7 +26,8 @@ final class CameraV3MarshrouteRouter: BaseRouter, CameraV3Router {
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
-                isNewFlowPrototype: true,
+                isNewFlowPrototype: true, 
+                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
                 configure: configure
             )
         }, animator: ModalNavigationTransitionsAnimator())

@@ -16,6 +16,7 @@ final class CameraV3RouterImpl:
     
     // MARK: - NewCameraRouter
     func showMediaPicker(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
@@ -25,7 +26,8 @@ final class CameraV3RouterImpl:
         let viewController = assembly.module(
             data: data,
             overridenTheme: overridenTheme,
-            isNewFlowPrototype: true,
+            isNewFlowPrototype: true, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
         

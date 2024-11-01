@@ -8,8 +8,9 @@ public protocol MediaPickerMarshrouteAssembly: AnyObject {
         viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        configure: (MediaPickerModule) -> ())
-        -> UIViewController
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (MediaPickerModule) -> ()
+    ) -> UIViewController
 }
 
 public protocol MediaPickerMarshrouteAssemblyFactory: AnyObject {
@@ -22,15 +23,16 @@ public extension MediaPickerMarshrouteAssembly {
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        configure: (MediaPickerModule) -> ())
-        -> UIViewController
-    {
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (MediaPickerModule) -> ()
+    ) -> UIViewController {
         return module(
             data: data,
             overridenTheme: overridenTheme,
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }
@@ -39,15 +41,16 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        configure: (MediaPickerModule) -> ())
-        -> UIViewController
-    {
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (MediaPickerModule) -> ()
+    ) -> UIViewController {
         return module(
             data: data,
             overridenTheme: nil,
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }
@@ -55,15 +58,16 @@ public extension MediaPickerMarshrouteAssembly {
     func module(
         data: MediaPickerData,
         routerSeed: RouterSeed,
-        configure: (MediaPickerModule) -> ())
-        -> UIViewController
-    {
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        configure: (MediaPickerModule) -> ()
+    ) -> UIViewController {
         return module(
             data: data,
             overridenTheme: nil,
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: false,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }
