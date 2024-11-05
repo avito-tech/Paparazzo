@@ -52,6 +52,8 @@ public protocol PaparazzoPickerModule: AnyObject {
     func setCropMode(_: MediaPickerCropMode)
     func setThumbnailsAlwaysVisible(_: Bool)
     
+    func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool)
+        
     func removeItem(_: MediaPickerItem)
     
     // startIndex - index of element in previous array of MediaPickerItem, new elements were added after that index
@@ -60,6 +62,8 @@ public protocol PaparazzoPickerModule: AnyObject {
     var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())? { get set }
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())? { get set }
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())? { get set }
+    var onItemAutoEnhance: ((MediaPickerItem) -> ())? { get set }
+    var onItemSelectSetAutoEnhanceStatusIfNeeded: ((MediaPickerItem) -> ())? { get set }
     var onCropFinish: (() -> ())? { get set }
     var onCropCancel: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }

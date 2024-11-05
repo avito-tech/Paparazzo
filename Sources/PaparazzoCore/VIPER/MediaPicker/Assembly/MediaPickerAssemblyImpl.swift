@@ -61,6 +61,7 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         viewController.setShowsAutocorrectButton(data.autocorrectEnabled)
         viewController.setHapticFeedbackEnabled(data.hapticFeedbackEnabled)
         viewController.setShowsRemoveButton(data.removeEnabled)
+        viewController.setShowsAutoEnhanceButton(data.autoEnhanceEnabled)
         
         presenter.view = viewController
         

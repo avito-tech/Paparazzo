@@ -344,6 +344,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         set { photoControlsView.onCropButtonTap = newValue }
     }
     
+    var onAutoEnhanceButtonTap: (() -> ())? {
+        get { return photoControlsView.onAutoEnhanceButtonTap }
+        set { photoControlsView.onAutoEnhanceButtonTap = newValue }
+    }
+    
     var onCameraThumbnailTap: (() -> ())? {
         get { return photoControlsView.onCameraButtonTap }
         set { photoControlsView.onCameraButtonTap = newValue }
@@ -400,6 +405,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             photoControlsView.setAutocorrectButtonSelected(false)
         case .corrected:
             photoControlsView.setAutocorrectButtonSelected(true)
+        }
+    }
+        
+    func setAutoEnhanceStatus(_ status: MediaPickerAutoEnhanceStatus) {
+        switch status {
+        case .original:
+            photoControlsView.setAutoEnhanceButtonSelected(false)
+        case .enhanced:
+            photoControlsView.setAutoEnhanceButtonSelected(true)
         }
     }
     
@@ -524,6 +538,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoPreviewView.moveItem(from: sourceIndex, to: destinationIndex)
     }
     
+    func moveItemThumbnail(from sourceIndex: Int, to destinationIndex: Int) {
+        thumbnailRibbonView.moveItemThumbnail(from: sourceIndex, to: destinationIndex)
+    }
+    
     func scrollToItemThumbnail(_ item: MediaPickerItem, animated: Bool) {
         thumbnailRibbonView.scrollToItemThumbnail(item, animated: animated)
     }
@@ -630,6 +648,14 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             photoControlsView.mode.insert(.hasRemoveButton)
         } else {
             photoControlsView.mode.remove(.hasRemoveButton)
+        }
+    }
+    
+    func setShowsAutoEnhanceButton(_ showsAutoEnhanceButton: Bool) {
+        if showsAutoEnhanceButton {
+            photoControlsView.mode.insert(.hasAutoEnhanceButton)
+        } else {
+            photoControlsView.mode.remove(.hasAutoEnhanceButton)
         }
     }
     

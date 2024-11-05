@@ -58,6 +58,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())?
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())?
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())?
+    var onItemAutoEnhance: ((MediaPickerItem) -> ())?
+    var onItemSelectSetAutoEnhanceStatusIfNeeded: ((MediaPickerItem) -> ())?
     var onCropFinish: (() -> ())?
     var onCropCancel: (() -> ())?
     var onContinueButtonTap: (() -> ())?
@@ -118,6 +120,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     public func setAccessDeniedButtonTitle(_ title: String) {
         mediaPickerModule?.setAccessDeniedButtonTitle(title)
+    }
+    
+    public func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool) {
+        mediaPickerModule?.setAutoEnhanceImage(image, prevImage: prevImage, isEnhanced: isEnhanced)
     }
     
     func setCropMode(_ cropMode: MediaPickerCropMode) {
