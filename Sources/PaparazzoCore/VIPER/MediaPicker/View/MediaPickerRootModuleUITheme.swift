@@ -14,7 +14,8 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
 
     var mediaPickerIconColor: UIColor { get }
     var mediaPickerIconActiveColor: UIColor { get }
-    
+    var mediaPickerIconDisableColor: UIColor? { get }
+
     var buttonGrayHighlightedColor: UIColor { get }
 
     var shutterButtonColor: UIColor { get }

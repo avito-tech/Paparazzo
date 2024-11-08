@@ -24,6 +24,7 @@ public struct PaparazzoUITheme:
     public var mediaPickerTitleDarkColor = UIColor.black
     public var mediaPickerIconColor = UIColor.black
     public var mediaPickerIconActiveColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var mediaPickerIconDisableColor: UIColor? = UIColor(red: 244.0/255, green: 244.0/255, blue: 244.0/255, alpha: 1)
     public var buttonGrayHighlightedColor = UIColor(red: 227.0/255, green: 226.0/255, blue: 225.0/255, alpha: 1)
 
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
