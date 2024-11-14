@@ -7,7 +7,7 @@ let package = Package(
     name: "Paparazzo",
     defaultLocalization: "ru_RU",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         .library(

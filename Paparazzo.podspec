@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
   s.license                = 'MIT'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
   s.source                 = { :git => 'https://github.com/avito-tech/Paparazzo.git', :tag => "#{s.version}" }
-  s.platform               = :ios, '10.0'
-  s.ios.deployment_target  = '10.0'
+  s.platform               = :ios, '14.0'
+  s.ios.deployment_target  = '14.0'
   s.swift_version          = '5.0'
   s.requires_arc           = true
 
