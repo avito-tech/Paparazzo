@@ -12,7 +12,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     private let cameraModuleInput: CameraModuleInput
     
     // MARK: - Private Properties
-    private var modifyItemsAndNotUpload: [MediaPickerItem] = []
+    private var notUploadedModifyItems: [MediaPickerItem] = []
     
     // MARK: - Init
     
@@ -110,7 +110,6 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     public func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool) {
-
         updateAutoEnhanceButtonIfNeeded(prevImage, isEnhanced: isEnhanced)
 
         guard
@@ -367,7 +366,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             if let originalItem = self?.interactor.selectedItem?.originalItem {
                 self?.view?.showInfoMessage(localized("AUTOCORRECTION OFF"), timeout: 1.0)
                 self?.updateItem(originalItem, afterAutocorrect: true)
-                self?.modifyItemsAndNotUpload.removeAll(where: { $0 == self?.interactor.selectedItem })
+                self?.notUploadedModifyItems.removeAll(where: { $0 == self?.interactor.selectedItem })
             } else {
                 self?.view?.showInfoMessage(localized("AUTOCORRECTION ON"), timeout: 1.0)
                 self?.view?.setAutocorrectionStatus(.corrected)
@@ -375,7 +374,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     onResult: { [weak self] updatedItem in
                         if let updatedItem = updatedItem {
                             self?.updateItem(updatedItem, afterAutocorrect: true)
-                            self?.modifyItemsAndNotUpload.append(updatedItem)
+                            self?.notUploadedModifyItems.append(updatedItem)
                             self?.updateAutoEnhanceButtonIfNeeded(updatedItem, isEnhanced: false)
                         }
                     }, onError: { [weak self] errorMessage in
@@ -390,7 +389,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         
         view?.onAutoEnhanceButtonTap = { [weak self] in
             guard let item = self?.interactor.selectedItem else { return }
-            let isAllowedEnhance = self?.modifyItemsAndNotUpload.contains(item) ?? true
+            let isAllowedEnhance = self?.notUploadedModifyItems.contains(item) ?? true
             self?.onItemAutoEnhance?(item, !isAllowedEnhance)
         }
         
@@ -585,7 +584,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     source: item.source
                 )
                 
-                self?.modifyItemsAndNotUpload.append(croppedItem)
+                self?.notUploadedModifyItems.append(croppedItem)
                 self?.updateAutoEnhanceButtonIfNeeded(croppedItem, isEnhanced: false)
                 
                 self?.interactor.updateItem(croppedItem)
@@ -606,7 +605,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     }
     
     private func updateAutoEnhanceButtonIfNeeded(_ item: MediaPickerItem, isEnhanced: Bool) {
-        if self.modifyItemsAndNotUpload.contains(item) {
+        if self.notUploadedModifyItems.contains(item) {
             view?.setAutoEnhanceStatus(.disabled)
         } else if isEnhanced {
             view?.setAutoEnhanceStatus(.enhanced)
