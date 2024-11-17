@@ -411,9 +411,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     func setAutoEnhanceStatus(_ status: MediaPickerAutoEnhanceStatus) {
         switch status {
         case .original:
-            photoControlsView.setAutoEnhanceButtonSelected(false)
+            photoControlsView.setAutoEnhanceButtonStatus(.original)
         case .enhanced:
-            photoControlsView.setAutoEnhanceButtonSelected(true)
+            photoControlsView.setAutoEnhanceButtonStatus(.enhanced)
+        case .disabled:
+            photoControlsView.setAutoEnhanceButtonStatus(.disabled)
         }
     }
     

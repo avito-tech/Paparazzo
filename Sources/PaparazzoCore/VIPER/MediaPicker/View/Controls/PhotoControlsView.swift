@@ -144,8 +144,18 @@ final class PhotoControlsView: UIView, ThemeConfigurable {
         autocorrectButton.tintColor = color
     }
     
-    func setAutoEnhanceButtonSelected(_ selected: Bool) {
-        let color = selected ? theme?.mediaPickerIconActiveColor : theme?.mediaPickerIconColor
+    func setAutoEnhanceButtonStatus(_ status: MediaPickerAutoEnhanceStatus) {
+        var color: UIColor?
+        autoEnhanceButton.isUserInteractionEnabled = true
+
+        switch status {
+        case .original:
+            color = theme?.mediaPickerIconColor
+        case .enhanced:
+            color = theme?.mediaPickerIconActiveColor
+        case .disabled:
+            color = theme?.mediaPickerIconDisableColor
+        }
         autoEnhanceButton.tintColor = color
     }
     

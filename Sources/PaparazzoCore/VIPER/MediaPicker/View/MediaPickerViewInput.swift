@@ -19,6 +19,7 @@ enum MediaPickerAutocorrectionStatus {
 enum MediaPickerAutoEnhanceStatus {
     case original
     case enhanced
+    case disabled
 }
 
 protocol MediaPickerViewInput: AnyObject {

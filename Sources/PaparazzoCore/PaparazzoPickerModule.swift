@@ -62,7 +62,7 @@ public protocol PaparazzoPickerModule: AnyObject {
     var onItemAutocorrect: ((MediaPickerItem, _ isAutocorrected: Bool, _ index: Int?) -> ())? { get set }
     var onItemMove: ((_ sourceIndex: Int, _ destinationIndex: Int) -> ())? { get set }
     var onItemRemove: ((MediaPickerItem, _ index: Int?) -> ())? { get set }
-    var onItemAutoEnhance: ((MediaPickerItem) -> ())? { get set }
+    var onItemAutoEnhance: ((MediaPickerItem, _ isAllowedEnhance: Bool) -> ())? { get set }
     var onItemSelectSetAutoEnhanceStatusIfNeeded: ((MediaPickerItem) -> ())? { get set }
     var onCropFinish: (() -> ())? { get set }
     var onCropCancel: (() -> ())? { get set }
