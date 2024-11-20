@@ -86,6 +86,9 @@ final class CameraV3Presenter: CameraV3Module {
                 weakSelf?.view?.showFocus(on: touchPoint)
             }
         }
+        view?.onViewDidLoad = { [weak self] in
+            self?.drawingMeasurement?()
+        }
         
         view?.onViewWillAppear = { _ in
             weakSelf?.volumeService.subscribe()
