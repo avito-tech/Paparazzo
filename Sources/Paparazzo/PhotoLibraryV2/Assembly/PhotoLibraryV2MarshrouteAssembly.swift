@@ -10,9 +10,9 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) -> UIViewController
 }
 
@@ -23,9 +23,9 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) -> UIViewController {
         module(
             mediaPickerData: mediaPickerData,
@@ -35,9 +35,9 @@ public extension PhotoLibraryV2MarshrouteAssembly {
             isUsingCameraV3: false,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure,
-            measureScreenInitialization: measureScreenInitialization,
-            initializationMeasurementStop: initializationMeasurementStop,
-            drawingMeasurement: drawingMeasurement
+            cameraV3MeasureInitialization: cameraV3MeasureInitialization,
+            cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
+            cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
         )
     }
 }

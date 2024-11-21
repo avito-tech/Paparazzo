@@ -7,9 +7,9 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) -> UIViewController
 }
 

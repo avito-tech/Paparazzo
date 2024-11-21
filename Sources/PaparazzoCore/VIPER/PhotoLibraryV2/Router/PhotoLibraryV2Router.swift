@@ -23,9 +23,9 @@ protocol PhotoLibraryV2Router: AnyObject {
         mediaPickerData: MediaPickerData,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     )
     
     @available(iOS 14, *)

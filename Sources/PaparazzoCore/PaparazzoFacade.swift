@@ -102,9 +102,9 @@ public final class PaparazzoFacade {
         isPresentingPhotosFromCameraFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) -> NavigationController {
         let assembly = assemblyFactory(theme: theme).photoLibraryV2Assembly()
         
@@ -123,9 +123,9 @@ public final class PaparazzoFacade {
                     onCancel?()
                 }
             },
-            measureScreenInitialization: measureScreenInitialization, 
-            initializationMeasurementStop: initializationMeasurementStop,
-            drawingMeasurement: drawingMeasurement
+            cameraV3MeasureInitialization: cameraV3MeasureInitialization, 
+            cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
+            cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
         )
         
         return NavigationController(rootViewController: galleryController)

@@ -63,9 +63,9 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         mediaPickerData: MediaPickerData,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) {
         let assembly = assemblyFactory.cameraV3Assembly()
         let viewController = assembly.module(
@@ -74,9 +74,9 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             cameraService: cameraService, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure,
-            measureScreenInitialization: measureScreenInitialization, 
-            initializationMeasurementStop: initializationMeasurementStop,
-            drawingMeasurement: drawingMeasurement
+            cameraV3MeasureInitialization: cameraV3MeasureInitialization, 
+            cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
+            cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
         )
         present(viewController, animated: true)
     }

@@ -17,9 +17,9 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) -> UIViewController {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
@@ -54,9 +54,9 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             isNewFlowPrototype: isNewFlowPrototype, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             isUsingCameraV3: isUsingCameraV3,
-            measureScreenInitialization: measureScreenInitialization,
-            initializationMeasurementStop: initializationMeasurementStop,
-            drawingMeasurement: drawingMeasurement
+            cameraV3MeasureInitialization: cameraV3MeasureInitialization,
+            cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
+            cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
         )
         
         viewController.addDisposable(presenter)

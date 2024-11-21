@@ -21,12 +21,12 @@ final class CameraV3AssemblyImpl:
         cameraService: CameraService,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        measureScreenInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        cameraV3MeasureInitialization: (() -> ())?,
+        cameraV3InitializationMeasurementStop: (() -> ())?,
+        cameraV3DrawingMeasurement: (() -> ())?
     ) -> UIViewController {
-        measureScreenInitialization?()
-        defer { initializationMeasurementStop?() }
+        cameraV3MeasureInitialization?()
+        defer { cameraV3InitializationMeasurementStop?() }
         
         let interactor = CameraV3InteractorImpl(
             mediaPickerData: mediaPickerData,
@@ -49,7 +49,7 @@ final class CameraV3AssemblyImpl:
             volumeService: serviceFactory.volumeService(),
             router: router, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            drawingMeasurement: drawingMeasurement
+            drawingMeasurement: cameraV3DrawingMeasurement
         )
         
         viewController.setTheme(theme)
