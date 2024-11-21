@@ -12,6 +12,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let isNewFlowPrototype: Bool
     private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let isUsingCameraV3: Bool
+    private let measureScreenInitialization: (() -> ())?
+    private let initializationMeasurementStop: (() -> ())?
+    private let drawingMeasurement: (() -> ())?
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -40,7 +43,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isUsingCameraV3: Bool
+        isUsingCameraV3: Bool,
+        measureScreenInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) {
         self.interactor = interactor
         self.router = router
@@ -49,6 +55,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
+        self.measureScreenInitialization = measureScreenInitialization
+        self.initializationMeasurementStop = initializationMeasurementStop
+        self.drawingMeasurement = drawingMeasurement
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -524,7 +533,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 cameraV3Module.onLastPhotoThumbnailTap = { [weak self] in
                     self?.onLastPhotoThumbnailTap?()
                 }
-            }
+            },
+            measureScreenInitialization: measureScreenInitialization, 
+            initializationMeasurementStop: initializationMeasurementStop,
+            drawingMeasurement: drawingMeasurement
         )
     }
     

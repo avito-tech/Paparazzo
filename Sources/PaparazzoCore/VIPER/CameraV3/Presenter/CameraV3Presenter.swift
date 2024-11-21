@@ -7,18 +7,21 @@ final class CameraV3Presenter: CameraV3Module {
     private let router: CameraV3Router
     private let volumeService: VolumeService
     private let isPresentingPhotosFromCameraFixEnabled: Bool
+    private let drawingMeasurement: (() -> ())?
     
     // MARK: - Init
     init(
         interactor: CameraV3Interactor,
         volumeService: VolumeService,
         router: CameraV3Router,
-        isPresentingPhotosFromCameraFixEnabled: Bool
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        drawingMeasurement: (() -> ())?
     ) {
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
+        self.drawingMeasurement = drawingMeasurement
     }
     
     var onLastPhotoThumbnailTap: (() -> ())?

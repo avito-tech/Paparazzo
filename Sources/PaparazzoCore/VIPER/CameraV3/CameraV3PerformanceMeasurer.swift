@@ -1,1 +1,3 @@
-final class CameraV3PerformanceMeasurer { }
+final class CameraV3PerformanceMeasurer { 
+    var measureContentDrawing: (() -> ())?
+}

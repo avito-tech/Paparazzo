@@ -23,7 +23,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> ()
+        configure: (PhotoLibraryV2Module) -> (),
+        measureScreenInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
@@ -54,7 +57,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isUsingCameraV3: isUsingCameraV3
+            isUsingCameraV3: isUsingCameraV3,
+            measureScreenInitialization: measureScreenInitialization, 
+            initializationMeasurementStop: initializationMeasurementStop,
+            drawingMeasurement: drawingMeasurement
         )
         
         let viewController = PhotoLibraryV2ViewController(

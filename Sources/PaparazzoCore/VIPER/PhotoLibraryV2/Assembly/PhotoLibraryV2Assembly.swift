@@ -6,7 +6,10 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> ()
+        configure: (PhotoLibraryV2Module) -> (),
+        measureScreenInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController
 }
 

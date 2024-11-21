@@ -6,7 +6,10 @@ protocol CameraV3Assembly: AnyObject {
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (CameraV3Module) -> ()
+        configure: (CameraV3Module) -> (),
+        measureScreenInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController
 }
 

@@ -9,7 +9,10 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> ()
+        configure: (PhotoLibraryV2Module) -> (),
+        measureScreenInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController
 }
 
@@ -19,7 +22,10 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> ()
+        configure: (PhotoLibraryV2Module) -> (),
+        measureScreenInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController {
         module(
             mediaPickerData: mediaPickerData,
@@ -28,7 +34,10 @@ public extension PhotoLibraryV2MarshrouteAssembly {
             isNewFlowPrototype: false,
             isUsingCameraV3: false,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            configure: configure
+            configure: configure,
+            measureScreenInitialization: measureScreenInitialization,
+            initializationMeasurementStop: initializationMeasurementStop,
+            drawingMeasurement: drawingMeasurement
         )
     }
 }
