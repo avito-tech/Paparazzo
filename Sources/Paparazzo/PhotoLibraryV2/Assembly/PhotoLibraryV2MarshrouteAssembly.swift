@@ -22,10 +22,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> (),
-        cameraV3MeasureInitialization: (() -> ())?,
-        cameraV3InitializationMeasurementStop: (() -> ())?,
-        cameraV3DrawingMeasurement: (() -> ())?
+        configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         module(
             mediaPickerData: mediaPickerData,
@@ -35,9 +32,9 @@ public extension PhotoLibraryV2MarshrouteAssembly {
             isUsingCameraV3: false,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure,
-            cameraV3MeasureInitialization: cameraV3MeasureInitialization,
-            cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
-            cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
+            cameraV3MeasureInitialization: nil,
+            cameraV3InitializationMeasurementStop: nil,
+            cameraV3DrawingMeasurement: nil
         )
     }
 }
