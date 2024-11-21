@@ -68,9 +68,9 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         mediaPickerData: MediaPickerData,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        cameraV3MeasureInitialization: (() -> ())?,
-        cameraV3InitializationMeasurementStop: (() -> ())?,
-        cameraV3DrawingMeasurement: (() -> ())?
+        measureInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.cameraV3Assembly().module(
@@ -80,9 +80,9 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 routerSeed: routerSeed, 
                 isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
                 configure: configure,
-                cameraV3MeasureInitialization: cameraV3MeasureInitialization, 
-                cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
-                cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
+                measureInitialization: measureInitialization,
+                initializationMeasurementStop: initializationMeasurementStop,
+                drawingMeasurement: drawingMeasurement
             )
         }
     }

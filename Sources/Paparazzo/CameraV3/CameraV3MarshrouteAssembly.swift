@@ -9,9 +9,9 @@ protocol CameraV3MarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        cameraV3MeasureInitialization: (() -> ())?,
-        cameraV3InitializationMeasurementStop: (() -> ())?,
-        cameraV3DrawingMeasurement: (() -> ())?
+        measureInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController
 }
 
@@ -39,11 +39,11 @@ final class CameraV3MarshrouteAssemblyImpl:
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        cameraV3MeasureInitialization: (() -> ())?,
-        cameraV3InitializationMeasurementStop: (() -> ())?,
-        cameraV3DrawingMeasurement: (() -> ())?
+        measureInitialization: (() -> ())?,
+        initializationMeasurementStop: (() -> ())?,
+        drawingMeasurement: (() -> ())?
     ) -> UIViewController {
-        measureScreenInitialization?()
+        measureInitialization?()
         defer { initializationMeasurementStop?() }
         
         let interactor = CameraV3InteractorImpl(

@@ -534,9 +534,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     self?.onLastPhotoThumbnailTap?()
                 }
             },
-            cameraV3MeasureInitialization: cameraV3MeasureInitialization, 
-            cameraV3InitializationMeasurementStop: cameraV3InitializationMeasurementStop,
-            cameraV3DrawingMeasurement: cameraV3DrawingMeasurement
+            measureInitialization: cameraV3MeasureInitialization, 
+            initializationMeasurementStop: cameraV3InitializationMeasurementStop,
+            drawingMeasurement: cameraV3DrawingMeasurement
         )
     }
     
