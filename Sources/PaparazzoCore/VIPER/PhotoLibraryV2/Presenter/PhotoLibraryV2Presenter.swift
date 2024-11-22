@@ -12,9 +12,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let isNewFlowPrototype: Bool
     private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let isUsingCameraV3: Bool
-    private let cameraV3MeasureInitialization: (() -> ())?
-    private let cameraV3InitializationMeasurementStop: (() -> ())?
-    private let cameraV3DrawingMeasurement: (() -> ())?
+    private let onCameraV3InitializationMeasurementStart: (() -> ())?
+    private let onCameraV3InitializationMeasurementStop: (() -> ())?
+    private let onCameraV3DrawingMeasurementStart: (() -> ())?
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -44,9 +44,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isUsingCameraV3: Bool,
-        cameraV3MeasureInitialization: (() -> ())?,
-        cameraV3InitializationMeasurementStop: (() -> ())?,
-        cameraV3DrawingMeasurement: (() -> ())?
+        onCameraV3InitializationMeasurementStart: (() -> ())?,
+        onCameraV3InitializationMeasurementStop: (() -> ())?,
+        onCameraV3DrawingMeasurementStart: (() -> ())?
     ) {
         self.interactor = interactor
         self.router = router
@@ -55,9 +55,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
-        self.cameraV3MeasureInitialization = cameraV3MeasureInitialization
-        self.cameraV3InitializationMeasurementStop = cameraV3InitializationMeasurementStop
-        self.cameraV3DrawingMeasurement = cameraV3DrawingMeasurement
+        self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
+        self.onCameraV3InitializationMeasurementStop = onCameraV3InitializationMeasurementStop
+        self.onCameraV3DrawingMeasurementStart = onCameraV3DrawingMeasurementStart
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -534,9 +534,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     self?.onLastPhotoThumbnailTap?()
                 }
             },
-            measureInitialization: cameraV3MeasureInitialization, 
-            initializationMeasurementStop: cameraV3InitializationMeasurementStop,
-            drawingMeasurement: cameraV3DrawingMeasurement
+            onInitializationMeasurementStart: onCameraV3InitializationMeasurementStart, 
+            onInitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
+            onDrawingMeasurementStart: onCameraV3DrawingMeasurementStart
         )
     }
     

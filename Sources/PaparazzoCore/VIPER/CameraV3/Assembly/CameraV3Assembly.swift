@@ -7,9 +7,9 @@ protocol CameraV3Assembly: AnyObject {
         cameraService: CameraService,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        measureInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        onInitializationMeasurementStart: (() -> ())?,
+        onInitializationMeasurementStop: (() -> ())?,
+        onDrawingMeasurementStart: (() -> ())?
     ) -> UIViewController
 }
 

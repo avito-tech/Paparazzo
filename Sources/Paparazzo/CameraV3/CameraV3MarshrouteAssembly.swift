@@ -9,9 +9,9 @@ protocol CameraV3MarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        measureInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        onInitializationMeasurementStart: (() -> ())?,
+        onInitializationMeasurementStop: (() -> ())?,
+        onDrawingMeasurementStart: (() -> ())?
     ) -> UIViewController
 }
 
@@ -39,12 +39,12 @@ final class CameraV3MarshrouteAssemblyImpl:
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
-        measureInitialization: (() -> ())?,
-        initializationMeasurementStop: (() -> ())?,
-        drawingMeasurement: (() -> ())?
+        onInitializationMeasurementStart: (() -> ())?,
+        onInitializationMeasurementStop: (() -> ())?,
+        onDrawingMeasurementStart: (() -> ())?
     ) -> UIViewController {
-        measureInitialization?()
-        defer { initializationMeasurementStop?() }
+        onInitializationMeasurementStart?()
+        defer { onInitializationMeasurementStop?() }
         
         let interactor = CameraV3InteractorImpl(
             mediaPickerData: mediaPickerData,
@@ -66,7 +66,7 @@ final class CameraV3MarshrouteAssemblyImpl:
             volumeService: serviceFactory.volumeService(),
             router: router,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            drawingMeasurement: drawingMeasurement
+            onDrawingMeasurementStart: onDrawingMeasurementStart
         )
         
         viewController.setTheme(theme)
