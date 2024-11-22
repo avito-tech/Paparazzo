@@ -69,7 +69,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
-       : (() -> ())?,
+        onInitializationMeasurementStop: (() -> ())?,
         onDrawingMeasurementStart: (() -> ())?
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in

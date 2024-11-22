@@ -21,7 +21,7 @@ final class CameraV3Presenter: CameraV3Module {
         self.volumeService = volumeService
         self.router = router
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
-        onDrawingMeasurementStart = onDrawingMeasurementStart
+        self.onDrawingMeasurementStart = onDrawingMeasurementStart
     }
     
     var onLastPhotoThumbnailTap: (() -> ())?
