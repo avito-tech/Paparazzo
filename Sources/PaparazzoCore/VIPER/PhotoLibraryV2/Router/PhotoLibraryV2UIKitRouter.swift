@@ -65,7 +65,8 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) {
         let assembly = assemblyFactory.cameraV3Assembly()
         let viewController = assembly.module(
@@ -76,7 +77,8 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             configure: configure,
             onInitializationMeasurementStart: onInitializationMeasurementStart,
             onInitializationMeasurementStop: onInitializationMeasurementStop,
-            onDrawingMeasurementStart: onDrawingMeasurementStart
+            onDrawingMeasurementStart: onDrawingMeasurementStart, 
+            onDrawingMeasurementStop: onDrawingMeasurementStop
         )
         present(viewController, animated: true)
     }

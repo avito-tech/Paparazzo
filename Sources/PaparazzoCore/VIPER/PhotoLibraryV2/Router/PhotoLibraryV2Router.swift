@@ -25,7 +25,8 @@ protocol PhotoLibraryV2Router: AnyObject {
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     )
     
     @available(iOS 14, *)

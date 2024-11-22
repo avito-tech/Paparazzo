@@ -70,7 +70,8 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.cameraV3Assembly().module(
@@ -82,7 +83,8 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 configure: configure,
                 onInitializationMeasurementStart: onInitializationMeasurementStart,
                 onInitializationMeasurementStop: onInitializationMeasurementStop,
-                onDrawingMeasurementStart: onDrawingMeasurementStart
+                onDrawingMeasurementStart: onDrawingMeasurementStart, 
+                onDrawingMeasurementStop: onDrawingMeasurementStop
             )
         }
     }

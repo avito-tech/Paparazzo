@@ -9,7 +9,8 @@ protocol CameraV3Assembly: AnyObject {
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) -> UIViewController
 }
 

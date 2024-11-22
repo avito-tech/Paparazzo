@@ -26,7 +26,8 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
-        onCameraV3DrawingMeasurementStart: (() -> ())?
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
@@ -60,7 +61,8 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             isUsingCameraV3: isUsingCameraV3,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart, 
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
-            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart
+            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
+            onCameraV3DrawingMeasurementStop: onCameraV3DrawingMeasurementStop
         )
         
         let viewController = PhotoLibraryV2ViewController(

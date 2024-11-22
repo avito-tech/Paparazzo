@@ -11,7 +11,8 @@ protocol CameraV3MarshrouteAssembly: AnyObject {
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) -> UIViewController
 }
 
@@ -41,7 +42,8 @@ final class CameraV3MarshrouteAssemblyImpl:
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) -> UIViewController {
         onInitializationMeasurementStart?()
         defer { onInitializationMeasurementStop?() }
@@ -66,7 +68,8 @@ final class CameraV3MarshrouteAssemblyImpl:
             volumeService: serviceFactory.volumeService(),
             router: router,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            onDrawingMeasurementStart: onDrawingMeasurementStart
+            onDrawingMeasurementStart: onDrawingMeasurementStart, 
+            onDrawingMeasurementStop: onDrawingMeasurementStop
         )
         
         viewController.setTheme(theme)

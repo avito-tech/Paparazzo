@@ -8,6 +8,7 @@ final class CameraV3Presenter: CameraV3Module {
     private let volumeService: VolumeService
     private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let onDrawingMeasurementStart: (() -> ())?
+    private let onDrawingMeasurementStop: (() -> ())?
     
     // MARK: - Init
     init(
@@ -15,13 +16,15 @@ final class CameraV3Presenter: CameraV3Module {
         volumeService: VolumeService,
         router: CameraV3Router,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) {
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
         self.onDrawingMeasurementStart = onDrawingMeasurementStart
+        self.onDrawingMeasurementStop = onDrawingMeasurementStop
     }
     
     var onLastPhotoThumbnailTap: (() -> ())?
@@ -89,6 +92,11 @@ final class CameraV3Presenter: CameraV3Module {
                 weakSelf?.view?.showFocus(on: touchPoint)
             }
         }
+        
+        view?.onDrawingMeasurementStop = { [weak self] in
+            self?.onDrawingMeasurementStop?()
+        }
+        
         view?.onViewDidLoad = { [weak self] in
             self?.onDrawingMeasurementStart?()
         }

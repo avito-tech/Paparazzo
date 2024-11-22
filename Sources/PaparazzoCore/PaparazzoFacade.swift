@@ -104,7 +104,8 @@ public final class PaparazzoFacade {
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
-        onCameraV3DrawingMeasurementStart: (() -> ())?
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> NavigationController {
         let assembly = assemblyFactory(theme: theme).photoLibraryV2Assembly()
         
@@ -125,7 +126,8 @@ public final class PaparazzoFacade {
             },
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart, 
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
-            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart
+            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
+            onCameraV3DrawingMeasurementStop: onCameraV3DrawingMeasurementStop
         )
         
         return NavigationController(rootViewController: galleryController)

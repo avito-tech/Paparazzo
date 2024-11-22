@@ -50,6 +50,8 @@ final class CameraV3View: UIView {
     var onFlashToggle: ((Bool) -> ())?
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
     
+    var onDrawingMeasurementStop: (() -> ())?
+    
     // MARK: - Init
     init() {
         super.init(frame: .zero)
@@ -269,6 +271,7 @@ final class CameraV3View: UIView {
         if let previewLayer = previewLayer {
             cameraOutputView.layer.insertSublayer(previewLayer, at: 0)
         }
+        onDrawingMeasurementStop?()
         setNeedsLayout()
     }
     

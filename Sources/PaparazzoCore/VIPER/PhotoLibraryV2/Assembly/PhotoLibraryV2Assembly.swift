@@ -9,7 +9,8 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
-        onCameraV3DrawingMeasurementStart: (() -> ())?
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> UIViewController
 }
 

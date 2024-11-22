@@ -129,6 +129,11 @@ final class CameraV3ViewController:
         set { cameraView.onFocusTap = newValue }
     }
     
+    var onDrawingMeasurementStop: (() -> ())? {
+        get { cameraView.onDrawingMeasurementStop }
+        set { cameraView.onDrawingMeasurementStop = newValue }
+    }
+    
     func setFlashButtonVisible(_ flag: Bool) {
         cameraView.setFlashButtonVisible(flag)
     }

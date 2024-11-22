@@ -23,7 +23,8 @@ final class CameraV3AssemblyImpl:
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
-        onDrawingMeasurementStart: (() -> ())?
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) -> UIViewController {
         onInitializationMeasurementStart?()
         defer { onInitializationMeasurementStop?() }
@@ -49,7 +50,8 @@ final class CameraV3AssemblyImpl:
             volumeService: serviceFactory.volumeService(),
             router: router, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            onDrawingMeasurementStart: onDrawingMeasurementStart
+            onDrawingMeasurementStart: onDrawingMeasurementStart, 
+            onDrawingMeasurementStop: onDrawingMeasurementStop
         )
         
         viewController.setTheme(theme)
