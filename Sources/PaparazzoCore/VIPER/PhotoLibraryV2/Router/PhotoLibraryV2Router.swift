@@ -22,7 +22,11 @@ protocol PhotoLibraryV2Router: AnyObject {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (CameraV3Module) -> ()
+        configure: (CameraV3Module) -> (),
+        onInitializationMeasurementStart: (() -> ())?,
+        onInitializationMeasurementStop: (() -> ())?,
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     )
     
     @available(iOS 14, *)

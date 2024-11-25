@@ -12,6 +12,8 @@ protocol CameraV3ViewInput: AnyObject {
     var onLastPhotoThumbnailTap: (() -> ())? { get set }
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)? { get set }
     
+    var onDrawingMeasurementStop: (() -> ())? { get set }
+    
     func setFlashButtonVisible(_ flag: Bool)
     func setFlashButtonOn(_ flag: Bool)
     func animateShot()

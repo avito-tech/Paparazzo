@@ -16,9 +16,12 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> ())
-        -> UIViewController
-    {
+        configure: (PhotoLibraryV2Module) -> (),
+        onCameraV3InitializationMeasurementStart: (() -> ())?,
+        onCameraV3InitializationMeasurementStop: (() -> ())?,
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
+    ) -> UIViewController {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             photosOrder: .reversed
@@ -51,7 +54,11 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isUsingCameraV3: isUsingCameraV3
+            isUsingCameraV3: isUsingCameraV3,
+            onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
+            onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
+            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
+            onCameraV3DrawingMeasurementStop: onCameraV3DrawingMeasurementStop
         )
         
         viewController.addDisposable(presenter)

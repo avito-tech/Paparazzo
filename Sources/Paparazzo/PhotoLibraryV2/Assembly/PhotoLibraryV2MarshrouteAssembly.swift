@@ -9,7 +9,11 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        configure: (PhotoLibraryV2Module) -> ()
+        configure: (PhotoLibraryV2Module) -> (),
+        onCameraV3InitializationMeasurementStart: (() -> ())?,
+        onCameraV3InitializationMeasurementStop: (() -> ())?,
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> UIViewController
 }
 
@@ -28,7 +32,11 @@ public extension PhotoLibraryV2MarshrouteAssembly {
             isNewFlowPrototype: false,
             isUsingCameraV3: false,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            configure: configure
+            configure: configure,
+            onCameraV3InitializationMeasurementStart: nil,
+            onCameraV3InitializationMeasurementStop: nil,
+            onCameraV3DrawingMeasurementStart: nil,
+            onCameraV3DrawingMeasurementStop: nil
         )
     }
 }

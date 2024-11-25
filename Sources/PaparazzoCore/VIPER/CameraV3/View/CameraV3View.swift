@@ -50,6 +50,8 @@ final class CameraV3View: UIView {
     var onFlashToggle: ((Bool) -> ())?
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)?
     
+    var onDrawingMeasurementStop: (() -> ())?
+    
     // MARK: - Init
     init() {
         super.init(frame: .zero)
@@ -270,6 +272,10 @@ final class CameraV3View: UIView {
             cameraOutputView.layer.insertSublayer(previewLayer, at: 0)
         }
         setNeedsLayout()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.onDrawingMeasurementStop?()
+        }
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {

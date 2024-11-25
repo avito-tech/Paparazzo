@@ -33,7 +33,6 @@ final class CameraV3ViewController:
     
     override func viewDidLoad() {
         super.viewDidLoad()
-               
         hideVolumeView()
         configure()
     }
@@ -126,6 +125,11 @@ final class CameraV3ViewController:
     var onFocusTap: ((_ focusPoint: CGPoint, _ touchPoint: CGPoint) -> Void)? {
         get { cameraView.onFocusTap }
         set { cameraView.onFocusTap = newValue }
+    }
+    
+    var onDrawingMeasurementStop: (() -> ())? {
+        get { cameraView.onDrawingMeasurementStop }
+        set { cameraView.onDrawingMeasurementStop = newValue }
     }
     
     func setFlashButtonVisible(_ flag: Bool) {

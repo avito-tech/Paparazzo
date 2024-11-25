@@ -7,18 +7,24 @@ final class CameraV3Presenter: CameraV3Module {
     private let router: CameraV3Router
     private let volumeService: VolumeService
     private let isPresentingPhotosFromCameraFixEnabled: Bool
+    private let onDrawingMeasurementStart: (() -> ())?
+    private let onDrawingMeasurementStop: (() -> ())?
     
     // MARK: - Init
     init(
         interactor: CameraV3Interactor,
         volumeService: VolumeService,
         router: CameraV3Router,
-        isPresentingPhotosFromCameraFixEnabled: Bool
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
     ) {
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
+        self.onDrawingMeasurementStart = onDrawingMeasurementStart
+        self.onDrawingMeasurementStop = onDrawingMeasurementStop
     }
     
     var onLastPhotoThumbnailTap: (() -> ())?
@@ -87,11 +93,16 @@ final class CameraV3Presenter: CameraV3Module {
             }
         }
         
+        view?.onDrawingMeasurementStop = { [weak self] in
+            self?.onDrawingMeasurementStop?()
+        }
+        
         view?.onViewWillAppear = { _ in
             weakSelf?.volumeService.subscribe()
             weakSelf?.adjustHintText()
             weakSelf?.adjustPhotoLibraryItems(animated: false)
             weakSelf?.adjustShutterButtonAvailability(animated: false)
+            weakSelf?.onDrawingMeasurementStart?()
         }
         
         view?.onViewDidDisappear = { _ in

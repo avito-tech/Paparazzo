@@ -12,6 +12,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let isNewFlowPrototype: Bool
     private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let isUsingCameraV3: Bool
+    private let onCameraV3InitializationMeasurementStart: (() -> ())?
+    private let onCameraV3InitializationMeasurementStop: (() -> ())?
+    private let onCameraV3DrawingMeasurementStart: (() -> ())?
+    private let onCameraV3DrawingMeasurementStop: (() -> ())?
     
     weak var mediaPickerModule: MediaPickerModule?
     
@@ -40,7 +44,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isUsingCameraV3: Bool
+        isUsingCameraV3: Bool,
+        onCameraV3InitializationMeasurementStart: (() -> ())?,
+        onCameraV3InitializationMeasurementStop: (() -> ())?,
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
     ) {
         self.interactor = interactor
         self.router = router
@@ -49,6 +57,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
+        self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
+        self.onCameraV3InitializationMeasurementStop = onCameraV3InitializationMeasurementStop
+        self.onCameraV3DrawingMeasurementStart = onCameraV3DrawingMeasurementStart
+        self.onCameraV3DrawingMeasurementStop = onCameraV3DrawingMeasurementStop
     }
     
     // MARK: - PhotoLibraryV2Module
@@ -524,7 +536,11 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 cameraV3Module.onLastPhotoThumbnailTap = { [weak self] in
                     self?.onLastPhotoThumbnailTap?()
                 }
-            }
+            },
+            onInitializationMeasurementStart: onCameraV3InitializationMeasurementStart, 
+            onInitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
+            onDrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
+            onDrawingMeasurementStop: onCameraV3DrawingMeasurementStop
         )
     }
     
