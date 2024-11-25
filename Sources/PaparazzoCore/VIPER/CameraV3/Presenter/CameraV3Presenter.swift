@@ -97,15 +97,12 @@ final class CameraV3Presenter: CameraV3Module {
             self?.onDrawingMeasurementStop?()
         }
         
-        view?.onViewDidLoad = { [weak self] in
-            self?.onDrawingMeasurementStart?()
-        }
-        
         view?.onViewWillAppear = { _ in
             weakSelf?.volumeService.subscribe()
             weakSelf?.adjustHintText()
             weakSelf?.adjustPhotoLibraryItems(animated: false)
             weakSelf?.adjustShutterButtonAvailability(animated: false)
+            weakSelf?.onDrawingMeasurementStart?()
         }
         
         view?.onViewDidDisappear = { _ in

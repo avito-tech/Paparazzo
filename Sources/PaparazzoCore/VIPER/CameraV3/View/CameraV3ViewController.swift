@@ -33,7 +33,6 @@ final class CameraV3ViewController:
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        onViewDidLoad?()
         hideVolumeView()
         configure()
     }
@@ -95,7 +94,6 @@ final class CameraV3ViewController:
 
     // MARK: - CameraV3ViewInput
     
-    var onViewDidLoad: (() -> ())?
     var onViewWillAppear: ((Bool) -> ())?
     var onViewDidDisappear: ((Bool) -> ())?
     var onViewDidLayoutSubviews: (() -> ())?

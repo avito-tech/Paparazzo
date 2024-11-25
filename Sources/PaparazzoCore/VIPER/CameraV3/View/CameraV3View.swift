@@ -271,8 +271,11 @@ final class CameraV3View: UIView {
         if let previewLayer = previewLayer {
             cameraOutputView.layer.insertSublayer(previewLayer, at: 0)
         }
-        onDrawingMeasurementStop?()
         setNeedsLayout()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.onDrawingMeasurementStop?()
+        }
     }
     
     func setAccessDeniedViewVisible(_ visible: Bool) {

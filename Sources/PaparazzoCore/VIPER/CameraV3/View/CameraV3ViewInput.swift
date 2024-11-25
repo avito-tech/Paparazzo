@@ -1,7 +1,6 @@
 import AVFoundation
 
 protocol CameraV3ViewInput: AnyObject {
-    var onViewDidLoad: (() -> ())? { get set }
     var onViewWillAppear: ((_ animated: Bool) -> ())? { get set }
     var onViewDidDisappear: ((_ animated: Bool) -> ())? { get set }
     var onViewDidLayoutSubviews: (() -> ())? { get set }
