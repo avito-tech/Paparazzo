@@ -15,6 +15,7 @@ protocol PhotoLibraryV2Interactor: AnyObject {
     func setCameraOutputNeeded(_: Bool)
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
+    func observeLimitedAccess(handler: @escaping () -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())
     

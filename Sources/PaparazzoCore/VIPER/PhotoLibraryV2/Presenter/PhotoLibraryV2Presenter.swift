@@ -11,6 +11,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
     private let isPresentingPhotosFromCameraFixEnabled: Bool
+    private let isLimitAlertFixEnabled: Bool
     private let isUsingCameraV3: Bool
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
     private let onCameraV3InitializationMeasurementStop: (() -> ())?
@@ -33,6 +34,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     // MARK: - State
     private var shouldScrollToTopOnFullReload = true
+    private var isObservingLimitedAccessAlert = false
     private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
     private var continueButtonTitle: String?
     
@@ -44,6 +46,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isLimitAlertFixEnabled: Bool,
         isUsingCameraV3: Bool,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -55,6 +58,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.overridenTheme = overridenTheme
         self.isNewFlowPrototype = isNewFlowPrototype
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
+        self.isLimitAlertFixEnabled = isLimitAlertFixEnabled
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
         self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
@@ -206,9 +210,19 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         }
         
         if #available(iOS 14, *) {
-            interactor.onLimitedAccess = { [weak self] in
-                DispatchQueue.main.async {
-                    self?.router.showLimitedAccessAlert()
+            if isLimitAlertFixEnabled {
+                view?.onViewDidAppear = { [weak self] in
+                    guard let self, !isObservingLimitedAccessAlert else { return }
+                    isObservingLimitedAccessAlert = true
+                    interactor.observeLimitedAccess { [weak self] in
+                        self?.router.showLimitedAccessAlert()
+                    }
+                }
+            } else {
+                interactor.onLimitedAccess = { [weak self] in
+                    DispatchQueue.main.async {
+                        self?.router.showLimitedAccessAlert()
+                    }
                 }
             }
         }

@@ -83,6 +83,10 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         photoLibraryItemsService.observeAuthorizationStatus(handler: handler)
     }
     
+    func observeLimitedAccess(handler: @escaping () -> ()) {
+        photoLibraryItemsService.observeLimitedAccess(handler: handler)
+    }
+    
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         photoLibraryItemsService.observeAlbums { [weak self] albums in
             guard let self else { return }
