@@ -6,6 +6,7 @@ protocol PhotoLibraryItemsService: AnyObject {
     var onLimitedAccess: (() -> ())? { get set }
     
     func observeAuthorizationStatus(handler: @escaping (_ accessGranted: Bool) -> ())
+    func observeLimitedAccess(handler: @escaping () -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
 }
@@ -52,6 +53,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         onAuthorizationStatusChange = handler
         callAuthorizationHandler(for: authorizationStatus)
     }
+    
+    func observeLimitedAccess(handler: @escaping () -> ()) {
+        onLimitedAccess = handler
+        #if compiler(>=5.3)
+        if authorizationStatus == .limited {
+            onLimitedAccess?()
+        }
+        #endif
+    }
+
     
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ()) {
         executeAfterSetup {
