@@ -100,6 +100,7 @@ public final class PaparazzoFacade {
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV2Data,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isLimitAlertFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -114,6 +115,7 @@ public final class PaparazzoFacade {
             isNewFlowPrototype: true,
             isUsingCameraV3: true, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isLimitAlertFixEnabled: isLimitAlertFixEnabled,
             configure: { (module: PhotoLibraryV2Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()
