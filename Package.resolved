@@ -1,0 +1,50 @@
+{
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
+        "version" : "5.9.1"
+      }
+    },
+    {
+      "identity" : "alamofireimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/AlamofireImage.git",
+      "state" : {
+        "revision" : "98cbb00ce0ec5fc8e52a5b50a6bfc08d3e5aee10",
+        "version" : "4.2.0"
+      }
+    },
+    {
+      "identity" : "avito-ios-navigation",
+      "kind" : "remoteSourceControl",
+      "location" : "ssh://git@stash.msk.avito.ru:7999/ma/avito-ios-navigation.git",
+      "state" : {
+        "revision" : "b2ccce6229f21fbad4fd2bc8fe4df62a9f7c107e",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "imagesource",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/avito-tech/ImageSource.git",
+      "state" : {
+        "revision" : "97af96c6485feb8e13b4329f6be7471b0c4bcef0",
+        "version" : "4.1.0"
+      }
+    },
+    {
+      "identity" : "jnwspringanimation",
+      "kind" : "remoteSourceControl",
+      "location" : "ssh://git@stash.msk.avito.ru:7999/iedm/JNWSpringAnimation.git",
+      "state" : {
+        "revision" : "dc6758e1ee40c70db33b0119d9992973cf5aff38",
+        "version" : "0.8.0"
+      }
+    }
+  ],
+  "version" : 2
+}

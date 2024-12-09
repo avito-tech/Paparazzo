@@ -11,7 +11,7 @@ class ExampleViewItem {
     }
 }
 
-protocol ExampleViewInput: class {
+protocol ExampleViewInput: AnyObject {
     var onViewDidLoad: (() -> ())? { get set }
     func setItems(_: [ExampleViewItem])
 }

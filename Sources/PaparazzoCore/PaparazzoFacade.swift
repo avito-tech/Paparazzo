@@ -1,0 +1,141 @@
+import ImageSource
+import UIKit
+
+public final class PaparazzoFacade {
+    
+    private static let imageStorage: ImageStorage = {
+        let imageStorage = ImageStorageImpl()
+        imageStorage.removeAll()
+        return imageStorage
+    }()
+    
+    public static func paparazzoViewController<NavigationController: UINavigationController>(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        parameters: MediaPickerData = MediaPickerData(),
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        onFinish: @escaping ([MediaPickerItem]) -> (),
+        onCancel: (() -> ())? = nil)
+        -> NavigationController
+    {
+        let assembly = assemblyFactory(theme: theme).mediaPickerAssembly()
+        
+        let viewController = assembly.module(
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            data: parameters,
+            configure: { (module: MediaPickerModule) in
+                module.setContinueButtonTitle("Done")
+                module.onCancel = { [weak module] in
+                    module?.dismissModule()
+                    onCancel?()
+                }
+                module.onFinish = { [weak module] items in
+                    module?.dismissModule()
+                    onFinish(items)
+                }
+            }
+        )
+        
+        return NavigationController(rootViewController: viewController)
+    }
+    
+    public static func maskCropperViewController<NavigationController: UINavigationController>(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        parameters: MaskCropperData,
+        croppingOverlayProvider: CroppingOverlayProvider,
+        onFinish: @escaping (ImageSource) -> (),
+        onCancel: (() -> ())? = nil)
+        -> NavigationController
+    {
+        let assembly = assemblyFactory(theme: theme).maskCropperAssembly()
+        
+        let viewController = assembly.module(
+            data: parameters,
+            croppingOverlayProvider: croppingOverlayProvider,
+            configure: { (module: MaskCropperModule) in
+                module.onConfirm = { [weak module] imageSource in
+                    module?.dismissModule()
+                    onFinish(imageSource)
+                }
+                module.onDiscard = { [weak module] in
+                    module?.dismissModule()
+                    onCancel?()
+                }
+            }
+        )
+        
+        return NavigationController(rootViewController: viewController)
+    }
+    
+    public static func libraryViewController<NavigationController: UINavigationController>(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        parameters: PhotoLibraryData = PhotoLibraryData(),
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        onFinish: @escaping ([PhotoLibraryItem]) -> (),
+        onCancel: (() -> ())? = nil)
+        -> NavigationController
+    {
+        let assembly = assemblyFactory(theme: theme).photoLibraryAssembly()
+        
+        let galleryController = assembly.module(
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            data: parameters,
+            configure: { (module: PhotoLibraryModule) in
+                module.onFinish = { [weak module] result in
+                    module?.dismissModule()
+                    
+                    switch result {
+                    case .selectedItems(let images):
+                        onFinish(images)
+                    case .cancelled:
+                        onCancel?()
+                    }
+                }
+            }
+        )
+        
+        return NavigationController(rootViewController: galleryController)
+    }
+    
+    public static func libraryV2ViewController<NavigationController: UINavigationController>(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        parameters: PhotoLibraryV2Data,
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        isLimitAlertFixEnabled: Bool,
+        onFinish: @escaping ([MediaPickerItem]) -> (),
+        onCancel: (() -> ())? = nil,
+        onCameraV3InitializationMeasurementStart: (() -> ())?,
+        onCameraV3InitializationMeasurementStop: (() -> ())?,
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
+    ) -> NavigationController {
+        let assembly = assemblyFactory(theme: theme).photoLibraryV2Assembly()
+        
+        let galleryController = assembly.module(
+            data: parameters,
+            isNewFlowPrototype: true,
+            isUsingCameraV3: true, 
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isLimitAlertFixEnabled: isLimitAlertFixEnabled,
+            configure: { (module: PhotoLibraryV2Module) in
+                module.onFinish = { [weak module] result in
+                    module?.dismissModule()
+                    onFinish(result)
+                }
+                module.onCancel = { [weak module] in
+                    module?.dismissModule()
+                    onCancel?()
+                }
+            },
+            onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart, 
+            onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
+            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
+            onCameraV3DrawingMeasurementStop: onCameraV3DrawingMeasurementStop
+        )
+        
+        return NavigationController(rootViewController: galleryController)
+    }
+    
+    private static func assemblyFactory(theme: PaparazzoUITheme) -> AssemblyFactory {
+        return AssemblyFactory(theme: theme, imageStorage: imageStorage)
+    }
+}

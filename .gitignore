@@ -14,3 +14,7 @@ xcuserdata/
 
 # CocoaPods
 Pods/
+
+# SPM
+.swiftpm
+.build/

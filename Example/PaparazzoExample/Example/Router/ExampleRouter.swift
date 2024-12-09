@@ -24,6 +24,7 @@ protocol ExampleRouter: RouterFocusable, RouterDismissable {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         isNewFlowPrototype: Bool,
+        isUsingCameraV3: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     )
     
