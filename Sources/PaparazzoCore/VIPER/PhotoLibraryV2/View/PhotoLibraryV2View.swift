@@ -284,6 +284,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     var onTitleTap: (() -> ())?
     var onDimViewTap: (() -> ())?
     
+    var onLoadNextPage: (() -> ())?
+    
     func setContinueButtonTitle(_ title: String) {
         topRightContinueButton.setTitle(title, for: .normal)
         topRightContinueButton.accessibilityValue = title
@@ -332,8 +334,8 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
-    func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
-        
+    @available(*, deprecated, message: "Use `insertItems` or `deleteAllItems` instead.")
+    func setItemsLegacy(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
         if scrollToTop {
             coverCollectionViewWithItsSnapshot()
         }
@@ -364,6 +366,67 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
             },
             catchClosure: { _ in
                 self.recreateCollectionView()
+                completion?()
+            }
+        )
+    }
+    
+    func insertItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
+        if scrollToTop {
+            coverCollectionViewWithItsSnapshot()
+        }
+        
+        ObjCExceptionCatcher.tryClosure(
+            tryClosure: { [collectionView, collectionSnapshotView, dataSource] in
+                collectionView.performBatchUpdates(
+                    animated: true,
+                    updates: {
+                        let numberOfInsertedItems = collectionView.numberOfItems(inSection: 0)
+                        let indexPathsToInsert = (numberOfInsertedItems ..< items.count).map { IndexPath(item: $0, section: 0) }
+                        
+                        collectionView.insertItems(at: indexPathsToInsert)
+
+                        dataSource.setItems(items)
+                    },
+                    completion: { [weak self] _ in
+                        if scrollToTop {
+                            collectionView.scrollToTop()
+                            collectionSnapshotView?.removeFromSuperview()
+                        }
+                        self?.selectCollectionViewCellsAccordingToDataSource()
+                        completion?()
+                    }
+                )
+            },
+            catchClosure: { [weak self] _ in
+                self?.recreateCollectionView()
+                completion?()
+            }
+        )
+    }
+    
+    func deleteAllItems(completion: (() -> ())?) {
+        let numberOfInsertedItems = collectionView.numberOfItems(inSection: 0)
+        if numberOfInsertedItems == 0 {
+            completion?()
+            return
+        }
+        
+        ObjCExceptionCatcher.tryClosure(
+            tryClosure: { [collectionView, collectionSnapshotView, dataSource] in
+                collectionView.performBatchUpdates(
+                    animated: true,
+                    updates: { [weak self] in
+                        dataSource.deleteAllItems()
+                        collectionView.reloadData()
+                    },
+                    completion: { _ in
+                        completion?()
+                    }
+                )
+            },
+            catchClosure: { [weak self] _ in
+                self?.recreateCollectionView()
                 completion?()
             }
         )
@@ -586,6 +649,14 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentOffset.y + scrollView.frame.size.height
+        
+        guard contentHeight > scrollView.contentSize.height else { return }
+        
+//        onLoadNextPage?()
+    }
+
     // MARK: - Private
     
     private var theme: PhotoLibraryV2UITheme?

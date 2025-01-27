@@ -6,6 +6,7 @@ protocol PhotoLibraryV2ViewInput: AnyObject {
     var onTitleTap: (() -> ())? { get set }
     var onDimViewTap: (() -> ())? { get set }
     var onLastPhotoThumbnailTap: (() -> ())? { get set }
+    var onLoadNextPage: (() -> ())? { get set }
     
     func setTitle(_: String)
     func setTitleVisible(_: Bool)
@@ -19,7 +20,10 @@ protocol PhotoLibraryV2ViewInput: AnyObject {
     
     func setCameraViewData(_: PhotoLibraryCameraViewData?)
     
-    func setItems(_: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
+    @available(*, deprecated, message: "Use `insertItems` or `deleteAllItems` instead.")
+    func setItemsLegacy(_: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
+    func deleteAllItems(completion: (() -> ())?)
+    func insertItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: @escaping () -> ())
     
     func setCanSelectMoreItems(_: Bool)

@@ -9,6 +9,11 @@ protocol PhotoLibraryItemsService: AnyObject {
     func observeLimitedAccess(handler: @escaping () -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
+    
+    func photoLibraryItems(
+        page: Int,
+        itemsPerPage: Int
+    ) -> [PhotoLibraryItem]
 }
 
 enum PhotosOrder {
@@ -284,7 +289,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
                 }
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+                onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
@@ -292,19 +297,55 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             if let phChanges = phChanges, phChanges.hasIncrementalChanges {
                 onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+                onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
         }
     }
     
-    private func photoLibraryItems(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
+    private func photoLibraryItemsLegacy(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
         
         let indexes = 0 ..< fetchResult.count
         
         return indexes.map { indexInFetchResult in
             
+            let index: Int = {
+                switch photosOrder {
+                case .normal:
+                    return indexInFetchResult
+                case .reversed:
+                    return indexes.upperBound - indexInFetchResult - 1
+                }
+            }()
+            
+            return PhotoLibraryItem(
+                image: PHAssetImageSource(
+                    fetchResult: fetchResult,
+                    index: index,
+                    imageManager: imageManager
+                )
+            )
+        }
+    }
+    
+    func photoLibraryItems(
+        page: Int,
+        itemsPerPage: Int
+    ) -> [PhotoLibraryItem] {
+        guard let fetchResult = observedAlbum?.fetchResult else {
+            return []
+        }
+        
+        let startIndex = page * itemsPerPage
+        let endIndex = (page + 1) * itemsPerPage - 1
+        
+        if startIndex > (fetchResult.count - 1) {
+            return []
+        }
+        let indexes = startIndex...min(endIndex, fetchResult.count - 1)
+        
+        return indexes.map { indexInFetchResult in
             let index: Int = {
                 switch photosOrder {
                 case .normal:
@@ -339,7 +380,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             insertedItems: insertedObjects(from: changes),
             updatedItems: updatedObjects(from: changes),
             movedIndexes: movedIndexes(from: changes),
-            itemsAfterChanges: photoLibraryItems(from: changes.fetchResultAfterChanges)
+            itemsAfterChanges: photoLibraryItemsLegacy(from: changes.fetchResultAfterChanges)
         )
     }
     

@@ -33,6 +33,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let shouldAllowFinishingWithNoPhotos: Bool
     
     // MARK: - State
+    private var currentPageIndex = 0
+    private var isNextPageLoading = true
+    
     private var shouldScrollToTopOnFullReload = true
     private var isObservingLimitedAccessAlert = false
     private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
@@ -257,7 +260,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 switch event {
                 case .fullReload(let items):
                     needToShowPlaceholder = items.isEmpty
-                    self.view?.setItems(
+                    self.view?.setItemsLegacy(
                         items.map(self.cellData),
                         scrollToTop: self.shouldScrollToTopOnFullReload,
                         completion: { [weak self] in
@@ -345,6 +348,18 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         
         view?.onDimViewTap = { [weak self] in
             self?.view?.hideAlbumsList()
+        }
+        
+        view?.onLoadNextPage = { [weak self] in
+            guard let self, !self.isNextPageLoading else { return }
+            
+            self.isNextPageLoading = true
+            self.currentPageIndex += 1
+            let nextPageItems = self.interactor.photoLibraryItems(page: self.currentPageIndex, itemsPerPage: 15)
+            let nextPageCells = nextPageItems.map(self.cellData)
+            self.view?.insertItems(nextPageCells, scrollToTop: false, completion: { [weak self] in
+                self?.isNextPageLoading = false
+            })
         }
         
         interactor.observeDeviceOrientation { [weak self] orientation in
