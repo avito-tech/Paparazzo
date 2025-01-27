@@ -259,6 +259,9 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 
                 switch event {
                 case .fullReload(let items):
+                    self.currentPageIndex = 0
+                    self.isNextPageLoading = true
+                    
                     needToShowPlaceholder = items.isEmpty
                     self.view?.setItemsLegacy(
                         items.map(self.cellData),
@@ -269,6 +272,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                                 self.shouldScrollToTopOnFullReload = false
                                 self.adjustViewForSelectionState(selectionState)
                                 self.view?.setProgressVisible(false)
+                                self.isNextPageLoading = false
                             }
                         }
                     )
@@ -355,6 +359,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             
             self.isNextPageLoading = true
             self.currentPageIndex += 1
+            
             let nextPageItems = self.interactor.photoLibraryItems(page: self.currentPageIndex, itemsPerPage: 15)
             let nextPageCells = nextPageItems.map(self.cellData)
             self.view?.insertItems(nextPageCells, scrollToTop: false, completion: { [weak self] in

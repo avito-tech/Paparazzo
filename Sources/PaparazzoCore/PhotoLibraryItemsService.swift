@@ -289,7 +289,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
                 }
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
+                onAlbumEvent?(.fullReload(photoLibraryItems(page: 0, itemsPerPage: 15)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
@@ -297,7 +297,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             if let phChanges = phChanges, phChanges.hasIncrementalChanges {
                 onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
+                onAlbumEvent?(.fullReload(photoLibraryItems(page: 0, itemsPerPage: 15)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
@@ -333,17 +333,12 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         page: Int,
         itemsPerPage: Int
     ) -> [PhotoLibraryItem] {
-        guard let fetchResult = observedAlbum?.fetchResult else {
-            return []
-        }
+        guard let observedAlbum else { return [] }
         
         let startIndex = page * itemsPerPage
-        let endIndex = (page + 1) * itemsPerPage - 1
-        
-        if startIndex > (fetchResult.count - 1) {
-            return []
-        }
-        let indexes = startIndex...min(endIndex, fetchResult.count - 1)
+        if startIndex > (observedAlbum.fetchResult.count - 1) { return [] }
+        let endIndex = min(startIndex + itemsPerPage, observedAlbum.fetchResult.count)
+        let indexes = startIndex ..< endIndex
         
         return indexes.map { indexInFetchResult in
             let index: Int = {
@@ -357,7 +352,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             
             return PhotoLibraryItem(
                 image: PHAssetImageSource(
-                    fetchResult: fetchResult,
+                    fetchResult: observedAlbum.fetchResult,
                     index: index,
                     imageManager: imageManager
                 )

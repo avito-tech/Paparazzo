@@ -123,7 +123,10 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
     }
     
-    var onLoadNextPage: (() -> ())?
+    var onLoadNextPage: (() -> ())? {
+        get { return photoLibraryView.onLoadNextPage }
+        set { photoLibraryView.onLoadNextPage = newValue }
+    }
     
     @nonobjc func setTitle(_ title: String) {
         photoLibraryView.setTitle(title)

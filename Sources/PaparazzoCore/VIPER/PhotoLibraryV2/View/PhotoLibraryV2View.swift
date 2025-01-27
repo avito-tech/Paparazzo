@@ -381,12 +381,13 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
                 collectionView.performBatchUpdates(
                     animated: true,
                     updates: {
-                        let numberOfInsertedItems = collectionView.numberOfItems(inSection: 0)
-                        let indexPathsToInsert = (numberOfInsertedItems ..< items.count).map { IndexPath(item: $0, section: 0) }
+                        let startIndexToInsert = collectionView.numberOfItems(inSection: 0)
+                        let endIndexToInsert = startIndexToInsert + items.count
+                        let indexPathsToInsert = (startIndexToInsert ..< endIndexToInsert).map { IndexPath(item: $0, section: 0) }
                         
                         collectionView.insertItems(at: indexPathsToInsert)
 
-                        dataSource.setItems(items)
+                        dataSource.addItems(items)
                     },
                     completion: { [weak self] _ in
                         if scrollToTop {
@@ -650,11 +651,15 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentHeight = scrollView.contentOffset.y + scrollView.frame.size.height
+        let height = scrollView.frame.size.height
+        let contentYOffset = scrollView.contentOffset.y
+        let bottomOffset = scrollView.contentSize.height - contentYOffset
+
+        guard bottomOffset < height else { return }
         
-        guard contentHeight > scrollView.contentSize.height else { return }
+        print("You reached end of the table")
         
-//        onLoadNextPage?()
+        onLoadNextPage?()
     }
 
     // MARK: - Private
