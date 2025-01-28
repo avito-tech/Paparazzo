@@ -349,9 +349,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         // Количество фотографий для локального постраничного отображения из галереи
         let itemsPerPage: Int
         #if DEBUG
-        itemsPerPage = 20
+        itemsPerPage = 50
         #else
-        itemsPerPage = 2000
+        itemsPerPage = 5000
         #endif
         let startIndex = numberOfDisplayedItems
         let endIndex = min(startIndex + itemsPerPage, observedAlbum.fetchResult.count)
