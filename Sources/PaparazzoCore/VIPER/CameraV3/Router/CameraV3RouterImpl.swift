@@ -17,6 +17,7 @@ final class CameraV3RouterImpl:
     // MARK: - NewCameraRouter
     func showMediaPicker(
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
@@ -28,6 +29,7 @@ final class CameraV3RouterImpl:
             overridenTheme: overridenTheme,
             isNewFlowPrototype: true, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure
         )
         

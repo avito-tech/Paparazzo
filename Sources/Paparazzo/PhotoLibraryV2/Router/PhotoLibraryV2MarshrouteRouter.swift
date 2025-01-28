@@ -23,6 +23,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ())
     {
         pushViewControllerDerivedFrom { routerSeed in
@@ -34,7 +35,8 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
                 isNewFlowPrototype: isNewFlowPrototype, 
-                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+                isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
                 configure: configure
             )
         }
@@ -45,6 +47,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         mediaPickerData: MediaPickerData,
         shouldAllowFinishingWithNoPhotos: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (NewCameraModule) -> ())
     {
         presentModalViewControllerDerivedFrom { routerSeed in
@@ -57,6 +60,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 cameraService: cameraService,
                 shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
                 isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+                isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
                 routerSeed: routerSeed,
                 configure: configure
             )
@@ -67,6 +71,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -79,7 +84,8 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
                 routerSeed: routerSeed, 
-                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+                isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
                 configure: configure,
                 onInitializationMeasurementStart: onInitializationMeasurementStart,
                 onInitializationMeasurementStop: onInitializationMeasurementStop,

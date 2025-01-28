@@ -13,6 +13,7 @@ public final class PaparazzoFacade {
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: MediaPickerData = MediaPickerData(),
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
@@ -21,6 +22,7 @@ public final class PaparazzoFacade {
         
         let viewController = assembly.module(
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             data: parameters,
             configure: { (module: MediaPickerModule) in
                 module.setContinueButtonTitle("Done")
@@ -70,6 +72,7 @@ public final class PaparazzoFacade {
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryData = PhotoLibraryData(),
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         onFinish: @escaping ([PhotoLibraryItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
@@ -77,7 +80,8 @@ public final class PaparazzoFacade {
         let assembly = assemblyFactory(theme: theme).photoLibraryAssembly()
         
         let galleryController = assembly.module(
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             data: parameters,
             configure: { (module: PhotoLibraryModule) in
                 module.onFinish = { [weak module] result in
@@ -101,6 +105,7 @@ public final class PaparazzoFacade {
         parameters: PhotoLibraryV2Data,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isLimitAlertFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -115,7 +120,8 @@ public final class PaparazzoFacade {
             isNewFlowPrototype: true,
             isUsingCameraV3: true, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isLimitAlertFixEnabled: isLimitAlertFixEnabled,
+            isLimitAlertFixEnabled: isLimitAlertFixEnabled, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: { (module: PhotoLibraryV2Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()

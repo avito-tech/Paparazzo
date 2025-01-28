@@ -10,6 +10,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isLimitAlertFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -25,6 +26,7 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isLimitAlertFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         module(
@@ -34,7 +36,8 @@ public extension PhotoLibraryV2MarshrouteAssembly {
             isNewFlowPrototype: false,
             isUsingCameraV3: false,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isLimitAlertFixEnabled: isLimitAlertFixEnabled,
+            isLimitAlertFixEnabled: isLimitAlertFixEnabled, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure,
             onCameraV3InitializationMeasurementStart: nil,
             onCameraV3InitializationMeasurementStop: nil,

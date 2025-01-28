@@ -22,6 +22,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     var onLimitedAccess: (() -> ())?
     
     private let isPresentingPhotosFromCameraFixEnabled: Bool
+    private let isPhotoFetchingByPageEnabled: Bool
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
@@ -36,8 +37,13 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    init(isPresentingPhotosFromCameraFixEnabled: Bool, photosOrder: PhotosOrder = .normal) {
+    init(
+        isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
+        photosOrder: PhotosOrder = .normal
+    ) {
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
+        self.isPhotoFetchingByPageEnabled = isPhotoFetchingByPageEnabled
         self.photosOrder = photosOrder
     }
     
@@ -286,7 +292,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
                 }
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
+                if isPhotoFetchingByPageEnabled {
+                    onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
+                } else {
+                    onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
+                }
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
@@ -294,7 +304,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             if let phChanges = phChanges, phChanges.hasIncrementalChanges {
                 onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
+                if isPhotoFetchingByPageEnabled {
+                    onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
+                } else {
+                    onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
+                }
             } else {
                 onAlbumEvent?(.fullReload([]))
             }

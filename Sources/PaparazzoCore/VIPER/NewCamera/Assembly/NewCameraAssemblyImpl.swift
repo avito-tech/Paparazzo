@@ -20,6 +20,7 @@ final class NewCameraAssemblyImpl:
         cameraService: CameraService,
         shouldAllowFinishingWithNoPhotos: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (NewCameraModule) -> ())
         -> UIViewController
     {
@@ -41,7 +42,8 @@ final class NewCameraAssemblyImpl:
             interactor: interactor,
             router: router,
             shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled
         )
         
         viewController.setTheme(theme)

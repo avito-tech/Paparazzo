@@ -24,6 +24,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isLimitAlertFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -33,6 +34,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             photosOrder: .reversed
         )
         
@@ -60,8 +62,9 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             isNewFlowPrototype: isNewFlowPrototype, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             isLimitAlertFixEnabled: isLimitAlertFixEnabled,
-            isUsingCameraV3: isUsingCameraV3,
-            onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart, 
+            isUsingCameraV3: isUsingCameraV3, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
+            onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
             onCameraV3DrawingMeasurementStop: onCameraV3DrawingMeasurementStop

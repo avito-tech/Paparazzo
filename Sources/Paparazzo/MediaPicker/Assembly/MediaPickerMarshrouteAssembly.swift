@@ -9,6 +9,7 @@ public protocol MediaPickerMarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController
 }
@@ -24,6 +25,7 @@ public extension MediaPickerMarshrouteAssembly {
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -33,6 +35,7 @@ public extension MediaPickerMarshrouteAssembly {
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure
         )
     }
@@ -42,6 +45,7 @@ public extension MediaPickerMarshrouteAssembly {
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -51,6 +55,7 @@ public extension MediaPickerMarshrouteAssembly {
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure
         )
     }
@@ -59,6 +64,7 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -68,6 +74,7 @@ public extension MediaPickerMarshrouteAssembly {
             routerSeed: routerSeed,
             isNewFlowPrototype: false,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure
         )
     }

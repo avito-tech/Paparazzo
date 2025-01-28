@@ -8,6 +8,7 @@ protocol NewCameraAssembly: AnyObject {
         cameraService: CameraService,
         shouldAllowFinishingWithNoPhotos: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }
