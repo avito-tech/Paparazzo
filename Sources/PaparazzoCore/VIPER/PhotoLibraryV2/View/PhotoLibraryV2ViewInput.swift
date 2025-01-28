@@ -6,7 +6,7 @@ protocol PhotoLibraryV2ViewInput: AnyObject {
     var onTitleTap: (() -> ())? { get set }
     var onDimViewTap: (() -> ())? { get set }
     var onLastPhotoThumbnailTap: (() -> ())? { get set }
-    var onLoadNextPage: (() -> ())? { get set }
+    var onLoadNextPage: ((_: Int) -> ())? { get set }
     
     func setTitle(_: String)
     func setTitleVisible(_: Bool)

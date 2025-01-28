@@ -284,7 +284,7 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     var onTitleTap: (() -> ())?
     var onDimViewTap: (() -> ())?
     
-    var onLoadNextPage: (() -> ())?
+    var onLoadNextPage: ((_ numberOfDisplayedItems: Int) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         topRightContinueButton.setTitle(title, for: .normal)
@@ -651,15 +651,17 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let numberOfItems = collectionView.numberOfItems(inSection: 0)
+        
+        guard numberOfItems != 0 else { return }
+        
         let height = scrollView.frame.size.height
         let contentYOffset = scrollView.contentOffset.y
         let bottomOffset = scrollView.contentSize.height - contentYOffset
 
         guard bottomOffset < height else { return }
         
-        print("You reached end of the table")
-        
-        onLoadNextPage?()
+        onLoadNextPage?(numberOfItems)
     }
 
     // MARK: - Private

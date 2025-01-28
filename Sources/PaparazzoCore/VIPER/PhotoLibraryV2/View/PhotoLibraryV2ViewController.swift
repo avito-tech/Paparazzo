@@ -123,7 +123,7 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
     }
     
-    var onLoadNextPage: (() -> ())? {
+    var onLoadNextPage: ((_ numberOfDisplayedItems: Int) -> ())? {
         get { return photoLibraryView.onLoadNextPage }
         set { photoLibraryView.onLoadNextPage = newValue }
     }

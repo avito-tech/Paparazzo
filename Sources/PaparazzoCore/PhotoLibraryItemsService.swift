@@ -10,10 +10,7 @@ protocol PhotoLibraryItemsService: AnyObject {
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
     
-    func photoLibraryItems(
-        page: Int,
-        itemsPerPage: Int
-    ) -> [PhotoLibraryItem]
+    func photoLibraryItems(numberOfDisplayedItems: Int) -> [PhotoLibraryItem]
 }
 
 enum PhotosOrder {
@@ -289,7 +286,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
                 }
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(page: 0, itemsPerPage: 15)))
+                onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
@@ -297,13 +294,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             if let phChanges = phChanges, phChanges.hasIncrementalChanges {
                 onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
             } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(page: 0, itemsPerPage: 15)))
+                onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
         }
     }
     
+    @available(*, deprecated, message: "Use `photoLibraryItems` instead.")
     private func photoLibraryItemsLegacy(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
         
         let indexes = 0 ..< fetchResult.count
@@ -329,14 +327,19 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    func photoLibraryItems(
-        page: Int,
-        itemsPerPage: Int
-    ) -> [PhotoLibraryItem] {
+    func photoLibraryItems(numberOfDisplayedItems: Int) -> [PhotoLibraryItem] {
         guard let observedAlbum else { return [] }
         
-        let startIndex = page * itemsPerPage
-        if startIndex > (observedAlbum.fetchResult.count - 1) { return [] }
+        if numberOfDisplayedItems > (observedAlbum.fetchResult.count - 1) { return [] }
+        
+        // Количество фотографий для локального постраничного отображения из галереи
+        let itemsPerPage: Int
+        #if DEBUG
+        itemsPerPage = 20
+        #else
+        itemsPerPage = 2000
+        #endif
+        let startIndex = numberOfDisplayedItems
         let endIndex = min(startIndex + itemsPerPage, observedAlbum.fetchResult.count)
         let indexes = startIndex ..< endIndex
         

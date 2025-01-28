@@ -33,7 +33,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let shouldAllowFinishingWithNoPhotos: Bool
     
     // MARK: - State
-    private var currentPageIndex = 0
     private var isNextPageLoading = true
     
     private var shouldScrollToTopOnFullReload = true
@@ -259,7 +258,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 
                 switch event {
                 case .fullReload(let items):
-                    self.currentPageIndex = 0
                     self.isNextPageLoading = true
                     
                     needToShowPlaceholder = items.isEmpty
@@ -354,17 +352,28 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.view?.hideAlbumsList()
         }
         
-        view?.onLoadNextPage = { [weak self] in
+        view?.onLoadNextPage = { [weak self] numberOfDisplayedItems in
             guard let self, !self.isNextPageLoading else { return }
             
             self.isNextPageLoading = true
-            self.currentPageIndex += 1
             
-            let nextPageItems = self.interactor.photoLibraryItems(page: self.currentPageIndex, itemsPerPage: 15)
-            let nextPageCells = nextPageItems.map(self.cellData)
-            self.view?.insertItems(nextPageCells, scrollToTop: false, completion: { [weak self] in
-                self?.isNextPageLoading = false
-            })
+            DispatchQueue.global().async { [weak self] in
+                guard let self else { return }
+                
+                let nextPageItems = self.interactor.photoLibraryItems(numberOfDisplayedItems: numberOfDisplayedItems)
+                
+                if nextPageItems.isEmpty { return }
+                
+                let nextPageCells = nextPageItems.map(self.cellData)
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.view?.insertItems(nextPageCells, scrollToTop: false, completion: {
+                        guard let self else { return }
+                        
+                        self.isNextPageLoading = false
+                    })
+                }
+            }
         }
         
         interactor.observeDeviceOrientation { [weak self] orientation in
