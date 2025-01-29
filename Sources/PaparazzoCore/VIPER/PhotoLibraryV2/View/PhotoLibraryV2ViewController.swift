@@ -170,8 +170,8 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setItemsLegacy(items, scrollToTop: scrollToTop, completion: completion)
     }
     
-    func deleteAllItems(completion: (() -> ())?) {
-        photoLibraryView.deleteAllItems(completion: completion)
+    func deleteAllItems() {
+        photoLibraryView.deleteAllItems()
     }
     
     func insertItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {

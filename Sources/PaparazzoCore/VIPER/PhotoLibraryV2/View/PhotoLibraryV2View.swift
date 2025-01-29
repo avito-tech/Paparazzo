@@ -406,31 +406,9 @@ final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, Them
         )
     }
     
-    func deleteAllItems(completion: (() -> ())?) {
-        let numberOfInsertedItems = collectionView.numberOfItems(inSection: 0)
-        if numberOfInsertedItems == 0 {
-            completion?()
-            return
-        }
-        
-        ObjCExceptionCatcher.tryClosure(
-            tryClosure: { [collectionView, collectionSnapshotView, dataSource] in
-                collectionView.performBatchUpdates(
-                    animated: true,
-                    updates: { [weak self] in
-                        dataSource.deleteAllItems()
-                        collectionView.reloadData()
-                    },
-                    completion: { _ in
-                        completion?()
-                    }
-                )
-            },
-            catchClosure: { [weak self] _ in
-                self?.recreateCollectionView()
-                completion?()
-            }
-        )
+    func deleteAllItems() {
+        dataSource.deleteAllItems()
+        collectionView.reloadData()
     }
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, completion: @convention(block) @escaping () -> ()) {

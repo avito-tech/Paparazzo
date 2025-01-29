@@ -22,7 +22,7 @@ protocol PhotoLibraryV2ViewInput: AnyObject {
     
     @available(*, deprecated, message: "Use `insertItems` or `deleteAllItems` instead.")
     func setItemsLegacy(_: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
-    func deleteAllItems(completion: (() -> ())?)
+    func deleteAllItems()
     func insertItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?)
     func applyChanges(_: PhotoLibraryViewChanges, completion: @escaping () -> ())
     

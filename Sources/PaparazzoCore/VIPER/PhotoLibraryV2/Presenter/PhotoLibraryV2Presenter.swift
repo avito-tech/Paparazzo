@@ -265,23 +265,21 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                     
                     if self.isPhotoFetchingByPageEnabled {
                         self.isNextPageLoading = true
-                        self.view?.deleteAllItems(completion: { [weak self] in
-                            guard let self else { return }
-                            
-                            self.view?.insertItems(
-                                items.map(self.cellData),
-                                scrollToTop: self.shouldScrollToTopOnFullReload,
-                                completion: { [weak self] in
-                                    dispatch_to_main_queue {
-                                        guard let self else { return }
-                                        self.shouldScrollToTopOnFullReload = false
-                                        self.adjustViewForSelectionState(selectionState)
-                                        self.view?.setProgressVisible(false)
-                                        self.isNextPageLoading = false
-                                    }
+                        self.view?.deleteAllItems()
+
+                        self.view?.insertItems(
+                            items.map(self.cellData),
+                            scrollToTop: self.shouldScrollToTopOnFullReload,
+                            completion: { [weak self] in
+                                dispatch_to_main_queue {
+                                    guard let self else { return }
+                                    self.shouldScrollToTopOnFullReload = false
+                                    self.adjustViewForSelectionState(selectionState)
+                                    self.view?.setProgressVisible(false)
+                                    self.isNextPageLoading = false
                                 }
-                            )
-                        })
+                            }
+                        )
                     } else {
                         self.view?.setItemsLegacy(
                             items.map(self.cellData),
