@@ -19,6 +19,12 @@ enum PhotosOrder {
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
+    // MARK: - Spec
+    private enum Spec {
+        static let debugItemsPerPage = 50
+        static let releaseItemsPerPage = 1000
+    }
+    
     var onLimitedAccess: (() -> ())?
     
     private let isPresentingPhotosFromCameraFixEnabled: Bool
@@ -425,9 +431,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         // Количество фотографий для локального постраничного отображения из галереи
         let itemsPerPage: Int
         #if DEBUG
-        itemsPerPage = 50
+        itemsPerPage = Spec.debugItemsPerPage
         #else
-        itemsPerPage = 5000
+        itemsPerPage = Spec.releaseItemsPerPage
         #endif
         let startIndex = numberOfDisplayedItems
         let endIndex = min(startIndex + itemsPerPage, observedAlbum.fetchResult.count)
