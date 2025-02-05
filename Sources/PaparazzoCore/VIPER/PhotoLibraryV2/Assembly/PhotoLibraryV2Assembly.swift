@@ -7,6 +7,7 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
         isUsingCameraV3: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isLimitAlertFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

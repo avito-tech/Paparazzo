@@ -13,6 +13,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let isLimitAlertFixEnabled: Bool
     private let isUsingCameraV3: Bool
+    private let isPhotoFetchingByPageEnabled: Bool
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
     private let onCameraV3InitializationMeasurementStop: (() -> ())?
     private let onCameraV3DrawingMeasurementStart: (() -> ())?
@@ -33,6 +34,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let shouldAllowFinishingWithNoPhotos: Bool
     
     // MARK: - State
+    private var isNextPageLoading = true
+    
     private var shouldScrollToTopOnFullReload = true
     private var isObservingLimitedAccessAlert = false
     private var continueButtonPlacement: MediaPickerContinueButtonPlacement?
@@ -48,6 +51,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         isPresentingPhotosFromCameraFixEnabled: Bool,
         isLimitAlertFixEnabled: Bool,
         isUsingCameraV3: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
         onCameraV3DrawingMeasurementStart: (() -> ())?,
@@ -61,6 +65,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.isLimitAlertFixEnabled = isLimitAlertFixEnabled
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.isUsingCameraV3 = isUsingCameraV3
+        self.isPhotoFetchingByPageEnabled = isPhotoFetchingByPageEnabled
         self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
         self.onCameraV3InitializationMeasurementStop = onCameraV3InitializationMeasurementStop
         self.onCameraV3DrawingMeasurementStart = onCameraV3DrawingMeasurementStart
@@ -257,18 +262,38 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 switch event {
                 case .fullReload(let items):
                     needToShowPlaceholder = items.isEmpty
-                    self.view?.setItems(
-                        items.map(self.cellData),
-                        scrollToTop: self.shouldScrollToTopOnFullReload,
-                        completion: { [weak self] in
-                            dispatch_to_main_queue {
-                                guard let self else { return }
-                                self.shouldScrollToTopOnFullReload = false
-                                self.adjustViewForSelectionState(selectionState)
-                                self.view?.setProgressVisible(false)
+                    
+                    if self.isPhotoFetchingByPageEnabled {
+                        self.isNextPageLoading = true
+                        self.view?.deleteAllItems()
+
+                        self.view?.insertItems(
+                            items.map(self.cellData),
+                            scrollToTop: self.shouldScrollToTopOnFullReload,
+                            completion: { [weak self] in
+                                dispatch_to_main_queue {
+                                    guard let self else { return }
+                                    self.shouldScrollToTopOnFullReload = false
+                                    self.adjustViewForSelectionState(selectionState)
+                                    self.view?.setProgressVisible(false)
+                                    self.isNextPageLoading = false
+                                }
                             }
-                        }
-                    )
+                        )
+                    } else {
+                        self.view?.setItemsLegacy(
+                            items.map(self.cellData),
+                            scrollToTop: self.shouldScrollToTopOnFullReload,
+                            completion: { [weak self] in
+                                dispatch_to_main_queue {
+                                    guard let self else { return }
+                                    self.shouldScrollToTopOnFullReload = false
+                                    self.adjustViewForSelectionState(selectionState)
+                                    self.view?.setProgressVisible(false)
+                                }
+                            }
+                        )
+                    }
                     
                 case .incrementalChanges(let changes):
                     needToShowPlaceholder = changes.itemsAfterChanges.isEmpty
@@ -316,7 +341,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
                 data: data,
                 overridenTheme: strongSelf.overridenTheme,
                 isNewFlowPrototype: strongSelf.isNewFlowPrototype, 
-                isPresentingPhotosFromCameraFixEnabled: strongSelf.isPresentingPhotosFromCameraFixEnabled,
+                isPresentingPhotosFromCameraFixEnabled: strongSelf.isPresentingPhotosFromCameraFixEnabled, 
+                isPhotoFetchingByPageEnabled: strongSelf.isPhotoFetchingByPageEnabled,
                 configure: { [weak self] module in
                     self?.configureMediaPicker(module)
                 }
@@ -347,6 +373,32 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.view?.hideAlbumsList()
         }
         
+        if isPhotoFetchingByPageEnabled {
+            view?.onLoadNextPage = { [weak self] numberOfDisplayedItems in
+                guard let self, !self.isNextPageLoading else { return }
+                
+                self.isNextPageLoading = true
+                
+                DispatchQueue.global().async { [weak self] in
+                    guard let self else { return }
+                    
+                    let nextPageItems = self.interactor.photoLibraryItems(numberOfDisplayedItems: numberOfDisplayedItems)
+                    
+                    if nextPageItems.isEmpty { return }
+                    
+                    let nextPageCells = nextPageItems.map(self.cellData)
+                    
+                    DispatchQueue.main.async { [weak self] in
+                        self?.view?.insertItems(nextPageCells, scrollToTop: false, completion: {
+                            guard let self else { return }
+                            
+                            self.isNextPageLoading = false
+                        })
+                    }
+                }
+            }
+        }
+        
         interactor.observeDeviceOrientation { [weak self] orientation in
             self?.cameraViewData { [weak self] viewData in
                 self?.view?.setCameraViewData(viewData)
@@ -363,7 +415,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             data: data,
             overridenTheme: overridenTheme,
             isNewFlowPrototype: true, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)
                 module.onFinish = { _ in
@@ -503,6 +556,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             mediaPickerData: interactor.mediaPickerData,
             shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: { [weak self] newCameraModule in
                 newCameraModule.configureMediaPicker = { [weak newCameraModule] mediaPickerModule in
                     self?.configureMediaPicker(mediaPickerModule)
@@ -530,7 +584,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router.showCameraV3(
             selectedImagesStorage: interactor.selectedPhotosStorage,
             mediaPickerData: interactor.mediaPickerData, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: { [weak self] cameraV3Module in
                 cameraV3Module.configureMediaPicker = { [weak self, weak cameraV3Module] pickerModule in
                     self?.configureMediaPicker(pickerModule)
@@ -563,7 +618,8 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             data: interactor.mediaPickerData.byDisablingLibrary(),
             overridenTheme: overridenTheme,
             isNewFlowPrototype: isNewFlowPrototype, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)
             }

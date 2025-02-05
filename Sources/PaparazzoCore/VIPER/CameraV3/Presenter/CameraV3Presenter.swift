@@ -7,6 +7,7 @@ final class CameraV3Presenter: CameraV3Module {
     private let router: CameraV3Router
     private let volumeService: VolumeService
     private let isPresentingPhotosFromCameraFixEnabled: Bool
+    private let isPhotoFetchingByPageEnabled: Bool
     private let onDrawingMeasurementStart: (() -> ())?
     private let onDrawingMeasurementStop: (() -> ())?
     
@@ -16,6 +17,7 @@ final class CameraV3Presenter: CameraV3Module {
         volumeService: VolumeService,
         router: CameraV3Router,
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         onDrawingMeasurementStart: (() -> ())?,
         onDrawingMeasurementStop: (() -> ())?
     ) {
@@ -23,6 +25,7 @@ final class CameraV3Presenter: CameraV3Module {
         self.volumeService = volumeService
         self.router = router
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
+        self.isPhotoFetchingByPageEnabled = isPhotoFetchingByPageEnabled
         self.onDrawingMeasurementStart = onDrawingMeasurementStart
         self.onDrawingMeasurementStop = onDrawingMeasurementStop
     }
@@ -74,9 +77,10 @@ final class CameraV3Presenter: CameraV3Module {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router, isPresentingPhotosFromCameraFixEnabled] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router, isPresentingPhotosFromCameraFixEnabled, isPhotoFetchingByPageEnabled] in
             router.showMediaPicker(
-                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
+                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
+                isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
                 data: interactor.mediaPickerDataWithSelectedLastItem,
                 overridenTheme: nil,
                 configure: { module in

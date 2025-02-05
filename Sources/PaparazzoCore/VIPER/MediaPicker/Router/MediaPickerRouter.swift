@@ -2,9 +2,9 @@ import ImageSource
 import UIKit
 
 protocol MediaPickerRouter: AnyObject {
-    
     func showPhotoLibrary(
         isPresentingPhotosFromCameraFixEnabled: Bool,
+        isPhotoFetchingByPageEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ()
     )
