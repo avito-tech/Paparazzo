@@ -20,7 +20,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ())
     {
         let assembly = assemblyFactory.mediaPickerAssembly()
@@ -30,7 +29,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             overridenTheme: overridenTheme,
             isNewFlowPrototype: isNewFlowPrototype,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure
         )
         
@@ -44,7 +42,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         mediaPickerData: MediaPickerData,
         shouldAllowFinishingWithNoPhotos: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (NewCameraModule) -> ())
     {
         let assembly = assemblyFactory.newCameraAssembly()
@@ -55,7 +52,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             cameraService: cameraService,
             shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure
         )
         
@@ -66,7 +62,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -79,7 +74,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             mediaPickerData: mediaPickerData,
             cameraService: cameraService, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             configure: configure,
             onInitializationMeasurementStart: onInitializationMeasurementStart,
             onInitializationMeasurementStop: onInitializationMeasurementStop,

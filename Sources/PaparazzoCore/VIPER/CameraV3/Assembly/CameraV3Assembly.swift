@@ -6,7 +6,6 @@ protocol CameraV3Assembly: AnyObject {
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,

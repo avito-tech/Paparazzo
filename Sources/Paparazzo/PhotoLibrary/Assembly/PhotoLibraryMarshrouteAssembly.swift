@@ -4,7 +4,6 @@ import Marshroute
 public protocol PhotoLibraryMarshrouteAssembly: AnyObject {
     func module(
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,

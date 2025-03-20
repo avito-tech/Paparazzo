@@ -3,7 +3,6 @@ protocol NewCameraRouter: AnyObject {
     
     func showMediaPicker(
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())

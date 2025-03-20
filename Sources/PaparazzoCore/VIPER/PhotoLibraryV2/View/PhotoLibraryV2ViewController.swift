@@ -123,11 +123,6 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
     }
     
-    var onLoadNextPage: ((_ numberOfDisplayedItems: Int) -> ())? {
-        get { return photoLibraryView.onLoadNextPage }
-        set { photoLibraryView.onLoadNextPage = newValue }
-    }
-    
     @nonobjc func setTitle(_ title: String) {
         photoLibraryView.setTitle(title)
     }
@@ -166,16 +161,8 @@ final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setCameraViewData(viewData)
     }
     
-    func setItemsLegacy(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
-        photoLibraryView.setItemsLegacy(items, scrollToTop: scrollToTop, completion: completion)
-    }
-    
-    func deleteAllItems() {
-        photoLibraryView.deleteAllItems()
-    }
-    
-    func insertItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
-        photoLibraryView.insertItems(items, scrollToTop: scrollToTop, completion: completion)
+    func setItems(_ items: [PhotoLibraryItemCellData], scrollToTop: Bool, completion: (() -> ())?) {
+        photoLibraryView.setItems(items, scrollToTop: scrollToTop, completion: completion)
     }
     
     func applyChanges(_ changes: PhotoLibraryViewChanges, completion: @escaping () -> ()) {

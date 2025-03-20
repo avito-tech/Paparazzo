@@ -23,7 +23,6 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
     {
@@ -52,7 +51,6 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         
         let presenter = MediaPickerPresenter(
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             interactor: interactor,
             router: router,

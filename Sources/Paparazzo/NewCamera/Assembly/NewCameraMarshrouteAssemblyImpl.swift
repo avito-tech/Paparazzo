@@ -21,7 +21,6 @@ final class NewCameraMarshrouteAssemblyImpl:
         cameraService: CameraService,
         shouldAllowFinishingWithNoPhotos: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         routerSeed: RouterSeed,
         configure: (NewCameraModule) -> ())
         -> UIViewController
@@ -44,8 +43,7 @@ final class NewCameraMarshrouteAssemblyImpl:
             interactor: interactor,
             router: router,
             shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
         )
         
         viewController.setTheme(theme)

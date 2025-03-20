@@ -20,7 +20,6 @@ final class CameraV3AssemblyImpl:
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -51,7 +50,6 @@ final class CameraV3AssemblyImpl:
             volumeService: serviceFactory.volumeService(),
             router: router, 
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             onDrawingMeasurementStart: onDrawingMeasurementStart,
             onDrawingMeasurementStop: onDrawingMeasurementStop
         )

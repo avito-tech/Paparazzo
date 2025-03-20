@@ -71,10 +71,6 @@ final class CollectionViewDataSource<CellType: Customizable>: NSObject, UICollec
         items.append(item)
     }
     
-    func addItems(_ items: [ItemType]) {
-        self.items.append(contentsOf: items)
-    }
-    
     func setItems(_ items: [ItemType]) {
         self.items = items
     }

@@ -9,7 +9,6 @@ protocol NewCameraMarshrouteAssembly: AnyObject {
         cameraService: CameraService,
         shouldAllowFinishingWithNoPhotos: Bool,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         routerSeed: RouterSeed,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController

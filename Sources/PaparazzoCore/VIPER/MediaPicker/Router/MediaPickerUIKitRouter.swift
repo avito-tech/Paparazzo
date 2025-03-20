@@ -17,7 +17,6 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
 
     func showPhotoLibrary(
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ()
     ) {
@@ -25,7 +24,6 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
         
         let viewController = assembly.module(
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             data: data,
             configure: configure
         )
