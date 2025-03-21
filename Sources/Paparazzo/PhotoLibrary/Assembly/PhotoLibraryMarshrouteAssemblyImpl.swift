@@ -5,7 +5,6 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: BasePaparazzoAssembly, Ph
     
     public func module(
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
@@ -13,8 +12,7 @@ public final class PhotoLibraryMarshrouteAssemblyImpl: BasePaparazzoAssembly, Ph
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
         )
         
         let interactor = PhotoLibraryInteractorImpl(

@@ -28,6 +28,4 @@ protocol PhotoLibraryV2Interactor: AnyObject {
     
     func setCurrentAlbum(_: PhotoLibraryAlbum)
     func observeSelectedItemsChange(_: @escaping () -> ())
-    
-    func photoLibraryItems(numberOfDisplayedItems: Int) -> [PhotoLibraryItem]
 }

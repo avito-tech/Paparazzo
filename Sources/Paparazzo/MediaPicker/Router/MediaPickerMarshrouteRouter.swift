@@ -17,7 +17,6 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
 
     func showPhotoLibrary(
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ()
     ) {
@@ -27,7 +26,6 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
             
             return assembly.module(
                 isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-                isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
                 selectedItems: data.selectedItems,
                 maxSelectedItemsCount: data.maxSelectedItemsCount,
                 routerSeed: routerSeed,

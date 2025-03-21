@@ -8,7 +8,6 @@ protocol CameraV3MarshrouteAssembly: AnyObject {
         cameraService: CameraService,
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -40,7 +39,6 @@ final class CameraV3MarshrouteAssemblyImpl:
         cameraService: CameraService,
         routerSeed: RouterSeed,
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -70,7 +68,6 @@ final class CameraV3MarshrouteAssemblyImpl:
             volumeService: serviceFactory.volumeService(),
             router: router,
             isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled,
             onDrawingMeasurementStart: onDrawingMeasurementStart,
             onDrawingMeasurementStop: onDrawingMeasurementStop
         )

@@ -4,14 +4,12 @@ public final class PhotoLibraryAssemblyImpl: BasePaparazzoAssembly, PhotoLibrary
     
     public func module(
         isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ())
         -> UIViewController
     {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
-            isPhotoFetchingByPageEnabled: isPhotoFetchingByPageEnabled
+            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
         )
         
         let interactor = PhotoLibraryInteractorImpl(

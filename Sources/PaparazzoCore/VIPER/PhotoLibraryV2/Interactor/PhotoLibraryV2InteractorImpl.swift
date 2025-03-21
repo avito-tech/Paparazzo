@@ -151,10 +151,6 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         selectedPhotosStorage.observeImagesChange(onChange)
     }
     
-    func photoLibraryItems(numberOfDisplayedItems: Int) -> [PhotoLibraryItem] {
-        photoLibraryItemsService.photoLibraryItems(numberOfDisplayedItems: numberOfDisplayedItems)
-    }
-    
     // MARK: - Private
     
     private func canSelectMoreItems() -> Bool {

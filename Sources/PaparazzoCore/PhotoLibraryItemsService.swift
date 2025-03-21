@@ -9,8 +9,6 @@ protocol PhotoLibraryItemsService: AnyObject {
     func observeLimitedAccess(handler: @escaping () -> ())
     func observeAlbums(handler: @escaping ([PhotoLibraryAlbum]) -> ())
     func observeEvents(in: PhotoLibraryAlbum, handler: @escaping (_ event: PhotoLibraryAlbumEvent) -> ())
-    
-    func photoLibraryItems(numberOfDisplayedItems: Int) -> [PhotoLibraryItem]
 }
 
 enum PhotosOrder {
@@ -19,16 +17,9 @@ enum PhotosOrder {
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
-    // MARK: - Spec
-    private enum Spec {
-        static let debugItemsPerPage = 50
-        static let releaseItemsPerPage = 1000
-    }
-    
     var onLimitedAccess: (() -> ())?
     
     private let isPresentingPhotosFromCameraFixEnabled: Bool
-    private let isPhotoFetchingByPageEnabled: Bool
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
@@ -43,13 +34,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    init(
-        isPresentingPhotosFromCameraFixEnabled: Bool,
-        isPhotoFetchingByPageEnabled: Bool,
-        photosOrder: PhotosOrder = .normal
-    ) {
+    init(isPresentingPhotosFromCameraFixEnabled: Bool, photosOrder: PhotosOrder = .normal) {
         self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
-        self.isPhotoFetchingByPageEnabled = isPhotoFetchingByPageEnabled
         self.photosOrder = photosOrder
     }
     
@@ -142,18 +128,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     changeDetails.insertedIndexes?.enumerated()
                         .map { ($1, changeDetails.insertedObjects[$0]) }
                         .forEach { insertionIndex, assetCollection in
-                            let album = self.isPhotoFetchingByPageEnabled
-                                ? PhotoLibraryAlbum(assetCollection: assetCollection, ascending: self.photosOrder == .normal)
-                                : PhotoLibraryAlbum(assetCollection: assetCollection)
+                            let album = PhotoLibraryAlbum(assetCollection: assetCollection)
                             fetchResult.albums.insert(album, at: insertionIndex)
                         }
                     
                     changeDetails.changedIndexes?.enumerated()
                         .map { ($1, changeDetails.changedObjects[$0]) }
                         .forEach { changingIndex, assetCollection in
-                            let album = self.isPhotoFetchingByPageEnabled
-                                ? PhotoLibraryAlbum(assetCollection: assetCollection, ascending: self.photosOrder == .normal)
-                                : PhotoLibraryAlbum(assetCollection: assetCollection)
+                            let album = PhotoLibraryAlbum(assetCollection: assetCollection)
                             fetchResult.albums[changingIndex] = album
                         }
                     
@@ -193,22 +175,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         case .authorized:
             wasSetUp = true
-            isPhotoFetchingByPageEnabled
-                ? setUpFetchResult(completion: completion)
-                : setUpFetchResultLegacy(completion: completion)
+            setUpFetchResult(completion: completion)
 
             #if compiler(>=5.3)
             // Xcode 12+
         case .limited:
             wasSetUp = true
             if isPresentingPhotosFromCameraFixEnabled {
-                isPhotoFetchingByPageEnabled
-                    ? setUpFetchResult(completion: completion)
-                    : setUpFetchResultLegacy(completion: completion)
+                setUpFetchResult(completion: completion)
             } else {
-                isPhotoFetchingByPageEnabled
-                    ? setUpFetchResultForLimitedAccess(completion: completion)
-                    : setUpFetchResultForLimitedAccessLegacy(completion: completion)
+                setUpFetchResultForLimitedAccess(completion: completion)
             }
             
             onLimitedAccess?()
@@ -216,27 +192,18 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         
         case .notDetermined:
             PHPhotoLibrary.requestReadWriteAuthorization { [weak self] status in
-                guard let self else { return }
                 
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.async {
                     self?.callAuthorizationHandler(for: status)
                     self?.wasSetUp = true
                 }
                 
                 switch status {
                 case .authorized:
-                    self.isPhotoFetchingByPageEnabled
-                        ? self.setUpFetchResult(completion: completion)
-                        : self.setUpFetchResultLegacy(completion: completion)
+                    self?.setUpFetchResult(completion: completion)
                 #if compiler(>=5.3)
                 case .limited:
-                    if self.isPresentingPhotosFromCameraFixEnabled {
-                        self.setUpFetchResult(completion: completion)
-                    } else {
-                        self.isPhotoFetchingByPageEnabled
-                            ? self.setUpFetchResultForLimitedAccess(completion: completion)
-                            : self.setUpFetchResultForLimitedAccessLegacy(completion: completion)
-                    }
+                    self?.setUpFetchResult(completion: completion)
                 #endif
                 default:
                     DispatchQueue.main.async(execute: completion)
@@ -254,9 +221,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    @available(*, deprecated, message: "Use `setUpFetchResult` instead.")
-    // Не нужно сортировать каждый раз и использовать photosOrder, так как это происходит на этапе загрузки фотографий
-    private func setUpFetchResultLegacy(completion: @escaping () -> ()) {
+    private func setUpFetchResult(completion: @escaping () -> ()) {
         fetchResultQueue.async {
             
             var fetchResults = [PhotoLibraryFetchResult]()
@@ -284,37 +249,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    private func setUpFetchResult(completion: @escaping () -> ()) {
-        fetchResultQueue.async { [weak self] in
-            guard let self else { return }
-            
-            var fetchResults = [PhotoLibraryFetchResult]()
-            
-            let collectionsFetchResults = [
-                PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil),
-                PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
-            ]
-            
-            collectionsFetchResults.enumerated().forEach { index, collectionsFetchResult in
-                var albums = [PhotoLibraryAlbum]()
-                
-                collectionsFetchResult.enumerateObjects(using: { collection, _, _ in
-                    albums.append(PhotoLibraryAlbum(assetCollection: collection, ascending: self.photosOrder == .normal))
-                })
-                
-                fetchResults.append(PhotoLibraryFetchResult(albums: albums, phFetchResult: collectionsFetchResult))
-            }
-            
-            self.fetchResults = fetchResults
-            self.photoLibrary.register(self)
-
-            DispatchQueue.main.async(execute: completion)
-        }
-    }
-    
-    @available(*, deprecated, message: "Use `setUpFetchResultForLimitedAccess` instead.")
-    // Не нужно сортировать каждый раз и использовать photosOrder, так как это происходит на этапе загрузки фотографий
-    private func setUpFetchResultForLimitedAccessLegacy(completion: @escaping () -> ()) {
+    private func setUpFetchResultForLimitedAccess(completion: @escaping () -> ()) {
         fetchResultQueue.async {
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
@@ -336,30 +271,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    private func setUpFetchResultForLimitedAccess(completion: @escaping () -> ()) {
-        fetchResultQueue.async { [weak self] in
-            guard let self else { return }
-            
-            let fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
-            fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
-            
-            let assetsFetchResult = PHAsset.fetchAssets(with: fetchOptions)
-            
-            let assetCollection = PHAssetCollection.transientAssetCollection(
-                withAssetFetchResult: assetsFetchResult,
-                title: localized("All photos")
-            )
-            
-            let albums = [PhotoLibraryAlbum(assetCollection: assetCollection, ascending: self.photosOrder == .normal)]
-            
-            self.fetchResults = [PhotoLibraryFetchResult(albums: albums, phFetchResult: nil)]
-            self.photoLibrary.register(self)
-
-            DispatchQueue.main.async(execute: completion)
-        }
-    }
-    
     private func callAuthorizationHandler(for status: PHAuthorizationStatus) {
         onAuthorizationStatusChange?(status.isAuthorizedOrLimited)
     }
@@ -373,11 +284,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
                 }
             } else if let observedAlbum = observedAlbum {
-                if isPhotoFetchingByPageEnabled {
-                    onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
-                } else {
-                    onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
-                }
+                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
@@ -385,20 +292,14 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             if let phChanges = phChanges, phChanges.hasIncrementalChanges {
                 onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
             } else if let observedAlbum = observedAlbum {
-                if isPhotoFetchingByPageEnabled {
-                    onAlbumEvent?(.fullReload(photoLibraryItems(numberOfDisplayedItems: 0)))
-                } else {
-                    onAlbumEvent?(.fullReload(photoLibraryItemsLegacy(from: observedAlbum.fetchResult)))
-                }
+                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
             } else {
                 onAlbumEvent?(.fullReload([]))
             }
         }
     }
     
-    @available(*, deprecated, message: "Use `photoLibraryItems` instead.")
-    // Не нужно сортировать каждый раз и использовать photosOrder, так как это происходит на этапе загрузки фотографий
-    private func photoLibraryItemsLegacy(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
+    private func photoLibraryItems(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
         
         let indexes = 0 ..< fetchResult.count
         
@@ -423,33 +324,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    func photoLibraryItems(numberOfDisplayedItems: Int) -> [PhotoLibraryItem] {
-        guard let observedAlbum else { return [] }
-        
-        if numberOfDisplayedItems > (observedAlbum.fetchResult.count - 1) { return [] }
-        
-        // Количество фотографий для локального постраничного отображения из галереи
-        let itemsPerPage: Int
-        #if DEBUG
-        itemsPerPage = Spec.debugItemsPerPage
-        #else
-        itemsPerPage = Spec.releaseItemsPerPage
-        #endif
-        let startIndex = numberOfDisplayedItems
-        let endIndex = min(startIndex + itemsPerPage, observedAlbum.fetchResult.count)
-        let indexes = startIndex ..< endIndex
-        
-        return indexes.map { index in
-            PhotoLibraryItem(
-                image: PHAssetImageSource(
-                    fetchResult: observedAlbum.fetchResult,
-                    index: index,
-                    imageManager: imageManager
-                )
-            )
-        }
-    }
-    
     private func photoLibraryItem(from asset: PHAsset) -> PhotoLibraryItem {
         return PhotoLibraryItem(
             image: PHAssetImageSource(asset: asset, imageManager: imageManager)
@@ -460,28 +334,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     func photoLibraryChanges(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> PhotoLibraryChanges
     {
-        if isPhotoFetchingByPageEnabled {
-            return PhotoLibraryChanges(
-                removedIndexes: removedIndexes(from: changes),
-                insertedItems: insertedObjects(from: changes),
-                updatedItems: updatedObjects(from: changes),
-                movedIndexes: movedIndexes(from: changes),
-                itemsAfterChanges: photoLibraryItemsLegacy(from: changes.fetchResultAfterChanges)
-            )
-        } else {
-            return PhotoLibraryChanges(
-                removedIndexes: removedIndexesLegacy(from: changes),
-                insertedItems: insertedObjectsLegacy(from: changes),
-                updatedItems: updatedObjectsLegacy(from: changes),
-                movedIndexes: movedIndexesLegacy(from: changes),
-                itemsAfterChanges: photoLibraryItemsLegacy(from: changes.fetchResultAfterChanges)
-            )
-        }
+        return PhotoLibraryChanges(
+            removedIndexes: removedIndexes(from: changes),
+            insertedItems: insertedObjects(from: changes),
+            updatedItems: updatedObjects(from: changes),
+            movedIndexes: movedIndexes(from: changes),
+            itemsAfterChanges: photoLibraryItems(from: changes.fetchResultAfterChanges)
+        )
     }
     
-    @available(*, deprecated, message: "Use `removedIndexes` instead.")
-    // Не нужно сортировать каждый раз, так как это происходит на этапе загрузки фотографий
-    private func removedIndexesLegacy(from changes: PHFetchResultChangeDetails<PHAsset>)
+    private func removedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> IndexSet
     {
         let assetsCountBeforeChanges = changes.fetchResultBeforeChanges.count
@@ -501,21 +363,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         return removedIndexes
     }
     
-    private func removedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
-        -> IndexSet
-    {
-        let assetsCountBeforeChanges = changes.fetchResultBeforeChanges.count
-        var removedIndexes = IndexSet()
-        changes.removedIndexes?.reversed().forEach { index in
-            removedIndexes.insert(index)
-        }
-        
-        return removedIndexes
-    }
-    
-    @available(*, deprecated, message: "Use `insertedObjects` instead.")
-    // Не нужно сортировать каждый раз, так как это происходит на этапе загрузки фотографий
-    private func insertedObjectsLegacy(from changes: PHFetchResultChangeDetails<PHAsset>)
+    private func insertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
         guard let insertedIndexes = changes.insertedIndexes else { return [] }
@@ -553,26 +401,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    private func insertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
-        -> [(index: Int, item: PhotoLibraryItem)]
-    {
-        guard let insertedIndexes = changes.insertedIndexes else { return [] }
-        
-        let objectsCountAfterRemovalsAndInsertions =
-            changes.fetchResultBeforeChanges.count - changes.removedObjects.count + changes.insertedObjects.count
-        
-        return insertedIndexes.enumerated().map {
-            insertionIndex, targetAssetIndex -> (index: Int, item: PhotoLibraryItem) in
-            
-            let asset = changes.insertedObjects[insertionIndex]
-            return (index: targetAssetIndex, item: photoLibraryItem(from: asset))
-        }
-    }
-
-    
-    @available(*, deprecated, message: "Use `updatedObjects` instead.")
-    // Не нужно сортировать каждый раз, так как это происходит на этапе загрузки фотографий
-    private func updatedObjectsLegacy(from changes: PHFetchResultChangeDetails<PHAsset>)
+    private func updatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
         guard let changedIndexes = changes.changedIndexes else { return [] }
@@ -608,24 +437,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    private func updatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
-        -> [(index: Int, item: PhotoLibraryItem)]
-    {
-        guard let changedIndexes = changes.changedIndexes else { return [] }
-        
-        let objectsCountAfterRemovalsAndInsertions =
-            changes.fetchResultBeforeChanges.count - changes.removedObjects.count + changes.insertedObjects.count
-        
-        return changedIndexes.enumerated().map { changeIndex, assetIndex -> (index: Int, item: PhotoLibraryItem) in
-            
-            let asset = changes.changedObjects[changeIndex]
-            return (index: assetIndex, item: photoLibraryItem(from: asset))
-        }
-    }
-    
-    @available(*, deprecated, message: "Use `movedIndexes` instead.")
-    // Не нужно сортировать каждый раз, так как это происходит на этапе загрузки фотографий
-    private func movedIndexesLegacy(from changes: PHFetchResultChangeDetails<PHAsset>)
+    private func movedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(from: Int, to: Int)]
     {
         var movedIndexes = [(from: Int, to: Int)]()
@@ -648,21 +460,6 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             }()
             
             movedIndexes.append((from: realFrom, to: realTo))
-        }
-        
-        return movedIndexes
-    }
-    
-    private func movedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
-        -> [(from: Int, to: Int)]
-    {
-        var movedIndexes = [(from: Int, to: Int)]()
-        
-        let objectsCountAfterRemovalsAndInsertions =
-            changes.fetchResultBeforeChanges.count - changes.removedObjects.count + changes.insertedObjects.count
-        
-        changes.enumerateMoves { from, to in
-            movedIndexes.append((from: from, to: to))
         }
         
         return movedIndexes
@@ -719,31 +516,12 @@ final class PhotoLibraryAlbum: Equatable {
         self.numberOfItems = fetchResult.count
     }
     
-    @available(*, deprecated, message: "Use init(assetCollection: ascending:)")
     fileprivate convenience init(assetCollection: PHAssetCollection) {
         
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
         fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
         
-        let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
-        
-        self.init(
-            identifier: assetCollection.localIdentifier,
-            title: assetCollection.localizedTitle,
-            coverImage: fetchResult.lastObject.flatMap { PHAssetImageSource(asset: $0) },
-            isAllPhotos: assetCollection.assetCollectionType == .smartAlbum &&
-                         assetCollection.assetCollectionSubtype == .smartAlbumUserLibrary,
-            fetchResult: fetchResult
-        )
-    }
-    
-    fileprivate convenience init(assetCollection: PHAssetCollection, ascending: Bool) {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
-        fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: ascending)]
-
         let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
         
         self.init(
