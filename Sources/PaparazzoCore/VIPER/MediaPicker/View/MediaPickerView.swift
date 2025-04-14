@@ -9,6 +9,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let notchMaskingView = UIView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
+    private var imagePerceptionBadgeView = ImagePerceptionBadgeView()
     
     private let closeButton = UIButton()
     private let topRightContinueButton = ButtonWithActivity()
@@ -91,6 +92,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(topRightContinueButton)
+        addSubview(imagePerceptionBadgeView)
         
         setMode(.camera)
         setUpAccessibilityIdentifiers()
@@ -109,6 +111,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         layOutNotchMaskingView()
         layOutFakeNavigationBarButtons()
         layOutBottomContinueButton()
+        layoutBadgeView()
         
         let controlsIdealFrame = CGRect(
             left: bounds.left,
@@ -254,6 +257,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoTitleLabel.sizeToFit()
         photoTitleLabel.centerX = bounds.centerX
         photoTitleLabel.top = max(notchMaskingView.bottom, fakeNavigationBarMinimumYOffset) + fakeNavigationBarContentTopInset + 9
+    }
+    
+    private func layoutBadgeView() {
+        imagePerceptionBadgeView.layout(
+            left: bounds.left + 8,
+            top: paparazzoSafeAreaInsets.top + 56,
+            width: imagePerceptionBadgeView.sizeThatFits().width,
+            height: imagePerceptionBadgeView.sizeThatFits().height
+        )
     }
     
     // MARK: - ThemeConfigurable
@@ -417,6 +429,10 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         case .disabled:
             photoControlsView.setAutoEnhanceButtonStatus(.disabled)
         }
+    }
+    
+    func setImagePerceptionBadge(_ viewData: ImagePerceptionBadgeViewData) {
+        imagePerceptionBadgeView.setViewData(viewData)
     }
     
     func setCameraControlsEnabled(_ enabled: Bool) {

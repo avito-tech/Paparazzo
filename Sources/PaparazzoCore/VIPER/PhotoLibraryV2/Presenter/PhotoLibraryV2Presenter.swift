@@ -86,6 +86,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onRotateButtonTap: (() -> ())?
     var onGridButtonTap: ((Bool) -> ())?
     var onAspectRatioButtonTap: ((String) -> ())?
+    var onItemChangeState: ((MediaPickerImageState) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
@@ -136,6 +137,10 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     public func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool) {
         mediaPickerModule?.setAutoEnhanceImage(image, prevImage: prevImage, isEnhanced: isEnhanced)
+    }
+    
+    func setImagePerceptionBadge(_ badge: ImagePerceptionBadgeViewData) {
+        mediaPickerModule?.setImagePerceptionBadge(badge)
     }
     
     func setCropMode(_ cropMode: MediaPickerCropMode) {

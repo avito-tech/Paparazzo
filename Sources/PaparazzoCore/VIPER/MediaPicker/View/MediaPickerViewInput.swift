@@ -63,6 +63,8 @@ protocol MediaPickerViewInput: AnyObject {
     func setPhotoLibraryButtonEnabled(_: Bool)
     func setPhotoLibraryButtonVisible(_: Bool)
     
+    func setImagePerceptionBadge(_ badge: ImagePerceptionBadgeViewData)
+    
     var onCloseButtonTap: (() -> ())? { get set }
     var onContinueButtonTap: (() -> ())? { get set }
     
