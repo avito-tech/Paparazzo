@@ -373,6 +373,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.setPhotoLibraryButtonVisible(visible)
     }
     
+    func setImagePerceptionBadge(_ viewData: ImagePerceptionBadgeViewData) {
+        mediaPickerView.setImagePerceptionBadge(viewData)
+    }
+    
     func showInfoMessage(_ message: String, timeout: TimeInterval) {
         mediaPickerView.showInfoMessage(message, timeout: timeout)
     }
