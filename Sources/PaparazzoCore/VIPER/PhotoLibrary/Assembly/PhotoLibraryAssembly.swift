@@ -2,7 +2,6 @@ import UIKit
 
 public protocol PhotoLibraryAssembly: AnyObject {
     func module(
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController

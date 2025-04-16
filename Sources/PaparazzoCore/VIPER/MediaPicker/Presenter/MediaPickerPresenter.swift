@@ -6,7 +6,6 @@ final class MediaPickerPresenter: MediaPickerModule {
     private let isNewFlowPrototype: Bool
     
     // MARK: - Dependencies
-    private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let interactor: MediaPickerInteractor
     private let router: MediaPickerRouter
     private let cameraModuleInput: CameraModuleInput
@@ -17,13 +16,11 @@ final class MediaPickerPresenter: MediaPickerModule {
     // MARK: - Init
     
     init(
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         interactor: MediaPickerInteractor,
         router: MediaPickerRouter,
         cameraModuleInput: CameraModuleInput)
     {
-        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
         self.isNewFlowPrototype = isNewFlowPrototype
         self.interactor = interactor
         self.router = router
@@ -541,7 +538,6 @@ final class MediaPickerPresenter: MediaPickerModule {
         )
         
         router.showPhotoLibrary(
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             data: data
         ) { [weak self] module in
             guard let strongSelf = self else { return }

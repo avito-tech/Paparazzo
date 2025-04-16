@@ -8,7 +8,6 @@ public protocol MediaPickerMarshrouteAssembly: AnyObject {
         viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController
 }
@@ -23,7 +22,6 @@ public extension MediaPickerMarshrouteAssembly {
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -32,7 +30,6 @@ public extension MediaPickerMarshrouteAssembly {
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }
@@ -41,7 +38,6 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -50,7 +46,6 @@ public extension MediaPickerMarshrouteAssembly {
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: isNewFlowPrototype,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }
@@ -58,7 +53,6 @@ public extension MediaPickerMarshrouteAssembly {
     func module(
         data: MediaPickerData,
         routerSeed: RouterSeed,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -67,7 +61,6 @@ public extension MediaPickerMarshrouteAssembly {
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isNewFlowPrototype: false,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
     }
