@@ -433,6 +433,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     func setImagePerceptionBadge(_ viewData: ImagePerceptionBadgeViewData) {
         imagePerceptionBadgeView.setViewData(viewData)
+        setNeedsLayout()
+        layoutIfNeeded()
     }
     
     func setCameraControlsEnabled(_ enabled: Bool) {
