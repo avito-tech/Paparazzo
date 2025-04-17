@@ -22,7 +22,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ())
     {
         pushViewControllerDerivedFrom { routerSeed in
@@ -34,7 +33,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
                 isNewFlowPrototype: isNewFlowPrototype, 
-                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
                 configure: configure
             )
         }
@@ -44,7 +42,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         shouldAllowFinishingWithNoPhotos: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (NewCameraModule) -> ())
     {
         presentModalViewControllerDerivedFrom { routerSeed in
@@ -56,7 +53,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
                 shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
-                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
                 routerSeed: routerSeed,
                 configure: configure
             )
@@ -66,7 +62,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     func showCameraV3(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -79,7 +74,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
                 routerSeed: routerSeed, 
-                isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
                 configure: configure,
                 onInitializationMeasurementStart: onInitializationMeasurementStart,
                 onInitializationMeasurementStop: onInitializationMeasurementStop,

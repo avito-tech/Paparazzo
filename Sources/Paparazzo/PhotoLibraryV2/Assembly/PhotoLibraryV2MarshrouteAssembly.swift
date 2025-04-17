@@ -8,8 +8,6 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
-        isLimitAlertFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -23,8 +21,6 @@ public extension PhotoLibraryV2MarshrouteAssembly {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
-        isLimitAlertFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> ()
     ) -> UIViewController {
         module(
@@ -33,8 +29,6 @@ public extension PhotoLibraryV2MarshrouteAssembly {
             routerSeed: routerSeed,
             isNewFlowPrototype: false,
             isUsingCameraV3: false,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isLimitAlertFixEnabled: isLimitAlertFixEnabled, 
             configure: configure,
             onCameraV3InitializationMeasurementStart: nil,
             onCameraV3InitializationMeasurementStop: nil,

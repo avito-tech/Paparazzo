@@ -8,7 +8,6 @@ protocol NewCameraMarshrouteAssembly: AnyObject {
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         shouldAllowFinishingWithNoPhotos: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         routerSeed: RouterSeed,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController

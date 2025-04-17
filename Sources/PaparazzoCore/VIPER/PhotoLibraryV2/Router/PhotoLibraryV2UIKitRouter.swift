@@ -19,7 +19,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (MediaPickerModule) -> ())
     {
         let assembly = assemblyFactory.mediaPickerAssembly()
@@ -28,7 +27,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             data: data,
             overridenTheme: overridenTheme,
             isNewFlowPrototype: isNewFlowPrototype,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
             configure: configure
         )
         
@@ -41,7 +39,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         shouldAllowFinishingWithNoPhotos: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (NewCameraModule) -> ())
     {
         let assembly = assemblyFactory.newCameraAssembly()
@@ -51,7 +48,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             mediaPickerData: mediaPickerData,
             cameraService: cameraService,
             shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
             configure: configure
         )
         
@@ -61,7 +57,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     func showCameraV3(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -73,7 +68,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
             cameraService: cameraService, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
             configure: configure,
             onInitializationMeasurementStart: onInitializationMeasurementStart,
             onInitializationMeasurementStop: onInitializationMeasurementStop,

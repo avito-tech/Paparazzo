@@ -7,7 +7,6 @@ protocol CameraV3MarshrouteAssembly: AnyObject {
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         routerSeed: RouterSeed,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -38,7 +37,6 @@ final class CameraV3MarshrouteAssemblyImpl:
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         routerSeed: RouterSeed,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -67,7 +65,6 @@ final class CameraV3MarshrouteAssemblyImpl:
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
             router: router,
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
             onDrawingMeasurementStart: onDrawingMeasurementStart,
             onDrawingMeasurementStop: onDrawingMeasurementStop
         )

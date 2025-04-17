@@ -15,8 +15,6 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
-        isLimitAlertFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -24,7 +22,6 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> UIViewController {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
             photosOrder: .reversed
         )
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
@@ -54,8 +51,6 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             router: router,
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled,
-            isLimitAlertFixEnabled: isLimitAlertFixEnabled,
             isUsingCameraV3: isUsingCameraV3,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
