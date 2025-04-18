@@ -90,7 +90,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onRotateButtonTap: (() -> ())?
     var onGridButtonTap: ((Bool) -> ())?
     var onAspectRatioButtonTap: ((String) -> ())?
-    var onItemChangeState: ((MediaPickerImageState) -> ())?
+    var onItemStateDidChange: ((MediaPickerImageState) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title

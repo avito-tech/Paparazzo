@@ -47,9 +47,9 @@ final class ImagePerceptionBadgeView: UIView {
         didSet {
             guard
                 let imageId = viewData.imageID,
-                imageId != "",
+                !imageId.isEmpty,
                 let title = viewData.title,
-                title != "",
+                !title.isEmpty,
                 let color = viewData.color,
                 let onTap = viewData.onTap
             else {

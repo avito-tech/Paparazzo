@@ -62,7 +62,7 @@ final class MediaPickerPresenter: MediaPickerModule {
     var onRotateButtonTap: (() -> ())?
     var onGridButtonTap: ((Bool) -> ())?
     var onAspectRatioButtonTap: ((String) -> ())?
-    var onItemChangeState: ((MediaPickerImageState) -> ())?
+    var onItemStateDidChange: ((MediaPickerImageState) -> ())?
     
     func setContinueButtonTitle(_ title: String) {
         continueButtonTitle = title
@@ -310,7 +310,7 @@ final class MediaPickerPresenter: MediaPickerModule {
             self?.interactor.selectItem(item)
             self?.updateAutocorrectionStatusForItem(item)
             self?.onItemSelectSetAutoEnhanceStatusIfNeeded?(item)
-            self?.onItemChangeState?(.select(item))
+            self?.onItemStateDidChange?(.select(item))
             self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: true)
         }
         
@@ -322,7 +322,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                 self?.adjustViewForSelectedItem(item, animated: true, scrollToSelected: false)
             }
             self?.view?.moveItem(from: sourceIndex, to: destinationIndex)
-            self?.onItemChangeState?(.update)
+            self?.onItemStateDidChange?(.update)
         }
         
         view?.onCameraThumbnailTap = { [weak self] in
@@ -370,7 +370,7 @@ final class MediaPickerPresenter: MediaPickerModule {
         }
         
         view?.onAutocorrectButtonTap = { [weak self] in
-            self?.onItemChangeState?(.update)
+            self?.onItemStateDidChange?(.update)
             if let originalItem = self?.interactor.selectedItem?.originalItem {
                 self?.view?.showInfoMessage(localized("AUTOCORRECTION OFF"), timeout: 1.0)
                 self?.updateItem(originalItem, afterAutocorrect: true)
@@ -399,12 +399,12 @@ final class MediaPickerPresenter: MediaPickerModule {
             guard let item = self?.interactor.selectedItem else { return }
             let isAllowedEnhance = self?.notUploadedModifyItems.contains(item) ?? true
             self?.onItemAutoEnhance?(item, !isAllowedEnhance)
-            self?.onItemChangeState?(.update)
+            self?.onItemStateDidChange?(.update)
         }
         
         view?.onRemoveButtonTap = { [weak self] in
             self?.removeSelectedItem()
-            self?.onItemChangeState?(.update)
+            self?.onItemStateDidChange?(.update)
         }
         
         view?.onPreviewSizeDetermined = { [weak self] previewSize in
@@ -605,7 +605,7 @@ final class MediaPickerPresenter: MediaPickerModule {
                     self?.onItemUpdate?(croppedItem, index)
                     self?.router.focusOnCurrentModule()
                 }
-                self?.onItemChangeState?(.update)
+                self?.onItemStateDidChange?(.update)
             }
             
             module.onAspectRatioButtonTap = onAspectRatioButtonTap

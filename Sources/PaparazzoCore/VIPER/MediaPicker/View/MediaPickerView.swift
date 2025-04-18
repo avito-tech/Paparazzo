@@ -261,8 +261,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private func layoutBadgeView() {
         imagePerceptionBadgeView.layout(
-            left: bounds.left + 8,
-            top: paparazzoSafeAreaInsets.top + 56,
+            left: bounds.left + Spec.PerceptionBadge.leftInset,
+            top: paparazzoSafeAreaInsets.top + Spec.PerceptionBadge.topInset,
             width: imagePerceptionBadgeView.sizeThatFits().width,
             height: imagePerceptionBadgeView.sizeThatFits().height
         )
@@ -767,6 +767,16 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     @objc private func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
     }
+    
+    // MARK: - Spec
+    
+    private enum Spec {
+        enum PerceptionBadge {
+            static let leftInset: CGFloat = 8
+            static let topInset: CGFloat = 56
+        }
+    }
+    
 }
 
 private extension UIButton {
