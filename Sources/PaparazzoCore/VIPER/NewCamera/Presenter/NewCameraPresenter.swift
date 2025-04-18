@@ -9,19 +9,16 @@ final class NewCameraPresenter:
     
     // MARK: - Config
     private let shouldAllowFinishingWithNoPhotos: Bool
-    private let isPresentingPhotosFromCameraFixEnabled: Bool
     
     // MARK: - Init
     init(
         interactor: NewCameraInteractor,
         router: NewCameraRouter,
         shouldAllowFinishingWithNoPhotos: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool
     ) {
         self.interactor = interactor
         self.router = router
         self.shouldAllowFinishingWithNoPhotos = shouldAllowFinishingWithNoPhotos
-        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
     }
     
     // MARK: - Weak properties
@@ -74,7 +71,6 @@ final class NewCameraPresenter:
                 .bySelectingLastItem()
             
             self?.router.showMediaPicker(
-                isPresentingPhotosFromCameraFixEnabled: strongSelf.isPresentingPhotosFromCameraFixEnabled,
                 data: data,
                 overridenTheme: nil,
                 configure: { module in

@@ -7,7 +7,6 @@ protocol NewCameraAssembly: AnyObject {
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
         shouldAllowFinishingWithNoPhotos: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (NewCameraModule) -> ()
     ) -> UIViewController
 }

@@ -3,14 +3,11 @@ import UIKit
 public final class PhotoLibraryAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryAssembly {
     
     public func module(
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ())
         -> UIViewController
     {
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled
-        )
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
         
         let interactor = PhotoLibraryInteractorImpl(
             selectedItems: data.selectedItems,

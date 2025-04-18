@@ -19,7 +19,6 @@ final class CameraV3AssemblyImpl:
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
         configure: (CameraV3Module) -> (),
         onInitializationMeasurementStart: (() -> ())?,
         onInitializationMeasurementStop: (() -> ())?,
@@ -49,7 +48,6 @@ final class CameraV3AssemblyImpl:
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
             router: router, 
-            isPresentingPhotosFromCameraFixEnabled: isPresentingPhotosFromCameraFixEnabled, 
             onDrawingMeasurementStart: onDrawingMeasurementStart,
             onDrawingMeasurementStop: onDrawingMeasurementStop
         )

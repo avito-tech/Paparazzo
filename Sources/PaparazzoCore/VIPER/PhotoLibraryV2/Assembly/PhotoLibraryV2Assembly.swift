@@ -5,8 +5,6 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
-        isPresentingPhotosFromCameraFixEnabled: Bool,
-        isLimitAlertFixEnabled: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

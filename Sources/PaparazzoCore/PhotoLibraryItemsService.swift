@@ -19,7 +19,6 @@ enum PhotosOrder {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
     var onLimitedAccess: (() -> ())?
     
-    private let isPresentingPhotosFromCameraFixEnabled: Bool
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
@@ -34,8 +33,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    init(isPresentingPhotosFromCameraFixEnabled: Bool, photosOrder: PhotosOrder = .normal) {
-        self.isPresentingPhotosFromCameraFixEnabled = isPresentingPhotosFromCameraFixEnabled
+    init(photosOrder: PhotosOrder = .normal) {
         self.photosOrder = photosOrder
     }
     
@@ -181,11 +179,7 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             // Xcode 12+
         case .limited:
             wasSetUp = true
-            if isPresentingPhotosFromCameraFixEnabled {
-                setUpFetchResult(completion: completion)
-            } else {
-                setUpFetchResultForLimitedAccess(completion: completion)
-            }
+            setUpFetchResult(completion: completion)
             
             onLimitedAccess?()
             #endif
@@ -276,26 +270,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
 
     private func callObserverHandler(changes phChanges: PHFetchResultChangeDetails<PHAsset>?) {
-        if isPresentingPhotosFromCameraFixEnabled {
-            if let phChanges = phChanges, phChanges.hasIncrementalChanges {
-                if authorizationStatus == .limited {
-                    onAlbumEvent?(.fullReload(photoLibraryChanges(from: phChanges).itemsAfterChanges))
-                } else {
-                    onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
-                }
-            } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+        if let phChanges = phChanges, phChanges.hasIncrementalChanges {
+            if authorizationStatus == .limited {
+                onAlbumEvent?(.fullReload(photoLibraryChanges(from: phChanges).itemsAfterChanges))
             } else {
-                onAlbumEvent?(.fullReload([]))
-            }
-        } else {
-            if let phChanges = phChanges, phChanges.hasIncrementalChanges {
                 onAlbumEvent?(.incrementalChanges(photoLibraryChanges(from: phChanges)))
-            } else if let observedAlbum = observedAlbum {
-                onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
-            } else {
-                onAlbumEvent?(.fullReload([]))
             }
+        } else if let observedAlbum = observedAlbum {
+            onAlbumEvent?(.fullReload(photoLibraryItems(from: observedAlbum.fetchResult)))
+        } else {
+            onAlbumEvent?(.fullReload([]))
         }
     }
     
