@@ -116,7 +116,7 @@ final class NewCameraPresenter:
         
         view?.onAccessDeniedButtonTap = {
             if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
         
