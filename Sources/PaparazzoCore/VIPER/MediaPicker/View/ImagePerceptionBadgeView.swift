@@ -77,6 +77,8 @@ final class ImagePerceptionBadgeView: UIView {
                 action: #selector(handleTap)
             )
         )
+        
+        accessibilityIdentifier = "ImagePerceptionBadgeView"
     }
     
     @available(*, unavailable)
