@@ -9,6 +9,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     private let notchMaskingView = UIView()
     private let cameraControlsView = CameraControlsView()
     private let photoControlsView = PhotoControlsView()
+    private var imagePerceptionBadgeView = ImagePerceptionBadgeView()
     
     private let closeButton = UIButton()
     private let topRightContinueButton = ButtonWithActivity()
@@ -91,6 +92,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         addSubview(closeButton)
         addSubview(photoTitleLabel)
         addSubview(topRightContinueButton)
+        addSubview(imagePerceptionBadgeView)
         
         setMode(.camera)
         setUpAccessibilityIdentifiers()
@@ -109,6 +111,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         layOutNotchMaskingView()
         layOutFakeNavigationBarButtons()
         layOutBottomContinueButton()
+        layoutBadgeView()
         
         let controlsIdealFrame = CGRect(
             left: bounds.left,
@@ -254,6 +257,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoTitleLabel.sizeToFit()
         photoTitleLabel.centerX = bounds.centerX
         photoTitleLabel.top = max(notchMaskingView.bottom, fakeNavigationBarMinimumYOffset) + fakeNavigationBarContentTopInset + 9
+    }
+    
+    private func layoutBadgeView() {
+        imagePerceptionBadgeView.layout(
+            left: bounds.left + Spec.PerceptionBadge.leftInset,
+            top: paparazzoSafeAreaInsets.top + Spec.PerceptionBadge.topInset,
+            width: imagePerceptionBadgeView.sizeThatFits().width,
+            height: imagePerceptionBadgeView.sizeThatFits().height
+        )
     }
     
     // MARK: - ThemeConfigurable
@@ -417,6 +429,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         case .disabled:
             photoControlsView.setAutoEnhanceButtonStatus(.disabled)
         }
+    }
+    
+    func setImagePerceptionBadge(_ viewData: ImagePerceptionBadgeViewData) {
+        imagePerceptionBadgeView.setViewData(viewData)
+        setNeedsLayout()
+        layoutIfNeeded()
     }
     
     func setCameraControlsEnabled(_ enabled: Bool) {
@@ -749,6 +767,16 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     @objc private func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
     }
+    
+    // MARK: - Spec
+    
+    private enum Spec {
+        enum PerceptionBadge {
+            static let leftInset: CGFloat = 8
+            static let topInset: CGFloat = 56
+        }
+    }
+    
 }
 
 private extension UIButton {

@@ -28,6 +28,11 @@ public struct CameraHintData {
     }
 }
 
+public enum MediaPickerImageState {
+    case select(MediaPickerItem)
+    case update
+}
+
 public protocol PaparazzoPickerModule: AnyObject {
     
     func focusOnModule()
@@ -53,6 +58,7 @@ public protocol PaparazzoPickerModule: AnyObject {
     func setThumbnailsAlwaysVisible(_: Bool)
     
     func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool)
+    func setImagePerceptionBadge(_ badge: ImagePerceptionBadgeViewData)
         
     func removeItem(_: MediaPickerItem)
     
@@ -73,6 +79,7 @@ public protocol PaparazzoPickerModule: AnyObject {
     var onRotateButtonTap: (() -> ())? { get set }
     var onGridButtonTap: ((Bool) -> ())? { get set }
     var onAspectRatioButtonTap: ((String) -> ())? { get set }
+    var onItemStateDidChange: ((MediaPickerImageState) -> ())? { get set }
     
     var onViewDidLoad: (() -> ())? { get set }
     var onFinish: (([MediaPickerItem]) -> ())? { get set }

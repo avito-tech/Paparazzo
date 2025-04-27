@@ -70,6 +70,9 @@ public struct PaparazzoUITheme:
 
     public var infoMessageFont = UIFont.systemFont(ofSize: 14)
     
+    public var imagePerceptionBadgeTextColor = UIColor.white
+    public var imagePerceptionBadgeTextFont = UIFont.systemFont(ofSize: 11)
+    
     // MARK: - PhotoLibraryUITheme
     
     public var photoLibraryTitleFont = UIFont.boldSystemFont(ofSize: 18)

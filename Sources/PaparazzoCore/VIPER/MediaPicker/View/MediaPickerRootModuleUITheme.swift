@@ -52,4 +52,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var cameraContinueButtonTitleFont: UIFont { get }
     
     var infoMessageFont: UIFont { get }
+    
+    var imagePerceptionBadgeTextColor: UIColor { get }
+    var imagePerceptionBadgeTextFont: UIFont { get }
 }
