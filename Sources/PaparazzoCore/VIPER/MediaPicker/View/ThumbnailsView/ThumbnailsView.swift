@@ -304,7 +304,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         withItem mediaPickerItem: MediaPickerItem
     ) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(
+        let cell = collectionView.cellForItem(at: indexPath) ?? collectionView.dequeueReusableCell(
             withReuseIdentifier: photoCellReuseId,
             for: indexPath
         )
