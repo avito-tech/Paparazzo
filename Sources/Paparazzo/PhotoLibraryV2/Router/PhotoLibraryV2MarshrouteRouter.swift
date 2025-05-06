@@ -7,6 +7,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     & NewCameraMarshrouteAssemblyFactory
     & LimitedAccessAlertFactory
     & CameraV3MarshrouteAssemblyFactory
+    & MedicalBookCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
@@ -79,6 +80,22 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 onInitializationMeasurementStop: onInitializationMeasurementStop,
                 onDrawingMeasurementStart: onDrawingMeasurementStart, 
                 onDrawingMeasurementStop: onDrawingMeasurementStop
+            )
+        }
+    }
+    
+    func showMedicalBookCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (MedicalBookCameraModule) -> ()
+    ) {
+        presentModalViewControllerDerivedFrom { routerSeed in
+            assemblyFactory.medicalBookCameraAssembly().module(
+                selectedImagesStorage: selectedImagesStorage,
+                mediaPickerData: mediaPickerData,
+                cameraService: cameraService,
+                routerSeed: routerSeed,
+                configure: configure
             )
         }
     }

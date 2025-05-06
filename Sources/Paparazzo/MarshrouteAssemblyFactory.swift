@@ -12,7 +12,8 @@ public final class MarshrouteAssemblyFactory:
     ScannerMarshrouteAssemblyFactory,
     NewCameraMarshrouteAssemblyFactory,
     LimitedAccessAlertFactory,
-    CameraV3MarshrouteAssemblyFactory
+    CameraV3MarshrouteAssemblyFactory,
+    MedicalBookCameraMarshrouteAssemblyFactory
 {
     private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
@@ -74,6 +75,14 @@ public final class MarshrouteAssemblyFactory:
     
     func cameraV3Assembly() -> CameraV3MarshrouteAssembly {
         CameraV3MarshrouteAssemblyImpl(
+            assemblyFactory: self,
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
+    }
+    
+    func medicalBookCameraAssembly() -> MedicalBookCameraMarshrouteAssembly {
+        MedicalBookCameraMarshrouteAssemblyImpl(
             assemblyFactory: self,
             theme: theme,
             serviceFactory: serviceFactory

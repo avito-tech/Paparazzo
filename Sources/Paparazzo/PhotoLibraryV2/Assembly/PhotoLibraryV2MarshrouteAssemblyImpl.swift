@@ -8,6 +8,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     & NewCameraMarshrouteAssemblyFactory
     & LimitedAccessAlertFactory
     & CameraV3MarshrouteAssemblyFactory
+    & MedicalBookCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     

@@ -2,7 +2,11 @@ import UIKit
 
 final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory & LimitedAccessAlertFactory & CameraV3AssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory
+    & NewCameraAssemblyFactory
+    & LimitedAccessAlertFactory
+    & CameraV3AssemblyFactory
+    & MedicalBookCameraAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
@@ -73,6 +77,21 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             onInitializationMeasurementStop: onInitializationMeasurementStop,
             onDrawingMeasurementStart: onDrawingMeasurementStart, 
             onDrawingMeasurementStop: onDrawingMeasurementStop
+        )
+        present(viewController, animated: true)
+    }
+    
+    func showMedicalBookCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (MedicalBookCameraModule) -> ()
+    ) {
+        let assembly = assemblyFactory.medicalBookCameraAssembly()
+        let viewController = assembly.module(
+            selectedImagesStorage: selectedImagesStorage,
+            mediaPickerData: mediaPickerData,
+            cameraService: cameraService,
+            configure: configure
         )
         present(viewController, animated: true)
     }

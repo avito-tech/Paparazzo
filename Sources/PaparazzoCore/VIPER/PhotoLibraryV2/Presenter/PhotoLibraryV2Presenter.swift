@@ -545,6 +545,33 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         )
     }
     
+    private func openMedicalBookCamera() {
+        router.showMedicalBookCamera(
+            selectedImagesStorage: interactor.selectedPhotosStorage,
+            mediaPickerData: interactor.mediaPickerData,
+            configure: { [weak self] medicalBookModule in
+                medicalBookModule.configureMediaPicker = { [weak self, weak medicalBookModule] pickerModule in
+                    self?.configureMediaPicker(pickerModule)
+                    pickerModule.onFinish = { _ in
+                        medicalBookModule?.focusOnCurrentModule()
+                    }
+                }
+                
+                medicalBookModule.onFinish = { module, result in
+                    switch result {
+                    case .finished:
+                        self?.view?.onContinueButtonTap?()
+                    case .cancelled:
+                        self?.router.focusOnCurrentModule()
+                    }
+                }
+                medicalBookModule.onLastPhotoThumbnailTap = { [weak self] in
+                    self?.onLastPhotoThumbnailTap?()
+                }
+            }
+        )
+    }
+    
     private func openPicker() {
         router.showMediaPicker(
             data: interactor.mediaPickerData.byDisablingLibrary(),
