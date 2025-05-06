@@ -8,7 +8,8 @@ public struct PaparazzoUITheme:
     MaskCropperUITheme,
     ScannerRootModuleUITheme,
     NewCameraUITheme,
-    CameraV3UITheme
+    CameraV3UITheme,
+    MedicalBookCameraUITheme
 {
     public init() {}
 
@@ -186,6 +187,38 @@ public struct PaparazzoUITheme:
     public var cameraV3AccessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var cameraV3AccessDeniedMessageFont = UIFont.boldSystemFont(ofSize: 17)
     public var cameraV3AccessDeniedButtonFont = UIFont.boldSystemFont(ofSize: 17)
+    
+    // MARK: - MedicalBookTheme
+
+    public var medicalBookViewBackground = UIColor.black
+    
+    public var medicalBookCloseIcon = PaparazzoUITheme.image(named: "medicalBookClose")
+    public var medicalBookCloseIconColor = UIColor.white
+    public var medicalBookFlashOnIcon = PaparazzoUITheme.image(named: "medicalBookLightOn")
+    public var medicalBookFlashOffIcon = PaparazzoUITheme.image(named: "medicalBookLightOff")
+    public var medicalBookFlashIconColor = UIColor.white
+    public var medicalBookToggleCameraIcon = PaparazzoUITheme.image(named: "medicalBookRotateCamera")
+    public var medicalBookToggleCameraIconColor = UIColor.white
+    
+    public var medicalBookHintViewBackground = UIColor.RGB(red: 41, green: 41, blue: 41, alpha: 1)
+    public var medicalBookHintViewFont = UIFont.systemFont(ofSize: 15)
+    public var medicalBookHintViewFontColor = UIColor.white
+    
+    public var medicalBookShutterScaleFactor = CGFloat(0.85)
+    public var medicalBookShutterEnabledColor = UIColor.white
+    public var medicalBookShutterDisabledColor = UIColor.gray
+    
+    public var medicalBookSelectedPhotosFont = UIFont.systemFont(ofSize: 15)
+    public var medicalBookSelectedPhotosFontColor = UIColor.white
+    
+    public var medicalBookAccessDeniedBackgroundColor = UIColor.black
+    public var medicalBookAccessDeniedTitleColor = UIColor.white
+    public var medicalBookAccessDeniedMessageColor = UIColor.white
+    public var medicalBookAccessDeniedButtonTextColor = UIColor.white
+    public var medicalBookAccessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
+    public var medicalBookAccessDeniedMessageFont = UIFont.boldSystemFont(ofSize: 17)
+    public var medicalBookAccessDeniedButtonFont = UIFont.boldSystemFont(ofSize: 17)
+    
     
     // MARK: - Private
     private static func image(named name: String) -> UIImage? {

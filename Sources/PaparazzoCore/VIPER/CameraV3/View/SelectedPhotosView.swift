@@ -106,6 +106,11 @@ final class SelectedPhotosView: UIView {
         label.font = theme.cameraV3SelectedPhotosFont
     }
     
+    func setTheme(_ theme: MedicalBookCameraUITheme) {
+        label.textColor = theme.medicalBookSelectedPhotosFontColor
+        label.font = theme.medicalBookSelectedPhotosFont
+    }
+    
     func setViewData(_ viewData: SelectedPhotosViewData?, animated: Bool) {
         guard let viewData = viewData else {
             isHidden = true
