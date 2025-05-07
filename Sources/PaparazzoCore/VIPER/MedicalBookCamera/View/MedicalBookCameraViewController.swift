@@ -112,6 +112,11 @@ final class MedicalBookCameraViewController:
         set { medicalBookCameraView.onFlashToggle = newValue }
     }
     
+    var onDoneButtonTap: (() -> ())? {
+        get { medicalBookCameraView.onDoneButtonTap }
+        set { medicalBookCameraView.onDoneButtonTap = newValue }
+    }
+    
     var onShutterButtonTap: (() -> ())? {
         get { medicalBookCameraView.onShutterButtonTap }
         set { medicalBookCameraView.onShutterButtonTap = newValue }
@@ -145,6 +150,14 @@ final class MedicalBookCameraViewController:
     
     func setHintText(_ text: String) {
         medicalBookCameraView.setHintText(text)
+    }
+    
+    func setDoneButtonTitle(_ text: String) {
+        medicalBookCameraView.setDoneButtonTitle(text)
+    }
+    
+    func setDoneButtonVisible(_ flag: Bool) {
+        medicalBookCameraView.setDoneButtonVisible(flag)
     }
     
     func setSelectedData(_ viewData: SelectedPhotosViewData?, animated: Bool) {

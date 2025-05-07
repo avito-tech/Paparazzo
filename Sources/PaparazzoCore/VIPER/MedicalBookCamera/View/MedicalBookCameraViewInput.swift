@@ -8,9 +8,9 @@ protocol MedicalBookCameraViewInput: AnyObject {
     var onCloseButtonTap: (() -> ())? { get set }
     var onToggleCameraButtonTap: (() -> ())? { get set }
     var onFlashToggle: ((Bool) -> ())? { get set }
+    var onDoneButtonTap: (() -> ())? { get set }
     var onShutterButtonTap: (() -> ())? { get set }
     var onLastPhotoThumbnailTap: (() -> ())? { get set }
-    
     var onAccessDeniedButtonTap: (() -> ())? { get set }
 
     func setFlashButtonVisible(_ flag: Bool)
@@ -18,6 +18,8 @@ protocol MedicalBookCameraViewInput: AnyObject {
     func animateShot()
     func setShutterButtonEnabled(_ flag: Bool, _ animated: Bool)
     func setHintText(_ text: String)
+    func setDoneButtonTitle(_ text: String)
+    func setDoneButtonVisible(_ flag: Bool)
     func setSelectedData(_ viewData: SelectedPhotosViewData?, animated: Bool)
     func setSelectedDataEnabled(_ flag: Bool)
     

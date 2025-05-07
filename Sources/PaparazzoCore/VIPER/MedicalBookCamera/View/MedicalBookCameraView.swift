@@ -2,29 +2,22 @@ import AVFoundation
 import UIKit
 
 final class MedicalBookCameraView: UIView {
-    struct Spec {
-        static let topButtonsSize = CGSize(width: 24, height: 24)
-        static let topButtonInsets = UIEdgeInsets(top: 12, left: 14, bottom: 0, right: 16)
-        static let shutterButtonBottomOffset: CGFloat = 4
-        static let cameraOutputViewIPadBottomOffset: CGFloat = 118
-        static let selectedPhotosViewIPadXOffset: CGFloat = 48
-        static let hintDefaultHeight: CGFloat = 74
-        static let closeButtonDefaultTopOffset: CGFloat = {
-            UIDevice.current.userInterfaceIdiom == .phone ? 20 : 24
-        }()
-    }
-    
-    var cameraOutputLayer: AVCaptureVideoPreviewLayer?
     private let closeButton = UIButton()
     private let flashButton = UIButton()
     private let toggleButton = UIButton()
-    private let hintView = CameraHintView()
+    
     private let cameraOutputView = UIView()
     private let flashView = UIView()
+    
+    private let hintView = MedicalCameraHintView()
     private let shutterButton = ShutterButton()
     private let accessDeniedView = AccessDeniedView()
     private let selectedPhotosView = SelectedPhotosView()
-    private var theme: MedicalBookCameraUITheme?
+    private let doneButton = UIButton()
+    
+    private let maskOverlayView = MedicalMaskOverlayView()
+    
+    var cameraOutputLayer: AVCaptureVideoPreviewLayer?
     
     // MARK: - Handlers
     var onShutterButtonTap: (() -> ())? {
@@ -45,6 +38,7 @@ final class MedicalBookCameraView: UIView {
     var onCloseButtonTap: (() -> ())?
     var onToggleCameraButtonTap: (() -> ())?
     var onFlashToggle: ((Bool) -> ())?
+    var onDoneButtonTap: (() -> ())?
     
     // MARK: - Init
     init() {
@@ -55,8 +49,10 @@ final class MedicalBookCameraView: UIView {
         addSubview(toggleButton)
         addSubview(shutterButton)
         addSubview(cameraOutputView)
+        addSubview(maskOverlayView)
         addSubview(hintView)
         addSubview(selectedPhotosView)
+        addSubview(doneButton)
         addSubview(accessDeniedView)
         addSubview(flashView)
         
@@ -68,6 +64,7 @@ final class MedicalBookCameraView: UIView {
         closeButton.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
         flashButton.addTarget(self, action: #selector(flashButtonDidTap), for: .touchUpInside)
         toggleButton.addTarget(self, action: #selector(toggleButtonDidTap), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(doneButtonDidTap), for: .touchUpInside)
         
         setAccessibilityIds()
     }
@@ -143,40 +140,58 @@ final class MedicalBookCameraView: UIView {
             height: height
         )
         
-        let hintHeight = max((cameraOutputView.height - cameraOutputView.width) / 2, Spec.hintDefaultHeight)
+        maskOverlayView.frame = CGRect(
+            left: left,
+            right: right,
+            top: cameraOutputView.top,
+            height: height
+        )
         
         hintView.frame = CGRect(
             left: left,
             right: right,
             top: cameraOutputView.bottom + 3,
-            height: hintHeight
+            height: Spec.hintDefaultHeight
         )
         
         cameraOutputLayer?.frame.size = cameraOutputView.size
         accessDeniedView.frame = cameraOutputView.frame
         flashView.frame = cameraOutputView.frame
         
-        let selectedPhotosViewX: CGFloat
-        let shutterButtonRightX = shutterButton.centerX + shutterButton.width / 2
+        let selectedPhotosLeftViewX: CGFloat
+        let doneButtonRightViewX: CGFloat
+        
+        let shutterButtonLeftX = shutterButton.centerX - shutterButton.width / 2
+        let doneButtonLeRightX = shutterButton.centerX + shutterButton.width / 2
+        
         let selectedPhotosViewSize = selectedPhotosView.sizeThatFits(size)
+        let doneButtonViewSize = Spec.doneButtonSize
+        
         if UIDevice.current.userInterfaceIdiom == .phone {
-            selectedPhotosViewX = shutterButtonRightX + (self.right - shutterButtonRightX - selectedPhotosViewSize.width) / 2
+            selectedPhotosLeftViewX = shutterButtonLeftX + (self.left - shutterButtonLeftX - selectedPhotosViewSize.width) / 2
+            doneButtonRightViewX = doneButtonLeRightX + (self.right - doneButtonLeRightX - doneButtonViewSize.width) / 2
         } else  {
-            selectedPhotosViewX = shutterButtonRightX + Spec.selectedPhotosViewIPadXOffset
+            selectedPhotosLeftViewX = shutterButtonLeftX + Spec.selectedPhotosViewIPadXOffset
+            doneButtonRightViewX = doneButtonLeRightX + Spec.selectedPhotosViewIPadXOffset
         }
         
         selectedPhotosView.frame = CGRect(
-            x: selectedPhotosViewX,
+            x: selectedPhotosLeftViewX,
             y: shutterButton.centerY - selectedPhotosViewSize.height / 2,
             width: selectedPhotosViewSize.width,
             height: selectedPhotosViewSize.height
+        )
+        
+        doneButton.frame = CGRect(
+            x: doneButtonRightViewX,
+            y: shutterButton.centerY - doneButtonViewSize.height / 2,
+            width: doneButtonViewSize.width,
+            height: doneButtonViewSize.height
         )
     }
     
     // MARK: - Theme
     func setTheme(_ theme: MedicalBookCameraUITheme) {
-        self.theme = theme
-        
         backgroundColor = theme.medicalBookViewBackground
         
         flashView.backgroundColor = backgroundColor
@@ -189,9 +204,13 @@ final class MedicalBookCameraView: UIView {
         toggleButton.tintColor = theme.medicalBookToggleCameraIconColor
         toggleButton.setImage(theme.medicalBookToggleCameraIcon, for: .normal)
         
-        hintView.label.font = theme.medicalBookHintViewFont
-        hintView.label.textColor = theme.medicalBookHintViewFontColor
-        hintView.backgroundColor = theme.medicalBookHintViewBackground
+        doneButton.titleLabel?.font = theme.medicalBookDoneButtonFont
+        doneButton.backgroundColor = theme.medicalBookDoneButtonBackground
+        doneButton.contentEdgeInsets = Spec.doneButtonInsets
+        doneButton.layer.cornerRadius = Spec.doneButtonCornerRadius
+        doneButton.layer.masksToBounds = true
+        
+        hintView.setTheme(theme)
         
         shutterButton.setTheme(ShutterButton.Theme(
             scaleFactor: theme.medicalBookShutterScaleFactor,
@@ -203,13 +222,22 @@ final class MedicalBookCameraView: UIView {
         accessDeniedView.setThemeMedicalBook(theme)
     }
     
-    // MARK: - CameraV3View
+    // MARK: - MedicalBookCameraView
     func setShutterButtonEnabled(_ flag: Bool, animated: Bool) {
         shutterButton.setState(flag ? .enabled : .disabled, animated: animated)
     }
     
     func setHintText(_ text: String) {
-        hintView.label.text = text
+        hintView.isHidden = text.isEmpty
+        hintView.setLabelText(text)
+    }
+    
+    func setDoneButtonTitle(_ title: String) {
+        doneButton.setTitle(title, for: .normal)
+    }
+    
+    func setDoneButtonVisible(_ flag: Bool) {
+        doneButton.isHidden = !flag
     }
     
     func setSelectedData(_ viewData: SelectedPhotosViewData?, animated: Bool) {
@@ -264,6 +292,7 @@ final class MedicalBookCameraView: UIView {
             self.closeButton.transform = nextTransform
             self.flashButton.transform = nextTransform
             self.toggleButton.transform = nextTransform
+            self.doneButton.transform = nextTransform
             self.selectedPhotosView.transform = nextTransform
         }
     }
@@ -281,39 +310,23 @@ final class MedicalBookCameraView: UIView {
     @objc private func toggleButtonDidTap() {
         onToggleCameraButtonTap?()
     }
+    
+    @objc private func doneButtonDidTap() {
+        onDoneButtonTap?()
+    }
 }
 
-fileprivate final class CameraHintView: UIView {
-    struct Spec {
-        static let horizontalInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 50)
-    }
-    
-    let label = UILabel()
-    
-    // MARK: - Init
-    init() {
-        super.init(frame: .zero)
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        label.setAccessibilityId(.cameraHint)
-        addSubview(label)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Layout
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        let availableSize = label.sizeForWidth(bounds.width - Spec.horizontalInsets.left - Spec.horizontalInsets.right)
-
-        label.frame = CGRect(
-            centerX: bounds.centerX,
-            centerY: bounds.centerY,
-            width: availableSize.width,
-            height: availableSize.height
-        )
-    }
+private enum Spec {
+    static let topButtonsSize = CGSize(width: 24, height: 24)
+    static let topButtonInsets = UIEdgeInsets(top: 12, left: 14, bottom: 0, right: 16)
+    static let shutterButtonBottomOffset: CGFloat = 4
+    static let cameraOutputViewIPadBottomOffset: CGFloat = 118
+    static let selectedPhotosViewIPadXOffset: CGFloat = 48
+    static let hintDefaultHeight: CGFloat = 74
+    static let doneButtonInsets = UIEdgeInsets(top: 11, left: 16, bottom: 13, right: 16)
+    static let doneButtonCornerRadius: CGFloat = 12.0
+    static let doneButtonSize = CGSize(width: 83, height: 44)
+    static let closeButtonDefaultTopOffset: CGFloat = {
+        UIDevice.current.userInterfaceIdiom == .phone ? 20 : 24
+    }()
 }

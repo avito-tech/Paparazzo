@@ -211,6 +211,9 @@ public struct PaparazzoUITheme:
     public var medicalBookSelectedPhotosFont = UIFont.systemFont(ofSize: 15)
     public var medicalBookSelectedPhotosFontColor = UIColor.white
     
+    public var medicalBookDoneButtonFont = UIFont.systemFont(ofSize: 15)
+    public var medicalBookDoneButtonBackground: UIColor = UIColor.RGB(red: 41, green: 41, blue: 41, alpha: 1)
+    
     public var medicalBookAccessDeniedBackgroundColor = UIColor.black
     public var medicalBookAccessDeniedTitleColor = UIColor.white
     public var medicalBookAccessDeniedMessageColor = UIColor.white

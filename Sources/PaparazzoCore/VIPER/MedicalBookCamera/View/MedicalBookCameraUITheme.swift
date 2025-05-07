@@ -14,6 +14,9 @@ public protocol MedicalBookCameraUITheme: AccessDeniedViewTheme {
     var medicalBookHintViewBackground: UIColor { get }
     var medicalBookHintViewFont: UIFont { get }
     var medicalBookHintViewFontColor: UIColor { get }
+    
+    var medicalBookDoneButtonBackground: UIColor { get }
+    var medicalBookDoneButtonFont: UIFont { get }
 
     var medicalBookShutterScaleFactor: CGFloat { get }
     var medicalBookShutterEnabledColor: UIColor { get }

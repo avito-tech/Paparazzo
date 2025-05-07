@@ -35,6 +35,7 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
         let appName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
         weak var weakSelf = self
         
+        view?.setDoneButtonTitle(localized(Spec.doneButtonTitle))
         view?.setFlashButtonVisible(interactor.isFlashAvailable)
         view?.setFlashButtonOn(interactor.isFlashEnabled)
         
@@ -54,6 +55,11 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
         view?.onFlashToggle = {
             guard let self = weakSelf, !self.interactor.setFlashEnabled($0) else { return }
             self.view?.setFlashButtonOn(!$0)
+        }
+        
+        view?.onDoneButtonTap = {
+            guard let self = weakSelf else { return }
+            weakSelf?.onFinish?(self, .finished)
         }
         
         view?.onAccessDeniedButtonTap = {
@@ -82,6 +88,7 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
         view?.onViewWillAppear = { _ in
             weakSelf?.volumeService.subscribe()
             weakSelf?.adjustHintText()
+            weakSelf?.adjustDoneButtonVisibility()
             weakSelf?.adjustPhotoLibraryItems(animated: false)
             weakSelf?.adjustShutterButtonAvailability(animated: false)
         }
@@ -136,7 +143,12 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
     }
     
     private func adjustHintText() {
-        view?.setHintText(Spec.hintText)
+        let text = interactor.items.isEmpty ? Spec.hintText : ""
+        view?.setHintText(text)
+    }
+    
+    private func adjustDoneButtonVisibility() {
+        view?.setDoneButtonVisible(!interactor.items.isEmpty)
     }
     
     private func takePhoto() {
@@ -144,11 +156,15 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
         
         view?.animateShot()
         interactor.takePhoto { [weak self] photo in
-            if let photo {
-                self?.interactor.addItem(MediaPickerItem(image: photo.image, source: .camera))
+            guard let photo else {
+                self?.adjustShutterButtonAvailability()
+                return
             }
             
+            self?.interactor.addItem(MediaPickerItem(image: photo.image, source: .camera))
             self?.adjustShutterButtonAvailability()
+            self?.adjustHintText()
+            self?.adjustDoneButtonVisibility()
         }
     }
     
@@ -164,8 +180,9 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
 
 // MARK: - Spec
 private enum Spec {
+    static let doneButtonTitle = "Done"
     static let deniedTitle = "To take photo"
     static let deniedMessage = "Allow %@ to use your camera"
     static let deniedButtonTitle = "Allow access to camera"
-    static let hintText = "Поместите медкнижку в рамку и убедитесь,\u{00A0}что видны обе страницы разворота"
+    static let hintText = "Поместите медкнижку в рамку и убедитесь, что\u{00A0}видны обе страницы разворота"
 }
