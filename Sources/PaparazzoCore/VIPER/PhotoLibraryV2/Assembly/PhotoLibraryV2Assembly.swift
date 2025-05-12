@@ -4,7 +4,7 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
     func module(
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
-        isUsingCameraV3: Bool,
+        cameraType: MediaPickerCameraType?,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

@@ -6,6 +6,7 @@ protocol MedicalBookCameraInteractor: AnyObject {
     var isFlashEnabled: Bool { get }
     var canAddNewItems: Bool { get }
     var maxItemsCount: Int { get }
+    var hintText: String? { get }
     var items: [MediaPickerItem] { get }
     var mediaPickerDataWithSelectedLastItem: MediaPickerData { get }
     

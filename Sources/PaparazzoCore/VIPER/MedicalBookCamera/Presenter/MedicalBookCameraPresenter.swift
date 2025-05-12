@@ -143,8 +143,9 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
     }
     
     private func adjustHintText() {
-        let text = interactor.items.isEmpty ? Spec.hintText : ""
-        view?.setHintText(text)
+        let availableHintText = interactor.hintText ?? Spec.hintText
+        let actualHintText = interactor.items.isEmpty ? availableHintText : ""
+        view?.setHintText(actualHintText)
     }
     
     private func adjustDoneButtonVisibility() {

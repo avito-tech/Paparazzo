@@ -10,7 +10,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
-    private let isUsingCameraV3: Bool
+    private var cameraType: MediaPickerCameraType?
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
     private let onCameraV3InitializationMeasurementStop: (() -> ())?
     private let onCameraV3DrawingMeasurementStart: (() -> ())?
@@ -43,7 +43,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
-        isUsingCameraV3: Bool,
+        cameraType: MediaPickerCameraType?,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
         onCameraV3DrawingMeasurementStart: (() -> ())?,
@@ -54,7 +54,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.overridenTheme = overridenTheme
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
-        self.isUsingCameraV3 = isUsingCameraV3
+        self.cameraType = cameraType
         self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
         self.onCameraV3InitializationMeasurementStop = onCameraV3InitializationMeasurementStop
         self.onCameraV3DrawingMeasurementStart = onCameraV3DrawingMeasurementStart
@@ -476,12 +476,17 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     }
     
     private func handlePhotoLibraryCameraTap() {
-        if isUsingCameraV3 {
+        switch cameraType {
+        case .cameraV3:
             openCameraV3()
-        } else if isNewFlowPrototype {
-            openNewCamera()
-        } else {
-            openPicker()
+        case .medicalBookCamera:
+            openMedicalBookCamera()
+        default:
+            if isNewFlowPrototype {
+                openNewCamera()
+            } else {
+                openPicker()
+            }
         }
     }
     

@@ -37,6 +37,10 @@ final class MedicalBookCameraInteractorImpl: MedicalBookCameraInteractor {
         mediaPickerData.maxItemsCount ?? 0
     }
     
+    var hintText: String? {
+        mediaPickerData.hintText
+    }
+    
     var canAddNewItems: Bool {
         mediaPickerData.maxItemsCount.flatMap { selectedImagesStorage.images.count < $0 } ?? true
     }
