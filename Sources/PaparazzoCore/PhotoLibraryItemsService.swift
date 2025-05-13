@@ -17,8 +17,12 @@ enum PhotosOrder {
 }
 
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
+    
+    static let fetchLimit = 3 //10_000
+    
     var onLimitedAccess: (() -> ())?
     
+    private let shouldUseFetchLimit: Bool
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
@@ -33,7 +37,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    init(photosOrder: PhotosOrder = .normal) {
+    init(shouldUseFetchLimit: Bool = false, photosOrder: PhotosOrder = .normal) {
+        self.shouldUseFetchLimit = shouldUseFetchLimit
         self.photosOrder = photosOrder
     }
     
@@ -244,8 +249,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     private func setUpFetchResultForLimitedAccess(completion: @escaping () -> ()) {
-        fetchResultQueue.async {
+        fetchResultQueue.async { [shouldUseFetchLimit] in
             let fetchOptions = PHFetchOptions()
+            if shouldUseFetchLimit {
+                fetchOptions.fetchLimit = PhotoLibraryItemsServiceImpl.fetchLimit
+            }
             fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
             fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
             
@@ -505,6 +513,8 @@ final class PhotoLibraryAlbum: Equatable {
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
         fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
+        fetchOptions.fetchLimit = 3 // вот сюда надо тогл и лимит прокинуть, чтобы работало
+        // еще можно сорт дескриптор добавить, или просто проверить что загружаются самые свежии фото - это не проверяла
         
         let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: fetchOptions)
         

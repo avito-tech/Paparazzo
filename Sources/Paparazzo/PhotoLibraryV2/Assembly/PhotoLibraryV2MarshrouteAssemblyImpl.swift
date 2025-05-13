@@ -22,6 +22,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         isUsingCameraV3: Bool,
+        shouldUseFetchLimit: Bool,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -30,6 +31,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
+            shouldUseFetchLimit: shouldUseFetchLimit,
             photosOrder: .reversed
         )
         
