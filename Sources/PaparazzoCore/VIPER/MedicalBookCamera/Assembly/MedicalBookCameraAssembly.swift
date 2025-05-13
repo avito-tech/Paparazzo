@@ -5,6 +5,7 @@ protocol MedicalBookCameraAssembly: AnyObject {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
         configure: (MedicalBookCameraModule) -> ()
     ) -> UIViewController
 }

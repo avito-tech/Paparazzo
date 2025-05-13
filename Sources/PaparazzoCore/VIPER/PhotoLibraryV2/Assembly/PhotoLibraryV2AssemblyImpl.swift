@@ -29,7 +29,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             photosOrder: .reversed
         )
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
-        
+        let cameraStatusService = serviceFactory.cameraStatusService()
+
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: data.mediaPickerData,
             selectedItems: data.selectedItems,
@@ -47,6 +48,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         let router = PhotoLibraryV2UIKitRouter(
             assemblyFactory: assemblyFactory,
             cameraService: cameraService,
+            cameraStatusService: cameraStatusService,
             viewController: viewController
         )
         

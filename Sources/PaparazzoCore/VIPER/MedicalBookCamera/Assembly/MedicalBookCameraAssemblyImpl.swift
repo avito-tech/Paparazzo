@@ -23,12 +23,14 @@ final class MedicalBookCameraAssemblyImpl:
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
         configure: (MedicalBookCameraModule) -> ()
     ) -> UIViewController {
         let interactor = MedicalBookCameraInteractorImpl(
             mediaPickerData: mediaPickerData,
             selectedImagesStorage: selectedImagesStorage,
-            cameraService: cameraService
+            cameraService: cameraService,
+            cameraStatusService: cameraStatusService
         )
         
         let viewController = MedicalBookCameraViewController(

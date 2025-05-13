@@ -35,6 +35,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         )
         
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
+        let cameraStatusService = serviceFactory.cameraStatusService()
         
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: mediaPickerData,
@@ -48,6 +49,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         let router = PhotoLibraryV2MarshrouteRouter(
             assemblyFactory: assemblyFactory,
             cameraService: cameraService,
+            cameraStatusService: cameraStatusService,
             routerSeed: routerSeed
         )
         

@@ -4,6 +4,7 @@ import UIKit
 protocol ServiceFactory: AnyObject {
     func deviceOrientationService() -> DeviceOrientationService
     func cameraService(initialActiveCameraType: CameraType) -> CameraService
+    func cameraStatusService() -> CameraStatusService
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider
     func imageCroppingService(image: ImageSource, canvasSize: CGSize) -> ImageCroppingService
     func locationProvider() -> LocationProvider
@@ -28,6 +29,10 @@ final class ServiceFactoryImpl: ServiceFactory {
             initialActiveCameraType: initialActiveCameraType,
             imageStorage: imageStorage
         )
+    }
+    
+    func cameraStatusService() -> CameraStatusService {
+        CameraStatusServiceImpl()
     }
     
     func photoLibraryLatestPhotoProvider() -> PhotoLibraryLatestPhotoProvider {

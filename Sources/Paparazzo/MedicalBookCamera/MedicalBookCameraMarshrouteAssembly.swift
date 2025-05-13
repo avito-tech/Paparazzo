@@ -6,6 +6,7 @@ protocol MedicalBookCameraMarshrouteAssembly: AnyObject {
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
         routerSeed: RouterSeed,
         configure: (MedicalBookCameraModule) -> ()
     ) -> UIViewController
@@ -36,13 +37,15 @@ final class MedicalBookCameraMarshrouteAssemblyImpl:
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
         routerSeed: RouterSeed,
         configure: (MedicalBookCameraModule) -> ()
     ) -> UIViewController {
         let interactor = MedicalBookCameraInteractorImpl(
             mediaPickerData: mediaPickerData,
             selectedImagesStorage: selectedImagesStorage,
-            cameraService: cameraService
+            cameraService: cameraService,
+            cameraStatusService: cameraStatusService
         )
         
         let router = MedicalBookCameraMarshrouteRouter(

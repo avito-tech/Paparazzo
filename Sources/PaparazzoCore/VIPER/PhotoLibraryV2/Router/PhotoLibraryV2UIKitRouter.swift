@@ -10,10 +10,17 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
+    private let cameraStatusService: CameraStatusService
     
-    init(assemblyFactory: AssemblyFactory, cameraService: CameraService, viewController: UIViewController) {
+    init(
+        assemblyFactory: AssemblyFactory,
+        cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
+        viewController: UIViewController
+    ) {
         self.assemblyFactory = assemblyFactory
         self.cameraService = cameraService
+        self.cameraStatusService = cameraStatusService
         super.init(viewController: viewController)
     }
     
@@ -91,6 +98,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
             cameraService: cameraService,
+            cameraStatusService: cameraStatusService,
             configure: configure
         )
         present(viewController, animated: true)

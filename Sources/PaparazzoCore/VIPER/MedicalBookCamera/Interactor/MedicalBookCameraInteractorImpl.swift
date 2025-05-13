@@ -5,16 +5,19 @@ final class MedicalBookCameraInteractorImpl: MedicalBookCameraInteractor {
     private let mediaPickerData: MediaPickerData
     private let selectedImagesStorage: SelectedImageStorage
     private let cameraService: CameraService
+    private let cameraStatusService: CameraStatusService
     
     // MARK: - Init
     init(
         mediaPickerData: MediaPickerData,
         selectedImagesStorage: SelectedImageStorage,
-        cameraService: CameraService
+        cameraService: CameraService,
+        cameraStatusService: CameraStatusService
     ) {
         self.mediaPickerData = mediaPickerData
         self.selectedImagesStorage = selectedImagesStorage
         self.cameraService = cameraService
+        self.cameraStatusService = cameraStatusService
     }
     
     // MARK: - CameraV3Interactor
@@ -70,7 +73,7 @@ final class MedicalBookCameraInteractorImpl: MedicalBookCameraInteractor {
             return handler(true)
         #endif
         
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        switch cameraStatusService.cameraAuthorizationStatus(for: .video) {
         case .authorized:
             handler(true)
         case .notDetermined, .denied, .restricted:

@@ -11,10 +11,17 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
+    private let cameraStatusService: CameraStatusService
     
-    init(assemblyFactory: AssemblyFactory, cameraService: CameraService, routerSeed: RouterSeed) {
+    init(
+        assemblyFactory: AssemblyFactory,
+        cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
+        routerSeed: RouterSeed
+    ) {
         self.assemblyFactory = assemblyFactory
         self.cameraService = cameraService
+        self.cameraStatusService = cameraStatusService
         super.init(routerSeed: routerSeed)
     }
     
@@ -94,6 +101,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
+                cameraStatusService: cameraStatusService,
                 routerSeed: routerSeed,
                 configure: configure
             )
