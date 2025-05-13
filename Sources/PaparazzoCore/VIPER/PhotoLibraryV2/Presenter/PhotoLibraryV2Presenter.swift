@@ -10,7 +10,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
-    private let isUsingCameraV3: Bool
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
     private let onCameraV3InitializationMeasurementStop: (() -> ())?
     private let onCameraV3DrawingMeasurementStart: (() -> ())?
@@ -43,7 +42,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
-        isUsingCameraV3: Bool,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
         onCameraV3DrawingMeasurementStart: (() -> ())?,
@@ -54,7 +52,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.overridenTheme = overridenTheme
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
-        self.isUsingCameraV3 = isUsingCameraV3
         self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
         self.onCameraV3InitializationMeasurementStop = onCameraV3InitializationMeasurementStop
         self.onCameraV3DrawingMeasurementStart = onCameraV3DrawingMeasurementStart
@@ -76,7 +73,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onViewDidLoad: (() -> ())?
     var onCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
-    var onNewCameraShow: (() -> ())?
     var onCameraV3Show: (() -> ())?
     var onCropButtonTap: (() -> ())?
     var onLastPhotoThumbnailTap: (() -> ())?
@@ -467,50 +463,12 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: { [weak self] in
-                    self?.handlePhotoLibraryCameraTap()
+                    self?.openCameraV3()
                 }
             )
             
             completion(viewData)
         }
-    }
-    
-    private func handlePhotoLibraryCameraTap() {
-        if isUsingCameraV3 {
-            openCameraV3()
-        } else if isNewFlowPrototype {
-            openNewCamera()
-        } else {
-            openPicker()
-        }
-    }
-    
-    private func openNewCamera() {
-        onNewCameraShow?()
-        router.showNewCamera(
-            selectedImagesStorage: interactor.selectedPhotosStorage,
-            mediaPickerData: interactor.mediaPickerData,
-            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
-            configure: { [weak self] newCameraModule in
-                newCameraModule.configureMediaPicker = { [weak newCameraModule] mediaPickerModule in
-                    self?.configureMediaPicker(mediaPickerModule)
-                    mediaPickerModule.onFinish = { _ in
-                        newCameraModule?.focusOnModule()
-                    }
-                }
-                newCameraModule.onFinish = { module, result in
-                    switch result {
-                    case .finished:
-                        self?.view?.onContinueButtonTap?()
-                    case .cancelled:
-                        self?.router.focusOnCurrentModule()
-                    }
-                }
-                newCameraModule.onLastPhotoThumbnailTap = { [weak self] in
-                    self?.onLastPhotoThumbnailTap?()
-                }
-            }
-        )
     }
     
     private func openCameraV3() {
@@ -542,17 +500,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             onInitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onDrawingMeasurementStart: onCameraV3DrawingMeasurementStart,
             onDrawingMeasurementStop: onCameraV3DrawingMeasurementStop
-        )
-    }
-    
-    private func openPicker() {
-        router.showMediaPicker(
-            data: interactor.mediaPickerData.byDisablingLibrary(),
-            overridenTheme: overridenTheme,
-            isNewFlowPrototype: isNewFlowPrototype,
-            configure: { [weak self] module in
-                self?.configureMediaPicker(module)
-            }
         )
     }
     

@@ -2,7 +2,7 @@ import UIKit
 
 final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & NewCameraAssemblyFactory & LimitedAccessAlertFactory & CameraV3AssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory & LimitedAccessAlertFactory & CameraV3AssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
@@ -33,25 +33,6 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
         let navigationController = UINavigationController(rootViewController: viewController)
         
         present(navigationController, animated: true, completion: nil)
-    }
-    
-    func showNewCamera(
-        selectedImagesStorage: SelectedImageStorage,
-        mediaPickerData: MediaPickerData,
-        shouldAllowFinishingWithNoPhotos: Bool,
-        configure: (NewCameraModule) -> ())
-    {
-        let assembly = assemblyFactory.newCameraAssembly()
-        
-        let viewController = assembly.module(
-            selectedImagesStorage: selectedImagesStorage,
-            mediaPickerData: mediaPickerData,
-            cameraService: cameraService,
-            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
-            configure: configure
-        )
-        
-        present(viewController, animated: true)
     }
     
     func showCameraV3(

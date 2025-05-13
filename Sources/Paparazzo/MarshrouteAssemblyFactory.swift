@@ -10,7 +10,6 @@ public final class MarshrouteAssemblyFactory:
     PhotoLibraryV2MarshrouteAssemblyFactory,
     MaskCropperMarshrouteAssemblyFactory,
     ScannerMarshrouteAssemblyFactory,
-    NewCameraMarshrouteAssemblyFactory,
     LimitedAccessAlertFactory,
     CameraV3MarshrouteAssemblyFactory
 {
@@ -62,14 +61,6 @@ public final class MarshrouteAssemblyFactory:
     
     public func scannerAssembly() -> ScannerMarshrouteAssembly {
         return ScannerMarshrouteAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
-    }
-    
-    func newCameraAssembly() -> NewCameraMarshrouteAssembly {
-        return NewCameraMarshrouteAssemblyImpl(
-            assemblyFactory: self,
-            theme: theme,
-            serviceFactory: serviceFactory
-        )
     }
     
     func cameraV3Assembly() -> CameraV3MarshrouteAssembly {

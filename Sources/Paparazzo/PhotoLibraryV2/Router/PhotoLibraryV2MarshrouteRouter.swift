@@ -4,7 +4,6 @@ import UIKit
 final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     typealias AssemblyFactory =
     MediaPickerMarshrouteAssemblyFactory
-    & NewCameraMarshrouteAssemblyFactory
     & LimitedAccessAlertFactory
     & CameraV3MarshrouteAssemblyFactory
     
@@ -33,27 +32,6 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
                 isNewFlowPrototype: isNewFlowPrototype, 
-                configure: configure
-            )
-        }
-    }
-    
-    func showNewCamera(
-        selectedImagesStorage: SelectedImageStorage,
-        mediaPickerData: MediaPickerData,
-        shouldAllowFinishingWithNoPhotos: Bool,
-        configure: (NewCameraModule) -> ())
-    {
-        presentModalViewControllerDerivedFrom { routerSeed in
-            
-            let assembly = assemblyFactory.newCameraAssembly()
-            
-            return assembly.module(
-                selectedImagesStorage: selectedImagesStorage,
-                mediaPickerData: mediaPickerData,
-                cameraService: cameraService,
-                shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos, 
-                routerSeed: routerSeed,
                 configure: configure
             )
         }

@@ -9,13 +9,6 @@ protocol PhotoLibraryV2Router: AnyObject {
         configure: (MediaPickerModule) -> ()
     )
     
-    func showNewCamera(
-        selectedImagesStorage: SelectedImageStorage,
-        mediaPickerData: MediaPickerData,
-        shouldAllowFinishingWithNoPhotos: Bool,
-        configure: (NewCameraModule) -> ()
-    )
-    
     func showCameraV3(
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,

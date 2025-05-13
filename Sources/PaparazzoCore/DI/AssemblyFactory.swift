@@ -2,7 +2,6 @@ import UIKit
 
 public final class AssemblyFactory:
     CameraAssemblyFactory,
-    NewCameraAssemblyFactory,
     MediaPickerAssemblyFactory,
     PhotoLibraryAssemblyFactory,
     PhotoLibraryV2AssemblyFactory,
@@ -27,10 +26,6 @@ public final class AssemblyFactory:
     
     func cameraAssembly() -> CameraAssembly {
         return CameraAssemblyImpl(theme: theme, serviceFactory: serviceFactory)
-    }
-    
-    func newCameraAssembly() -> NewCameraAssembly {
-        return NewCameraAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
     }
     
     func cameraV3Assembly() -> CameraV3Assembly {
