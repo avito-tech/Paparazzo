@@ -107,7 +107,7 @@ public final class PaparazzoFacade {
         let galleryController = assembly.module(
             data: parameters,
             isNewFlowPrototype: true,
-            isUsingCameraV3: true, 
+            cameraType: .cameraV3, 
             configure: { (module: PhotoLibraryV2Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()
