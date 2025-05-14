@@ -57,6 +57,7 @@ final class MedicalBookCameraView: UIView {
         addSubview(flashView)
         
         flashView.alpha = 0
+        maskOverlayView.backgroundColor = .clear
         accessDeniedView.isHidden = true
         cameraOutputView.backgroundColor = .black
         cameraOutputView.layer.masksToBounds = true
@@ -130,6 +131,7 @@ final class MedicalBookCameraView: UIView {
             - paparazzoSafeAreaInsets.bottom
             - Spec.cameraOutputViewIPadBottomOffset
             - closeButton.bottom
+            - Spec.hintDefaultHeight
             + Spec.topButtonInsets.top
         }
         
@@ -140,18 +142,18 @@ final class MedicalBookCameraView: UIView {
             height: height
         )
         
-        maskOverlayView.frame = CGRect(
-            left: left,
-            right: right,
-            top: cameraOutputView.top,
-            height: height
-        )
-        
         hintView.frame = CGRect(
             left: left,
             right: right,
             top: cameraOutputView.bottom + 3,
             height: Spec.hintDefaultHeight
+        )
+        
+        maskOverlayView.frame = CGRect(
+            centerX: cameraOutputView.centerX,
+            centerY: cameraOutputView.centerY,
+            width: cameraOutputView.width,
+            height: cameraOutputView.height
         )
         
         cameraOutputLayer?.frame.size = cameraOutputView.size
@@ -171,7 +173,7 @@ final class MedicalBookCameraView: UIView {
             selectedPhotosLeftViewX = shutterButtonLeftX + (self.left - shutterButtonLeftX - selectedPhotosViewSize.width) / 2
             doneButtonRightViewX = doneButtonLeRightX + (self.right - doneButtonLeRightX - doneButtonViewSize.width) / 2
         } else  {
-            selectedPhotosLeftViewX = shutterButtonLeftX + Spec.selectedPhotosViewIPadXOffset
+            selectedPhotosLeftViewX = shutterButtonLeftX - selectedPhotosViewSize.width - Spec.selectedPhotosViewIPadXOffset
             doneButtonRightViewX = doneButtonLeRightX + Spec.selectedPhotosViewIPadXOffset
         }
         
