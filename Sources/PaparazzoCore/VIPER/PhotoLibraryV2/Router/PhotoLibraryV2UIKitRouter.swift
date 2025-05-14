@@ -2,14 +2,24 @@ import UIKit
 
 final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & LimitedAccessAlertFactory & CameraV3AssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory
+    & LimitedAccessAlertFactory
+    & CameraV3AssemblyFactory
+    & MedicalBookCameraAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     private let cameraService: CameraService
+    private let cameraStatusService: CameraStatusService
     
-    init(assemblyFactory: AssemblyFactory, cameraService: CameraService, viewController: UIViewController) {
+    init(
+        assemblyFactory: AssemblyFactory,
+        cameraService: CameraService,
+        cameraStatusService: CameraStatusService,
+        viewController: UIViewController
+    ) {
         self.assemblyFactory = assemblyFactory
         self.cameraService = cameraService
+        self.cameraStatusService = cameraStatusService
         super.init(viewController: viewController)
     }
     
@@ -54,6 +64,22 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
             onInitializationMeasurementStop: onInitializationMeasurementStop,
             onDrawingMeasurementStart: onDrawingMeasurementStart, 
             onDrawingMeasurementStop: onDrawingMeasurementStop
+        )
+        present(viewController, animated: true)
+    }
+    
+    func showMedicalBookCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (MedicalBookCameraModule) -> ()
+    ) {
+        let assembly = assemblyFactory.medicalBookCameraAssembly()
+        let viewController = assembly.module(
+            selectedImagesStorage: selectedImagesStorage,
+            mediaPickerData: mediaPickerData,
+            cameraService: cameraService,
+            cameraStatusService: cameraStatusService,
+            configure: configure
         )
         present(viewController, animated: true)
     }

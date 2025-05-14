@@ -19,6 +19,12 @@ protocol PhotoLibraryV2Router: AnyObject {
         onDrawingMeasurementStop: (() -> ())?
     )
     
+    func showMedicalBookCamera(
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (MedicalBookCameraModule) -> ()
+    )
+    
     @available(iOS 14, *)
     func showLimitedAccessAlert()
 }

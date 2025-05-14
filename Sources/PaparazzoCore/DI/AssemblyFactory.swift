@@ -8,7 +8,8 @@ public final class AssemblyFactory:
     ImageCroppingAssemblyFactory,
     MaskCropperAssemblyFactory,
     LimitedAccessAlertFactory,
-    CameraV3AssemblyFactory
+    CameraV3AssemblyFactory,
+    MedicalBookCameraAssemblyFactory
 {
     private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
@@ -30,6 +31,14 @@ public final class AssemblyFactory:
     
     func cameraV3Assembly() -> CameraV3Assembly {
         CameraV3AssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
+    }
+    
+    func medicalBookCameraAssembly() -> MedicalBookCameraAssembly {
+        MedicalBookCameraAssemblyImpl(
+            assemblyFactory: self,
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
     }
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {

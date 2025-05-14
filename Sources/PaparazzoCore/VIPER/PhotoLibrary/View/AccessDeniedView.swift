@@ -92,6 +92,16 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
         button.setTitleColor(theme.cameraV3AccessDeniedButtonTextColor, for: .normal)
     }
     
+    func setThemeMedicalBook(_ theme: MedicalBookCameraUITheme) {
+        backgroundColor = theme.medicalBookAccessDeniedBackgroundColor
+        titleLabel.font = theme.medicalBookAccessDeniedTitleFont
+        titleLabel.textColor = theme.medicalBookAccessDeniedTitleColor
+        messageLabel.font = theme.medicalBookAccessDeniedMessageFont
+        messageLabel.textColor = theme.medicalBookAccessDeniedMessageColor
+        button.titleLabel?.font = theme.medicalBookAccessDeniedButtonFont
+        button.setTitleColor(theme.medicalBookAccessDeniedButtonTextColor, for: .normal)
+    }
+    
     // MARK: - Private
     
     private func calculateFrames(forBounds bounds: CGRect) -> (

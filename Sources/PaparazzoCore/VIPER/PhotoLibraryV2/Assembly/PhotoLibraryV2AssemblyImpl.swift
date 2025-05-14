@@ -2,7 +2,10 @@ import UIKit
 
 public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2Assembly {
     
-    typealias AssemblyFactory = MediaPickerAssemblyFactory & LimitedAccessAlertFactory & CameraV3AssemblyFactory
+    typealias AssemblyFactory = MediaPickerAssemblyFactory
+    & LimitedAccessAlertFactory
+    & CameraV3AssemblyFactory
+    & MedicalBookCameraAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -14,6 +17,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     public func module(
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
+        cameraType: MediaPickerCameraType?,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -24,7 +28,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             photosOrder: .reversed
         )
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
-        
+        let cameraStatusService = serviceFactory.cameraStatusService()
+
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: data.mediaPickerData,
             selectedItems: data.selectedItems,
@@ -42,6 +47,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         let router = PhotoLibraryV2UIKitRouter(
             assemblyFactory: assemblyFactory,
             cameraService: cameraService,
+            cameraStatusService: cameraStatusService,
             viewController: viewController
         )
         
@@ -50,6 +56,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             router: router,
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype, 
+            cameraType: cameraType,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 

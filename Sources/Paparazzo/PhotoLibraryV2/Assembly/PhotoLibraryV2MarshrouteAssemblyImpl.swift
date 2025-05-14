@@ -7,6 +7,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     MediaPickerMarshrouteAssemblyFactory
     & LimitedAccessAlertFactory
     & CameraV3MarshrouteAssemblyFactory
+    & MedicalBookCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     
@@ -20,6 +21,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
+<<<<<<< HEAD
+=======
+        cameraType: MediaPickerCameraType?,
+>>>>>>> master
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -32,6 +37,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         )
         
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
+        let cameraStatusService = serviceFactory.cameraStatusService()
         
         let interactor = PhotoLibraryV2InteractorImpl(
             mediaPickerData: mediaPickerData,
@@ -45,6 +51,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         let router = PhotoLibraryV2MarshrouteRouter(
             assemblyFactory: assemblyFactory,
             cameraService: cameraService,
+            cameraStatusService: cameraStatusService,
             routerSeed: routerSeed
         )
         
@@ -53,6 +60,10 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             router: router,
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype, 
+<<<<<<< HEAD
+=======
+            cameraType: cameraType,
+>>>>>>> master
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 

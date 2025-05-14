@@ -7,6 +7,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
+        cameraType: MediaPickerCameraType?,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

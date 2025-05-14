@@ -10,6 +10,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
+    private var cameraType: MediaPickerCameraType?
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
     private let onCameraV3InitializationMeasurementStop: (() -> ())?
     private let onCameraV3DrawingMeasurementStart: (() -> ())?
@@ -42,6 +43,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
+        cameraType: MediaPickerCameraType?,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
         onCameraV3DrawingMeasurementStart: (() -> ())?,
@@ -52,6 +54,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.overridenTheme = overridenTheme
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
+        self.cameraType = cameraType
         self.onCameraV3InitializationMeasurementStart = onCameraV3InitializationMeasurementStart
         self.onCameraV3InitializationMeasurementStop = onCameraV3InitializationMeasurementStop
         self.onCameraV3DrawingMeasurementStart = onCameraV3DrawingMeasurementStart
@@ -463,11 +466,22 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             let viewData = PhotoLibraryCameraViewData(
                 parameters: parameters,
                 onTap: { [weak self] in
-                    self?.openCameraV3()
+                    self?.handlePhotoLibraryCameraTap()
                 }
             )
             
             completion(viewData)
+        }
+    }
+    
+    private func handlePhotoLibraryCameraTap() {
+        switch cameraType {
+        case .cameraV3:
+            openCameraV3()
+        case .medicalBookCamera:
+            openMedicalBookCamera()
+        default:
+            openPicker()
         }
     }
     
@@ -500,6 +514,44 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             onInitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onDrawingMeasurementStart: onCameraV3DrawingMeasurementStart,
             onDrawingMeasurementStop: onCameraV3DrawingMeasurementStop
+        )
+    }
+    
+    private func openMedicalBookCamera() {
+        router.showMedicalBookCamera(
+            selectedImagesStorage: interactor.selectedPhotosStorage,
+            mediaPickerData: interactor.mediaPickerData,
+            configure: { [weak self] medicalBookModule in
+                medicalBookModule.configureMediaPicker = { [weak self, weak medicalBookModule] pickerModule in
+                    self?.configureMediaPicker(pickerModule)
+                    pickerModule.onFinish = { _ in
+                        medicalBookModule?.focusOnCurrentModule()
+                    }
+                }
+                
+                medicalBookModule.onFinish = { module, result in
+                    switch result {
+                    case .finished:
+                        self?.view?.onContinueButtonTap?()
+                    case .cancelled:
+                        self?.router.focusOnCurrentModule()
+                    }
+                }
+                medicalBookModule.onLastPhotoThumbnailTap = { [weak self] in
+                    self?.onLastPhotoThumbnailTap?()
+                }
+            }
+        )
+    }
+    
+    private func openPicker() {
+        router.showMediaPicker(
+            data: interactor.mediaPickerData.byDisablingLibrary(),
+            overridenTheme: overridenTheme,
+            isNewFlowPrototype: isNewFlowPrototype,
+            configure: { [weak self] module in
+                self?.configureMediaPicker(module)
+            }
         )
     }
     
