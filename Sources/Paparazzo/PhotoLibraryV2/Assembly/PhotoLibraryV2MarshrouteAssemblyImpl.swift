@@ -21,10 +21,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-<<<<<<< HEAD
-=======
-        cameraType: MediaPickerCameraType?,
->>>>>>> master
+        cameraType: MediaPickerCameraType,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -60,10 +57,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             router: router,
             overridenTheme: theme,
             isNewFlowPrototype: isNewFlowPrototype, 
-<<<<<<< HEAD
-=======
             cameraType: cameraType,
->>>>>>> master
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 
