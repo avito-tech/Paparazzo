@@ -57,6 +57,7 @@ final class MedicalBookCameraView: UIView {
         addSubview(flashView)
         
         flashView.alpha = 0
+        maskOverlayView.backgroundColor = .clear
         accessDeniedView.isHidden = true
         cameraOutputView.backgroundColor = .black
         cameraOutputView.layer.masksToBounds = true
@@ -140,18 +141,18 @@ final class MedicalBookCameraView: UIView {
             height: height
         )
         
-        maskOverlayView.frame = CGRect(
-            left: left,
-            right: right,
-            top: cameraOutputView.top,
-            height: height
-        )
-        
         hintView.frame = CGRect(
             left: left,
             right: right,
             top: cameraOutputView.bottom + 3,
             height: Spec.hintDefaultHeight
+        )
+        
+        maskOverlayView.frame = CGRect(
+            centerX: cameraOutputView.centerX,
+            centerY: cameraOutputView.centerY,
+            width: cameraOutputView.width,
+            height: cameraOutputView.height
         )
         
         cameraOutputLayer?.frame.size = cameraOutputView.size

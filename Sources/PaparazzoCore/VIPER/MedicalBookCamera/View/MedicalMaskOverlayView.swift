@@ -13,7 +13,6 @@ final class MedicalMaskOverlayView: UIView {
     }
     
     private func configure() {
-        backgroundColor = .clear
         isUserInteractionEnabled = false
         layer.addSublayer(shapeLayer)
         
