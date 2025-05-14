@@ -57,7 +57,7 @@ final class MedicalBookCameraInteractorImpl: MedicalBookCameraInteractor {
     }
     
     func takePhoto(completion: @escaping (PhotoLibraryItem?) -> ()) {
-        cameraService.takePhotoToPhotoLibrary(croppedToRatio: 4.0 / 3.0, completion: completion)
+        cameraService.takePhotoToPhotoLibrary(croppedToRatio: 3.0 / 4.0, completion: completion)
     }
     
     func toggleCamera() {
