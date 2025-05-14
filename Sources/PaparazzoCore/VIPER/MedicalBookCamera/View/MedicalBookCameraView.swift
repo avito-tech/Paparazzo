@@ -131,6 +131,7 @@ final class MedicalBookCameraView: UIView {
             - paparazzoSafeAreaInsets.bottom
             - Spec.cameraOutputViewIPadBottomOffset
             - closeButton.bottom
+            - Spec.hintDefaultHeight
             + Spec.topButtonInsets.top
         }
         
@@ -172,7 +173,7 @@ final class MedicalBookCameraView: UIView {
             selectedPhotosLeftViewX = shutterButtonLeftX + (self.left - shutterButtonLeftX - selectedPhotosViewSize.width) / 2
             doneButtonRightViewX = doneButtonLeRightX + (self.right - doneButtonLeRightX - doneButtonViewSize.width) / 2
         } else  {
-            selectedPhotosLeftViewX = shutterButtonLeftX + Spec.selectedPhotosViewIPadXOffset
+            selectedPhotosLeftViewX = shutterButtonLeftX - selectedPhotosViewSize.width - Spec.selectedPhotosViewIPadXOffset
             doneButtonRightViewX = doneButtonLeRightX + Spec.selectedPhotosViewIPadXOffset
         }
         
