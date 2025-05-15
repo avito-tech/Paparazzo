@@ -15,6 +15,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     }
     
     public func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
@@ -25,7 +26,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
         onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> UIViewController {
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
-            photosOrder: .reversed
+            photosOrder: .reversed,
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled
         )
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
         let cameraStatusService = serviceFactory.cameraStatusService()
@@ -55,7 +57,8 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isNewFlowPrototype: isNewFlowPrototype, 
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
+            isNewFlowPrototype: isNewFlowPrototype,
             cameraType: cameraType,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,

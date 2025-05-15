@@ -8,7 +8,11 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
     
     private let assemblyFactory: AssemblyFactory
     
-    init(assemblyFactory: AssemblyFactory, theme: PaparazzoUITheme, serviceFactory: ServiceFactory) {
+    init(
+        assemblyFactory: AssemblyFactory,
+        theme: PaparazzoUITheme,
+        serviceFactory: ServiceFactory
+    ) {
         self.assemblyFactory = assemblyFactory
         super.init(theme: theme, serviceFactory: serviceFactory)
     }
@@ -16,6 +20,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
     // MARK: - MediaPickerAssembly
     
     public func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         viewfinderOverlay: UIView?,
@@ -37,6 +42,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         )
 
         let router = MediaPickerMarshrouteRouter(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             assemblyFactory: assemblyFactory,
             routerSeed: routerSeed
         )

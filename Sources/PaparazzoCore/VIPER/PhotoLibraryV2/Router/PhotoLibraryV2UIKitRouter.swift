@@ -26,6 +26,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     // MARK: - PhotoLibraryV2Router
     
     func showMediaPicker(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
@@ -46,6 +47,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     }
     
     func showCameraV3(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (CameraV3Module) -> (),
@@ -56,6 +58,7 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     ) {
         let assembly = assemblyFactory.cameraV3Assembly()
         let viewController = assembly.module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
             cameraService: cameraService, 
@@ -69,12 +72,14 @@ final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     }
     
     func showMedicalBookCamera(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (MedicalBookCameraModule) -> ()
     ) {
         let assembly = assemblyFactory.medicalBookCameraAssembly()
         let viewController = assembly.module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             selectedImagesStorage: selectedImagesStorage,
             mediaPickerData: mediaPickerData,
             cameraService: cameraService,

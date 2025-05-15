@@ -3,11 +3,12 @@ import UIKit
 public final class PhotoLibraryAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryAssembly {
     
     public func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ())
         -> UIViewController
     {
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled)
         
         let interactor = PhotoLibraryInteractorImpl(
             selectedItems: data.selectedItems,

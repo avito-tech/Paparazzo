@@ -19,6 +19,8 @@ enum PhotosOrder {
 final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PHPhotoLibraryChangeObserver {
     var onLimitedAccess: (() -> ())?
     
+    private let isPhotoFetchLimitEnabled: Bool
+    
     private let photosOrder: PhotosOrder
     private let photoLibrary = PHPhotoLibrary.shared()
     private var fetchResults = [PhotoLibraryFetchResult]()
@@ -33,8 +35,9 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     private lazy var imageManager = PHImageManager()
     
     // MARK: - Init
-    init(photosOrder: PhotosOrder = .normal) {
+    init(photosOrder: PhotosOrder = .normal, isPhotoFetchLimitEnabled: Bool) {
         self.photosOrder = photosOrder
+        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
     }
     
     deinit {
@@ -126,14 +129,22 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                     changeDetails.insertedIndexes?.enumerated()
                         .map { ($1, changeDetails.insertedObjects[$0]) }
                         .forEach { insertionIndex, assetCollection in
-                            let album = PhotoLibraryAlbum(assetCollection: assetCollection)
+                            let album = PhotoLibraryAlbum(
+                                isPhotoFetchLimitEnabled: self.isPhotoFetchLimitEnabled,
+                                photosOrder: self.photosOrder,
+                                assetCollection: assetCollection
+                            )
                             fetchResult.albums.insert(album, at: insertionIndex)
                         }
                     
                     changeDetails.changedIndexes?.enumerated()
                         .map { ($1, changeDetails.changedObjects[$0]) }
                         .forEach { changingIndex, assetCollection in
-                            let album = PhotoLibraryAlbum(assetCollection: assetCollection)
+                            let album = PhotoLibraryAlbum(
+                                isPhotoFetchLimitEnabled: self.isPhotoFetchLimitEnabled,
+                                photosOrder: self.photosOrder,
+                                assetCollection: assetCollection
+                            )
                             fetchResult.albums[changingIndex] = album
                         }
                     
@@ -216,7 +227,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     private func setUpFetchResult(completion: @escaping () -> ()) {
-        fetchResultQueue.async {
+        fetchResultQueue.async { [weak self] in
+            guard let self else { return }
             
             var fetchResults = [PhotoLibraryFetchResult]()
             
@@ -230,7 +242,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 var albums = [PhotoLibraryAlbum]()
                 
                 collectionsFetchResult.enumerateObjects(using: { collection, _, _ in
-                    albums.append(PhotoLibraryAlbum(assetCollection: collection))
+                    albums.append(PhotoLibraryAlbum(
+                        isPhotoFetchLimitEnabled: self.isPhotoFetchLimitEnabled,
+                        photosOrder: self.photosOrder,
+                        assetCollection: collection
+                    ))
                 })
                 
                 fetchResults.append(PhotoLibraryFetchResult(albums: albums, phFetchResult: collectionsFetchResult))
@@ -244,7 +260,8 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
     }
     
     private func setUpFetchResultForLimitedAccess(completion: @escaping () -> ()) {
-        fetchResultQueue.async {
+        fetchResultQueue.async { [weak self] in
+            guard let self else { return }
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
             fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
@@ -256,7 +273,11 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
                 title: localized("All photos")
             )
             
-            let albums = [PhotoLibraryAlbum(assetCollection: assetCollection)]
+            let albums = [PhotoLibraryAlbum(
+                isPhotoFetchLimitEnabled: self.isPhotoFetchLimitEnabled,
+                photosOrder: self.photosOrder,
+                assetCollection: assetCollection
+            )]
             
             self.fetchResults = [PhotoLibraryFetchResult(albums: albums, phFetchResult: nil)]
             self.photoLibrary.register(self)
@@ -283,7 +304,31 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
+    // MARK: - Photo library items
+    
     private func photoLibraryItems(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
+        if isPhotoFetchLimitEnabled {
+            return newPhotoLibraryItems(from: fetchResult)
+        } else {
+            return legacyPhotoLibraryItems(from: fetchResult)
+        }
+    }
+    
+    private func newPhotoLibraryItems(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
+        let indexes = 0 ..< fetchResult.count
+        
+        return indexes.map { indexInFetchResult in
+            PhotoLibraryItem(
+                image: PHAssetImageSource(
+                    fetchResult: fetchResult,
+                    index: indexInFetchResult,
+                    imageManager: imageManager
+                )
+            )
+        }
+    }
+    
+    private func legacyPhotoLibraryItems(from fetchResult: PHFetchResult<PHAsset>) -> [PhotoLibraryItem] {
         
         let indexes = 0 ..< fetchResult.count
         
@@ -327,7 +372,28 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         )
     }
     
-    private func removedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
+    // MARK: - Remove
+    
+    private func removedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>) -> IndexSet {
+        if isPhotoFetchLimitEnabled {
+            return newRemovedIndexes(from: changes)
+        } else {
+            return legacyRemovedIndexes(from: changes)
+        }
+    }
+    
+    private func newRemovedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>) -> IndexSet {
+        var removedIndexes = IndexSet()
+        
+        changes.removedIndexes?.reversed().forEach { index in
+            removedIndexes.insert(index)
+        }
+
+        return removedIndexes
+    }
+
+    
+    private func legacyRemovedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> IndexSet
     {
         let assetsCountBeforeChanges = changes.fetchResultBeforeChanges.count
@@ -347,7 +413,26 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         return removedIndexes
     }
     
-    private func insertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
+    // MARK: - Insert
+    
+    private func insertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>) -> [(index: Int, item: PhotoLibraryItem)] {
+        if isPhotoFetchLimitEnabled {
+            return newInsertedObjects(from: changes)
+        } else {
+            return legacyInsertedObjects(from: changes)
+        }
+    }
+    
+    private func newInsertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>) -> [(index: Int, item: PhotoLibraryItem)] {
+        guard let insertedIndexes = changes.insertedIndexes else { return [] }
+        
+        return insertedIndexes.enumerated().map { insertionIndex, targetAssetIndex -> (index: Int, item: PhotoLibraryItem) in
+            let asset = changes.insertedObjects[insertionIndex]
+            return (index: targetAssetIndex, item: photoLibraryItem(from: asset))
+        }
+    }
+    
+    private func legacyInsertedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
         guard let insertedIndexes = changes.insertedIndexes else { return [] }
@@ -385,7 +470,26 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    private func updatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
+    // MARK: - Update
+    
+    private func updatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>) -> [(index: Int, item: PhotoLibraryItem)] {
+        if isPhotoFetchLimitEnabled {
+            return newUpdatedObjects(from: changes)
+        } else {
+            return legacyUpdatedObjects(from: changes)
+        }
+    }
+    
+    private func newUpdatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>) -> [(index: Int, item: PhotoLibraryItem)] {
+        guard let changedIndexes = changes.changedIndexes else { return [] }
+        
+        return changedIndexes.enumerated().map { changeIndex, assetIndex -> (index: Int, item: PhotoLibraryItem) in
+            let asset = changes.changedObjects[changeIndex]
+            return (index: assetIndex, item: photoLibraryItem(from: asset))
+        }
+    }
+    
+    private func legacyUpdatedObjects(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(index: Int, item: PhotoLibraryItem)]
     {
         guard let changedIndexes = changes.changedIndexes else { return [] }
@@ -421,7 +525,17 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
         }
     }
     
-    private func movedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
+    // MARK: - Moved
+    
+    private func movedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>) -> [(from: Int, to: Int)] {
+        if isPhotoFetchLimitEnabled {
+            return newMovedIndexes(from: changes)
+        } else {
+            return legacyMovedIndexes(from: changes)
+        }
+    }
+    
+    private func legacyMovedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>)
         -> [(from: Int, to: Int)]
     {
         var movedIndexes = [(from: Int, to: Int)]()
@@ -444,6 +558,16 @@ final class PhotoLibraryItemsServiceImpl: NSObject, PhotoLibraryItemsService, PH
             }()
             
             movedIndexes.append((from: realFrom, to: realTo))
+        }
+        
+        return movedIndexes
+    }
+    
+    private func newMovedIndexes(from changes: PHFetchResultChangeDetails<PHAsset>) -> [(from: Int, to: Int)] {
+        var movedIndexes = [(from: Int, to: Int)]()
+        
+        changes.enumerateMoves { (from, to) in
+            movedIndexes.append((from: from, to: to))
         }
         
         return movedIndexes
@@ -500,9 +624,19 @@ final class PhotoLibraryAlbum: Equatable {
         self.numberOfItems = fetchResult.count
     }
     
-    fileprivate convenience init(assetCollection: PHAssetCollection) {
+    fileprivate convenience init(
+        isPhotoFetchLimitEnabled: Bool,
+        photosOrder: PhotosOrder,
+        assetCollection: PHAssetCollection
+    ) {
         
         let fetchOptions = PHFetchOptions()
+        
+        if isPhotoFetchLimitEnabled {
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: photosOrder == .normal)]
+            fetchOptions.fetchLimit = 10_000
+        }
+        
         fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
         fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
         

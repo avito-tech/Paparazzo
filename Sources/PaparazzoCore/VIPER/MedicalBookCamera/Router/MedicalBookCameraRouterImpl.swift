@@ -16,6 +16,7 @@ final class MedicalBookCameraRouterImpl:
     
     // MARK: - NewCameraRouter
     func showMediaPicker(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())

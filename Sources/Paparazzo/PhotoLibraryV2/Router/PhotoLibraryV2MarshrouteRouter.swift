@@ -26,6 +26,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
     // MARK: - PhotoLibraryV2Router
     func showMediaPicker(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
@@ -36,6 +37,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
             let assembly = assemblyFactory.mediaPickerAssembly()
             
             return assembly.module(
+                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
@@ -46,6 +48,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     }
     
     func showCameraV3(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (CameraV3Module) -> (),
@@ -56,6 +59,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.cameraV3Assembly().module(
+                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
@@ -70,12 +74,14 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     }
     
     func showMedicalBookCamera(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (MedicalBookCameraModule) -> ()
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.medicalBookCameraAssembly().module(
+                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,

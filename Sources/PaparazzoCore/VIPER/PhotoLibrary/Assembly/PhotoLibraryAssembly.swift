@@ -2,6 +2,7 @@ import UIKit
 
 public protocol PhotoLibraryAssembly: AnyObject {
     func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: PhotoLibraryData,
         configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController

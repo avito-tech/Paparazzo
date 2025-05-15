@@ -19,10 +19,11 @@ public final class MarshrouteAssemblyFactory:
     private let imageStorage: ImageStorage
     private let alertFactory: LimitedAccessAlertFactory
     
-    public init(theme: PaparazzoUITheme = PaparazzoUITheme(),
-                imageStorage: ImageStorage = ImageStorageImpl(),
-                limitedAccessAlertFactory: LimitedAccessAlertFactory = LimitedAccessAlertFactoryImpl())
-    {
+    public init(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        imageStorage: ImageStorage = ImageStorageImpl(),
+        limitedAccessAlertFactory: LimitedAccessAlertFactory = LimitedAccessAlertFactoryImpl()
+    ) {
         self.theme = theme
         self.imageStorage = imageStorage
         self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
