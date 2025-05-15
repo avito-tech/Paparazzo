@@ -12,7 +12,6 @@ final class PhotoLibraryToCameraTransitioningDelegate: NSObject, UIViewControlle
     {
         if (presenting is PhotoLibraryV2ViewController
             || (presenting as? UINavigationController)?.topViewController is PhotoLibraryV2ViewController) {
-            
             if presented is CameraV3ViewController {
                 return CameraV3PresentAnimator()
             } else if presented is MedicalBookCameraViewController {
