@@ -5,7 +5,6 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
     
     typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory
         & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
-        & NewCameraMarshrouteAssemblyFactory
     
     private let assemblyFactory: AssemblyFactory
     

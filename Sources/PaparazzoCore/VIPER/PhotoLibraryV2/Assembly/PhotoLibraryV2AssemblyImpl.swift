@@ -3,7 +3,6 @@ import UIKit
 public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2Assembly {
     
     typealias AssemblyFactory = MediaPickerAssemblyFactory
-    & NewCameraAssemblyFactory
     & LimitedAccessAlertFactory
     & CameraV3AssemblyFactory
     & MedicalBookCameraAssemblyFactory
@@ -18,7 +17,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     public func module(
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
-        cameraType: MediaPickerCameraType?,
+        cameraType: MediaPickerCameraType,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

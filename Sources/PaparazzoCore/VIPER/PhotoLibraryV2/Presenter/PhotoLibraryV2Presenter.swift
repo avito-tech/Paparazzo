@@ -10,7 +10,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
     private let isNewFlowPrototype: Bool
-    private var cameraType: MediaPickerCameraType?
+    private var cameraType: MediaPickerCameraType
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
     private let onCameraV3InitializationMeasurementStop: (() -> ())?
     private let onCameraV3DrawingMeasurementStart: (() -> ())?
@@ -43,7 +43,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
         isNewFlowPrototype: Bool,
-        cameraType: MediaPickerCameraType?,
+        cameraType: MediaPickerCameraType,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
         onCameraV3DrawingMeasurementStart: (() -> ())?,
@@ -76,7 +76,6 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     var onViewDidLoad: (() -> ())?
     var onCancel: (() -> ())?
     var onFinish: (([MediaPickerItem]) -> ())?
-    var onNewCameraShow: (() -> ())?
     var onCameraV3Show: (() -> ())?
     var onCropButtonTap: (() -> ())?
     var onLastPhotoThumbnailTap: (() -> ())?
@@ -481,41 +480,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             openCameraV3()
         case .medicalBookCamera:
             openMedicalBookCamera()
-        default:
-            if isNewFlowPrototype {
-                openNewCamera()
-            } else {
-                openPicker()
-            }
         }
-    }
-    
-    private func openNewCamera() {
-        onNewCameraShow?()
-        router.showNewCamera(
-            selectedImagesStorage: interactor.selectedPhotosStorage,
-            mediaPickerData: interactor.mediaPickerData,
-            shouldAllowFinishingWithNoPhotos: shouldAllowFinishingWithNoPhotos,
-            configure: { [weak self] newCameraModule in
-                newCameraModule.configureMediaPicker = { [weak newCameraModule] mediaPickerModule in
-                    self?.configureMediaPicker(mediaPickerModule)
-                    mediaPickerModule.onFinish = { _ in
-                        newCameraModule?.focusOnModule()
-                    }
-                }
-                newCameraModule.onFinish = { module, result in
-                    switch result {
-                    case .finished:
-                        self?.view?.onContinueButtonTap?()
-                    case .cancelled:
-                        self?.router.focusOnCurrentModule()
-                    }
-                }
-                newCameraModule.onLastPhotoThumbnailTap = { [weak self] in
-                    self?.onLastPhotoThumbnailTap?()
-                }
-            }
-        )
     }
     
     private func openCameraV3() {

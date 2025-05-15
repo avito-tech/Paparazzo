@@ -5,7 +5,6 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     
     typealias AssemblyFactory =
     MediaPickerMarshrouteAssemblyFactory
-    & NewCameraMarshrouteAssemblyFactory
     & LimitedAccessAlertFactory
     & CameraV3MarshrouteAssemblyFactory
     & MedicalBookCameraMarshrouteAssemblyFactory
@@ -22,7 +21,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
-        cameraType: MediaPickerCameraType?,
+        cameraType: MediaPickerCameraType,
         configure: (PhotoLibraryV2Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
