@@ -1,7 +1,7 @@
 import UIKit
 
 final class MedicalBookCameraPresentAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    private let animationDuration: TimeInterval = 0.2
+    private let animationDuration: TimeInterval = Spec.animationDuratuion
     
     func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
         return animationDuration
@@ -40,7 +40,7 @@ final class MedicalBookCameraPresentAnimator: NSObject, UIViewControllerAnimated
 }
 
 final class MedicalBookCameraDismissAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    private let animationDuration: TimeInterval = 0.25
+    private let animationDuration: TimeInterval = Spec.animationDuratuion
     
     func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
         return animationDuration
@@ -71,13 +71,17 @@ final class MedicalBookCameraDismissAnimator: NSObject, UIViewControllerAnimated
                 width: snapshot.bounds.size.width,
                 height: snapshot.bounds.size.height
             )
-            previewLayer.cornerRadius = 6
+            previewLayer.cornerRadius = 0
             incomingViewController.setPreviewLayer(previewLayer)
         } completion: {
             snapshot.removeFromSuperview()
             transitionContext.completeTransition($0)
         }
     }
+}
+
+private enum Spec {
+    static let animationDuratuion: TimeInterval = 0.25
 }
 
 private extension UIViewController {
