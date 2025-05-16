@@ -81,7 +81,7 @@ final class MedicalBookCameraDismissAnimator: NSObject, UIViewControllerAnimated
 }
 
 private enum Spec {
-    static let animationDuratuion: TimeInterval = 0.25
+    static let animationDuratuion: TimeInterval = 0.20
 }
 
 private extension UIViewController {
