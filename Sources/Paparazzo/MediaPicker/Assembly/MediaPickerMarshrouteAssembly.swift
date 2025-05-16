@@ -3,6 +3,7 @@ import UIKit
 
 public protocol MediaPickerMarshrouteAssembly: AnyObject {
     func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         viewfinderOverlay: UIView?,
@@ -18,6 +19,7 @@ public protocol MediaPickerMarshrouteAssemblyFactory: AnyObject {
 
 public extension MediaPickerMarshrouteAssembly {
     func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
@@ -25,6 +27,7 @@ public extension MediaPickerMarshrouteAssembly {
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: data,
             overridenTheme: overridenTheme,
             viewfinderOverlay: nil,
@@ -35,12 +38,14 @@ public extension MediaPickerMarshrouteAssembly {
     }
     
     func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: data,
             overridenTheme: nil,
             viewfinderOverlay: nil,
@@ -51,11 +56,13 @@ public extension MediaPickerMarshrouteAssembly {
     }
     
     func module(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         routerSeed: RouterSeed,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: data,
             overridenTheme: nil,
             viewfinderOverlay: nil,

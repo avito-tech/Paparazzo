@@ -6,9 +6,15 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
     
     typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryMarshrouteAssemblyFactory & MaskCropperMarshrouteAssemblyFactory
 
+    private let isPhotoFetchLimitEnabled: Bool
     private let assemblyFactory: AssemblyFactory
 
-    init(assemblyFactory: AssemblyFactory, routerSeed: RouterSeed) {
+    init(
+        isPhotoFetchLimitEnabled: Bool,
+        assemblyFactory: AssemblyFactory,
+        routerSeed: RouterSeed
+    ) {
+        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.assemblyFactory = assemblyFactory
         super.init(routerSeed: routerSeed)
     }
@@ -24,6 +30,7 @@ final class MediaPickerMarshrouteRouter: BaseRouter, MediaPickerRouter {
             let assembly = assemblyFactory.photoLibraryAssembly()
             
             return assembly.module(
+                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 selectedItems: data.selectedItems,
                 maxSelectedItemsCount: data.maxSelectedItemsCount,
                 routerSeed: routerSeed,

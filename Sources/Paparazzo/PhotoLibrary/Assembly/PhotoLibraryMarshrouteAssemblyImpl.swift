@@ -4,13 +4,13 @@ import Marshroute
 public final class PhotoLibraryMarshrouteAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryMarshrouteAssembly {
     
     public func module(
+        isPhotoFetchLimitEnabled: Bool,
         selectedItems: [PhotoLibraryItem],
         maxSelectedItemsCount: Int?,
         routerSeed: RouterSeed,
         configure: (PhotoLibraryModule) -> ()
     ) -> UIViewController {
-        
-        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl()
+        let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled)
         
         let interactor = PhotoLibraryInteractorImpl(
             selectedItems: selectedItems,

@@ -3,17 +3,20 @@ import UIKit
 
 final class MedicalBookCameraPresenter: MedicalBookCameraModule {
     // MARK: - Private properties
+    private let isPhotoFetchLimitEnabled: Bool
     private let interactor: MedicalBookCameraInteractor
     private let router: MedicalBookCameraRouter
     private let volumeService: VolumeService
     
     // MARK: - Init
     init(
+        isPhotoFetchLimitEnabled: Bool,
         interactor: MedicalBookCameraInteractor,
         router: MedicalBookCameraRouter,
         volumeService: VolumeService
     )
     {
+        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.interactor = interactor
         self.router = router
         self.volumeService = volumeService
@@ -73,8 +76,9 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router, isPhotoFetchLimitEnabled] in
             router.showMediaPicker(
+                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 data: interactor.mediaPickerDataWithSelectedLastItem,
                 overridenTheme: nil,
                 configure: { module in

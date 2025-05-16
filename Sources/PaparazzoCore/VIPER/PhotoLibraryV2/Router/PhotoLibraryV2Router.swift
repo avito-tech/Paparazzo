@@ -3,6 +3,7 @@ protocol PhotoLibraryV2Router: AnyObject {
     func focusOnCurrentModule()
     
     func showMediaPicker(
+        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isNewFlowPrototype: Bool,
@@ -10,6 +11,7 @@ protocol PhotoLibraryV2Router: AnyObject {
     )
     
     func showCameraV3(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (CameraV3Module) -> (),
@@ -20,6 +22,7 @@ protocol PhotoLibraryV2Router: AnyObject {
     )
     
     func showMedicalBookCamera(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (MedicalBookCameraModule) -> ()

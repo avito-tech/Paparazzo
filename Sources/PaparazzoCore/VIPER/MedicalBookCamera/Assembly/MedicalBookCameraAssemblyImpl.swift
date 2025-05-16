@@ -20,6 +20,7 @@ final class MedicalBookCameraAssemblyImpl:
     
     // MARK: - MedicalBookCameraAssembly
     func module(
+        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -44,6 +45,7 @@ final class MedicalBookCameraAssemblyImpl:
         
         
         let presenter = MedicalBookCameraPresenter(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             interactor: interactor,
             router: router,
             volumeService: serviceFactory.volumeService()

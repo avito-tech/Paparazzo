@@ -9,6 +9,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let interactor: PhotoLibraryV2Interactor
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
+    private let isPhotoFetchLimitEnabled: Bool
     private let isNewFlowPrototype: Bool
     private var cameraType: MediaPickerCameraType
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
@@ -42,6 +43,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         interactor: PhotoLibraryV2Interactor,
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
+        isPhotoFetchLimitEnabled: Bool,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -52,6 +54,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.interactor = interactor
         self.router = router
         self.overridenTheme = overridenTheme
+        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.cameraType = cameraType
@@ -303,6 +306,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             let data = strongSelf.interactor.mediaPickerData.bySettingMediaPickerItems(selectedItems)
             
             self?.router.showMediaPicker(
+                isPhotoFetchLimitEnabled: strongSelf.isPhotoFetchLimitEnabled,
                 data: data,
                 overridenTheme: strongSelf.overridenTheme,
                 isNewFlowPrototype: strongSelf.isNewFlowPrototype,
@@ -349,6 +353,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             .bySelectingLastItem()
         
         router.showMediaPicker(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: data,
             overridenTheme: overridenTheme,
             isNewFlowPrototype: true,
@@ -486,6 +491,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private func openCameraV3() {
         onCameraV3Show?()
         router.showCameraV3(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             selectedImagesStorage: interactor.selectedPhotosStorage,
             mediaPickerData: interactor.mediaPickerData,
             configure: { [weak self] cameraV3Module in
@@ -517,6 +523,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func openMedicalBookCamera() {
         router.showMedicalBookCamera(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             selectedImagesStorage: interactor.selectedPhotosStorage,
             mediaPickerData: interactor.mediaPickerData,
             configure: { [weak self] medicalBookModule in
@@ -544,6 +551,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func openPicker() {
         router.showMediaPicker(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: interactor.mediaPickerData.byDisablingLibrary(),
             overridenTheme: overridenTheme,
             isNewFlowPrototype: isNewFlowPrototype,

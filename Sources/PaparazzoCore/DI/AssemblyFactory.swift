@@ -11,15 +11,18 @@ public final class AssemblyFactory:
     CameraV3AssemblyFactory,
     MedicalBookCameraAssemblyFactory
 {
+    private let isPhotoFetchLimitEnabled: Bool
     private let theme: PaparazzoUITheme
     private let serviceFactory: ServiceFactory
     private let alertFactory: LimitedAccessAlertFactory
     
     public init(
+        isPhotoFetchLimitEnabled: Bool,
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         imageStorage: ImageStorage = ImageStorageImpl(),
         limitedAccessAlertFactory: LimitedAccessAlertFactory = LimitedAccessAlertFactoryImpl())
     {
+        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.theme = theme
         self.serviceFactory = ServiceFactoryImpl(imageStorage: imageStorage)
         self.alertFactory = limitedAccessAlertFactory
@@ -43,6 +46,7 @@ public final class AssemblyFactory:
     
     public func mediaPickerAssembly() -> MediaPickerAssembly {
         return MediaPickerAssemblyImpl(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             assemblyFactory: self,
             theme: theme,
             serviceFactory: serviceFactory

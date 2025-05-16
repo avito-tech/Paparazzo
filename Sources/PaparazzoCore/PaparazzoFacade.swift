@@ -10,13 +10,14 @@ public final class PaparazzoFacade {
     }()
     
     public static func paparazzoViewController<NavigationController: UINavigationController>(
+        isPhotoFetchLimitEnabled: Bool,
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: MediaPickerData = MediaPickerData(),
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
     {
-        let assembly = assemblyFactory(theme: theme).mediaPickerAssembly()
+        let assembly = assemblyFactory(isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled, theme: theme).mediaPickerAssembly()
         
         let viewController = assembly.module(
             data: parameters,
@@ -37,6 +38,7 @@ public final class PaparazzoFacade {
     }
     
     public static func maskCropperViewController<NavigationController: UINavigationController>(
+        isPhotoFetchLimitEnabled: Bool,
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: MaskCropperData,
         croppingOverlayProvider: CroppingOverlayProvider,
@@ -44,7 +46,7 @@ public final class PaparazzoFacade {
         onCancel: (() -> ())? = nil)
         -> NavigationController
     {
-        let assembly = assemblyFactory(theme: theme).maskCropperAssembly()
+        let assembly = assemblyFactory(isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled, theme: theme).maskCropperAssembly()
         
         let viewController = assembly.module(
             data: parameters,
@@ -65,15 +67,17 @@ public final class PaparazzoFacade {
     }
     
     public static func libraryViewController<NavigationController: UINavigationController>(
+        isPhotoFetchLimitEnabled: Bool,
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryData = PhotoLibraryData(),
         onFinish: @escaping ([PhotoLibraryItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
     {
-        let assembly = assemblyFactory(theme: theme).photoLibraryAssembly()
+        let assembly = assemblyFactory(isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled, theme: theme).photoLibraryAssembly()
         
         let galleryController = assembly.module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: parameters,
             configure: { (module: PhotoLibraryModule) in
                 module.onFinish = { [weak module] result in
@@ -93,6 +97,7 @@ public final class PaparazzoFacade {
     }
     
     public static func libraryV2ViewController<NavigationController: UINavigationController>(
+        isPhotoFetchLimitEnabled: Bool,
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV2Data,
         onFinish: @escaping ([MediaPickerItem]) -> (),
@@ -102,9 +107,10 @@ public final class PaparazzoFacade {
         onCameraV3DrawingMeasurementStart: (() -> ())?,
         onCameraV3DrawingMeasurementStop: (() -> ())?
     ) -> NavigationController {
-        let assembly = assemblyFactory(theme: theme).photoLibraryV2Assembly()
+        let assembly = assemblyFactory(isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled, theme: theme).photoLibraryV2Assembly()
         
         let galleryController = assembly.module(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: parameters,
             isNewFlowPrototype: true,
             cameraType: .cameraV3,
@@ -127,7 +133,14 @@ public final class PaparazzoFacade {
         return NavigationController(rootViewController: galleryController)
     }
     
-    private static func assemblyFactory(theme: PaparazzoUITheme) -> AssemblyFactory {
-        return AssemblyFactory(theme: theme, imageStorage: imageStorage)
+    private static func assemblyFactory(
+        isPhotoFetchLimitEnabled: Bool,
+        theme: PaparazzoUITheme
+    ) -> AssemblyFactory {
+        return AssemblyFactory(
+            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
+            theme: theme,
+            imageStorage: imageStorage
+        )
     }
 }
