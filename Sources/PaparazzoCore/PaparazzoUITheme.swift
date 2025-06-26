@@ -68,6 +68,8 @@ public struct PaparazzoUITheme:
     public var accessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var accessDeniedMessageFont = UIFont.systemFont(ofSize: 17)
     public var accessDeniedButtonFont = UIFont.systemFont(ofSize: 17)
+    public var accessDeniedButtonBackgroundColor: UIColor = UIColor.RGB(red: 0, green: 170, blue: 255, alpha: 1)
+    public var accessDeniedButtonCornerRadius: CGFloat = 4
 
     public var infoMessageFont = UIFont.systemFont(ofSize: 14)
     
@@ -187,6 +189,8 @@ public struct PaparazzoUITheme:
     public var cameraV3AccessDeniedTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var cameraV3AccessDeniedMessageFont = UIFont.boldSystemFont(ofSize: 17)
     public var cameraV3AccessDeniedButtonFont = UIFont.boldSystemFont(ofSize: 17)
+    public var cameraV3AccessDeniedButtonBackgroundColor: UIColor = UIColor.RGB(red: 0, green: 170, blue: 255, alpha: 1)
+    public var cameraV3AccessDeniedButtonCornerRadius: CGFloat = 4
     
     // MARK: - MedicalBookTheme
 

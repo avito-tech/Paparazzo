@@ -37,4 +37,6 @@ public protocol CameraV3UITheme: AccessDeniedViewTheme {
     var cameraV3AccessDeniedTitleFont: UIFont { get }
     var cameraV3AccessDeniedMessageFont: UIFont { get }
     var cameraV3AccessDeniedButtonFont: UIFont { get }
+    var cameraV3AccessDeniedButtonBackgroundColor: UIColor { get }
+    var cameraV3AccessDeniedButtonCornerRadius: CGFloat { get }
 }
