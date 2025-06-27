@@ -80,6 +80,8 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
         messageLabel.textColor = theme.accessDeniedMessageColor
         button.titleLabel?.font = theme.accessDeniedButtonFont
         button.setTitleColor(theme.accessDeniedButtonTextColor, for: .normal)
+        button.layer.cornerRadius = theme.accessDeniedButtonCornerRadius
+        button.backgroundColor = theme.accessDeniedButtonBackgroundColor
     }
     
     func setThemeV3(_ theme: CameraV3UITheme) {
@@ -90,6 +92,8 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
         messageLabel.textColor = theme.cameraV3AccessDeniedMessageColor
         button.titleLabel?.font = theme.cameraV3AccessDeniedButtonFont
         button.setTitleColor(theme.cameraV3AccessDeniedButtonTextColor, for: .normal)
+        button.layer.cornerRadius = theme.cameraV3AccessDeniedButtonCornerRadius
+        button.backgroundColor = theme.cameraV3AccessDeniedButtonBackgroundColor
     }
     
     func setThemeMedicalBook(_ theme: MedicalBookCameraUITheme) {
@@ -109,8 +113,8 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
         messageLabelFrame: CGRect,
         buttonFrame: CGRect)
     {
-        let titleBottomMargin: CGFloat = 7
-        let messageBottomMargin: CGFloat = 34
+        let titleBottomMargin: CGFloat = 12
+        let messageBottomMargin: CGFloat = 22
         let buttonHeight: CGFloat = 52
         
         let labelsWidth = bounds.size.width * 0.8
