@@ -13,7 +13,7 @@
 // Photo Library
 "All photos" = "Все фотографии";
 "Unnamed album" = "Безымянный";
-"To pick photo from library" = "Чтобы выбрать фото из галереи";
+"To pick photo from library" = "Чтобы выбрать фото из\U00A0галереи";
 "Allow %@ to access your photo library" = "Разрешите приложению %@ доступ к\U00A0вашим фотографиям";
 "Allow access to photo library" = "Разрешить доступ к галерее";
 "No photos" = "Нет фото";
