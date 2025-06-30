@@ -9,8 +9,8 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
     let button = UIButton()
     
     var title: String? {
-        get { return titleLabel.text }
-        set { titleLabel.text = newValue }
+        get { return titleLabel.attributedText?.string }
+        set { setTitleAttrubited(newValue) }
     }
     
     var message: String? {
@@ -107,6 +107,20 @@ final class AccessDeniedView: UIView, ThemeConfigurable {
     }
     
     // MARK: - Private
+    private func setTitleAttrubited(_ title: String?) {
+        let style = NSMutableParagraphStyle()
+        style.minimumLineHeight = 28
+        style.maximumLineHeight = 28
+        style.alignment = .center
+        
+        let attributedString = NSMutableAttributedString(string: title ?? "")
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        titleLabel.attributedText = attributedString
+    }
     
     private func calculateFrames(forBounds bounds: CGRect) -> (
         titleLabelFrame: CGRect,

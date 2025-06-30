@@ -7,14 +7,14 @@
 
 // Camera
 "To take photo" = "Чтобы сделать фото";
-"Allow %@ to use your camera" = "Разрешите камере делать фото с помощью приложения %@";
+"Allow %@ to use your camera" = "Разрешите камере делать фото с\U00A0помощью приложения %@";
 "Allow access to camera" = "Разрешить доступ к камере";
 
 // Photo Library
 "All photos" = "Все фотографии";
 "Unnamed album" = "Безымянный";
-"To pick photo from library" = "Чтобы выбрать фото из галереи";
-"Allow %@ to access your photo library" = "Разрешите приложению %@ доступ к вашим фотографиям";
+"To pick photo from library" = "Чтобы выбрать фото из\U00A0галереи";
+"Allow %@ to access your photo library" = "Разрешите приложению %@ доступ к\U00A0вашим фотографиям";
 "Allow access to photo library" = "Разрешить доступ к галерее";
 "No photos" = "Нет фото";
 "Album is empty" = "В этом альбоме нет фото";
