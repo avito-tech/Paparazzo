@@ -147,7 +147,7 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
     }
     
     private func adjustHintText() {
-        let availableHintText = interactor.hintText ?? Spec.hintText
+        let availableHintText = interactor.hintText ?? localized(Spec.hintText)
         let actualHintText = interactor.items.isEmpty ? availableHintText : ""
         view?.setHintText(actualHintText)
     }
@@ -189,5 +189,5 @@ private enum Spec {
     static let deniedTitle = "To take photo"
     static let deniedMessage = "Allow %@ to use your camera"
     static let deniedButtonTitle = "Allow access to camera"
-    static let hintText = "Поместите медкнижку в рамку и убедитесь, что\u{00A0}видны обе страницы разворота"
+    static let hintText = "Place the medical record in a frame"
 }

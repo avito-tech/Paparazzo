@@ -1,0 +1,39 @@
+// Media Picker
+"Photo %d" = "hy:Фото %d";
+"Continue" = "hy:Далее";
+"Select" = "hy:Выбрать";
+"AUTOCORRECTION OFF" = "hy:РАЗМЫТИЕ ВЫКЛ.";
+"AUTOCORRECTION ON" = "hy:РАЗМЫТИЕ ВКЛ.";
+
+// Camera
+"To take photo" = "hy:Чтобы сделать фото";
+"Allow %@ to use your camera" = "hy:Разрешите камере делать фото с\U00A0помощью приложения %@";
+"Allow access to camera" = "hy:Разрешить доступ к камере";
+
+// Photo Library
+"All photos" = "hy:Все фотографии";
+"Unnamed album" = "hy:Безымянный";
+"To pick photo from library" = "hy:Чтобы выбрать фото из\U00A0галереи";
+"Allow %@ to access your photo library" = "hy:Разрешите приложению %@ доступ к\U00A0вашим фотографиям";
+"Allow access to photo library" = "hy:Разрешить доступ к галерее";
+"No photos" = "hy:Нет фото";
+"Album is empty" = "hy:В этом альбоме нет фото";
+
+// Cropping
+"Cropping" = "hy:Кадрирование";
+
+"Done" = "hy:Готово";
+"Place the object inside the frame and take a photo" = "hy:Разместите объект внутри рамки и сделайте фото";
+"Select at least one photo" = "hy:Вы не выбрали ни одного фото";
+
+"Place the object inside the frame" = "hy:Разместите объект внутри рамки — эту область покажем в\u{00A0}поиске";
+"Place the medical record in a frame" = "hy:Поместите медкнижку в рамку и убедитесь, что\u{00A0}видны обе страницы разворота";
+
+"%d photo" = "hy:%d фото";
+
+// Permission
+"Photo title permission" = "hy:Приложение «Авито» запрашивает доступ к Фото";
+"Photo message permission" = "hy:Приложению нужен доступ к галерее, чтобы прикреплять фотографии к объявлению";
+"Choose more photos" = "hy:Выбрать еще фото...";
+"Do not change selection" = "hy:Не менять выбор";
+"Open settings" = "hy:Перейти в настройки";

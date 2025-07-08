@@ -11,13 +11,13 @@ public final class LimitedAccessAlertFactoryImpl: LimitedAccessAlertFactory {
     @available(iOS 14, *)
     public func limitedAccessAlert() -> UIAlertController {
         let limitedAccessAlert = UIAlertController(
-            title: "Приложение «Авито» запрашивает доступ к Фото",
-            message: "Приложению нужен доступ к галерее, чтобы прикреплять фотографии к объявлению",
+            title: localized("Photo title permission"),
+            message: localized("Photo message permission"),
             preferredStyle: .alert
         )
         
         let selectPhotosAction = UIAlertAction(
-            title: "Выбрать еще фото...",
+            title: localized("Choose more photos"),
             style: .default
         ) { _ in
             guard let topViewController = UIApplication.shared.topViewController else { return }
@@ -27,11 +27,11 @@ public final class LimitedAccessAlertFactoryImpl: LimitedAccessAlertFactory {
         
         limitedAccessAlert.addAction(selectPhotosAction)
         
-        let cancelAction = UIAlertAction(title: "Не менять выбор", style: .default, handler: nil)
+        let cancelAction = UIAlertAction(title: localized("Do not change selection"), style: .default, handler: nil)
         limitedAccessAlert.addAction(cancelAction)
         
         let allowFullAccessAction = UIAlertAction(
-            title: "Перейти в настройки",
+            title: localized("Open settings"),
             style: .default
         ) { _ in
             if let url = URL(string: UIApplication.openSettingsURLString) {

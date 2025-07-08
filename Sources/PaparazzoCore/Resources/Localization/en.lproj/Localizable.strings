@@ -25,3 +25,15 @@
 "Done" = "Done";
 "Place the object inside the frame and take a photo" = "Place the object inside the frame and take a photo";
 "Select at least one photo" = "Select at least one photo";
+
+"Place the object inside the frame" = "Place the object inside the frame - this area will be shown in the search";
+"Place the medical record in a frame" = "Place the medical record in the frame and make sure that both pages of the spread are visible";
+
+"%d photo" = "%d photo";
+
+// Permission
+"Photo title permission" = "Avito app requests access to Photos";
+"Photo message permission" = "The app needs access to the gallery to attach photos to the ad.";
+"Choose more photos" = "Select more photos...";
+"Do not change selection" = "Do not change selection";
+"Open settings" = "Go to the settings";

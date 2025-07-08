@@ -632,7 +632,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             : .visible(SelectedPhotosBarData(
                 lastPhoto: images.last?.image,
                 penultimatePhoto: images.count > 1 ? images[images.count - 2].image : nil,
-                countString: "\(images.count) фото"
+                countString: localized("%d photo", images.count)
             ))
         )
     }
