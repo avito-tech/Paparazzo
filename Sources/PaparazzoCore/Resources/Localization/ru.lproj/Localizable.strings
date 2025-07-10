@@ -26,8 +26,8 @@
 "Place the object inside the frame and take a photo" = "Разместите объект внутри рамки и сделайте фото";
 "Select at least one photo" = "Вы не выбрали ни одного фото";
 
-"Place the object inside the frame" = "Разместите объект внутри рамки — эту область покажем в\u{00A0}поиске";
-"Place the medical record in a frame" = "Поместите медкнижку в рамку и убедитесь, что\u{00A0}видны обе страницы разворота";
+"Place the object inside the frame" = "Разместите объект внутри рамки — эту область покажем в\U00A0поиске";
+"Place the medical record in a frame" = "Поместите медкнижку в рамку и убедитесь, что\U00A0видны обе страницы разворота";
 
 "%d photo" = "%d фото";
 
