@@ -159,7 +159,7 @@ final class CameraV3Presenter: CameraV3Module {
     }
     
     private func adjustHintText() {
-        let text = interactor.items.isEmpty ? "Разместите объект внутри рамки — эту область покажем в\u{00A0}поиске" : ""
+        let text = interactor.items.isEmpty ? localized("Place the object inside the frame") : ""
         view?.setHintText(text)
     }
     
