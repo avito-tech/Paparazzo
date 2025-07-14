@@ -5,16 +5,13 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
     
     typealias AssemblyFactory = ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory & MaskCropperAssemblyFactory
  
-    private let isPhotoFetchLimitEnabled: Bool
     private let assemblyFactory: AssemblyFactory
     private var cropViewControllers = [WeakWrapper<UIViewController>]()
 
     init(
-        isPhotoFetchLimitEnabled: Bool,
         assemblyFactory: AssemblyFactory,
         viewController: UIViewController
     ) {
-        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.assemblyFactory = assemblyFactory
         super.init(viewController: viewController)
     }
@@ -28,7 +25,6 @@ final class MediaPickerUIKitRouter: BaseUIKitRouter, MediaPickerRouter {
         let assembly = assemblyFactory.photoLibraryAssembly()
         
         let viewController = assembly.module(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             data: data,
             configure: configure
         )

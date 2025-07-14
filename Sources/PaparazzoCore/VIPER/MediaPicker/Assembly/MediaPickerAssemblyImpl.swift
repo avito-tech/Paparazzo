@@ -4,16 +4,13 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
     
     typealias AssemblyFactory = CameraAssemblyFactory & ImageCroppingAssemblyFactory & PhotoLibraryAssemblyFactory & MaskCropperAssemblyFactory
     
-    private let isPhotoFetchLimitEnabled: Bool
     private let assemblyFactory: AssemblyFactory
     
     init(
-        isPhotoFetchLimitEnabled: Bool,
         assemblyFactory: AssemblyFactory,
         theme: PaparazzoUITheme,
         serviceFactory: ServiceFactory
     ) {
-        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.assemblyFactory = assemblyFactory
         super.init(theme: theme, serviceFactory: serviceFactory)
     }
@@ -42,7 +39,6 @@ public final class MediaPickerAssemblyImpl: BasePaparazzoAssembly, MediaPickerAs
         let viewController = MediaPickerViewController()
 
         let router = MediaPickerUIKitRouter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             assemblyFactory: assemblyFactory,
             viewController: viewController
         )

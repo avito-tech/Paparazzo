@@ -2,7 +2,6 @@ import UIKit
 
 protocol CameraV3Assembly: AnyObject {
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,

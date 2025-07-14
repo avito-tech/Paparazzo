@@ -3,7 +3,6 @@ import UIKit
 
 final class CameraV3Presenter: CameraV3Module {
     // MARK: - Private properties
-    private let isPhotoFetchLimitEnabled: Bool
     private let interactor: CameraV3Interactor
     private let router: CameraV3Router
     private let volumeService: VolumeService
@@ -12,14 +11,12 @@ final class CameraV3Presenter: CameraV3Module {
     
     // MARK: - Init
     init(
-        isPhotoFetchLimitEnabled: Bool,
         interactor: CameraV3Interactor,
         volumeService: VolumeService,
         router: CameraV3Router,
         onDrawingMeasurementStart: (() -> ())?,
         onDrawingMeasurementStop: (() -> ())?
     ) {
-        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
@@ -74,9 +71,8 @@ final class CameraV3Presenter: CameraV3Module {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router, isPhotoFetchLimitEnabled] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router] in
             router.showMediaPicker(
-                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 data: interactor.mediaPickerDataWithSelectedLastItem,
                 overridenTheme: nil,
                 configure: { module in

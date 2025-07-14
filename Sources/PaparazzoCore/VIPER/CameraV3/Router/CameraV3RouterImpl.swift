@@ -16,7 +16,6 @@ final class CameraV3RouterImpl:
     
     // MARK: - NewCameraRouter
     func showMediaPicker(
-        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())

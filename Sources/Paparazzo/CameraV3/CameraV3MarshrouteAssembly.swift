@@ -3,7 +3,6 @@ import UIKit
 
 protocol CameraV3MarshrouteAssembly: AnyObject {
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -34,7 +33,6 @@ final class CameraV3MarshrouteAssemblyImpl:
     }
 
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -55,7 +53,6 @@ final class CameraV3MarshrouteAssemblyImpl:
         )
         
         let router = CameraV3MarshrouteRouter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             assemblyFactory: assemblyFactory,
             routerSeed: routerSeed
         )
@@ -65,7 +62,6 @@ final class CameraV3MarshrouteAssemblyImpl:
         )
         
         let presenter = CameraV3Presenter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
             router: router,
