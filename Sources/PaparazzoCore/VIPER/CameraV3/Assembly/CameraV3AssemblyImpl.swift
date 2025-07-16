@@ -16,7 +16,6 @@ final class CameraV3AssemblyImpl:
     
     // MARK: - CameraV3Assembly
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -46,7 +45,6 @@ final class CameraV3AssemblyImpl:
         
         
         let presenter = CameraV3Presenter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
             router: router, 

@@ -4,22 +4,18 @@ final class MedicalBookCameraMarshrouteRouter: BaseRouter, MedicalBookCameraRout
     
     typealias AssemblyFactory = MediaPickerMarshrouteAssemblyFactory
     
-    private let isPhotoFetchLimitEnabled: Bool
     private let assemblyFactory: AssemblyFactory
     
     init(
-        isPhotoFetchLimitEnabled: Bool,
         assemblyFactory: AssemblyFactory,
         routerSeed: RouterSeed
     ) {
-        self.isPhotoFetchLimitEnabled = isPhotoFetchLimitEnabled
         self.assemblyFactory = assemblyFactory
         super.init(routerSeed: routerSeed)
     }
     
     // MARK: - NewCameraRouter
     func showMediaPicker(
-        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
@@ -29,7 +25,6 @@ final class MedicalBookCameraMarshrouteRouter: BaseRouter, MedicalBookCameraRout
             let assembly = assemblyFactory.mediaPickerAssembly()
             
             return assembly.module(
-                isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,

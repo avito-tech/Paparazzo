@@ -20,7 +20,6 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
     // MARK: - MediaPickerAssembly
     
     public func module(
-        isPhotoFetchLimitEnabled: Bool,
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         viewfinderOverlay: UIView?,
@@ -42,7 +41,6 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         )
 
         let router = MediaPickerMarshrouteRouter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             assemblyFactory: assemblyFactory,
             routerSeed: routerSeed
         )

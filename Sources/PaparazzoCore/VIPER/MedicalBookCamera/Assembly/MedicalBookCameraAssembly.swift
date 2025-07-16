@@ -2,7 +2,6 @@ import UIKit
 
 protocol MedicalBookCameraAssembly: AnyObject {
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,

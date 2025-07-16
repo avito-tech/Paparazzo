@@ -3,7 +3,6 @@ import UIKit
 
 protocol MedicalBookCameraMarshrouteAssembly: AnyObject {
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -35,7 +34,6 @@ final class MedicalBookCameraMarshrouteAssemblyImpl:
     }
 
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -51,7 +49,6 @@ final class MedicalBookCameraMarshrouteAssemblyImpl:
         )
         
         let router = MedicalBookCameraMarshrouteRouter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             assemblyFactory: assemblyFactory,
             routerSeed: routerSeed
         )
@@ -61,7 +58,6 @@ final class MedicalBookCameraMarshrouteAssemblyImpl:
         )
         
         let presenter = MedicalBookCameraPresenter(
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             interactor: interactor,
             router: router,
             volumeService: serviceFactory.volumeService(),

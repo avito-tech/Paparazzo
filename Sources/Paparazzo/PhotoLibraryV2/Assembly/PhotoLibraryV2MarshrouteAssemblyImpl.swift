@@ -17,7 +17,6 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     }
     
     public func module(
-        isPhotoFetchLimitEnabled: Bool,
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
@@ -31,8 +30,7 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
     ) -> UIViewController {
         
         let photoLibraryItemsService = PhotoLibraryItemsServiceImpl(
-            photosOrder: .reversed,
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled
+            photosOrder: .reversed
         )
         
         let cameraService = serviceFactory.cameraService(initialActiveCameraType: .back)
@@ -58,7 +56,6 @@ public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, 
             interactor: interactor,
             router: router,
             overridenTheme: theme,
-            isPhotoFetchLimitEnabled: isPhotoFetchLimitEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             cameraType: cameraType,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,

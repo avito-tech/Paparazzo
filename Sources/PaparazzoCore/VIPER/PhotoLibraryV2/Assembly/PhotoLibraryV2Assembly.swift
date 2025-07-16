@@ -2,7 +2,6 @@ import UIKit
 
 public protocol PhotoLibraryV2Assembly: AnyObject {
     func module(
-        isPhotoFetchLimitEnabled: Bool,
         data: PhotoLibraryV2Data,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
