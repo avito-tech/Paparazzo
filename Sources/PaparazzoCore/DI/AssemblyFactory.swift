@@ -5,6 +5,7 @@ public final class AssemblyFactory:
     MediaPickerAssemblyFactory,
     PhotoLibraryAssemblyFactory,
     PhotoLibraryV2AssemblyFactory,
+    PhotoLibraryV3AssemblyFactory,
     ImageCroppingAssemblyFactory,
     MaskCropperAssemblyFactory,
     LimitedAccessAlertFactory,
@@ -59,6 +60,14 @@ public final class AssemblyFactory:
     
     public func photoLibraryV2Assembly() -> PhotoLibraryV2Assembly {
         return PhotoLibraryV2AssemblyImpl(
+            assemblyFactory: self,
+            theme: theme,
+            serviceFactory: serviceFactory
+        )
+    }
+    
+    public func photoLibraryV3Assembly() -> PhotoLibraryV3Assembly {
+        return PhotoLibraryV3AssemblyImpl(
             assemblyFactory: self,
             theme: theme,
             serviceFactory: serviceFactory

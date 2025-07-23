@@ -31,6 +31,14 @@ public final class MediaPickerItem: Equatable {
         )
     }
     
+    public convenience init(_ photoLibraryItem: PhotoLibraryV3Item) {
+        self.init(
+            image: photoLibraryItem.image,
+            source: .photoLibrary,
+            originalItem: nil
+        )
+    }
+    
     public static func ==(item1: MediaPickerItem, item2: MediaPickerItem) -> Bool {
         return item1.image == item2.image
             // Let's hope we will not shoot ourselves in a foot by this

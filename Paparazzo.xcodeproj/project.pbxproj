@@ -1,0 +1,2798 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		009FD3F1769106847BA88C09 /* PhotoLibraryV3Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064F1FB3AA16B03172BC63C /* PhotoLibraryV3Interactor.swift */; };
+		00C335C59C09870B9B1C0CD4 /* CameraV3AssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B2367A3844CF740C2A8B62 /* CameraV3AssemblyImpl.swift */; };
+		030F494E3BBF1D8D7216794D /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8490E05CF565D73A2DF25D5C /* ServiceFactory.swift */; };
+		05B39B628A2A54C4C411B5F2 /* PhotoLibraryV2ViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392E21719088CD5B8B886C60 /* PhotoLibraryV2ViewInput.swift */; };
+		06181112EE3C6CA37C8460F2 /* ScannerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0018315D5BEFEF04BEEFE5 /* ScannerModule.swift */; };
+		06302A62718D017B4CBED027 /* PhotoPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF92A4C6AB96AF5BFC7E4F5 /* PhotoPreviewCell.swift */; };
+		06EB7FB7AE50BDBB222F8F9C /* MedicalBookCameraInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0623FFD0C9B3E1FDF4F1AD7B /* MedicalBookCameraInteractor.swift */; };
+		070499B3964E876E4C844270 /* ScannerAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA71B853B85703923DAEB54 /* ScannerAssemblyImpl.swift */; };
+		073B2EC8B849E446AFA7BD4A /* InfoMessageViewAnimatorBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAFCB59B5CBCA6D89C66A13 /* InfoMessageViewAnimatorBehavior.swift */; };
+		087C27DA8D79E6383D6C8A3D /* ThumbnailsViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196A98D6A4CF0DD63DE979F4 /* ThumbnailsViewLayout.swift */; };
+		08A11A66F46A3463C15D8138 /* CircleCroppingOverlayProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCE69794E1B3CF9D6EF3FD9 /* CircleCroppingOverlayProvider.swift */; };
+		099C1C8E0DA110024A5B670F /* RectangleCroppingOverlayProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6131A92C13D6FB9ABABF2B3 /* RectangleCroppingOverlayProvider.swift */; };
+		0C9D6910799B8B202FFD6A5B /* CroppingPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDA97266ADE0C282EE8B046 /* CroppingPreviewView.swift */; };
+		0C9FB31F16C864B2E8DC9417 /* MaskCropperInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C4C03B265321290869385 /* MaskCropperInteractor.swift */; };
+		0CAD4C7A9A71A42E63E4F7A6 /* UIDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA700D392218B5F077AB9D18 /* UIDeviceExtensions.swift */; };
+		0D1244B0CAD31A2ECF43FAD3 /* CameraV3MarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF6A7DC2C8FEA8FC29392F7 /* CameraV3MarshrouteAssembly.swift */; };
+		0DACB39B73DD1B941C6C7E7C /* PhotoLibraryV3UITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026CC77191C8EE2622D35815 /* PhotoLibraryV3UITheme.swift */; };
+		136C02B2163D40FC90DCDE36 /* PhotoLibraryToCameraTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EF8BB5766E5D006C6B09F5 /* PhotoLibraryToCameraTransitioningDelegate.swift */; };
+		13B35CE71FD867F617C8B630 /* MedicalBookCameraModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5074ADC882E46966123BB732 /* MedicalBookCameraModule.swift */; };
+		16E7569CD0FF33D1D8F5B1B0 /* PhotoLibraryUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06A4F955AB2CC2A20A3EA46 /* PhotoLibraryUITheme.swift */; };
+		176A52A9D1B10F87E2C1E919 /* MedicalBookCameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A4EC5F8308590E34DFADB8 /* MedicalBookCameraPresenter.swift */; };
+		19F4A2A0E49476D9E5CABD40 /* MedicalBookCameraUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B34EA81A953B36CE65BF9 /* MedicalBookCameraUITheme.swift */; };
+		1A6990454635C080CE65C5C0 /* MaskCropperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB27502BE8830914397B587 /* MaskCropperView.swift */; };
+		1B9D9617FEBAA94D1148902A /* PhotoLibraryV2MarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744D8EDC0DAFDB64384FD90E /* PhotoLibraryV2MarshrouteAssembly.swift */; };
+		1CF9AF7E3C517217A15BBEEA /* BasePaparazzoAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5433A735198E7BDE58B2D /* BasePaparazzoAssembly.swift */; };
+		1DB1560DB42E913E5EDB1BD2 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26962A06159CDF1A3CB1A63E /* CameraService.swift */; };
+		1E41018D51CAFCA99BC02D2D /* MediaPickerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03436A840B3B16BF8F79A32 /* MediaPickerModule.swift */; };
+		1E9B8AFDAC1566DC0E018FEF /* PhotoLibraryV3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDF587B79E8DD7C50D3F14 /* PhotoLibraryV3ViewController.swift */; };
+		1ECDA8460021C45EA0C19F5B /* ImageCroppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7423436E2B8766CA44F172 /* ImageCroppingViewController.swift */; };
+		2230DC15F2D75474FF1CF014 /* CameraV3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FB0CB09A04E669063E21B1 /* CameraV3ViewController.swift */; };
+		2275FCF89FAA89946D06CB73 /* PhotoLibraryMarshrouteAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B800933973EE0D05536E0C84 /* PhotoLibraryMarshrouteAssemblyImpl.swift */; };
+		2368EDAA0F8DB68213227747 /* MediaItemThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264C80D9D22F2E1977C5818A /* MediaItemThumbnailCell.swift */; };
+		2474E7743E8D3472EA06A7F2 /* PhotoLibraryV2InteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8385A0AB515FB22BF6BE41 /* PhotoLibraryV2InteractorImpl.swift */; };
+		257C100BF390C48228B86BB7 /* CameraV3Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = C870042715A34CE6F6CCF4C8 /* CameraV3Module.swift */; };
+		259A36BCF31A199273EDA5A7 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA084BC93C7E943550D2E018 /* PhotoCollectionViewCell.swift */; };
+		25DFF043E8BE976C38658CA7 /* MedicalBookCameraAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214BC237D8A6A2891B26F5D /* MedicalBookCameraAssemblyImpl.swift */; };
+		25F3ADB83C8B57D581AD73C8 /* PhotoLibraryViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668F1A5F8F3D01BEF0176441 /* PhotoLibraryViewInput.swift */; };
+		275D80A518086EEB5E79BAF1 /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC54D1C3E3E585B1C96654A /* CameraControlsView.swift */; };
+		2AC4D3BA7B43EC0F0CB16701 /* CroppingOverlayProvidersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A3560EC36C521ED226079 /* CroppingOverlayProvidersFactory.swift */; };
+		2BC0D39BD11749763AC76AD7 /* PaparazzoFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B78938215CF53495DFD54A /* PaparazzoFacade.swift */; };
+		2BFA56AFD658BAD3773D0C6F /* ScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53399024AFF3912DB0211DB /* ScannerPresenter.swift */; };
+		2C5F450387C7D34D80746C2D /* PhotoLibraryV2Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB93D82A83F17512BC47F7DC /* PhotoLibraryV2Interactor.swift */; };
+		2CCD1F8A6BC65C50EDB2B591 /* PhotoLibraryV2Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1DA865782F1F8FC4A9F6C7 /* PhotoLibraryV2Router.swift */; };
+		2D66793FC92997A76AB353DC /* MaskCropperPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0618A1657A9E08392E183C /* MaskCropperPresenter.swift */; };
+		2E75995DBD3DF6ABAE653E71 /* CameraModuleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC12E199C70ED9265A7DC1AE /* CameraModuleInput.swift */; };
+		2E97562420AC7BBCE1A71931 /* PhotoLibraryV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F99CF1A1475314832AA0E21 /* PhotoLibraryV2ViewController.swift */; };
+		31826CB41385107090D30D4E /* PhotoLibraryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBE9485C2517C58E98C157D /* PhotoLibraryPresenter.swift */; };
+		31AD3B8B2CC1659133E25886 /* PhotoLibraryAlbumsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F32BD2249AC7D9C4E1A5F2 /* PhotoLibraryAlbumsTableViewCell.swift */; };
+		34DE9127FD3F36CA85A9646E /* CameraThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45B32EB91E42B9196B7EBB5 /* CameraThumbnailCell.swift */; };
+		35735D0D3ACFFD753E7FA184 /* CameraInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DE697AADBC5E2729299D04 /* CameraInteractorImpl.swift */; };
+		358DD908E499C2B76CE8C8FC /* CameraV3TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA692F5A799CFBE4F68F112 /* CameraV3TransitionAnimator.swift */; };
+		35B339EE2EA3D9B4FE8BFD1C /* MedicalBookCameraMarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8837CABB69048E5FB8A228 /* MedicalBookCameraMarshrouteAssembly.swift */; };
+		36AC8DE61AAA6DEE07BD2C29 /* PhotoLibraryV3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581B27D2ABE5C9ACB95C6D15 /* PhotoLibraryV3View.swift */; };
+		37259763782C271E4577575C /* PHPhotoLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A763FEE7673E0827CC78CBD /* PHPhotoLibraryExtensions.swift */; };
+		37439D3269587388084AE670 /* InfoMessageViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7129D59B8EB2FC65EA726407 /* InfoMessageViewFactory.swift */; };
+		3784E8DE186229E184B5C377 /* AccessibilityId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5D91D3E84DEF3E6BFC27B9 /* AccessibilityId.swift */; };
+		39731EFD59847357D5FE9FF3 /* PhotoLibraryV3CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5518C657D910A362BBDA2B31 /* PhotoLibraryV3CameraView.swift */; };
+		3D30721D78247CD205416435 /* PhotoLibraryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB2DA2020BE124E55745E6 /* PhotoLibraryAssembly.swift */; };
+		3E977CE22FB498A7F3C7032F /* MediaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED112548798603DB25691B5F /* MediaPickerView.swift */; };
+		3F3BD3989138BDC075CE7A8D /* ScannerUIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C85F23252CA8D7DAD9454B2 /* ScannerUIKitRouter.swift */; };
+		3FEF2AAEF6CDFA7DF5555B45 /* PhotoLibraryV3MarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAECB20191E12C8065922BA /* PhotoLibraryV3MarshrouteRouter.swift */; };
+		4027DDAADD1C06FF26930B09 /* MediaPickerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F4C48CF8C5D70F168F11E3 /* MediaPickerData.swift */; };
+		4121A384C264BAAEF5B907BC /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD19021DD416AC50CB88777 /* PhotoLibraryViewController.swift */; };
+		414AF2E71F933294F7A889D3 /* PhotoLibraryV2Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B81B298ECFB943A0500FDC /* PhotoLibraryV2Data.swift */; };
+		4256E804B597281253258ECE /* InfoMessageDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D2B8607DCF3CD6DACC82A /* InfoMessageDisplayer.swift */; };
+		42E8B713A0234E9CFCB7D0A9 /* ImageCroppingAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52211E3F5E6B9E00566C7410 /* ImageCroppingAssemblyImpl.swift */; };
+		447DE7AD3AF754DCCD22179D /* BaseUIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F537093BDF8893674DC01E8 /* BaseUIKitRouter.swift */; };
+		44911FEC2E836B9485049274 /* PhotoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CA4FAC0962AB56FCF63474 /* PhotoPreviewView.swift */; };
+		46B69E738661CA6852F0D192 /* SelectedImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44154467E95093DF39593EED /* SelectedImageStorage.swift */; };
+		48D78B343E3EE3F9C219C63C /* CameraStatusServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD0203246C2983ACC9AB907 /* CameraStatusServiceImpl.swift */; };
+		492C243EE2ED2E627352326F /* PhotoLibraryMarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1ECC1A6DE283F56B57132 /* PhotoLibraryMarshrouteAssembly.swift */; };
+		4A0ECEEE53375013676BF0DE /* InfoMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D19200D37ED10350D97318A /* InfoMessageView.swift */; };
+		4A31963EA8633E21D2CDC682 /* FocusIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17B4A7DD6A8CE7BEF9B765D /* FocusIndicator.swift */; };
+		4A628663C56424EBFD830D7E /* PhotoLibraryV2TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827E4F90C141BCF1F8FD78E2 /* PhotoLibraryV2TitleView.swift */; };
+		4AF3FFACB6FFC1094C478619 /* MaskCropperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773ACB84F814604EE8C69567 /* MaskCropperViewController.swift */; };
+		4B013960D60AEFBACC61586C /* CroppedImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22255A22012B561B68CC03A /* CroppedImageSource.swift */; };
+		4B3999ED3D340005524C55F7 /* HeartShapeCroppingOverlayProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C36FFE7D2D94080AFAF9C /* HeartShapeCroppingOverlayProvider.swift */; };
+		4BAA323413547747C2CAAD55 /* PhotoLibraryV3Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B63AAEE4F6C57E07DF8972D /* PhotoLibraryV3Presenter.swift */; };
+		4BF54C47D5D570911DE29CE3 /* ImageSource+BackwardCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A02039BA410B675605687F /* ImageSource+BackwardCompatibility.swift */; };
+		4C54F58794BB57EBADD24DC7 /* MaskCropperMarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99676EED37B0DD5717996A8B /* MaskCropperMarshrouteRouter.swift */; };
+		4E7F66FF052CE7411B645DB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DA2409FAD36330F67C0A3DC /* Assets.xcassets */; };
+		4F4E1A1473317C1934D3CB8D /* MaskCropperUIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32372E4DBADA7C4193C3C5AE /* MaskCropperUIKitRouter.swift */; };
+		4F67DA27BF9CEFBA7115FAD1 /* TuistBundle+Paparazzo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE99ED65FC673A4CF3E87C14 /* TuistBundle+Paparazzo.swift */; };
+		4FD3D9D2559954D0C03BEC6F /* InfoMessageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04942A252BDF377B3A10DC1 /* InfoMessageAnimator.swift */; };
+		504D5799A7A8AD88F6B23C1E /* PhotoLibraryV3MarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1802A49EAAB90AE10C41839 /* PhotoLibraryV3MarshrouteAssembly.swift */; };
+		515352BE764C710362B17128 /* PhotoLibraryV2AssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64418F109235F439124957 /* PhotoLibraryV2AssemblyImpl.swift */; };
+		51DFC5F85EA99E4F738D9819 /* PhotoLibraryV2UITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE834D7FFF8330281F2722B9 /* PhotoLibraryV2UITheme.swift */; };
+		5250CD54EE8092DAC90071D6 /* PhotoLibraryV2Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE913D1D4F0EA5F4262B0E4 /* PhotoLibraryV2Presenter.swift */; };
+		52D0FF341C69C9976323DBFA /* ObjCExceptionsCatcher.framework in Dependencies */ = {isa = PBXBuildFile; fileRef = 4F62A915908F2B825BE7C6BF /* ObjCExceptionsCatcher.framework */; };
+		534083E65058A78237A4F038 /* MedicalCameraHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3993CB263DF15E2B44AF42 /* MedicalCameraHintView.swift */; };
+		536C5A60F172C2CDACC7D52C /* ImageSource.framework in Dependencies */ = {isa = PBXBuildFile; fileRef = 6D988B1DFD232A734DF9FCC2 /* ImageSource.framework */; };
+		539F3B8A969540BE967F2C6A /* PhotoControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37C809F5FF0500BCC5BA2EE /* PhotoControlsView.swift */; };
+		5659888DF35747FCF83B846F /* CameraAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDFA84DF32A429616553723 /* CameraAssembly.swift */; };
+		56D04EC5C90C51166B7958FD /* ImageCroppingParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F564560E0F8740745DDA6AE4 /* ImageCroppingParameters.swift */; };
+		56DBDEA31C59B33FF06E9E7D /* PhotoLibraryV3ViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47910D59CD87B3A8CA9B9192 /* PhotoLibraryV3ViewInput.swift */; };
+		57F48EA30915F6447FF45D3D /* PhotoLibraryV3Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = E899DE2FAF35EF4606CE7313 /* PhotoLibraryV3Module.swift */; };
+		5818EAA1D830212D0A75D264 /* ImageCroppingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589533584777D86A74612797 /* ImageCroppingService.swift */; };
+		5B52EF9AD803D3EC32F8B33B /* ThumbnailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C446B2B47072CDEE07A230 /* ThumbnailsView.swift */; };
+		5CC3ACE5685DFFB9158C0273 /* CameraV3Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2DF64707B702CF142E6B19 /* CameraV3Assembly.swift */; };
+		5DD486CC2653B856834BF4F6 /* MediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD6C1269128BE029811BB8 /* MediaPickerViewController.swift */; };
+		5E1BA471065D4BEAA7E32A2D /* ScannerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CA4832B5A413AE12680B4E /* ScannerAssembly.swift */; };
+		5E8E5641724C26D82762EF4C /* CameraInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85B928870015338C9535224 /* CameraInteractor.swift */; };
+		60E07272FFB79EC4CDBC9BBF /* ObjCExceptionCatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFF1D0488A4EECFFA1BA91E /* ObjCExceptionCatcher.swift */; };
+		61B17DE783E62E0F75FCE90D /* PhotoTweakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CE4ED7D9CDE0D5BEB41289 /* PhotoTweakView.swift */; };
+		6274117F770E36DA205C113F /* PhotoLibraryV2MarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5691A6CD18255439870EC8B1 /* PhotoLibraryV2MarshrouteRouter.swift */; };
+		63DAFF099146D945FEB0E569 /* MedicalBookCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC4A03FCFDEB7F75395057A /* MedicalBookCameraView.swift */; };
+		642A964263E8D3337BF74564 /* PhotoLibraryV3TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EA36EAC6720A8B2538C1DA /* PhotoLibraryV3TitleView.swift */; };
+		65364C4F8358DC056FFA7411 /* PhotoLibraryAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061289A7D90E83C02CDD2C3F /* PhotoLibraryAssemblyImpl.swift */; };
+		659F61354546451498C41DFE /* SingleObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CCA8FCC283613E7B0231E5 /* SingleObjectCache.swift */; };
+		6644BD6C02525063DC92C307 /* ImageCroppingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036E952E60A746F2F0DA5DAD /* ImageCroppingModule.swift */; };
+		670209B0B221AD75C784A250 /* MaskCropperMarshrouteAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6DEA373921ADF9DC8A474D /* MaskCropperMarshrouteAssemblyImpl.swift */; };
+		67799A072D6AE3C2FC142DF2 /* PhotoLibraryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A10A3B0912A7D810A56837 /* PhotoLibraryInteractor.swift */; };
+		67EFC3DAD3FAFA26D314EBBE /* InfoMessageViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1568973DA6A2FEC945ED69BC /* InfoMessageViewInput.swift */; };
+		6AA1AC647F5AADD134625618 /* PhotoLibraryV2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6D3D968B3181459C6983FB /* PhotoLibraryV2View.swift */; };
+		6B44B4D2322A93D1FB906F40 /* CaptureSessionPreviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C188BC74BB525292C7BFBD22 /* CaptureSessionPreviewService.swift */; };
+		6B95DFEEBDDAA0AA34091CAC /* PhotoLibraryV2Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C155A2BD8A7B9EBC411D5F5 /* PhotoLibraryV2Layout.swift */; };
+		6BB69A9C277678D5710AF2AA /* CameraV3Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B72C489F8894FFF1E2ACE8 /* CameraV3Interactor.swift */; };
+		6C365326AB2B8767664BAAEA /* ThemeConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350906CCA5135F36FE32F97C /* ThemeConfigurable.swift */; };
+		6C59351E138A8E0B985528D5 /* ScannerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627BD1EA97E55F7E27AB629F /* ScannerInteractor.swift */; };
+		6CAB48641DCE6DB4469287AA /* CameraOutputRenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1DFDAA9D048088B3D1D893 /* CameraOutputRenderView.swift */; };
+		6FB0FD2E30A5EBE8DAE471C6 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8562C6A07DE0AB127E7B68 /* LocationProvider.swift */; };
+		7058E77CCECCFCECD61FE39D /* LimitedAccessAlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C96702EFD83E8A38894C131 /* LimitedAccessAlertFactory.swift */; };
+		716BCEEC44CEFC275E8F08BE /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184F3D992B04C2CDA849A4B2 /* ScannerViewController.swift */; };
+		736091CCF912F8D3436FF796 /* RightIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F34B2A88BCFC5F7D761CFF2 /* RightIconButton.swift */; };
+		742F335A8CDB0C911AFF4148 /* PhotoLibraryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE07C5F584AFF7EF8E2AF32 /* PhotoLibraryLayout.swift */; };
+		7455C841455EFDC577496F06 /* MediaPickerViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C8BB86D7F5D3868A19971F /* MediaPickerViewInput.swift */; };
+		756FD1D8EE3A3433F16B4CF0 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A231514631E575A9D2F4FB5 /* ShutterButton.swift */; };
+		757524FDC74BDD82C5D9FBF9 /* MaskCropperModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5C4372C20537C87EAE197 /* MaskCropperModule.swift */; };
+		76C026CAE1FA6C19B9A36BF0 /* MaskCropperInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05DB757B384A6686AC52171 /* MaskCropperInteractorImpl.swift */; };
+		77FF39BC7E5A0054EE9A44DB /* MaskCropperOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549808EBBEF5093B5700168 /* MaskCropperOverlayView.swift */; };
+		784CB453F4612B569383835E /* MaskCropperControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A25C9FAFB32B9F863F5B6 /* MaskCropperControlsView.swift */; };
+		797799FD6EE3E15B6B17420E /* MedicalBookCameraMarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DB1750A7468463C6C5882 /* MedicalBookCameraMarshrouteRouter.swift */; };
+		79785B62689476BD1C14B151 /* PhotoLibraryLatestPhotoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E150E7C2FC11EA1102C139 /* PhotoLibraryLatestPhotoProvider.swift */; };
+		79D387758C53C66F6C5B6C9F /* ImageCroppingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAD27E60F7BC97615992D87 /* ImageCroppingPresenter.swift */; };
+		7ABB4F309B23214C416E884A /* MaskCropperUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8635C73B3F66019578C429 /* MaskCropperUITheme.swift */; };
+		7B4BA811FC20355213A361C6 /* CroppingOverlayProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2921787416C62DABDA3F0E6 /* CroppingOverlayProvider.swift */; };
+		7D074F9C1E0C0153AD1A7735 /* MediaPickerMarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF3B814D6640BF2EA1F1B8 /* MediaPickerMarshrouteRouter.swift */; };
+		7DA59A871EEBEC032A769668 /* PaparazzoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893475B17D506B61AA7290DC /* PaparazzoViewController.swift */; };
+		7DEF7672B0BBD5F61C47F579 /* CameraV3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD47820A7B28435DD4BC392 /* CameraV3View.swift */; };
+		7E83188ECC342670931B9E14 /* RotationSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361381937B38DB676CB3C8DC /* RotationSliderView.swift */; };
+		7F8063CC7A8EB53740997768 /* MediaPickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78FA623991F7F78129377D9 /* MediaPickerInteractor.swift */; };
+		7F895269A5BE84B8207F098E /* ExifOrientationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB4A5176D400A5DB0AAFC92 /* ExifOrientationExtensions.swift */; };
+		809303242157D2A4AAFB4FD4 /* MediaPickerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B99C255C559740560D483DC /* MediaPickerRouter.swift */; };
+		80F01EDCCC0ED936067A0911 /* MaskCropperData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5FF9EA93F7EAD52942D86 /* MaskCropperData.swift */; };
+		822EBE4ADC31C929285DE378 /* PhotoLibraryItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCACA79E6B87BC429FCEB8 /* PhotoLibraryItemsService.swift */; };
+		852820D161801C4BE166C051 /* CameraOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11343D65BA6486A5FB0D1ED /* CameraOutputView.swift */; };
+		8595D52F3BD15F31CAB3DDB8 /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F93151671307C36B4DB4CA /* FloatExtensions.swift */; };
+		85A2D154977B904A596F7ACF /* ScannerViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD303DA07B391091CE9A0BBB /* ScannerViewInput.swift */; };
+		888C6ED7F09821CF3B820ACF /* ImageCroppingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5804755734D64E57C722FF79 /* ImageCroppingInteractor.swift */; };
+		889B40AE3644ABFEC05836C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4A44B84BE3A4B909AFC83B7 /* Localizable.strings */; };
+		8936BE57FF8984AFF44CAC40 /* PhotoLibraryV3UIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9D931BDCD4FB308C81B0D3 /* PhotoLibraryV3UIKitRouter.swift */; };
+		8B289E567CE08B3E880CD90B /* PhotoLibraryModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9BE03CE63F901F5527C31 /* PhotoLibraryModule.swift */; };
+		906846FC7702FDD35AE160A7 /* CameraV3ViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92963AE72361C596C699B6 /* CameraV3ViewInput.swift */; };
+		908CEC5A4C1878386621598B /* VolumeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE2CDF578B4178FE450DFE9 /* VolumeService.swift */; };
+		912AC11DC13B0D8A3F70C1AA /* DummyImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F231001CFFF123384E3545DA /* DummyImageSource.swift */; };
+		957E01DF81F1C0C339427265 /* SelectedPhotosBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE14684F6330D38916FE38A /* SelectedPhotosBarView.swift */; };
+		96433C40565C683FB77BA4D7 /* JNWSpringAnimation.framework in Dependencies */ = {isa = PBXBuildFile; fileRef = 467D3395447AB7B5ED887D2B /* JNWSpringAnimation.framework */; };
+		981E34683C303BB67BF2AFDF /* MaskCropperMarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E70FE94F0738007A9867E /* MaskCropperMarshrouteAssembly.swift */; };
+		98B1E551D9E054CBABE211E9 /* PhotoLibraryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F25342DA916AE9A5FB097 /* PhotoLibraryRouter.swift */; };
+		9C6C82CF04CF347C27EF602F /* PhotoLibraryTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1104358B0EFDB70A53A75 /* PhotoLibraryTitleView.swift */; };
+		9EC64CFB0FDB93CDF6E09F63 /* AccessDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC21FE8BBD2FBC539AA1D0C9 /* AccessDeniedView.swift */; };
+		9EE8440B6AFB7725F7901DEE /* MedicalBookCameraTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF0A0ABBCFFDB3C7819EA9E /* MedicalBookCameraTransitionAnimator.swift */; };
+		9FA74724F6CC877045F05055 /* NonAnimatedPushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9022FE90F9217D2B4179B067 /* NonAnimatedPushAnimator.swift */; };
+		A1F9343FB5F04005C371793C /* MedicalBookCameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54C3146D593D4CB6AA4E9BC /* MedicalBookCameraRouter.swift */; };
+		A3DAA869B0BD0EAB7DC16F3B /* ScannerInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1599A58C138B6AF70E930C8 /* ScannerInteractorImpl.swift */; };
+		A52D723C6F2102F5538C2CFB /* MediaPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C985910E98081E3A003D2AF1 /* MediaPickerItem.swift */; };
+		A5B70C96269265EAE1B5A6D9 /* PhotoLibraryV2Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C245BE03249D189753B587DB /* PhotoLibraryV2Assembly.swift */; };
+		A5BBE668E60DB084CE26E4CE /* ImageCroppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1267FDC67E5ABA529D8350 /* ImageCroppingView.swift */; };
+		A5C97ED98D233B5924E2E2C3 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D72D94AB28E9D60DE19C31 /* Debouncer.swift */; };
+		A6663FE5AB8F258F562F5919 /* SelectedPhotosBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E82FAAF456B86C30B8BAC2 /* SelectedPhotosBarState.swift */; };
+		A6B8D949F2744F3A668904E0 /* CGRectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D1C2162692B2A4D1AA804 /* CGRectExtensions.swift */; };
+		A6C70F0C5DE734C79F852799 /* PhotoLibraryV3Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D60FF2F807B9D710DFD61E /* PhotoLibraryV3Router.swift */; };
+		A90455C5EC68EF1827DE0313 /* CameraAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3E92030E8DC3A5E4E083D7 /* CameraAssemblyImpl.swift */; };
+		AA04CEBA0CC9049DF35AE422 /* MedicalBookCameraInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D997026347163F1FB8B91684 /* MedicalBookCameraInteractorImpl.swift */; };
+		AC68C5977C6E36819EF9EB01 /* ScannerMarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957024338A8F5EFD32689797 /* ScannerMarshrouteAssembly.swift */; };
+		AC7C2D7F2F12B07311A529B1 /* CameraOutputGLKView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C8DB42F54158C62BAAB85 /* CameraOutputGLKView.swift */; };
+		AE70A89E78C1F50672F109CB /* AvitoMediaPicker_ObjCExceptionCatcherHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7A5A297AD7150B31BE269 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.m */; };
+		AF3ACD371A7DD4D3DCC279F3 /* AspectRatio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7816BAF0D40F8E4C2F7F0874 /* AspectRatio.swift */; };
+		AFEED071C86B289135BBA829 /* CameraV3UITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF91F9557524A62913F2EA41 /* CameraV3UITheme.swift */; };
+		B0D4D14D22AD13B842A174E0 /* WeakWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222EAD58E056E2D834257E09 /* WeakWrapper.swift */; };
+		B12F4537E68458A835474EE2 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B84D7665366B2150CF555F7 /* ScannerView.swift */; };
+		B21FA86163B4C5209248D934 /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7533B64F15891986198EF2AF /* UIKitExtensions.swift */; };
+		B224D2CC2A7FB66CE5D097D8 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A3470D7EF4F87E05561B97 /* Promise.swift */; };
+		B29F1562B3919AC4CE917E60 /* PhotoLibraryV3Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304AAF2144A53E45E7F3995 /* PhotoLibraryV3Assembly.swift */; };
+		B2E2AC3B127723D49B6A56D4 /* MainCameraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770BFBDD15B04FED9A4A9457 /* MainCameraCell.swift */; };
+		B759D56218A28F2F0D2E6BD5 /* MedicalBookCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060CD5D9A3E0FAE344CEC7E5 /* MedicalBookCameraViewController.swift */; };
+		B78F35F3B241AEAA735926F3 /* PhotoLibraryV2Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A4E69FCDECB775EF25B43 /* PhotoLibraryV2Module.swift */; };
+		B931EFF9038218BAE65F859C /* CameraV3InteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59918F795E3E41C3CB8F7274 /* CameraV3InteractorImpl.swift */; };
+		BA3CCD270537B05F2D74C20D /* Marshroute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591EC195914B4DB2CAB1A8F4 /* Marshroute.framework */; };
+		BB2455AAB5863C061EF3AC21 /* MediaPickerMarshrouteAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC86621BAA3AE25585FA4CC /* MediaPickerMarshrouteAssemblyImpl.swift */; };
+		BBC40D2527B660245EFC63A8 /* ImageCroppingControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2228D64464C694058C15F65 /* ImageCroppingControlsView.swift */; };
+		BD24E3C2167AEAA32A7E3664 /* ScannerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDE7F6339C1A5C701C826B3 /* ScannerRouter.swift */; };
+		BDC846D197FEE7A1A273D31E /* MedicalBookCameraViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A197365DDE469920FCF3F2 /* MedicalBookCameraViewInput.swift */; };
+		BE1330DA65C97EDD7C956F4C /* ImageCroppingUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC88A468B507F1306DAF518 /* ImageCroppingUITheme.swift */; };
+		BE4E8995D2607D183CF4CE80 /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C600EECE496A8FD2236C3E /* DisposeBag.swift */; };
+		BECDD074B622496F82BF1ED5 /* CameraViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D6ED47C21BD10179CFCDD /* CameraViewInput.swift */; };
+		C028032B4392803586CA5D38 /* MarshrouteAssemblyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A022730E7AABB1A1AEF0456 /* MarshrouteAssemblyFactory.swift */; };
+		C033AAFECD7D015F8002BF4C /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489C3A26DC51C4532CE2EC9 /* Localization.swift */; };
+		C0424A8A74C27F07117AABC4 /* PhotoLibraryToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C9D59FEDA19A955B501A7C /* PhotoLibraryToolbar.swift */; };
+		C0D3C19842463346E62011C1 /* PaparazzoUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DB0232BA469E50EFA16EE6 /* PaparazzoUITheme.swift */; };
+		C1541C99AB2B7BE5086C8EA4 /* ImageCroppingViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210A205C55F4FD3275A889D /* ImageCroppingViewInput.swift */; };
+		C1DCFA0726DF72B44FEE34F8 /* FocusIndicatorV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B879F47B3FA40FAA4A97A0 /* FocusIndicatorV3.swift */; };
+		C3266B0B50113EF092EA81D4 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB52EB564806FA007139934 /* ArrayExtensions.swift */; };
+		C3BC5E00F2E99AC5709A6AE5 /* UIView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7601C2626FF30011992D465 /* UIView+Layout.swift */; };
+		C3C37B8A9A0F7CA48ADF304F /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF5D4FA5ED801DBF5EFA759 /* Filter.swift */; };
+		C5C9CD2F590B36B78608AB85 /* DeviceOrientationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C141C5E35DEC2A1F51D99A5 /* DeviceOrientationService.swift */; };
+		C691FE3FED7F056B8889267D /* ScannerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9BD58D4B7C081CFA7AE5F /* ScannerData.swift */; };
+		C69A2ED4A1DF1FECDBACD8CE /* PaparazzoPickerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250D9F6298F646A4306A43C5 /* PaparazzoPickerModule.swift */; };
+		C71C3995C7B23817AC80B2D6 /* MediaPickerUIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926EADD01A9A3375F4F654E4 /* MediaPickerUIKitRouter.swift */; };
+		C75149CFFE64748F0EB3BCC1 /* CGAffineTransformExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E31E4FC590E6A59923198F /* CGAffineTransformExtensions.swift */; };
+		C855F558113214C88FE7FC7A /* PhotoLibraryAlbumsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A121E82C7E3BD357A04EB3 /* PhotoLibraryAlbumsTableView.swift */; };
+		C8C2419B6261A563EA4834BD /* CameraV3Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5574C58042458CAC8C47C0FF /* CameraV3Presenter.swift */; };
+		CA35534C336118C462250E81 /* MediaPickerAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B90535D541944F1AE15BBD /* MediaPickerAssemblyImpl.swift */; };
+		CADA0B0085357981F16CBF32 /* ScannerModuleUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE251153F181F94C50651FB /* ScannerModuleUITheme.swift */; };
+		CB2B47A2B852A4BDEEA4BAE2 /* MediaPickerMarshrouteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5842AC1FD0AB31DCE7D08254 /* MediaPickerMarshrouteAssembly.swift */; };
+		CB60E1E7F6A3EC54B6D27CCF /* MaskCropperAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BF50C25AC2F6E27767ECD3 /* MaskCropperAssembly.swift */; };
+		CB68C3345AC23103554C57AA /* PhotoLibraryV3AssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E62A5A65CB254226BC839FD /* PhotoLibraryV3AssemblyImpl.swift */; };
+		CB7E901ECBBC6AE9A47C4707 /* PhotoLibraryInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FA41C6565D6A623487DFCF /* PhotoLibraryInteractorImpl.swift */; };
+		CE1FB51155754E1148D6D22D /* PhotoLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB7C1D6694DD6E1FEBF3F56 /* PhotoLibraryView.swift */; };
+		CE73C91B43409D92F2C20B30 /* CameraStatusService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E0262FAF6167CA6889D0D /* CameraStatusService.swift */; };
+		CF716BFCA86DD4FDC1856DE2 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487B48083109107EB20EEE4D /* ImageStorage.swift */; };
+		CFC8964E12F781915C8B2A5D /* PhotoLibraryV3InteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C973328F9FF670F82627CAB /* PhotoLibraryV3InteractorImpl.swift */; };
+		D0239C7C5FD1B45265FE8645 /* PhotoLibraryV2UIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3899E01133BB23CE96C972C7 /* PhotoLibraryV2UIKitRouter.swift */; };
+		D0D7810189BEDB835FE587B2 /* PhotoLibraryItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2697F9B802601858E6C3AB5 /* PhotoLibraryItemCell.swift */; };
+		D1FEDE435B28C4DEF3780BD4 /* PhotoLibraryV2MarshrouteAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65F1126FC2C614A03A41318 /* PhotoLibraryV2MarshrouteAssemblyImpl.swift */; };
+		D2F00F14B61AF58AC7B3B53A /* UIScrollView+ScrollToDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FF025D38525F0139D1CB19 /* UIScrollView+ScrollToDirection.swift */; };
+		D507E263F8042DCD4386152D /* NewCameraUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421452DA6B82236F02C1FB72 /* NewCameraUITheme.swift */; };
+		D53500D3AE3EA317184DF29A /* MediaPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7119C12810262FBA05A8698F /* MediaPickerPresenter.swift */; };
+		D6252C14EAD715918136AF2E /* AVFoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7102DAB73E443C48879603D /* AVFoundationExtensions.swift */; };
+		D63CCDF6943C05F453F550AB /* ScannerMarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD548164D5F8B6C6135C2C6 /* ScannerMarshrouteRouter.swift */; };
+		D669362DC1478032A60DDF7E /* MediaPickerInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A81E172841416511110DDE /* MediaPickerInteractorImpl.swift */; };
+		D6A62EA5089DF48D2F67B9DB /* PhotoLibraryCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD079FBE2F7A24E5B11352F /* PhotoLibraryCameraView.swift */; };
+		D7DD7B854640CA2D5ED3731F /* ButtonWithActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E625960183FD3C78B34185C3 /* ButtonWithActivity.swift */; };
+		DAD887CBA4227888DF3F7BA5 /* CameraV3MarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2185F47A3135AC5E40BFD0 /* CameraV3MarshrouteRouter.swift */; };
+		DC6D8C7DA6A7D2CF22A1719F /* CameraV3RouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E590E77718447E04297789C6 /* CameraV3RouterImpl.swift */; };
+		DD1602360D06D74E850A0A05 /* AssemblyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9ED25603140039152B54AA /* AssemblyFactory.swift */; };
+		DD8E00D8D5D801B350742E0C /* MediaPickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D021026588569CC58938DB /* MediaPickerAssembly.swift */; };
+		DE63CC174533F07B8110BEF2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92D5519C02A2B752C67018E /* CameraView.swift */; };
+		DF1229DDB54569F003983A23 /* PHAuthorizationStatusExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609FA206CD941692C624F7E3 /* PHAuthorizationStatusExtensions.swift */; };
+		DF12613F4EDF471A01717BAD /* MedicalBookCameraRouterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CFD5003998C6E878619912 /* MedicalBookCameraRouterImpl.swift */; };
+		DF1C257BF2667B4B5D28B195 /* PhotoLibraryV3MarshrouteAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7962606F5B68103E3B3FF1 /* PhotoLibraryV3MarshrouteAssemblyImpl.swift */; };
+		DF60B7D6F09031628D3B84F5 /* CaptureSessionSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9114F4A4D3FC6CC9DA108A /* CaptureSessionSynchronizer.swift */; };
+		E0D264E3D9F9108390240720 /* MedicalMaskOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A5D4FA44752F52EF71E421 /* MedicalMaskOverlayView.swift */; };
+		E1EE1D5F5721877FBACF1EC4 /* PhotoLibraryV3Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE87B88EF50F528FE0A580 /* PhotoLibraryV3Data.swift */; };
+		E69DE879A2DC478C92AC7110 /* SelectedPhotosBarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A544679ABDC118FF04270615 /* SelectedPhotosBarData.swift */; };
+		E744FA561301001694B2D06F /* MediaPickerCameraType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD875A35BD3A411955C4BE3 /* MediaPickerCameraType.swift */; };
+		E9526E37C2FA1A1C52FB63E4 /* MaskCropperViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1D1EAFB177BE8829EA7477 /* MaskCropperViewInput.swift */; };
+		EB78A82699B0B4DD8E668690 /* ImagePerceptionBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C87D17D4CB9E0718C068E33 /* ImagePerceptionBadgeView.swift */; };
+		EDD8166DB8324FB95993D50F /* PhotoLibraryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3863EC9F48A46C674547329 /* PhotoLibraryData.swift */; };
+		EE056B31715080CA6BF385D9 /* CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963A9EAFF3AB5EAB7B33AAF0 /* CollectionViewDataSource.swift */; };
+		EFD2471035340196B7AD90F8 /* CameraServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D65813E3BD56BD40B5BEDC6 /* CameraServiceImpl.swift */; };
+		F1052B46855F21B9CCBF78A5 /* MaskCropperAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24751B2E426E31C9DED3CC /* MaskCropperAssemblyImpl.swift */; };
+		F30949493659332F476AE3B3 /* PhotoLibraryUIKitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4D2F6545FCDCC055A2B1F /* PhotoLibraryUIKitRouter.swift */; };
+		F3915E575920A4A4C1F27E17 /* MediaRibbonDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366F1F8C16B2F5048866DFB6 /* MediaRibbonDataSource.swift */; };
+		F39FF25058EEFCE7AA6B6D55 /* PhotoLibraryV3Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C58D94AF503580120E01E4 /* PhotoLibraryV3Layout.swift */; };
+		F3A35FC4182D00AF1A042154 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = C91B11AB776D4DFC5DDDBF13 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F3C0C75471CE469480E08988 /* MaskCropperRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F81B90C4BA8629A8601168 /* MaskCropperRouter.swift */; };
+		F3F5C26E86A72FBA4E6B62AF /* ImageCroppingAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFA77FC5EA9F8E31B738C4D /* ImageCroppingAssembly.swift */; };
+		F5CEBBA1EFFF5F77D7910018 /* ImageCroppingInteractorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F94D5C1F6D65AF79CE669 /* ImageCroppingInteractorImpl.swift */; };
+		F5D0C01E7BA082F8C5496379 /* CameraV3Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC05583CBBE5F7289D100FF4 /* CameraV3Router.swift */; };
+		F7C616DD6FCC6115CB18F1C3 /* UIView+SafeAreaInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772DD9A15927655921071F4D /* UIView+SafeAreaInsets.swift */; };
+		F85CC66C15365FDFC0190108 /* PhotoLibraryV3ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE500D3FF4257A7636AE812 /* PhotoLibraryV3ItemCell.swift */; };
+		F8685A1CAA13CAC5E4D56867 /* CameraShader.metallib in Resources */ = {isa = PBXBuildFile; fileRef = D011B014719D94C1FD03F0D3 /* CameraShader.metallib */; };
+		FA56D0B761D73BF5C46C6A51 /* PhotoLibraryMarshrouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA4A4C3925AC9C2D103411D /* PhotoLibraryMarshrouteRouter.swift */; };
+		FB064A0A437EE998CBECEE41 /* ImageMetadataWritingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358F114A5E2987794B1D0DC4 /* ImageMetadataWritingService.swift */; };
+		FB9EAEB260C4A99D7EDCB8AB /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982F7B12F5A8D297FBD284D /* GridView.swift */; };
+		FC90D1AA816F3D0CF45B5035 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AC2E2BEAF5F594DB8BCA44 /* CameraPresenter.swift */; };
+		FCF10E5623443E0FC73D17C9 /* AccessDeniedUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17CE084A4187979898B3F99 /* AccessDeniedUITheme.swift */; };
+		FD31C8D0261902DEBF17F0E3 /* MedicalBookCameraAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2BB242ECC44E789B5123F2 /* MedicalBookCameraAssembly.swift */; };
+		FE2500E3EE32DB97F73F1639 /* ScannerMarshrouteAssemblyImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE13353D238CFCDB1289312 /* ScannerMarshrouteAssemblyImpl.swift */; };
+		FF38C7E1CCD0189D1E845810 /* SelectedPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9DD72C64CFAE066557F430 /* SelectedPhotosView.swift */; };
+		FF6708B389472FEEF64629CB /* MediaPickerRootModuleUITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B4A3199DE6068E0AE1C29 /* MediaPickerRootModuleUITheme.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0E8FCC7F509502E4887760AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29A5B9BAD0D7DAA5A455CEB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20DE1258D1E79BEF422FEDB4;
+			remoteInfo = ObjCExceptionsCatcher;
+		};
+		D71CB512DB6DCE1117C00584 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29A5B9BAD0D7DAA5A455CEB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B59C20E86EEC90B84F72D3A8;
+			remoteInfo = Paparazzo_Paparazzo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5B474041A379E98F6861E9EB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B7B5A05640E60E6F26DE919 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFD349616286C854E8D91469 /* Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstSubfolderSpec = 16;
+			files = (
+				536C5A60F172C2CDACC7D52C /* ImageSource.framework in Dependencies */,
+				96433C40565C683FB77BA4D7 /* JNWSpringAnimation.framework in Dependencies */,
+				52D0FF341C69C9976323DBFA /* ObjCExceptionsCatcher.framework in Dependencies */,
+			);
+			name = Dependencies;
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		E9A39BD4030536B90E38B086 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		00B81B298ECFB943A0500FDC /* PhotoLibraryV2Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Data.swift; sourceTree = "<group>"; };
+		026CC77191C8EE2622D35815 /* PhotoLibraryV3UITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3UITheme.swift; sourceTree = "<group>"; };
+		036E952E60A746F2F0DA5DAD /* ImageCroppingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingModule.swift; sourceTree = "<group>"; };
+		04AB40587F7CD0C153DFE581 /* Paparazzo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Paparazzo-Info.plist"; sourceTree = "<group>"; };
+		04CE4ED7D9CDE0D5BEB41289 /* PhotoTweakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTweakView.swift; sourceTree = "<group>"; };
+		05A81E172841416511110DDE /* MediaPickerInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerInteractorImpl.swift; sourceTree = "<group>"; };
+		05B1104358B0EFDB70A53A75 /* PhotoLibraryTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryTitleView.swift; sourceTree = "<group>"; };
+		060CD5D9A3E0FAE344CEC7E5 /* MedicalBookCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraViewController.swift; sourceTree = "<group>"; };
+		061289A7D90E83C02CDD2C3F /* PhotoLibraryAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssemblyImpl.swift; sourceTree = "<group>"; };
+		0623FFD0C9B3E1FDF4F1AD7B /* MedicalBookCameraInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraInteractor.swift; sourceTree = "<group>"; };
+		075C36FFE7D2D94080AFAF9C /* HeartShapeCroppingOverlayProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShapeCroppingOverlayProvider.swift; sourceTree = "<group>"; };
+		09A10A3B0912A7D810A56837 /* PhotoLibraryInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractor.swift; sourceTree = "<group>"; };
+		0A763FEE7673E0827CC78CBD /* PHPhotoLibraryExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtensions.swift; sourceTree = "<group>"; };
+		0AC54D1C3E3E585B1C96654A /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
+		0B1DFDAA9D048088B3D1D893 /* CameraOutputRenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOutputRenderView.swift; sourceTree = "<group>"; };
+		0BF1ECC1A6DE283F56B57132 /* PhotoLibraryMarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryMarshrouteAssembly.swift; sourceTree = "<group>"; };
+		0C141C5E35DEC2A1F51D99A5 /* DeviceOrientationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientationService.swift; sourceTree = "<group>"; };
+		0C87D17D4CB9E0718C068E33 /* ImagePerceptionBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePerceptionBadgeView.swift; sourceTree = "<group>"; };
+		0CDC1B8D80172A414B5D94E6 /* Paparazzo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Paparazzo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D2185F47A3135AC5E40BFD0 /* CameraV3MarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3MarshrouteRouter.swift; sourceTree = "<group>"; };
+		0DCE69794E1B3CF9D6EF3FD9 /* CircleCroppingOverlayProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCroppingOverlayProvider.swift; sourceTree = "<group>"; };
+		0EAECB20191E12C8065922BA /* PhotoLibraryV3MarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3MarshrouteRouter.swift; sourceTree = "<group>"; };
+		10F81B90C4BA8629A8601168 /* MaskCropperRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperRouter.swift; sourceTree = "<group>"; };
+		12A4D2F6545FCDCC055A2B1F /* PhotoLibraryUIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryUIKitRouter.swift; sourceTree = "<group>"; };
+		12D9BD58D4B7C081CFA7AE5F /* ScannerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerData.swift; sourceTree = "<group>"; };
+		12EF8BB5766E5D006C6B09F5 /* PhotoLibraryToCameraTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryToCameraTransitioningDelegate.swift; sourceTree = "<group>"; };
+		134F25342DA916AE9A5FB097 /* PhotoLibraryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryRouter.swift; sourceTree = "<group>"; };
+		1568973DA6A2FEC945ED69BC /* InfoMessageViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageViewInput.swift; sourceTree = "<group>"; };
+		184F3D992B04C2CDA849A4B2 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
+		18B9BE03CE63F901F5527C31 /* PhotoLibraryModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryModule.swift; sourceTree = "<group>"; };
+		18CE87B88EF50F528FE0A580 /* PhotoLibraryV3Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Data.swift; sourceTree = "<group>"; };
+		18F93151671307C36B4DB4CA /* FloatExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtensions.swift; sourceTree = "<group>"; };
+		196A98D6A4CF0DD63DE979F4 /* ThumbnailsViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailsViewLayout.swift; sourceTree = "<group>"; };
+		1A64418F109235F439124957 /* PhotoLibraryV2AssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2AssemblyImpl.swift; sourceTree = "<group>"; };
+		1B63AAEE4F6C57E07DF8972D /* PhotoLibraryV3Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Presenter.swift; sourceTree = "<group>"; };
+		1BB27502BE8830914397B587 /* MaskCropperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperView.swift; sourceTree = "<group>"; };
+		1BE7A5A297AD7150B31BE269 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AvitoMediaPicker_ObjCExceptionCatcherHelper.m; sourceTree = "<group>"; };
+		1CDFA84DF32A429616553723 /* CameraAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAssembly.swift; sourceTree = "<group>"; };
+		1CF6A7DC2C8FEA8FC29392F7 /* CameraV3MarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3MarshrouteAssembly.swift; sourceTree = "<group>"; };
+		1EBE9485C2517C58E98C157D /* PhotoLibraryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPresenter.swift; sourceTree = "<group>"; };
+		1FB7C1D6694DD6E1FEBF3F56 /* PhotoLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryView.swift; sourceTree = "<group>"; };
+		222EAD58E056E2D834257E09 /* WeakWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakWrapper.swift; sourceTree = "<group>"; };
+		22C9D59FEDA19A955B501A7C /* PhotoLibraryToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryToolbar.swift; sourceTree = "<group>"; };
+		2489C3A26DC51C4532CE2EC9 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		250D9F6298F646A4306A43C5 /* PaparazzoPickerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaparazzoPickerModule.swift; sourceTree = "<group>"; };
+		264C80D9D22F2E1977C5818A /* MediaItemThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemThumbnailCell.swift; sourceTree = "<group>"; };
+		268D6ED47C21BD10179CFCDD /* CameraViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewInput.swift; sourceTree = "<group>"; };
+		26962A06159CDF1A3CB1A63E /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		2AC88A468B507F1306DAF518 /* ImageCroppingUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingUITheme.swift; sourceTree = "<group>"; };
+		2D19200D37ED10350D97318A /* InfoMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageView.swift; sourceTree = "<group>"; };
+		2D5D91D3E84DEF3E6BFC27B9 /* AccessibilityId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityId.swift; sourceTree = "<group>"; };
+		2DAD6C1269128BE029811BB8 /* MediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerViewController.swift; sourceTree = "<group>"; };
+		3064F1FB3AA16B03172BC63C /* PhotoLibraryV3Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Interactor.swift; sourceTree = "<group>"; };
+		30B90535D541944F1AE15BBD /* MediaPickerAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerAssemblyImpl.swift; sourceTree = "<group>"; };
+		32372E4DBADA7C4193C3C5AE /* MaskCropperUIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperUIKitRouter.swift; sourceTree = "<group>"; };
+		350906CCA5135F36FE32F97C /* ThemeConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeConfigurable.swift; sourceTree = "<group>"; };
+		358F114A5E2987794B1D0DC4 /* ImageMetadataWritingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMetadataWritingService.swift; sourceTree = "<group>"; };
+		361381937B38DB676CB3C8DC /* RotationSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotationSliderView.swift; sourceTree = "<group>"; };
+		366F1F8C16B2F5048866DFB6 /* MediaRibbonDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRibbonDataSource.swift; sourceTree = "<group>"; };
+		3899E01133BB23CE96C972C7 /* PhotoLibraryV2UIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2UIKitRouter.swift; sourceTree = "<group>"; };
+		38E31E4FC590E6A59923198F /* CGAffineTransformExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformExtensions.swift; sourceTree = "<group>"; };
+		392E21719088CD5B8B886C60 /* PhotoLibraryV2ViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2ViewInput.swift; sourceTree = "<group>"; };
+		3C96702EFD83E8A38894C131 /* LimitedAccessAlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessAlertFactory.swift; sourceTree = "<group>"; };
+		3CF5D4FA5ED801DBF5EFA759 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		3F537093BDF8893674DC01E8 /* BaseUIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIKitRouter.swift; sourceTree = "<group>"; };
+		3FBCACA79E6B87BC429FCEB8 /* PhotoLibraryItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryItemsService.swift; sourceTree = "<group>"; };
+		421452DA6B82236F02C1FB72 /* NewCameraUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCameraUITheme.swift; sourceTree = "<group>"; };
+		4214BC237D8A6A2891B26F5D /* MedicalBookCameraAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraAssemblyImpl.swift; sourceTree = "<group>"; };
+		44154467E95093DF39593EED /* SelectedImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageStorage.swift; sourceTree = "<group>"; };
+		467D3395447AB7B5ED887D2B /* JNWSpringAnimation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JNWSpringAnimation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46CA4FAC0962AB56FCF63474 /* PhotoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPreviewView.swift; sourceTree = "<group>"; };
+		47910D59CD87B3A8CA9B9192 /* PhotoLibraryV3ViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3ViewInput.swift; sourceTree = "<group>"; };
+		487B48083109107EB20EEE4D /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
+		4A1267FDC67E5ABA529D8350 /* ImageCroppingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingView.swift; sourceTree = "<group>"; };
+		4BB4A5176D400A5DB0AAFC92 /* ExifOrientationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifOrientationExtensions.swift; sourceTree = "<group>"; };
+		4DE913D1D4F0EA5F4262B0E4 /* PhotoLibraryV2Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Presenter.swift; sourceTree = "<group>"; };
+		4EDA97266ADE0C282EE8B046 /* CroppingPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppingPreviewView.swift; sourceTree = "<group>"; };
+		4F62A915908F2B825BE7C6BF /* ObjCExceptionsCatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjCExceptionsCatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FD47820A7B28435DD4BC392 /* CameraV3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3View.swift; sourceTree = "<group>"; };
+		5074ADC882E46966123BB732 /* MedicalBookCameraModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraModule.swift; sourceTree = "<group>"; };
+		52211E3F5E6B9E00566C7410 /* ImageCroppingAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingAssemblyImpl.swift; sourceTree = "<group>"; };
+		53177754A0C5AE7863AEFD38 /* ObjCExceptionsCatcher-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ObjCExceptionsCatcher-Info.plist"; sourceTree = "<group>"; };
+		5518C657D910A362BBDA2B31 /* PhotoLibraryV3CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3CameraView.swift; sourceTree = "<group>"; };
+		5574C58042458CAC8C47C0FF /* CameraV3Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3Presenter.swift; sourceTree = "<group>"; };
+		5691A6CD18255439870EC8B1 /* PhotoLibraryV2MarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2MarshrouteRouter.swift; sourceTree = "<group>"; };
+		56CA4832B5A413AE12680B4E /* ScannerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerAssembly.swift; sourceTree = "<group>"; };
+		5804755734D64E57C722FF79 /* ImageCroppingInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingInteractor.swift; sourceTree = "<group>"; };
+		581B27D2ABE5C9ACB95C6D15 /* PhotoLibraryV3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3View.swift; sourceTree = "<group>"; };
+		5842AC1FD0AB31DCE7D08254 /* MediaPickerMarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMarshrouteAssembly.swift; sourceTree = "<group>"; };
+		589533584777D86A74612797 /* ImageCroppingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingService.swift; sourceTree = "<group>"; };
+		58A4EC5F8308590E34DFADB8 /* MedicalBookCameraPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraPresenter.swift; sourceTree = "<group>"; };
+		591EC195914B4DB2CAB1A8F4 /* Marshroute.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Marshroute.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		59918F795E3E41C3CB8F7274 /* CameraV3InteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3InteractorImpl.swift; sourceTree = "<group>"; };
+		5A231514631E575A9D2F4FB5 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
+		5AA4A4C3925AC9C2D103411D /* PhotoLibraryMarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryMarshrouteRouter.swift; sourceTree = "<group>"; };
+		5B1D1EAFB177BE8829EA7477 /* MaskCropperViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperViewInput.swift; sourceTree = "<group>"; };
+		5C3B34EA81A953B36CE65BF9 /* MedicalBookCameraUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraUITheme.swift; sourceTree = "<group>"; };
+		5CD19021DD416AC50CB88777 /* PhotoLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewController.swift; sourceTree = "<group>"; };
+		5D65813E3BD56BD40B5BEDC6 /* CameraServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraServiceImpl.swift; sourceTree = "<group>"; };
+		5DF081F2E334E519A7323553 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5F34B2A88BCFC5F7D761CFF2 /* RightIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightIconButton.swift; sourceTree = "<group>"; };
+		5F99CF1A1475314832AA0E21 /* PhotoLibraryV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2ViewController.swift; sourceTree = "<group>"; };
+		609FA206CD941692C624F7E3 /* PHAuthorizationStatusExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAuthorizationStatusExtensions.swift; sourceTree = "<group>"; };
+		627BD1EA97E55F7E27AB629F /* ScannerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerInteractor.swift; sourceTree = "<group>"; };
+		668F1A5F8F3D01BEF0176441 /* PhotoLibraryViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewInput.swift; sourceTree = "<group>"; };
+		6CF0A0ABBCFFDB3C7819EA9E /* MedicalBookCameraTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraTransitionAnimator.swift; sourceTree = "<group>"; };
+		6D988B1DFD232A734DF9FCC2 /* ImageSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E7962606F5B68103E3B3FF1 /* PhotoLibraryV3MarshrouteAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3MarshrouteAssemblyImpl.swift; sourceTree = "<group>"; };
+		70B72C489F8894FFF1E2ACE8 /* CameraV3Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3Interactor.swift; sourceTree = "<group>"; };
+		7119C12810262FBA05A8698F /* MediaPickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerPresenter.swift; sourceTree = "<group>"; };
+		7129D59B8EB2FC65EA726407 /* InfoMessageViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageViewFactory.swift; sourceTree = "<group>"; };
+		71B2367A3844CF740C2A8B62 /* CameraV3AssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3AssemblyImpl.swift; sourceTree = "<group>"; };
+		73AC2E2BEAF5F594DB8BCA44 /* CameraPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
+		744D8EDC0DAFDB64384FD90E /* PhotoLibraryV2MarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2MarshrouteAssembly.swift; sourceTree = "<group>"; };
+		7533B64F15891986198EF2AF /* UIKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
+		7549808EBBEF5093B5700168 /* MaskCropperOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperOverlayView.swift; sourceTree = "<group>"; };
+		75DB0232BA469E50EFA16EE6 /* PaparazzoUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaparazzoUITheme.swift; sourceTree = "<group>"; };
+		770BFBDD15B04FED9A4A9457 /* MainCameraCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCameraCell.swift; sourceTree = "<group>"; };
+		772DD9A15927655921071F4D /* UIView+SafeAreaInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SafeAreaInsets.swift"; sourceTree = "<group>"; };
+		773ACB84F814604EE8C69567 /* MaskCropperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperViewController.swift; sourceTree = "<group>"; };
+		77A197365DDE469920FCF3F2 /* MedicalBookCameraViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraViewInput.swift; sourceTree = "<group>"; };
+		7816BAF0D40F8E4C2F7F0874 /* AspectRatio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectRatio.swift; sourceTree = "<group>"; };
+		78B879F47B3FA40FAA4A97A0 /* FocusIndicatorV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusIndicatorV3.swift; sourceTree = "<group>"; };
+		7A9114F4A4D3FC6CC9DA108A /* CaptureSessionSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionSynchronizer.swift; sourceTree = "<group>"; };
+		7A9D931BDCD4FB308C81B0D3 /* PhotoLibraryV3UIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3UIKitRouter.swift; sourceTree = "<group>"; };
+		7B6DEA373921ADF9DC8A474D /* MaskCropperMarshrouteAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperMarshrouteAssemblyImpl.swift; sourceTree = "<group>"; };
+		7C155A2BD8A7B9EBC411D5F5 /* PhotoLibraryV2Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Layout.swift; sourceTree = "<group>"; };
+		7C2DF64707B702CF142E6B19 /* CameraV3Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3Assembly.swift; sourceTree = "<group>"; };
+		7C3993CB263DF15E2B44AF42 /* MedicalCameraHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalCameraHintView.swift; sourceTree = "<group>"; };
+		7C973328F9FF670F82627CAB /* PhotoLibraryV3InteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3InteractorImpl.swift; sourceTree = "<group>"; };
+		7E7E0262FAF6167CA6889D0D /* CameraStatusService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStatusService.swift; sourceTree = "<group>"; };
+		81C8BB86D7F5D3868A19971F /* MediaPickerViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerViewInput.swift; sourceTree = "<group>"; };
+		827E4F90C141BCF1F8FD78E2 /* PhotoLibraryV2TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2TitleView.swift; sourceTree = "<group>"; };
+		83EA36EAC6720A8B2538C1DA /* PhotoLibraryV3TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3TitleView.swift; sourceTree = "<group>"; };
+		8490E05CF565D73A2DF25D5C /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
+		850C8DB42F54158C62BAAB85 /* CameraOutputGLKView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOutputGLKView.swift; sourceTree = "<group>"; };
+		893475B17D506B61AA7290DC /* PaparazzoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaparazzoViewController.swift; sourceTree = "<group>"; };
+		8A022730E7AABB1A1AEF0456 /* MarshrouteAssemblyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarshrouteAssemblyFactory.swift; sourceTree = "<group>"; };
+		8A3E92030E8DC3A5E4E083D7 /* CameraAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAssemblyImpl.swift; sourceTree = "<group>"; };
+		8A8385A0AB515FB22BF6BE41 /* PhotoLibraryV2InteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2InteractorImpl.swift; sourceTree = "<group>"; };
+		8B84D7665366B2150CF555F7 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		8B99C255C559740560D483DC /* MediaPickerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerRouter.swift; sourceTree = "<group>"; };
+		8C85F23252CA8D7DAD9454B2 /* ScannerUIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerUIKitRouter.swift; sourceTree = "<group>"; };
+		8D6D3D968B3181459C6983FB /* PhotoLibraryV2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2View.swift; sourceTree = "<group>"; };
+		8DB52EB564806FA007139934 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
+		9022FE90F9217D2B4179B067 /* NonAnimatedPushAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonAnimatedPushAnimator.swift; sourceTree = "<group>"; };
+		926EADD01A9A3375F4F654E4 /* MediaPickerUIKitRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerUIKitRouter.swift; sourceTree = "<group>"; };
+		939C4C03B265321290869385 /* MaskCropperInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperInteractor.swift; sourceTree = "<group>"; };
+		957024338A8F5EFD32689797 /* ScannerMarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerMarshrouteAssembly.swift; sourceTree = "<group>"; };
+		95F4C48CF8C5D70F168F11E3 /* MediaPickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerData.swift; sourceTree = "<group>"; };
+		963A9EAFF3AB5EAB7B33AAF0 /* CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSource.swift; sourceTree = "<group>"; };
+		96E82FAAF456B86C30B8BAC2 /* SelectedPhotosBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPhotosBarState.swift; sourceTree = "<group>"; };
+		98FA41C6565D6A623487DFCF /* PhotoLibraryInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryInteractorImpl.swift; sourceTree = "<group>"; };
+		99676EED37B0DD5717996A8B /* MaskCropperMarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperMarshrouteRouter.swift; sourceTree = "<group>"; };
+		9CD0203246C2983ACC9AB907 /* CameraStatusServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStatusServiceImpl.swift; sourceTree = "<group>"; };
+		9DA2409FAD36330F67C0A3DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9DA71B853B85703923DAEB54 /* ScannerAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerAssemblyImpl.swift; sourceTree = "<group>"; };
+		9DC4A03FCFDEB7F75395057A /* MedicalBookCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraView.swift; sourceTree = "<group>"; };
+		9E1DA865782F1F8FC4A9F6C7 /* PhotoLibraryV2Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Router.swift; sourceTree = "<group>"; };
+		9E62A5A65CB254226BC839FD /* PhotoLibraryV3AssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3AssemblyImpl.swift; sourceTree = "<group>"; };
+		9EC86621BAA3AE25585FA4CC /* MediaPickerMarshrouteAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMarshrouteAssemblyImpl.swift; sourceTree = "<group>"; };
+		9F0018315D5BEFEF04BEEFE5 /* ScannerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModule.swift; sourceTree = "<group>"; };
+		A04942A252BDF377B3A10DC1 /* InfoMessageAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageAnimator.swift; sourceTree = "<group>"; };
+		A1599A58C138B6AF70E930C8 /* ScannerInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerInteractorImpl.swift; sourceTree = "<group>"; };
+		A1CF3B814D6640BF2EA1F1B8 /* MediaPickerMarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMarshrouteRouter.swift; sourceTree = "<group>"; };
+		A1F5FF9EA93F7EAD52942D86 /* MaskCropperData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperData.swift; sourceTree = "<group>"; };
+		A22255A22012B561B68CC03A /* CroppedImageSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppedImageSource.swift; sourceTree = "<group>"; };
+		A304AAF2144A53E45E7F3995 /* PhotoLibraryV3Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Assembly.swift; sourceTree = "<group>"; };
+		A3B78938215CF53495DFD54A /* PaparazzoFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaparazzoFacade.swift; sourceTree = "<group>"; };
+		A544679ABDC118FF04270615 /* SelectedPhotosBarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPhotosBarData.swift; sourceTree = "<group>"; };
+		A6131A92C13D6FB9ABABF2B3 /* RectangleCroppingOverlayProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleCroppingOverlayProvider.swift; sourceTree = "<group>"; };
+		A78FA623991F7F78129377D9 /* MediaPickerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerInteractor.swift; sourceTree = "<group>"; };
+		A7D72D94AB28E9D60DE19C31 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		A7FF025D38525F0139D1CB19 /* UIScrollView+ScrollToDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollToDirection.swift"; sourceTree = "<group>"; };
+		A8692350BE1FC229EF89F793 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A982F7B12F5A8D297FBD284D /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
+		A99A4E69FCDECB775EF25B43 /* PhotoLibraryV2Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Module.swift; sourceTree = "<group>"; };
+		A9C58D94AF503580120E01E4 /* PhotoLibraryV3Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Layout.swift; sourceTree = "<group>"; };
+		AA700D392218B5F077AB9D18 /* UIDeviceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtensions.swift; sourceTree = "<group>"; };
+		AC21FE8BBD2FBC539AA1D0C9 /* AccessDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessDeniedView.swift; sourceTree = "<group>"; };
+		AD7423436E2B8766CA44F172 /* ImageCroppingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingViewController.swift; sourceTree = "<group>"; };
+		AE834D7FFF8330281F2722B9 /* PhotoLibraryV2UITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2UITheme.swift; sourceTree = "<group>"; };
+		AF6A3560EC36C521ED226079 /* CroppingOverlayProvidersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppingOverlayProvidersFactory.swift; sourceTree = "<group>"; };
+		AF91F9557524A62913F2EA41 /* CameraV3UITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3UITheme.swift; sourceTree = "<group>"; };
+		AFE14684F6330D38916FE38A /* SelectedPhotosBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPhotosBarView.swift; sourceTree = "<group>"; };
+		AFFF1D0488A4EECFFA1BA91E /* ObjCExceptionCatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCExceptionCatcher.swift; sourceTree = "<group>"; };
+		B03B4A3199DE6068E0AE1C29 /* MediaPickerRootModuleUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerRootModuleUITheme.swift; sourceTree = "<group>"; };
+		B0E5433A735198E7BDE58B2D /* BasePaparazzoAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePaparazzoAssembly.swift; sourceTree = "<group>"; };
+		B17CE084A4187979898B3F99 /* AccessDeniedUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessDeniedUITheme.swift; sourceTree = "<group>"; };
+		B2921787416C62DABDA3F0E6 /* CroppingOverlayProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppingOverlayProvider.swift; sourceTree = "<group>"; };
+		B29D1C2162692B2A4D1AA804 /* CGRectExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectExtensions.swift; sourceTree = "<group>"; };
+		B2CFD5003998C6E878619912 /* MedicalBookCameraRouterImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraRouterImpl.swift; sourceTree = "<group>"; };
+		B3863EC9F48A46C674547329 /* PhotoLibraryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryData.swift; sourceTree = "<group>"; };
+		B5C600EECE496A8FD2236C3E /* DisposeBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposeBag.swift; sourceTree = "<group>"; };
+		B7102DAB73E443C48879603D /* AVFoundationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVFoundationExtensions.swift; sourceTree = "<group>"; };
+		B800933973EE0D05536E0C84 /* PhotoLibraryMarshrouteAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryMarshrouteAssemblyImpl.swift; sourceTree = "<group>"; };
+		B88A25C9FAFB32B9F863F5B6 /* MaskCropperControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperControlsView.swift; sourceTree = "<group>"; };
+		BB93D82A83F17512BC47F7DC /* PhotoLibraryV2Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Interactor.swift; sourceTree = "<group>"; };
+		BBAFCB59B5CBCA6D89C66A13 /* InfoMessageViewAnimatorBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageViewAnimatorBehavior.swift; sourceTree = "<group>"; };
+		BC05583CBBE5F7289D100FF4 /* CameraV3Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3Router.swift; sourceTree = "<group>"; };
+		BCFA77FC5EA9F8E31B738C4D /* ImageCroppingAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingAssembly.swift; sourceTree = "<group>"; };
+		BD303DA07B391091CE9A0BBB /* ScannerViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewInput.swift; sourceTree = "<group>"; };
+		BDD548164D5F8B6C6135C2C6 /* ScannerMarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerMarshrouteRouter.swift; sourceTree = "<group>"; };
+		BDD5C4372C20537C87EAE197 /* MaskCropperModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperModule.swift; sourceTree = "<group>"; };
+		BE24751B2E426E31C9DED3CC /* MaskCropperAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperAssemblyImpl.swift; sourceTree = "<group>"; };
+		BEE07C5F584AFF7EF8E2AF32 /* PhotoLibraryLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryLayout.swift; sourceTree = "<group>"; };
+		BF0618A1657A9E08392E183C /* MaskCropperPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperPresenter.swift; sourceTree = "<group>"; };
+		BFFDF587B79E8DD7C50D3F14 /* PhotoLibraryV3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3ViewController.swift; sourceTree = "<group>"; };
+		C11343D65BA6486A5FB0D1ED /* CameraOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOutputView.swift; sourceTree = "<group>"; };
+		C188BC74BB525292C7BFBD22 /* CaptureSessionPreviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionPreviewService.swift; sourceTree = "<group>"; };
+		C245BE03249D189753B587DB /* PhotoLibraryV2Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2Assembly.swift; sourceTree = "<group>"; };
+		C5FB0CB09A04E669063E21B1 /* CameraV3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3ViewController.swift; sourceTree = "<group>"; };
+		C65F1126FC2C614A03A41318 /* PhotoLibraryV2MarshrouteAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV2MarshrouteAssemblyImpl.swift; sourceTree = "<group>"; };
+		C7601C2626FF30011992D465 /* UIView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layout.swift"; sourceTree = "<group>"; };
+		C870042715A34CE6F6CCF4C8 /* CameraV3Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3Module.swift; sourceTree = "<group>"; };
+		C8E150E7C2FC11EA1102C139 /* PhotoLibraryLatestPhotoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryLatestPhotoProvider.swift; sourceTree = "<group>"; };
+		C91B11AB776D4DFC5DDDBF13 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AvitoMediaPicker_ObjCExceptionCatcherHelper.h; sourceTree = "<group>"; };
+		C92D5519C02A2B752C67018E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		C974DC83550D8A264937045E /* Paparazzo_Paparazzo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Paparazzo_Paparazzo-Info.plist"; sourceTree = "<group>"; };
+		C985910E98081E3A003D2AF1 /* MediaPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerItem.swift; sourceTree = "<group>"; };
+		CA2BB242ECC44E789B5123F2 /* MedicalBookCameraAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraAssembly.swift; sourceTree = "<group>"; };
+		CA9DD72C64CFAE066557F430 /* SelectedPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPhotosView.swift; sourceTree = "<group>"; };
+		CB8562C6A07DE0AB127E7B68 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
+		CC0DB1750A7468463C6C5882 /* MedicalBookCameraMarshrouteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraMarshrouteRouter.swift; sourceTree = "<group>"; };
+		CD92963AE72361C596C699B6 /* CameraV3ViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3ViewInput.swift; sourceTree = "<group>"; };
+		CDAD27E60F7BC97615992D87 /* ImageCroppingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingPresenter.swift; sourceTree = "<group>"; };
+		D011B014719D94C1FD03F0D3 /* CameraShader.metallib */ = {isa = PBXFileReference; lastKnownFileType = "archive.metal-library"; path = CameraShader.metallib; sourceTree = "<group>"; };
+		D03436A840B3B16BF8F79A32 /* MediaPickerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerModule.swift; sourceTree = "<group>"; };
+		D17B4A7DD6A8CE7BEF9B765D /* FocusIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusIndicator.swift; sourceTree = "<group>"; };
+		D210A205C55F4FD3275A889D /* ImageCroppingViewInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingViewInput.swift; sourceTree = "<group>"; };
+		D2228D64464C694058C15F65 /* ImageCroppingControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingControlsView.swift; sourceTree = "<group>"; };
+		D56ABFC6C1240DBFCD03EAB1 /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D5C446B2B47072CDEE07A230 /* ThumbnailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailsView.swift; sourceTree = "<group>"; };
+		D65E639EF1E655269DE50A52 /* Paparazzo_Paparazzo.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Paparazzo_Paparazzo.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7D60FF2F807B9D710DFD61E /* PhotoLibraryV3Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Router.swift; sourceTree = "<group>"; };
+		D85B928870015338C9535224 /* CameraInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraInteractor.swift; sourceTree = "<group>"; };
+		D8A02039BA410B675605687F /* ImageSource+BackwardCompatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageSource+BackwardCompatibility.swift"; sourceTree = "<group>"; };
+		D8DE697AADBC5E2729299D04 /* CameraInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraInteractorImpl.swift; sourceTree = "<group>"; };
+		D997026347163F1FB8B91684 /* MedicalBookCameraInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraInteractorImpl.swift; sourceTree = "<group>"; };
+		DAE500D3FF4257A7636AE812 /* PhotoLibraryV3ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3ItemCell.swift; sourceTree = "<group>"; };
+		DB8635C73B3F66019578C429 /* MaskCropperUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperUITheme.swift; sourceTree = "<group>"; };
+		DB9ED25603140039152B54AA /* AssemblyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyFactory.swift; sourceTree = "<group>"; };
+		DC12E199C70ED9265A7DC1AE /* CameraModuleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModuleInput.swift; sourceTree = "<group>"; };
+		DDD875A35BD3A411955C4BE3 /* MediaPickerCameraType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerCameraType.swift; sourceTree = "<group>"; };
+		DDF92A4C6AB96AF5BFC7E4F5 /* PhotoPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPreviewCell.swift; sourceTree = "<group>"; };
+		E05DB757B384A6686AC52171 /* MaskCropperInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperInteractorImpl.swift; sourceTree = "<group>"; };
+		E1A5D4FA44752F52EF71E421 /* MedicalMaskOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalMaskOverlayView.swift; sourceTree = "<group>"; };
+		E27D2B8607DCF3CD6DACC82A /* InfoMessageDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageDisplayer.swift; sourceTree = "<group>"; };
+		E2F32BD2249AC7D9C4E1A5F2 /* PhotoLibraryAlbumsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAlbumsTableViewCell.swift; sourceTree = "<group>"; };
+		E32E70FE94F0738007A9867E /* MaskCropperMarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperMarshrouteAssembly.swift; sourceTree = "<group>"; };
+		E53399024AFF3912DB0211DB /* ScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerPresenter.swift; sourceTree = "<group>"; };
+		E590E77718447E04297789C6 /* CameraV3RouterImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3RouterImpl.swift; sourceTree = "<group>"; };
+		E625960183FD3C78B34185C3 /* ButtonWithActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithActivity.swift; sourceTree = "<group>"; };
+		E899DE2FAF35EF4606CE7313 /* PhotoLibraryV3Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3Module.swift; sourceTree = "<group>"; };
+		E9BF50C25AC2F6E27767ECD3 /* MaskCropperAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskCropperAssembly.swift; sourceTree = "<group>"; };
+		EA084BC93C7E943550D2E018 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		ED112548798603DB25691B5F /* MediaPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerView.swift; sourceTree = "<group>"; };
+		EDE2CDF578B4178FE450DFE9 /* VolumeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeService.swift; sourceTree = "<group>"; };
+		EEA692F5A799CFBE4F68F112 /* CameraV3TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraV3TransitionAnimator.swift; sourceTree = "<group>"; };
+		F06A4F955AB2CC2A20A3EA46 /* PhotoLibraryUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryUITheme.swift; sourceTree = "<group>"; };
+		F1802A49EAAB90AE10C41839 /* PhotoLibraryV3MarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryV3MarshrouteAssembly.swift; sourceTree = "<group>"; };
+		F1D021026588569CC58938DB /* MediaPickerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerAssembly.swift; sourceTree = "<group>"; };
+		F231001CFFF123384E3545DA /* DummyImageSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyImageSource.swift; sourceTree = "<group>"; };
+		F2697F9B802601858E6C3AB5 /* PhotoLibraryItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryItemCell.swift; sourceTree = "<group>"; };
+		F37C809F5FF0500BCC5BA2EE /* PhotoControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoControlsView.swift; sourceTree = "<group>"; };
+		F3A3470D7EF4F87E05561B97 /* Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		F45B32EB91E42B9196B7EBB5 /* CameraThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraThumbnailCell.swift; sourceTree = "<group>"; };
+		F54C3146D593D4CB6AA4E9BC /* MedicalBookCameraRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraRouter.swift; sourceTree = "<group>"; };
+		F564560E0F8740745DDA6AE4 /* ImageCroppingParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingParameters.swift; sourceTree = "<group>"; };
+		F5CCA8FCC283613E7B0231E5 /* SingleObjectCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectCache.swift; sourceTree = "<group>"; };
+		F7DB2DA2020BE124E55745E6 /* PhotoLibraryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAssembly.swift; sourceTree = "<group>"; };
+		F94F94D5C1F6D65AF79CE669 /* ImageCroppingInteractorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingInteractorImpl.swift; sourceTree = "<group>"; };
+		F9A121E82C7E3BD357A04EB3 /* PhotoLibraryAlbumsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryAlbumsTableView.swift; sourceTree = "<group>"; };
+		FB8837CABB69048E5FB8A228 /* MedicalBookCameraMarshrouteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalBookCameraMarshrouteAssembly.swift; sourceTree = "<group>"; };
+		FE99ED65FC673A4CF3E87C14 /* TuistBundle+Paparazzo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+Paparazzo.swift"; sourceTree = "<group>"; };
+		FEDE7F6339C1A5C701C826B3 /* ScannerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerRouter.swift; sourceTree = "<group>"; };
+		FEE13353D238CFCDB1289312 /* ScannerMarshrouteAssemblyImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerMarshrouteAssemblyImpl.swift; sourceTree = "<group>"; };
+		FEE251153F181F94C50651FB /* ScannerModuleUITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModuleUITheme.swift; sourceTree = "<group>"; };
+		FFD079FBE2F7A24E5B11352F /* PhotoLibraryCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCameraView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		08884BE69815E1AE3B0ED3CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA3CCD270537B05F2D74C20D /* Marshroute.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E876199ED1195B51402E86C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		987AF4FD83CCAAFBAEA89CA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0283447385D623EAEABBE218 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				0623FFD0C9B3E1FDF4F1AD7B /* MedicalBookCameraInteractor.swift */,
+				D997026347163F1FB8B91684 /* MedicalBookCameraInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		076DA9ACD21854A27E5032BD /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				D85B928870015338C9535224 /* CameraInteractor.swift */,
+				D8DE697AADBC5E2729299D04 /* CameraInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		0AEB9D2E8F9A2629585976D6 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				10F81B90C4BA8629A8601168 /* MaskCropperRouter.swift */,
+				32372E4DBADA7C4193C3C5AE /* MaskCropperUIKitRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		0E429E19787AEA4BD7F5E02E /* CroppingOverlayProviders */ = {
+			isa = PBXGroup;
+			children = (
+				0DCE69794E1B3CF9D6EF3FD9 /* CircleCroppingOverlayProvider.swift */,
+				B2921787416C62DABDA3F0E6 /* CroppingOverlayProvider.swift */,
+				AF6A3560EC36C521ED226079 /* CroppingOverlayProvidersFactory.swift */,
+				075C36FFE7D2D94080AFAF9C /* HeartShapeCroppingOverlayProvider.swift */,
+				A6131A92C13D6FB9ABABF2B3 /* RectangleCroppingOverlayProvider.swift */,
+			);
+			path = CroppingOverlayProviders;
+			sourceTree = "<group>";
+		};
+		127ABF5D7AA143E56F0DD7D2 /* CameraStatus */ = {
+			isa = PBXGroup;
+			children = (
+				7E7E0262FAF6167CA6889D0D /* CameraStatusService.swift */,
+				9CD0203246C2983ACC9AB907 /* CameraStatusServiceImpl.swift */,
+			);
+			path = CameraStatus;
+			sourceTree = "<group>";
+		};
+		19243C0A26393EDB4321129B /* PhotoLibraryV2 */ = {
+			isa = PBXGroup;
+			children = (
+				431B2DDDF2BA720A6EC4D26E /* Assembly */,
+				E20F7A1E2528FD0C08D2D57A /* Interactor */,
+				4D510B0AD5C8FDF7F308587A /* Module */,
+				32B70C1907EE7A4F8318C450 /* Presenter */,
+				BA69B5F97E43C48D0AE16A69 /* Router */,
+				4D5CD09B0A1DB7FE9AB3902C /* View */,
+			);
+			path = PhotoLibraryV2;
+			sourceTree = "<group>";
+		};
+		1A2BDDFB850508AD562B4829 /* PhotoLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				E9B3BE41501825752FC5117C /* Assembly */,
+				4A7A1D743F4F2532C7BB6689 /* Interactor */,
+				E714A6E081DEF43853211BCD /* Module */,
+				E7864DDA64FDD8ED847D190E /* Presenter */,
+				A23E6863CFEDC0712168C644 /* Router */,
+				474ED7AA54D4715ADF158345 /* View */,
+			);
+			path = PhotoLibrary;
+			sourceTree = "<group>";
+		};
+		1A3D15856DE0D6A47650DDF3 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				5691A6CD18255439870EC8B1 /* PhotoLibraryV2MarshrouteRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		1A754D91385C8B89A779E23E /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				3064F1FB3AA16B03172BC63C /* PhotoLibraryV3Interactor.swift */,
+				7C973328F9FF670F82627CAB /* PhotoLibraryV3InteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		202F64F0E08FDB8DAA439224 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				99676EED37B0DD5717996A8B /* MaskCropperMarshrouteRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		224FC2C1FBBB579A19C96C0F /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				5804755734D64E57C722FF79 /* ImageCroppingInteractor.swift */,
+				F94F94D5C1F6D65AF79CE669 /* ImageCroppingInteractorImpl.swift */,
+				F564560E0F8740745DDA6AE4 /* ImageCroppingParameters.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		2251900FB1ADB9A8068FBB3C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				FEDE7F6339C1A5C701C826B3 /* ScannerRouter.swift */,
+				8C85F23252CA8D7DAD9454B2 /* ScannerUIKitRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		233B99428053DC138F15C98F /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				957024338A8F5EFD32689797 /* ScannerMarshrouteAssembly.swift */,
+				FEE13353D238CFCDB1289312 /* ScannerMarshrouteAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		2B9BB3B56082807CDD540FEB /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				BC05583CBBE5F7289D100FF4 /* CameraV3Router.swift */,
+				E590E77718447E04297789C6 /* CameraV3RouterImpl.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		313F2C36F21B377B3BD357C2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5C3B34EA81A953B36CE65BF9 /* MedicalBookCameraUITheme.swift */,
+				9DC4A03FCFDEB7F75395057A /* MedicalBookCameraView.swift */,
+				060CD5D9A3E0FAE344CEC7E5 /* MedicalBookCameraViewController.swift */,
+				77A197365DDE469920FCF3F2 /* MedicalBookCameraViewInput.swift */,
+				7C3993CB263DF15E2B44AF42 /* MedicalCameraHintView.swift */,
+				E1A5D4FA44752F52EF71E421 /* MedicalMaskOverlayView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		32B70C1907EE7A4F8318C450 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				4DE913D1D4F0EA5F4262B0E4 /* PhotoLibraryV2Presenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		368FA7F411F4759CC1F80046 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				5A78EBEE0B96F986BA973CD5 /* Assembly */,
+				076DA9ACD21854A27E5032BD /* Interactor */,
+				DCFD487D15DABC19F367DFF0 /* Module */,
+				AE804AC0610E3F4E401CE011 /* Presenter */,
+				997E3B00479C439D64F7CFC1 /* View */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		38FEAFE7EB7F11E5B0E64CAA /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				744D8EDC0DAFDB64384FD90E /* PhotoLibraryV2MarshrouteAssembly.swift */,
+				C65F1126FC2C614A03A41318 /* PhotoLibraryV2MarshrouteAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		390C540E6AC257986D0D9DAD /* InfoMessage */ = {
+			isa = PBXGroup;
+			children = (
+				A04942A252BDF377B3A10DC1 /* InfoMessageAnimator.swift */,
+				E27D2B8607DCF3CD6DACC82A /* InfoMessageDisplayer.swift */,
+				2D19200D37ED10350D97318A /* InfoMessageView.swift */,
+				BBAFCB59B5CBCA6D89C66A13 /* InfoMessageViewAnimatorBehavior.swift */,
+				7129D59B8EB2FC65EA726407 /* InfoMessageViewFactory.swift */,
+				1568973DA6A2FEC945ED69BC /* InfoMessageViewInput.swift */,
+			);
+			path = InfoMessage;
+			sourceTree = "<group>";
+		};
+		395125CF1A5B96E4A7AB0BCC /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				12D9BD58D4B7C081CFA7AE5F /* ScannerData.swift */,
+				9F0018315D5BEFEF04BEEFE5 /* ScannerModule.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		39C08BB760B44B8E62858640 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AF91F9557524A62913F2EA41 /* CameraV3UITheme.swift */,
+				4FD47820A7B28435DD4BC392 /* CameraV3View.swift */,
+				C5FB0CB09A04E669063E21B1 /* CameraV3ViewController.swift */,
+				CD92963AE72361C596C699B6 /* CameraV3ViewInput.swift */,
+				78B879F47B3FA40FAA4A97A0 /* FocusIndicatorV3.swift */,
+				A544679ABDC118FF04270615 /* SelectedPhotosBarData.swift */,
+				96E82FAAF456B86C30B8BAC2 /* SelectedPhotosBarState.swift */,
+				CA9DD72C64CFAE066557F430 /* SelectedPhotosView.swift */,
+				5A231514631E575A9D2F4FB5 /* ShutterButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3A442CF4BB9677B6A33604CD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FEE251153F181F94C50651FB /* ScannerModuleUITheme.swift */,
+				8B84D7665366B2150CF555F7 /* ScannerView.swift */,
+				184F3D992B04C2CDA849A4B2 /* ScannerViewController.swift */,
+				BD303DA07B391091CE9A0BBB /* ScannerViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3CF85F8F8F7B88D59C7FEDF2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5518C657D910A362BBDA2B31 /* PhotoLibraryV3CameraView.swift */,
+				DAE500D3FF4257A7636AE812 /* PhotoLibraryV3ItemCell.swift */,
+				A9C58D94AF503580120E01E4 /* PhotoLibraryV3Layout.swift */,
+				83EA36EAC6720A8B2538C1DA /* PhotoLibraryV3TitleView.swift */,
+				026CC77191C8EE2622D35815 /* PhotoLibraryV3UITheme.swift */,
+				581B27D2ABE5C9ACB95C6D15 /* PhotoLibraryV3View.swift */,
+				BFFDF587B79E8DD7C50D3F14 /* PhotoLibraryV3ViewController.swift */,
+				47910D59CD87B3A8CA9B9192 /* PhotoLibraryV3ViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3E913CF0F318A11B5C6B38D1 /* MedicalBookCamera */ = {
+			isa = PBXGroup;
+			children = (
+				6A3C21DCA304C02C76B5E192 /* Assembly */,
+				0283447385D623EAEABBE218 /* Interactor */,
+				7942923F7CC624CB39AE3E62 /* Presenter */,
+				DB04018D6E9683DD7BBE4391 /* Router */,
+				313F2C36F21B377B3BD357C2 /* View */,
+			);
+			path = MedicalBookCamera;
+			sourceTree = "<group>";
+		};
+		3ED49DCD8E599AAA606D83F3 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				DB9ED25603140039152B54AA /* AssemblyFactory.swift */,
+				B0E5433A735198E7BDE58B2D /* BasePaparazzoAssembly.swift */,
+				8490E05CF565D73A2DF25D5C /* ServiceFactory.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		3EDE4C7334E5F6873E29C126 /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				CB2C858156C9E86F12C1AE4D /* Derived */,
+				D0C12C7202F6B0607BBA36FB /* Sources */,
+			);
+			name = Project;
+			sourceTree = "<group>";
+		};
+		3F6EE3C7133523BDA71D3D70 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				F1D021026588569CC58938DB /* MediaPickerAssembly.swift */,
+				30B90535D541944F1AE15BBD /* MediaPickerAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		4031D8359264D0D5CDFF549C /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				E625960183FD3C78B34185C3 /* ButtonWithActivity.swift */,
+				0AC54D1C3E3E585B1C96654A /* CameraControlsView.swift */,
+				F37C809F5FF0500BCC5BA2EE /* PhotoControlsView.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		431B2DDDF2BA720A6EC4D26E /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				C245BE03249D189753B587DB /* PhotoLibraryV2Assembly.swift */,
+				1A64418F109235F439124957 /* PhotoLibraryV2AssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		467198C68068D044EE07FFE5 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				E53399024AFF3912DB0211DB /* ScannerPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		474ED7AA54D4715ADF158345 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B17CE084A4187979898B3F99 /* AccessDeniedUITheme.swift */,
+				AC21FE8BBD2FBC539AA1D0C9 /* AccessDeniedView.swift */,
+				F9A121E82C7E3BD357A04EB3 /* PhotoLibraryAlbumsTableView.swift */,
+				E2F32BD2249AC7D9C4E1A5F2 /* PhotoLibraryAlbumsTableViewCell.swift */,
+				F2697F9B802601858E6C3AB5 /* PhotoLibraryItemCell.swift */,
+				BEE07C5F584AFF7EF8E2AF32 /* PhotoLibraryLayout.swift */,
+				05B1104358B0EFDB70A53A75 /* PhotoLibraryTitleView.swift */,
+				22C9D59FEDA19A955B501A7C /* PhotoLibraryToolbar.swift */,
+				F06A4F955AB2CC2A20A3EA46 /* PhotoLibraryUITheme.swift */,
+				1FB7C1D6694DD6E1FEBF3F56 /* PhotoLibraryView.swift */,
+				5CD19021DD416AC50CB88777 /* PhotoLibraryViewController.swift */,
+				668F1A5F8F3D01BEF0176441 /* PhotoLibraryViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4771FC305CCE5D2D36783580 /* NewCamera */ = {
+			isa = PBXGroup;
+			children = (
+				8FF48F2FE8DB071F45419F3F /* Interactor */,
+				E6C887E5E64A66D20E7A50F4 /* View */,
+			);
+			path = NewCamera;
+			sourceTree = "<group>";
+		};
+		478F29371F5BFBCE21446221 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				F4E4C331EB148F23DB6F9535 /* Filters */,
+				A78FA623991F7F78129377D9 /* MediaPickerInteractor.swift */,
+				05A81E172841416511110DDE /* MediaPickerInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		4A7A1D743F4F2532C7BB6689 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				09A10A3B0912A7D810A56837 /* PhotoLibraryInteractor.swift */,
+				98FA41C6565D6A623487DFCF /* PhotoLibraryInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		4D510B0AD5C8FDF7F308587A /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				00B81B298ECFB943A0500FDC /* PhotoLibraryV2Data.swift */,
+				A99A4E69FCDECB775EF25B43 /* PhotoLibraryV2Module.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		4D5CD09B0A1DB7FE9AB3902C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FFD079FBE2F7A24E5B11352F /* PhotoLibraryCameraView.swift */,
+				7C155A2BD8A7B9EBC411D5F5 /* PhotoLibraryV2Layout.swift */,
+				827E4F90C141BCF1F8FD78E2 /* PhotoLibraryV2TitleView.swift */,
+				AE834D7FFF8330281F2722B9 /* PhotoLibraryV2UITheme.swift */,
+				8D6D3D968B3181459C6983FB /* PhotoLibraryV2View.swift */,
+				5F99CF1A1475314832AA0E21 /* PhotoLibraryV2ViewController.swift */,
+				392E21719088CD5B8B886C60 /* PhotoLibraryV2ViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4F21861491DA2F33D4DA24B3 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				5842AC1FD0AB31DCE7D08254 /* MediaPickerMarshrouteAssembly.swift */,
+				9EC86621BAA3AE25585FA4CC /* MediaPickerMarshrouteAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		4FDFC112C96AA71024B93961 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				770BFBDD15B04FED9A4A9457 /* MainCameraCell.swift */,
+				DDF92A4C6AB96AF5BFC7E4F5 /* PhotoPreviewCell.swift */,
+				46CA4FAC0962AB56FCF63474 /* PhotoPreviewView.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		52495711DE22C0917BE365D5 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				70B72C489F8894FFF1E2ACE8 /* CameraV3Interactor.swift */,
+				59918F795E3E41C3CB8F7274 /* CameraV3InteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		53C858AB086068E90FADC901 /* MaskCropper */ = {
+			isa = PBXGroup;
+			children = (
+				60502F3FDBF0B39B158F33F7 /* Assembly */,
+				202F64F0E08FDB8DAA439224 /* Router */,
+			);
+			path = MaskCropper;
+			sourceTree = "<group>";
+		};
+		5518E7193512966324D7A05F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B88A25C9FAFB32B9F863F5B6 /* MaskCropperControlsView.swift */,
+				7549808EBBEF5093B5700168 /* MaskCropperOverlayView.swift */,
+				DB8635C73B3F66019578C429 /* MaskCropperUITheme.swift */,
+				1BB27502BE8830914397B587 /* MaskCropperView.swift */,
+				773ACB84F814604EE8C69567 /* MaskCropperViewController.swift */,
+				5B1D1EAFB177BE8829EA7477 /* MaskCropperViewInput.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5A78EBEE0B96F986BA973CD5 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				1CDFA84DF32A429616553723 /* CameraAssembly.swift */,
+				8A3E92030E8DC3A5E4E083D7 /* CameraAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		5ABFE698A7EA4919AA6599F2 /* ImageCropping */ = {
+			isa = PBXGroup;
+			children = (
+				8037D152539E184AC2EC9352 /* Assembly */,
+				224FC2C1FBBB579A19C96C0F /* Interactor */,
+				D91CE83D0B97FA6356F8D24E /* Module */,
+				B63AFC9A7DD65B45F82630D4 /* Presenter */,
+				DE3883BA43EEC6DE69C96D23 /* View */,
+				7816BAF0D40F8E4C2F7F0874 /* AspectRatio.swift */,
+				A22255A22012B561B68CC03A /* CroppedImageSource.swift */,
+			);
+			path = ImageCropping;
+			sourceTree = "<group>";
+		};
+		5ADD97F5BFE16F3FF779A478 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C91B11AB776D4DFC5DDDBF13 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		60502F3FDBF0B39B158F33F7 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				E32E70FE94F0738007A9867E /* MaskCropperMarshrouteAssembly.swift */,
+				7B6DEA373921ADF9DC8A474D /* MaskCropperMarshrouteAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		639788817DA9AA0763A5C889 /* CameraV3 */ = {
+			isa = PBXGroup;
+			children = (
+				BA5BF1ECE7EFC1812887473E /* Assembly */,
+				52495711DE22C0917BE365D5 /* Interactor */,
+				F8B2830B90756FBE075D1AE5 /* Presenter */,
+				2B9BB3B56082807CDD540FEB /* Router */,
+				39C08BB760B44B8E62858640 /* View */,
+				EDE2CDF578B4178FE450DFE9 /* VolumeService.swift */,
+			);
+			path = CameraV3;
+			sourceTree = "<group>";
+		};
+		65039CCD4DCDD7A8258C8188 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				26962A06159CDF1A3CB1A63E /* CameraService.swift */,
+				5D65813E3BD56BD40B5BEDC6 /* CameraServiceImpl.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		6A3C21DCA304C02C76B5E192 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				CA2BB242ECC44E789B5123F2 /* MedicalBookCameraAssembly.swift */,
+				4214BC237D8A6A2891B26F5D /* MedicalBookCameraAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		6B3B69DC35EB81858A1064E2 /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				4F21861491DA2F33D4DA24B3 /* Assembly */,
+				87D80CE8251677DDDCBE006B /* Router */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
+		72C496FD02EE86DD2ABDBBA1 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				0EAECB20191E12C8065922BA /* PhotoLibraryV3MarshrouteRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		7605DE28CF58CB052E362BE1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8DB52EB564806FA007139934 /* ArrayExtensions.swift */,
+				B7102DAB73E443C48879603D /* AVFoundationExtensions.swift */,
+				38E31E4FC590E6A59923198F /* CGAffineTransformExtensions.swift */,
+				B29D1C2162692B2A4D1AA804 /* CGRectExtensions.swift */,
+				4BB4A5176D400A5DB0AAFC92 /* ExifOrientationExtensions.swift */,
+				18F93151671307C36B4DB4CA /* FloatExtensions.swift */,
+				D8A02039BA410B675605687F /* ImageSource+BackwardCompatibility.swift */,
+				609FA206CD941692C624F7E3 /* PHAuthorizationStatusExtensions.swift */,
+				0A763FEE7673E0827CC78CBD /* PHPhotoLibraryExtensions.swift */,
+				AA700D392218B5F077AB9D18 /* UIDeviceExtensions.swift */,
+				7533B64F15891986198EF2AF /* UIKitExtensions.swift */,
+				A7FF025D38525F0139D1CB19 /* UIScrollView+ScrollToDirection.swift */,
+				C7601C2626FF30011992D465 /* UIView+Layout.swift */,
+				772DD9A15927655921071F4D /* UIView+SafeAreaInsets.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		76A782F226AAFA8F8CD1C7C3 /* Shader */ = {
+			isa = PBXGroup;
+			children = (
+				D011B014719D94C1FD03F0D3 /* CameraShader.metallib */,
+			);
+			path = Shader;
+			sourceTree = "<group>";
+		};
+		78CAD4141C0F0F929F5FC465 /* PhotoLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				A2AD78B163C44864AE3026C8 /* Assembly */,
+				8571FA4337E584DF68B369C5 /* Router */,
+			);
+			path = PhotoLibrary;
+			sourceTree = "<group>";
+		};
+		7942923F7CC624CB39AE3E62 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				5074ADC882E46966123BB732 /* MedicalBookCameraModule.swift */,
+				58A4EC5F8308590E34DFADB8 /* MedicalBookCameraPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		7A88520A6C83FCCFAA99D562 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				9DA2409FAD36330F67C0A3DC /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		7C1046C12564D2347FB7EB24 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				D7D60FF2F807B9D710DFD61E /* PhotoLibraryV3Router.swift */,
+				7A9D931BDCD4FB308C81B0D3 /* PhotoLibraryV3UIKitRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		7D5A9E0530A502308386568C /* PhotoLibraryV3Marshroute */ = {
+			isa = PBXGroup;
+			children = (
+				8BAB1ADBCD14A0E78D6844D0 /* Assembly */,
+				72C496FD02EE86DD2ABDBBA1 /* Router */,
+			);
+			path = PhotoLibraryV3Marshroute;
+			sourceTree = "<group>";
+		};
+		8037D152539E184AC2EC9352 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				BCFA77FC5EA9F8E31B738C4D /* ImageCroppingAssembly.swift */,
+				52211E3F5E6B9E00566C7410 /* ImageCroppingAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		80AA64421FA65D2DFE61C839 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E917705E81DE4991058CBE7E /* CameraOutputRenderView */,
+				3F537093BDF8893674DC01E8 /* BaseUIKitRouter.swift */,
+				C11343D65BA6486A5FB0D1ED /* CameraOutputView.swift */,
+				C188BC74BB525292C7BFBD22 /* CaptureSessionPreviewService.swift */,
+				7A9114F4A4D3FC6CC9DA108A /* CaptureSessionSynchronizer.swift */,
+				963A9EAFF3AB5EAB7B33AAF0 /* CollectionViewDataSource.swift */,
+				F231001CFFF123384E3545DA /* DummyImageSource.swift */,
+				487B48083109107EB20EEE4D /* ImageStorage.swift */,
+				2489C3A26DC51C4532CE2EC9 /* Localization.swift */,
+				AFFF1D0488A4EECFFA1BA91E /* ObjCExceptionCatcher.swift */,
+				F3A3470D7EF4F87E05561B97 /* Promise.swift */,
+				F5CCA8FCC283613E7B0231E5 /* SingleObjectCache.swift */,
+				222EAD58E056E2D834257E09 /* WeakWrapper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		831701246ED85C32A402DE6D /* Paparazzo */ = {
+			isa = PBXGroup;
+			children = (
+				FA845A58DC0DD2B16BD0B474 /* CameraV3 */,
+				E43E69A8B9E4BCD37F75727E /* Core */,
+				53C858AB086068E90FADC901 /* MaskCropper */,
+				6B3B69DC35EB81858A1064E2 /* MediaPicker */,
+				D0CF076E0A7CD448EBF44A29 /* MedicalBookCamera */,
+				78CAD4141C0F0F929F5FC465 /* PhotoLibrary */,
+				E52A706965551CCAFA717034 /* PhotoLibraryV2 */,
+				7D5A9E0530A502308386568C /* PhotoLibraryV3Marshroute */,
+				8FDE297E5BD3CA87C3EA2781 /* Scanner */,
+				8A022730E7AABB1A1AEF0456 /* MarshrouteAssemblyFactory.swift */,
+			);
+			path = Paparazzo;
+			sourceTree = "<group>";
+		};
+		8571FA4337E584DF68B369C5 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				5AA4A4C3925AC9C2D103411D /* PhotoLibraryMarshrouteRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		8604A78D24D2692AAD3A6996 /* PhotoLibraryV3 */ = {
+			isa = PBXGroup;
+			children = (
+				CF76F3B79B0F7154DAF7EE7C /* Assembly */,
+				1A754D91385C8B89A779E23E /* Interactor */,
+				D542B666B9D00F3CC4BE6EFE /* Module */,
+				C60900EB618B2A2FE344322A /* Presenter */,
+				7C1046C12564D2347FB7EB24 /* Router */,
+				3CF85F8F8F7B88D59C7FEDF2 /* View */,
+			);
+			path = PhotoLibraryV3;
+			sourceTree = "<group>";
+		};
+		87D80CE8251677DDDCBE006B /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				A1CF3B814D6640BF2EA1F1B8 /* MediaPickerMarshrouteRouter.swift */,
+				9022FE90F9217D2B4179B067 /* NonAnimatedPushAnimator.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		889B53B6D4020F76471C33B7 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				E4A44B84BE3A4B909AFC83B7 /* Localizable.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		89540167E2424192A2260C1A /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				627BD1EA97E55F7E27AB629F /* ScannerInteractor.swift */,
+				A1599A58C138B6AF70E930C8 /* ScannerInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		8BAB1ADBCD14A0E78D6844D0 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				F1802A49EAAB90AE10C41839 /* PhotoLibraryV3MarshrouteAssembly.swift */,
+				6E7962606F5B68103E3B3FF1 /* PhotoLibraryV3MarshrouteAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		8FDE297E5BD3CA87C3EA2781 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				233B99428053DC138F15C98F /* Assembly */,
+				D597B824BE0DDD3D98DAFDBF /* Router */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		8FF48F2FE8DB071F45419F3F /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				44154467E95093DF39593EED /* SelectedImageStorage.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		90964CE30D9AFD3D4CCDE835 /* ObjCExceptionsCatcher */ = {
+			isa = PBXGroup;
+			children = (
+				5ADD97F5BFE16F3FF779A478 /* include */,
+				1BE7A5A297AD7150B31BE269 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.m */,
+			);
+			path = ObjCExceptionsCatcher;
+			sourceTree = "<group>";
+		};
+		997E3B00479C439D64F7CFC1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C92D5519C02A2B752C67018E /* CameraView.swift */,
+				268D6ED47C21BD10179CFCDD /* CameraViewInput.swift */,
+				D17B4A7DD6A8CE7BEF9B765D /* FocusIndicator.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9B1B37048BF0058542176909 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				939C4C03B265321290869385 /* MaskCropperInteractor.swift */,
+				E05DB757B384A6686AC52171 /* MaskCropperInteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		9C01204543C609D67390DAE2 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				56CA4832B5A413AE12680B4E /* ScannerAssembly.swift */,
+				9DA71B853B85703923DAEB54 /* ScannerAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		A0DDEBC27944235884935614 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				DDD875A35BD3A411955C4BE3 /* MediaPickerCameraType.swift */,
+				95F4C48CF8C5D70F168F11E3 /* MediaPickerData.swift */,
+				C985910E98081E3A003D2AF1 /* MediaPickerItem.swift */,
+				D03436A840B3B16BF8F79A32 /* MediaPickerModule.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		A23E6863CFEDC0712168C644 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				134F25342DA916AE9A5FB097 /* PhotoLibraryRouter.swift */,
+				12A4D2F6545FCDCC055A2B1F /* PhotoLibraryUIKitRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		A24F7E94EF4611DC64A89925 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				E9BF50C25AC2F6E27767ECD3 /* MaskCropperAssembly.swift */,
+				BE24751B2E426E31C9DED3CC /* MaskCropperAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		A2AD78B163C44864AE3026C8 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				0BF1ECC1A6DE283F56B57132 /* PhotoLibraryMarshrouteAssembly.swift */,
+				B800933973EE0D05536E0C84 /* PhotoLibraryMarshrouteAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		A547C5CE02EE422C6BF7A854 /* PhotoLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				C8E150E7C2FC11EA1102C139 /* PhotoLibraryLatestPhotoProvider.swift */,
+			);
+			path = PhotoLibrary;
+			sourceTree = "<group>";
+		};
+		AA500948ADDC6FFF69B17701 /* ThumbnailsView */ = {
+			isa = PBXGroup;
+			children = (
+				F45B32EB91E42B9196B7EBB5 /* CameraThumbnailCell.swift */,
+				264C80D9D22F2E1977C5818A /* MediaItemThumbnailCell.swift */,
+				D5C446B2B47072CDEE07A230 /* ThumbnailsView.swift */,
+				196A98D6A4CF0DD63DE979F4 /* ThumbnailsViewLayout.swift */,
+			);
+			path = ThumbnailsView;
+			sourceTree = "<group>";
+		};
+		AE22B758ADD8AEB95A6552E3 /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				3F6EE3C7133523BDA71D3D70 /* Assembly */,
+				478F29371F5BFBCE21446221 /* Interactor */,
+				A0DDEBC27944235884935614 /* Module */,
+				D72250FA837AE8FD4F148DE4 /* Presenter */,
+				DCD0EBAA54A7A7DED6AACE88 /* Router */,
+				F6E68BF6831040195B4F5EE8 /* View */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
+		AE804AC0610E3F4E401CE011 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				73AC2E2BEAF5F594DB8BCA44 /* CameraPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		B63AFC9A7DD65B45F82630D4 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				CDAD27E60F7BC97615992D87 /* ImageCroppingPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		BA5BF1ECE7EFC1812887473E /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				7C2DF64707B702CF142E6B19 /* CameraV3Assembly.swift */,
+				71B2367A3844CF740C2A8B62 /* CameraV3AssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		BA69B5F97E43C48D0AE16A69 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				9E1DA865782F1F8FC4A9F6C7 /* PhotoLibraryV2Router.swift */,
+				3899E01133BB23CE96C972C7 /* PhotoLibraryV2UIKitRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		BBA22105FD10A9F0F5F4E8FB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6D988B1DFD232A734DF9FCC2 /* ImageSource.framework */,
+				467D3395447AB7B5ED887D2B /* JNWSpringAnimation.framework */,
+				591EC195914B4DB2CAB1A8F4 /* Marshroute.framework */,
+				4F62A915908F2B825BE7C6BF /* ObjCExceptionsCatcher.framework */,
+				D65E639EF1E655269DE50A52 /* Paparazzo_Paparazzo.bundle */,
+				0CDC1B8D80172A414B5D94E6 /* Paparazzo.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BBEA9471E61ED9609312E3B9 /* MaskCropper */ = {
+			isa = PBXGroup;
+			children = (
+				A24F7E94EF4611DC64A89925 /* Assembly */,
+				9B1B37048BF0058542176909 /* Interactor */,
+				FE5153A498A8D7A19ADF5857 /* Module */,
+				C56E0A8B2201B79430DED964 /* Presenter */,
+				0AEB9D2E8F9A2629585976D6 /* Router */,
+				5518E7193512966324D7A05F /* View */,
+			);
+			path = MaskCropper;
+			sourceTree = "<group>";
+		};
+		BFAE9A531DD5E69143B4C197 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				EEA692F5A799CFBE4F68F112 /* CameraV3TransitionAnimator.swift */,
+				6CF0A0ABBCFFDB3C7819EA9E /* MedicalBookCameraTransitionAnimator.swift */,
+				12EF8BB5766E5D006C6B09F5 /* PhotoLibraryToCameraTransitioningDelegate.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		C4E157196E88F5F4D7E88881 /* VIPER */ = {
+			isa = PBXGroup;
+			children = (
+				368FA7F411F4759CC1F80046 /* Camera */,
+				639788817DA9AA0763A5C889 /* CameraV3 */,
+				5ABFE698A7EA4919AA6599F2 /* ImageCropping */,
+				390C540E6AC257986D0D9DAD /* InfoMessage */,
+				BBEA9471E61ED9609312E3B9 /* MaskCropper */,
+				AE22B758ADD8AEB95A6552E3 /* MediaPicker */,
+				3E913CF0F318A11B5C6B38D1 /* MedicalBookCamera */,
+				4771FC305CCE5D2D36783580 /* NewCamera */,
+				1A2BDDFB850508AD562B4829 /* PhotoLibrary */,
+				19243C0A26393EDB4321129B /* PhotoLibraryV2 */,
+				8604A78D24D2692AAD3A6996 /* PhotoLibraryV3 */,
+				DDF5BDFFE63B36B3188776AB /* Scanner */,
+				BFAE9A531DD5E69143B4C197 /* Transition */,
+			);
+			path = VIPER;
+			sourceTree = "<group>";
+		};
+		C56E0A8B2201B79430DED964 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				BF0618A1657A9E08392E183C /* MaskCropperPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		C60900EB618B2A2FE344322A /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				1B63AAEE4F6C57E07DF8972D /* PhotoLibraryV3Presenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		CB2C858156C9E86F12C1AE4D /* Derived */ = {
+			isa = PBXGroup;
+			children = (
+				E82DA9ACDD9D0FFFF09EFC26 /* InfoPlists */,
+				CFD578108F635847BD2B22DB /* Sources */,
+			);
+			path = Derived;
+			sourceTree = "<group>";
+		};
+		CF76F3B79B0F7154DAF7EE7C /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				A304AAF2144A53E45E7F3995 /* PhotoLibraryV3Assembly.swift */,
+				9E62A5A65CB254226BC839FD /* PhotoLibraryV3AssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		CFD578108F635847BD2B22DB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FE99ED65FC673A4CF3E87C14 /* TuistBundle+Paparazzo.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D0C12C7202F6B0607BBA36FB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				90964CE30D9AFD3D4CCDE835 /* ObjCExceptionsCatcher */,
+				831701246ED85C32A402DE6D /* Paparazzo */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D0CF076E0A7CD448EBF44A29 /* MedicalBookCamera */ = {
+			isa = PBXGroup;
+			children = (
+				FB8837CABB69048E5FB8A228 /* MedicalBookCameraMarshrouteAssembly.swift */,
+				CC0DB1750A7468463C6C5882 /* MedicalBookCameraMarshrouteRouter.swift */,
+			);
+			path = MedicalBookCamera;
+			sourceTree = "<group>";
+		};
+		D542B666B9D00F3CC4BE6EFE /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				18CE87B88EF50F528FE0A580 /* PhotoLibraryV3Data.swift */,
+				E899DE2FAF35EF4606CE7313 /* PhotoLibraryV3Module.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		D597B824BE0DDD3D98DAFDBF /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				BDD548164D5F8B6C6135C2C6 /* ScannerMarshrouteRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		D72250FA837AE8FD4F148DE4 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				7119C12810262FBA05A8698F /* MediaPickerPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		D783ECB388D65A7561ABEC73 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2D5D91D3E84DEF3E6BFC27B9 /* AccessibilityId.swift */,
+				A7D72D94AB28E9D60DE19C31 /* Debouncer.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		D91CE83D0B97FA6356F8D24E /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				036E952E60A746F2F0DA5DAD /* ImageCroppingModule.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		DB04018D6E9683DD7BBE4391 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				F54C3146D593D4CB6AA4E9BC /* MedicalBookCameraRouter.swift */,
+				B2CFD5003998C6E878619912 /* MedicalBookCameraRouterImpl.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		DCD0EBAA54A7A7DED6AACE88 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				8B99C255C559740560D483DC /* MediaPickerRouter.swift */,
+				926EADD01A9A3375F4F654E4 /* MediaPickerUIKitRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		DCFD487D15DABC19F367DFF0 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				DC12E199C70ED9265A7DC1AE /* CameraModuleInput.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		DDF5BDFFE63B36B3188776AB /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				9C01204543C609D67390DAE2 /* Assembly */,
+				89540167E2424192A2260C1A /* Interactor */,
+				395125CF1A5B96E4A7AB0BCC /* Module */,
+				467198C68068D044EE07FFE5 /* Presenter */,
+				2251900FB1ADB9A8068FBB3C /* Router */,
+				3A442CF4BB9677B6A33604CD /* View */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		DE3883BA43EEC6DE69C96D23 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4EDA97266ADE0C282EE8B046 /* CroppingPreviewView.swift */,
+				A982F7B12F5A8D297FBD284D /* GridView.swift */,
+				D2228D64464C694058C15F65 /* ImageCroppingControlsView.swift */,
+				2AC88A468B507F1306DAF518 /* ImageCroppingUITheme.swift */,
+				4A1267FDC67E5ABA529D8350 /* ImageCroppingView.swift */,
+				AD7423436E2B8766CA44F172 /* ImageCroppingViewController.swift */,
+				D210A205C55F4FD3275A889D /* ImageCroppingViewInput.swift */,
+				5F34B2A88BCFC5F7D761CFF2 /* RightIconButton.swift */,
+				361381937B38DB676CB3C8DC /* RotationSliderView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E20F7A1E2528FD0C08D2D57A /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				BB93D82A83F17512BC47F7DC /* PhotoLibraryV2Interactor.swift */,
+				8A8385A0AB515FB22BF6BE41 /* PhotoLibraryV2InteractorImpl.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		E43E69A8B9E4BCD37F75727E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				3ED49DCD8E599AAA606D83F3 /* DI */,
+				7605DE28CF58CB052E362BE1 /* Extensions */,
+				80AA64421FA65D2DFE61C839 /* Helpers */,
+				EFC2817A5B48D8D8032CA810 /* Resources */,
+				FAF7D0589873AC894CFA6463 /* Services */,
+				D783ECB388D65A7561ABEC73 /* Utilities */,
+				C4E157196E88F5F4D7E88881 /* VIPER */,
+				B5C600EECE496A8FD2236C3E /* DisposeBag.swift */,
+				3C96702EFD83E8A38894C131 /* LimitedAccessAlertFactory.swift */,
+				A3B78938215CF53495DFD54A /* PaparazzoFacade.swift */,
+				250D9F6298F646A4306A43C5 /* PaparazzoPickerModule.swift */,
+				75DB0232BA469E50EFA16EE6 /* PaparazzoUITheme.swift */,
+				893475B17D506B61AA7290DC /* PaparazzoViewController.swift */,
+				3FBCACA79E6B87BC429FCEB8 /* PhotoLibraryItemsService.swift */,
+				04CE4ED7D9CDE0D5BEB41289 /* PhotoTweakView.swift */,
+				350906CCA5135F36FE32F97C /* ThemeConfigurable.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E52A706965551CCAFA717034 /* PhotoLibraryV2 */ = {
+			isa = PBXGroup;
+			children = (
+				38FEAFE7EB7F11E5B0E64CAA /* Assembly */,
+				1A3D15856DE0D6A47650DDF3 /* Router */,
+			);
+			path = PhotoLibraryV2;
+			sourceTree = "<group>";
+		};
+		E6C887E5E64A66D20E7A50F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				421452DA6B82236F02C1FB72 /* NewCameraUITheme.swift */,
+				AFE14684F6330D38916FE38A /* SelectedPhotosBarView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E714A6E081DEF43853211BCD /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				B3863EC9F48A46C674547329 /* PhotoLibraryData.swift */,
+				18B9BE03CE63F901F5527C31 /* PhotoLibraryModule.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		E7864DDA64FDD8ED847D190E /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				1EBE9485C2517C58E98C157D /* PhotoLibraryPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		E82DA9ACDD9D0FFFF09EFC26 /* InfoPlists */ = {
+			isa = PBXGroup;
+			children = (
+				53177754A0C5AE7863AEFD38 /* ObjCExceptionsCatcher-Info.plist */,
+				C974DC83550D8A264937045E /* Paparazzo_Paparazzo-Info.plist */,
+				04AB40587F7CD0C153DFE581 /* Paparazzo-Info.plist */,
+			);
+			path = InfoPlists;
+			sourceTree = "<group>";
+		};
+		E8DF37306A3E5B15CA948718 = {
+			isa = PBXGroup;
+			children = (
+				3EDE4C7334E5F6873E29C126 /* Project */,
+				BBA22105FD10A9F0F5F4E8FB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E917705E81DE4991058CBE7E /* CameraOutputRenderView */ = {
+			isa = PBXGroup;
+			children = (
+				850C8DB42F54158C62BAAB85 /* CameraOutputGLKView.swift */,
+				0B1DFDAA9D048088B3D1D893 /* CameraOutputRenderView.swift */,
+			);
+			path = CameraOutputRenderView;
+			sourceTree = "<group>";
+		};
+		E9B3BE41501825752FC5117C /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				F7DB2DA2020BE124E55745E6 /* PhotoLibraryAssembly.swift */,
+				061289A7D90E83C02CDD2C3F /* PhotoLibraryAssemblyImpl.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		ED8BD4DB72AFE1E03E777BA2 /* ImageCropping */ = {
+			isa = PBXGroup;
+			children = (
+				589533584777D86A74612797 /* ImageCroppingService.swift */,
+			);
+			path = ImageCropping;
+			sourceTree = "<group>";
+		};
+		EFC2817A5B48D8D8032CA810 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7A88520A6C83FCCFAA99D562 /* Assets */,
+				889B53B6D4020F76471C33B7 /* Localization */,
+				76A782F226AAFA8F8CD1C7C3 /* Shader */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F4E4C331EB148F23DB6F9535 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				3CF5D4FA5ED801DBF5EFA759 /* Filter.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
+		F6E68BF6831040195B4F5EE8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4031D8359264D0D5CDFF549C /* Controls */,
+				4FDFC112C96AA71024B93961 /* MainView */,
+				AA500948ADDC6FFF69B17701 /* ThumbnailsView */,
+				0C87D17D4CB9E0718C068E33 /* ImagePerceptionBadgeView.swift */,
+				B03B4A3199DE6068E0AE1C29 /* MediaPickerRootModuleUITheme.swift */,
+				ED112548798603DB25691B5F /* MediaPickerView.swift */,
+				2DAD6C1269128BE029811BB8 /* MediaPickerViewController.swift */,
+				81C8BB86D7F5D3868A19971F /* MediaPickerViewInput.swift */,
+				366F1F8C16B2F5048866DFB6 /* MediaRibbonDataSource.swift */,
+				EA084BC93C7E943550D2E018 /* PhotoCollectionViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F8B2830B90756FBE075D1AE5 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C870042715A34CE6F6CCF4C8 /* CameraV3Module.swift */,
+				5574C58042458CAC8C47C0FF /* CameraV3Presenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		FA845A58DC0DD2B16BD0B474 /* CameraV3 */ = {
+			isa = PBXGroup;
+			children = (
+				1CF6A7DC2C8FEA8FC29392F7 /* CameraV3MarshrouteAssembly.swift */,
+				0D2185F47A3135AC5E40BFD0 /* CameraV3MarshrouteRouter.swift */,
+			);
+			path = CameraV3;
+			sourceTree = "<group>";
+		};
+		FAF7D0589873AC894CFA6463 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				65039CCD4DCDD7A8258C8188 /* Camera */,
+				127ABF5D7AA143E56F0DD7D2 /* CameraStatus */,
+				0E429E19787AEA4BD7F5E02E /* CroppingOverlayProviders */,
+				ED8BD4DB72AFE1E03E777BA2 /* ImageCropping */,
+				A547C5CE02EE422C6BF7A854 /* PhotoLibrary */,
+				0C141C5E35DEC2A1F51D99A5 /* DeviceOrientationService.swift */,
+				358F114A5E2987794B1D0DC4 /* ImageMetadataWritingService.swift */,
+				CB8562C6A07DE0AB127E7B68 /* LocationProvider.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		FE5153A498A8D7A19ADF5857 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				A1F5FF9EA93F7EAD52942D86 /* MaskCropperData.swift */,
+				BDD5C4372C20537C87EAE197 /* MaskCropperModule.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C6847C5C5B176E5BED81F560 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3A35FC4182D00AF1A042154 /* AvitoMediaPicker_ObjCExceptionCatcherHelper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		20DE1258D1E79BEF422FEDB4 /* ObjCExceptionsCatcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF222385B866F160B9601C55 /* Build configuration list for PBXNativeTarget "ObjCExceptionsCatcher" */;
+			buildPhases = (
+				C6847C5C5B176E5BED81F560 /* Headers */,
+				8E433DB1DB8ADE178F9AFD04 /* Sources */,
+				EBB34089A47C2C9584E21834 /* Resources */,
+				7E876199ED1195B51402E86C /* Frameworks */,
+				5B474041A379E98F6861E9EB /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ObjCExceptionsCatcher;
+			packageProductDependencies = (
+			);
+			productName = ObjCExceptionsCatcher;
+			productReference = 4F62A915908F2B825BE7C6BF /* ObjCExceptionsCatcher.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		62A44670F4C5CC169B878AE4 /* Paparazzo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0A360E79CA6530C1443F4A6 /* Build configuration list for PBXNativeTarget "Paparazzo" */;
+			buildPhases = (
+				353CBE73BE8A4F73555C87DC /* Sources */,
+				0C96CA98C060574379317146 /* Resources */,
+				08884BE69815E1AE3B0ED3CE /* Frameworks */,
+				E9A39BD4030536B90E38B086 /* Embed Frameworks */,
+				CFD349616286C854E8D91469 /* Dependencies */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A19C16450EF26C04660AA754 /* PBXTargetDependency */,
+				920B379F0648B1C846FC8F36 /* PBXTargetDependency */,
+			);
+			name = Paparazzo;
+			packageProductDependencies = (
+			);
+			productName = Paparazzo;
+			productReference = 0CDC1B8D80172A414B5D94E6 /* Paparazzo.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B59C20E86EEC90B84F72D3A8 /* Paparazzo_Paparazzo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 491F7A0CCE096D8AB90DACBA /* Build configuration list for PBXNativeTarget "Paparazzo_Paparazzo" */;
+			buildPhases = (
+				CF81988BC3D393728DD18A2C /* Resources */,
+				987AF4FD83CCAAFBAEA89CA6 /* Frameworks */,
+				9B7B5A05640E60E6F26DE919 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Paparazzo_Paparazzo;
+			packageProductDependencies = (
+			);
+			productName = Paparazzo_Paparazzo;
+			productReference = D65E639EF1E655269DE50A52 /* Paparazzo_Paparazzo.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29A5B9BAD0D7DAA5A455CEB5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = E16827F99C1449EC97E50E05 /* Build configuration list for PBXProject "Paparazzo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				hy,
+				ru,
+			);
+			mainGroup = E8DF37306A3E5B15CA948718;
+			productRefGroup = BBA22105FD10A9F0F5F4E8FB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				20DE1258D1E79BEF422FEDB4 /* ObjCExceptionsCatcher */,
+				62A44670F4C5CC169B878AE4 /* Paparazzo */,
+				B59C20E86EEC90B84F72D3A8 /* Paparazzo_Paparazzo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0C96CA98C060574379317146 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF81988BC3D393728DD18A2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E7F66FF052CE7411B645DB1 /* Assets.xcassets in Resources */,
+				889B40AE3644ABFEC05836C3 /* Localizable.strings in Resources */,
+				F8685A1CAA13CAC5E4D56867 /* CameraShader.metallib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBB34089A47C2C9584E21834 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		353CBE73BE8A4F73555C87DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F67DA27BF9CEFBA7115FAD1 /* TuistBundle+Paparazzo.swift in Sources */,
+				0D1244B0CAD31A2ECF43FAD3 /* CameraV3MarshrouteAssembly.swift in Sources */,
+				DAD887CBA4227888DF3F7BA5 /* CameraV3MarshrouteRouter.swift in Sources */,
+				DD1602360D06D74E850A0A05 /* AssemblyFactory.swift in Sources */,
+				1CF9AF7E3C517217A15BBEEA /* BasePaparazzoAssembly.swift in Sources */,
+				030F494E3BBF1D8D7216794D /* ServiceFactory.swift in Sources */,
+				BE4E8995D2607D183CF4CE80 /* DisposeBag.swift in Sources */,
+				D6252C14EAD715918136AF2E /* AVFoundationExtensions.swift in Sources */,
+				C3266B0B50113EF092EA81D4 /* ArrayExtensions.swift in Sources */,
+				C75149CFFE64748F0EB3BCC1 /* CGAffineTransformExtensions.swift in Sources */,
+				A6B8D949F2744F3A668904E0 /* CGRectExtensions.swift in Sources */,
+				7F895269A5BE84B8207F098E /* ExifOrientationExtensions.swift in Sources */,
+				8595D52F3BD15F31CAB3DDB8 /* FloatExtensions.swift in Sources */,
+				4BF54C47D5D570911DE29CE3 /* ImageSource+BackwardCompatibility.swift in Sources */,
+				DF1229DDB54569F003983A23 /* PHAuthorizationStatusExtensions.swift in Sources */,
+				37259763782C271E4577575C /* PHPhotoLibraryExtensions.swift in Sources */,
+				0CAD4C7A9A71A42E63E4F7A6 /* UIDeviceExtensions.swift in Sources */,
+				B21FA86163B4C5209248D934 /* UIKitExtensions.swift in Sources */,
+				D2F00F14B61AF58AC7B3B53A /* UIScrollView+ScrollToDirection.swift in Sources */,
+				C3BC5E00F2E99AC5709A6AE5 /* UIView+Layout.swift in Sources */,
+				F7C616DD6FCC6115CB18F1C3 /* UIView+SafeAreaInsets.swift in Sources */,
+				447DE7AD3AF754DCCD22179D /* BaseUIKitRouter.swift in Sources */,
+				AC7C2D7F2F12B07311A529B1 /* CameraOutputGLKView.swift in Sources */,
+				6CAB48641DCE6DB4469287AA /* CameraOutputRenderView.swift in Sources */,
+				852820D161801C4BE166C051 /* CameraOutputView.swift in Sources */,
+				6B44B4D2322A93D1FB906F40 /* CaptureSessionPreviewService.swift in Sources */,
+				DF60B7D6F09031628D3B84F5 /* CaptureSessionSynchronizer.swift in Sources */,
+				EE056B31715080CA6BF385D9 /* CollectionViewDataSource.swift in Sources */,
+				912AC11DC13B0D8A3F70C1AA /* DummyImageSource.swift in Sources */,
+				CF716BFCA86DD4FDC1856DE2 /* ImageStorage.swift in Sources */,
+				C033AAFECD7D015F8002BF4C /* Localization.swift in Sources */,
+				60E07272FFB79EC4CDBC9BBF /* ObjCExceptionCatcher.swift in Sources */,
+				B224D2CC2A7FB66CE5D097D8 /* Promise.swift in Sources */,
+				659F61354546451498C41DFE /* SingleObjectCache.swift in Sources */,
+				B0D4D14D22AD13B842A174E0 /* WeakWrapper.swift in Sources */,
+				7058E77CCECCFCECD61FE39D /* LimitedAccessAlertFactory.swift in Sources */,
+				2BC0D39BD11749763AC76AD7 /* PaparazzoFacade.swift in Sources */,
+				C69A2ED4A1DF1FECDBACD8CE /* PaparazzoPickerModule.swift in Sources */,
+				C0D3C19842463346E62011C1 /* PaparazzoUITheme.swift in Sources */,
+				7DA59A871EEBEC032A769668 /* PaparazzoViewController.swift in Sources */,
+				822EBE4ADC31C929285DE378 /* PhotoLibraryItemsService.swift in Sources */,
+				61B17DE783E62E0F75FCE90D /* PhotoTweakView.swift in Sources */,
+				1DB1560DB42E913E5EDB1BD2 /* CameraService.swift in Sources */,
+				EFD2471035340196B7AD90F8 /* CameraServiceImpl.swift in Sources */,
+				CE73C91B43409D92F2C20B30 /* CameraStatusService.swift in Sources */,
+				48D78B343E3EE3F9C219C63C /* CameraStatusServiceImpl.swift in Sources */,
+				08A11A66F46A3463C15D8138 /* CircleCroppingOverlayProvider.swift in Sources */,
+				7B4BA811FC20355213A361C6 /* CroppingOverlayProvider.swift in Sources */,
+				2AC4D3BA7B43EC0F0CB16701 /* CroppingOverlayProvidersFactory.swift in Sources */,
+				4B3999ED3D340005524C55F7 /* HeartShapeCroppingOverlayProvider.swift in Sources */,
+				099C1C8E0DA110024A5B670F /* RectangleCroppingOverlayProvider.swift in Sources */,
+				C5C9CD2F590B36B78608AB85 /* DeviceOrientationService.swift in Sources */,
+				5818EAA1D830212D0A75D264 /* ImageCroppingService.swift in Sources */,
+				FB064A0A437EE998CBECEE41 /* ImageMetadataWritingService.swift in Sources */,
+				6FB0FD2E30A5EBE8DAE471C6 /* LocationProvider.swift in Sources */,
+				79785B62689476BD1C14B151 /* PhotoLibraryLatestPhotoProvider.swift in Sources */,
+				6C365326AB2B8767664BAAEA /* ThemeConfigurable.swift in Sources */,
+				3784E8DE186229E184B5C377 /* AccessibilityId.swift in Sources */,
+				A5C97ED98D233B5924E2E2C3 /* Debouncer.swift in Sources */,
+				5659888DF35747FCF83B846F /* CameraAssembly.swift in Sources */,
+				A90455C5EC68EF1827DE0313 /* CameraAssemblyImpl.swift in Sources */,
+				5E8E5641724C26D82762EF4C /* CameraInteractor.swift in Sources */,
+				35735D0D3ACFFD753E7FA184 /* CameraInteractorImpl.swift in Sources */,
+				2E75995DBD3DF6ABAE653E71 /* CameraModuleInput.swift in Sources */,
+				FC90D1AA816F3D0CF45B5035 /* CameraPresenter.swift in Sources */,
+				DE63CC174533F07B8110BEF2 /* CameraView.swift in Sources */,
+				BECDD074B622496F82BF1ED5 /* CameraViewInput.swift in Sources */,
+				4A31963EA8633E21D2CDC682 /* FocusIndicator.swift in Sources */,
+				5CC3ACE5685DFFB9158C0273 /* CameraV3Assembly.swift in Sources */,
+				00C335C59C09870B9B1C0CD4 /* CameraV3AssemblyImpl.swift in Sources */,
+				6BB69A9C277678D5710AF2AA /* CameraV3Interactor.swift in Sources */,
+				B931EFF9038218BAE65F859C /* CameraV3InteractorImpl.swift in Sources */,
+				257C100BF390C48228B86BB7 /* CameraV3Module.swift in Sources */,
+				C8C2419B6261A563EA4834BD /* CameraV3Presenter.swift in Sources */,
+				F5D0C01E7BA082F8C5496379 /* CameraV3Router.swift in Sources */,
+				DC6D8C7DA6A7D2CF22A1719F /* CameraV3RouterImpl.swift in Sources */,
+				AFEED071C86B289135BBA829 /* CameraV3UITheme.swift in Sources */,
+				7DEF7672B0BBD5F61C47F579 /* CameraV3View.swift in Sources */,
+				2230DC15F2D75474FF1CF014 /* CameraV3ViewController.swift in Sources */,
+				906846FC7702FDD35AE160A7 /* CameraV3ViewInput.swift in Sources */,
+				C1DCFA0726DF72B44FEE34F8 /* FocusIndicatorV3.swift in Sources */,
+				E69DE879A2DC478C92AC7110 /* SelectedPhotosBarData.swift in Sources */,
+				A6663FE5AB8F258F562F5919 /* SelectedPhotosBarState.swift in Sources */,
+				FF38C7E1CCD0189D1E845810 /* SelectedPhotosView.swift in Sources */,
+				756FD1D8EE3A3433F16B4CF0 /* ShutterButton.swift in Sources */,
+				908CEC5A4C1878386621598B /* VolumeService.swift in Sources */,
+				AF3ACD371A7DD4D3DCC279F3 /* AspectRatio.swift in Sources */,
+				F3F5C26E86A72FBA4E6B62AF /* ImageCroppingAssembly.swift in Sources */,
+				42E8B713A0234E9CFCB7D0A9 /* ImageCroppingAssemblyImpl.swift in Sources */,
+				4B013960D60AEFBACC61586C /* CroppedImageSource.swift in Sources */,
+				888C6ED7F09821CF3B820ACF /* ImageCroppingInteractor.swift in Sources */,
+				F5CEBBA1EFFF5F77D7910018 /* ImageCroppingInteractorImpl.swift in Sources */,
+				56D04EC5C90C51166B7958FD /* ImageCroppingParameters.swift in Sources */,
+				6644BD6C02525063DC92C307 /* ImageCroppingModule.swift in Sources */,
+				79D387758C53C66F6C5B6C9F /* ImageCroppingPresenter.swift in Sources */,
+				0C9D6910799B8B202FFD6A5B /* CroppingPreviewView.swift in Sources */,
+				FB9EAEB260C4A99D7EDCB8AB /* GridView.swift in Sources */,
+				BBC40D2527B660245EFC63A8 /* ImageCroppingControlsView.swift in Sources */,
+				BE1330DA65C97EDD7C956F4C /* ImageCroppingUITheme.swift in Sources */,
+				A5BBE668E60DB084CE26E4CE /* ImageCroppingView.swift in Sources */,
+				1ECDA8460021C45EA0C19F5B /* ImageCroppingViewController.swift in Sources */,
+				C1541C99AB2B7BE5086C8EA4 /* ImageCroppingViewInput.swift in Sources */,
+				736091CCF912F8D3436FF796 /* RightIconButton.swift in Sources */,
+				7E83188ECC342670931B9E14 /* RotationSliderView.swift in Sources */,
+				4FD3D9D2559954D0C03BEC6F /* InfoMessageAnimator.swift in Sources */,
+				4256E804B597281253258ECE /* InfoMessageDisplayer.swift in Sources */,
+				4A0ECEEE53375013676BF0DE /* InfoMessageView.swift in Sources */,
+				073B2EC8B849E446AFA7BD4A /* InfoMessageViewAnimatorBehavior.swift in Sources */,
+				37439D3269587388084AE670 /* InfoMessageViewFactory.swift in Sources */,
+				67EFC3DAD3FAFA26D314EBBE /* InfoMessageViewInput.swift in Sources */,
+				CB60E1E7F6A3EC54B6D27CCF /* MaskCropperAssembly.swift in Sources */,
+				F1052B46855F21B9CCBF78A5 /* MaskCropperAssemblyImpl.swift in Sources */,
+				0C9FB31F16C864B2E8DC9417 /* MaskCropperInteractor.swift in Sources */,
+				76C026CAE1FA6C19B9A36BF0 /* MaskCropperInteractorImpl.swift in Sources */,
+				80F01EDCCC0ED936067A0911 /* MaskCropperData.swift in Sources */,
+				757524FDC74BDD82C5D9FBF9 /* MaskCropperModule.swift in Sources */,
+				2D66793FC92997A76AB353DC /* MaskCropperPresenter.swift in Sources */,
+				F3C0C75471CE469480E08988 /* MaskCropperRouter.swift in Sources */,
+				4F4E1A1473317C1934D3CB8D /* MaskCropperUIKitRouter.swift in Sources */,
+				784CB453F4612B569383835E /* MaskCropperControlsView.swift in Sources */,
+				77FF39BC7E5A0054EE9A44DB /* MaskCropperOverlayView.swift in Sources */,
+				7ABB4F309B23214C416E884A /* MaskCropperUITheme.swift in Sources */,
+				1A6990454635C080CE65C5C0 /* MaskCropperView.swift in Sources */,
+				4AF3FFACB6FFC1094C478619 /* MaskCropperViewController.swift in Sources */,
+				E9526E37C2FA1A1C52FB63E4 /* MaskCropperViewInput.swift in Sources */,
+				DD8E00D8D5D801B350742E0C /* MediaPickerAssembly.swift in Sources */,
+				CA35534C336118C462250E81 /* MediaPickerAssemblyImpl.swift in Sources */,
+				C3C37B8A9A0F7CA48ADF304F /* Filter.swift in Sources */,
+				7F8063CC7A8EB53740997768 /* MediaPickerInteractor.swift in Sources */,
+				D669362DC1478032A60DDF7E /* MediaPickerInteractorImpl.swift in Sources */,
+				E744FA561301001694B2D06F /* MediaPickerCameraType.swift in Sources */,
+				4027DDAADD1C06FF26930B09 /* MediaPickerData.swift in Sources */,
+				A52D723C6F2102F5538C2CFB /* MediaPickerItem.swift in Sources */,
+				1E41018D51CAFCA99BC02D2D /* MediaPickerModule.swift in Sources */,
+				D53500D3AE3EA317184DF29A /* MediaPickerPresenter.swift in Sources */,
+				809303242157D2A4AAFB4FD4 /* MediaPickerRouter.swift in Sources */,
+				C71C3995C7B23817AC80B2D6 /* MediaPickerUIKitRouter.swift in Sources */,
+				D7DD7B854640CA2D5ED3731F /* ButtonWithActivity.swift in Sources */,
+				275D80A518086EEB5E79BAF1 /* CameraControlsView.swift in Sources */,
+				539F3B8A969540BE967F2C6A /* PhotoControlsView.swift in Sources */,
+				EB78A82699B0B4DD8E668690 /* ImagePerceptionBadgeView.swift in Sources */,
+				B2E2AC3B127723D49B6A56D4 /* MainCameraCell.swift in Sources */,
+				06302A62718D017B4CBED027 /* PhotoPreviewCell.swift in Sources */,
+				44911FEC2E836B9485049274 /* PhotoPreviewView.swift in Sources */,
+				FF6708B389472FEEF64629CB /* MediaPickerRootModuleUITheme.swift in Sources */,
+				3E977CE22FB498A7F3C7032F /* MediaPickerView.swift in Sources */,
+				5DD486CC2653B856834BF4F6 /* MediaPickerViewController.swift in Sources */,
+				7455C841455EFDC577496F06 /* MediaPickerViewInput.swift in Sources */,
+				F3915E575920A4A4C1F27E17 /* MediaRibbonDataSource.swift in Sources */,
+				259A36BCF31A199273EDA5A7 /* PhotoCollectionViewCell.swift in Sources */,
+				34DE9127FD3F36CA85A9646E /* CameraThumbnailCell.swift in Sources */,
+				2368EDAA0F8DB68213227747 /* MediaItemThumbnailCell.swift in Sources */,
+				5B52EF9AD803D3EC32F8B33B /* ThumbnailsView.swift in Sources */,
+				087C27DA8D79E6383D6C8A3D /* ThumbnailsViewLayout.swift in Sources */,
+				FD31C8D0261902DEBF17F0E3 /* MedicalBookCameraAssembly.swift in Sources */,
+				25DFF043E8BE976C38658CA7 /* MedicalBookCameraAssemblyImpl.swift in Sources */,
+				06EB7FB7AE50BDBB222F8F9C /* MedicalBookCameraInteractor.swift in Sources */,
+				AA04CEBA0CC9049DF35AE422 /* MedicalBookCameraInteractorImpl.swift in Sources */,
+				13B35CE71FD867F617C8B630 /* MedicalBookCameraModule.swift in Sources */,
+				176A52A9D1B10F87E2C1E919 /* MedicalBookCameraPresenter.swift in Sources */,
+				A1F9343FB5F04005C371793C /* MedicalBookCameraRouter.swift in Sources */,
+				DF12613F4EDF471A01717BAD /* MedicalBookCameraRouterImpl.swift in Sources */,
+				19F4A2A0E49476D9E5CABD40 /* MedicalBookCameraUITheme.swift in Sources */,
+				63DAFF099146D945FEB0E569 /* MedicalBookCameraView.swift in Sources */,
+				B759D56218A28F2F0D2E6BD5 /* MedicalBookCameraViewController.swift in Sources */,
+				BDC846D197FEE7A1A273D31E /* MedicalBookCameraViewInput.swift in Sources */,
+				534083E65058A78237A4F038 /* MedicalCameraHintView.swift in Sources */,
+				E0D264E3D9F9108390240720 /* MedicalMaskOverlayView.swift in Sources */,
+				46B69E738661CA6852F0D192 /* SelectedImageStorage.swift in Sources */,
+				D507E263F8042DCD4386152D /* NewCameraUITheme.swift in Sources */,
+				957E01DF81F1C0C339427265 /* SelectedPhotosBarView.swift in Sources */,
+				3D30721D78247CD205416435 /* PhotoLibraryAssembly.swift in Sources */,
+				65364C4F8358DC056FFA7411 /* PhotoLibraryAssemblyImpl.swift in Sources */,
+				67799A072D6AE3C2FC142DF2 /* PhotoLibraryInteractor.swift in Sources */,
+				CB7E901ECBBC6AE9A47C4707 /* PhotoLibraryInteractorImpl.swift in Sources */,
+				EDD8166DB8324FB95993D50F /* PhotoLibraryData.swift in Sources */,
+				8B289E567CE08B3E880CD90B /* PhotoLibraryModule.swift in Sources */,
+				31826CB41385107090D30D4E /* PhotoLibraryPresenter.swift in Sources */,
+				98B1E551D9E054CBABE211E9 /* PhotoLibraryRouter.swift in Sources */,
+				F30949493659332F476AE3B3 /* PhotoLibraryUIKitRouter.swift in Sources */,
+				FCF10E5623443E0FC73D17C9 /* AccessDeniedUITheme.swift in Sources */,
+				9EC64CFB0FDB93CDF6E09F63 /* AccessDeniedView.swift in Sources */,
+				C855F558113214C88FE7FC7A /* PhotoLibraryAlbumsTableView.swift in Sources */,
+				31AD3B8B2CC1659133E25886 /* PhotoLibraryAlbumsTableViewCell.swift in Sources */,
+				D0D7810189BEDB835FE587B2 /* PhotoLibraryItemCell.swift in Sources */,
+				742F335A8CDB0C911AFF4148 /* PhotoLibraryLayout.swift in Sources */,
+				9C6C82CF04CF347C27EF602F /* PhotoLibraryTitleView.swift in Sources */,
+				C0424A8A74C27F07117AABC4 /* PhotoLibraryToolbar.swift in Sources */,
+				16E7569CD0FF33D1D8F5B1B0 /* PhotoLibraryUITheme.swift in Sources */,
+				CE1FB51155754E1148D6D22D /* PhotoLibraryView.swift in Sources */,
+				4121A384C264BAAEF5B907BC /* PhotoLibraryViewController.swift in Sources */,
+				25F3ADB83C8B57D581AD73C8 /* PhotoLibraryViewInput.swift in Sources */,
+				A5B70C96269265EAE1B5A6D9 /* PhotoLibraryV2Assembly.swift in Sources */,
+				515352BE764C710362B17128 /* PhotoLibraryV2AssemblyImpl.swift in Sources */,
+				2C5F450387C7D34D80746C2D /* PhotoLibraryV2Interactor.swift in Sources */,
+				2474E7743E8D3472EA06A7F2 /* PhotoLibraryV2InteractorImpl.swift in Sources */,
+				414AF2E71F933294F7A889D3 /* PhotoLibraryV2Data.swift in Sources */,
+				B78F35F3B241AEAA735926F3 /* PhotoLibraryV2Module.swift in Sources */,
+				5250CD54EE8092DAC90071D6 /* PhotoLibraryV2Presenter.swift in Sources */,
+				2CCD1F8A6BC65C50EDB2B591 /* PhotoLibraryV2Router.swift in Sources */,
+				D0239C7C5FD1B45265FE8645 /* PhotoLibraryV2UIKitRouter.swift in Sources */,
+				D6A62EA5089DF48D2F67B9DB /* PhotoLibraryCameraView.swift in Sources */,
+				6B95DFEEBDDAA0AA34091CAC /* PhotoLibraryV2Layout.swift in Sources */,
+				4A628663C56424EBFD830D7E /* PhotoLibraryV2TitleView.swift in Sources */,
+				51DFC5F85EA99E4F738D9819 /* PhotoLibraryV2UITheme.swift in Sources */,
+				6AA1AC647F5AADD134625618 /* PhotoLibraryV2View.swift in Sources */,
+				2E97562420AC7BBCE1A71931 /* PhotoLibraryV2ViewController.swift in Sources */,
+				05B39B628A2A54C4C411B5F2 /* PhotoLibraryV2ViewInput.swift in Sources */,
+				B29F1562B3919AC4CE917E60 /* PhotoLibraryV3Assembly.swift in Sources */,
+				CB68C3345AC23103554C57AA /* PhotoLibraryV3AssemblyImpl.swift in Sources */,
+				009FD3F1769106847BA88C09 /* PhotoLibraryV3Interactor.swift in Sources */,
+				CFC8964E12F781915C8B2A5D /* PhotoLibraryV3InteractorImpl.swift in Sources */,
+				E1EE1D5F5721877FBACF1EC4 /* PhotoLibraryV3Data.swift in Sources */,
+				57F48EA30915F6447FF45D3D /* PhotoLibraryV3Module.swift in Sources */,
+				4BAA323413547747C2CAAD55 /* PhotoLibraryV3Presenter.swift in Sources */,
+				A6C70F0C5DE734C79F852799 /* PhotoLibraryV3Router.swift in Sources */,
+				8936BE57FF8984AFF44CAC40 /* PhotoLibraryV3UIKitRouter.swift in Sources */,
+				39731EFD59847357D5FE9FF3 /* PhotoLibraryV3CameraView.swift in Sources */,
+				F85CC66C15365FDFC0190108 /* PhotoLibraryV3ItemCell.swift in Sources */,
+				F39FF25058EEFCE7AA6B6D55 /* PhotoLibraryV3Layout.swift in Sources */,
+				642A964263E8D3337BF74564 /* PhotoLibraryV3TitleView.swift in Sources */,
+				0DACB39B73DD1B941C6C7E7C /* PhotoLibraryV3UITheme.swift in Sources */,
+				36AC8DE61AAA6DEE07BD2C29 /* PhotoLibraryV3View.swift in Sources */,
+				1E9B8AFDAC1566DC0E018FEF /* PhotoLibraryV3ViewController.swift in Sources */,
+				56DBDEA31C59B33FF06E9E7D /* PhotoLibraryV3ViewInput.swift in Sources */,
+				5E1BA471065D4BEAA7E32A2D /* ScannerAssembly.swift in Sources */,
+				070499B3964E876E4C844270 /* ScannerAssemblyImpl.swift in Sources */,
+				6C59351E138A8E0B985528D5 /* ScannerInteractor.swift in Sources */,
+				A3DAA869B0BD0EAB7DC16F3B /* ScannerInteractorImpl.swift in Sources */,
+				C691FE3FED7F056B8889267D /* ScannerData.swift in Sources */,
+				06181112EE3C6CA37C8460F2 /* ScannerModule.swift in Sources */,
+				2BFA56AFD658BAD3773D0C6F /* ScannerPresenter.swift in Sources */,
+				BD24E3C2167AEAA32A7E3664 /* ScannerRouter.swift in Sources */,
+				3F3BD3989138BDC075CE7A8D /* ScannerUIKitRouter.swift in Sources */,
+				CADA0B0085357981F16CBF32 /* ScannerModuleUITheme.swift in Sources */,
+				B12F4537E68458A835474EE2 /* ScannerView.swift in Sources */,
+				716BCEEC44CEFC275E8F08BE /* ScannerViewController.swift in Sources */,
+				85A2D154977B904A596F7ACF /* ScannerViewInput.swift in Sources */,
+				358DD908E499C2B76CE8C8FC /* CameraV3TransitionAnimator.swift in Sources */,
+				9EE8440B6AFB7725F7901DEE /* MedicalBookCameraTransitionAnimator.swift in Sources */,
+				136C02B2163D40FC90DCDE36 /* PhotoLibraryToCameraTransitioningDelegate.swift in Sources */,
+				C028032B4392803586CA5D38 /* MarshrouteAssemblyFactory.swift in Sources */,
+				981E34683C303BB67BF2AFDF /* MaskCropperMarshrouteAssembly.swift in Sources */,
+				670209B0B221AD75C784A250 /* MaskCropperMarshrouteAssemblyImpl.swift in Sources */,
+				4C54F58794BB57EBADD24DC7 /* MaskCropperMarshrouteRouter.swift in Sources */,
+				CB2B47A2B852A4BDEEA4BAE2 /* MediaPickerMarshrouteAssembly.swift in Sources */,
+				BB2455AAB5863C061EF3AC21 /* MediaPickerMarshrouteAssemblyImpl.swift in Sources */,
+				7D074F9C1E0C0153AD1A7735 /* MediaPickerMarshrouteRouter.swift in Sources */,
+				9FA74724F6CC877045F05055 /* NonAnimatedPushAnimator.swift in Sources */,
+				35B339EE2EA3D9B4FE8BFD1C /* MedicalBookCameraMarshrouteAssembly.swift in Sources */,
+				797799FD6EE3E15B6B17420E /* MedicalBookCameraMarshrouteRouter.swift in Sources */,
+				492C243EE2ED2E627352326F /* PhotoLibraryMarshrouteAssembly.swift in Sources */,
+				2275FCF89FAA89946D06CB73 /* PhotoLibraryMarshrouteAssemblyImpl.swift in Sources */,
+				FA56D0B761D73BF5C46C6A51 /* PhotoLibraryMarshrouteRouter.swift in Sources */,
+				1B9D9617FEBAA94D1148902A /* PhotoLibraryV2MarshrouteAssembly.swift in Sources */,
+				D1FEDE435B28C4DEF3780BD4 /* PhotoLibraryV2MarshrouteAssemblyImpl.swift in Sources */,
+				6274117F770E36DA205C113F /* PhotoLibraryV2MarshrouteRouter.swift in Sources */,
+				504D5799A7A8AD88F6B23C1E /* PhotoLibraryV3MarshrouteAssembly.swift in Sources */,
+				DF1C257BF2667B4B5D28B195 /* PhotoLibraryV3MarshrouteAssemblyImpl.swift in Sources */,
+				3FEF2AAEF6CDFA7DF5555B45 /* PhotoLibraryV3MarshrouteRouter.swift in Sources */,
+				AC68C5977C6E36819EF9EB01 /* ScannerMarshrouteAssembly.swift in Sources */,
+				FE2500E3EE32DB97F73F1639 /* ScannerMarshrouteAssemblyImpl.swift in Sources */,
+				D63CCDF6943C05F453F550AB /* ScannerMarshrouteRouter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8E433DB1DB8ADE178F9AFD04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE70A89E78C1F50672F109CB /* AvitoMediaPicker_ObjCExceptionCatcherHelper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		920B379F0648B1C846FC8F36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Paparazzo_Paparazzo;
+			target = B59C20E86EEC90B84F72D3A8 /* Paparazzo_Paparazzo */;
+			targetProxy = D71CB512DB6DCE1117C00584 /* PBXContainerItemProxy */;
+		};
+		A19C16450EF26C04660AA754 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ObjCExceptionsCatcher;
+			target = 20DE1258D1E79BEF422FEDB4 /* ObjCExceptionsCatcher */;
+			targetProxy = 0E8FCC7F509502E4887760AD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E4A44B84BE3A4B909AFC83B7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5DF081F2E334E519A7323553 /* en */,
+				D56ABFC6C1240DBFCD03EAB1 /* hy */,
+				A8692350BE1FC229EF89F793 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		608FF24803C9E5BB37DE373B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Sources/ObjCExceptionsCatcher/include",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/ObjCExceptionsCatcher-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-name=ObjCExceptionsCatcher",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = ObjCExceptionsCatcher;
+				PRODUCT_NAME = ObjCExceptionsCatcher;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		6591F6D6DD6C0AA51996402C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				ENABLE_TESTABILITY = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+					"SWIFT_PACKAGE=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-package-name",
+					Paparazzo,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					SWIFT_PACKAGE,
+				);
+				SWIFT_SUPPRESS_WARNINGS = YES;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		A0E75A1C2EDCA30904F922A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				INFOPLIST_FILE = "Derived/InfoPlists/Paparazzo_Paparazzo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Paparazzo.resources;
+				PRODUCT_NAME = Paparazzo_Paparazzo;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					DEBUG,
+				);
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		A83B08CC44DAF1D0F6B9F9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Sources/ObjCExceptionsCatcher/include",
+					"$(SRCROOT)/../avito-ios/Tuist/.build/checkouts/JNWSpringAnimation/Sources/JNWSpringAnimation/include",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/Paparazzo-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=$(SRCROOT)/Derived/ObjCExceptionsCatcher.modulemap",
+					"-fmodule-map-file=$(SRCROOT)/../avito-ios/Tuist/.build/tuist-derived/JNWSpringAnimation/JNWSpringAnimation.modulemap",
+				);
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/Derived/ObjCExceptionsCatcher.modulemap",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../avito-ios/Tuist/.build/tuist-derived/JNWSpringAnimation/JNWSpringAnimation.modulemap",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Paparazzo;
+				PRODUCT_NAME = Paparazzo;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BE5BEA473A60E33721F8A5C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				INFOPLIST_FILE = "Derived/InfoPlists/Paparazzo_Paparazzo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Paparazzo.resources;
+				PRODUCT_NAME = Paparazzo_Paparazzo;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+		C16BBEFC06BF3D1EB5BDF0E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Sources/ObjCExceptionsCatcher/include",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/ObjCExceptionsCatcher-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-name=ObjCExceptionsCatcher",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = ObjCExceptionsCatcher;
+				PRODUCT_NAME = ObjCExceptionsCatcher;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					DEBUG,
+				);
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C1874836FC85C70A1CB39DD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				ENABLE_TESTABILITY = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-package-name",
+					Paparazzo,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					SWIFT_PACKAGE,
+				);
+				SWIFT_SUPPRESS_WARNINGS = YES;
+				USE_HEADERMAP = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D136F9452675FAE59EA847C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Sources/ObjCExceptionsCatcher/include",
+					"$(SRCROOT)/../avito-ios/Tuist/.build/checkouts/JNWSpringAnimation/Sources/JNWSpringAnimation/include",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/Paparazzo-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=$(SRCROOT)/Derived/ObjCExceptionsCatcher.modulemap",
+					"-fmodule-map-file=$(SRCROOT)/../avito-ios/Tuist/.build/tuist-derived/JNWSpringAnimation/JNWSpringAnimation.modulemap",
+				);
+				OTHER_SWIFT_FLAGS = (
+					"$(inherited)",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/Derived/ObjCExceptionsCatcher.modulemap",
+					"-Xcc",
+					"-fmodule-map-file=$(SRCROOT)/../avito-ios/Tuist/.build/tuist-derived/JNWSpringAnimation/JNWSpringAnimation.modulemap",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Paparazzo;
+				PRODUCT_NAME = Paparazzo;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					DEBUG,
+				);
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		491F7A0CCE096D8AB90DACBA /* Build configuration list for PBXNativeTarget "Paparazzo_Paparazzo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0E75A1C2EDCA30904F922A5 /* Debug */,
+				BE5BEA473A60E33721F8A5C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B0A360E79CA6530C1443F4A6 /* Build configuration list for PBXNativeTarget "Paparazzo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D136F9452675FAE59EA847C0 /* Debug */,
+				A83B08CC44DAF1D0F6B9F9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF222385B866F160B9601C55 /* Build configuration list for PBXNativeTarget "ObjCExceptionsCatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C16BBEFC06BF3D1EB5BDF0E1 /* Debug */,
+				608FF24803C9E5BB37DE373B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E16827F99C1449EC97E50E05 /* Build configuration list for PBXProject "Paparazzo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6591F6D6DD6C0AA51996402C /* Debug */,
+				C1874836FC85C70A1CB39DD0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29A5B9BAD0D7DAA5A455CEB5 /* Project object */;
+}

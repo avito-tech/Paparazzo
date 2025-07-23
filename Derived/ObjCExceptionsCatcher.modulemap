@@ -1,0 +1,4 @@
+module ObjCExceptionsCatcher {
+    umbrella "/Users/ttt/avito-ios-media-picker/Sources/ObjCExceptionsCatcher/include"
+    export *
+}

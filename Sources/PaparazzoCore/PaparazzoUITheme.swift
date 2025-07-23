@@ -4,6 +4,7 @@ public struct PaparazzoUITheme:
     MediaPickerRootModuleUITheme,
     PhotoLibraryUITheme,
     PhotoLibraryV2UITheme,
+    PhotoLibraryV3UITheme,
     ImageCroppingUITheme,
     MaskCropperUITheme,
     ScannerRootModuleUITheme,

@@ -1,0 +1,4 @@
+module ObjCExceptionsCatcherHelpers {
+    umbrella "/Users/ttt/avito-ios-media-picker/Paparazzo/Core/Helpers/ObjCExceptionsCatcher/Helpers/Headers"
+    export *
+}
