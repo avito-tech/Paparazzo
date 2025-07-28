@@ -1,6 +1,7 @@
 import UIKit
 import Marshroute
 
+@available(*, deprecated, message: "Use PhotoLibraryV3MarshrouteAssemblyImpl instead")
 public final class PhotoLibraryV2MarshrouteAssemblyImpl: BasePaparazzoAssembly, PhotoLibraryV2MarshrouteAssembly {
     
     typealias AssemblyFactory =

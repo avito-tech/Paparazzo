@@ -2,6 +2,7 @@ import AVFoundation
 import ImageSource
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3CameraView instead")
 class PhotoLibraryCameraView: UICollectionReusableView {
     
     // MARK: - Subviews

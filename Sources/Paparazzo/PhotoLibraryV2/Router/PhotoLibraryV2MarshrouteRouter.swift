@@ -1,6 +1,7 @@
 import Marshroute
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3MarshrouteRouter instead")
 final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     typealias AssemblyFactory =
     MediaPickerMarshrouteAssemblyFactory

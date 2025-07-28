@@ -1,6 +1,7 @@
 import Foundation
 import ImageSource
 
+@available(*, deprecated, message: "Use PhotoLibraryV3Interactor instead")
 protocol PhotoLibraryV2Interactor: AnyObject {
     
     var mediaPickerData: MediaPickerData { get }

@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3Assembly instead")
 public protocol PhotoLibraryV2Assembly: AnyObject {
     func module(
         data: PhotoLibraryV2Data,
@@ -13,6 +14,7 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
     ) -> UIViewController
 }
 
+@available(*, deprecated, message: "Use PhotoLibraryV3AssemblyFactory instead")
 public protocol PhotoLibraryV2AssemblyFactory: AnyObject {
     func photoLibraryV2Assembly() -> PhotoLibraryV2Assembly
 }

@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3Data instead")
 public struct PhotoLibraryV2Data {
     public let selectedItems: [PhotoLibraryItem]
     public let mediaPickerData: MediaPickerData
