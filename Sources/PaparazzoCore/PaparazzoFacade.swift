@@ -127,6 +127,40 @@ public final class PaparazzoFacade {
         return NavigationController(rootViewController: galleryController)
     }
     
+    public static func libraryV3ViewController<NavigationController: UINavigationController>(
+        theme: PaparazzoUITheme = PaparazzoUITheme(),
+        parameters: PhotoLibraryV3Data,
+        onFinish: @escaping ([MediaPickerItem]) -> (),
+        onCancel: (() -> ())? = nil,
+        onCameraV3InitializationMeasurementStart: (() -> ())?,
+        onCameraV3InitializationMeasurementStop: (() -> ())?,
+        onCameraV3DrawingMeasurementStart: (() -> ())?,
+        onCameraV3DrawingMeasurementStop: (() -> ())?
+    ) -> NavigationController {
+        let assembly = assemblyFactory(theme: theme).photoLibraryV3Assembly()
+        
+        let galleryController = assembly.module(
+            data: parameters,
+            cameraType: .cameraV3,
+            configure: { (module: PhotoLibraryV3Module) in
+                module.onFinish = { [weak module] result in
+                    module?.dismissModule()
+                    onFinish(result)
+                }
+                module.onCancel = { [weak module] in
+                    module?.dismissModule()
+                    onCancel?()
+                }
+            },
+            onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
+            onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
+            onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart,
+            onCameraV3DrawingMeasurementStop: onCameraV3DrawingMeasurementStop
+        )
+        
+        return NavigationController(rootViewController: galleryController)
+    }
+    
     private static func assemblyFactory(
         theme: PaparazzoUITheme
     ) -> AssemblyFactory {

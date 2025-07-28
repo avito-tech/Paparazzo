@@ -8,6 +8,7 @@ public final class MarshrouteAssemblyFactory:
     ImageCroppingAssemblyFactory,
     PhotoLibraryMarshrouteAssemblyFactory,
     PhotoLibraryV2MarshrouteAssemblyFactory,
+    PhotoLibraryV3MarshrouteAssemblyFactory,
     MaskCropperMarshrouteAssemblyFactory,
     ScannerMarshrouteAssemblyFactory,
     LimitedAccessAlertFactory,
@@ -55,6 +56,10 @@ public final class MarshrouteAssemblyFactory:
     
     public func photoLibraryV2Assembly() -> PhotoLibraryV2MarshrouteAssembly {
         return PhotoLibraryV2MarshrouteAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
+    }
+    
+    public func photoLibraryV3Assembly() -> PhotoLibraryV3MarshrouteAssembly {
+        return PhotoLibraryV3MarshrouteAssemblyImpl(assemblyFactory: self, theme: theme, serviceFactory: serviceFactory)
     }
     
     public func maskCropperAssembly() -> MaskCropperMarshrouteAssembly {

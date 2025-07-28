@@ -1,10 +1,10 @@
 import Foundation
 import ImageSource
 
-final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
+final class PhotoLibraryV3InteractorImpl: PhotoLibraryV3Interactor {
     
     // MARK: - State
-    private var onAlbumEvent: ((PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ())?
+    private var onAlbumEvent: ((PhotoLibraryV3AlbumEvent, PhotoLibraryV3ItemSelectionState) -> ())?
     
     // MARK: - Dependencies
     private let photoLibraryItemsService: PhotoLibraryItemsService
@@ -23,7 +23,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     // MARK: - Init
     init(
         mediaPickerData: MediaPickerData,
-        selectedItems: [PhotoLibraryItem],
+        selectedItems: [PhotoLibraryV3Item],
         photoLibraryItemsService: PhotoLibraryItemsService,
         cameraService: CameraService,
         deviceOrientationService: DeviceOrientationService,
@@ -96,7 +96,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         }
     }
     
-    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryAlbumEvent, PhotoLibraryItemSelectionState) -> ()) {
+    func observeCurrentAlbumEvents(handler: @escaping (PhotoLibraryV3AlbumEvent, PhotoLibraryV3ItemSelectionState) -> ()) {
         onAlbumEvent = handler
     }
     
@@ -104,7 +104,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         return selectedItems.contains(item)
     }
     
-    func selectItem(_ item: MediaPickerItem) -> PhotoLibraryItemSelectionState {
+    func selectItem(_ item: MediaPickerItem) -> PhotoLibraryV3ItemSelectionState {
         if canSelectMoreItems() {
             selectedPhotosStorage.addItem(item)
         }
@@ -115,7 +115,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         selectedPhotosStorage.replaceItem(at: index, with: item)
     }
     
-    func deselectItem(_ item: MediaPickerItem) -> PhotoLibraryItemSelectionState {
+    func deselectItem(_ item: MediaPickerItem) -> PhotoLibraryV3ItemSelectionState {
         selectedPhotosStorage.removeItem(item)
         return selectionState()
     }
@@ -124,7 +124,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         selectedPhotosStorage.moveItem(at: sourceIndex, to: destinationIndex)
     }
     
-    func prepareSelection() -> PhotoLibraryItemSelectionState {
+    func prepareSelection() -> PhotoLibraryV3ItemSelectionState {
         if selectedItems.count > 0 && mediaPickerData.maxItemsCount == 1 {
             selectedPhotosStorage.removeAllItems()
             return selectionState(preSelectionAction: .deselectAll)
@@ -142,7 +142,7 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
             // TODO: (ayutkin) find a way to remove items in `selectedItems` that refer to removed assets
             
             dispatch_to_main_queue {
-                self.onAlbumEvent?(event, self.selectionState())
+                self.onAlbumEvent?(event.asV3, self.selectionState())
             }
         }
     }
@@ -157,11 +157,40 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
         return mediaPickerData.maxItemsCount.flatMap { selectedItems.count < $0 } ?? true
     }
     
-    private func selectionState(preSelectionAction: PhotoLibraryItemSelectionState.PreSelectionAction = .none) -> PhotoLibraryItemSelectionState {
-        return PhotoLibraryItemSelectionState(
+    private func selectionState(preSelectionAction: PhotoLibraryV3ItemSelectionState.PreSelectionAction = .none) -> PhotoLibraryV3ItemSelectionState {
+        return PhotoLibraryV3ItemSelectionState(
             isAnyItemSelected: selectedItems.count > 0,
             canSelectMoreItems: canSelectMoreItems(),
             preSelectionAction: preSelectionAction
+        )
+    }
+}
+
+fileprivate extension PhotoLibraryAlbumEvent {
+    var asV3: PhotoLibraryV3AlbumEvent {
+        switch self {
+        case let .fullReload(value):
+            return .fullReload(value.map { $0.asV3 })
+        case let .incrementalChanges(value):
+            return .incrementalChanges(value.asV3)
+        }
+    }
+}
+
+fileprivate extension PhotoLibraryItem {
+    var asV3: PhotoLibraryV3Item {
+        PhotoLibraryV3Item(image: self.image)
+    }
+}
+
+fileprivate extension PhotoLibraryChanges {
+    var asV3: PhotoLibraryV3Changes {
+        PhotoLibraryV3Changes(
+            removedIndexes: self.removedIndexes,
+            insertedItems: self.insertedItems.map { ($0.0, $0.1.asV3) },
+            updatedItems: self.updatedItems.map { ($0.0, $0.1.asV3) },
+            movedIndexes: self.movedIndexes,
+            itemsAfterChanges: self.itemsAfterChanges.map { $0.asV3 }
         )
     }
 }
