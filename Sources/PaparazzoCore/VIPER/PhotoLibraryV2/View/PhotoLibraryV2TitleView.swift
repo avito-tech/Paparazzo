@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3TitleView instead")
 final class PhotoLibraryV2TitleView: UIView {
     
     var contentInsets: UIEdgeInsets = .zero

@@ -2,6 +2,7 @@ import Foundation
 import ImageSource
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3Presenter instead")
 final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     // MARK: - Dependencies

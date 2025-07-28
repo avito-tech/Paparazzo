@@ -1,6 +1,7 @@
 import Foundation
 import ImageSource
 
+@available(*, deprecated, message: "Use PhotoLibraryV3InteractorImpl instead")
 final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     
     // MARK: - State
