@@ -84,27 +84,38 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
     private var collectionSnapshotView: UIView?
     private let titleView = PhotoLibraryV3TitleView()
     private let accessDeniedView = AccessDeniedView()
-    private let progressIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let dimView = UIView()
-    private let albumsTableView = PhotoLibraryAlbumsTableView()
+    private let albumsTableView = PhotoLibraryV3AlbumsTableView()
     private let placeholderView = UILabel()
     private let closeButton = UIButton()
     private let topRightContinueButton = ButtonWithActivity(shouldResizeToFitActivity: true)
-    private let bottomContinueButton = ButtonWithActivity(activityStyle: .white)
+    
+    private lazy var progressIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .whiteLarge)
+        view.hidesWhenStopped = true
+        return view
+    }()
+
+    private lazy var bottomContinueButton: ButtonWithActivity = {
+        let button = ButtonWithActivity(activityStyle: .white)
+        button.titleEdgeInsets = Spec.bottomContinueButtonInsets
+        return button
+    }()
     
     private lazy var selectedPhotosBarView: SelectedPhotosV3BarView = {
         let view = SelectedPhotosV3BarView()
         view.isHidden = true
-        view.accessibilityIdentifier = "selectedPhotosBarView"
-        view.layer.cornerRadius = 28
         return view
     }()
     
     // MARK: Specs
     
-    private let closeButtonSize = CGSize(width: 38, height: 38)
-    private let continueButtonHeight = CGFloat(38)
-    private let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    private enum Spec {
+        static let closeButtonSize = CGSize(width: 38, height: 38)
+        static let continueButtonHeight = CGFloat(38)
+        static let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let bottomContinueButtonInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
+    }
     
     // MARK: Init
     
@@ -119,7 +130,6 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         backgroundColor = .white
         
         titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTitleViewTap(_:))))
-        titleView.accessibilityIdentifier = "titleView"
         
         dimView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         dimView.alpha = 0
@@ -145,10 +155,6 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         addSubview(titleView)
         addSubview(closeButton)
         addSubview(topRightContinueButton)
-        
-        progressIndicator.hidesWhenStopped = true
-        progressIndicator.color = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
-        
         addSubview(progressIndicator)
         
         setUpAccessibilityIdentifiers()
@@ -260,6 +266,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
             for: .highlighted
         )
         
+        bottomContinueButton.layer.cornerRadius = theme.libraryBottomContinueButtonCornerRadius
         bottomContinueButton.backgroundColor = theme.libraryBottomContinueButtonBackgroundColor
         bottomContinueButton.titleLabel?.font = theme.libraryBottomContinueButtonFont
         bottomContinueButton.setTitleColor(theme.libraryBottomContinueButtonTitleColor, for: .normal)
@@ -267,12 +274,13 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         albumsTableView.setCellLabelFont(theme.photoLibraryAlbumCellFont)
         albumsTableView.setCellBackgroundColor(theme.photoLibraryAlbumsTableViewCellBackgroundColor)
         albumsTableView.setTableViewBackgroundColor(theme.photoLibraryAlbumsTableViewBackgroundColor)
-        albumsTableView.setTopSeparatorColor(theme.photoLibraryAlbumsTableTopSeparatorColor)
         albumsTableView.setCellDefaultLabelColor(theme.photoLibraryAlbumsCellDefaultLabelColor)
         albumsTableView.setCellSelectedLabelColor(theme.photoLibraryAlbumsCellSelectedLabelColor)
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor
+        
+        progressIndicator.color = theme.progressIndicatorColor
         
         selectedPhotosBarView.setTheme(theme)
     }
@@ -298,7 +306,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         topRightContinueButton.accessibilityValue = title
         topRightContinueButton.size = CGSize(
             width: topRightContinueButton.sizeThatFits().width,
-            height: continueButtonHeight
+            height: Spec.continueButtonHeight
         )
         titleView.setNeedsLayout()
         
@@ -589,7 +597,7 @@ extension PhotoLibraryV3View: UICollectionViewDelegateFlowLayout {
 // MARK: - Private methods
 
 private extension PhotoLibraryV3View {
-    private func configureDataSource() {
+    func configureDataSource() {
         dataSource.additionalCellConfiguration = { [weak self] cell, data, collectionView, indexPath in
             self?.configureCell(cell, wihData: data, inCollectionView: collectionView, atIndexPath: indexPath)
         }
@@ -601,6 +609,7 @@ private extension PhotoLibraryV3View {
             
             view.setCameraIcon(self?.theme?.cameraIcon)
             view.setCameraIconColor(self?.theme?.cameraIconColor)
+            view.setCameraCornerRadius(self?.theme?.cameraCornerRadius)
             
             view.onTap = self?.cameraViewData?.onTap
             
@@ -610,31 +619,30 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func setUpAccessibilityIdentifiers() {
+    func setUpAccessibilityIdentifiers() {
         accessibilityIdentifier = AccessibilityId.photoLibrary.rawValue
-        
+        selectedPhotosBarView.accessibilityIdentifier = AccessibilityId.selectedPhotosBarView.rawValue
+        titleView.accessibilityIdentifier = AccessibilityId.titleView.rawValue
         closeButton.accessibilityIdentifier = AccessibilityId.discardLibraryButton.rawValue
         topRightContinueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
         bottomContinueButton.accessibilityIdentifier = AccessibilityId.confirmLibraryButton.rawValue
     }
     
-    private func setUpButtons() {
-        closeButton.size = closeButtonSize
+    func setUpButtons() {
+        closeButton.size = Spec.closeButtonSize
         closeButton.addTarget(
             self,
             action: #selector(onCloseButtonTap(_:)),
             for: .touchUpInside
         )
         
-        topRightContinueButton.contentEdgeInsets = continueButtonContentInsets
+        topRightContinueButton.contentEdgeInsets = Spec.continueButtonContentInsets
         topRightContinueButton.addTarget(
             self,
             action: #selector(onContinueButtonTap(_:)),
             for: .touchUpInside
         )
         
-        bottomContinueButton.layer.cornerRadius = 5
-        bottomContinueButton.titleEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
         bottomContinueButton.addTarget(
             self,
             action: #selector(onContinueButtonTap(_:)),
@@ -642,7 +650,7 @@ private extension PhotoLibraryV3View {
         )
     }
     
-    private func setUpCollectionView() {
+    func setUpCollectionView() {
         collectionView.backgroundColor = .white
         collectionView.dataSource = dataSource
         collectionView.delegate = self
@@ -663,7 +671,7 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func setTopRightContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
+    func setTopRightContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
         guard topRightContinueButton.style != style else { return }
         
         UIView.animate(
@@ -675,7 +683,7 @@ private extension PhotoLibraryV3View {
         )
     }
     
-    private func recreateCollectionView() {
+    func recreateCollectionView() {
         
         // Save the previously visible bounds
         let oldBounds = collectionView.bounds
@@ -714,34 +722,34 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func reloadDataPreservingSelection() {
+    func reloadDataPreservingSelection() {
         collectionView.reloadData()
         selectCollectionViewCellsAccordingToDataSource()
     }
     
-    private func selectCollectionViewCellsAccordingToDataSource() {
+    func selectCollectionViewCellsAccordingToDataSource() {
         // TODO: Сейчас тут замедляется UI на огромных галереях из-за итерирования по всем айтемам
         for indexPath in dataSource.indexPaths(where: { $0.selected }) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
     }
     
-    private func adjustDimmingForCell(_ cell: UICollectionViewCell) {
+    func adjustDimmingForCell(_ cell: UICollectionViewCell) {
         let shouldDimCell = (dimsUnselectedItems && !cell.isSelected)
         cell.contentView.alpha = shouldDimCell ? 0.3 : 1
     }
     
-    private func adjustDimmingForCellAtIndexPath(_ indexPath: IndexPath) {
+    func adjustDimmingForCellAtIndexPath(_ indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) {
             adjustDimmingForCell(cell)
         }
     }
     
-    private func adjustDimmingForVisibleCells() {
+    func adjustDimmingForVisibleCells() {
         collectionView.visibleCells.forEach { adjustDimmingForCell($0) }
     }
     
-    private func configureCell(
+    func configureCell(
         _ cell: PhotoLibraryV3ItemCell,
         wihData data: PhotoLibraryV3ItemCellData,
         inCollectionView collectionView: UICollectionView,
@@ -752,6 +760,7 @@ private extension PhotoLibraryV3View {
         cell.selectionIndexFont = theme?.librarySelectionIndexFont
         cell.setBadgeTextColor(theme?.libraryItemBadgeTextColor)
         cell.setBadgeBackgroundColor(theme?.libraryItemBadgeBackgroundColor)
+        cell.setBadgeCornerRadius(theme?.libraryItemBadgeCornerRadius)
         
         cell.setCloudIcon(theme?.iCloudIcon)
         
@@ -767,7 +776,7 @@ private extension PhotoLibraryV3View {
         cell.adjustAppearanceForSelected(data.selected, animated: false)
     }
     
-    private func onDeselectItem(at indexPath: IndexPath) {
+    func onDeselectItem(at indexPath: IndexPath) {
         dataSource.mutateItem(at: indexPath) { (cellData: inout PhotoLibraryV3ItemCellData) in
             cellData.selected = false
         }
@@ -776,7 +785,7 @@ private extension PhotoLibraryV3View {
         adjustDimmingForCellAtIndexPath(indexPath)
     }
     
-    private func coverCollectionViewWithItsSnapshot() {
+    func coverCollectionViewWithItsSnapshot() {
         collectionSnapshotView = collectionView.snapshotView(afterScreenUpdates: false)
         collectionSnapshotView?.backgroundColor = collectionView.backgroundColor
         
@@ -785,7 +794,7 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func layoutAlbumsTableView() {
+    func layoutAlbumsTableView() {
         
         let size = albumsTableView.sizeThatFits(CGSize(
             width: bounds.width,
@@ -809,18 +818,18 @@ private extension PhotoLibraryV3View {
         )
     }
     
-    private func layOutTopRightContinueButton() {
+    func layOutTopRightContinueButton() {
         let width = topRightContinueButton.sizeThatFits().width
         
         topRightContinueButton.frame = CGRect(
             x: bounds.right - 8 - width,
             y: max(8, paparazzoSafeAreaInsets.top),
             width: width,
-            height: continueButtonHeight
+            height: Spec.continueButtonHeight
         )
     }
     
-    private func deselectCell(at indexPath: IndexPath) {
+    func deselectCell(at indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         
         onDeselectItem(at: indexPath)
@@ -833,7 +842,7 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func removeItems(
+    func removeItems(
         changes: PhotoLibraryV3ViewChanges,
         toIndexPath: (Int) -> IndexPath,
         collectionView: UICollectionView,
@@ -847,7 +856,7 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func insertItems(
+    func insertItems(
         changes: PhotoLibraryV3ViewChanges,
         toIndexPath: (Int) -> IndexPath,
         collectionView: UICollectionView,
@@ -863,7 +872,7 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func updateItems(
+    func updateItems(
         changes: PhotoLibraryV3ViewChanges,
         toIndexPath: (Int) -> IndexPath,
         collectionView: UICollectionView,
@@ -887,7 +896,7 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    private func moveItems(
+    func moveItems(
         changes: PhotoLibraryV3ViewChanges,
         toIndexPath: (Int) -> IndexPath,
         collectionView: UICollectionView,
@@ -902,19 +911,19 @@ private extension PhotoLibraryV3View {
         }
     }
     
-    @objc private func onTitleViewTap(_: UITapGestureRecognizer) {
+    @objc func onTitleViewTap(_: UITapGestureRecognizer) {
         onTitleTap?()
     }
     
-    @objc private func onDimViewTap(_: UITapGestureRecognizer) {
+    @objc func onDimViewTap(_: UITapGestureRecognizer) {
         onDimViewTap?()
     }
     
-    @objc private func onCloseButtonTap(_: UIButton) {
+    @objc func onCloseButtonTap(_: UIButton) {
         onCloseButtonTap?()
     }
     
-    @objc private func onContinueButtonTap(_: UIButton) {
+    @objc func onContinueButtonTap(_: UIButton) {
         onContinueButtonTap?()
     }
 }

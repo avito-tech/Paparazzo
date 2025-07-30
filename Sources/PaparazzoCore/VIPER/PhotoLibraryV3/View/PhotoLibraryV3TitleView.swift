@@ -2,6 +2,10 @@ import UIKit
 
 final class PhotoLibraryV3TitleView: UIView {
     
+    // MARK: Properties
+    
+    var contentInsets: UIEdgeInsets = .zero
+    
     // MARK: UI elements
     
     private let label = UILabel()
@@ -15,8 +19,9 @@ final class PhotoLibraryV3TitleView: UIView {
     
     // MARK: Specs
     
-    private let labelToIconSpacing: CGFloat = 4
-    var contentInsets: UIEdgeInsets = .zero
+    private enum Spec {
+        static let labelToIconSpacing: CGFloat = 4
+    }
     
     // MARK: Init
     
@@ -84,14 +89,14 @@ final class PhotoLibraryV3TitleView: UIView {
         let iconSize = iconView.image?.size ?? .zero
         let topInset = paparazzoSafeAreaInsets.top / 3
         
-        label.resizeToFitWidth(bounds.width - 2 * (labelToIconSpacing + iconSize.width) - contentInsets.left - contentInsets.right)
-        label.left = (bounds.width - (label.width + labelToIconSpacing + iconSize.width)) / 2
+        label.resizeToFitWidth(bounds.width - 2 * (Spec.labelToIconSpacing + iconSize.width) - contentInsets.left - contentInsets.right)
+        label.left = (bounds.width - (label.width + Spec.labelToIconSpacing + iconSize.width)) / 2
         label.centerY = bounds.centerY + topInset
         
         // Don't use `frame` here, otherwise the rotation animation will be broken
         iconView.bounds = CGRect(origin: .zero, size: iconSize)
         iconView.center = CGPoint(
-            x: ceil(label.right + labelToIconSpacing) + iconSize.width / 2,
+            x: ceil(label.right + Spec.labelToIconSpacing) + iconSize.width / 2,
             y: label.centerY
         )
     }

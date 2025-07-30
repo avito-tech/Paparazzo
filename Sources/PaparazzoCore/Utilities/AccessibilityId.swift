@@ -36,13 +36,20 @@ public enum AccessibilityId: String {
     case discardLibraryButton
     case cameraInLibraryButton
     case doneButton
+    case lastPhotoThumbnailView
     
     // PhotoLibrary
     case photoLibrary
+    case titleView
+    case selectedPhotosBarView
     
     // CameraView
     case cameraView
     case cameraTitle
     case cameraSubtitle
     case cameraViewfinder
+    
+    // Albums
+    case albumsTableView
+    case albumsCoverImageView
 }

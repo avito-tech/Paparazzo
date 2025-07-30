@@ -177,7 +177,6 @@ final class PhotoLibraryV3Presenter: PhotoLibraryV3Module {
         
         view?.setProgressVisible(true)
         
-        //view?.setContinueButtonVisible(!isNewFlowPrototype)
         view?.setContinueButtonVisible(false)
         
         view?.onViewWillAppear = { [weak self] in
@@ -292,23 +291,6 @@ final class PhotoLibraryV3Presenter: PhotoLibraryV3Module {
             
             strongSelf.interactor.setCameraOutputNeeded(false)
             strongSelf.onFinish?(selectedItems)
-            
-//            guard !strongSelf.isNewFlowPrototype else {
-//                strongSelf.interactor.setCameraOutputNeeded(false)
-//                strongSelf.onFinish?(selectedItems)
-//                return
-//            }
-//            
-//            let data = strongSelf.interactor.mediaPickerData.bySettingMediaPickerItems(selectedItems)
-//            
-//            self?.router.showMediaPicker(
-//                data: data,
-//                overridenTheme: strongSelf.overridenTheme,
-//                isNewFlowPrototype: true,
-//                configure: { [weak self] module in
-//                    self?.configureMediaPicker(module)
-//                }
-//            )
         }
         
         view?.onCloseButtonTap = { [weak self] in
@@ -430,10 +412,6 @@ final class PhotoLibraryV3Presenter: PhotoLibraryV3Module {
             if let selectionState = self?.interactor.selectItem(mediaPickerItem) {
                 self?.adjustViewForSelectionState(selectionState)
             }
-            
-//            if self?.isNewFlowPrototype == false {
-//                self?.view?.setHeaderVisible(false)
-//            }
             
             self?.updateContinueButtonTitle()
         }

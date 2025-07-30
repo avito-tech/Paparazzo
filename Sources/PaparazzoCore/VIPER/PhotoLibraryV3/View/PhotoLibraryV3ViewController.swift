@@ -5,12 +5,55 @@ import UIKit
 final class PhotoLibraryV3ViewController: PaparazzoViewController, PhotoLibraryV3ViewInput, ThemeConfigurable {
     typealias ThemeType = PhotoLibraryV3UITheme & NewCameraUITheme
     
+    // MARK: Properties
+    
     private let photoLibraryView: PhotoLibraryV3View
     private let deviceOrientationService: DeviceOrientationService
+    private var theme: PhotoLibraryV3UITheme?
     
     var previewLayer: AVCaptureVideoPreviewLayer? {
         return photoLibraryView.previewLayer
     }
+    
+    // MARK: Handler
+    
+    var onItemSelect: ((PhotoLibraryV3Item) -> ())?
+    var onViewDidLoad: (() -> ())?
+    var onViewWillAppear: (() -> ())?
+    var onViewDidAppear: (() -> ())?
+    var onViewDidDisappear: ((Bool) -> ())?
+    
+    var onTitleTap: (() -> ())? {
+        get { return photoLibraryView.onTitleTap }
+        set { photoLibraryView.onTitleTap = newValue }
+    }
+    
+    var onContinueButtonTap: (() -> ())? {
+        get { return photoLibraryView.onContinueButtonTap }
+        set { photoLibraryView.onContinueButtonTap = newValue }
+    }
+    
+    var onCloseButtonTap: (() -> ())? {
+        get { return photoLibraryView.onCloseButtonTap }
+        set { photoLibraryView.onCloseButtonTap = newValue }
+    }
+    
+    var onAccessDeniedButtonTap: (() -> ())? {
+        get { return photoLibraryView.onAccessDeniedButtonTap }
+        set { photoLibraryView.onAccessDeniedButtonTap = newValue }
+    }
+    
+    var onDimViewTap: (() -> ())? {
+        get { return photoLibraryView.onDimViewTap }
+        set { photoLibraryView.onDimViewTap = newValue }
+    }
+    
+    var onLastPhotoThumbnailTap: (() -> ())? {
+        get { return photoLibraryView.onLastPhotoThumbnailTap }
+        set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
+    }
+    
+    // MARK: Init
     
     init(deviceOrientationService: DeviceOrientationService) {
         photoLibraryView = PhotoLibraryV3View()
@@ -33,7 +76,7 @@ final class PhotoLibraryV3ViewController: PaparazzoViewController, PhotoLibraryV
         photoLibraryView.setPreviewLayer(previewLayer)
     }
     
-    // MARK: - UIViewController
+    // MARK: - Life cycle
     
     override func loadView() {
         view = photoLibraryView
@@ -72,52 +115,37 @@ final class PhotoLibraryV3ViewController: PaparazzoViewController, PhotoLibraryV
         previewLayer?.connection?.videoOrientation = deviceOrientationService.currentOrientation.toAVCaptureVideoOrientation
     }
     
+    // MARK: Override
+    
     override var prefersStatusBarHidden: Bool {
         return !UIDevice.current.hasTopSafeAreaInset
     }
     
-    // MARK: - ThemeConfigurable
+    override public var shouldAutorotate: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .all
+        } else {
+            return .portrait
+        }
+    }
+    
+    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return super.preferredInterfaceOrientationForPresentation
+        } else {
+            return .portrait
+        }
+    }
+    
+    // MARK: Public methods
     
     func setTheme(_ theme: ThemeType) {
         self.theme = theme
         photoLibraryView.setTheme(theme)
-    }
-    
-    // MARK: - PhotoLibraryViewInput
-    var onItemSelect: ((PhotoLibraryV3Item) -> ())?
-    var onViewDidLoad: (() -> ())?
-    var onViewWillAppear: (() -> ())?
-    var onViewDidAppear: (() -> ())?
-    var onViewDidDisappear: ((Bool) -> ())?
-    
-    var onTitleTap: (() -> ())? {
-        get { return photoLibraryView.onTitleTap }
-        set { photoLibraryView.onTitleTap = newValue }
-    }
-    
-    var onContinueButtonTap: (() -> ())? {
-        get { return photoLibraryView.onContinueButtonTap }
-        set { photoLibraryView.onContinueButtonTap = newValue }
-    }
-    
-    var onCloseButtonTap: (() -> ())? {
-        get { return photoLibraryView.onCloseButtonTap }
-        set { photoLibraryView.onCloseButtonTap = newValue }
-    }
-    
-    var onAccessDeniedButtonTap: (() -> ())? {
-        get { return photoLibraryView.onAccessDeniedButtonTap }
-        set { photoLibraryView.onAccessDeniedButtonTap = newValue }
-    }
-    
-    var onDimViewTap: (() -> ())? {
-        get { return photoLibraryView.onDimViewTap }
-        set { photoLibraryView.onDimViewTap = newValue }
-    }
-    
-    var onLastPhotoThumbnailTap: (() -> ())? {
-        get { return photoLibraryView.onLastPhotoThumbnailTap }
-        set { photoLibraryView.onLastPhotoThumbnailTap = newValue }
     }
     
     @nonobjc func setTitle(_ title: String) {
@@ -241,37 +269,16 @@ final class PhotoLibraryV3ViewController: PaparazzoViewController, PhotoLibraryV
     func setPlaceholderText(_ text: String) {
         photoLibraryView.setPlaceholderText(text)
     }
-    
-    // MARK: - Orientation
-    override public var shouldAutorotate: Bool {
-        return UIDevice.current.userInterfaceIdiom == .pad
-    }
-    
-    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return .all
-        } else {
-            return .portrait
-        }
-    }
-    
-    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return super.preferredInterfaceOrientationForPresentation
-        } else {
-            return .portrait
-        }
-    }
-    
-    // MARK: - Private
-    
-    private var theme: PhotoLibraryV3UITheme?
-    
-    @objc private func onCloseButtonTap(_ sender: UIBarButtonItem) {
+}
+
+// MARK: - Private methods
+
+private extension PhotoLibraryV3ViewController {
+    @objc func onCloseButtonTap(_ sender: UIBarButtonItem) {
         onCloseButtonTap?()
     }
     
-    @objc private func onContinueButtonTap(_ sender: UIBarButtonItem) {
+    @objc func onContinueButtonTap(_ sender: UIBarButtonItem) {
         onContinueButtonTap?()
     }
 }

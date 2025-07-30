@@ -28,6 +28,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     
     private lazy var selectionIndexBadgeContainer: UIView = {
         let view = UIView()
+        view.alpha = 0
+        view.backgroundColor = .clear
         view.layer.borderWidth = 2
         view.layer.borderColor = UIColor(ciColor: .black).cgColor
         return view
@@ -35,12 +37,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     
     private lazy var selectionIndexBadge: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .black
-        label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 10)
         label.size = CGSize(width: 19, height: 19)
         label.textAlignment = .center
-        label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
         return label
     }()
@@ -51,29 +49,7 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     
     var onImageSetFromSource: (() -> ())?
     
-    // MARK: UICollectionViewCell
-    
-    func adjustAppearanceForSelected(_ isSelected: Bool, animated: Bool) {
-        
-        func adjustAppearance() {
-            if isSelected {
-                self.selectionIndexBadgeContainer.alpha = 1
-            } else {
-                self.selectionIndexBadgeContainer.alpha = 0
-            }
-        }
-        
-        if animated {
-            UIView.animate(withDuration: 0.2, animations: adjustAppearance)
-        } else {
-            adjustAppearance()
-        }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        getSelectionIndex = nil
-    }
+    // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -88,9 +64,6 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         setUpRoundedCorners(for: backgroundView)
         setUpRoundedCorners(for: imageView)
         setUpRoundedCorners(for: selectionIndexBadgeContainer)
-        
-        selectionIndexBadgeContainer.alpha = 0
-        selectionIndexBadgeContainer.backgroundColor = .clear
         selectionIndexBadgeContainer.addSubview(selectionIndexBadge)
         
         contentView.insertSubview(cloudIconView, at: 0)
@@ -100,6 +73,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -118,6 +93,13 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         )
     }
     
+    // MARK: Override
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        getSelectionIndex = nil
+    }
+    
     override func didRequestImage(requestId imageRequestId: ImageRequestId) {
         self.imageRequestId = imageRequestId
     }
@@ -128,7 +110,29 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         }
     }
     
-    // MARK: - PhotoLibraryV3ItemCell
+    // MARK: Public methods
+    
+    func adjustAppearanceForSelected(_ isSelected: Bool, animated: Bool) {
+        
+        func adjustAppearance() {
+            if isSelected {
+                self.selectionIndexBadgeContainer.alpha = 1
+            } else {
+                self.selectionIndexBadgeContainer.alpha = 0
+            }
+        }
+        
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: adjustAppearance)
+        } else {
+            adjustAppearance()
+        }
+    }
+    
+    func setBadgeCornerRadius(_ radius: CGFloat?) {
+        guard let radius else { return }
+        selectionIndexBadge.layer.cornerRadius = radius
+    }
     
     func setBadgeBackgroundColor(_ color: UIColor?) {
         selectionIndexBadge.backgroundColor = color
@@ -156,10 +160,12 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         getSelectionIndex = item.getSelectionIndex
         isSelected = item.selected
     }
-    
-    // MARK: - Private
-    
-    private func setUpRoundedCorners(for view: UIView) {
+}
+
+// MARK: - Private methods
+
+private extension PhotoLibraryV3ItemCell {
+    func setUpRoundedCorners(for view: UIView) {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.layer.shouldRasterize = true
