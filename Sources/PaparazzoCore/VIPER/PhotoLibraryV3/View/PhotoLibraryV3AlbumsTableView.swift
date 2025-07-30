@@ -1,52 +1,81 @@
 import UIKit
 
-@available(*, deprecated, message: "Use PhotoLibraryV3AlbumsTableView instead")
-final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableViewDelegate {
+final class PhotoLibraryV3AlbumsTableView: UIView {
     
-    // MARK: - Subviews
-    private let topSeparator = UIView()
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    // MARK: Properties
     
-    // MARK: - Data
     private var cellDataList = [PhotoLibraryAlbumCellData]()
     private var selectedAlbumId: String?
-    
     private let cellId = "AlbumCell"
     private var cellLabelFont: UIFont?
     private var cellBackgroundColor: UIColor?
     private var cellDefaultLabelColor: UIColor?
     private var cellSelectedLabelColor: UIColor?
     
-    private let separatorHeight: CGFloat = 1
-    private let minInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    // MARK: Spec
     
-    // MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
-        
-        topSeparator.backgroundColor = UIColor.RGB(red: 215, green: 215, blue: 215)
-        
+    private enum Spec {
+        static let minInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    }
+    
+    // MARK: UI elements
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.rowHeight = 60
         tableView.alwaysBounceVertical = false
-        tableView.register(PhotoLibraryAlbumsTableViewCell.self, forCellReuseIdentifier: cellId)
-        tableView.accessibilityIdentifier = "tableView"
-        
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
+        tableView.register(PhotoLibraryV3AlbumsTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.accessibilityIdentifier = AccessibilityId.albumsTableView.rawValue
+        tableView.contentInsetAdjustmentBehavior = .never
+        return tableView
+    }()
+    
+    // MARK: Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
         
         addSubview(tableView)
-        addSubview(topSeparator)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - PhotoLibraryAlbumsTableView
+    // MARK: Layout
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let tableViewSize = tableView.sizeThatFits(size)
+        let tableVerticalInsets = Spec.minInsets.top + Spec.minInsets.bottom
+        return CGSize(
+            width: tableViewSize.width,
+            height: min(size.height, tableViewSize.height  + tableVerticalInsets)
+        )
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        tableView.layout(
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            bottom: bounds.bottom
+        )
+        
+        tableView.contentInset = UIEdgeInsets(
+            top: Spec.minInsets.top,
+            left: Spec.minInsets.left,
+            bottom: max(Spec.minInsets.bottom, paparazzoSafeAreaInsets.bottom),
+            right: Spec.minInsets.right
+        )
+    }
+    
+    // MARK: Public methods
+    
     func setCellDataList(_ cellDataList: [PhotoLibraryAlbumCellData], completion: @escaping () -> ()) {
         self.cellDataList = cellDataList
         tableView.reloadData()
@@ -78,10 +107,6 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         cellBackgroundColor = color
     }
     
-    func setTopSeparatorColor(_ color: UIColor) {
-        topSeparator.backgroundColor = color
-    }
-    
     func setCellDefaultLabelColor(_ color: UIColor) {
         cellDefaultLabelColor = color
     }
@@ -89,15 +114,18 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
     func setCellSelectedLabelColor(_ color: UIColor) {
         cellSelectedLabelColor = color
     }
-    
-    // MARK: - UITableViewDataSource
+}
+
+// MARK: - UITableViewDataSource
+
+extension PhotoLibraryV3AlbumsTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellDataList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? PhotoLibraryAlbumsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? PhotoLibraryV3AlbumsTableViewCell else {
             return UITableViewCell()
         }
         
@@ -124,47 +152,14 @@ final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableV
         
         return cell
     }
-    
-    // MARK: - UITableViewDelegate
+}
+
+// MARK: - UITableViewDelegate
+
+extension PhotoLibraryV3AlbumsTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellData = cellDataList[indexPath.row]
         cellData.onSelect()
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    // MARK: - UIView
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let tableViewSize = tableView.sizeThatFits(size)
-        let tableVerticalInsets = minInsets.top + minInsets.bottom
-        return CGSize(
-            width: tableViewSize.width,
-            height: min(size.height, tableViewSize.height + separatorHeight + tableVerticalInsets)
-        )
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        topSeparator.layout(
-            left: bounds.left,
-            right: bounds.right,
-            top: bounds.top,
-            height: separatorHeight
-        )
-        
-        tableView.layout(
-            left: bounds.left,
-            right: bounds.right,
-            top: topSeparator.bottom,
-            bottom: bounds.bottom
-        )
-        
-        tableView.contentInset = UIEdgeInsets(
-            top: minInsets.top,
-            left: minInsets.left,
-            bottom: max(minInsets.bottom, paparazzoSafeAreaInsets.bottom),
-            right: minInsets.right
-        )
     }
 }

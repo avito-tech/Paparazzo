@@ -1,6 +1,7 @@
 import ImageSource
 import UIKit
 
+@available(*, deprecated, message: "Use SelectedPhotosV3BarView instead")
 final class SelectedPhotosBarView: UIView {
     
     let lastPhotoThumbnailView = UIImageView()

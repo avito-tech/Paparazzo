@@ -4,33 +4,34 @@ import UIKit
 
 final class PhotoLibraryV3CameraView: UICollectionReusableView {
     
-    // MARK: - Subviews
+    // MARK: Handler
+    
+    var onTap: (() -> ())?
+    
+    // MARK: UI elements
+    
     var cameraOutputLayer: AVCaptureVideoPreviewLayer? = AVCaptureVideoPreviewLayer()
     private var dimView = UIView()
     private let button = UIButton()
     
-    // MARK: - Init
+    // MARK: Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .black
-        layer.cornerRadius = 28
         layer.rasterizationScale = UIScreen.main.nativeScale
         layer.shouldRasterize = true
         layer.masksToBounds = true
         
         dimView.backgroundColor = UIColor.black.withAlphaComponent(0.48)
-        
         addSubview(dimView)
         
-        button.tintColor = .white
         button.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
-        
         addSubview(button)
         
         if let cameraOutputLayer = cameraOutputLayer {
             cameraOutputLayer.videoGravity = .resizeAspectFill
-            cameraOutputLayer.cornerRadius = 28
             layer.insertSublayer(cameraOutputLayer, below: dimView.layer)
         }
         
@@ -41,8 +42,18 @@ final class PhotoLibraryV3CameraView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - PhotoLibraryCameraView
-    var onTap: (() -> ())?
+    // MARK: Layout
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        layOutPreviewLayer()
+        
+        dimView.frame = bounds
+        button.frame = bounds
+    }
+    
+    // MARK: Public methods
     
     func setCameraIcon(_ icon: UIImage?) {
         button.setImage(icon, for: .normal)
@@ -50,6 +61,11 @@ final class PhotoLibraryV3CameraView: UICollectionReusableView {
 
     func setCameraIconColor(_ color: UIColor?) {
         button.tintColor = color
+    }
+    
+    func setCameraCornerRadius(_ radius: CGFloat?) {
+        guard let radius else { return }
+        layer.cornerRadius = radius
     }
     
     func setOutputParameters(_ parameters: CameraOutputParameters) {
@@ -68,23 +84,16 @@ final class PhotoLibraryV3CameraView: UICollectionReusableView {
             layOutPreviewLayer()
         }
     }
-    
-    // MARK: - Layout
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        layOutPreviewLayer()
-        
-        dimView.frame = bounds
-        button.frame = bounds
-    }
-    
-    // MARK: - Private
-    @objc private func onButtonTap(_ sender: UIButton) {
+}
+
+// MARK: - Privat methods
+
+private extension PhotoLibraryV3CameraView {
+    @objc func onButtonTap(_ sender: UIButton) {
         onTap?()
     }
     
-    private func layOutPreviewLayer() {
+    func layOutPreviewLayer() {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         cameraOutputLayer?.frame = layer.bounds

@@ -3,6 +3,7 @@ import UIKit
 
 // TODO: (ayutkin) make base table view cell for image source in ImageSource/UIKit
 // TODO: (ayutkin) add placeholder image for empty albums
+@available(*, deprecated, message: "Use PhotoLibraryV3AlbumsTableViewCell instead")
 final class PhotoLibraryAlbumsTableViewCell: UITableViewCell {
     
     // MARK: - Specs

@@ -9,34 +9,33 @@ final class SelectedPhotosV3BarView: UIView {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
-        view.layer.cornerRadius = 10
-        view.accessibilityIdentifier = "lastPhotoThumbnailView"
+        view.accessibilityIdentifier = AccessibilityId.lastPhotoThumbnailView.rawValue
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private(set) lazy var label = UILabel()
     
-    private lazy var button: ButtonWithActivity = {
+    private lazy var confirmButton: ButtonWithActivity = {
         let button = ButtonWithActivity(activityStyle: .white)
         button.accessibilityIdentifier = AccessibilityId.doneButton.rawValue
-        button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 14, bottom: 10, right: 14)
-        button.layer.backgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1).cgColor
-        button.layer.cornerRadius = 12
+        button.titleEdgeInsets = Spec.confirmButtonInsets
         return button
     }()
     
     private lazy var placeholderLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.textColor = UIColor(red: 0.646, green: 0.646, blue: 0.646, alpha: 1)
         return label
     }()
     
     // MARK: Spec
     
-    private let lastPhotoThumbnailSize = CGSize(width: 40, height: 40)
-    private let contentInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
+    private enum Spec {
+        static let confirmButtonInsets = UIEdgeInsets(top: 10, left: 14, bottom: 10, right: 14)
+        static let lastPhotoThumbnailSize = CGSize(width: 40, height: 40)
+        static let contentInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
+    }
     
     // MARK: Handler
     
@@ -50,7 +49,7 @@ final class SelectedPhotosV3BarView: UIView {
         
         backgroundColor = .white
         
-        button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
+        confirmButton.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
         lastPhotoThumbnailView.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(handleLastPhotoThumbnailTap))
         )
@@ -58,7 +57,7 @@ final class SelectedPhotosV3BarView: UIView {
         addSubview(lastPhotoThumbnailView)
         addSubview(label)
         addSubview(placeholderLabel)
-        addSubview(button)
+        addSubview(confirmButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,16 +74,16 @@ final class SelectedPhotosV3BarView: UIView {
         super.layoutSubviews()
         
         lastPhotoThumbnailView.layout(
-            left: bounds.left + contentInsets.left,
-            top: bounds.top + contentInsets.top,
-            width: lastPhotoThumbnailSize.width,
-            height: lastPhotoThumbnailSize.height
+            left: bounds.left + Spec.contentInsets.left,
+            top: bounds.top + Spec.contentInsets.top,
+            width: Spec.lastPhotoThumbnailSize.width,
+            height: Spec.lastPhotoThumbnailSize.height
         )
         
         layOutButton()
         
         let placeholderInsets = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 7)
-        let placeholderSize = placeholderLabel.sizeForWidth(button.left - bounds.left - placeholderInsets.width)
+        let placeholderSize = placeholderLabel.sizeForWidth(confirmButton.left - bounds.left - placeholderInsets.width)
         
         placeholderLabel.frame = CGRect(
             x: bounds.left + placeholderInsets.left,
@@ -95,9 +94,9 @@ final class SelectedPhotosV3BarView: UIView {
         
         label.layout(
             left: lastPhotoThumbnailView.right + 15,
-            right: button.left - 12,
-            top: bounds.top + contentInsets.top,
-            bottom: bounds.bottom - contentInsets.bottom
+            right: confirmButton.left - 12,
+            top: bounds.top + Spec.contentInsets.top,
+            bottom: bounds.bottom - Spec.contentInsets.bottom
         )
     }
     
@@ -106,24 +105,27 @@ final class SelectedPhotosV3BarView: UIView {
     func setLastImage(_ imageSource: ImageSource?, resultHandler: ((ImageRequestResult<UIImage>) -> ())? = nil) {
         lastPhotoThumbnailView.setImage(
             fromSource: imageSource,
-            size: lastPhotoThumbnailSize,
+            size: Spec.lastPhotoThumbnailSize,
             resultHandler: resultHandler
         )
     }
     
     func setTheme(_ theme: NewCameraUITheme) {
         backgroundColor = theme.newCameraSelectedPhotosBarBackgroundColor
+        layer.cornerRadius = theme.newCameraSelectedPhotosBarCornerRadius
+        lastPhotoThumbnailView.layer.cornerRadius = theme.newCameraSelectedPhotosBarPhotoCornerRadius
         label.textColor = theme.newCameraPhotosCountColor
         label.font = theme.newCameraPhotosCountFont
         placeholderLabel.font = theme.newCameraPhotosCountPlaceholderFont
         placeholderLabel.textColor = theme.newCameraPhotosCountPlaceholderColor
-        button.titleLabel?.font = theme.newCameraDoneButtonFont
-        button.setTitleColor(theme.newCameraSelectedPhotosBarButtonTitleColorNormal, for: .normal)
-        button.backgroundColor = theme.newCameraSelectedPhotosBarButtonBackgroundColor
+        confirmButton.titleLabel?.font = theme.newCameraDoneButtonFont
+        confirmButton.setTitleColor(theme.newCameraSelectedPhotosBarButtonTitleColorNormal, for: .normal)
+        confirmButton.backgroundColor = theme.newCameraSelectedPhotosBarButtonBackgroundColor
+        confirmButton.layer.cornerRadius = theme.newCameraSelectedPhotosBarButtonCornerRadius
     }
     
     func setDoneButtonTitle(_ title: String) {
-        button.setTitle(title, for: .normal)
+        confirmButton.setTitle(title, for: .normal)
         setNeedsLayout()
     }
     
@@ -182,12 +184,12 @@ final class SelectedPhotosV3BarView: UIView {
     }
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
-        guard button.style != style else { return }
+        guard confirmButton.style != style else { return }
         
         UIView.animate(
             withDuration: 0.3,
             animations: {
-                self.button.style = style
+                self.confirmButton.style = style
                 self.layOutButton()
             }
         )
@@ -198,9 +200,9 @@ final class SelectedPhotosV3BarView: UIView {
 
 private extension SelectedPhotosV3BarView {
     private func layOutButton() {
-        let buttonSize = button.sizeThatFits()
+        let buttonSize = confirmButton.sizeThatFits()
         
-        button.frame = CGRect(
+        confirmButton.frame = CGRect(
             x: bounds.right - 16 - buttonSize.width,
             y: floor(bounds.centerY - buttonSize.height / 2),
             width: buttonSize.width,
