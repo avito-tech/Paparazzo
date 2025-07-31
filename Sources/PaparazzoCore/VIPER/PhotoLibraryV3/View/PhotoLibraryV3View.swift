@@ -87,7 +87,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
     private let dimView = UIView()
     private let albumsTableView = PhotoLibraryV3AlbumsTableView()
     private let placeholderView = UILabel()
-    private let closeButton = UIButton()
+    private lazy var closeButton = UIButton()
     private let topRightContinueButton = ButtonWithActivity(shouldResizeToFitActivity: true)
     
     private lazy var progressIndicator: UIActivityIndicatorView = {
@@ -276,6 +276,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         albumsTableView.setTableViewBackgroundColor(theme.photoLibraryAlbumsTableViewBackgroundColor)
         albumsTableView.setCellDefaultLabelColor(theme.photoLibraryAlbumsCellDefaultLabelColor)
         albumsTableView.setCellSelectedLabelColor(theme.photoLibraryAlbumsCellSelectedLabelColor)
+        albumsTableView.setCellImageCornerRadius(theme.photoLibraryAlbumsCellImageCornerRadius)
         
         placeholderView.font = theme.photoLibraryPlaceholderFont
         placeholderView.textColor = theme.photoLibraryPlaceholderColor

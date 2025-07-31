@@ -121,6 +121,7 @@ public struct PaparazzoUITheme:
     public var libraryBottomContinueButtonCornerRadius: CGFloat = 5
     public var libraryItemBadgeCornerRadius: CGFloat = 10
     public var cameraCornerRadius: CGFloat = 28
+    public var photoLibraryAlbumsCellImageCornerRadius: CGFloat = 12
     
     // MARK: - ImageCroppingUITheme
     
