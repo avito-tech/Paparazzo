@@ -11,6 +11,7 @@ final class PhotoLibraryV3AlbumsTableView: UIView {
     private var cellBackgroundColor: UIColor?
     private var cellDefaultLabelColor: UIColor?
     private var cellSelectedLabelColor: UIColor?
+    private var cellImageCornerRadius: CGFloat?
     
     // MARK: Spec
     
@@ -49,10 +50,9 @@ final class PhotoLibraryV3AlbumsTableView: UIView {
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         let tableViewSize = tableView.sizeThatFits(size)
-        let tableVerticalInsets = Spec.minInsets.top + Spec.minInsets.bottom
         return CGSize(
             width: tableViewSize.width,
-            height: min(size.height, tableViewSize.height  + tableVerticalInsets)
+            height: size.height
         )
     }
     
@@ -114,6 +114,10 @@ final class PhotoLibraryV3AlbumsTableView: UIView {
     func setCellSelectedLabelColor(_ color: UIColor) {
         cellSelectedLabelColor = color
     }
+    
+    func setCellImageCornerRadius(_ radius: CGFloat) {
+        cellImageCornerRadius = radius
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -134,20 +138,24 @@ extension PhotoLibraryV3AlbumsTableView: UITableViewDataSource {
         cell.setCellData(cellData)
         cell.isSelected = (cellData.identifier == selectedAlbumId)
         
-        if let cellLabelFont = cellLabelFont {
+        if let cellLabelFont {
             cell.setLabelFont(cellLabelFont)
         }
         
-        if let cellBackgroundColor = cellBackgroundColor {
+        if let cellBackgroundColor {
             cell.backgroundColor = cellBackgroundColor
         }
         
-        if let cellDefaultLabelColor = cellDefaultLabelColor {
+        if let cellDefaultLabelColor {
             cell.setDefaultLabelColor(cellDefaultLabelColor)
         }
         
-        if let cellSelectedLabelColor = cellSelectedLabelColor {
+        if let cellSelectedLabelColor {
             cell.setSelectedLabelColor(cellSelectedLabelColor)
+        }
+        
+        if let cellImageCornerRadius {
+            cell.setImageCornerRadius(cellImageCornerRadius)
         }
         
         return cell

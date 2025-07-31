@@ -7,6 +7,7 @@ public protocol PhotoLibraryV3UITheme: AccessDeniedViewTheme {
     var photoLibraryCollectionBackgroundColor: UIColor { get }
     var photoLibraryAlbumsCellDefaultLabelColor: UIColor { get }
     var photoLibraryAlbumsCellSelectedLabelColor: UIColor { get }
+    var photoLibraryAlbumsCellImageCornerRadius: CGFloat { get }
     
     var photoLibraryTitleFont: UIFont { get }
     var photoLibraryTitleColor: UIColor { get }

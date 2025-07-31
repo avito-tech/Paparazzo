@@ -13,6 +13,7 @@ final class PhotoLibraryV3TitleView: UIView {
     private lazy var iconView: UIImageView = {
         let imageView = UIImageView()
         imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
         imageView.accessibilityIdentifier = "iconView"
         return imageView
     }()
@@ -97,7 +98,7 @@ final class PhotoLibraryV3TitleView: UIView {
         iconView.bounds = CGRect(origin: .zero, size: iconSize)
         iconView.center = CGPoint(
             x: ceil(label.right + Spec.labelToIconSpacing) + iconSize.width / 2,
-            y: label.centerY
+            y: ceil(bounds.centerY + topInset + 2 - iconSize.height / 2) + iconSize.height / 2
         )
     }
 }

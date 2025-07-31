@@ -5,6 +5,17 @@ final class SelectedPhotosV3BarView: UIView {
     
     // MARK: UI elements
     
+    private lazy var shadowLayer: CALayer = {
+        let layer = CALayer()
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.12
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowRadius = 12
+        layer.masksToBounds = false
+        layer.backgroundColor = UIColor.white.cgColor
+        return layer
+    }()
+    
     private lazy var lastPhotoThumbnailView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -54,6 +65,7 @@ final class SelectedPhotosV3BarView: UIView {
             UITapGestureRecognizer(target: self, action: #selector(handleLastPhotoThumbnailTap))
         )
         
+        layer.addSublayer(shadowLayer)
         addSubview(lastPhotoThumbnailView)
         addSubview(label)
         addSubview(placeholderLabel)
@@ -73,6 +85,9 @@ final class SelectedPhotosV3BarView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        shadowLayer.frame = bounds
+        shadowLayer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
+        
         lastPhotoThumbnailView.layout(
             left: bounds.left + Spec.contentInsets.left,
             top: bounds.top + Spec.contentInsets.top,
@@ -84,7 +99,6 @@ final class SelectedPhotosV3BarView: UIView {
         
         let placeholderInsets = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 7)
         let placeholderSize = placeholderLabel.sizeForWidth(confirmButton.left - bounds.left - placeholderInsets.width)
-        
         placeholderLabel.frame = CGRect(
             x: bounds.left + placeholderInsets.left,
             y: floor(bounds.top + (bounds.height - placeholderSize.height) / 2),
@@ -112,7 +126,7 @@ final class SelectedPhotosV3BarView: UIView {
     
     func setTheme(_ theme: NewCameraUITheme) {
         backgroundColor = theme.newCameraSelectedPhotosBarBackgroundColor
-        layer.cornerRadius = theme.newCameraSelectedPhotosBarCornerRadius
+        shadowLayer.cornerRadius = theme.newCameraSelectedPhotosBarCornerRadius
         lastPhotoThumbnailView.layer.cornerRadius = theme.newCameraSelectedPhotosBarPhotoCornerRadius
         label.textColor = theme.newCameraPhotosCountColor
         label.font = theme.newCameraPhotosCountFont

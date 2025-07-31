@@ -31,7 +31,6 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
         let image = UIImageView()
         image.backgroundColor = .lightGray
         image.contentMode = .scaleAspectFill
-        image.layer.cornerRadius = 6
         image.layer.masksToBounds = true
         image.layer.shouldRasterize = true
         image.layer.rasterizationScale = UIScreen.main.nativeScale
@@ -44,7 +43,7 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
     private enum Spec {
         static let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let imageSize = CGSize(width: 52, height: 52)
-        static let imageToTitleSpacing: CGFloat = 16
+        static let imageToTitleSpacing: CGFloat = 12
     }
     
     // MARK: Init
@@ -104,6 +103,10 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
     
     func setSelectedLabelColor(_ color: UIColor) {
         selectedLabelColor = color
+    }
+    
+    func setImageCornerRadius(_ radius: CGFloat) {
+        coverImageView.layer.cornerRadius = radius
     }
 }
 
