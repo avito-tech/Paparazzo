@@ -7,19 +7,9 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
-    private var defaultLabelColor = UIColor.RGB(red: 51, green: 51, blue: 51)
-    
-    private var selectedLabelColor = UIColor.RGB(red: 0, green: 170, blue: 255)
-    
     private var coverImage: ImageSource? {
         didSet {
             updateImage()
-        }
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            label.textColor = isSelected ? selectedLabelColor : defaultLabelColor
         }
     }
     
@@ -98,11 +88,7 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
     }
     
     func setDefaultLabelColor(_ color: UIColor) {
-        defaultLabelColor = color
-    }
-    
-    func setSelectedLabelColor(_ color: UIColor) {
-        selectedLabelColor = color
+        label.textColor = color
     }
     
     func setImageCornerRadius(_ radius: CGFloat) {

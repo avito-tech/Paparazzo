@@ -150,10 +150,6 @@ extension PhotoLibraryV3AlbumsTableView: UITableViewDataSource {
             cell.setDefaultLabelColor(cellDefaultLabelColor)
         }
         
-        if let cellSelectedLabelColor {
-            cell.setSelectedLabelColor(cellSelectedLabelColor)
-        }
-        
         if let cellImageCornerRadius {
             cell.setImageCornerRadius(cellImageCornerRadius)
         }
