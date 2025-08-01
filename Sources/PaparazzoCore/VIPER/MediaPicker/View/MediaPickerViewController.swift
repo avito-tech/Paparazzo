@@ -319,6 +319,10 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
         mediaPickerView.updateItem(item)
     }
     
+    func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem) {
+        mediaPickerView.updateItem(previousItem: previousItem, newItem: newItem)
+    }
+    
     func removeItem(_ item: MediaPickerItem) {
         mediaPickerView.removeItem(item)
     }

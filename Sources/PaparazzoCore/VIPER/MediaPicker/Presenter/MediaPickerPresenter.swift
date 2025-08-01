@@ -110,27 +110,33 @@ final class MediaPickerPresenter: MediaPickerModule {
     public func setAutoEnhanceImage(_ image: MediaPickerItem?, prevImage: MediaPickerItem, isEnhanced: Bool) {
         updateAutoEnhanceButtonIfNeeded(prevImage, isEnhanced: isEnhanced)
 
-        guard
-            let image,
-            let index = interactor.indexOfItem(prevImage)
-        else {
-            return
-        }
+        guard let newItem = image else { return }
+        interactor.updateItem(previousItem: prevImage, newItem: newItem)
+        view?.updateItem(previousItem: prevImage, newItem: newItem)
+        view?.selectItem(newItem)
+        adjustPhotoTitleForItem(newItem)
         
-        interactor.removeItem(prevImage)
-        view?.removeItem(prevImage)
-        
-        let startIndex = interactor.addItems([image]).startIndex
-        interactor.updateItem(image)
-        interactor.moveItem(from: startIndex, to: index)
-        
-        view?.addItems([image], animated: false, completion: { [weak self] in
-            guard let self else { return }
-            self.view?.moveItem(from: startIndex, to: index)
-            self.view?.moveItemThumbnail(from: startIndex, to: index)
-            self.view?.selectItem(image)
-            self.adjustPhotoTitleForItem(image)
-        })
+//        guard
+//            let image,
+//            let index = interactor.indexOfItem(prevImage)
+//        else {
+//            return
+//        }
+//
+//        interactor.removeItem(prevImage)
+//        view?.removeItem(prevImage)
+//        
+//        let startIndex = interactor.addItems([image]).startIndex
+//        interactor.updateItem(image)
+//        interactor.moveItem(from: startIndex, to: index)
+//        
+//        view?.addItems([image], animated: false, completion: { [weak self] in
+//            guard let self else { return }
+//            self.view?.moveItem(from: startIndex, to: index)
+//            self.view?.moveItemThumbnail(from: startIndex, to: index)
+//            self.view?.selectItem(image)
+//            self.adjustPhotoTitleForItem(image)
+//        })
     }
     
     public func setImagePerceptionBadge(_ badge: ImagePerceptionBadgeViewData) {

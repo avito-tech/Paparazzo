@@ -48,6 +48,7 @@ protocol MediaPickerViewInput: AnyObject {
     
     func addItems(_: [MediaPickerItem], animated: Bool, completion: @escaping () -> ())
     func updateItem(_: MediaPickerItem)
+    func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem)
     func removeItem(_: MediaPickerItem)
     func selectItem(_: MediaPickerItem)
     func moveItem(from sourceIndex: Int, to destinationIndex: Int)

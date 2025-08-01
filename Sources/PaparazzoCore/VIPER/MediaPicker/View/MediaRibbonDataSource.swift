@@ -50,6 +50,12 @@ final class MediaRibbonDataSource {
         }
     }
     
+    func insertItem(_ item: MediaPickerItem, at index: Int) -> IndexPath? {
+        guard mediaPickerItems.indices.contains(index) else { return nil }
+        mediaPickerItems.insert(item, at: index)
+        return IndexPath(item: index, section: 0)
+    }
+    
     func moveItem(from index: Int, to destinationIndex: Int) {
         mediaPickerItems.moveElement(from: index, to: destinationIndex)
     }

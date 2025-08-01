@@ -97,6 +97,15 @@ final class MediaPickerInteractorImpl: MediaPickerInteractor {
         }
     }
     
+    func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem) {
+        guard let index = indexOfItem(previousItem) else { return }
+        items.remove(at: index)
+        items.insert(newItem, at: index)
+        
+        guard previousItem == selectedItem else { return }
+        selectedItem = newItem
+    }
+    
     func removeItem(_ item: MediaPickerItem) -> MediaPickerItem? {
         
         var adjacentItem: MediaPickerItem?

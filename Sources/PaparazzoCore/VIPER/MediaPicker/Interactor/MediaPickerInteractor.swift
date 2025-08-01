@@ -19,6 +19,7 @@ protocol MediaPickerInteractor: AnyObject {
         ) -> (addedItems: [MediaPickerItem], startIndex: Int)
     
     func updateItem(_ item: MediaPickerItem)
+    func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem)
     
     // returns the nearby item - the item to select after removing the original item
     func removeItem(_ item: MediaPickerItem) -> MediaPickerItem?
