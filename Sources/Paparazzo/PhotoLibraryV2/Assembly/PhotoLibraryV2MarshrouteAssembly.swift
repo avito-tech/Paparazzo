@@ -6,6 +6,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
         mediaPickerData: MediaPickerData,
         selectedItems: [PhotoLibraryItem],
         routerSeed: RouterSeed,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
         configure: (PhotoLibraryV2Module) -> (),

@@ -3,6 +3,7 @@ import UIKit
 
 protocol MedicalBookCameraMarshrouteAssembly: AnyObject {
     func module(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -34,6 +35,7 @@ final class MedicalBookCameraMarshrouteAssemblyImpl:
     }
 
     func module(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -58,6 +60,7 @@ final class MedicalBookCameraMarshrouteAssemblyImpl:
         )
         
         let presenter = MedicalBookCameraPresenter(
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             interactor: interactor,
             router: router,
             volumeService: serviceFactory.volumeService(),

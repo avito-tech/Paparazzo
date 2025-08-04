@@ -9,6 +9,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private let interactor: PhotoLibraryV2Interactor
     private let router: PhotoLibraryV2Router
     private let overridenTheme: PaparazzoUITheme
+    private let isPaparazzoImageUpdaingFixEnabled: Bool
     private let isNewFlowPrototype: Bool
     private var cameraType: MediaPickerCameraType
     private let onCameraV3InitializationMeasurementStart: (() -> ())?
@@ -42,6 +43,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         interactor: PhotoLibraryV2Interactor,
         router: PhotoLibraryV2Router,
         overridenTheme: PaparazzoUITheme,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -52,6 +54,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         self.interactor = interactor
         self.router = router
         self.overridenTheme = overridenTheme
+        self.isPaparazzoImageUpdaingFixEnabled = isPaparazzoImageUpdaingFixEnabled
         self.isNewFlowPrototype = isNewFlowPrototype
         self.shouldAllowFinishingWithNoPhotos = !interactor.selectedItems.isEmpty
         self.cameraType = cameraType
@@ -305,6 +308,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
             self?.router.showMediaPicker(
                 data: data,
                 overridenTheme: strongSelf.overridenTheme,
+                isPaparazzoImageUpdaingFixEnabled: strongSelf.isPaparazzoImageUpdaingFixEnabled,
                 isNewFlowPrototype: strongSelf.isNewFlowPrototype,
                 configure: { [weak self] module in
                     self?.configureMediaPicker(module)
@@ -351,6 +355,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router.showMediaPicker(
             data: data,
             overridenTheme: overridenTheme,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: true,
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)
@@ -486,6 +491,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     private func openCameraV3() {
         onCameraV3Show?()
         router.showCameraV3(
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             selectedImagesStorage: interactor.selectedPhotosStorage,
             mediaPickerData: interactor.mediaPickerData,
             configure: { [weak self] cameraV3Module in
@@ -517,6 +523,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
     
     private func openMedicalBookCamera() {
         router.showMedicalBookCamera(
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             selectedImagesStorage: interactor.selectedPhotosStorage,
             mediaPickerData: interactor.mediaPickerData,
             configure: { [weak self] medicalBookModule in
@@ -546,6 +553,7 @@ final class PhotoLibraryV2Presenter: PhotoLibraryV2Module {
         router.showMediaPicker(
             data: interactor.mediaPickerData.byDisablingLibrary(),
             overridenTheme: overridenTheme,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: { [weak self] module in
                 self?.configureMediaPicker(module)

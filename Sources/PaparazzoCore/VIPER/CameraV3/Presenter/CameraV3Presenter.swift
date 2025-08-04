@@ -3,6 +3,7 @@ import UIKit
 
 final class CameraV3Presenter: CameraV3Module {
     // MARK: - Private properties
+    private let isPaparazzoImageUpdaingFixEnabled: Bool
     private let interactor: CameraV3Interactor
     private let router: CameraV3Router
     private let volumeService: VolumeService
@@ -11,12 +12,14 @@ final class CameraV3Presenter: CameraV3Module {
     
     // MARK: - Init
     init(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         interactor: CameraV3Interactor,
         volumeService: VolumeService,
         router: CameraV3Router,
         onDrawingMeasurementStart: (() -> ())?,
         onDrawingMeasurementStop: (() -> ())?
     ) {
+        self.isPaparazzoImageUpdaingFixEnabled = isPaparazzoImageUpdaingFixEnabled
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
@@ -71,9 +74,10 @@ final class CameraV3Presenter: CameraV3Module {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router, isPaparazzoImageUpdaingFixEnabled] in
             router.showMediaPicker(
                 data: interactor.mediaPickerDataWithSelectedLastItem,
+                isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
                 overridenTheme: nil,
                 configure: { module in
                     weakSelf?.configureMediaPicker?(module)

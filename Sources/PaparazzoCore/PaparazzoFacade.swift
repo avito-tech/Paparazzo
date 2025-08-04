@@ -12,6 +12,7 @@ public final class PaparazzoFacade {
     public static func paparazzoViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: MediaPickerData = MediaPickerData(),
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil)
         -> NavigationController
@@ -20,6 +21,7 @@ public final class PaparazzoFacade {
         
         let viewController = assembly.module(
             data: parameters,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             configure: { (module: MediaPickerModule) in
                 module.setContinueButtonTitle("Done")
                 module.onCancel = { [weak module] in
@@ -95,6 +97,7 @@ public final class PaparazzoFacade {
     public static func libraryV2ViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV2Data,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -106,6 +109,7 @@ public final class PaparazzoFacade {
         
         let galleryController = assembly.module(
             data: parameters,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: true,
             cameraType: .cameraV3,
             configure: { (module: PhotoLibraryV2Module) in

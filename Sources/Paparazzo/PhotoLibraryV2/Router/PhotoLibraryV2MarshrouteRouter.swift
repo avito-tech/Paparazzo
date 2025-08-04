@@ -28,6 +28,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
     {
@@ -39,13 +40,15 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
-                isNewFlowPrototype: isNewFlowPrototype, 
+                isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+                isNewFlowPrototype: isNewFlowPrototype,
                 configure: configure
             )
         }
     }
     
     func showCameraV3(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (CameraV3Module) -> (),
@@ -56,6 +59,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.cameraV3Assembly().module(
+                isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
@@ -70,12 +74,14 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     }
     
     func showMedicalBookCamera(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (MedicalBookCameraModule) -> ()
     ) {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.medicalBookCameraAssembly().module(
+                isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,

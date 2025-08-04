@@ -17,6 +17,7 @@ final class MedicalBookCameraRouterImpl:
     // MARK: - NewCameraRouter
     func showMediaPicker(
         data: MediaPickerData,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
     {
@@ -25,6 +26,7 @@ final class MedicalBookCameraRouterImpl:
         let viewController = assembly.module(
             data: data,
             overridenTheme: overridenTheme,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: true,
             configure: configure
         )

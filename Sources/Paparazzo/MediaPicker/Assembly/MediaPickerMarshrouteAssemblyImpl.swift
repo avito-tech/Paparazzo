@@ -24,6 +24,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         overridenTheme: PaparazzoUITheme?,
         viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
@@ -52,6 +53,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         )
         
         let presenter = MediaPickerPresenter(
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             interactor: interactor,
             router: router,

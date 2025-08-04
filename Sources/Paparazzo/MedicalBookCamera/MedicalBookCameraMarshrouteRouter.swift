@@ -17,6 +17,7 @@ final class MedicalBookCameraMarshrouteRouter: BaseRouter, MedicalBookCameraRout
     // MARK: - NewCameraRouter
     func showMediaPicker(
         data: MediaPickerData,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
     {
@@ -28,6 +29,7 @@ final class MedicalBookCameraMarshrouteRouter: BaseRouter, MedicalBookCameraRout
                 data: data,
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
+                isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
                 isNewFlowPrototype: true,
                 configure: configure
             )

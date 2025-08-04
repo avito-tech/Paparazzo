@@ -2,6 +2,7 @@ import UIKit
 
 protocol MedicalBookCameraAssembly: AnyObject {
     func module(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
