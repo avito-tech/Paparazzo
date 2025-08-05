@@ -762,6 +762,7 @@ private extension PhotoLibraryV3View {
         cell.setBadgeTextColor(theme?.libraryItemBadgeTextColor)
         cell.setBadgeBackgroundColor(theme?.libraryItemBadgeBackgroundColor)
         cell.setBadgeCornerRadius(theme?.libraryItemBadgeCornerRadius)
+        cell.setImageOverlayColor(theme?.libraryItemImageOverlayColor)
         
         cell.setCloudIcon(theme?.iCloudIcon)
         

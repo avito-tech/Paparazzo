@@ -20,6 +20,7 @@ public protocol NewCameraUITheme: AccessDeniedViewTheme {
     var newCameraSelectedPhotosBarButtonBackgroundColor: UIColor { get }
     var newCameraSelectedPhotosBarButtonCornerRadius: CGFloat { get }
     var newCameraSelectedPhotosBarPhotoCornerRadius: CGFloat { get }
+    var newCameraSelectedPhotosBarPhotoOverlayColor: UIColor { get }
     var newCameraCaptureButtonBorderColorEnabled: UIColor { get }
     var newCameraCaptureButtonBackgroundColorEnabled: UIColor { get }
     var newCameraCaptureButtonBorderColorDisabled: UIColor { get }
