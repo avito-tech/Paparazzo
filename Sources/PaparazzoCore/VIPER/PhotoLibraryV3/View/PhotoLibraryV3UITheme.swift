@@ -32,6 +32,7 @@ public protocol PhotoLibraryV3UITheme: AccessDeniedViewTheme {
     var libraryItemBadgeTextColor: UIColor { get }
     var libraryItemBadgeBackgroundColor: UIColor { get }
     var libraryItemBadgeCornerRadius: CGFloat { get }
+    var libraryItemImageOverlayColor: UIColor { get }
     
     var closeIcon: UIImage? { get }
     var closeIconColor: UIColor { get }

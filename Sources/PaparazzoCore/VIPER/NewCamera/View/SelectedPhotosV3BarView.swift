@@ -16,6 +16,8 @@ final class SelectedPhotosV3BarView: UIView {
         return layer
     }()
     
+    private lazy var lastPhotoOverlay = CALayer()
+    
     private lazy var lastPhotoThumbnailView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -66,6 +68,7 @@ final class SelectedPhotosV3BarView: UIView {
         )
         
         layer.addSublayer(shadowLayer)
+        lastPhotoThumbnailView.layer.addSublayer(lastPhotoOverlay)
         addSubview(lastPhotoThumbnailView)
         addSubview(label)
         addSubview(placeholderLabel)
@@ -94,6 +97,8 @@ final class SelectedPhotosV3BarView: UIView {
             width: Spec.lastPhotoThumbnailSize.width,
             height: Spec.lastPhotoThumbnailSize.height
         )
+        
+        lastPhotoOverlay.frame = lastPhotoThumbnailView.bounds
         
         layOutButton()
         
@@ -127,6 +132,7 @@ final class SelectedPhotosV3BarView: UIView {
     func setTheme(_ theme: NewCameraUITheme) {
         backgroundColor = theme.newCameraSelectedPhotosBarBackgroundColor
         shadowLayer.cornerRadius = theme.newCameraSelectedPhotosBarCornerRadius
+        lastPhotoOverlay.backgroundColor = theme.newCameraSelectedPhotosBarPhotoOverlayColor.cgColor
         lastPhotoThumbnailView.layer.cornerRadius = theme.newCameraSelectedPhotosBarPhotoCornerRadius
         label.textColor = theme.newCameraPhotosCountColor
         label.font = theme.newCameraPhotosCountFont

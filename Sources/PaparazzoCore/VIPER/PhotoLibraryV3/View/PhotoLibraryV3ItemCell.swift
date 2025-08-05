@@ -24,7 +24,9 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     
     // MARK: UI elements
     
-    private let cloudIconView = UIImageView()
+    private lazy var imageOverlay = CALayer()
+    
+    private lazy var cloudIconView = UIImageView()
     
     private lazy var selectionIndexBadgeContainer: UIView = {
         let view = UIView()
@@ -66,6 +68,7 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         setUpRoundedCorners(for: selectionIndexBadgeContainer)
         selectionIndexBadgeContainer.addSubview(selectionIndexBadge)
         
+        imageView.layer.addSublayer(imageOverlay)
         contentView.insertSubview(cloudIconView, at: 0)
         contentView.addSubview(selectionIndexBadgeContainer)
     }
@@ -83,6 +86,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         cloudIconView.sizeToFit()
         cloudIconView.right = contentView.bounds.right
         cloudIconView.bottom = contentView.bounds.bottom
+        
+        imageOverlay.frame = imageView.bounds
         
         selectionIndexBadgeContainer.center = imageView.center
         selectionIndexBadgeContainer.bounds = imageView.bounds
@@ -127,6 +132,10 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         } else {
             adjustAppearance()
         }
+    }
+    
+    func setImageOverlayColor(_ color: UIColor?) {
+        imageOverlay.backgroundColor = color?.cgColor
     }
     
     func setBadgeCornerRadius(_ radius: CGFloat?) {

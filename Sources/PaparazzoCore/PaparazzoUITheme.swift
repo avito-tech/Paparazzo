@@ -122,6 +122,7 @@ public struct PaparazzoUITheme:
     public var libraryItemBadgeCornerRadius: CGFloat = 10
     public var cameraCornerRadius: CGFloat = 28
     public var photoLibraryAlbumsCellImageCornerRadius: CGFloat = 12
+    public var libraryItemImageOverlayColor: UIColor = UIColor.clear
     
     // MARK: - ImageCroppingUITheme
     
@@ -158,6 +159,7 @@ public struct PaparazzoUITheme:
     public var newCameraSelectedPhotosBarBackgroundColor = UIColor.white
     public var newCameraSelectedPhotosBarButtonCornerRadius: CGFloat = 12
     public var newCameraSelectedPhotosBarPhotoCornerRadius: CGFloat = 10
+    public var newCameraSelectedPhotosBarPhotoOverlayColor: UIColor = UIColor.clear
     public var newCameraSelectedPhotosBarCornerRadius: CGFloat = 28
     public var newCameraCaptureButtonBorderColorEnabled = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
     public var newCameraCaptureButtonBackgroundColorEnabled = UIColor.white
