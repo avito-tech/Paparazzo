@@ -41,6 +41,12 @@ final class MediaRibbonDataSource {
         }
     }
     
+    func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem) -> IndexPath? {
+        guard let indexPath = indexPathForItem(previousItem) else { return nil }
+        mediaPickerItems[indexPath.row] = newItem
+        return indexPath
+    }
+    
     func removeItem(_ item: MediaPickerItem) -> IndexPath? {
         if let index = mediaPickerItems.firstIndex(of: item) {
             mediaPickerItems.remove(at: index)

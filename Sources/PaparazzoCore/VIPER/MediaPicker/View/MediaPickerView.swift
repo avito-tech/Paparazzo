@@ -544,7 +544,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         photoPreviewView.updateItem(item)
         thumbnailRibbonView.updateItem(item)
     }
-
+    
+    func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem) {
+        photoPreviewView.updateItem(previousItem: previousItem, newItem: newItem)
+        thumbnailRibbonView.updateItem(previousItem: previousItem, newItem: newItem)
+    }
+    
     func removeItem(_ item: MediaPickerItem) {
         photoPreviewView.removeItem(item, animated: false)
         thumbnailRibbonView.removeItem(item, animated: true)

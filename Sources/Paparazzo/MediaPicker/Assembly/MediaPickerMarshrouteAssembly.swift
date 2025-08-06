@@ -7,6 +7,7 @@ public protocol MediaPickerMarshrouteAssembly: AnyObject {
         overridenTheme: PaparazzoUITheme?,
         viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController
@@ -21,6 +22,7 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
@@ -29,6 +31,7 @@ public extension MediaPickerMarshrouteAssembly {
             overridenTheme: overridenTheme,
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
         )
@@ -37,6 +40,7 @@ public extension MediaPickerMarshrouteAssembly {
     func module(
         data: MediaPickerData,
         routerSeed: RouterSeed,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
@@ -45,6 +49,7 @@ public extension MediaPickerMarshrouteAssembly {
             overridenTheme: nil,
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
         )
@@ -53,6 +58,7 @@ public extension MediaPickerMarshrouteAssembly {
     func module(
         data: MediaPickerData,
         routerSeed: RouterSeed,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
         return module(
@@ -60,6 +66,7 @@ public extension MediaPickerMarshrouteAssembly {
             overridenTheme: nil,
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             isNewFlowPrototype: false,
             configure: configure
         )
