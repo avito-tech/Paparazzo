@@ -92,10 +92,8 @@ final class PhotoPreviewView: UIView, UICollectionViewDataSource, UICollectionVi
     }
     
     func updateItem(previousItem: MediaPickerItem, newItem: MediaPickerItem) {
-        guard let updatedIndexPath = dataSource.indexPathForItem(previousItem) else { return }
-        dataSource.removeItem(previousItem)
-        dataSource.insertItem(newItem, at: updatedIndexPath.row)
-        collectionView.reloadItems(at: [updatedIndexPath])
+        guard let indexPath = dataSource.updateItem(previousItem: previousItem, newItem: newItem) else { return }
+        collectionView.reloadItems(at: [indexPath])
     }
     
     func removeItem(_ item: MediaPickerItem, animated: Bool) {
