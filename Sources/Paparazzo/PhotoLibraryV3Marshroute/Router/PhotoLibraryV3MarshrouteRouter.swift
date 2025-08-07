@@ -24,7 +24,7 @@ final class PhotoLibraryV3MarshrouteRouter: BaseRouter, PhotoLibraryV3Router {
         super.init(routerSeed: routerSeed)
     }
     
-    // MARK: - PhotoLibraryV2Router
+    // MARK: - PhotoLibraryV3Router
     func showMediaPicker(
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,

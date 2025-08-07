@@ -2,7 +2,7 @@ import AVFoundation
 import ImageSource
 import UIKit
 
-final class PhotoLibraryV3ViewController: PaparazzoViewController, PhotoLibraryV3ViewInput, ThemeConfigurable {
+final class PhotoLibraryV3ViewController: PaparazzoViewController, PhotoLibraryTransitionController, PhotoLibraryV3ViewInput, ThemeConfigurable {
     typealias ThemeType = PhotoLibraryV3UITheme & NewCameraUITheme
     
     // MARK: Properties
