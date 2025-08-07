@@ -9,7 +9,7 @@ final class CameraV3PresentAnimator: NSObject, UIViewControllerAnimatedTransitio
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard
-            let fromViewController = transitionContext.viewController(forKey: .from)?.photoLibraryV2ViewController,
+            let fromViewController = transitionContext.viewController(forKey: .from)?.photoLibraryViewController,
             let incomingViewController = transitionContext.viewController(forKey: .to) as? CameraV3ViewController,
             let incomingView = transitionContext.view(forKey: .to),
             let previewLayer = fromViewController.previewLayer
@@ -49,7 +49,7 @@ final class CameraV3DismissAnimator: NSObject, UIViewControllerAnimatedTransitio
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard
             let fromViewController = transitionContext.viewController(forKey: .from) as? CameraV3ViewController,
-            let incomingViewController = transitionContext.viewController(forKey: .to)?.photoLibraryV2ViewController,
+            let incomingViewController = transitionContext.viewController(forKey: .to)?.photoLibraryViewController,
             let incomingView = transitionContext.view(forKey: .to),
             let snapshot = fromViewController.view.snapshotView(afterScreenUpdates: true),
             let previewLayer = fromViewController.previewLayer
@@ -80,9 +80,9 @@ final class CameraV3DismissAnimator: NSObject, UIViewControllerAnimatedTransitio
     }
 }
 
-private extension UIViewController {
-    var photoLibraryV2ViewController: PhotoLibraryV2ViewController? {
-        self as? PhotoLibraryV2ViewController
-        ?? (self as? UINavigationController)?.topViewController as? PhotoLibraryV2ViewController
+fileprivate extension UIViewController {
+    var photoLibraryViewController: PhotoLibraryTransitionController? {
+        self as? PhotoLibraryTransitionController
+        ?? (self as? UINavigationController)?.topViewController as? PhotoLibraryTransitionController
     }
 }

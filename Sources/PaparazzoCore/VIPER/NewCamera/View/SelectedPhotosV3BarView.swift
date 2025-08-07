@@ -66,7 +66,7 @@ final class SelectedPhotosV3BarView: UIView {
         lastPhotoThumbnailView.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(handleLastPhotoThumbnailTap))
         )
-        
+         
         layer.addSublayer(shadowLayer)
         lastPhotoThumbnailView.layer.addSublayer(lastPhotoOverlay)
         addSubview(lastPhotoThumbnailView)
