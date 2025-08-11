@@ -4,6 +4,7 @@ public protocol PhotoLibraryV3Assembly: AnyObject {
     func module(
         data: PhotoLibraryV3Data,
         cameraType: MediaPickerCameraType,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         configure: (PhotoLibraryV3Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

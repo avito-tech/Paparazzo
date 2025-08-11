@@ -17,6 +17,7 @@ public final class PhotoLibraryV3AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     public func module(
         data: PhotoLibraryV3Data,
         cameraType: MediaPickerCameraType,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         configure: (PhotoLibraryV3Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
@@ -54,6 +55,7 @@ public final class PhotoLibraryV3AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             router: router,
             overridenTheme: theme,
             cameraType: cameraType,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
             onCameraV3InitializationMeasurementStop: onCameraV3InitializationMeasurementStop,
             onCameraV3DrawingMeasurementStart: onCameraV3DrawingMeasurementStart, 

@@ -134,6 +134,7 @@ public final class PaparazzoFacade {
     public static func libraryV3ViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV3Data,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -146,6 +147,7 @@ public final class PaparazzoFacade {
         let galleryController = assembly.module(
             data: parameters,
             cameraType: .cameraV3,
+            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
             configure: { (module: PhotoLibraryV3Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()
