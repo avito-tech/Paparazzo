@@ -293,7 +293,6 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         if let frame = layout?.frameForHeader(at: indexPath) {
             return convert(frame, from: collectionView)
         }
-        
         return .zero
     }
     
