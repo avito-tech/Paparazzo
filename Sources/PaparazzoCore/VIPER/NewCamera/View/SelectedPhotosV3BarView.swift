@@ -48,6 +48,7 @@ final class SelectedPhotosV3BarView: UIView {
         static let confirmButtonInsets = UIEdgeInsets(top: 10, left: 14, bottom: 10, right: 14)
         static let lastPhotoThumbnailSize = CGSize(width: 40, height: 40)
         static let contentInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
+        static let placeholderInsets = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 7)
     }
     
     // MARK: Handler
@@ -102,10 +103,9 @@ final class SelectedPhotosV3BarView: UIView {
         
         layOutButton()
         
-        let placeholderInsets = UIEdgeInsets(top: 0, left: 19, bottom: 0, right: 7)
-        let placeholderSize = placeholderLabel.sizeForWidth(confirmButton.left - bounds.left - placeholderInsets.width)
+        let placeholderSize = placeholderLabel.sizeForWidth(confirmButton.left - bounds.left - Spec.placeholderInsets.width)
         placeholderLabel.frame = CGRect(
-            x: bounds.left + placeholderInsets.left,
+            x: bounds.left + Spec.placeholderInsets.left,
             y: floor(bounds.top + (bounds.height - placeholderSize.height) / 2),
             width: placeholderSize.width,
             height: placeholderSize.height

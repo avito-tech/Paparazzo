@@ -98,7 +98,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
 
     private lazy var bottomContinueButton: ButtonWithActivity = {
         let button = ButtonWithActivity(activityStyle: .white)
-        button.titleEdgeInsets = Spec.bottomContinueButtonInsets
+        button.titleEdgeInsets = Spec.bottomContinueButtonTitleInsets
         return button
     }()
     
@@ -112,9 +112,13 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
     
     private enum Spec {
         static let closeButtonSize = CGSize(width: 38, height: 38)
+        static let closeButtonInset = CGFloat(8)
+        static let titleViewContentInset = CGFloat(10)
         static let continueButtonHeight = CGFloat(38)
-        static let continueButtonContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        static let bottomContinueButtonInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
+        static let bottomButtonHeight = CGFloat(48)
+        static let continueButtonContentInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let bottomContinueButtonTitleInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
+        static let bottomContinueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
     
     // MARK: Init
@@ -170,8 +174,8 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         super.layoutSubviews()
         
         closeButton.frame = CGRect(
-            x: 8,
-            y: max(8, paparazzoSafeAreaInsets.top),
+            x: Spec.closeButtonInset,
+            y: max(Spec.closeButtonInset, paparazzoSafeAreaInsets.top),
             width: closeButton.width,
             height: closeButton.height
         )
@@ -179,19 +183,19 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         layOutTopRightContinueButton()
         
         bottomContinueButton.layout(
-            left: bounds.left + 16,
-            right: bounds.right - 16,
-            bottom: bounds.bottom - paparazzoSafeAreaInsets.bottom - 16,
-            height: 48
+            left: bounds.left + Spec.bottomContinueButtonInsets.left,
+            right: bounds.right - Spec.bottomContinueButtonInsets.right,
+            bottom: bounds.bottom - paparazzoSafeAreaInsets.bottom - Spec.bottomContinueButtonInsets.bottom,
+            height: Spec.bottomButtonHeight
         )
         
         titleView.contentInsets = UIEdgeInsets(
             top: 0,
-            left: closeButton.right + 10,
+            left: closeButton.right + Spec.titleViewContentInset,
             bottom: 0,
             right: (continueButtonPlacement == .bottom)
-                ? closeButton.right + 10  // same as left, so that it stays centered
-                : bounds.width - topRightContinueButton.left + 10
+            ? closeButton.right + Spec.titleViewContentInset  // same as left, so that it stays centered
+            : bounds.width - topRightContinueButton.left + Spec.titleViewContentInset
         )
         
         let titleViewSize = titleView.sizeThatFits(bounds.size)

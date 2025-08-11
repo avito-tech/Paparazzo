@@ -39,11 +39,18 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     
     private lazy var selectionIndexBadge: UILabel = {
         let label = UILabel()
-        label.size = CGSize(width: 19, height: 19)
+        label.size = Spec.selectionBadgeSize
         label.textAlignment = .center
         label.layer.masksToBounds = true
         return label
     }()
+    
+    // MARK: Spec
+    
+    private enum Spec {
+        static let selectionBadgeSize = CGSize(width: 19, height: 19)
+        static let selectionBadgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    }
     
     // MARK: Handler
     
@@ -93,8 +100,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         selectionIndexBadgeContainer.bounds = imageView.bounds
         
         selectionIndexBadge.layout(
-            right: contentView.bounds.right - 8,
-            top: contentView.bounds.top + 8
+            right: contentView.bounds.right - Spec.selectionBadgeInsets.right,
+            top: contentView.bounds.top + Spec.selectionBadgeInsets.top
         )
     }
     
@@ -110,9 +117,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     }
     
     override func imageRequestResultReceived(_ result: ImageRequestResult<UIImage>) {
-        if result.requestId == self.imageRequestId {
-            onImageSetFromSource?()
-        }
+        guard result.requestId == imageRequestId else { return }
+        onImageSetFromSource?()
     }
     
     // MARK: Public methods
@@ -120,11 +126,7 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
     func adjustAppearanceForSelected(_ isSelected: Bool, animated: Bool) {
         
         func adjustAppearance() {
-            if isSelected {
-                self.selectionIndexBadgeContainer.alpha = 1
-            } else {
-                self.selectionIndexBadgeContainer.alpha = 0
-            }
+            selectionIndexBadgeContainer.alpha = isSelected ? 1 : 0
         }
         
         if animated {
