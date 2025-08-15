@@ -40,7 +40,8 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
-
+        selectedBackgroundView = nil
+        
         contentView.addSubview(coverImageView)
         contentView.addSubview(label)
     }
