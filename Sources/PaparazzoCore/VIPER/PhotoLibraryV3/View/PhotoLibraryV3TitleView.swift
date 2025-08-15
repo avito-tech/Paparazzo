@@ -22,6 +22,7 @@ final class PhotoLibraryV3TitleView: UIView {
     
     private enum Spec {
         static let labelToIconSpacing: CGFloat = 4
+        static let baseHeight: CGFloat = 52
     }
     
     // MARK: Init
@@ -81,7 +82,7 @@ final class PhotoLibraryV3TitleView: UIView {
     // MARK: Layout
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: size.width, height: 52 + paparazzoSafeAreaInsets.top)
+        return CGSize(width: size.width, height: Spec.baseHeight + paparazzoSafeAreaInsets.top)
     }
     
     override func layoutSubviews() {

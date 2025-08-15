@@ -171,12 +171,8 @@ final class PhotoLibraryV3ItemCell: UIImageSourceCollectionViewCell, Customizabl
         getSelectionIndex = item.getSelectionIndex
         isSelected = item.selected
     }
-}
-
-// MARK: - Private methods
-
-private extension PhotoLibraryV3ItemCell {
-    func setUpRoundedCorners(for view: UIView) {
+    
+    private func setUpRoundedCorners(for view: UIView) {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.layer.shouldRasterize = true

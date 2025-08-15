@@ -119,6 +119,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
         static let continueButtonContentInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let bottomContinueButtonTitleInsets = UIEdgeInsets(top: 12, left: 16, bottom: 14, right: 16)
         static let bottomContinueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let animateDuration = 0.25
     }
     
     // MARK: Init
@@ -499,7 +500,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
     }
     
     func showAlbumsList() {
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: Spec.animateDuration) {
             self.albumsListState = .expanded
             self.dimView.alpha = 1
             self.layoutAlbumsTableView()
@@ -508,7 +509,7 @@ final class PhotoLibraryV3View: UIView, ThemeConfigurable {
     }
     
     func hideAlbumsList() {
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: Spec.animateDuration) {
             self.albumsListState = .collapsed
             self.dimView.alpha = 0
             self.layoutAlbumsTableView()
@@ -679,7 +680,7 @@ private extension PhotoLibraryV3View {
         guard topRightContinueButton.style != style else { return }
         
         UIView.animate(
-            withDuration: 0.3,
+            withDuration: Spec.animateDuration,
             animations: {
                 self.topRightContinueButton.style = style
                 self.layOutTopRightContinueButton()
@@ -716,7 +717,7 @@ private extension PhotoLibraryV3View {
             
             // Animate snapshot fading out
             UIView.animate(
-                withDuration: 0.2,
+                withDuration: Spec.animateDuration,
                 animations: {
                     collectionViewSnapshot?.alpha = 0
                 }, completion: { _ in

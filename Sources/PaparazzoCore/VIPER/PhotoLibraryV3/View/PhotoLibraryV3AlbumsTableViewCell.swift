@@ -1,8 +1,6 @@
 import ImageSource
 import UIKit
 
-// TODO: (ayutkin) make base table view cell for image source in ImageSource/UIKit
-// TODO: (ayutkin) add placeholder image for empty albums
 final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
     
     // MARK: Properties
@@ -42,9 +40,6 @@ final class PhotoLibraryV3AlbumsTableViewCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
-        
-        selectedBackgroundView = UIView()
-        selectedBackgroundView?.backgroundColor = .white
 
         contentView.addSubview(coverImageView)
         contentView.addSubview(label)

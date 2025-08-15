@@ -165,32 +165,3 @@ final class PhotoLibraryV3InteractorImpl: PhotoLibraryV3Interactor {
         )
     }
 }
-
-fileprivate extension PhotoLibraryAlbumEvent {
-    var asV3: PhotoLibraryV3AlbumEvent {
-        switch self {
-        case let .fullReload(value):
-            return .fullReload(value.map { $0.asV3 })
-        case let .incrementalChanges(value):
-            return .incrementalChanges(value.asV3)
-        }
-    }
-}
-
-fileprivate extension PhotoLibraryItem {
-    var asV3: PhotoLibraryV3Item {
-        PhotoLibraryV3Item(image: self.image)
-    }
-}
-
-fileprivate extension PhotoLibraryChanges {
-    var asV3: PhotoLibraryV3Changes {
-        PhotoLibraryV3Changes(
-            removedIndexes: self.removedIndexes,
-            insertedItems: self.insertedItems.map { ($0.0, $0.1.asV3) },
-            updatedItems: self.updatedItems.map { ($0.0, $0.1.asV3) },
-            movedIndexes: self.movedIndexes,
-            itemsAfterChanges: self.itemsAfterChanges.map { $0.asV3 }
-        )
-    }
-}
