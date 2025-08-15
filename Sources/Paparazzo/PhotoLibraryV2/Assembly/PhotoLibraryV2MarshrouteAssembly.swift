@@ -1,6 +1,7 @@
 import UIKit
 import Marshroute
 
+@available(*, deprecated, message: "Use PhotoLibraryV3MarshrouteAssembly instead")
 public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
     func module(
         mediaPickerData: MediaPickerData,
@@ -17,6 +18,7 @@ public protocol PhotoLibraryV2MarshrouteAssembly: AnyObject {
     ) -> UIViewController
 }
 
+@available(*, deprecated, message: "Use PhotoLibraryV3MarshrouteAssemblyFactory instead")
 public protocol PhotoLibraryV2MarshrouteAssemblyFactory: AnyObject {
     func photoLibraryV2Assembly() -> PhotoLibraryV2MarshrouteAssembly
 }

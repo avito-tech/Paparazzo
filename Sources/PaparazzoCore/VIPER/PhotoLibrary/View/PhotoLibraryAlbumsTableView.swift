@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3AlbumsTableView instead")
 final class PhotoLibraryAlbumsTableView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Subviews

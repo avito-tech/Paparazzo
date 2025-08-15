@@ -1,6 +1,7 @@
 import Foundation
 import ImageSource
 
+@available(*, deprecated, message: "Use PhotoLibraryV3InteractorImpl instead")
 final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
     
     // MARK: - State
@@ -163,22 +164,5 @@ final class PhotoLibraryV2InteractorImpl: PhotoLibraryV2Interactor {
             canSelectMoreItems: canSelectMoreItems(),
             preSelectionAction: preSelectionAction
         )
-    }
-}
-
-extension ExifOrientation {
-    func byApplyingDeviceOrientation(_ orientation: DeviceOrientation) -> ExifOrientation {
-        switch orientation {
-        case .portrait:
-            return .left
-        case .landscapeLeft:
-            return .up
-        case .landscapeRight:
-            return .down
-        case .portraitUpsideDown:
-            return .right
-        case .unknown:
-            return .left
-        }
     }
 }

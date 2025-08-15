@@ -1,3 +1,4 @@
+@available(*, deprecated, message: "Use PhotoLibraryV3Router instead")
 protocol PhotoLibraryV2Router: AnyObject {
     func dismissCurrentModule()
     func focusOnCurrentModule()

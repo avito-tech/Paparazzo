@@ -2,6 +2,7 @@ import AVFoundation
 import ImageSource
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3View instead")
 final class PhotoLibraryV2View: UIView, UICollectionViewDelegateFlowLayout, ThemeConfigurable {
     
     typealias ThemeType = PhotoLibraryV2UITheme & NewCameraUITheme

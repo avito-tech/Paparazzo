@@ -4,6 +4,7 @@ public struct PaparazzoUITheme:
     MediaPickerRootModuleUITheme,
     PhotoLibraryUITheme,
     PhotoLibraryV2UITheme,
+    PhotoLibraryV3UITheme,
     ImageCroppingUITheme,
     MaskCropperUITheme,
     ScannerRootModuleUITheme,
@@ -100,7 +101,7 @@ public struct PaparazzoUITheme:
     public var photoLibraryAlbumsCellDefaultLabelColor = UIColor.RGB(red: 51, green: 51, blue: 51)
     public var photoLibraryCollectionBackgroundColor = UIColor.white
     
-    // MARK: - PhotoLibraryV2UITheme
+    // MARK: - PhotoLibraryV2UITheme & PhotoLibraryV3UITheme
     public var continueButtonTitleColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var continueButtonTitleHighlightedColor = UIColor(red: 0, green: 152.0/255, blue: 229.0/255, alpha: 1)
     public var closeIcon = PaparazzoUITheme.image(named: "bt-close")
@@ -114,6 +115,14 @@ public struct PaparazzoUITheme:
     public var libraryItemBadgeBackgroundColor = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
     public var cameraIcon = PaparazzoUITheme.image(named: "camera-new")
     public var cameraIconColor = UIColor.white
+    
+    // MARK: PhotoLibraryV3UITheme
+    public var progressIndicatorColor = UIColor(red: 162.0 / 255, green: 162.0 / 255, blue: 162.0 / 255, alpha: 1)
+    public var libraryBottomContinueButtonCornerRadius: CGFloat = 5
+    public var libraryItemBadgeCornerRadius: CGFloat = 10
+    public var cameraCornerRadius: CGFloat = 28
+    public var photoLibraryAlbumsCellImageCornerRadius: CGFloat = 12
+    public var libraryItemImageOverlayColor: UIColor = UIColor.clear
     
     // MARK: - ImageCroppingUITheme
     
@@ -148,7 +157,10 @@ public struct PaparazzoUITheme:
     public var newCameraFlashBackgroundColor = UIColor.white
     public var newCameraButtonBackgroundColor = UIColor.white
     public var newCameraSelectedPhotosBarBackgroundColor = UIColor.white
-    
+    public var newCameraSelectedPhotosBarButtonCornerRadius: CGFloat = 12
+    public var newCameraSelectedPhotosBarPhotoCornerRadius: CGFloat = 10
+    public var newCameraSelectedPhotosBarPhotoOverlayColor: UIColor = UIColor.clear
+    public var newCameraSelectedPhotosBarCornerRadius: CGFloat = 28
     public var newCameraCaptureButtonBorderColorEnabled = UIColor(red: 0, green: 0.67, blue: 1, alpha: 1)
     public var newCameraCaptureButtonBackgroundColorEnabled = UIColor.white
     public var newCameraCaptureButtonBorderColorDisabled = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)

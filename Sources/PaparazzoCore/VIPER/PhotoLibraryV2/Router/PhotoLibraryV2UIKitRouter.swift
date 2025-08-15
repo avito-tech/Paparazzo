@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3UIKitRouter instead")
 final class PhotoLibraryV2UIKitRouter: BaseUIKitRouter, PhotoLibraryV2Router {
     
     typealias AssemblyFactory = MediaPickerAssemblyFactory

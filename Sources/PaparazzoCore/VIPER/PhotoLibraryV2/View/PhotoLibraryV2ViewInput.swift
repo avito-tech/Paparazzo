@@ -1,6 +1,7 @@
 import Foundation
 import ImageSource
 
+@available(*, deprecated, message: "Use PhotoLibraryV3ViewInput instead")
 protocol PhotoLibraryV2ViewInput: AnyObject {
     
     var onTitleTap: (() -> ())? { get set }

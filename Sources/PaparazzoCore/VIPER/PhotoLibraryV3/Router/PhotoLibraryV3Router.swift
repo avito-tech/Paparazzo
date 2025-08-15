@@ -1,0 +1,33 @@
+protocol PhotoLibraryV3Router: AnyObject {
+    func dismissCurrentModule()
+    func focusOnCurrentModule()
+    
+    func showMediaPicker(
+        data: MediaPickerData,
+        overridenTheme: PaparazzoUITheme?,
+        isPaparazzoImageUpdaingFixEnabled: Bool,
+        isNewFlowPrototype: Bool,
+        configure: (MediaPickerModule) -> ()
+    )
+    
+    func showCameraV3(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (CameraV3Module) -> (),
+        onInitializationMeasurementStart: (() -> ())?,
+        onInitializationMeasurementStop: (() -> ())?,
+        onDrawingMeasurementStart: (() -> ())?,
+        onDrawingMeasurementStop: (() -> ())?
+    )
+    
+    func showMedicalBookCamera(
+        isPaparazzoImageUpdaingFixEnabled: Bool,
+        selectedImagesStorage: SelectedImageStorage,
+        mediaPickerData: MediaPickerData,
+        configure: (MedicalBookCameraModule) -> ()
+    )
+    
+    @available(iOS 14, *)
+    func showLimitedAccessAlert()
+}

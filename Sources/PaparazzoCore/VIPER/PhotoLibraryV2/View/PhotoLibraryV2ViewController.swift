@@ -2,7 +2,8 @@ import AVFoundation
 import ImageSource
 import UIKit
 
-final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryV2ViewInput, ThemeConfigurable {
+@available(*, deprecated, message: "Use PhotoLibraryV3ViewController instead")
+final class PhotoLibraryV2ViewController: PaparazzoViewController, PhotoLibraryTransitionController, PhotoLibraryV2ViewInput, ThemeConfigurable {
     
     typealias ThemeType = PhotoLibraryV2UITheme & NewCameraUITheme
     

@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "Use PhotoLibraryV3Layout instead")
 final class PhotoLibraryV2Layout: UICollectionViewFlowLayout {
     
     private var attributes = [IndexPath: UICollectionViewLayoutAttributes]()
