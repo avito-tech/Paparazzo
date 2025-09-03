@@ -9,35 +9,6 @@ public final class PaparazzoFacade {
         return imageStorage
     }()
     
-    public static func paparazzoViewController<NavigationController: UINavigationController>(
-        theme: PaparazzoUITheme = PaparazzoUITheme(),
-        parameters: MediaPickerData = MediaPickerData(),
-        isPaparazzoImageUpdaingFixEnabled: Bool,
-        onFinish: @escaping ([MediaPickerItem]) -> (),
-        onCancel: (() -> ())? = nil)
-        -> NavigationController
-    {
-        let assembly = assemblyFactory(theme: theme).mediaPickerAssembly()
-        
-        let viewController = assembly.module(
-            data: parameters,
-            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
-            configure: { (module: MediaPickerModule) in
-                module.setContinueButtonTitle("Done")
-                module.onCancel = { [weak module] in
-                    module?.dismissModule()
-                    onCancel?()
-                }
-                module.onFinish = { [weak module] items in
-                    module?.dismissModule()
-                    onFinish(items)
-                }
-            }
-        )
-        
-        return NavigationController(rootViewController: viewController)
-    }
-    
     public static func maskCropperViewController<NavigationController: UINavigationController>(
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: MaskCropperData,

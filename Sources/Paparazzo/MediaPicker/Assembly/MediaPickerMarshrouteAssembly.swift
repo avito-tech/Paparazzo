@@ -54,21 +54,4 @@ public extension MediaPickerMarshrouteAssembly {
             configure: configure
         )
     }
-    
-    func module(
-        data: MediaPickerData,
-        routerSeed: RouterSeed,
-        isPaparazzoImageUpdaingFixEnabled: Bool,
-        configure: (MediaPickerModule) -> ()
-    ) -> UIViewController {
-        return module(
-            data: data,
-            overridenTheme: nil,
-            viewfinderOverlay: nil,
-            routerSeed: routerSeed,
-            isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
-            isNewFlowPrototype: false,
-            configure: configure
-        )
-    }
 }
