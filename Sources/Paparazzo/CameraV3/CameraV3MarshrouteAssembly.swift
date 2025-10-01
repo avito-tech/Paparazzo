@@ -4,6 +4,7 @@ import UIKit
 protocol CameraV3MarshrouteAssembly: AnyObject {
     func module(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -35,6 +36,7 @@ final class CameraV3MarshrouteAssemblyImpl:
 
     func module(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -65,6 +67,7 @@ final class CameraV3MarshrouteAssemblyImpl:
         
         let presenter = CameraV3Presenter(
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
             router: router,

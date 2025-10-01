@@ -4,6 +4,7 @@ import UIKit
 final class CameraV3Presenter: CameraV3Module {
     // MARK: - Private properties
     private let isPaparazzoImageUpdaingFixEnabled: Bool
+    private let isRedesignedMediaPickerEnabled: Bool
     private let interactor: CameraV3Interactor
     private let router: CameraV3Router
     private let volumeService: VolumeService
@@ -13,6 +14,7 @@ final class CameraV3Presenter: CameraV3Module {
     // MARK: - Init
     init(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         interactor: CameraV3Interactor,
         volumeService: VolumeService,
         router: CameraV3Router,
@@ -20,6 +22,7 @@ final class CameraV3Presenter: CameraV3Module {
         onDrawingMeasurementStop: (() -> ())?
     ) {
         self.isPaparazzoImageUpdaingFixEnabled = isPaparazzoImageUpdaingFixEnabled
+        self.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
         self.interactor = interactor
         self.volumeService = volumeService
         self.router = router
@@ -74,10 +77,11 @@ final class CameraV3Presenter: CameraV3Module {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router, isPaparazzoImageUpdaingFixEnabled] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router, isPaparazzoImageUpdaingFixEnabled, isRedesignedMediaPickerEnabled] in
             router.showMediaPicker(
                 data: interactor.mediaPickerDataWithSelectedLastItem,
                 isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+                isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
                 overridenTheme: nil,
                 configure: { module in
                     weakSelf?.configureMediaPicker?(module)

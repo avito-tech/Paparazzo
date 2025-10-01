@@ -22,16 +22,20 @@ public struct PaparazzoUITheme:
     public var thumbnailsViewBackgroundColor = UIColor.white
     public var photoPreviewBackgroundColor = UIColor.white
     public var photoPreviewCollectionBackgroundColor = UIColor.white
+    public var mediaPickerTitleFont = UIFont.boldSystemFont(ofSize: 17)
     public var mediaPickerTitleLightColor = UIColor.white
     public var mediaPickerTitleDarkColor = UIColor.black
     public var mediaPickerIconColor = UIColor.black
     public var mediaPickerIconActiveColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var mediaPickerIconDisableColor: UIColor? = UIColor(red: 244.0/255, green: 244.0/255, blue: 244.0/255, alpha: 1)
+    public var mediaPickerDoneButtonColor = UIColor.black
+    public var mediaPickerDoneButtonHighlightedColor = UIColor.black
     public var buttonGrayHighlightedColor = UIColor(red: 227.0/255, green: 226.0/255, blue: 225.0/255, alpha: 1)
 
     public var shutterButtonColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var shutterButtonDisabledColor = UIColor.lightGray
-    public var mediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
+    public var newMediaRibbonSelectionColor = UIColor(red: 20.0/255, green: 20.0/255, blue: 20.0/255, alpha: 1)
+    public var legacyMediaRibbonSelectionColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
     public var focusIndicatorColor = UIColor(red: 0, green: 170.0/255, blue: 1, alpha: 1)
 
     public var removePhotoIcon = PaparazzoUITheme.image(named: "delete")
@@ -40,6 +44,7 @@ public struct PaparazzoUITheme:
     public var autoEnhanceImageIcon = PaparazzoUITheme.image(named: "autoEnhanceImage")
     public var returnToCameraIcon = PaparazzoUITheme.image(named: "camera")
     public var closeCameraIcon = PaparazzoUITheme.image(named: "bt-close")
+    public var backIconRedesigned = PaparazzoUITheme.image(named: "bt-back-redesigned")
     public var backIcon = PaparazzoUITheme.image(named: "bt-back")
     public var flashOnIcon = PaparazzoUITheme.image(named: "light_on")
     public var flashOffIcon = PaparazzoUITheme.image(named: "light_off")

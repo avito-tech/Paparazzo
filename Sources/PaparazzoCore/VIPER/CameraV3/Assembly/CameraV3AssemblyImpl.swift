@@ -17,6 +17,7 @@ final class CameraV3AssemblyImpl:
     // MARK: - CameraV3Assembly
     func module(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -47,6 +48,7 @@ final class CameraV3AssemblyImpl:
         
         let presenter = CameraV3Presenter(
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             interactor: interactor,
             volumeService: serviceFactory.volumeService(),
             router: router, 

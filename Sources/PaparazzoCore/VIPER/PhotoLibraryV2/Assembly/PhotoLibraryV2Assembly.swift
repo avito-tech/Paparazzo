@@ -5,6 +5,7 @@ public protocol PhotoLibraryV2Assembly: AnyObject {
     func module(
         data: PhotoLibraryV2Data,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
         configure: (PhotoLibraryV2Module) -> (),

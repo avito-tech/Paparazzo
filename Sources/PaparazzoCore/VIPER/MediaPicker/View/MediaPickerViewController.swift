@@ -5,6 +5,8 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     
     typealias ThemeType = MediaPickerRootModuleUITheme
     
+    var isRedesignedMediaPickerEnabled: Bool = false
+    
     private let mediaPickerView = MediaPickerView()
     private var layoutSubviewsPromise = Promise<Void>()
     private var isAnimatingTransition: Bool = false
@@ -13,12 +15,14 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return view.paparazzoSafeAreaInsets.top > 0 ? .lightContent : .default
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         automaticallyAdjustsScrollViewInsets = false
-        view.backgroundColor = .black
+        if !isRedesignedMediaPickerEnabled {
+            view.backgroundColor = .black
+        }
         view.addSubview(mediaPickerView)
         onViewDidLoad?()
     }
@@ -388,7 +392,11 @@ final class MediaPickerViewController: PaparazzoViewController, MediaPickerViewI
     // MARK: - ThemeConfigurable
     
     func setTheme(_ theme: ThemeType) {
-        mediaPickerView.setCloseButtonImage(isBeingPresented ? theme.closeCameraIcon : theme.backIcon)
+        let backIcon = isRedesignedMediaPickerEnabled
+            ? theme.backIconRedesigned
+            : theme.backIcon
+        mediaPickerView.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
+        mediaPickerView.setCloseButtonImage(isBeingPresented ? theme.closeCameraIcon : backIcon)
         mediaPickerView.setTheme(theme)
     }
     

@@ -5,6 +5,7 @@ public protocol MediaPickerAssembly: AnyObject {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController

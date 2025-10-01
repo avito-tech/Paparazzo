@@ -18,6 +18,7 @@ final class CameraV3RouterImpl:
     func showMediaPicker(
         data: MediaPickerData,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
     {
@@ -27,6 +28,7 @@ final class CameraV3RouterImpl:
             data: data,
             overridenTheme: overridenTheme,
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             isNewFlowPrototype: true,
             configure: configure
         )

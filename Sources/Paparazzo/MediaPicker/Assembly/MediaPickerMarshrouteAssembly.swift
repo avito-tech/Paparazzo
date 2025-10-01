@@ -8,6 +8,7 @@ public protocol MediaPickerMarshrouteAssembly: AnyObject {
         viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController
@@ -23,6 +24,7 @@ public extension MediaPickerMarshrouteAssembly {
         overridenTheme: PaparazzoUITheme?,
         routerSeed: RouterSeed,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
@@ -32,6 +34,7 @@ public extension MediaPickerMarshrouteAssembly {
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
         )
@@ -41,6 +44,7 @@ public extension MediaPickerMarshrouteAssembly {
         data: MediaPickerData,
         routerSeed: RouterSeed,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     ) -> UIViewController {
@@ -50,6 +54,7 @@ public extension MediaPickerMarshrouteAssembly {
             viewfinderOverlay: nil,
             routerSeed: routerSeed,
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             configure: configure
         )

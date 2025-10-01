@@ -8,6 +8,7 @@ public protocol PhotoLibraryV3MarshrouteAssembly: AnyObject {
         routerSeed: RouterSeed,
         cameraType: MediaPickerCameraType,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         configure: (PhotoLibraryV3Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,
