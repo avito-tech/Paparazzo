@@ -9,19 +9,23 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var photoPreviewBackgroundColor: UIColor { get }
     var photoPreviewCollectionBackgroundColor: UIColor { get }
 
+    var mediaPickerTitleFont: UIFont { get }
     var mediaPickerTitleLightColor: UIColor { get }
     var mediaPickerTitleDarkColor: UIColor { get }
 
     var mediaPickerIconColor: UIColor { get }
     var mediaPickerIconActiveColor: UIColor { get }
     var mediaPickerIconDisableColor: UIColor? { get }
+    var mediaPickerDoneButtonColor: UIColor { get }
+    var mediaPickerDoneButtonHighlightedColor: UIColor { get }
 
     var buttonGrayHighlightedColor: UIColor { get }
 
     var shutterButtonColor: UIColor { get }
     var shutterButtonDisabledColor: UIColor { get }
     var focusIndicatorColor: UIColor { get }
-    var mediaRibbonSelectionColor: UIColor { get }
+    var newMediaRibbonSelectionColor: UIColor { get }
+    var legacyMediaRibbonSelectionColor: UIColor { get }
     var cameraContinueButtonTitleColor: UIColor { get }
     var cameraContinueButtonTitleHighlightedColor: UIColor { get }
     var cameraButtonsBackgroundNormalColor: UIColor { get }
@@ -43,6 +47,7 @@ public protocol MediaPickerRootModuleUITheme: AccessDeniedViewTheme {
     var autoEnhanceImageIcon: UIImage? { get }
     var returnToCameraIcon: UIImage? { get }
     var closeCameraIcon: UIImage? { get }
+    var backIconRedesigned: UIImage? { get }
     var backIcon: UIImage? { get }
     var flashOnIcon: UIImage? { get }
     var flashOffIcon: UIImage? { get }

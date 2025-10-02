@@ -4,6 +4,8 @@ import UIKit
 final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayoutDelegate, ThemeConfigurable {
     
     typealias ThemeType = MediaPickerRootModuleUITheme
+    
+    var isRedesignedMediaPickerEnabled: Bool = false
    
     var onDragStart: (() -> ())? {
         get {
@@ -315,7 +317,11 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
         )
         
         if let cell = cell as? MediaItemThumbnailCell {
-            cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
+            let selectedBorderColor = isRedesignedMediaPickerEnabled
+                ? theme?.newMediaRibbonSelectionColor
+                : theme?.legacyMediaRibbonSelectionColor
+            cell.selectedBorderColor = selectedBorderColor
+            cell.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
             cell.customizeWithItem(mediaPickerItem)
             cell.setAccessibilityId("\(AccessibilityId.mediaItemThumbnailCell)-\(indexPath.row)")
         }
@@ -340,7 +346,7 @@ final class ThumbnailsView: UIView, UICollectionViewDataSource, MediaRibbonLayou
     
     private func setUpCameraCell(_ cell: UICollectionViewCell) {
         if let cell = cell as? CameraThumbnailCell {
-            cell.selectedBorderColor = theme?.mediaRibbonSelectionColor
+            cell.selectedBorderColor = theme?.legacyMediaRibbonSelectionColor
             cell.setCameraIcon(theme?.returnToCameraIcon)
             cell.setCameraIconTransform(cameraIconTransform)
             

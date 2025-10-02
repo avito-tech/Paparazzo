@@ -21,6 +21,7 @@ final class MedicalBookCameraAssemblyImpl:
     // MARK: - MedicalBookCameraAssembly
     func module(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         cameraService: CameraService,
@@ -46,6 +47,7 @@ final class MedicalBookCameraAssemblyImpl:
         
         let presenter = MedicalBookCameraPresenter(
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             interactor: interactor,
             router: router,
             volumeService: serviceFactory.volumeService()

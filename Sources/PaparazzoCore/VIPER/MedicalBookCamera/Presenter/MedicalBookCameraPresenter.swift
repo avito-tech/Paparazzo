@@ -4,6 +4,7 @@ import UIKit
 final class MedicalBookCameraPresenter: MedicalBookCameraModule {
     // MARK: - Private properties
     private let isPaparazzoImageUpdaingFixEnabled: Bool
+    private let isRedesignedMediaPickerEnabled: Bool
     private let interactor: MedicalBookCameraInteractor
     private let router: MedicalBookCameraRouter
     private let volumeService: VolumeService
@@ -11,12 +12,14 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
     // MARK: - Init
     init(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         interactor: MedicalBookCameraInteractor,
         router: MedicalBookCameraRouter,
         volumeService: VolumeService
     )
     {
         self.isPaparazzoImageUpdaingFixEnabled = isPaparazzoImageUpdaingFixEnabled
+        self.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
         self.interactor = interactor
         self.router = router
         self.volumeService = volumeService
@@ -76,10 +79,11 @@ final class MedicalBookCameraPresenter: MedicalBookCameraModule {
             weakSelf?.takePhoto()
         }
         
-        view?.onLastPhotoThumbnailTap = { [interactor, router, isPaparazzoImageUpdaingFixEnabled] in
+        view?.onLastPhotoThumbnailTap = { [interactor, router, isPaparazzoImageUpdaingFixEnabled, isRedesignedMediaPickerEnabled] in
             router.showMediaPicker(
                 data: interactor.mediaPickerDataWithSelectedLastItem,
                 isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+                isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
                 overridenTheme: nil,
                 configure: { module in
                     weakSelf?.configureMediaPicker?(module)

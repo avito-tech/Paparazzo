@@ -7,12 +7,14 @@ protocol PhotoLibraryV2Router: AnyObject {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ()
     )
     
     func showCameraV3(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (CameraV3Module) -> (),
@@ -24,6 +26,7 @@ protocol PhotoLibraryV2Router: AnyObject {
     
     func showMedicalBookCamera(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (MedicalBookCameraModule) -> ()

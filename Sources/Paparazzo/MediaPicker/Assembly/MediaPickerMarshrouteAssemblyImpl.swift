@@ -25,6 +25,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         viewfinderOverlay: UIView?,
         routerSeed: RouterSeed,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
         -> UIViewController
@@ -61,6 +62,7 @@ public final class MediaPickerMarshrouteAssemblyImpl: BasePaparazzoAssembly, Med
         )
         
         let viewController = MediaPickerViewController()
+        viewController.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
         viewController.addDisposable(presenter)
         viewController.setCameraView(cameraView)
         viewController.setTheme(overridenTheme ?? theme)

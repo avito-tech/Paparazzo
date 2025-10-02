@@ -30,6 +30,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         data: MediaPickerData,
         overridenTheme: PaparazzoUITheme?,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         configure: (MediaPickerModule) -> ())
     {
@@ -42,6 +43,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
                 overridenTheme: overridenTheme,
                 routerSeed: routerSeed,
                 isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+                isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
                 isNewFlowPrototype: isNewFlowPrototype,
                 configure: configure
             )
@@ -50,6 +52,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
     func showCameraV3(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (CameraV3Module) -> (),
@@ -61,6 +64,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.cameraV3Assembly().module(
                 isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+                isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,
@@ -76,6 +80,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
     
     func showMedicalBookCamera(
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         selectedImagesStorage: SelectedImageStorage,
         mediaPickerData: MediaPickerData,
         configure: (MedicalBookCameraModule) -> ()
@@ -83,6 +88,7 @@ final class PhotoLibraryV2MarshrouteRouter: BaseRouter, PhotoLibraryV2Router {
         presentModalViewControllerDerivedFrom { routerSeed in
             assemblyFactory.medicalBookCameraAssembly().module(
                 isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+                isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
                 selectedImagesStorage: selectedImagesStorage,
                 mediaPickerData: mediaPickerData,
                 cameraService: cameraService,

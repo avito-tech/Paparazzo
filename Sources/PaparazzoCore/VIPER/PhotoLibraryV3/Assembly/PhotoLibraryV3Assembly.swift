@@ -5,6 +5,7 @@ public protocol PhotoLibraryV3Assembly: AnyObject {
         data: PhotoLibraryV3Data,
         cameraType: MediaPickerCameraType,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         configure: (PhotoLibraryV3Module) -> (),
         onCameraV3InitializationMeasurementStart: (() -> ())?,
         onCameraV3InitializationMeasurementStop: (() -> ())?,

@@ -4,6 +4,7 @@ protocol MedicalBookCameraRouter: AnyObject {
     func showMediaPicker(
         data: MediaPickerData,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         overridenTheme: PaparazzoUITheme?,
         configure: (MediaPickerModule) -> ())
 }

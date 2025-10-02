@@ -5,6 +5,12 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     typealias ThemeType = MediaPickerRootModuleUITheme
     
+    var isRedesignedMediaPickerEnabled: Bool = false {
+        didSet {
+            thumbnailRibbonView.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
+        }
+    }
+    
     // MARK: - Subviews
     private let notchMaskingView = UIView()
     private let cameraControlsView = CameraControlsView()
@@ -13,6 +19,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private let closeButton = UIButton()
     private let topRightContinueButton = ButtonWithActivity()
+    private let bottomContinueButtonContainer = UIView()
+    private let bottomContinueButtonContainerShapeLayer = CAShapeLayer()
     private let bottomContinueButton = UIButton()
     private let photoTitleLabel = UILabel()
     private let flashView = UIView()
@@ -45,9 +53,11 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             switch continueButtonPlacement {
             case .topRight:
                 bottomContinueButton.removeFromSuperview()
+                bottomContinueButtonContainer.removeFromSuperview()
                 addSubview(topRightContinueButton)
             case .bottom:
                 topRightContinueButton.removeFromSuperview()
+                if isRedesignedMediaPickerEnabled { addSubview(bottomContinueButtonContainer) }
                 addSubview(bottomContinueButton)
             }
         }
@@ -66,22 +76,27 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         super.init(frame: .zero)
         
-        backgroundColor = .white
-        
-        notchMaskingView.backgroundColor = .black
-        
+        if !isRedesignedMediaPickerEnabled {
+            backgroundColor = .white
+            notchMaskingView.backgroundColor = .black
+            photoTitleLabel.textColor = .white
+        }
+
         flashView.backgroundColor = .white
         flashView.alpha = 0
         
         setUpButtons()
         setUpThumbnailRibbonView()
         
-        photoTitleLabel.textColor = .white
         photoTitleLabel.layer.shadowOffset = .zero
         photoTitleLabel.layer.shadowOpacity = 0.5
         photoTitleLabel.layer.shadowRadius = 2
         photoTitleLabel.layer.masksToBounds = false
         photoTitleLabel.alpha = 0
+        
+        bottomContinueButtonContainerShapeLayer.shadowOffset = CGSize(width: 0, height: -4)
+        bottomContinueButtonContainerShapeLayer.shadowOpacity = 0.1
+        bottomContinueButtonContainer.layer.insertSublayer(bottomContinueButtonContainerShapeLayer, at: 0)
         
         addSubview(notchMaskingView)
         addSubview(photoPreviewView)
@@ -110,16 +125,22 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         layOutNotchMaskingView()
         layOutFakeNavigationBarButtons()
-        layOutBottomContinueButton()
+        layOutBottomContinueViews()
         layoutBadgeView()
         
+        let bottomPadding = isRedesignedMediaPickerEnabled
+            ? Spec.CameraControlsView.newInsets.bottom
+            : Spec.CameraControlsView.legacyInsets.bottom
+        let height = isRedesignedMediaPickerEnabled
+            ? Spec.CameraControlsView.newHeight
+            : Spec.CameraControlsView.legacyHeight
         let controlsIdealFrame = CGRect(
             left: bounds.left,
             right: bounds.right,
             bottom: (continueButtonPlacement == .bottom)
-                ? bottomContinueButton.top
+                ? bottomContinueButton.top - bottomPadding
                 : bounds.bottom - paparazzoSafeAreaInsets.bottom,
-            height: 93
+            height: height
         )
         
         /// Ideal height of photoPreviewView is when it's aspect ratio is 4:3 (same as camera output)
@@ -175,13 +196,48 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         )
     }
     
-    private func layOutBottomContinueButton() {
-        bottomContinueButton.layout(
-            left: bounds.left + 16,
-            right: bounds.right - 16,
-            bottom: bounds.bottom - max(14, paparazzoSafeAreaInsets.bottom),
-            height: 36
+    private func layOutBottomContinueViews() {
+        layOutBottomContinueButtonContainer()
+        layOutBottomContinueButtonContainerShapeLayer()
+        layOutBottomContinueButton()
+    }
+    
+    private func layOutBottomContinueButtonContainer() {
+        let height = paparazzoSafeAreaInsets.bottom
+            + Spec.BottomContinueButton.newHeight
+            + Spec.BottomContinueButton.newInsets.bottom
+        bottomContinueButtonContainer.layout(
+            left: bounds.left,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            height: height
         )
+    }
+    
+    private func layOutBottomContinueButton() {
+        if isRedesignedMediaPickerEnabled {
+            bottomContinueButton.layout(
+                left: bottomContinueButtonContainer.left + Spec.BottomContinueButton.newInsets.left,
+                right: bottomContinueButtonContainer.right - Spec.BottomContinueButton.newInsets.left,
+                top: bottomContinueButtonContainer.top + Spec.BottomContinueButton.newInsets.left,
+                height: Spec.BottomContinueButton.newHeight
+            )
+        } else {
+            bottomContinueButton.layout(
+                left: bounds.left + Spec.BottomContinueButton.legacyInsets.left,
+                right: bounds.right - Spec.BottomContinueButton.legacyInsets.right,
+                bottom: bounds.bottom - max(Spec.BottomContinueButton.legacyInsets.bottom, paparazzoSafeAreaInsets.bottom),
+                height: Spec.BottomContinueButton.legacyHeight
+            )
+        }
+    }
+    
+    private func layOutBottomContinueButtonContainerShapeLayer() {
+        bottomContinueButtonContainerShapeLayer.path = UIBezierPath(
+            roundedRect: bottomContinueButtonContainer.bounds,
+            cornerRadius: Spec.bottomContinueButtonContainerShapeLayer.cornerRadius
+        ).cgPath
+        bottomContinueButtonContainerShapeLayer.shadowPath = bottomContinueButtonContainerShapeLayer.path
     }
     
     private func layOutMainAreaWithThumbnailRibbonOverlappingPreview() {
@@ -190,36 +246,55 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         
         // Controls
         //
+        let cameraControlsViewBottomPadding = isRedesignedMediaPickerEnabled
+            ? Spec.CameraControlsView.newInsets.bottom
+            : Spec.CameraControlsView.legacyInsets.bottom
+        let cameraControlsViewHeight = isRedesignedMediaPickerEnabled
+            ? Spec.CameraControlsView.newHeight
+            : Spec.CameraControlsView.legacyHeight
+        let cameraControlsViewBottom = hasBottomContinueButton
+            ? bottomContinueButton.top - cameraControlsViewBottomPadding
+            : bounds.bottom - paparazzoSafeAreaInsets.bottom
         cameraControlsView.layout(
             left: bounds.left,
             right: bounds.right,
-            bottom: hasBottomContinueButton
-                ? bottomContinueButton.top - 8
-                : bounds.bottom - paparazzoSafeAreaInsets.bottom,
-            height: 54
+            bottom: cameraControlsViewBottom,
+            height: cameraControlsViewHeight
         )
         photoControlsView.frame = cameraControlsView.frame
         
-        let previewTargetBottom = cameraControlsView.top - (hasBottomContinueButton ? 8 : 0)
+        let topInset = isRedesignedMediaPickerEnabled
+            ? Spec.ThumbnailRibbonView.newInsets.bottom
+            : Spec.ThumbnailRibbonView.legacyInsets.bottom
+        let previewTargetBottom = cameraControlsView.top - (hasBottomContinueButton ? 8 : 0) - topInset
         
         // Thumbnail ribbon
         //
+        let thumbnailRibbonViewHeight = isRedesignedMediaPickerEnabled
+            ? Spec.ThumbnailRibbonView.newHeight
+            : Spec.ThumbnailRibbonView.legacyHeight
         thumbnailRibbonView.backgroundColor = theme?.thumbnailsViewBackgroundColor.withAlphaComponent(0.6)
-        thumbnailRibbonView.contentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        let contentInsets = isRedesignedMediaPickerEnabled
+            ? Spec.ThumbnailRibbonView.newContentInsets
+            : Spec.ThumbnailRibbonView.legacyContentInsets
+        thumbnailRibbonView.contentInsets = contentInsets
         thumbnailRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
             bottom: previewTargetBottom,
-            height: 72
+            height: thumbnailRibbonViewHeight
         )
         
         // Camera stream / photo preview area
         //
+        let photoPreviewViewBottom = isRedesignedMediaPickerEnabled
+            ? thumbnailRibbonView.top - Spec.ThumbnailRibbonView.newInsets.top
+            : previewTargetBottom
         photoPreviewView.layout(
             left: bounds.left,
             right: bounds.right,
             top: notchMaskingView.bottom,
-            bottom: previewTargetBottom
+            bottom: photoPreviewViewBottom
         )
     }
     
@@ -235,21 +310,32 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         // Thumbnail ribbon
         //
         thumbnailRibbonView.backgroundColor = theme?.thumbnailsViewBackgroundColor
-        thumbnailRibbonView.contentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 8)
+        thumbnailRibbonView.contentInsets = isRedesignedMediaPickerEnabled
+            ? Spec.ThumbnailRibbonView.newContentInsets
+            : Spec.ThumbnailRibbonView.legacyContentInsets
+        let thumbnailRibbonViewTopInset = isRedesignedMediaPickerEnabled
+            ? Spec.ThumbnailRibbonView.newInsets.bottom
+            : Spec.ThumbnailRibbonView.legacyInsets.bottom
         thumbnailRibbonView.layout(
             left: bounds.left,
             right: bounds.right,
-            bottom: cameraControlsView.top,
+            bottom: cameraControlsView.top - thumbnailRibbonViewTopInset,
             height: thumbnailRibbonHeight
         )
         
         // Camera stream / photo preview area
         //
+        let photoPreviewViewBottomInset = isRedesignedMediaPickerEnabled
+            ? Spec.ThumbnailRibbonView.newInsets.top
+            : Spec.ThumbnailRibbonView.legacyInsets.top
+        let photoPreviewViewTopInset = isRedesignedMediaPickerEnabled
+            ? Spec.PhotoPreviewView.newInsets.top
+            : Spec.PhotoPreviewView.legacyInsets.top
         photoPreviewView.layout(
             left: bounds.left,
             right: bounds.right,
-            top: notchMaskingView.bottom,
-            bottom: thumbnailRibbonView.top
+            top: notchMaskingView.bottom + photoPreviewViewTopInset,
+            bottom: thumbnailRibbonView.top - photoPreviewViewBottomInset
         )
     }
     
@@ -261,8 +347,8 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private func layoutBadgeView() {
         imagePerceptionBadgeView.layout(
-            left: bounds.left + Spec.PerceptionBadge.leftInset,
-            top: paparazzoSafeAreaInsets.top + Spec.PerceptionBadge.topInset,
+            left: bounds.left + Spec.PerceptionBadge.insets.left,
+            top: paparazzoSafeAreaInsets.top + Spec.PerceptionBadge.insets.top,
             width: imagePerceptionBadgeView.sizeThatFits().width,
             height: imagePerceptionBadgeView.sizeThatFits().height
         )
@@ -273,11 +359,15 @@ final class MediaPickerView: UIView, ThemeConfigurable {
         self.theme = theme
         
         backgroundColor = theme.mediaPickerBackgroundColor
+        notchMaskingView.backgroundColor = theme.mediaPickerBackgroundColor
         photoPreviewView.backgroundColor = theme.photoPreviewBackgroundColor
         photoPreviewView.collectionViewBackgroundColor = theme.photoPreviewCollectionBackgroundColor
         
+        photoTitleLabel.font = theme.mediaPickerTitleFont
         photoTitleLabelLightTextColor = theme.mediaPickerTitleLightColor
         photoTitleLabelDarkTextColor = theme.mediaPickerTitleDarkColor
+        
+        thumbnailRibbonView.isRedesignedMediaPickerEnabled = isRedesignedMediaPickerEnabled
         
         cameraControlsView.setTheme(theme)
         photoControlsView.setTheme(theme)
@@ -311,8 +401,24 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             )
         }
         
-        bottomContinueButton.setBackgroundColor(theme.cameraBottomContinueButtonBackgroundColor, for: .normal)
-        bottomContinueButton.setBackgroundColor(theme.cameraBottomContinueButtonHighlightedBackgroundColor, for: .highlighted)
+        if isRedesignedMediaPickerEnabled {
+            bottomContinueButton.clipsToBounds = true
+            bottomContinueButton.layer.cornerRadius = Spec.BottomContinueButton.newCornerRadius
+            bottomContinueButton.setBackgroundColor(theme.mediaPickerDoneButtonColor, for: .normal)
+            bottomContinueButton.setBackgroundColor(theme.mediaPickerDoneButtonHighlightedColor, for: .highlighted)
+            
+            bottomContinueButtonContainer.layer.shadowColor = theme.mediaPickerDoneButtonColor.cgColor
+            bottomContinueButtonContainer.backgroundColor = theme.mediaPickerBackgroundColor
+            
+            bottomContinueButtonContainerShapeLayer.fillColor = theme.mediaPickerBackgroundColor.cgColor
+            bottomContinueButtonContainerShapeLayer.backgroundColor = theme.mediaPickerBackgroundColor.cgColor
+            bottomContinueButtonContainerShapeLayer.shadowColor = theme.mediaPickerDoneButtonColor.cgColor
+        } else {
+            bottomContinueButton.layer.cornerRadius = Spec.BottomContinueButton.legacyCornerRadius
+            bottomContinueButton.setBackgroundColor(theme.cameraBottomContinueButtonBackgroundColor, for: .normal)
+            bottomContinueButton.setBackgroundColor(theme.cameraBottomContinueButtonHighlightedBackgroundColor, for: .highlighted)
+        }
+        
         bottomContinueButton.titleLabel?.font = theme.cameraBottomContinueButtonFont
         bottomContinueButton.setTitleColor(theme.cameraBottomContinueButtonTitleColor, for: .normal)
 
@@ -506,6 +612,7 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     func setContinueButtonVisible(_ isVisible: Bool) {
         topRightContinueButton.isHidden = !isVisible
         bottomContinueButton.isHidden = !isVisible
+        bottomContinueButtonContainer.isHidden = !isVisible
     }
     
     func setContinueButtonStyle(_ style: MediaPickerContinueButtonStyle) {
@@ -747,7 +854,6 @@ final class MediaPickerView: UIView, ThemeConfigurable {
             for: .touchUpInside
         )
         
-        bottomContinueButton.layer.cornerRadius = 5
         bottomContinueButton.titleEdgeInsets = UIEdgeInsets(top: 6, left: 16, bottom: 8, right: 16)
         bottomContinueButton.addTarget(
             self,
@@ -777,11 +883,48 @@ final class MediaPickerView: UIView, ThemeConfigurable {
     
     private enum Spec {
         enum PerceptionBadge {
-            static let leftInset: CGFloat = 8
-            static let topInset: CGFloat = 56
+            static let insets = UIEdgeInsets(top: 56, left: 8, bottom: 0, right: 0)
+        }
+        
+        enum CameraControlsView {
+            static let newInsets = UIEdgeInsets(top: 0, left: 0, bottom: 26, right: 0)
+            static let legacyInsets = UIEdgeInsets.zero
+            
+            static let newHeight = 60.0
+            static let legacyHeight = 93.0
+        }
+        
+        enum BottomContinueButton {
+            static let newHeight = 52.0
+            static let legacyHeight = 36.0
+            
+            static let newInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            static let legacyInsets = UIEdgeInsets(top: 0, left: 16, bottom: 14, right: 16)
+            
+            static let newCornerRadius = 16.0
+            static let legacyCornerRadius = 5.0
+        }
+        
+        enum bottomContinueButtonContainerShapeLayer {
+            static let cornerRadius = 24.0
+        }
+        
+        enum ThumbnailRibbonView {
+            static let newHeight = 108.0
+            static let legacyHeight = 72.0
+            
+            static let newContentInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+            static let legacyContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            
+            static let newInsets = UIEdgeInsets(top: 6, left: 0, bottom: 16, right: 0)
+            static let legacyInsets = UIEdgeInsets.zero
+        }
+        
+        enum PhotoPreviewView {
+            static let newInsets = UIEdgeInsets(top: 52, left: 0, bottom: 0, right: 0)
+            static let legacyInsets = UIEdgeInsets.zero
         }
     }
-    
 }
 
 private extension UIButton {

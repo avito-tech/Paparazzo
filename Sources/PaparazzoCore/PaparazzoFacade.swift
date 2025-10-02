@@ -69,6 +69,7 @@ public final class PaparazzoFacade {
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV2Data,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -81,6 +82,7 @@ public final class PaparazzoFacade {
         let galleryController = assembly.module(
             data: parameters,
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             isNewFlowPrototype: true,
             cameraType: .cameraV3,
             configure: { (module: PhotoLibraryV2Module) in
@@ -106,6 +108,7 @@ public final class PaparazzoFacade {
         theme: PaparazzoUITheme = PaparazzoUITheme(),
         parameters: PhotoLibraryV3Data,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         onFinish: @escaping ([MediaPickerItem]) -> (),
         onCancel: (() -> ())? = nil,
         onCameraV3InitializationMeasurementStart: (() -> ())?,
@@ -119,6 +122,7 @@ public final class PaparazzoFacade {
             data: parameters,
             cameraType: .cameraV3,
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             configure: { (module: PhotoLibraryV3Module) in
                 module.onFinish = { [weak module] result in
                     module?.dismissModule()

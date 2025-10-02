@@ -17,6 +17,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
     public func module(
         data: PhotoLibraryV2Data,
         isPaparazzoImageUpdaingFixEnabled: Bool,
+        isRedesignedMediaPickerEnabled: Bool,
         isNewFlowPrototype: Bool,
         cameraType: MediaPickerCameraType,
         configure: (PhotoLibraryV2Module) -> (),
@@ -57,6 +58,7 @@ public final class PhotoLibraryV2AssemblyImpl: BasePaparazzoAssembly, PhotoLibra
             router: router,
             overridenTheme: theme,
             isPaparazzoImageUpdaingFixEnabled: isPaparazzoImageUpdaingFixEnabled,
+            isRedesignedMediaPickerEnabled: isRedesignedMediaPickerEnabled,
             isNewFlowPrototype: isNewFlowPrototype,
             cameraType: cameraType,
             onCameraV3InitializationMeasurementStart: onCameraV3InitializationMeasurementStart,
